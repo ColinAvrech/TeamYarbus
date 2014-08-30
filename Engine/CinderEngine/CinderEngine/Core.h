@@ -1,0 +1,73 @@
+/*!
+
+/auther Micah
+/file Core.h
+
+/brief contains the interface class for all systems.
+*/
+#pragma once
+
+//! The highest FPS the game can run at.
+#define FPS 60.0f
+
+#include "BaseSystem.h"
+#include <vector>
+#include <chrono>   //! chrono::nanoseconds,
+#include <thread>   //! sleep_for,
+#include <iostream>
+using namespace std::chrono;
+
+
+namespace Framework
+{
+
+  class CoreEngine
+  {
+  public:
+    CoreEngine();
+    ~CoreEngine();
+
+    //!Update all the systems
+    void GameLoop();
+
+    //!Destroy all system in reverse order that they were added
+    void DestroySystems();
+
+    //! Add a system to be updated every frame.
+    void AddSystem(BaseSystem* system);
+
+    //! initializes all systems in the game.
+    void Initialize();
+
+  private:
+
+    //!Hold pointers to all system in the game
+    std::vector<BaseSystem*> Systems;
+    //!Is the game running (true) or not (false, shut down)
+    bool GameActive;
+
+    /*!dt for each frame
+    A const reference is used for systems
+    and can be found in the framework*/
+    double _dt = 0.0f;
+
+    /*!average dt for each frame
+    A const reference is used for systems
+    and can be found in the framework*/
+    double _dt_ave = 0.0f;
+
+    //!time points to measure
+    high_resolution_clock::time_point _start_tp;
+    high_resolution_clock::time_point _end_tp;
+
+    //!Call at the begining of the update
+    void StartGameLoop_dt(void);
+    //!Call at the end of the update function
+    void EndGameLoop_dt(void);
+    //!Call to limit the number of FPS
+    void FrameLimiter(void);
+  };
+  
+  //! Global Pointer for the Game engine core
+  extern CoreEngine* CORE;
+}
