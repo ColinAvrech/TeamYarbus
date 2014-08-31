@@ -46,7 +46,6 @@ namespace Framework
       
       for (unsigned i = 0; i < Systems.size(); ++i)
         Systems[i]->Update(_dt);
-
       
 
       //! marks the end of a frame and calculates the dt, average dt

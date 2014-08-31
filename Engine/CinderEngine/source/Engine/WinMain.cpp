@@ -13,6 +13,7 @@ starts the game loop.
 
 #include "WindowSystem.h"
 #include "EventSystem.h"
+#include "GraphicsSystem.h"
 #include "CinderDebug.h"        //! EnableMemoryleakChecking
 #include "Core.h"
 #include "Console.h"
@@ -45,16 +46,19 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR, INT)
   //! Create the core engine which manages all systems.
   CoreEngine * engine = new CoreEngine;
   //! Initilize all systems
-  WindowSystem * windows = new WindowSystem(hInst, WindowTitle, ClientWidth, ClientHeight);
-  //EventSystem * events = new EventSystem();
+  WindowSystem * windows      = new WindowSystem (hInst, WindowTitle, ClientWidth, ClientHeight);
+  GraphicsSystem* graphics    = new GraphicsSystem ();
+  EventSystem * events        = new EventSystem ();
 
 
   engine->AddSystem(windows);
-  //engine->AddSystem(events);
+  engine->AddSystem (graphics);
+  engine->AddSystem(events);
 
   
   //! activate the window
   windows->ActivateWindow();
+  graphics->Initialize ();
 
   //! Run the game! NOW!
   engine->GameLoop();

@@ -1,7 +1,7 @@
 /*!
 
 /auther Micah
-/file System.h
+/file BaseSystem.h
 
 /brief contains the interface class for all systems.
 */
