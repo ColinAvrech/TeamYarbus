@@ -1,17 +1,20 @@
+
+
+/******************************************************************************/
 /*!
-
-/auther Micah
-/file ComponentTypeIds.h
-
-/brief An enumeration of all components in the engine. This list may be subject to
+\file   ComponentTypeIds.h
+\author Micah Rust
+\par    Course: GAM200
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+\brief  An enumeration of all components in the engine. This list may be subject to
 to self-generation in the future
 
 
 NOTE: it is possible to do this with strings, and It should be considered after
 the event system has been created since that will have a majority of the same
 code required to do this.
-
 */
+/******************************************************************************/
 
 #pragma once
 

@@ -1,11 +1,14 @@
+
+/******************************************************************************/
 /*!
-
-/auther Micah
-/file EventSystem.h
-
-/brief Contains all of the framework for creating and maintaining a window.
-
+\file   EventSystem.h
+\author Micah Rust
+\par    Course: GAM200
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+\brief
 */
+/******************************************************************************/
+
 #pragma once
 
 #include "BaseSystem.h"

@@ -1,11 +1,14 @@
+/******************************************************************************/
 /*!
-
-/auther Micah
-/file GOC.cpp
-
-/brief
-
+\file   GOC.cpp
+\author Micah Rust
+\par    Course: GAM200
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+\brief  The Game Object Composition (GOC) makes up all objects in the game engine.
+it holds an array of pointers to its components which will be initialized before
+the level runs.
 */
+/******************************************************************************/
 
 #include "ComponentTypeIds.h"
 #include "Factory.h"

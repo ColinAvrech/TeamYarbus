@@ -1,12 +1,13 @@
+/******************************************************************************/
 /*!
-
-/auther Micah
-/file WindowSystem.cpp
-
-/brief main.cpp is the starting place for the engine. This initializes all the systems and
-starts the game loop.
-
+\file   WindowSystem.cpp
+\author Micah Rust
+\par    Course: GAM200
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+\brief  This system creates a window for the graphics system. It also holds the
+function to handle windows Messages.
 */
+/******************************************************************************/
 
 
 #include "windowsystem.h"

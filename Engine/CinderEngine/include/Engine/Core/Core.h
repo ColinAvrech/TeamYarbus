@@ -1,10 +1,13 @@
+/******************************************************************************/
 /*!
-
-/auther Micah
-/file Core.h
-
-/brief contains the interface class for all systems.
+\file   Template.h
+\author Micah Rust
+\par    Course: GAM200
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+\brief  Core handles all the engine's main functionality. 
 */
+/******************************************************************************/
+
 #pragma once
 
 //! The highest FPS the game can run at.

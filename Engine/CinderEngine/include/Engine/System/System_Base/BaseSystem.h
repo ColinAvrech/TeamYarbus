@@ -1,10 +1,12 @@
+/******************************************************************************/
 /*!
-
-/auther Micah
-/file System.h
-
-/brief contains the interface class for all systems.
+\file   Template.h
+\author Micah Rust
+\par    Course: GAM200
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+\brief  The Base system which all System inherit and are called by.
 */
+/******************************************************************************/
 
 //!makes sure this is only included once
 #pragma once

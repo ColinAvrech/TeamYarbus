@@ -1,9 +1,11 @@
+/******************************************************************************/
 /*!
+\file   Template.h
+\author Micah Rust
+\par    Course: GAM200
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
 
-/auther Micah
-/file GOC.h
-
-/brief Game Object Compositions make up everything in the Cinder Engine.
+\brief  Game Object Compositions make up everything in the Cinder Engine.
 They are the core of every object and hold a Vector of pointers to all of
 their components. A component is a part of an object (ie. Physics, graphic,
 AI, controlers). Game Object Composition have three different states which
@@ -20,7 +22,10 @@ access each aplicable component when running their update function.
 -R.I.P. : Composition is about to die and will be deleted by the
 factory in the next loop.
 
+
 */
+/******************************************************************************/
+
 
 #pragma once
 

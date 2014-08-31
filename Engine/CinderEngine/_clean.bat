@@ -1,11 +1,11 @@
 @echo off
 cd premake
-rm *.vcxproj*
+del *.vcxproj*
 cd ..
-rm *.sdf
-rm *.opensdf
-rm *.sln
-rm *.suo
+del *.sdf
+del *.opensdf
+del *.sln
+del *.suo
 rmdir /S /Q obj
 rmdir /S /Q bin
 pause

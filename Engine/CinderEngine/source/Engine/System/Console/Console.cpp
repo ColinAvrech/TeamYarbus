@@ -1,10 +1,13 @@
+/******************************************************************************/
 /*!
-
-/auther Micah
-/file Console.cpp
-
+\file   Console.cpp
+\author Micah Rust
+\par    Course: GAM200
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+\brief  Holds all the logic for changing the color of the console text.
+Also has functions to create the console.
 */
-
+/******************************************************************************/
 
 #include "Console.h"
 

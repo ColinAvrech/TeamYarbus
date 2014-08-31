@@ -1,3 +1,12 @@
+/******************************************************************************/
+/*!
+\file   Vec2.cpp
+\author Micah Rust
+\par    Course: GAM200
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+\brief  Class for all 2D math relating to position.
+*/
+/******************************************************************************/
 
 #include "Vec2.h"
 

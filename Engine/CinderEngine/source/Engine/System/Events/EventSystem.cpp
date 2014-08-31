@@ -1,11 +1,12 @@
+/******************************************************************************/
 /*!
-
-/auther Micah
-/file EventSystem.cpp
-
-/brief Contains all of the framework for creating and maintaining a window.
-
+\file   EventSystem.cpp
+\author Micah Rust
+\par    Course: GAM200
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+\brief
 */
+/******************************************************************************/
 
 #include "EventSystem.h"
 

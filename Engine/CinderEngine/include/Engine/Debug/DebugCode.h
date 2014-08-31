@@ -1,12 +1,12 @@
+/******************************************************************************/
 /*!
-
-/auther Micah
-/file DebugCode.h
-
-
-
-
+\file   DebugCode.h
+\author Micah Rust
+\par    Course: GAM200
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+\brief
 */
+/******************************************************************************/
 
 #pragma once
 
