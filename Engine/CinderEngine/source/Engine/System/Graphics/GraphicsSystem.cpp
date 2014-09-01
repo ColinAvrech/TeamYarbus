@@ -78,7 +78,7 @@ namespace Framework
   // CAMERA
   // TEMPORARY
   // WILL BE REPLACED BY CAMERA COMPONENT
-  float camera_width = 2.0f * float (width) / float (height),
+  float camera_width = 2.0f * float (1024) / float (768),
     camera_height = 2.0f;
   Point camPosition;
   float camZoom = 1.0f, camRotation, movingCamWidth, movingCamHeight = 0.5f;
