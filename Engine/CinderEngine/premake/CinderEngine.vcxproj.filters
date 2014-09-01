@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{89AF369E-F58E-B539-FEA6-40106A051C9B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\Engine">
+      <UniqueIdentifier>{EEA51C00-DA73-1006-C307-812CAF74EC6A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\Engine\Composition">
+      <UniqueIdentifier>{31CB5524-1DDB-01F5-8694-661372C3F08D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\Engine\Composition\Component_Base">
+      <UniqueIdentifier>{6D053AF6-D91F-9D97-2242-AD2B8E9BC49E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\Engine\Composition\Components">
+      <UniqueIdentifier>{A6AF025C-1274-014C-DBD9-3116475D9D81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\Engine\Composition\Composition">
+      <UniqueIdentifier>{F4EC4DE8-E03E-25D8-C95D-62E8B54E3EC1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\Engine\Core">
+      <UniqueIdentifier>{06AF7083-7210-4E91-FB7D-944367DE8450}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\Engine\Debug">
+      <UniqueIdentifier>{E4EA92F1-D079-1CBB-7998-30B665062D61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\Engine\Factory">
+      <UniqueIdentifier>{35C8AA32-21C2-D384-0A2F-6A95F6C739F1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\Engine\Global">
+      <UniqueIdentifier>{8E3C752B-FAA8-3026-C39C-C8832FC8528E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\Engine\Math">
+      <UniqueIdentifier>{87EF7583-F350-5391-7CBE-9943E81E8A50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\Engine\System">
+      <UniqueIdentifier>{42E16048-AE4D-1C43-7741-B4A0E36C3EAB}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\Engine\System\Console">
+      <UniqueIdentifier>{641A4FA0-D032-36CA-99DF-C56305B7CA63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\Engine\System\Events">
+      <UniqueIdentifier>{E64EE8AC-D209-D858-7BC1-50A3675B22E9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\Engine\System\Events\EventSystem">
+      <UniqueIdentifier>{9C1DEA7D-889A-DDC0-B117-DED49DF37954}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\Engine\System\Events\Event_Base">
+      <UniqueIdentifier>{D1632E90-3DF3-EF7A-46EF-D092B2FD2A87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\Engine\System\Events\Events">
+      <UniqueIdentifier>{0A7C5F35-7635-CADF-FF94-E4B96B4D804F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\Engine\System\Graphics">
+      <UniqueIdentifier>{C2339B23-AE59-658A-979F-EA5583648A56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\Engine\System\System_Base">
+      <UniqueIdentifier>{90C88ABE-FC36-E03D-4520-9B3DB1CDD5D9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source">
+      <UniqueIdentifier>{76FF3A1C-62A1-65F2-4B5C-7946379DEC42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Engine">
+      <UniqueIdentifier>{3B29441B-A7E9-BF51-7024-09CFDCA3042E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Engine\Composition">
+      <UniqueIdentifier>{FEA96FB3-6A6C-A33D-B31C-32CA1F1E7C1B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Engine\Composition\Components">
+      <UniqueIdentifier>{539457E7-3F7B-19DF-E8CB-7FFCD4919245}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Engine\Composition\Components\Graphics">
+      <UniqueIdentifier>{F3E97E9F-5F5A-8118-2879-FBA094A8B919}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Engine\Composition\Composition">
+      <UniqueIdentifier>{41673FDE-AD2B-3ECE-7691-6E98E214DA03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Engine\Core">
+      <UniqueIdentifier>{734A5FF6-5F2E-204C-C88E-1A9FB4910ACE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Engine\Debug">
+      <UniqueIdentifier>{F1F354C2-5D55-32D0-E6C2-78825223698F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Engine\Factory">
+      <UniqueIdentifier>{8248133C-EEB4-CE36-B7A8-669423D4F09E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Engine\Math">
+      <UniqueIdentifier>{F48A64F6-E06E-254C-49CF-1F9F35D20FCE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Engine\System">
+      <UniqueIdentifier>{EF0B6431-DB9A-EDFA-84B9-01F67027FEA0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Engine\System\Console">
+      <UniqueIdentifier>{11A2F4FE-FD5C-E4AA-A614-5DF592AE2E3B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Engine\System\Events">
+      <UniqueIdentifier>{F314F569-5F22-2350-E808-1F3B5415EF06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Engine\System\Graphics">
+      <UniqueIdentifier>{0FB1F156-7BC9-D880-4476-681AB04D6D1A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Engine\System\System_Base">
+      <UniqueIdentifier>{BD5ED67E-A9AF-C1C0-D213-B082BEC3542A}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\Engine\Composition\Component_Base\Component.h">
+      <Filter>include\Engine\Composition\Component_Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\Composition\Component_Base\ComponentCreator.h">
+      <Filter>include\Engine\Composition\Component_Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\Composition\Component_Base\ComponentTypeIds.h">
+      <Filter>include\Engine\Composition\Component_Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\Composition\Components\Transform.h">
+      <Filter>include\Engine\Composition\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\Composition\Composition\GOC.h">
+      <Filter>include\Engine\Composition\Composition</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\Core\Core.h">
+      <Filter>include\Engine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\Debug\DebugCode.h">
+      <Filter>include\Engine\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\Factory\Factory.h">
+      <Filter>include\Engine\Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\Global\CinderDebug.h">
+      <Filter>include\Engine\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\Global\CinderWindows.h">
+      <Filter>include\Engine\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\Math\Affine.h">
+      <Filter>include\Engine\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\Math\Vec2.h">
+      <Filter>include\Engine\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\System\Console\Console.h">
+      <Filter>include\Engine\System\Console</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\System\Events\EventSystem\EventSystem.h">
+      <Filter>include\Engine\System\Events\EventSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\System\Events\Event_Base\BaseEvent.h">
+      <Filter>include\Engine\System\Events\Event_Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\System\Events\Event_Base\Events.h">
+      <Filter>include\Engine\System\Events\Event_Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\System\Events\Events\InputEvent.h">
+      <Filter>include\Engine\System\Events\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\System\Graphics\GraphicsSystem.h">
+      <Filter>include\Engine\System\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\System\System_Base\BaseSystem.h">
+      <Filter>include\Engine\System\System_Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\System\WindowSystem.h">
+      <Filter>include\Engine\System</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\source\Engine\Composition\Components\Graphics\Camera.cpp">
+      <Filter>source\Engine\Composition\Components\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Engine\Composition\Components\Graphics\Renderer.cpp">
+      <Filter>source\Engine\Composition\Components\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Engine\Composition\Composition\GOC.cpp">
+      <Filter>source\Engine\Composition\Composition</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Engine\Core\Core.cpp">
+      <Filter>source\Engine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Engine\Debug\DebugCode.cpp">
+      <Filter>source\Engine\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Engine\Factory\Factory.cpp">
+      <Filter>source\Engine\Factory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Engine\Math\Affine.cpp">
+      <Filter>source\Engine\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Engine\Math\Vec2.cpp">
+      <Filter>source\Engine\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Engine\System\Console\Console.cpp">
+      <Filter>source\Engine\System\Console</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Engine\System\Events\EventSystem.cpp">
+      <Filter>source\Engine\System\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Engine\System\Graphics\GraphicsSystem.cpp">
+      <Filter>source\Engine\System\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Engine\System\System_Base\BaseSystem.cpp">
+      <Filter>source\Engine\System\System_Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Engine\System\WindowSystem.cpp">
+      <Filter>source\Engine\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Engine\WinMain.cpp">
+      <Filter>source\Engine</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
