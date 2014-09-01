@@ -1,16 +1,19 @@
+/******************************************************************************/
 /*!
+\file   Core.cpp
+\author Micah Rust
+\par    Course: GAM200
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+\brief  Contains all functionality to start and run the gameloop. This includes
 
-/auther Micah
-/file Core.cpp
-
-/brief Contains all functionality to start and run the gameloop. This includes
-
-Adding Systems
+Adding Systems.
 Initializeing all systems.
 Updating all systems.
 Destorying all Systems.
-
+Main Game Loop.
 */
+/******************************************************************************/
+
 
 #include "Core.h"
 #include "Console.h"

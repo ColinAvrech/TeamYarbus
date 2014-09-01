@@ -1,10 +1,13 @@
+/******************************************************************************/
 /*!
-
-/auther Micah
-/file Events.h
-
-/brief contains all the enums for non-registered events.
+\file   Events.h
+\author Micah Rust
+\par    Course: GAM200
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+\brief  contains all the enums for non-registered events.
 */
+/******************************************************************************/
+
 
 #pragma once
 

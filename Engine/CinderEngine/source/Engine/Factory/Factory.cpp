@@ -1,11 +1,14 @@
+/******************************************************************************/
 /*!
-
-/auther Micah
-/file Factory.cpp
-
-/brief 
-
+\file   Factory.cpp
+\author Micah Rust
+\par    Course: GAM200
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+\brief  Creates all GameObjectComposition and their respective components using 
+the temaplted Component creators. The factory also cleans up when an object is 
+deleted.
 */
+/******************************************************************************/
 
 #include "Factory.h"
 

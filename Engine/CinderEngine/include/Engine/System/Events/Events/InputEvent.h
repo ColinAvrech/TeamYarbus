@@ -1,10 +1,12 @@
+/******************************************************************************/
 /*!
-
-/auther Micah
-/file InputEvent.h
-
-/brief contains the interface class for all events
+\file   InputEvent.h
+\author Micah Rust
+\par    Course: GAM200
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+\brief
 */
+/******************************************************************************/
 
 #pragma once
 

@@ -1,11 +1,13 @@
+/******************************************************************************/
 /*!
-
-/auther Micah
-/file System.h
-
-/brief System is a 100% virtual function. This code is ONLY for debug
+\file   BaseSystem.cpp
+\author Micah Rust
+\par    Course: GAM200
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+\brief  The Base System is a 100% virtual function. This code is ONLY for debug
 pruposes. This is debug code!
 */
+/******************************************************************************/
 
 #ifdef _DEBUG
 

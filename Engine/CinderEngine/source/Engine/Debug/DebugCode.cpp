@@ -1,14 +1,16 @@
+/******************************************************************************/
 /*!
-
-/auther Micah
-/file DebugCode.cpp
-
-/brief conatains all functions for Debugging code:
+\file   DebugCode.cpp
+\author Micah Rust
+\par    Course: GAM200
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+\brief  Contains all functions for Debugging code:
 
 ->TracePrint: Prints the message to the consule.
 ->SignalError: Prints the message to the consule, and opens a message box for the user with the error.
 
 */
+/******************************************************************************/
 
 #include "CinderDebug.h"
 #include "Console.h"

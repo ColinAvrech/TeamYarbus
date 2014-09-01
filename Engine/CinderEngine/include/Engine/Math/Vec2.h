@@ -1,12 +1,18 @@
+/******************************************************************************/
+/*!
+\file   Vec2.h
+\author Micah Rust
+\par    Course: GAM200
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+\brief  Vec2 is used for Position, Velocity, and Acceleration
+  of objects. It has Lots of utility and should be used for the
+  physics and graphics parts of our game.
+*/
+/******************************************************************************/
 
 #pragma once
 #include <iostream>
 
-/** 
-  \brief Vec2 is used for Position, Velocity, and Acceleration
-  of objects. It has Lots of utility and should be used for the
-  physics and graphics parts of our game.
-*/
 class Vec2
 {
 public:

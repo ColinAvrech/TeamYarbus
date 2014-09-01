@@ -1,11 +1,12 @@
+/******************************************************************************/
 /*!
-
-/auther Micah
-/file CinderWindows.h
-
-/brief Holds all the windows.h includes so that windows.h is only included once
-
+\file   CinderWindows.h
+\author Micah Rust
+\par    Course: GAM200
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+\brief  Include File for all windows functionality
 */
+/******************************************************************************/
 
 
 #pragma once

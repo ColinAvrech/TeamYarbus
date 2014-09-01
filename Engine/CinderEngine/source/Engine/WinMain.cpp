@@ -1,12 +1,14 @@
+/******************************************************************************/
 /*!
-
-/auther Micah
-/file main.cpp
-
-/brief main.cpp is the starting place for the engine. This initializes all the systems and
+\file   WinMain.cpp
+\author Micah Rust
+\par    Course: GAM200
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+\brief  WinMain.cpp is the starting place for the engine. This initializes all the systems and
 starts the game loop.
-
 */
+/******************************************************************************/
+
 
 #define WINDOWSBUILD
 #ifdef WINDOWSBUILD
