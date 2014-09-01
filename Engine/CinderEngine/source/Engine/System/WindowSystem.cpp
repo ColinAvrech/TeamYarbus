@@ -122,10 +122,10 @@ namespace Framework
 
   void WindowSystem::ActivateWindow()
   {
-    /*!Show the window (check: http://msdn.microsoft.com/en-us/library/windows/desktop/ms633548(v=vs.85).aspx for other options)*/
-    ShowWindow(hWnd, SW_SHOWDEFAULT);
-    //!Send a WM_PAIN message to the window
-    UpdateWindow(hWnd);
+    ///*!Show the window (check: http://msdn.microsoft.com/en-us/library/windows/desktop/ms633548(v=vs.85).aspx for other options)*/
+    //ShowWindow(hWnd, SW_SHOWDEFAULT);
+    ////!Send a WM_PAIN message to the window
+    //UpdateWindow(hWnd);
   }
 
   void WindowSystem::Update(const double dt)

@@ -16,6 +16,8 @@
 ------------------------------------------------------------------------------*/
 #pragma region Includes
 #include "BaseSystem.h"
+#include "Affine.h"
+#include "glut.h"
 #include <iostream>
 #pragma endregion
 
@@ -128,9 +130,11 @@ private:
 
 extern GraphicsSystem* GRAPHICSSYSTEM;
 
+void Init ();
 void Draw ();
 void Loop ();
 void Resized (int, int);
+void KeyPressed (unsigned char c, int, int);
 
 }
 
