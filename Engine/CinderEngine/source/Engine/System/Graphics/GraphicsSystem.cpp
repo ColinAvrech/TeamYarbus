@@ -13,6 +13,7 @@
 ------------------------------------------------------------------------------*/
 #pragma region Includes
 #include "GraphicsSystem.h"
+
 #pragma endregion
 
 namespace Framework 

@@ -26,11 +26,13 @@ solution "CinderEngine"
       "../source/**.cpp"
     }
     
-    includedirs { "../dependency/opengl/include", 
+    includedirs { "../dependency/opengl/include",
+                  "../dependency/lua/include",
                   "../dependency/audio/include", 
                   "../include/**" }
     
-    libdirs { "../dependency/opengl/library" }
+    libdirs { "../dependency/opengl/library",
+              "../dependency/lua/library"}
 
 
 --[[ Debug Configuration ]]
