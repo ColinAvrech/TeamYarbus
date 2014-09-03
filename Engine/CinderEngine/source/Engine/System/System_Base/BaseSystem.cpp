@@ -11,7 +11,7 @@ pruposes. This is debug code!
 
 #ifdef _DEBUG
 
-#include "BaseSystem.h"
+#include "Common.h"
 
 namespace Framework
 {

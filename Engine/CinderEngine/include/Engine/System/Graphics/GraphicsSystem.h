@@ -15,10 +15,9 @@
 // Includes
 ------------------------------------------------------------------------------*/
 #pragma region Includes
-#include "BaseSystem.h"
+#include "Common.h"
 #include "Affine.h"
 #include "glut.h"
-#include <iostream>
 #pragma endregion
 
 

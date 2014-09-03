@@ -16,9 +16,8 @@ starts the game loop.
 #include "WindowSystem.h"
 #include "EventSystem.h"
 #include "GraphicsSystem.h"
-#include "CinderDebug.h"        //! EnableMemoryleakChecking
+#include "Common.h"     //! EnableMemoryleakChecking
 #include "Core.h"
-#include "Console.h"
 
 #define _DEGUB
 using namespace Framework;

@@ -16,8 +16,7 @@ Main Game Loop.
 
 
 #include "Core.h"
-#include "Console.h"
-#include "CinderDebug.h"
+#include "Common.h"
 
 namespace Framework
 {

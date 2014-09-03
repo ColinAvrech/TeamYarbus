@@ -9,9 +9,8 @@
 //!makes sure this is only included once
 #pragma once
 
-#include <string>
+#include "Common.h"
 #ifdef _DEBUG
-#include <chrono> //! high_resolution_clock
 using namespace std::chrono;
 #endif
 

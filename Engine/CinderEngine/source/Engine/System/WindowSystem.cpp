@@ -9,9 +9,8 @@ function to handle windows Messages.
 */
 /******************************************************************************/
 
-
+#include "Common.h"
 #include "windowsystem.h"
-#include "CinderDebug.h"
 
 namespace Framework
 {

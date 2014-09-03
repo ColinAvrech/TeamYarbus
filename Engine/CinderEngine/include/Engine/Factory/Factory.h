@@ -11,11 +11,8 @@
 
 
 #pragma once
-#include "BaseSystem.h"      //! BaseSystem
-#include <map>           //! std::map
-#include <set>           //! std::set
-#include "CinderDebug.h" //!ErrorIf
-#include "GOC.h"         //! GOC
+
+#include "Common.h"
 
 namespace Framework
 {
