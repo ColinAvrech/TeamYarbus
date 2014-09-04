@@ -28,11 +28,12 @@ solution "CinderEngine"
     
     includedirs { "../dependency/opengl/include",
                   "../dependency/lua/include",
-                  "../dependency/audio/include", 
+                  "../dependency/fmod/include", 
                   "../include/**" }
     
     libdirs { "../dependency/opengl/library",
-              "../dependency/lua/library"}
+              "../dependency/lua/library",
+							"../dependency/fmod/library"}
 
 
 --[[ Debug Configuration ]]
@@ -42,7 +43,8 @@ solution "CinderEngine"
       targetdir "../bin/debug"
       postbuildcommands
               {
-                "copy ..\\dependency\\opengl\\library\\glut32.dll ..\\bin\\debug\\"
+                "copy ..\\dependency\\opengl\\library\\glut32.dll ..\\bin\\debug\\",
+								"copy ..\\dependency\\fmod\\library\\fmod.dll ..\\bin\\debug\\"
               }
         
 --[[ Release Configuration ]]        
@@ -53,6 +55,7 @@ solution "CinderEngine"
       targetdir "../bin/release"
       postbuildcommands
               {
-                "copy ..\\dependency\\opengl\\library\\glut32.dll ..\\bin\\release\\"
+                "copy ..\\dependency\\opengl\\library\\glut32.dll ..\\bin\\release\\",
+								"copy ..\\dependency\\fmod\\library\\fmod.dll ..\\bin\\debug\\"								
               }
         
