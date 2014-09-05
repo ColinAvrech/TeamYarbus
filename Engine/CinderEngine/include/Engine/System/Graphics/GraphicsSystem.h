@@ -17,6 +17,9 @@
 #pragma region Includes
 #include "Common.h"
 #include "Affine.h"
+#include "Sprite.h"
+#include "SpriteRenderer.h"
+#include "Transform.h"
 #include "glut.h"
 #pragma endregion
 
