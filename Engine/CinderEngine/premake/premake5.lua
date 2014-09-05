@@ -29,6 +29,7 @@ solution "CinderEngine"
     includedirs { "../dependency/opengl/include",
                   "../dependency/lua/include",
                   "../dependency/audio/include", 
+                  "../dependency/LuaBridge",
                   "../include/**" }
     
     libdirs { "../dependency/opengl/library",
