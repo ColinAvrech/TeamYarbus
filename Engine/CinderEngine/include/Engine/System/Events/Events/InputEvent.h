@@ -10,9 +10,7 @@
 
 #pragma once
 
-
-#include <vector>
-#include "CinderDebug.h"
+#include "Common.h"
 
 namespace Framework
 {

@@ -14,7 +14,6 @@
 
 #include "Component.h"
 #include "GOC.h"
-//#include <string>
 #include "lua.hpp"
 #include "Luabridge.h"
 
@@ -23,16 +22,13 @@ namespace Framework
   class ScriptComponent : public GameComponent
   {
   public:
-    ScriptComponent(GOC* obj)
-      :luaClass(NULL), LState(NULL){}   //Constructor
-    virtual ~ScriptComponent(){}        //Destructor
+    ScriptComponent(GOC* obj);          //Constructor
+    ~ScriptComponent();                 //Destructor
     bool isScript() { return true; }    //Confirm the component is a script
-    void RunScript(lua_State& LState);  //Run the script on update
+    void RunScript();                   //Run the script on update
 
   private:
-    //std::string scriptName;             //the name of the script file
-    //int ScriptID;                       //The assigned integer id of the attached script
     luabridge::LuaRef *luaClass;        //pointer to a lua table
-    lua_State **LState;                 //pointer to the lua state in which the script is loaded
+    lua_State *LState;                  //pointer to the lua state in which the script is loaded
   };
 }

@@ -16,9 +16,8 @@ starts the game loop.
 #include "WindowSystem.h"
 #include "EventSystem.h"
 #include "GraphicsSystem.h"
-#include "CinderDebug.h"        //! EnableMemoryleakChecking
+#include "Common.h"     //! EnableMemoryleakChecking
 #include "Core.h"
-#include "Console.h"
 
 #define _DEGUB
 using namespace Framework;
@@ -63,7 +62,7 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR, INT)
   graphics->Initialize ();
 
   //! Run the game! NOW!
-  engine->GameLoop();
+  //engine->GameLoop();
 
   //! Delete all systems
   engine->DestroySystems();

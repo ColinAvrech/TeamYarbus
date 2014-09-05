@@ -11,10 +11,7 @@
 
 #pragma once
 
-#include "BaseSystem.h"
-#include "Events.h"
-#include "GOC.h"
-#include <vector>
+#include "Common.h"
 
 
 namespace Framework

@@ -42,48 +42,18 @@ namespace Framework
 #pragma region Public Variables
 
   GraphicsSystem* GRAPHICSSYSTEM = NULL;
+  float time_last;
+  float rate = 1;
+  Affine map;
 
-  // TRANSFORMATIONS
-  Affine ObjectToWorld;
-  Affine WorldToCamera;
-  Affine NDC;
-  Affine WorldMatrix = Scale (1 / 12.0f, 1 / 2.0f);
-  Affine camera;
-  Affine staticCameraTransform = Scale (1.0f);
-  Affine Square = Scale (0.4f);
-  Affine movingCameraTransform = Scale (1);
-
-  // MESH DATA
-  // TEMPORARY
-  // EACH GAME OBJECT WITH A RENDERER COMPONENT WILL CARRY IT'S OWN DATA
-
-  const float pi = 4.0f*atan (1.0f);
-  int time_last;
-
-  // basic square
-  const int vertex_count = 4;
-  const Point vertices [vertex_count]
-    = { Point (1, 1), Point (-1, 1), Point (-1, -1), Point (1, -1) };
-  // Rotating Square
-  float rate = 2 * pi / 5.0f;
-  Point RotatingSquare (0.0f, 0.0f);
-  const int face_count = 2;
-  const struct { int index1, index2, index3; }
-  faces [face_count] = { { 0, 1, 2 }, { 0, 2, 3 } };
-  const int edge_count = 4;
-  const struct { int index1, index2; }
-  edges [edge_count] = { { 0, 1 }, { 1, 2 }, { 2, 3 }, { 3, 0 } };
-
-  Point O, R;
-
-  // CAMERA
-  // TEMPORARY
-  // WILL BE REPLACED BY CAMERA COMPONENT
-  float camera_width = 2.0f * float (1024) / float (768),
-    camera_height = 2.0f;
-  Point camPosition;
-  float camZoom = 1.0f, camRotation, movingCamWidth, movingCamHeight = 0.5f;
-  bool use_camera;
+  // THIS IS HOW A TYPICAL GAMEOBJECT WILL LOOK AFTER COMPONENT BASED DESIGN
+  // IS FULLY IMPLEMENTED
+  Transform transform;      // HOLDS ALL TRANSFORMATION DATA
+  SpriteRenderer renderer;  // RENDERS THE SPRITE OBJECT
+  //////////////////////////////////////////////////////////////////////////
+  SpriteRenderer renderer1;
+  Point verts [] = { Point (3, 2), Point (-4, 5), Point (-6, -7), Point (5, -8) };
+  SpriteRenderer renderer2 (verts);
 
 
 #pragma endregion
@@ -129,178 +99,49 @@ namespace Framework
   {
     srand (unsigned (time (0)));
     time_last = glutGet (GLUT_ELAPSED_TIME);
+    map = Scale (0.5f);
   }
 
 
   void Draw (void)
   {
-    // compute the time elapsed since the last call to 'Draw' (in seconds)
     int t = glutGet (GLUT_ELAPSED_TIME);
     double dt = 0.001*(t - time_last);
     time_last = t;
+
     rate += dt;
-    // clear the screen
-    glClearColor (1, 1, 1, 0);
+
+    glClearColor (0, 0, 0, 0);
     glClear (GL_COLOR_BUFFER_BIT);
 
-    Point temp_points [4];
-    Affine N = Scale (2.0f / camera_width, 2.0f / camera_height);
-    if (use_camera)
-    {
-      camera = Inverse (movingCameraTransform);
-    }
-    else
-    {
-      camera = Inverse (staticCameraTransform);
-    }
-#pragma region DrawMesh
-    float k = 0;
-    for (int i = 0; i < 50; ++i)
-    {
-      int j = rand () % 25;
-      ObjectToWorld = Trans (Vector ((-camera_width / 2) + k, 0.5f)) * Scale ((camera_width) / 50.0f, 0.5f);
-      WorldToCamera = ObjectToWorld;
-      NDC = camera * N * WorldToCamera;
-      //k += 0.04f;
-      for (int i = 0; i < vertex_count; ++i)
-      {
-        temp_points [i] = NDC * vertices [i];
-      }
-      k += camera_width / 50.0f;
-      glColor3f (0.2f / j, 0.5f / j, 1.0f / j);
+    //for (int i = 0; i < 4; ++i)
+    //{
+    //  renderer.temp [i] = Rot (-rate) * map * renderer.sprite.vertices [i];
+    //}
 
-      for (int k = 0; k < face_count; ++k)
-      {
-        glBegin (GL_POLYGON);
-        glVertex2f (temp_points [faces [k].index1].x, temp_points [faces [k].index1].y);
-        glVertex2f (temp_points [faces [k].index2].x, temp_points [faces [k].index2].y);
-        glVertex2f (temp_points [faces [k].index3].x, temp_points [faces [k].index3].y);
-        glEnd ();
-      }
+    //for (int i = 0; i < 4; ++i)
+    //{
+    //  renderer1.temp [i] =  Rot (rate) * map * renderer1.sprite.vertices [i];
+    //}
 
-      glColor3d (0, 0, 0);
-
-      glBegin (GL_LINES);
-      for (int k = 0; k < edge_count; ++k)
-      {
-        glVertex2f (temp_points [edges [k].index1].x, temp_points [edges [k].index1].y);
-        glVertex2f (temp_points [edges [k].index2].x, temp_points [edges [k].index2].y);
-      }
-      glEnd ();
+    for (int i = 0; i < 4; ++i)
+    {
+      renderer2.temp [i] = map * Scale (0.05f) * renderer2.sprite.vertices [i];
     }
 
-    k = 0;
-    for (int i = 0; i < 50; ++i)
-    {
-      int j = rand () % 25;
-      ObjectToWorld = Trans (Vector ((-camera_width / 2) + k, -0.5f)) * Scale ((camera_width) / 50.0f, 0.5f);
-      WorldToCamera = ObjectToWorld;
-      NDC = camera * N * WorldToCamera;
-      //k += 0.04f;
-      for (int i = 0; i < vertex_count; ++i)
-      {
-        temp_points [i] = NDC * vertices [i];
-      }
-      k += camera_width / 50.0f;
-      glColor3f (1.0f / j, 0.5f / j, 0.2f / j);
-
-      for (int k = 0; k < face_count; ++k)
-      {
-        glBegin (GL_POLYGON);
-        glVertex2f (temp_points [faces [k].index1].x, temp_points [faces [k].index1].y);
-        glVertex2f (temp_points [faces [k].index2].x, temp_points [faces [k].index2].y);
-        glVertex2f (temp_points [faces [k].index3].x, temp_points [faces [k].index3].y);
-        glEnd ();
-      }
-
-      glColor3d (0, 0, 0);
-
-      glBegin (GL_LINES);
-      for (int k = 0; k < edge_count; ++k)
-      {
-        glVertex2f (temp_points [edges [k].index1].x, temp_points [edges [k].index1].y);
-        glVertex2f (temp_points [edges [k].index2].x, temp_points [edges [k].index2].y);
-      }
-      glEnd ();
-    }
-
-#pragma  endregion
-
-#pragma endregion
-////////////////////////////////////////////////////////////////////////////////
-#pragma region RotatingSquare
-
-    WorldToCamera = Trans (R - O) * Rot (rate) * Trans (O - R) * Scale (0.4f);
-    NDC = camera * N * WorldToCamera;
-
-    for (int i = 0; i < vertex_count; ++i)
-    {
-      temp_points [i] = NDC * vertices [i];
-    }
-
-#pragma region DrawMesh
-
-    glColor3f (0, 0, 1);
-
-    for (int k = 0; k < face_count; ++k)
-    {
-      glBegin (GL_POLYGON);
-      glVertex2f (temp_points [faces [k].index1].x, temp_points [faces [k].index1].y);
-      glVertex2f (temp_points [faces [k].index2].x, temp_points [faces [k].index2].y);
-      glVertex2f (temp_points [faces [k].index3].x, temp_points [faces [k].index3].y);
-      glEnd ();
-    }
-
-    glColor3d (0, 0, 0);
-
-    glBegin (GL_LINES);
-    for (int k = 0; k < edge_count; ++k)
-    {
-      glVertex2f (temp_points [edges [k].index1].x, temp_points [edges [k].index1].y);
-      glVertex2f (temp_points [edges [k].index2].x, temp_points [edges [k].index2].y);
-    }
-    glEnd ();
-
-#pragma  endregion
-////////////////////////////////////////////////////////////////////////////////
-#pragma  endregion
-////////////////////////////////////////////////////////////////////////////////
-#pragma region Camera
-
-    ObjectToWorld = movingCameraTransform = Trans (Vector (camPosition.x, camPosition.y)) * Rot (camRotation) * Scale (movingCamWidth / camZoom, movingCamHeight / camZoom);
-    movingCameraTransform = N * movingCameraTransform;
-    WorldToCamera = ObjectToWorld * camera;
-    NDC = N * WorldToCamera;
-
-    for (int i = 0; i < vertex_count; ++i)
-    {
-      temp_points [i] = NDC * vertices [i];
-    }
-
-#pragma region DrawMesh
-
-
-    glColor3d (1, 0, 0);
-
-    glBegin (GL_LINES);
-    for (int k = 0; k < edge_count; ++k)
-    {
-      glVertex2f (temp_points [edges [k].index1].x, temp_points [edges [k].index1].y);
-      glVertex2f (temp_points [edges [k].index2].x, temp_points [edges [k].index2].y);
-    }
-    glEnd ();
-
-#pragma  endregion
-
-#pragma endregion
-
+    // DEFAULT PARAMETER IS ZERO
+    // THIS PARAMETER WILL BE USED TO CHOOSE WHICH MATERIAL TO USE
+    renderer.Render ();
+    renderer1.Render ();
+    renderer2.Render ();
     glutSwapBuffers ();
+
   }
 
 
   void KeyPressed (unsigned char c, int, int)
   {
-    int t = glutGet (GLUT_ELAPSED_TIME);
+   /* int t = glutGet (GLUT_ELAPSED_TIME);
     double dt = 0.001*(t - time_last);
 
     switch (c)
@@ -338,15 +179,15 @@ namespace Framework
       camRotation = 0.0f;
       camPosition = Point (0, 0);
       break;
-    }
+    }*/
   }
 
 
   void Resized (int W, int H)
   {
     glViewport (0, 0, W, H);
-    camera_width = 2.0f * float (W) / float (H);
-    movingCamWidth = 0.5f * float (W) / float (H);
+    //camera_width = 2.0f * float (W) / float (H);
+    //movingCamWidth = 0.5f * float (W) / float (H);
   }
 
 

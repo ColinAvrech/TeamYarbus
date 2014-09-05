@@ -10,10 +10,8 @@ the level runs.
 */
 /******************************************************************************/
 
-#include "ComponentTypeIds.h"
 #include "Factory.h"
-#include "GOC.h"
-#include <algorithm> //! std::sort
+#include "Common.h"
 
 namespace Framework
 {

@@ -12,13 +12,10 @@ input/output, Colors.
 
 #pragma once
 
-
+#include "Common.h"
 /*! check whether the colors of the text and background are the game.
 This ensures that they are never the same color*/
 #define PROTECTCOLORS false
-
-#include "CinderWindows.h"
-#include <iostream>
 
 
 namespace Console
