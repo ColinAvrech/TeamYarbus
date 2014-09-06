@@ -2,7 +2,7 @@
 cd premake
 del *.vcxproj*
 cd ..
-del*.sdf
+del *.sdf
 del *.opensdf
 del *.sln
 del *.suo
