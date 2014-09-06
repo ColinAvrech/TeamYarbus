@@ -26,6 +26,7 @@ from externals, and stable elements within the engine.
 #include "CinderWindows.h"
 #include "CinderDebug.h"
 #include "Console.h"
+#include "OpenGLIncludes.h"
 
 
 //! Unstable dependency

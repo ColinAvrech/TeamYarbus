@@ -13,10 +13,10 @@ starts the game loop.
 #define WINDOWSBUILD
 #ifdef WINDOWSBUILD
 
+#include "Common.h"     //! EnableMemoryleakChecking
 #include "WindowSystem.h"
 #include "EventSystem.h"
 #include "GraphicsSystem.h"
-#include "Common.h"     //! EnableMemoryleakChecking
 #include "Core.h"
 
 #define _DEGUB
@@ -53,7 +53,7 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR, INT)
 
 
   engine->AddSystem(windows);
-  engine->AddSystem (graphics);
+  engine->AddSystem(graphics);
   engine->AddSystem(events);
 
   

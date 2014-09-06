@@ -26,6 +26,11 @@ namespace Framework
     virtual void Update(const double dt);
     virtual const std::string GetName() { return "WindowSystem"; }
 
+    unsigned WindowHeight;
+    unsigned WindowWidth;
+
+    bool bFullScreen = false;
+    RECT rRect;
     HWND hWnd;
     HINSTANCE hInstance;
   };

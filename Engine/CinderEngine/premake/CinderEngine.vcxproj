@@ -57,14 +57,14 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_DEBUG;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\dependency\opengl\include;..\dependency\lua\include;..\dependency\fmod\include;..\include\Engine;..\include\Engine\Composition;..\include\Engine\Core;..\include\Engine\Debug;..\include\Engine\Factory;..\include\Engine\Global;..\include\Engine\Math;..\include\Engine\System;..\include\Engine\Composition\Components;..\include\Engine\Composition\Component_Base;..\include\Engine\Composition\Composition;..\include\Engine\System\Audio;..\include\Engine\System\Console;..\include\Engine\System\Events;..\include\Engine\System\Graphics;..\include\Engine\System\System_Base;..\include\Engine\System\Events\Events;..\include\Engine\System\Events\EventSystem;..\include\Engine\System\Events\Event_Base;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\dependency\opengl\include;..\dependency\lua\include;..\dependency\fmod\include;..\include\Engine;..\include\Engine\Composition;..\include\Engine\Core;..\include\Engine\Debug;..\include\Engine\Factory;..\include\Engine\Global;..\include\Engine\Math;..\include\Engine\System;..\include\Engine\Composition\Components;..\include\Engine\Composition\Component_Base;..\include\Engine\Composition\Composition;..\include\Engine\System\Console;..\include\Engine\System\Events;..\include\Engine\System\Graphics;..\include\Engine\System\System_Base;..\include\Engine\System\Events\Events;..\include\Engine\System\Events\EventSystem;..\include\Engine\System\Events\Event_Base;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <ProgramDataBaseFileName>$(OutDir)CinderEngine.pdb</ProgramDataBaseFileName>
       <Optimization>Disabled</Optimization>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\dependency\opengl\include;..\dependency\lua\include;..\dependency\fmod\include;..\include\Engine;..\include\Engine\Composition;..\include\Engine\Core;..\include\Engine\Debug;..\include\Engine\Factory;..\include\Engine\Global;..\include\Engine\Math;..\include\Engine\System;..\include\Engine\Composition\Components;..\include\Engine\Composition\Component_Base;..\include\Engine\Composition\Composition;..\include\Engine\System\Audio;..\include\Engine\System\Console;..\include\Engine\System\Events;..\include\Engine\System\Graphics;..\include\Engine\System\System_Base;..\include\Engine\System\Events\Events;..\include\Engine\System\Events\EventSystem;..\include\Engine\System\Events\Event_Base;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\dependency\opengl\include;..\dependency\lua\include;..\dependency\fmod\include;..\include\Engine;..\include\Engine\Composition;..\include\Engine\Core;..\include\Engine\Debug;..\include\Engine\Factory;..\include\Engine\Global;..\include\Engine\Math;..\include\Engine\System;..\include\Engine\Composition\Components;..\include\Engine\Composition\Component_Base;..\include\Engine\Composition\Composition;..\include\Engine\System\Console;..\include\Engine\System\Events;..\include\Engine\System\Graphics;..\include\Engine\System\System_Base;..\include\Engine\System\Events\Events;..\include\Engine\System\Events\EventSystem;..\include\Engine\System\Events\Event_Base;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -81,7 +81,7 @@ copy ..\dependency\fmod\library\fmod.dll ..\bin\debug\</Command>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>NDEBUG;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\dependency\opengl\include;..\dependency\lua\include;..\dependency\fmod\include;..\include\Engine;..\include\Engine\Composition;..\include\Engine\Core;..\include\Engine\Debug;..\include\Engine\Factory;..\include\Engine\Global;..\include\Engine\Math;..\include\Engine\System;..\include\Engine\Composition\Components;..\include\Engine\Composition\Component_Base;..\include\Engine\Composition\Composition;..\include\Engine\System\Audio;..\include\Engine\System\Console;..\include\Engine\System\Events;..\include\Engine\System\Graphics;..\include\Engine\System\System_Base;..\include\Engine\System\Events\Events;..\include\Engine\System\Events\EventSystem;..\include\Engine\System\Events\Event_Base;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\dependency\opengl\include;..\dependency\lua\include;..\dependency\fmod\include;..\include\Engine;..\include\Engine\Composition;..\include\Engine\Core;..\include\Engine\Debug;..\include\Engine\Factory;..\include\Engine\Global;..\include\Engine\Math;..\include\Engine\System;..\include\Engine\Composition\Components;..\include\Engine\Composition\Component_Base;..\include\Engine\Composition\Composition;..\include\Engine\System\Console;..\include\Engine\System\Events;..\include\Engine\System\Graphics;..\include\Engine\System\System_Base;..\include\Engine\System\Events\Events;..\include\Engine\System\Events\EventSystem;..\include\Engine\System\Events\Event_Base;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <ProgramDataBaseFileName>$(OutDir)CinderEngine.pdb</ProgramDataBaseFileName>
       <Optimization>Full</Optimization>
@@ -92,7 +92,7 @@ copy ..\dependency\fmod\library\fmod.dll ..\bin\debug\</Command>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\dependency\opengl\include;..\dependency\lua\include;..\dependency\fmod\include;..\include\Engine;..\include\Engine\Composition;..\include\Engine\Core;..\include\Engine\Debug;..\include\Engine\Factory;..\include\Engine\Global;..\include\Engine\Math;..\include\Engine\System;..\include\Engine\Composition\Components;..\include\Engine\Composition\Component_Base;..\include\Engine\Composition\Composition;..\include\Engine\System\Audio;..\include\Engine\System\Console;..\include\Engine\System\Events;..\include\Engine\System\Graphics;..\include\Engine\System\System_Base;..\include\Engine\System\Events\Events;..\include\Engine\System\Events\EventSystem;..\include\Engine\System\Events\Event_Base;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\dependency\opengl\include;..\dependency\lua\include;..\dependency\fmod\include;..\include\Engine;..\include\Engine\Composition;..\include\Engine\Core;..\include\Engine\Debug;..\include\Engine\Factory;..\include\Engine\Global;..\include\Engine\Math;..\include\Engine\System;..\include\Engine\Composition\Components;..\include\Engine\Composition\Component_Base;..\include\Engine\Composition\Composition;..\include\Engine\System\Console;..\include\Engine\System\Events;..\include\Engine\System\Graphics;..\include\Engine\System\System_Base;..\include\Engine\System\Events\Events;..\include\Engine\System\Events\EventSystem;..\include\Engine\System\Events\Event_Base;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -118,6 +118,7 @@ copy ..\dependency\fmod\library\fmod.dll ..\bin\debug\</Command>
     <ClInclude Include="..\include\Engine\Global\CinderDebug.h" />
     <ClInclude Include="..\include\Engine\Global\CinderWindows.h" />
     <ClInclude Include="..\include\Engine\Global\Common.h" />
+    <ClInclude Include="..\include\Engine\Global\OpenGLIncludes.h" />
     <ClInclude Include="..\include\Engine\Math\Affine.h" />
     <ClInclude Include="..\include\Engine\Math\Vec2.h" />
     <ClInclude Include="..\include\Engine\System\Console\Console.h" />

@@ -11,13 +11,14 @@
 #ifndef _GRAPHICS_H
 #define _GRAPHICS_H
 
+
+#define CINDER_SCREEN_DEPTH 16
+
 /*------------------------------------------------------------------------------
 // Includes
 ------------------------------------------------------------------------------*/
 #pragma region Includes
 #include "Common.h"
-#include "Affine.h"
-#include "glut.h"
 #pragma endregion
 
 
@@ -101,6 +102,9 @@ private:
 ------------------------------------------------------------------------------*/
 #pragma region Private Variables
 
+  HDC hDC;
+  HGLRC hRC;
+
 #pragma endregion
 
 
@@ -116,6 +120,16 @@ private:
 ------------------------------------------------------------------------------*/
 #pragma region Private Functions
 
+  //Initialization
+  void SetupPixelFormatWindows(HDC hDC);
+  bool SetupPixelFormatXWindows(HDC hDC);
+  void SetOpenGLScreenSize(unsigned width, unsigned height);
+
+  //Drawing
+  void DrawDebug(const double dt);
+  void DrawSprites(const double dt);
+  void DrawParticles(const double dt);
+
 #pragma endregion
 
 
@@ -129,13 +143,6 @@ private:
 };
 
 extern GraphicsSystem* GRAPHICSSYSTEM;
-
-void Init ();
-void Draw ();
-void Loop ();
-void Resized (int, int);
-void KeyPressed (unsigned char c, int, int);
-
 }
 
 //------------------------------------------------------------------------------
