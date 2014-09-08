@@ -62,7 +62,7 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR, INT)
   graphics->Initialize ();
 
   //! Run the game! NOW!
-  engine->GameLoop();
+  //engine->GameLoop();
 
   //! Delete all systems
   engine->DestroySystems();
