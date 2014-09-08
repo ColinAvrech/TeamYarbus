@@ -2,3 +2,8 @@
 *.idb
 *.tlog
 *.sln
+*.vcxproj
+*.vcxproj
+*.filters
+*.vcxproj
+Engine/CinderEngine/premake/CinderEngine.vcxproj.filters
