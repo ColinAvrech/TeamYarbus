@@ -2,3 +2,4 @@
 *.idb
 *.tlog
 *.sln
+/Engine/CinderEngine/CinderEngine.opensdf
