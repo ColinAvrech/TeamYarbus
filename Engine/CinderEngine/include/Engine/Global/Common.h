@@ -28,6 +28,8 @@ from externals, and stable elements within the engine.
 #include "Console.h"
 #include "OpenGLIncludes.h"
 
+#pragma comment (lib, "fmod_vc.lib")
+
 
 //! Unstable dependency
 #include "ComponentTypeIds.h"

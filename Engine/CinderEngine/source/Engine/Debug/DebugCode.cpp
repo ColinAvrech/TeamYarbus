@@ -62,7 +62,7 @@ void TracePrint(const char * msg, ...)
   vsnprintf_s(Message, BufferSize, _TRUNCATE, msg, args);
   va_end(args);
 
-  std::cout << Console::green << Message << std::endl;
+  std::cout << Console::green << Message << Console::white << std::endl;
 }
 
 /*! Enables memory checking.
