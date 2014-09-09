@@ -1,0 +1,34 @@
+﻿Build started 9/5/2014 10:51:17 AM.
+     1>Project "C:\Users\anna\Desktop\FALL_2014\TeamYarbus\Engine\CinderEngine\premake\CinderEngine.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I..\dependency\opengl\include /I..\dependency\lua\include /I..\dependency\fmod\include /I..\include\Engine /I..\include\Engine\Composition /I..\include\Engine\Core /I..\include\Engine\Debug /I..\include\Engine\Factory /I..\include\Engine\Global /I..\include\Engine\Math /I..\include\Engine\System /I..\include\Engine\Composition\Components /I..\include\Engine\Composition\Component_Base /I..\include\Engine\Composition\Composition /I..\include\Engine\System\Console /I..\include\Engine\System\Events /I..\include\Engine\System\Graphics /I..\include\Engine\System\System_Base /I..\include\Engine\System\Events\Events /I..\include\Engine\System\Events\EventSystem /I..\include\Engine\System\Events\Event_Base /I..\include\Engine\System\Graphics\Objects /I..\include\Engine\System\Graphics\Structs /ZI /nologo /W3 /WX- /Od /Oy- /D _DEBUG /D _CRT_SECURE_NO_WARNINGS /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"..\obj\Debug\\" /Fd"..\bin\debug\CinderEngine.pdb" /Gd /TP /analyze- /errorReport:prompt ..\source\Engine\System\Graphics\GraphicsSystem.cpp
+         GraphicsSystem.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"..\bin\debug\CinderEngine.exe" /INCREMENTAL /NOLOGO /LIBPATH:..\dependency\opengl\library /LIBPATH:..\dependency\lua\library /LIBPATH:..\dependency\fmod\library kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"..\bin\debug\CinderEngine.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"..\bin\debug\CinderEngine.lib" /MACHINE:X86 ..\obj\Debug\Camera.obj
+         ..\obj\Debug\SpriteRenderer.obj
+         ..\obj\Debug\Transform.obj
+         ..\obj\Debug\GOC.obj
+         ..\obj\Debug\Core.obj
+         ..\obj\Debug\DebugCode.obj
+         ..\obj\Debug\Factory.obj
+         ..\obj\Debug\Affine.obj
+         ..\obj\Debug\Vec2.obj
+         ..\obj\Debug\Console.obj
+         ..\obj\Debug\EventSystem.obj
+         ..\obj\Debug\GraphicsSystem.obj
+         ..\obj\Debug\Sprite.obj
+         ..\obj\Debug\BaseSystem.obj
+         ..\obj\Debug\WindowSystem.obj
+         ..\obj\Debug\WinMain.obj
+         CinderEngine.vcxproj -> C:\Users\anna\Desktop\FALL_2014\TeamYarbus\Engine\CinderEngine\premake\..\bin\debug\CinderEngine.exe
+       PostBuildEvent:
+         copy ..\dependency\opengl\library\glut32.dll ..\bin\debug\
+         copy ..\dependency\fmod\library\fmod.dll ..\bin\debug\
+         :VCEnd
+                 1 file(s) copied.
+                 1 file(s) copied.
+     1>Done Building Project "C:\Users\anna\Desktop\FALL_2014\TeamYarbus\Engine\CinderEngine\premake\CinderEngine.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:02.82
