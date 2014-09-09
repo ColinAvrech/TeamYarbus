@@ -16,6 +16,12 @@
     <Filter Include="include\Engine\Composition\Components">
       <UniqueIdentifier>{A6AF025C-1274-014C-DBD9-3116475D9D81}</UniqueIdentifier>
     </Filter>
+    <Filter Include="include\Engine\Composition\Components\Collision">
+      <UniqueIdentifier>{412CC0C8-AD67-208C-B65C-9D1B2217A5BC}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\Engine\Composition\Components\Collision\Shapes">
+      <UniqueIdentifier>{D41B2CA9-C0C5-61B8-A996-69D395DF01A7}</UniqueIdentifier>
+    </Filter>
     <Filter Include="include\Engine\Composition\Composition">
       <UniqueIdentifier>{F4EC4DE8-E03E-25D8-C95D-62E8B54E3EC1}</UniqueIdentifier>
     </Filter>
@@ -37,6 +43,9 @@
     <Filter Include="include\Engine\System">
       <UniqueIdentifier>{42E16048-AE4D-1C43-7741-B4A0E36C3EAB}</UniqueIdentifier>
     </Filter>
+    <Filter Include="include\Engine\System\Audio">
+      <UniqueIdentifier>{C3D8C54A-2FE6-F330-B8CC-EF1B24D9BFE7}</UniqueIdentifier>
+    </Filter>
     <Filter Include="include\Engine\System\Console">
       <UniqueIdentifier>{641A4FA0-D032-36CA-99DF-C56305B7CA63}</UniqueIdentifier>
     </Filter>
@@ -55,6 +64,12 @@
     <Filter Include="include\Engine\System\Graphics">
       <UniqueIdentifier>{C2339B23-AE59-658A-979F-EA5583648A56}</UniqueIdentifier>
     </Filter>
+    <Filter Include="include\Engine\System\Graphics\Objects">
+      <UniqueIdentifier>{7B740BAD-67C6-E29C-50E5-1FAD3CD6FB85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\Engine\System\Graphics\Structs">
+      <UniqueIdentifier>{E9CC8A0B-D51E-62FB-BE3D-9F0BAA2E7BE4}</UniqueIdentifier>
+    </Filter>
     <Filter Include="include\Engine\System\System_Base">
       <UniqueIdentifier>{90C88ABE-FC36-E03D-4520-9B3DB1CDD5D9}</UniqueIdentifier>
     </Filter>
@@ -70,8 +85,17 @@
     <Filter Include="source\Engine\Composition\Components">
       <UniqueIdentifier>{539457E7-3F7B-19DF-E8CB-7FFCD4919245}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\Engine\Composition\Components\Collision">
+      <UniqueIdentifier>{2E8D283E-1A0B-79D7-0303-376FEF1FBBFF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Engine\Composition\Components\Collision\Shapes">
+      <UniqueIdentifier>{21905A62-8DAC-4C53-5684-B9C0C25FB614}</UniqueIdentifier>
+    </Filter>
     <Filter Include="source\Engine\Composition\Components\Graphics">
       <UniqueIdentifier>{F3E97E9F-5F5A-8118-2879-FBA094A8B919}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Engine\Composition\Components\Scripting">
+      <UniqueIdentifier>{15CD363A-014B-87D3-EA42-456BD65FC9FB}</UniqueIdentifier>
     </Filter>
     <Filter Include="source\Engine\Composition\Composition">
       <UniqueIdentifier>{41673FDE-AD2B-3ECE-7691-6E98E214DA03}</UniqueIdentifier>
@@ -91,6 +115,9 @@
     <Filter Include="source\Engine\System">
       <UniqueIdentifier>{EF0B6431-DB9A-EDFA-84B9-01F67027FEA0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\Engine\System\Audio">
+      <UniqueIdentifier>{30911BBD-1CA1-C78D-855A-2CAC7189B626}</UniqueIdentifier>
+    </Filter>
     <Filter Include="source\Engine\System\Console">
       <UniqueIdentifier>{11A2F4FE-FD5C-E4AA-A614-5DF592AE2E3B}</UniqueIdentifier>
     </Filter>
@@ -99,6 +126,9 @@
     </Filter>
     <Filter Include="source\Engine\System\Graphics">
       <UniqueIdentifier>{0FB1F156-7BC9-D880-4476-681AB04D6D1A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Engine\System\Graphics\Objects">
+      <UniqueIdentifier>{C8EEFCA2-34B3-FB92-FD18-2C5D699C97C8}</UniqueIdentifier>
     </Filter>
     <Filter Include="source\Engine\System\System_Base">
       <UniqueIdentifier>{BD5ED67E-A9AF-C1C0-D213-B082BEC3542A}</UniqueIdentifier>
@@ -113,6 +143,39 @@
     </ClInclude>
     <ClInclude Include="..\include\Engine\Composition\Component_Base\ComponentTypeIds.h">
       <Filter>include\Engine\Composition\Component_Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\Composition\Components\Collision\CollideBox.h">
+      <Filter>include\Engine\Composition\Components\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\Composition\Components\Collision\CollideCircle.h">
+      <Filter>include\Engine\Composition\Components\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\Composition\Components\Collision\CollidePoint.h">
+      <Filter>include\Engine\Composition\Components\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\Composition\Components\Collision\Collision.h">
+      <Filter>include\Engine\Composition\Components\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\Composition\Components\Collision\Shapes\Box.h">
+      <Filter>include\Engine\Composition\Components\Collision\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\Composition\Components\Collision\Shapes\Circle.h">
+      <Filter>include\Engine\Composition\Components\Collision\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\Composition\Components\Collision\Shapes\Point.h">
+      <Filter>include\Engine\Composition\Components\Collision\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\Composition\Components\Collision\Shapes\Shape.h">
+      <Filter>include\Engine\Composition\Components\Collision\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\Composition\Components\Hierarchy.h">
+      <Filter>include\Engine\Composition\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\Composition\Components\Script.h">
+      <Filter>include\Engine\Composition\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\Composition\Components\SpriteRenderer.h">
+      <Filter>include\Engine\Composition\Components</Filter>
     </ClInclude>
     <ClInclude Include="..\include\Engine\Composition\Components\Transform.h">
       <Filter>include\Engine\Composition\Components</Filter>
@@ -147,6 +210,12 @@
     <ClInclude Include="..\include\Engine\Math\Vec2.h">
       <Filter>include\Engine\Math</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\Engine\System\Audio\AudioSystem.h">
+      <Filter>include\Engine\System\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\System\Audio\Sound.h">
+      <Filter>include\Engine\System\Audio</Filter>
+    </ClInclude>
     <ClInclude Include="..\include\Engine\System\Console\Console.h">
       <Filter>include\Engine\System\Console</Filter>
     </ClInclude>
@@ -165,6 +234,12 @@
     <ClInclude Include="..\include\Engine\System\Graphics\GraphicsSystem.h">
       <Filter>include\Engine\System\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\Engine\System\Graphics\Objects\Sprite.h">
+      <Filter>include\Engine\System\Graphics\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\System\Graphics\Structs\Bounds.h">
+      <Filter>include\Engine\System\Graphics\Structs</Filter>
+    </ClInclude>
     <ClInclude Include="..\include\Engine\System\System_Base\BaseSystem.h">
       <Filter>include\Engine\System\System_Base</Filter>
     </ClInclude>
@@ -173,11 +248,44 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\source\Engine\Composition\Components\Collision\CollideBox.cpp">
+      <Filter>source\Engine\Composition\Components\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Engine\Composition\Components\Collision\CollideCircle.cpp">
+      <Filter>source\Engine\Composition\Components\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Engine\Composition\Components\Collision\CollidePoint.cpp">
+      <Filter>source\Engine\Composition\Components\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Engine\Composition\Components\Collision\Collision.cpp">
+      <Filter>source\Engine\Composition\Components\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Engine\Composition\Components\Collision\Shapes\BoxShape.cpp">
+      <Filter>source\Engine\Composition\Components\Collision\Shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Engine\Composition\Components\Collision\Shapes\CircleShape.cpp">
+      <Filter>source\Engine\Composition\Components\Collision\Shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Engine\Composition\Components\Collision\Shapes\PointShape.cpp">
+      <Filter>source\Engine\Composition\Components\Collision\Shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Engine\Composition\Components\Collision\Shapes\Shape.cpp">
+      <Filter>source\Engine\Composition\Components\Collision\Shapes</Filter>
+    </ClCompile>
     <ClCompile Include="..\source\Engine\Composition\Components\Graphics\Camera.cpp">
       <Filter>source\Engine\Composition\Components\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\Engine\Composition\Components\Graphics\Renderer.cpp">
+    <ClCompile Include="..\source\Engine\Composition\Components\Graphics\SpriteRenderer.cpp">
       <Filter>source\Engine\Composition\Components\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Engine\Composition\Components\Hierarchy.cpp">
+      <Filter>source\Engine\Composition\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Engine\Composition\Components\Scripting\Script.cpp">
+      <Filter>source\Engine\Composition\Components\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Engine\Composition\Components\Transform.cpp">
+      <Filter>source\Engine\Composition\Components</Filter>
     </ClCompile>
     <ClCompile Include="..\source\Engine\Composition\Composition\GOC.cpp">
       <Filter>source\Engine\Composition\Composition</Filter>
@@ -197,6 +305,15 @@
     <ClCompile Include="..\source\Engine\Math\Vec2.cpp">
       <Filter>source\Engine\Math</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\Engine\System\Audio\AudioSystem.cpp">
+      <Filter>source\Engine\System\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Engine\System\Audio\LoadSound.cpp">
+      <Filter>source\Engine\System\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Engine\System\Audio\Sound.cpp">
+      <Filter>source\Engine\System\Audio</Filter>
+    </ClCompile>
     <ClCompile Include="..\source\Engine\System\Console\Console.cpp">
       <Filter>source\Engine\System\Console</Filter>
     </ClCompile>
@@ -205,6 +322,9 @@
     </ClCompile>
     <ClCompile Include="..\source\Engine\System\Graphics\GraphicsSystem.cpp">
       <Filter>source\Engine\System\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Engine\System\Graphics\Objects\Sprite.cpp">
+      <Filter>source\Engine\System\Graphics\Objects</Filter>
     </ClCompile>
     <ClCompile Include="..\source\Engine\System\System_Base\BaseSystem.cpp">
       <Filter>source\Engine\System\System_Base</Filter>

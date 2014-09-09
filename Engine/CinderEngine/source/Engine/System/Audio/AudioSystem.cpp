@@ -225,10 +225,10 @@ namespace Framework
     }
 
     // Prints out to the console
-    std::cout << GetName() + " Updating" << std::endl;
+    //std::cout << GetName() + " Updating" << std::endl;
 
     // Prints out the frametime
-    std::cout << dt << std::endl;
+    //std::cout << dt << std::endl;
   }
 
   /***************************************************************************/

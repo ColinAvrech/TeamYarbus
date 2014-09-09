@@ -57,19 +57,19 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_DEBUG;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\dependency\opengl\include;..\dependency\lua\include;..\dependency\fmod\include;..\include\Engine;..\include\Engine\Composition;..\include\Engine\Core;..\include\Engine\Debug;..\include\Engine\Factory;..\include\Engine\Global;..\include\Engine\Math;..\include\Engine\System;..\include\Engine\Composition\Components;..\include\Engine\Composition\Component_Base;..\include\Engine\Composition\Composition;..\include\Engine\System\Console;..\include\Engine\System\Events;..\include\Engine\System\Graphics;..\include\Engine\System\System_Base;..\include\Engine\System\Events\Events;..\include\Engine\System\Events\EventSystem;..\include\Engine\System\Events\Event_Base;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\dependency\opengl\include;..\dependency\zilch\include;..\dependency\fmod\include;..\include\Engine;..\include\Engine\Composition;..\include\Engine\Core;..\include\Engine\Debug;..\include\Engine\Factory;..\include\Engine\Global;..\include\Engine\Math;..\include\Engine\System;..\include\Engine\Composition\Components;..\include\Engine\Composition\Component_Base;..\include\Engine\Composition\Composition;..\include\Engine\Composition\Components\Collision;..\include\Engine\Composition\Components\Collision\Shapes;..\include\Engine\System\Audio;..\include\Engine\System\Console;..\include\Engine\System\Events;..\include\Engine\System\Graphics;..\include\Engine\System\System_Base;..\include\Engine\System\Events\Events;..\include\Engine\System\Events\EventSystem;..\include\Engine\System\Events\Event_Base;..\include\Engine\System\Graphics\Objects;..\include\Engine\System\Graphics\Structs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <ProgramDataBaseFileName>$(OutDir)CinderEngine.pdb</ProgramDataBaseFileName>
       <Optimization>Disabled</Optimization>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\dependency\opengl\include;..\dependency\lua\include;..\dependency\fmod\include;..\include\Engine;..\include\Engine\Composition;..\include\Engine\Core;..\include\Engine\Debug;..\include\Engine\Factory;..\include\Engine\Global;..\include\Engine\Math;..\include\Engine\System;..\include\Engine\Composition\Components;..\include\Engine\Composition\Component_Base;..\include\Engine\Composition\Composition;..\include\Engine\System\Console;..\include\Engine\System\Events;..\include\Engine\System\Graphics;..\include\Engine\System\System_Base;..\include\Engine\System\Events\Events;..\include\Engine\System\Events\EventSystem;..\include\Engine\System\Events\Event_Base;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\dependency\opengl\include;..\dependency\zilch\include;..\dependency\fmod\include;..\include\Engine;..\include\Engine\Composition;..\include\Engine\Core;..\include\Engine\Debug;..\include\Engine\Factory;..\include\Engine\Global;..\include\Engine\Math;..\include\Engine\System;..\include\Engine\Composition\Components;..\include\Engine\Composition\Component_Base;..\include\Engine\Composition\Composition;..\include\Engine\Composition\Components\Collision;..\include\Engine\Composition\Components\Collision\Shapes;..\include\Engine\System\Audio;..\include\Engine\System\Console;..\include\Engine\System\Events;..\include\Engine\System\Graphics;..\include\Engine\System\System_Base;..\include\Engine\System\Events\Events;..\include\Engine\System\Events\EventSystem;..\include\Engine\System\Events\Event_Base;..\include\Engine\System\Graphics\Objects;..\include\Engine\System\Graphics\Structs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\dependency\opengl\library;..\dependency\lua\library;..\dependency\fmod\library;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\dependency\opengl\library;..\dependency\zilch\library;..\dependency\fmod\library;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>copy ..\dependency\opengl\library\glut32.dll ..\bin\debug\
@@ -81,7 +81,7 @@ copy ..\dependency\fmod\library\fmod.dll ..\bin\debug\</Command>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>NDEBUG;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\dependency\opengl\include;..\dependency\lua\include;..\dependency\fmod\include;..\include\Engine;..\include\Engine\Composition;..\include\Engine\Core;..\include\Engine\Debug;..\include\Engine\Factory;..\include\Engine\Global;..\include\Engine\Math;..\include\Engine\System;..\include\Engine\Composition\Components;..\include\Engine\Composition\Component_Base;..\include\Engine\Composition\Composition;..\include\Engine\System\Console;..\include\Engine\System\Events;..\include\Engine\System\Graphics;..\include\Engine\System\System_Base;..\include\Engine\System\Events\Events;..\include\Engine\System\Events\EventSystem;..\include\Engine\System\Events\Event_Base;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\dependency\opengl\include;..\dependency\zilch\include;..\dependency\fmod\include;..\include\Engine;..\include\Engine\Composition;..\include\Engine\Core;..\include\Engine\Debug;..\include\Engine\Factory;..\include\Engine\Global;..\include\Engine\Math;..\include\Engine\System;..\include\Engine\Composition\Components;..\include\Engine\Composition\Component_Base;..\include\Engine\Composition\Composition;..\include\Engine\Composition\Components\Collision;..\include\Engine\Composition\Components\Collision\Shapes;..\include\Engine\System\Audio;..\include\Engine\System\Console;..\include\Engine\System\Events;..\include\Engine\System\Graphics;..\include\Engine\System\System_Base;..\include\Engine\System\Events\Events;..\include\Engine\System\Events\EventSystem;..\include\Engine\System\Events\Event_Base;..\include\Engine\System\Graphics\Objects;..\include\Engine\System\Graphics\Structs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <ProgramDataBaseFileName>$(OutDir)CinderEngine.pdb</ProgramDataBaseFileName>
       <Optimization>Full</Optimization>
@@ -92,14 +92,14 @@ copy ..\dependency\fmod\library\fmod.dll ..\bin\debug\</Command>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\dependency\opengl\include;..\dependency\lua\include;..\dependency\fmod\include;..\include\Engine;..\include\Engine\Composition;..\include\Engine\Core;..\include\Engine\Debug;..\include\Engine\Factory;..\include\Engine\Global;..\include\Engine\Math;..\include\Engine\System;..\include\Engine\Composition\Components;..\include\Engine\Composition\Component_Base;..\include\Engine\Composition\Composition;..\include\Engine\System\Console;..\include\Engine\System\Events;..\include\Engine\System\Graphics;..\include\Engine\System\System_Base;..\include\Engine\System\Events\Events;..\include\Engine\System\Events\EventSystem;..\include\Engine\System\Events\Event_Base;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\dependency\opengl\include;..\dependency\zilch\include;..\dependency\fmod\include;..\include\Engine;..\include\Engine\Composition;..\include\Engine\Core;..\include\Engine\Debug;..\include\Engine\Factory;..\include\Engine\Global;..\include\Engine\Math;..\include\Engine\System;..\include\Engine\Composition\Components;..\include\Engine\Composition\Component_Base;..\include\Engine\Composition\Composition;..\include\Engine\Composition\Components\Collision;..\include\Engine\Composition\Components\Collision\Shapes;..\include\Engine\System\Audio;..\include\Engine\System\Console;..\include\Engine\System\Events;..\include\Engine\System\Graphics;..\include\Engine\System\System_Base;..\include\Engine\System\Events\Events;..\include\Engine\System\Events\EventSystem;..\include\Engine\System\Events\Event_Base;..\include\Engine\System\Graphics\Objects;..\include\Engine\System\Graphics\Structs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>..\dependency\opengl\library;..\dependency\lua\library;..\dependency\fmod\library;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\dependency\opengl\library;..\dependency\zilch\library;..\dependency\fmod\library;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>copy ..\dependency\opengl\library\glut32.dll ..\bin\release\
@@ -110,6 +110,17 @@ copy ..\dependency\fmod\library\fmod.dll ..\bin\debug\</Command>
     <ClInclude Include="..\include\Engine\Composition\Component_Base\Component.h" />
     <ClInclude Include="..\include\Engine\Composition\Component_Base\ComponentCreator.h" />
     <ClInclude Include="..\include\Engine\Composition\Component_Base\ComponentTypeIds.h" />
+    <ClInclude Include="..\include\Engine\Composition\Components\Collision\CollideBox.h" />
+    <ClInclude Include="..\include\Engine\Composition\Components\Collision\CollideCircle.h" />
+    <ClInclude Include="..\include\Engine\Composition\Components\Collision\CollidePoint.h" />
+    <ClInclude Include="..\include\Engine\Composition\Components\Collision\Collision.h" />
+    <ClInclude Include="..\include\Engine\Composition\Components\Collision\Shapes\Box.h" />
+    <ClInclude Include="..\include\Engine\Composition\Components\Collision\Shapes\Circle.h" />
+    <ClInclude Include="..\include\Engine\Composition\Components\Collision\Shapes\Point.h" />
+    <ClInclude Include="..\include\Engine\Composition\Components\Collision\Shapes\Shape.h" />
+    <ClInclude Include="..\include\Engine\Composition\Components\Hierarchy.h" />
+    <ClInclude Include="..\include\Engine\Composition\Components\Script.h" />
+    <ClInclude Include="..\include\Engine\Composition\Components\SpriteRenderer.h" />
     <ClInclude Include="..\include\Engine\Composition\Components\Transform.h" />
     <ClInclude Include="..\include\Engine\Composition\Composition\GOC.h" />
     <ClInclude Include="..\include\Engine\Core\Core.h" />
@@ -121,27 +132,46 @@ copy ..\dependency\fmod\library\fmod.dll ..\bin\debug\</Command>
     <ClInclude Include="..\include\Engine\Global\OpenGLIncludes.h" />
     <ClInclude Include="..\include\Engine\Math\Affine.h" />
     <ClInclude Include="..\include\Engine\Math\Vec2.h" />
+    <ClInclude Include="..\include\Engine\System\Audio\AudioSystem.h" />
+    <ClInclude Include="..\include\Engine\System\Audio\Sound.h" />
     <ClInclude Include="..\include\Engine\System\Console\Console.h" />
     <ClInclude Include="..\include\Engine\System\Events\EventSystem\EventSystem.h" />
     <ClInclude Include="..\include\Engine\System\Events\Event_Base\BaseEvent.h" />
     <ClInclude Include="..\include\Engine\System\Events\Event_Base\Events.h" />
     <ClInclude Include="..\include\Engine\System\Events\Events\InputEvent.h" />
     <ClInclude Include="..\include\Engine\System\Graphics\GraphicsSystem.h" />
+    <ClInclude Include="..\include\Engine\System\Graphics\Objects\Sprite.h" />
+    <ClInclude Include="..\include\Engine\System\Graphics\Structs\Bounds.h" />
     <ClInclude Include="..\include\Engine\System\System_Base\BaseSystem.h" />
     <ClInclude Include="..\include\Engine\System\WindowSystem.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\source\Engine\Composition\Components\Collision\CollideBox.cpp" />
+    <ClCompile Include="..\source\Engine\Composition\Components\Collision\CollideCircle.cpp" />
+    <ClCompile Include="..\source\Engine\Composition\Components\Collision\CollidePoint.cpp" />
+    <ClCompile Include="..\source\Engine\Composition\Components\Collision\Collision.cpp" />
+    <ClCompile Include="..\source\Engine\Composition\Components\Collision\Shapes\BoxShape.cpp" />
+    <ClCompile Include="..\source\Engine\Composition\Components\Collision\Shapes\CircleShape.cpp" />
+    <ClCompile Include="..\source\Engine\Composition\Components\Collision\Shapes\PointShape.cpp" />
+    <ClCompile Include="..\source\Engine\Composition\Components\Collision\Shapes\Shape.cpp" />
     <ClCompile Include="..\source\Engine\Composition\Components\Graphics\Camera.cpp" />
-    <ClCompile Include="..\source\Engine\Composition\Components\Graphics\Renderer.cpp" />
+    <ClCompile Include="..\source\Engine\Composition\Components\Graphics\SpriteRenderer.cpp" />
+    <ClCompile Include="..\source\Engine\Composition\Components\Hierarchy.cpp" />
+    <ClCompile Include="..\source\Engine\Composition\Components\Scripting\Script.cpp" />
+    <ClCompile Include="..\source\Engine\Composition\Components\Transform.cpp" />
     <ClCompile Include="..\source\Engine\Composition\Composition\GOC.cpp" />
     <ClCompile Include="..\source\Engine\Core\Core.cpp" />
     <ClCompile Include="..\source\Engine\Debug\DebugCode.cpp" />
     <ClCompile Include="..\source\Engine\Factory\Factory.cpp" />
     <ClCompile Include="..\source\Engine\Math\Affine.cpp" />
     <ClCompile Include="..\source\Engine\Math\Vec2.cpp" />
+    <ClCompile Include="..\source\Engine\System\Audio\AudioSystem.cpp" />
+    <ClCompile Include="..\source\Engine\System\Audio\LoadSound.cpp" />
+    <ClCompile Include="..\source\Engine\System\Audio\Sound.cpp" />
     <ClCompile Include="..\source\Engine\System\Console\Console.cpp" />
     <ClCompile Include="..\source\Engine\System\Events\EventSystem.cpp" />
     <ClCompile Include="..\source\Engine\System\Graphics\GraphicsSystem.cpp" />
+    <ClCompile Include="..\source\Engine\System\Graphics\Objects\Sprite.cpp" />
     <ClCompile Include="..\source\Engine\System\System_Base\BaseSystem.cpp" />
     <ClCompile Include="..\source\Engine\System\WindowSystem.cpp" />
     <ClCompile Include="..\source\Engine\WinMain.cpp" />

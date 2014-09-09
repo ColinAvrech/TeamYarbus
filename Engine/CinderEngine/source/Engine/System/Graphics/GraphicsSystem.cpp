@@ -121,13 +121,13 @@ namespace Framework
   // Place Holder for XLIB's functions
   bool GraphicsSystem::SetupPixelFormatXWindows(HDC hDC)
   {
-<<<<<<< HEAD
+ 
     srand (unsigned (time (0)));
     time_last = glutGet (GLUT_ELAPSED_TIME);
     map = Scale (0.5f);
-=======
+ 
     return false;
->>>>>>> origin/Micah
+ 
   }
 
   void GraphicsSystem::SetOpenGLScreenSize(unsigned width, unsigned height)
@@ -170,7 +170,7 @@ namespace Framework
 
   void GraphicsSystem::Update (const double dt)
   {
-<<<<<<< HEAD
+    /*
     int t = glutGet (GLUT_ELAPSED_TIME);
     double dt = 0.001*(t - time_last);
     time_last = t;
@@ -200,7 +200,7 @@ namespace Framework
     renderer.Render ();
     renderer1.Render ();
     renderer2.Render ();
-    glutSwapBuffers ();
+    glutSwapBuffers (); */
 
   }
 
@@ -247,11 +247,7 @@ namespace Framework
       break;
     }*/
   }
-=======
-    DrawDebug(dt);
-    DrawSprites(dt);
-    DrawParticles(dt);
-  }
+ 
 
   void GraphicsSystem::DrawDebug(const double dt)
   {
@@ -349,22 +345,19 @@ namespace Framework
   void GraphicsSystem::DrawSprites(const double dt)
   {
 
->>>>>>> origin/Micah
+ 
 
   }
 
   void GraphicsSystem::DrawParticles(const double dt)
   {
-<<<<<<< HEAD
-    glViewport (0, 0, W, H);
     //camera_width = 2.0f * float (W) / float (H);
     //movingCamWidth = 0.5f * float (W) / float (H);
   }
-=======
->>>>>>> origin/Micah
+ 
+ 
 
 
-  }
 
 
 #pragma endregion
@@ -391,7 +384,7 @@ namespace Framework
 ------------------------------------------------------------------------------*/
 #pragma region Destructor
 
-  GraphicsSystem::~GraphicsSystem ()
+  GraphicsSystem::~GraphicsSystem()
   {
   }
 
