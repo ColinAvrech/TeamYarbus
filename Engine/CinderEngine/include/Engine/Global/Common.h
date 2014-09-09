@@ -27,6 +27,8 @@ from externals, and stable elements within the engine.
 #include "CinderDebug.h"
 #include "Console.h"
 
+#pragma comment (lib, "fmod_vc.lib")
+
 
 //! Unstable dependency
 #include "ComponentTypeIds.h"

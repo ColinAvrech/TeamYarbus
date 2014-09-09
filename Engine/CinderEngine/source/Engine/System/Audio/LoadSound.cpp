@@ -27,12 +27,7 @@ namespace Framework
   /***************************************************************************/
   void AudioSystem::LoadAllSounds()
   {
-    Sound* test;
-    LoadSound("music.mp3", "Test", Sound::SOUND_2D, 0.7f);
-
-    test = LoadSound("sfx.wav", "Test2", Sound::SOUND_2D, 0.7f);
-    test->Play();
-    test->SetLoop(true, test->GetID());
+    LoadSound("music.mp3", "Test", Sound::SOUND_2D, 0.7f)->Play();
 
     std::cout << "ALL SOUNDS LOADED" << std::endl;
   }
