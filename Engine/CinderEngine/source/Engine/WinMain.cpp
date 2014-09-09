@@ -16,6 +16,7 @@ starts the game loop.
 #include "WindowSystem.h"
 #include "EventSystem.h"
 #include "GraphicsSystem.h"
+#include "AudioSystem.h"
 #include "Common.h"     //! EnableMemoryleakChecking
 #include "Core.h"
 
@@ -48,18 +49,24 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR, INT)
   CoreEngine * engine = new CoreEngine;
   //! Initilize all systems
   WindowSystem * windows      = new WindowSystem (hInst, WindowTitle, ClientWidth, ClientHeight);
-  GraphicsSystem* graphics    = new GraphicsSystem ();
+  //GraphicsSystem* graphics    = new GraphicsSystem ();
+  AudioSystem* audio          = new AudioSystem();
   EventSystem * events        = new EventSystem ();
+  //GraphicsSystem * graphics = new GraphicsSystem();
 
 
   engine->AddSystem(windows);
-  engine->AddSystem (graphics);
+  engine->AddSystem (audio);
   engine->AddSystem(events);
+  //engine->AddSystem(graphics);
 
   
-  //! activate the window
+  //! activate the window.
   windows->ActivateWindow();
-  graphics->Initialize ();
+
+  //! Initialize all added Systems. DON'T INIT YOUR OWN
+  engine->Initialize();
+  audio->LoadAllSounds();
 
   //! Run the game! NOW!
   engine->GameLoop();
