@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="include">
@@ -6,24 +6,6 @@
     </Filter>
     <Filter Include="include\Engine">
       <UniqueIdentifier>{EEA51C00-DA73-1006-C307-812CAF74EC6A}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="include\Engine\Composition">
-      <UniqueIdentifier>{31CB5524-1DDB-01F5-8694-661372C3F08D}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="include\Engine\Composition\Component_Base">
-      <UniqueIdentifier>{6D053AF6-D91F-9D97-2242-AD2B8E9BC49E}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="include\Engine\Composition\Components">
-      <UniqueIdentifier>{A6AF025C-1274-014C-DBD9-3116475D9D81}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="include\Engine\Composition\Components\Collision">
-      <UniqueIdentifier>{412CC0C8-AD67-208C-B65C-9D1B2217A5BC}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="include\Engine\Composition\Components\Collision\Shapes">
-      <UniqueIdentifier>{D41B2CA9-C0C5-61B8-A996-69D395DF01A7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="include\Engine\Composition\Composition">
-      <UniqueIdentifier>{F4EC4DE8-E03E-25D8-C95D-62E8B54E3EC1}</UniqueIdentifier>
     </Filter>
     <Filter Include="include\Engine\Core">
       <UniqueIdentifier>{06AF7083-7210-4E91-FB7D-944367DE8450}</UniqueIdentifier>
@@ -70,8 +52,20 @@
     <Filter Include="include\Engine\System\Graphics\Structs">
       <UniqueIdentifier>{E9CC8A0B-D51E-62FB-BE3D-9F0BAA2E7BE4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="include\Engine\System\System_Base">
-      <UniqueIdentifier>{90C88ABE-FC36-E03D-4520-9B3DB1CDD5D9}</UniqueIdentifier>
+    <Filter Include="include\Engine\System\ObjectSystem">
+      <UniqueIdentifier>{2DA25B03-19DE-5E6D-82F0-76646E4B0788}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\Engine\System\ObjectSystem\Components">
+      <UniqueIdentifier>{22B1864D-8E21-89C6-5740-034FC36FC1C7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\Engine\System\ObjectSystem\Components\Collision">
+      <UniqueIdentifier>{BD38E164-2920-CC5A-320E-CED69E746F1D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\Engine\System\ObjectSystem\Components\Collision\Shapes">
+      <UniqueIdentifier>{D0C40ABC-BC9A-91B9-A544-AC0C91B9C45A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\Engine\System\WindowSystems">
+      <UniqueIdentifier>{81D0728C-ED89-DD36-76E9-F710E2A193A6}</UniqueIdentifier>
     </Filter>
     <Filter Include="source">
       <UniqueIdentifier>{76FF3A1C-62A1-65F2-4B5C-7946379DEC42}</UniqueIdentifier>
@@ -130,66 +124,21 @@
     <Filter Include="source\Engine\System\Graphics\Objects">
       <UniqueIdentifier>{C8EEFCA2-34B3-FB92-FD18-2C5D699C97C8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\Engine\System\System_Base">
-      <UniqueIdentifier>{BD5ED67E-A9AF-C1C0-D213-B082BEC3542A}</UniqueIdentifier>
+    <Filter Include="source\Engine\System\ObjectSystem">
+      <UniqueIdentifier>{FAFD19CD-666C-6F4C-AF55-2A4C1B0365E8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Engine\System\WindowSystems">
+      <UniqueIdentifier>{EEA5FC8D-DAE1-FFF7-43F4-17EF2F4FA812}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\Engine\Composition\Component_Base\Component.h">
-      <Filter>include\Engine\Composition\Component_Base</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\Engine\Composition\Component_Base\ComponentCreator.h">
-      <Filter>include\Engine\Composition\Component_Base</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\Engine\Composition\Component_Base\ComponentTypeIds.h">
-      <Filter>include\Engine\Composition\Component_Base</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\Engine\Composition\Components\Collision\CollideBox.h">
-      <Filter>include\Engine\Composition\Components\Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\Engine\Composition\Components\Collision\CollideCircle.h">
-      <Filter>include\Engine\Composition\Components\Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\Engine\Composition\Components\Collision\CollidePoint.h">
-      <Filter>include\Engine\Composition\Components\Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\Engine\Composition\Components\Collision\Collision.h">
-      <Filter>include\Engine\Composition\Components\Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\Engine\Composition\Components\Collision\Shapes\Box.h">
-      <Filter>include\Engine\Composition\Components\Collision\Shapes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\Engine\Composition\Components\Collision\Shapes\Circle.h">
-      <Filter>include\Engine\Composition\Components\Collision\Shapes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\Engine\Composition\Components\Collision\Shapes\Point.h">
-      <Filter>include\Engine\Composition\Components\Collision\Shapes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\Engine\Composition\Components\Collision\Shapes\Shape.h">
-      <Filter>include\Engine\Composition\Components\Collision\Shapes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\Engine\Composition\Components\Hierarchy.h">
-      <Filter>include\Engine\Composition\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\Engine\Composition\Components\Script.h">
-      <Filter>include\Engine\Composition\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\Engine\Composition\Components\SpriteRenderer.h">
-      <Filter>include\Engine\Composition\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\Engine\Composition\Components\Transform.h">
-      <Filter>include\Engine\Composition\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\Engine\Composition\Composition\GOC.h">
-      <Filter>include\Engine\Composition\Composition</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\Engine\Core\Core.h">
       <Filter>include\Engine\Core</Filter>
     </ClInclude>
     <ClInclude Include="..\include\Engine\Debug\DebugCode.h">
       <Filter>include\Engine\Debug</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Engine\Factory\Factory.h">
+    <ClInclude Include="..\include\Engine\Factory\ObjectSystem.h">
       <Filter>include\Engine\Factory</Filter>
     </ClInclude>
     <ClInclude Include="..\include\Engine\Global\CinderDebug.h">
@@ -216,6 +165,9 @@
     <ClInclude Include="..\include\Engine\System\Audio\Sound.h">
       <Filter>include\Engine\System\Audio</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\Engine\System\BaseSystem.h">
+      <Filter>include\Engine\System</Filter>
+    </ClInclude>
     <ClInclude Include="..\include\Engine\System\Console\Console.h">
       <Filter>include\Engine\System\Console</Filter>
     </ClInclude>
@@ -240,11 +192,53 @@
     <ClInclude Include="..\include\Engine\System\Graphics\Structs\Bounds.h">
       <Filter>include\Engine\System\Graphics\Structs</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Engine\System\System_Base\BaseSystem.h">
-      <Filter>include\Engine\System\System_Base</Filter>
+    <ClInclude Include="..\include\Engine\System\ObjectSystem\Component.h">
+      <Filter>include\Engine\System\ObjectSystem</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Engine\System\WindowSystem.h">
-      <Filter>include\Engine\System</Filter>
+    <ClInclude Include="..\include\Engine\System\ObjectSystem\Components\Collision\CollideBox.h">
+      <Filter>include\Engine\System\ObjectSystem\Components\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\System\ObjectSystem\Components\Collision\CollideCircle.h">
+      <Filter>include\Engine\System\ObjectSystem\Components\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\System\ObjectSystem\Components\Collision\CollidePoint.h">
+      <Filter>include\Engine\System\ObjectSystem\Components\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\System\ObjectSystem\Components\Collision\Collision.h">
+      <Filter>include\Engine\System\ObjectSystem\Components\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\System\ObjectSystem\Components\Collision\Shapes\Box.h">
+      <Filter>include\Engine\System\ObjectSystem\Components\Collision\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\System\ObjectSystem\Components\Collision\Shapes\Circle.h">
+      <Filter>include\Engine\System\ObjectSystem\Components\Collision\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\System\ObjectSystem\Components\Collision\Shapes\Point.h">
+      <Filter>include\Engine\System\ObjectSystem\Components\Collision\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\System\ObjectSystem\Components\Collision\Shapes\Shape.h">
+      <Filter>include\Engine\System\ObjectSystem\Components\Collision\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\System\ObjectSystem\Components\Hierarchy.h">
+      <Filter>include\Engine\System\ObjectSystem\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\System\ObjectSystem\Components\Script.h">
+      <Filter>include\Engine\System\ObjectSystem\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\System\ObjectSystem\Components\SpriteRenderer.h">
+      <Filter>include\Engine\System\ObjectSystem\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\System\ObjectSystem\Components\Transform.h">
+      <Filter>include\Engine\System\ObjectSystem\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\System\ObjectSystem\GameObject.h">
+      <Filter>include\Engine\System\ObjectSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\System\WindowSystems\WindowSystem.h">
+      <Filter>include\Engine\System\WindowSystems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\System\ObjectSystem\AllComponents.h">
+      <Filter>include\Engine\System\ObjectSystem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -287,7 +281,7 @@
     <ClCompile Include="..\source\Engine\Composition\Components\Transform.cpp">
       <Filter>source\Engine\Composition\Components</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\Engine\Composition\Composition\GOC.cpp">
+    <ClCompile Include="..\source\Engine\Composition\Composition\GameObject.cpp">
       <Filter>source\Engine\Composition\Composition</Filter>
     </ClCompile>
     <ClCompile Include="..\source\Engine\Core\Core.cpp">
@@ -296,7 +290,7 @@
     <ClCompile Include="..\source\Engine\Debug\DebugCode.cpp">
       <Filter>source\Engine\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\Engine\Factory\Factory.cpp">
+    <ClCompile Include="..\source\Engine\Factory\ObjectSystem.cpp">
       <Filter>source\Engine\Factory</Filter>
     </ClCompile>
     <ClCompile Include="..\source\Engine\Math\Affine.cpp">
@@ -326,11 +320,8 @@
     <ClCompile Include="..\source\Engine\System\Graphics\Objects\Sprite.cpp">
       <Filter>source\Engine\System\Graphics\Objects</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\Engine\System\System_Base\BaseSystem.cpp">
-      <Filter>source\Engine\System\System_Base</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Engine\System\WindowSystem.cpp">
-      <Filter>source\Engine\System</Filter>
+    <ClCompile Include="..\source\Engine\System\WindowSystems\WindowSystem.cpp">
+      <Filter>source\Engine\System\WindowSystems</Filter>
     </ClCompile>
     <ClCompile Include="..\source\Engine\WinMain.cpp">
       <Filter>source\Engine</Filter>

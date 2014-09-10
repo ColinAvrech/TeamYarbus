@@ -8,13 +8,9 @@
 */
 /******************************************************************************/
 
-
+/*
 #pragma once
 
-#include "Component.h"
-#include "Affine.h"
-#include "GOC.h"
-#include "Common.h"
 namespace Framework
 {
   class Hierarchy : public GameComponent
@@ -32,4 +28,4 @@ namespace Framework
     //The list of parented objects
     std::vector <GOC*> _Children;
   };
-}
+}*/

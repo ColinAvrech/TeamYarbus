@@ -13,6 +13,8 @@
 /******************************************************************************/
 
 #include "Common.h"
+#include "DebugCode.h"
+
 
 //! SignalError is passed the Error message, filename, line of that file, and the
 bool SignalError(const char* exp, const char * filename, int line_number, const char * formatMessage, ...)

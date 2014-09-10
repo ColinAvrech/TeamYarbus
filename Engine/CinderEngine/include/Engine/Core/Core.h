@@ -14,10 +14,8 @@
 #define FPS 60.0f
 
 #include "BaseSystem.h"
-#include <vector>
-#include <chrono>   //! chrono::nanoseconds,
-#include <thread>   //! sleep_for,
-#include <iostream>
+#include "Common.h"
+
 using namespace std::chrono;
 
 

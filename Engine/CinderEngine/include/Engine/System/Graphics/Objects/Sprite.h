@@ -15,6 +15,7 @@
 // Includes
 ------------------------------------------------------------------------------*/
 #pragma region Includes
+#include "Component.h"
 #include "Affine.h"
 #include "Bounds.h"
 #pragma endregion

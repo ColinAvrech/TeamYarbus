@@ -9,7 +9,6 @@ function to handle windows Messages.
 */
 /******************************************************************************/
 
-#include "Common.h"
 #include "windowsystem.h"
 
 namespace Framework
@@ -38,7 +37,6 @@ namespace Framework
                                 LPARAM lParam)  //!The secondary data for the message (if any)
 
   {
-    std::cout << "I have messageHandled";
     return DefWindowProc(hWnd, msg, wParam, lParam);
   }
 

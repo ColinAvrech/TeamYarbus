@@ -11,12 +11,15 @@
 #ifndef _AUDIO_H
 #define _AUDIO_H
 
+#pragma comment (lib, "fmod_vc.lib")
+
 /*-----------------------------------------------------------------------------
 // Includes
 -----------------------------------------------------------------------------*/
 #pragma region Includes
 
-#include "Common.h"
+
+#include "BaseSystem.h"
 #include "fmod.hpp"
 #include "fmod_DSP.h"
 #include "fmod_errors.h"

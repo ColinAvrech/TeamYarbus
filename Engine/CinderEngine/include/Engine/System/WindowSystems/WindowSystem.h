@@ -9,11 +9,9 @@
 #pragma once
 
 #include "BaseSystem.h"
-#include "CinderWindows.h"
 
 namespace Framework
 {
-
 
   class WindowSystem : public BaseSystem
   {

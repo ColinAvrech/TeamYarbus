@@ -12,6 +12,8 @@ and interface for every type of event.
 
 #pragma once
 
+#include "Common.h"
+
 namespace Framework
 {
 
@@ -48,18 +50,18 @@ namespace Framework
 
     struct EventDelegate
     {
-      GOC *obj = NULL;
+      GameObject *obj = NULL;
 
       /*!All possible types of Events and their related data*/
       union Action
       {
-        void *Input(GOC &obj, const class InputEvent &Event);
-        void *Engine(GOC &obj, const class EngineEvent &Event);
-        void *Grapics(GOC &obj, const class GraphicsEvent &Event);
-        void *Windows(GOC &obj, const class WindowsEvent &Event);
-        void *Audio(GOC &obj, const class AudioEvent &Event);
-        void *Physics(GOC &obj, const class PhysicsEvent &Event);
-        void *Script(GOC &obj, const class ScriptEvent &Event);
+        void *Input(GameObject &obj, const class InputEvent &Event);
+        void *Engine(GameObject &obj, const class EngineEvent &Event);
+        void *Grapics(GameObject &obj, const class GraphicsEvent &Event);
+        void *Windows(GameObject &obj, const class WindowsEvent &Event);
+        void *Audio(GameObject &obj, const class AudioEvent &Event);
+        void *Physics(GameObject &obj, const class PhysicsEvent &Event);
+        void *Script(GameObject &obj, const class ScriptEvent &Event);
       };
     };
 
@@ -72,3 +74,7 @@ namespace Framework
   };
 
 }
+
+#include "Factory.h"
+#include "WindowSystem.h"
+#include "EventSystem.h"

@@ -21,24 +21,23 @@ relaying information)
 */
 #pragma once
 
-#include "ComponentTypeIds.h"
+#include "GameObject.h"
+
+#define DefineComponentName(Component) const static std::string Component::Name("Component")
 
 namespace Framework
 {
-  //!Forward Declartion of Game Object Composition clas
-  class GameObjectComposition;
-  //! Acrynim for Game Object Composition
-  typedef GameObjectComposition GOC;
-
   /*! A Component is added to a Game object composition and is
   a small piece of logic for an object. 
   Ex, Transform component, Sprite Components*/
   class GameComponent
   {
   public:
-    /*! Game Object Composition will need to be
-    able to see our privates.*/
-    friend class GameObjectComposition;
+    GameComponent(GameObject *obj)
+      : Obj(obj){}
+
+    // The non-base component usees DefineComponentName macro to name component
+    const static std::string Name;
 
     /*!Telegraph that the component is active*/
     virtual void Initalize(){};
@@ -46,21 +45,8 @@ namespace Framework
     /*!TODO IMPLIMENT SERIALIZATION!*/
     virtual void Serialize(){};
 
-    GOC* GetOwner(){ return Base; }
-
-    /*! Id of the component used to find the component in array*/
-    ComponentTypeId TypeId;
-
-    /*!Protected members/variables are only accessible from within
-    the class defining them. This prevents other GOCs from destroying
-    the wrong components.*/
-  protected:
-    /*!Destroy he component. This can only be done by the Game Object Composition*/
-    virtual ~GameComponent(){};
-
-  private:
-    /*!Each compoent has a pointer to its base composition*/
-    GOC* Base;
+    //Variables that all components have
+    const GameObject* Obj;
   };
 
 }

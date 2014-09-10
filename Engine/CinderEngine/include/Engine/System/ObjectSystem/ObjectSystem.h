@@ -12,33 +12,31 @@
 
 #pragma once
 
-#include "Common.h"
+#include "BaseSystem.h"
+#include "Component.h"
 
 namespace Framework
 {
-  //!Forward Declaration of Component Creator
-  class ComponentCreator;
-
   /*!Game Object Factory:
   The Game object factory creates composition objects from data streams and manages
   their lifetimes. As part of controlling the life times of the GameObjectComposition (GOC)
   it also provides an integer based Id system for safe referencing of game objects
   through integer Id Handles.
   */
-  class GameObjectFactory : public BaseSystem
+  class ObjectSystem : public BaseSystem
   {
   public:
-    GameObjectFactory();
-    ~GameObjectFactory();
+    ObjectSystem();
+    ~ObjectSystem();
 
     //!Create initialized the Id a GOC from a file.
-    GOC * Create(const std::string& filename);
+    GameObject * GameObject(const std::string& filename);
 
     //!Add a GOC to the list to be destroyed
-    void DestroyByPointer(GOC * gameObject);
+    void DestroyByPointer(GameObject * gameObject);
 
     //!Add a GOC to the list to be destroyed
-    void DestroyById(GOCId id);
+    void DestroyById(unsigned id);
 
     //!Update the factory, Destroying dead objects
     virtual void Update(const double dt);
@@ -51,40 +49,39 @@ namespace Framework
 
     /*!Create and Id a GOC at runtime. Used to dynamically build GOC.
     After components have been added call GOC->Initializee().*/
-    GOC * CreateEmptyComposition();
+    GameObject * CreateEmptyComposition();
 
     /*!Build a composition and serialize from the data file but do not initialize
     the GOC.
     Usage: to create composition and then adjust its data before initialization.
     Check GameObjectComposition::Initialize for details.*/
-    GOC * BuildAndSerialize(const std::string& filename);
+    GameObject * BuildAndSerialize(const std::string& filename);
 
-    /*!Id object and store it in the object map.*/
-    void IdGameObject(GOC * gameObject);
+    /*!Used to generator unique GOCIds*/
+    static unsigned LastGameObjectId;
 
     /*!Add a component creator enabling data driven composition.*/
     void AddComponentCreator(const std::string& name, ComponentCreator* creator);
 
     /*!Get the game object with given id. This function will return NULL if
     the boject is destoryed.*/
-    GOC * GetObjectWithId(GOCId id);
+    GameObject * GetObjectWithId(unsigned id);
 
   private:
-    /*!Used to generator unique GOCIds*/
-    unsigned LastGameObjectId;
 
     /*!Map the component creator used for data driven composition.*/
     typedef std::map<std::string, ComponentCreator*> ComponentMapType;
     ComponentMapType ComponentMap;
 
     /*!Map of GOC to their Ids used for safe referencing of game objects*/
-    typedef std::map<unsigned, GOC *> GameObjectedIdMapType;
+    typedef std::map<unsigned, GameObject *> GameObjectedIdMapType;
     GameObjectedIdMapType GameObjectIdMap;
+    typedef std::map<std::string, size_t> SerializationMap;
+    SerializationMap  SerialMap;
 
-    /*!A set of objects to be deleted this is a set */
-    std::set<GOC*> ObjectsToBeDeleted;
+
   };
 
 
-  extern GameObjectFactory * FACTORY;
+  extern ObjectSystem * OBJECTSYSTEM;
 }

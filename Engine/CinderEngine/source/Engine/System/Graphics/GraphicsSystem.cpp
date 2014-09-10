@@ -48,12 +48,12 @@ namespace Framework
 
   // THIS IS HOW A TYPICAL GAMEOBJECT WILL LOOK AFTER COMPONENT BASED DESIGN
   // IS FULLY IMPLEMENTED
-  Transform transform;      // HOLDS ALL TRANSFORMATION DATA
-  SpriteRenderer renderer;  // RENDERS THE SPRITE OBJECT
+  // Transform transform;      // HOLDS ALL TRANSFORMATION DATA
+  // SpriteRenderer renderer;  // RENDERS THE SPRITE OBJECT
   //////////////////////////////////////////////////////////////////////////
-  SpriteRenderer renderer1;
-  Point verts [] = { Point (3, 2), Point (-4, 5), Point (-6, -7), Point (5, -8) };
-  SpriteRenderer renderer2 (verts);
+  // SpriteRenderer renderer1;
+  // Point verts [] = { Point (3, 2), Point (-4, 5), Point (-6, -7), Point (5, -8) };
+  // SpriteRenderer renderer2 (verts);
 
 
 #pragma endregion
@@ -113,7 +113,7 @@ namespace Framework
     ErrorIf(idpixelformat == false, "Failed to ChoosePixelFormat");
 
     // 
-    bool SPF = SetPixelFormat(hDC, idpixelformat, &PFD);
+    BOOL SPF = SetPixelFormat(hDC, idpixelformat, &PFD);
     ErrorIf(SPF == false, "Failed to SetPixelFormat");
   }
 

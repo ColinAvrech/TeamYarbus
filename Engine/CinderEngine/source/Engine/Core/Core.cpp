@@ -16,7 +16,6 @@ Main Game Loop.
 
 
 #include "Core.h"
-#include "Common.h"
 
 namespace Framework
 {
