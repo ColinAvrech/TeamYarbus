@@ -10,6 +10,7 @@ function to handle windows Messages.
 /******************************************************************************/
 
 #include "windowsystem.h"
+#include "Core.h"
 
 namespace Framework
 {
@@ -37,10 +38,37 @@ namespace Framework
                                 LPARAM lParam)  //!The secondary data for the message (if any)
 
   {
+    LONG    lRet = 0;
+
+    switch (msg)
+    {
+      case WM_SIZE:								// Resize msg
+        if (false)								// Do this only if we are NOT in full screen, TODO add flag for fullscreen
+        {
+          
+          //SizeOpenGLScreen(LOWORD(lParam), HIWORD(lParam));// LoWord=Width, HiWord=Height
+          //GetClientRect(hWnd, &g_rRect);				// Get the window rectangle
+        }
+        break;
+
+        //Key Pressed
+      case WM_KEYDOWN:
+        switch (wParam) {								  
+          case VK_ESCAPE:								  
+            PostQuitMessage(0);						
+            break;
+        }
+        break;
+
+      case WM_DESTROY:					
+        PostQuitMessage(0);		    // Post quit message
+        break;
+
+      default:
+        break;
+    }
     return DefWindowProc(hWnd, msg, wParam, lParam);
   }
-
-  //! @@ TODO MAKE THIS HANDLE INPUT MESSAGES... Probably make a new system called input and have it be a friend class to talk to this message handler
 
 
   WindowSystem::WindowSystem(HINSTANCE hInst, const char* WindowTitle, int ClientWidth, int ClientHeight)
@@ -132,6 +160,14 @@ namespace Framework
 
   void WindowSystem::Update(const double dt)
   {
-    return;
+    MSG msg;
+
+    if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+    {
+      if (msg.message == WM_QUIT)
+        CORE->QuitGame();
+      TranslateMessage(&msg);
+      DispatchMessage(&msg);
+    }
   }
 }

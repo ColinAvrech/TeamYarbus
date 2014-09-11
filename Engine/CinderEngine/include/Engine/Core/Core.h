@@ -36,6 +36,9 @@ namespace Framework
 
     //! Add a system to be updated every frame.
     void AddSystem(BaseSystem* system);
+   
+    //! Stops the game for whatever reason
+    void QuitGame();
 
     //! initializes all systems in the game.
     void Initialize();

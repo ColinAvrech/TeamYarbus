@@ -64,9 +64,6 @@
     <Filter Include="include\Engine\System\ObjectSystem\Components\Collision\Shapes">
       <UniqueIdentifier>{D0C40ABC-BC9A-91B9-A544-AC0C91B9C45A}</UniqueIdentifier>
     </Filter>
-    <Filter Include="include\Engine\System\WindowSystems">
-      <UniqueIdentifier>{81D0728C-ED89-DD36-76E9-F710E2A193A6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="source">
       <UniqueIdentifier>{76FF3A1C-62A1-65F2-4B5C-7946379DEC42}</UniqueIdentifier>
     </Filter>
@@ -129,6 +126,9 @@
     </Filter>
     <Filter Include="source\Engine\System\WindowSystems">
       <UniqueIdentifier>{EEA5FC8D-DAE1-FFF7-43F4-17EF2F4FA812}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\Engine\System\WindowSystems">
+      <UniqueIdentifier>{81D0728C-ED89-DD36-76E9-F710E2A193A6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

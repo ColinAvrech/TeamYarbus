@@ -46,27 +46,25 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR, INT)
   /*! Initialize the game engine*/
   
   //! Create the core engine which manages all systems.
-  CoreEngine * engine = new CoreEngine;
-  //! Initilize all systems
+  CoreEngine * engine         = new CoreEngine;
   WindowSystem * windows      = new WindowSystem (hInst, WindowTitle, ClientWidth, ClientHeight);
-  //GraphicsSystem* graphics    = new GraphicsSystem ();
+  GraphicsSystem* graphics    = new GraphicsSystem ();
   AudioSystem* audio          = new AudioSystem();
   EventSystem * events        = new EventSystem ();
-  //GraphicsSystem * graphics = new GraphicsSystem();
 
 
   engine->AddSystem(windows);
   engine->AddSystem (audio);
   engine->AddSystem(events);
-  //engine->AddSystem(graphics);
-
-  
-  //! activate the window.
-  windows->ActivateWindow();
+  engine->AddSystem(graphics);
 
   //! Initialize all added Systems. DON'T INIT YOUR OWN
   engine->Initialize();
   audio->LoadAllSounds();
+
+
+  windows->ActivateWindow();
+  //! activate the window.
 
   //! Run the game! NOW!
   engine->GameLoop();
