@@ -27,7 +27,6 @@ from externals, and stable elements within the engine.
 #include "CinderDebug.h"
 #include "Console.h"
 
-
 //! Unstable dependency
 #include "ComponentTypeIds.h"
 #include "GOC.h"

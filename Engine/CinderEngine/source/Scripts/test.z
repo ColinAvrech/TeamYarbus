@@ -1,0 +1,8 @@
+class Player
+{
+  [Static]
+  function SayHello()
+  {
+    Console.WriteLine("Fuck the world!");
+  }
+}

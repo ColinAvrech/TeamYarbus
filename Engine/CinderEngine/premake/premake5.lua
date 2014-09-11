@@ -27,12 +27,12 @@ solution "CinderEngine"
     }
     
     includedirs { "../dependency/opengl/include",
-                  "../dependency/zilch/include",
+                  "../dependency/Zilch/include",
                   "../dependency/fmod/include",
                   "../include/**" }
     
     libdirs { "../dependency/opengl/library",
-              "../dependency/zilch/library",
+              "../dependency/Zilch/library",
 							"../dependency/fmod/library"}
 
 
