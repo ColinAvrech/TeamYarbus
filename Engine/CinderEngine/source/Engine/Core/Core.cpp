@@ -16,7 +16,6 @@ Main Game Loop.
 
 
 #include "Core.h"
-#include "Common.h"
 
 namespace Framework
 {
@@ -82,6 +81,11 @@ namespace Framework
   {
     for (unsigned i = 0; i < Systems.size(); ++i)
       Systems[i]->Initialize();
+  }
+
+  void CoreEngine::QuitGame()
+  {
+    GameActive = false;
   }
   
   //!

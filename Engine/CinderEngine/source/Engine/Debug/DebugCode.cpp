@@ -13,6 +13,8 @@
 /******************************************************************************/
 
 #include "Common.h"
+#include "DebugCode.h"
+
 
 //! SignalError is passed the Error message, filename, line of that file, and the
 bool SignalError(const char* exp, const char * filename, int line_number, const char * formatMessage, ...)
@@ -62,7 +64,7 @@ void TracePrint(const char * msg, ...)
   vsnprintf_s(Message, BufferSize, _TRUNCATE, msg, args);
   va_end(args);
 
-  std::cout << Console::green << Message << std::endl;
+  std::cout << Console::green << Message << Console::white << std::endl;
 }
 
 /*! Enables memory checking.

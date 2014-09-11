@@ -14,9 +14,9 @@ starts the game loop.
 #ifdef WINDOWSBUILD
 
 #include "WindowSystem.h"
-#include "ZilchCompiledLib.h"
 #include "EventSystem.h"
 #include "GraphicsSystem.h"
+#include "AudioSystem.h"
 #include "Common.h"     //! EnableMemoryleakChecking
 #include "Core.h"
 
@@ -46,25 +46,25 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR, INT)
   /*! Initialize the game engine*/
   
   //! Create the core engine which manages all systems.
-  CoreEngine * engine = new CoreEngine;
-  //! Initilize all systems
+  CoreEngine * engine         = new CoreEngine;
   WindowSystem * windows      = new WindowSystem (hInst, WindowTitle, ClientWidth, ClientHeight);
   GraphicsSystem* graphics    = new GraphicsSystem ();
+  AudioSystem* audio          = new AudioSystem();
   EventSystem * events        = new EventSystem ();
-  ScriptSystem::ScriptSystem *script = new ScriptSystem::ScriptSystem();
 
 
   engine->AddSystem(windows);
-  //engine->AddSystem (graphics);
+  engine->AddSystem (audio);
   engine->AddSystem(events);
-  engine->AddSystem(script);
+  engine->AddSystem(graphics);
 
-  
-  //! activate the window
-  windows->ActivateWindow();
-
+  //! Initialize all added Systems. DON'T INIT YOUR OWN
   engine->Initialize();
-  //graphics->Initialize ();
+  audio->LoadAllSounds();
+
+
+  windows->ActivateWindow();
+  //! activate the window.
 
   //! Run the game! NOW!
   engine->GameLoop();

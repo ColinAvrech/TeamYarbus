@@ -14,10 +14,8 @@
 #define FPS 60.0f
 
 #include "BaseSystem.h"
-#include <vector>
-#include <chrono>   //! chrono::nanoseconds,
-#include <thread>   //! sleep_for,
-#include <iostream>
+#include "Common.h"
+
 using namespace std::chrono;
 
 
@@ -38,6 +36,9 @@ namespace Framework
 
     //! Add a system to be updated every frame.
     void AddSystem(BaseSystem* system);
+   
+    //! Stops the game for whatever reason
+    void QuitGame();
 
     //! initializes all systems in the game.
     void Initialize();

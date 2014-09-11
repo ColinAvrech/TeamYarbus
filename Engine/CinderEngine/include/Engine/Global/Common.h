@@ -15,23 +15,16 @@ from externals, and stable elements within the engine.
 //! External Dependencies
 #include <iostream>
 #include <chrono>
+#include <thread>
+#include <list>
 #include <vector>
 #include <map>
 #include <set>
 #include <string>
 #include <algorithm> //! std::sort
 
-
-//! Stable includes and dependencies
-#include "CinderWindows.h"
+//! Internal Stable headers
 #include "CinderDebug.h"
+#include "CinderWindows.h"
 #include "Console.h"
 
-//! Unstable dependency
-#include "ComponentTypeIds.h"
-#include "GOC.h"
-#include "BaseSystem.h"
-#include "Events.h"
-#include "BaseEvent.h"
-#include "Vec2.h"
-#include "Affine.h"

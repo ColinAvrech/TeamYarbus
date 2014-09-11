@@ -16,6 +16,7 @@
 ------------------------------------------------------------------------------*/
 #include "Common.h"
 #include "Zilch.hpp"
+#include "BaseSystem.h"
 
 namespace Framework
 {
