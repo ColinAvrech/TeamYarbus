@@ -138,9 +138,6 @@
     <ClInclude Include="..\include\Engine\Debug\DebugCode.h">
       <Filter>include\Engine\Debug</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Engine\Factory\ObjectSystem.h">
-      <Filter>include\Engine\Factory</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\Engine\Global\CinderDebug.h">
       <Filter>include\Engine\Global</Filter>
     </ClInclude>
@@ -240,6 +237,9 @@
     <ClInclude Include="..\include\Engine\System\ObjectSystem\AllComponents.h">
       <Filter>include\Engine\System\ObjectSystem</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\Engine\Factory\ObjectSystem.h">
+      <Filter>include\Engine\System\ObjectSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\Engine\Composition\Components\Collision\CollideBox.cpp">
@@ -290,9 +290,6 @@
     <ClCompile Include="..\source\Engine\Debug\DebugCode.cpp">
       <Filter>source\Engine\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\Engine\Factory\ObjectSystem.cpp">
-      <Filter>source\Engine\Factory</Filter>
-    </ClCompile>
     <ClCompile Include="..\source\Engine\Math\Affine.cpp">
       <Filter>source\Engine\Math</Filter>
     </ClCompile>
@@ -325,6 +322,9 @@
     </ClCompile>
     <ClCompile Include="..\source\Engine\WinMain.cpp">
       <Filter>source\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Engine\Factory\ObjectSystem.cpp">
+      <Filter>source\Engine\System\ObjectSystem</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

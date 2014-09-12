@@ -30,10 +30,10 @@ namespace Framework
   /*!Deletes all objects int eh ObjectsToBeDelted List.*/
   void ObjectSystem::Update(const double dt)
   {
-
   }
 
   void ObjectSystem::DestroyAllObjects()
   {    
   }
+
 }
