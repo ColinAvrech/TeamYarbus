@@ -170,20 +170,38 @@ namespace Framework
 
   void GraphicsSystem::Update (const double dt)
   {
-    glClear(GL_COLOR_BUFFER_BIT || GL_DEPTH_BUFFER_BIT);
+    /*
+    int t = glutGet (GLUT_ELAPSED_TIME);
+    double dt = 0.001*(t - time_last);
+    time_last = t;
 
-    glLoadIdentity();
+    rate += dt;
 
-    GLUquadricObj *pObj = gluNewQuadric();
+    glClearColor (0, 0, 0, 0);
+    glClear (GL_COLOR_BUFFER_BIT);
 
-    gluQuadricDrawStyle(pObj, GLU_LINE);				// Draw the sphere in wireframe
+    //for (int i = 0; i < 4; ++i)
+    //{
+    //  renderer.temp [i] = Rot (-rate) * map * renderer.sprite.vertices [i];
+    //}
 
-    glTranslatef(0.0f, 0.0f, -6.5f);					// Move the sphere backwards from the camera
-    gluSphere(pObj, 2.5f, 75, 75);						// Draw a decent poly sphere with a radius of 2.5
+    //for (int i = 0; i < 4; ++i)
+    //{
+    //  renderer1.temp [i] =  Rot (rate) * map * renderer1.sprite.vertices [i];
+    //}
 
-    gluDeleteQuadric(pObj);								// Free the Quadric
+    for (int i = 0; i < 4; ++i)
+    {
+      renderer2.temp [i] = map * Scale (0.05f) * renderer2.sprite.vertices [i];
+    }
 
-    SwapBuffers(hDC);
+    // DEFAULT PARAMETER IS ZERO
+    // THIS PARAMETER WILL BE USED TO CHOOSE WHICH MATERIAL TO USE
+    renderer.Render ();
+    renderer1.Render ();
+    renderer2.Render ();
+    glutSwapBuffers (); */
+
   }
 
 
