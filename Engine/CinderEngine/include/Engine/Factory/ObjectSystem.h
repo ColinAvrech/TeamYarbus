@@ -27,6 +27,8 @@ namespace Framework
   {
   public:
 
+    const char* LevelAssetsPath = "../../Assets/Levels/";
+
     ObjectSystem();
     ~ObjectSystem();
 
@@ -34,10 +36,13 @@ namespace Framework
     virtual void Update(const double dt);
 
     //!name of the system if the Factory, duh.
-    virtual const std::string GetName(){ return "Factory"; }
+    virtual const std::string GetName(){ return "ObjectSystem"; }
 
     //!Destroy all the GOC. Used in final shutdown procedure.
     void DestroyAllObjects();
+
+    void LoadLevel(std::string level);
+
 
     /*!Used to generator unique GOCIds*/
     static unsigned LastGameObjectId;
@@ -45,6 +50,7 @@ namespace Framework
   private:
 
 
+    std::string ReadLine(std::string line);
     //typedef std::map<std::string, size_t> SerializationMap;
     //SerializationMap  SerialMap;
 
