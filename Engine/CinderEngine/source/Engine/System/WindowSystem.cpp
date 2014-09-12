@@ -38,7 +38,7 @@ namespace Framework
                                 LPARAM lParam)  //!The secondary data for the message (if any)
 
   {
-
+    std::cout << "I have messageHandled";
     return DefWindowProc(hWnd, msg, wParam, lParam);
   }
 
@@ -53,6 +53,10 @@ namespace Framework
     //!Set the Global pointer to the windows system
     WINDOWSYSTEM = this;
 
+    //! Set window demensions
+    WindowHeight = ClientHeight;
+    WindowWidth = ClientWidth;
+
     //!Load the windows icon /|\ Loaded Cursor icon
     WindowData::WindowIconHandle = LoadIcon(NULL, WindowData::WindowIcon);
     WindowData::WindowCursorHandle = LoadCursorFromFile(WindowData::WindowCursor);
@@ -65,15 +69,15 @@ namespace Framework
                      WS_OVERLAPPEDWINDOW, //!The Style of the window, which must match what is passed in to CreateWindow below
                      FALSE);              //!Does this window have a menu?
     
-    //!Register the window class for the game.
-    WNDCLASSEX wcEx;                                   //!The windows class ex setup so we can register is later
-    wcEx.cbSize = sizeof(WNDCLASSEX);                  //!The size of the structure (For compatability)
-    wcEx.style = CS_CLASSDC;                           //!The style of the window class, (CS_CLASSDC is a base type)
-    wcEx.lpfnWndProc = MessageHandler;                 //!The name of the message handling function
-    wcEx.cbClsExtra = 0L; wcEx.cbWndExtra = 0L;        //!The amound of extram memory to allocate for this class and window
-    wcEx.hInstance = hInst;                            //!The Handle to the instance that has to window procedure (NULL makes it use this file.
-    wcEx.hIcon = WindowData::WindowIconHandle;         //!handle to the loaded icon
-    wcEx.hCursor = WindowData::WindowCursorHandle;     //!handle to the loaded cursor
+    //!Register the window class for the game. 
+    WNDCLASSEX wcEx;                                   //! The windows class ex setup so we can register is later
+    wcEx.cbSize = sizeof(WNDCLASSEX);                  //! The size of the structure (For compatability)
+    wcEx.style = CS_CLASSDC;                           //! The style of the window class, (CS_CLASSDC is a base type)
+    wcEx.lpfnWndProc = MessageHandler;                 //! The name of the message handling function
+    wcEx.cbClsExtra = 0L; wcEx.cbWndExtra = 0L;        //! The amound of extram memory to allocate for this class and window
+    wcEx.hInstance = hInst;                            //! The Handle to the instance that has to window procedure (NULL makes it use this file.
+    wcEx.hIcon = WindowData::WindowIconHandle;         //! handle to the loaded icon
+    wcEx.hCursor = WindowData::WindowCursorHandle;     //! handle to the loaded cursor
     wcEx.hbrBackground = NULL;                         //! NULL for default
     wcEx.lpszMenuName = NULL;                          //! NULL for default
     wcEx.lpszClassName = WindowData::windowClassName;  //! NULL for default
@@ -88,17 +92,18 @@ namespace Framework
 
     //!create the game's window
     hWnd = CreateWindow(
-      WindowData::windowClassName,           //!The window class name
-      WindowTitle,                           //!The name for the title bar
-      WS_OVERLAPPEDWINDOW,                   //!The Style of the window (can be broken down into more parts: (WS_BORDER | BS_MINIMIZEDBOX | WS_MAXIMIZE | etc... check msdn for more options)
-      CW_USEDEFAULT, CW_USEDEFAULT,          //!The x and y position of the window (coordinates for the base windows, also relative coordinates for the chile windows)
-      (fullWinRect.right - fullWinRect.left),//!These are screen coordinates, so to get the width (including borders) we subtract the right from the left
-      (fullWinRect.bottom - fullWinRect.top),//!These are screen coordinates, so to get the height (including borders) we subtract the bottom from the top
-      GetDesktopWindow(),                    //!The parent window
-      NULL,                                  //!The menu for the window (null: there is no menu)
-      hInstance,                             //!handle to the window
-      NULL);                                 //!lpParam for the UM_CREATE message that will be sent to the message handler                         
+      WindowData::windowClassName,           //! The window class name
+      WindowTitle,                           //! The name for the title bar
+      WS_OVERLAPPEDWINDOW,                   //! The Style of the window (can be broken down into more parts: (WS_BORDER | BS_MINIMIZEDBOX | WS_MAXIMIZE | etc... check msdn for more options)
+      CW_USEDEFAULT, CW_USEDEFAULT,          //! The x and y position of the window (coordinates for the base windows, also relative coordinates for the chile windows)
+      (fullWinRect.right - fullWinRect.left),//! These are screen coordinates, so to get the width (including borders) we subtract the right from the left
+      (fullWinRect.bottom - fullWinRect.top),//! These are screen coordinates, so to get the height (including borders) we subtract the bottom from the top
+      GetDesktopWindow(),                    //! The parent window
+      NULL,                                  //! The menu for the window (null: there is no menu)
+      hInstance,                             //! handle to the window
+      NULL);                                 //! lpParam for the UM_CREATE message that will be sent to the message handler                         
 
+    SetFocus(hWnd);										      //! Sets Keyboard Focus To The Window	
 
     DragAcceptFiles(hWnd, true);   //*This will tell windows that it can accept files which are dragged into the window.
   }
@@ -121,10 +126,10 @@ namespace Framework
 
   void WindowSystem::ActivateWindow()
   {
-    ///*!Show the window (check: http://msdn.microsoft.com/en-us/library/windows/desktop/ms633548(v=vs.85).aspx for other options)*/
-    //ShowWindow(hWnd, SW_SHOWDEFAULT);
-    ////!Send a WM_PAIN message to the window
-    //UpdateWindow(hWnd);
+    /*!Show the window (check: http://msdn.microsoft.com/en-us/library/windows/desktop/ms633548(v=vs.85).aspx for other options)*/
+    ShowWindow(hWnd, SW_SHOWDEFAULT);
+    //!Send a WM_PAIN message to the window
+    UpdateWindow(hWnd);
   }
 
   void WindowSystem::Update(const double dt)

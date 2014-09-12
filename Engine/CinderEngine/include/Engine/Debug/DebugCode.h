@@ -76,9 +76,6 @@ void TracePrint(const char * msg, ...);
 ->prints the statement to the consule
 */
 #define Trace(...) TracePrint(__VA_ARGS__)
-
-
-//!When DEBUG_CODE is not active
 #else
 
 /*!If diagnostics are not enabled, functions do nothing*/

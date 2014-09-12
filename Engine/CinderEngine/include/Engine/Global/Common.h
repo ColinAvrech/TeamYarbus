@@ -26,6 +26,9 @@ from externals, and stable elements within the engine.
 #include "CinderWindows.h"
 #include "CinderDebug.h"
 #include "Console.h"
+#include "OpenGLIncludes.h"
+
+#pragma comment (lib, "fmod_vc.lib")
 
 
 //! Unstable dependency
