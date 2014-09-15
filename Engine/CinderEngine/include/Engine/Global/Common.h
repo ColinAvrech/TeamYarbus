@@ -19,9 +19,14 @@ from externals, and stable elements within the engine.
 #include <list>
 #include <vector>
 #include <map>
+#include <unordered_map>
 #include <set>
 #include <string>
 #include <algorithm> //! std::sort
+
+#include <iostream>
+#include <fstream>
+#include <istream>
 
 //! Internal Stable headers
 #include "CinderDebug.h"

@@ -16,6 +16,8 @@ Main Game Loop.
 
 
 #include "Core.h"
+#include "ObjectSystem.h"
+
 
 namespace Framework
 {
@@ -45,6 +47,8 @@ namespace Framework
       //! Marks the begining of a frame
       StartGameLoop_dt();
       
+      OBJECTSYSTEM->LoadLevel("Level.data");
+
       for (unsigned i = 0; i < Systems.size(); ++i)
         Systems[i]->Update(_dt);
       
