@@ -23,8 +23,7 @@ from externals, and stable elements within the engine.
 #include <string>
 #include <algorithm> //! std::sort
 
-//! Internal Stable headers
-#include "CinderDebug.h"
-#include "CinderWindows.h"
+//! Global Headers
 #include "Console.h"
+#include "DebugCode.h"
 

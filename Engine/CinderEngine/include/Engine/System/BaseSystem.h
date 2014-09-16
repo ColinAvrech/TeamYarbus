@@ -10,7 +10,6 @@
 #pragma once
 
 #include "Common.h"
-#include "CinderWindows.h"
 
 #ifdef _DEBUG
 using namespace std::chrono;

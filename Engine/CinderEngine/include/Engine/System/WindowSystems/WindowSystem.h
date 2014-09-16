@@ -9,6 +9,7 @@
 #pragma once
 
 #include "BaseSystem.h"
+#include "GLFW.h"
 
 namespace Framework
 {
@@ -16,23 +17,21 @@ namespace Framework
   class WindowSystem : public BaseSystem
   {
   public:
-    WindowSystem(HINSTANCE hInst, const char* WindowTitle, int ClientWidth, int ClientHeight);
+    WindowSystem(const char* WindowTitle, int ClientWidth, int ClientHeight);
     ~WindowSystem();
 
-    
-    void ActivateWindow();
     virtual void Update(const double dt);
     virtual const std::string GetName() { return "WindowSystem"; }
 
+    void WindowsUpdate(const double dt);
+    void GraphicsUpdate(const double dt);
+
+
+    void GLFWMessageHandler(GLFWwindow* window, int key, int scanCode, int state, int mod);
+
     unsigned WindowHeight;
     unsigned WindowWidth;
-
-    bool bFullScreen = false;
-    RECT rRect;
-    HWND hWnd;
-    HINSTANCE hInstance;
   };
-
 
   extern WindowSystem* WINDOWSYSTEM;
 }

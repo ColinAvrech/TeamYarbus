@@ -16,19 +16,12 @@
 ------------------------------------------------------------------------------*/
 #pragma region Includes
 #include "Common.h"
-#include "Affine.h"
-#include "Sprite.h"
-#include "SpriteRenderer.h"
-#include "Transform.h"
-#include "BaseSystem.h"
 #pragma endregion
 
 
 
 namespace Framework
 {
-  #define CINDER_SCREEN_DEPTH 16
-
 /*------------------------------------------------------------------------------
 // Class
 ------------------------------------------------------------------------------*/
@@ -107,8 +100,6 @@ private:
 ------------------------------------------------------------------------------*/
 #pragma region Private Variables
 
-  HDC hDC;
-  HGLRC hRC;
 #pragma endregion
 
 
@@ -128,12 +119,6 @@ private:
   void GraphicsSystem::DrawSprites(const double dt);
   void GraphicsSystem::DrawParticles(const double dt);
 
-
-
-  void SetupPixelFormatWindows(HDC hDC);
-  bool SetupPixelFormatXWindows(HDC hDC);
-  void SetOpenGLScreenSize(unsigned width, unsigned height);
-
 #pragma endregion
 
 
@@ -147,12 +132,6 @@ private:
 };
 
 extern GraphicsSystem* GRAPHICSSYSTEM;
-
-void Init ();
-void Draw ();
-void Loop ();
-void Resized (int, int);
-void KeyPressed (unsigned char c, int, int);
 
 }
 
