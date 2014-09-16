@@ -23,39 +23,40 @@ solution "CinderEngine"
     files
     {
       "../include/**.h",
-      "../source/**.cpp"
+      "../source/**.cpp",
+      "../source/**.glsl",
     }
     
-    includedirs { "../dependency/opengl/include",
-                  "../dependency/Zilch/include",
+    includedirs { "../dependency/opengl/include**",
+                  "../dependency/zilch/include",
                   "../dependency/fmod/include",
                   "../include/**" }
     
-    libdirs { "../dependency/opengl/library",
-              "../dependency/Zilch/library",
-							"../dependency/fmod/library"}
+    libdirs { "../dependency/opengl/library**",
+              "../dependency/zilch/library",
+       "../dependency/fmod/library"}
 
 
 --[[ Debug Configuration ]]
     configuration "Debug"
-      flags   { "Symbols" , "WinMain" }
+      flags   { "Symbols" }
       defines { "_DEBUG"  , "_CRT_SECURE_NO_WARNINGS" }
       targetdir "../bin/debug"
       postbuildcommands
               {
-                "copy ..\\dependency\\opengl\\library\\glut32.dll ..\\bin\\debug\\",
-								"copy ..\\dependency\\fmod\\library\\fmod.dll ..\\bin\\debug\\"
+                "copy ..\\dependency\\opengl\\library\\glfw3.dll ..\\bin\\debug\\",
+                "copy ..\\dependency\\opengl\\library\\glew32.dll ..\\bin\\debug\\",
+        "copy ..\\dependency\\fmod\\library\\fmod.dll ..\\bin\\debug\\"
               }
         
 --[[ Release Configuration ]]        
     configuration "Release"
-      flags   { "Symbols" , "WinMain" }
+      flags   { "Symbols" }
       defines { "NDEBUG"  , "_CRT_SECURE_NO_WARNINGS" }      
       optimize  "Full"
       targetdir "../bin/release"
       postbuildcommands
               {
                 "copy ..\\dependency\\opengl\\library\\glut32.dll ..\\bin\\release\\",
-								"copy ..\\dependency\\fmod\\library\\fmod.dll ..\\bin\\debug\\"								
+        "copy ..\\dependency\\fmod\\library\\fmod.dll ..\\bin\\debug\\"        
               }
-        

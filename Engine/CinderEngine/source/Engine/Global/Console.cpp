@@ -9,7 +9,7 @@ Also has functions to create the console.
 */
 /******************************************************************************/
 
-#include "Console.h"
+#include "Common.h"
 
 namespace Console
 {

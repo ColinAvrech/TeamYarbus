@@ -14,6 +14,7 @@ from externals, and stable elements within the engine.
 
 //! External Dependencies
 #include <iostream>
+#include <fstream>
 #include <chrono>
 #include <thread>
 #include <list>
@@ -22,6 +23,11 @@ from externals, and stable elements within the engine.
 #include <set>
 #include <string>
 #include <algorithm> //! std::sort
+
+//Windows
+#define WIN32_LEAN_AND_MEAN
+#include "Windows.h"
+
 
 //! Global Headers
 #include "Console.h"

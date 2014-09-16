@@ -12,11 +12,6 @@ input/output, Colors.
 
 #pragma once
 
-#include "Common.h"
-
-#define WIN32_LEAN_AND_MEAN
-#include "Windows.h"
-
 /*! check whether the colors of the text and background are the game.
 This ensures that they are never the same color*/
 #define PROTECTCOLORS true

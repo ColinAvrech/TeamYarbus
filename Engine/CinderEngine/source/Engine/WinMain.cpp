@@ -13,11 +13,10 @@ starts the game loop.
 #define WINDOWSBUILD
 #ifdef WINDOWSBUILD
 
+#include "Common.h"
 #include "WindowSystem.h"
 #include "EventSystem.h"
-#include "GraphicsSystem.h"
 #include "AudioSystem.h"
-#include "Common.h"     //! EnableMemoryleakChecking
 #include "Core.h"
 
 #define _DEGUB
@@ -28,14 +27,7 @@ const char WindowTitle[] = "CinderEngine";
 const int ClientWidth = 1024;
 const int ClientHeight = 768;
 
-/*!
-@brief WinMain is the begining point for windows aplications.
-@param hInst handle to the application instance.
-@param hPrevInstance previous app instacne which you can use to prevent being launced multiple times.
-@param LPSTR Command line string, We will use GetCommandLine() instead.
-@param INT the way the application's window is displayed.
-*/
-INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR, INT)
+int main(void)
 {
   EnableMemoryLeakChecking();
 

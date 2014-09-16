@@ -13,6 +13,7 @@ and interface for every type of event.
 #pragma once
 
 #include "Common.h"
+#include "GameObject.h"
 
 namespace Framework
 {
