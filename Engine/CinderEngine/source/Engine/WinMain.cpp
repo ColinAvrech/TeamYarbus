@@ -55,7 +55,7 @@ int main(void)
   //! activate the window.
 
   //! Run the game! NOW!
-  engine->GameLoop();
+  //engine->GameLoop();
 
   //! Delete all systems
   engine->DestroySystems();

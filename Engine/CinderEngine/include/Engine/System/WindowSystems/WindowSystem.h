@@ -27,6 +27,7 @@ namespace Framework
     WindowSystem(const char* WindowTitle, int ClientWidth, int ClientHeight);
     ~WindowSystem();
 
+    virtual bool Initialize ();
     virtual void Update(const double dt);
     virtual const std::string GetName() { return "WindowSystem"; }
 
