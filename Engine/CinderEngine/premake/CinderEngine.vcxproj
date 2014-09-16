@@ -142,6 +142,7 @@ copy ..\dependency\fmod\library\fmod.dll ..\bin\debug\</Command>
     <ClInclude Include="..\include\Engine\System\ObjectSystem\Components\SpriteRenderer.h" />
     <ClInclude Include="..\include\Engine\System\ObjectSystem\Components\Transform.h" />
     <ClInclude Include="..\include\Engine\System\ObjectSystem\GameObject.h" />
+    <ClInclude Include="..\include\Engine\System\ObjectSystem\ObjectSystem.h" />
     <ClInclude Include="..\include\Engine\System\WindowSystems\WindowSystem.h" />
   </ItemGroup>
   <ItemGroup>
@@ -171,6 +172,10 @@ copy ..\dependency\fmod\library\fmod.dll ..\bin\debug\</Command>
     <ClCompile Include="..\source\Engine\System\Events\EventSystem.cpp" />
     <ClCompile Include="..\source\Engine\System\Graphics\GraphicsSystem.cpp" />
     <ClCompile Include="..\source\Engine\System\Graphics\Objects\Sprite.cpp" />
+    <ClCompile Include="..\source\Engine\System\ObjectSystem\ObjectSystem.cpp">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)\ObjectSystem1.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)\ObjectSystem1.obj</ObjectFileName>
+    </ClCompile>
     <ClCompile Include="..\source\Engine\System\WindowSystems\WindowSystem.cpp" />
     <ClCompile Include="..\source\Engine\WinMain.cpp" />
   </ItemGroup>

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="include">
@@ -64,6 +64,9 @@
     <Filter Include="include\Engine\System\ObjectSystem\Components\Collision\Shapes">
       <UniqueIdentifier>{D0C40ABC-BC9A-91B9-A544-AC0C91B9C45A}</UniqueIdentifier>
     </Filter>
+    <Filter Include="include\Engine\System\WindowSystems">
+      <UniqueIdentifier>{81D0728C-ED89-DD36-76E9-F710E2A193A6}</UniqueIdentifier>
+    </Filter>
     <Filter Include="source">
       <UniqueIdentifier>{76FF3A1C-62A1-65F2-4B5C-7946379DEC42}</UniqueIdentifier>
     </Filter>
@@ -127,9 +130,6 @@
     <Filter Include="source\Engine\System\WindowSystems">
       <UniqueIdentifier>{EEA5FC8D-DAE1-FFF7-43F4-17EF2F4FA812}</UniqueIdentifier>
     </Filter>
-    <Filter Include="include\Engine\System\WindowSystems">
-      <UniqueIdentifier>{81D0728C-ED89-DD36-76E9-F710E2A193A6}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Engine\Core\Core.h">
@@ -137,6 +137,9 @@
     </ClInclude>
     <ClInclude Include="..\include\Engine\Debug\DebugCode.h">
       <Filter>include\Engine\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Engine\Factory\ObjectSystem.h">
+      <Filter>include\Engine\Factory</Filter>
     </ClInclude>
     <ClInclude Include="..\include\Engine\Global\CinderDebug.h">
       <Filter>include\Engine\Global</Filter>
@@ -189,6 +192,9 @@
     <ClInclude Include="..\include\Engine\System\Graphics\Structs\Bounds.h">
       <Filter>include\Engine\System\Graphics\Structs</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\Engine\System\ObjectSystem\AllComponents.h">
+      <Filter>include\Engine\System\ObjectSystem</Filter>
+    </ClInclude>
     <ClInclude Include="..\include\Engine\System\ObjectSystem\Component.h">
       <Filter>include\Engine\System\ObjectSystem</Filter>
     </ClInclude>
@@ -231,14 +237,11 @@
     <ClInclude Include="..\include\Engine\System\ObjectSystem\GameObject.h">
       <Filter>include\Engine\System\ObjectSystem</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\Engine\System\ObjectSystem\ObjectSystem.h">
+      <Filter>include\Engine\System\ObjectSystem</Filter>
+    </ClInclude>
     <ClInclude Include="..\include\Engine\System\WindowSystems\WindowSystem.h">
       <Filter>include\Engine\System\WindowSystems</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\Engine\System\ObjectSystem\AllComponents.h">
-      <Filter>include\Engine\System\ObjectSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\Engine\Factory\ObjectSystem.h">
-      <Filter>include\Engine\System\ObjectSystem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -290,6 +293,9 @@
     <ClCompile Include="..\source\Engine\Debug\DebugCode.cpp">
       <Filter>source\Engine\Debug</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\Engine\Factory\ObjectSystem.cpp">
+      <Filter>source\Engine\Factory</Filter>
+    </ClCompile>
     <ClCompile Include="..\source\Engine\Math\Affine.cpp">
       <Filter>source\Engine\Math</Filter>
     </ClCompile>
@@ -317,14 +323,14 @@
     <ClCompile Include="..\source\Engine\System\Graphics\Objects\Sprite.cpp">
       <Filter>source\Engine\System\Graphics\Objects</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\Engine\System\ObjectSystem\ObjectSystem.cpp">
+      <Filter>source\Engine\System\ObjectSystem</Filter>
+    </ClCompile>
     <ClCompile Include="..\source\Engine\System\WindowSystems\WindowSystem.cpp">
       <Filter>source\Engine\System\WindowSystems</Filter>
     </ClCompile>
     <ClCompile Include="..\source\Engine\WinMain.cpp">
       <Filter>source\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Engine\Factory\ObjectSystem.cpp">
-      <Filter>source\Engine\System\ObjectSystem</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
