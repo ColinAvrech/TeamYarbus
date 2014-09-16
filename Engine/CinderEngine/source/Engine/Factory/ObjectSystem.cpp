@@ -64,7 +64,7 @@ namespace Framework
 
     while (!levelfile.eof())
     {
-      ReadLine(levelfile.getline);
+      //ReadLine(levelfile.getline);
     }
 
     levelfile.close();
@@ -73,7 +73,7 @@ namespace Framework
 
 
   std::string ObjectSystem::ReadLine(std::string line)
-  {
+  {/*
     std::vector<std::string> characters;
     
     while (!line._Eos)
@@ -81,7 +81,8 @@ namespace Framework
       characters.push_back(line.substr(0, line.find(' ')));
       line.erase(0, line.find(' '));
     }
-
+    */
+    return NULL;
   }
 
 }
