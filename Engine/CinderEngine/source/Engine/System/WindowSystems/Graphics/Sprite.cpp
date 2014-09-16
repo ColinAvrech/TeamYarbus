@@ -3,10 +3,10 @@
 GLfloat verts [] =
 {
   //  Position   Color             Texcoords
-  -0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f,// Top-left
-  0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, // Top-right
-  0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 1.0f,// Bottom-right
-  -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f // Bottom-left
+  -0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // Top-left
+  0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, // Top-right
+  0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, // Bottom-right
+  -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f  // Bottom-left
 };
 
 GLuint tris [] =
@@ -40,6 +40,7 @@ void Sprite::Create (GLuint _shader, GLuint _texture, GLfloat* _meshData /*= NUL
 {
   shaderID = _shader;
   textureID = _texture;
+  Use_Shader (shaderID);
   Specify_Attributes ();
   drawable = true;
 }
@@ -48,6 +49,7 @@ void Sprite::Create (GLuint _shader)
 {
   shaderID= _shader;
   textureID = TEXTURE_NONE;
+  Use_Shader (shaderID);
   Specify_Attributes ();
 }
 
@@ -79,17 +81,17 @@ void Sprite::Specify_Attributes ()
   // Specify the layout of the vertex data
   GLint posAttrib = glGetAttribLocation (shaderID, "position");
   glEnableVertexAttribArray (posAttrib);
-  glVertexAttribPointer (posAttrib, 2, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), 0);
+  glVertexAttribPointer (posAttrib, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), 0);
 
   GLint colAttrib = glGetAttribLocation (shaderID, "color");
   glEnableVertexAttribArray (colAttrib);
-  glVertexAttribPointer (colAttrib, 4, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*) (2 * sizeof(GLfloat)));
+  glVertexAttribPointer (colAttrib, 4, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*) (2 * sizeof(GLfloat)));
 
   if (textureID != TEXTURE_NONE)
   {
     GLint texAttrib = glGetAttribLocation (shaderID, "texcoord");
     glEnableVertexAttribArray (texAttrib);
-    glVertexAttribPointer (texAttrib, 2, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (void*) (5 * sizeof(GLfloat)));
+    glVertexAttribPointer (texAttrib, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*) (6 * sizeof(GLfloat)));
 
     glUniform1i (glGetUniformLocation (shaderID, "image"), 0);
     DrawFunction = &Sprite::Draw_Texture;

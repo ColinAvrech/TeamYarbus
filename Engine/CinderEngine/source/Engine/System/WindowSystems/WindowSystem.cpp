@@ -16,28 +16,6 @@ function to handle windows Messages.
 #include "Sprite.h"
 #include "Core.h"
 
-// Shader sources
-const GLchar* vertexSource =
-"#version 150 core\n"
-"in vec2 position;"
-"in vec4 color;"
-"in vec2 texcoord;"
-"out vec4 Color;"
-"out vec2 Texcoord;"
-"void main() {"
-"   Color = color;"
-"   Texcoord = texcoord;"
-"   gl_Position = vec4(position, 0.0, 1.0);"
-"}";
-const GLchar* fragmentSource =
-"#version 150 core\n"
-"in vec4 Color;"
-"in vec2 Texcoord;"
-"out vec4 outColor;"
-"uniform sampler2D tex;"
-"void main() {"
-"   outColor = Color;"
-"}";
 
 Sprite sprite;
 ResourceManager resourceManager;
@@ -103,12 +81,13 @@ namespace Framework
     //////////////////////////////////////////////////////////////////////////
 
     //////////////////////////////////////////////////////////////////////////
-    GLfloat vertices [] = {
+    GLfloat vertices [] =
+    {
       //  Position   Color             Texcoords
-      -0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f,// Top-left
-      0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, // Top-right
-      0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 1.0f,// Bottom-right
-      -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f // Bottom-left
+      -0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // Top-left
+      0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, // Top-right
+      0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, // Bottom-right
+      -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f  // Bottom-left
     };
     //////////////////////////////////////////////////////////////////////////
 
@@ -131,49 +110,37 @@ namespace Framework
     //////////////////////////////////////////////////////////////////////////
     glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, ebo);
     glBufferData (GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
+     //LOAD RESOURCES (TEXTURES, SHADERS)
+    resourceManager.Load_Resources ();
+
+    sprite.Create (resourceManager.Get_Shader ("VertexShader.glsl")->shaderProgram);
+
+#pragma region BACKUP
     //////////////////////////////////////////////////////////////////////////
 
     //////////////////////////////////////////////////////////////////////////
     // Create and compile the vertex shader
-    GLuint vertexShader = glCreateShader (GL_VERTEX_SHADER);
-    glShaderSource (vertexShader, 1, &vertexSource, NULL);
-    glCompileShader (vertexShader);
+    //GLuint vertexShader = glCreateShader (GL_VERTEX_SHADER);
+    //glShaderSource (vertexShader, 1, &vertexSource, NULL);
+    //glCompileShader (vertexShader);
     //////////////////////////////////////////////////////////////////////////
 
     //////////////////////////////////////////////////////////////////////////
     // Create and compile the fragment shader
-    GLuint fragmentShader = glCreateShader (GL_FRAGMENT_SHADER);
-    glShaderSource (fragmentShader, 1, &fragmentSource, NULL);
-    glCompileShader (fragmentShader);
+    //GLuint fragmentShader = glCreateShader (GL_FRAGMENT_SHADER);
+    //glShaderSource (fragmentShader, 1, &fragmentSource, NULL);
+    //glCompileShader (fragmentShader);
     //////////////////////////////////////////////////////////////////////////
 
     //////////////////////////////////////////////////////////////////////////
     // Link the vertex and fragment shader into a shader program
-    GLuint shaderProgram = glCreateProgram ();
-    glAttachShader (shaderProgram, vertexShader);
-    glAttachShader (shaderProgram, fragmentShader);
-    glBindFragDataLocation (shaderProgram, 0, "outColor");
-    glLinkProgram (shaderProgram);
-    glUseProgram (shaderProgram);
+    //GLuint shaderProgram = glCreateProgram ();
+    //glAttachShader (shaderProgram, vertexShader);
+    //glAttachShader (shaderProgram, fragmentShader);
+    //glBindFragDataLocation (shaderProgram, 0, "outColor");
+    //glLinkProgram (shaderProgram);
+    //glUseProgram (shaderProgram);
     //////////////////////////////////////////////////////////////////////////
-     //LOAD RESOURCES (TEXTURES, SHADERS)
-    resourceManager.Load_Resources ();
-    //////////////////////////////////////////////////////////////////////////
-    //// Specify the layout of the vertex data
-    //GLint posAttrib = glGetAttribLocation (shaderProgram, "position");
-    //glEnableVertexAttribArray (posAttrib);
-    //glVertexAttribPointer (posAttrib, 2, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), 0);
-
-    //GLint colAttrib = glGetAttribLocation (shaderProgram, "color");
-    //glEnableVertexAttribArray (colAttrib);
-    //glVertexAttribPointer (colAttrib, 4, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*) (2 * sizeof(GLfloat)));
-
-    //GLint texAttrib = glGetAttribLocation (shaderProgram, "texcoord");
-    //glEnableVertexAttribArray (texAttrib);
-    //glVertexAttribPointer (texAttrib, 2, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (void*) (5 * sizeof(GLfloat)));
-    //////////////////////////////////////////////////////////////////////////
-
-    sprite.Create (resourceManager.Get_Shader ("VertexShader.glsl")->shaderProgram);
 
     //////////////////////////////////////////////////////////////////////////
     //// Load texture
@@ -190,7 +157,7 @@ namespace Framework
     //glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     //glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     //////////////////////////////////////////////////////////////////////////
-
+#pragma endregion
     return true;
   }
 

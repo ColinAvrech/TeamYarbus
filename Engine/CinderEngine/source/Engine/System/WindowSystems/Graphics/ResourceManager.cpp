@@ -20,24 +20,24 @@ void ResourceManager::Load_Resources ()
 
 void ResourceManager::Load_Textures ()
 {
-  //textures ["Default"] = new Texture ((TextureResourcePath + "Default.jpg").c_str ());
-  std::ifstream texFile (TextureResourcePath + "TextureAssets.txt");
+  ////textures ["Default"] = new Texture ((TextureResourcePath + "Default.jpg").c_str ());
+  //std::ifstream texFile (TextureResourcePath + "TextureAssets.txt");
 
-  if (!texFile.good ())
-  {
-    std::cout << "Failed to Load Textures...\n";
-    return;
-  }
-  else
-  {
-    std::string str;
-    while (!texFile.eof ())
-    {
-      texFile >> str;
-      textures [str] = new Texture (str.c_str());
-      std::cout << str << std::endl;
-    }
-  }
+  //if (!texFile.good ())
+  //{
+  //  std::cout << "Failed to Load Textures...\n";
+  //  return;
+  //}
+  //else
+  //{
+  //  std::string str;
+  //  while (!texFile.eof ())
+  //  {
+  //    texFile >> str;
+  //    textures [str] = new Texture (str.c_str());
+  //    std::cout << str << std::endl;
+  //  }
+  //}
 }
 
 

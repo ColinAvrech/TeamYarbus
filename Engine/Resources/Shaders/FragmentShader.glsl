@@ -1,11 +1,11 @@
-#version 430
+#version 430 core
 
 in vec4 Color;
 in vec2 Texcoord;
 out vec4 outColor;
-uniform sampler2D image;
+uniform sampler2D tex;
 
 void main()
 {
-  outColor = texture(image, Texcoord) * Color;
+   outColor = Color;
 }
