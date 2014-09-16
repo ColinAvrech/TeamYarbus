@@ -25,6 +25,7 @@ private:
 
   std::string Read_Shader (const char* filename);
   GLuint Create_Shader (const char* filename, GLenum shaderType);
+  GLuint Create_Shader_From_String ();
   GLuint Create_Program (GLuint _vertexShader, GLuint _fragmentShader, GLuint _geometryShader = 0);
 
 };

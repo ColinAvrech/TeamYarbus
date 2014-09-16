@@ -1,4 +1,4 @@
-#version 150
+#version 430
 
 in vec2 position;
 in vec4 color;
@@ -11,5 +11,5 @@ void main()
 {
    Color = color;
    Texcoord = texcoord;
-   gl_Position = vec4(position, 0.5, 0.75);
+   gl_Position = vec4(position, 0.0, 0.75);
 }

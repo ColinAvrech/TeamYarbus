@@ -24,7 +24,7 @@ solution "CinderEngine"
     {
       "../include/**.h",
       "../source/**.cpp",
-      "../source/**.glsl",
+      "../../Resources/Shaders/**.glsl",
     }
     
     includedirs { "../dependency/opengl/include**",

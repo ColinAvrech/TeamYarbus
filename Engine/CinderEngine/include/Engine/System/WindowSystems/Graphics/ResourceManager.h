@@ -17,8 +17,8 @@ public:
   void Load_Resources ();
   Texture* Get_Texture (std::string textureName);
   Shader* Get_Shader (std::string shaderName);
-  std::string TextureResourcePath = "Resources/Textures/";
-  std::string ShaderResourcePath = "Resources/Shaders/";
+  std::string TextureResourcePath = "../../Resources/Textures/";
+  std::string ShaderResourcePath = "../../Resources/Shaders/";
 
 private:
   //std::unordered_map <std::string, Texture*> textures;

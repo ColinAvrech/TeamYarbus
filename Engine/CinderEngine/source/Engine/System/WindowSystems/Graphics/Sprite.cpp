@@ -2,11 +2,11 @@
 
 GLfloat verts [] =
 {
-  // x     y     r     g     b      u     v
-  -0.5f, 0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, // Top-left
-  0.5f, 0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, // Top-right
-  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, // Bottom-right
-  -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f  // Bottom-left
+  //  Position   Color             Texcoords
+  -0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f,// Top-left
+  0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, // Top-right
+  0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 1.0f,// Bottom-right
+  -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f // Bottom-left
 };
 
 GLuint tris [] =
@@ -15,42 +15,60 @@ GLuint tris [] =
   2, 3, 0
 };
 
+Sprite::Sprite ()
+{
+  drawable = false;
+}
+
 
 // NON-DEFAULT CONSTRUCTOR
 // MUST SPECIFY SHADER AND TEXTURE
 // MESH AND TRI DATA WILL BE PASSED TO CREATE CUSTOM MESH
 // ELSE THE DEFAULT QUAD WILL BE USED
-Sprite::Sprite (Shader* _shader, Texture* _texture, GLfloat* _meshData /*= NULL*/, GLuint* _triData /*= NULL*/)
+Sprite::Sprite (GLuint _shader, GLuint _texture /*=NULL*/, GLfloat* _meshData /*= NULL*/, GLuint* _triData /*= NULL*/)
 {
-  Create_Mesh (_meshData, _triData);
+  //Create_Mesh (_meshData, _triData);
 
-  shaderProgram = _shader;
-  texture = _texture;
-  shaderProgram->Use ();
+  shaderID = _shader;
+  textureID = _texture;
+  Use_Shader (shaderID);
+  drawable = true;
+}
+
+
+void Sprite::Create (GLuint _shader, GLuint _texture, GLfloat* _meshData /*= NULL*/, GLuint* _triData /*= NULL*/)
+{
+  shaderID = _shader;
+  textureID = _texture;
+  Specify_Attributes ();
+  drawable = true;
+}
+
+void Sprite::Create (GLuint _shader)
+{
+  shaderID= _shader;
+  textureID = TEXTURE_NONE;
+  Specify_Attributes ();
 }
 
 // DESTRUCTOR
 // DELETE ALL BUFFER OBJECTS
 Sprite::~Sprite ()
 {
-  delete vao;
-  delete vbo;
-  delete ebo;
 }
 
 
 // CALL TO CHANGE SHADER ATTACHED TO SPRITE
-void Sprite::Change_Shader (Shader* changeShader)
+void Sprite::Change_Shader (GLuint changeShader)
 {
-  shaderProgram = changeShader;
+  shaderID = changeShader;
   Specify_Attributes ();
-  changeShader->Use ();
 }
 
 
-void Sprite::Change_Texture (Texture* changeTexture)
+void Sprite::Change_Texture (GLuint _textureID)
 {
-  texture = changeTexture;
+  textureID = _textureID;
   Specify_Attributes ();
 }
 
@@ -58,19 +76,28 @@ void Sprite::Change_Texture (Texture* changeTexture)
 // USED TO COMMUNICATE WITH THE SHADER AND SSPECIFY ATTRIBUTES - POSITION, COLOR, TEX-COORDS
 void Sprite::Specify_Attributes ()
 {
-  GLint posAttrib = glGetAttribLocation (shaderProgram->shaderProgram, "position");
+  // Specify the layout of the vertex data
+  GLint posAttrib = glGetAttribLocation (shaderID, "position");
   glEnableVertexAttribArray (posAttrib);
-  glVertexAttribPointer (posAttrib, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), 0);
+  glVertexAttribPointer (posAttrib, 2, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), 0);
 
-  GLint colAttrib = glGetAttribLocation (shaderProgram->shaderProgram, "color");
+  GLint colAttrib = glGetAttribLocation (shaderID, "color");
   glEnableVertexAttribArray (colAttrib);
-  glVertexAttribPointer (colAttrib, 4, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*) (2 * sizeof(GLfloat)));
+  glVertexAttribPointer (colAttrib, 4, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*) (2 * sizeof(GLfloat)));
 
-  GLint texAttrib = glGetAttribLocation (shaderProgram->shaderProgram, "texcoord");
-  glEnableVertexAttribArray (texAttrib);
-  glVertexAttribPointer (texAttrib, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*) (6 * sizeof(GLfloat)));
+  if (textureID != TEXTURE_NONE)
+  {
+    GLint texAttrib = glGetAttribLocation (shaderID, "texcoord");
+    glEnableVertexAttribArray (texAttrib);
+    glVertexAttribPointer (texAttrib, 2, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (void*) (5 * sizeof(GLfloat)));
 
-  glUniform1i (glGetUniformLocation (shaderProgram->shaderProgram, "image"), 0);
+    glUniform1i (glGetUniformLocation (shaderID, "image"), 0);
+    DrawFunction = &Sprite::Draw_Texture;
+  }
+  else
+  {
+    DrawFunction = &Sprite::Draw_No_Texture;
+  }
 }
 
 
@@ -106,6 +133,23 @@ void Sprite::Create_Mesh (GLfloat* vertices, GLuint* faces)
 // CALLED BY RENDERER
 void Sprite::Draw ()
 {
-  glBindTexture (GL_TEXTURE_2D, texture->textureID);
+  (this->*DrawFunction)();
+}
+
+
+void Sprite::Draw_Texture ()
+{
+  glBindTexture (GL_TEXTURE_2D, textureID);
   glDrawElements (GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+}
+
+
+void Sprite::Draw_No_Texture ()
+{
+  glDrawElements (GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+}
+
+void Sprite::Use_Shader (GLuint _shaderID)
+{
+  glUseProgram (_shaderID);
 }

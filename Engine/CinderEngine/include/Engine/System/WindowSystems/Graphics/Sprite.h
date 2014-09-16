@@ -7,16 +7,19 @@
 #include "VertexBufferObject.h"
 #include "ElementBufferObject.h"
 
-
+#define TEXTURE_NONE -100
 
 class Sprite
 {
 public:
-  Sprite (Shader* _shader, Texture* _texture, GLfloat* _meshData = NULL, GLuint* _triData = NULL);
+  Sprite ();
+  Sprite (GLuint _shader, GLuint _texture = TEXTURE_NONE, GLfloat* _meshData = NULL, GLuint* _triData = NULL);
   ~Sprite ();
 
-  void Change_Shader (Shader* changeShader);
-  void Change_Texture (Texture* changeTexture);
+  void Create (GLuint _shader, GLuint _texture, GLfloat* _meshData = NULL, GLuint* _triData = NULL);
+  void Create (GLuint _shader);
+  void Change_Shader (GLuint _shaderID);
+  void Change_Texture (GLuint _textureID);
 
 
   void Specify_Attributes ();
@@ -32,14 +35,19 @@ private:
   GLuint*  faceData;
 
   // POINTER TO SHADER AND TEXTURE ATTACHED TO SPRITE
-  Shader* shaderProgram;
-  Texture* texture;
+  //Shader* shaderProgram;
+  GLuint shaderID;
+  GLuint textureID;
+  //Texture* texture;
   VAO* vao;
   VBO* vbo;
   EBO* ebo;
+  bool drawable;
 
   void Create_Mesh (GLfloat*, GLuint*);
+  (void) (Sprite::*DrawFunction)(void);
+  void Draw_Texture ();
+  void Draw_No_Texture ();
+  void Use_Shader (GLuint shaderID);
 };
-
-
 #endif

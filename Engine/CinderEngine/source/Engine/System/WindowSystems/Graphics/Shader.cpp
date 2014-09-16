@@ -1,5 +1,29 @@
 #include "Shader.h"
 
+// Shader sources
+// Shader sources
+static const GLchar* vertexSource =
+"#version 150 core\n"
+"in vec2 position;"
+"in vec4 color;"
+"in vec2 texcoord;"
+"out vec4 Color;"
+"out vec2 Texcoord;"
+"void main() {"
+"   Color = color;"
+"   Texcoord = texcoord;"
+"   gl_Position = vec4(position, 0.0, 1.0);"
+"}";
+static const GLchar* fragmentSource =
+"#version 150 core\n"
+"in vec4 Color;"
+"in vec2 Texcoord;"
+"out vec4 outColor;"
+"uniform sampler2D tex;"
+"void main() {"
+"   outColor = Color;"
+"}";
+
 
 Shader::Shader (const char* vs, const char* fs, const char* gs/*= NULL*/)
 {
@@ -56,7 +80,30 @@ GLuint Shader::Create_Program (GLuint _vertexShader, GLuint _fragmentShader, GLu
   GLuint program = glCreateProgram ();
   glAttachShader (program, _vertexShader);
   glAttachShader (program, _fragmentShader);
+  glBindFragDataLocation (shaderProgram, 0, "outColor");
   glLinkProgram (program);
 
   return program;
+}
+
+GLuint Shader::Create_Shader_From_String ()
+{
+  // Create and compile the vertex shader
+  GLuint vertexShader = glCreateShader (GL_VERTEX_SHADER);
+  glShaderSource (vertexShader, 1, &vertexSource, NULL);
+  glCompileShader (vertexShader);
+
+  // Create and compile the fragment shader
+  GLuint fragmentShader = glCreateShader (GL_FRAGMENT_SHADER);
+  glShaderSource (fragmentShader, 1, &fragmentSource, NULL);
+  glCompileShader (fragmentShader);
+
+  // Link the vertex and fragment shader into a shader program
+  GLuint shaderProgram = glCreateProgram ();
+  glAttachShader (shaderProgram, vertexShader);
+  glAttachShader (shaderProgram, fragmentShader);
+  glBindFragDataLocation (shaderProgram, 0, "outColor");
+  glLinkProgram (shaderProgram);
+
+  return shaderProgram;
 }
