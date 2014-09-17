@@ -32,6 +32,7 @@ namespace Framework
     //SoundName.test->Play();
     //SoundName.test->LowPassFilter();
     //SoundName.test->HighPassFilter();
+    //SoundName.test->Reverb();
 
     SoundName.test2 = LoadSound("music.mp3", "Test1", Sound::SOUND_2D, 0.7f);
 

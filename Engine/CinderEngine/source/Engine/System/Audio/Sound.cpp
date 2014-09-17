@@ -101,7 +101,7 @@ namespace Framework
       char buffer[1000];
 
       sprintf(buffer, "FMOD error! (%d) %s\n",
-        result, FMOD_ErrorString(result));
+      result, FMOD_ErrorString(result));
 
       // Prints the buffer to Visual Studio's output window
       OutputDebugStringA(buffer);
@@ -132,60 +132,239 @@ namespace Framework
       pChannel->setVolume(volume);
   }
 
+  /***************************************************************************/
+  /*!
+  \brief  Attaches a Low Pass Filter to the Signal Chain
+
+  \param  cutoff
+  Lowpass cutoff frequency in hz. 10.0 to 22000.0
+
+  \param  resonance
+  Lowpass resonance Q value. 1.0 to 10.0
+
+  \return Returns nothing
+  */
+  /***************************************************************************/
   void Sound::LowPassFilter(float cutoff, float resonance)
   {
     FMOD_RESULT result;
     bool active;
 
-    result = pFMODAudioSystem->createDSPByType(FMOD_DSP_TYPE_LOWPASS, &objects_DSP.dsplpf);
+    result = pFMODAudioSystem->createDSPByType(FMOD_DSP_TYPE_LOWPASS, &objects_DSP.dsp_lpf);
     ErrCheck(result);
 
-    result = objects_DSP.dsplpf->setParameterFloat(FMOD_DSP_LOWPASS_CUTOFF, cutoff);
+    // Lowpass cutoff frequency in hz.   10.0 to 22000.0
+    result = objects_DSP.dsp_lpf->setParameterFloat(FMOD_DSP_LOWPASS_CUTOFF, cutoff);
     ErrCheck(result);
 
-    result = objects_DSP.dsplpf->setParameterFloat(FMOD_DSP_LOWPASS_RESONANCE, resonance);
+    // Lowpass resonance Q value. 1.0 to 10.0
+    result = objects_DSP.dsp_lpf->setParameterFloat(FMOD_DSP_LOWPASS_RESONANCE, resonance);
     ErrCheck(result);
 
-    result = objects_DSP.dsplpf->getActive(&active);
+    result = objects_DSP.dsp_lpf->getActive(&active);
     ErrCheck(result);
 
     if (active)
     {
-      result = pChannel->removeDSP(objects_DSP.dsplpf);
+      result = pChannel->removeDSP(objects_DSP.dsp_lpf);
       ErrCheck(result);
     }
     else
     {
-      result = pChannel->addDSP(0, objects_DSP.dsplpf, 0);
+      result = pChannel->addDSP(0, objects_DSP.dsp_lpf, 0);
       ErrCheck(result);
     }
   }
 
+  /***************************************************************************/
+  /*!
+  \brief  Attaches a High Pass Filter to the Signal Chain
+
+  \param  cutoff
+  Highpass cutoff frequency in hz. 
+  Ranges from 1.0 to 22000.0
+
+  \param  resonance
+  Highpass resonance Q value. 
+  Ranges from 1.0 to 10.0
+
+  \return Returns nothing
+  */
+  /***************************************************************************/
   void Sound::HighPassFilter(float cutoff, float resonance)
   {
     FMOD_RESULT result;
     bool active;
 
-    result = pFMODAudioSystem->createDSPByType(FMOD_DSP_TYPE_HIGHPASS, &objects_DSP.dsphpf);
+    result = pFMODAudioSystem->createDSPByType(FMOD_DSP_TYPE_HIGHPASS, &objects_DSP.dsp_hpf);
     ErrCheck(result);
 
-    result = objects_DSP.dsphpf->setParameterFloat(FMOD_DSP_LOWPASS_CUTOFF, cutoff);
+    // Highpass cutoff frequency in hz.  1.0 to output 22000.0
+    result = objects_DSP.dsp_hpf->setParameterFloat(FMOD_DSP_HIGHPASS_CUTOFF, cutoff);
     ErrCheck(result);
 
-    result = objects_DSP.dsphpf->setParameterFloat(FMOD_DSP_LOWPASS_RESONANCE, resonance);
+    // Highpass resonance Q value.  1.0 to 10.0
+    result = objects_DSP.dsp_hpf->setParameterFloat(FMOD_DSP_HIGHPASS_RESONANCE, resonance);
     ErrCheck(result);
 
-    result = objects_DSP.dsphpf->getActive(&active);
+    result = objects_DSP.dsp_hpf->getActive(&active);
     ErrCheck(result);
 
     if (active)
     {
-      result = pChannel->removeDSP(objects_DSP.dsphpf);
+      result = pChannel->removeDSP(objects_DSP.dsp_hpf);
       ErrCheck(result);
     }
     else
     {
-      result = pChannel->addDSP(0, objects_DSP.dsphpf, 0);
+      result = pChannel->addDSP(0, objects_DSP.dsp_hpf, 0);
+      ErrCheck(result);
+    }
+  }
+
+  /***************************************************************************/
+  /*!
+  \brief  Emulates artificial reverb to the overall mix
+
+  \param  Wet
+  Reverb signal level in dB.  
+  Ranges from -80.0 to 20.0
+
+  \param  Dry
+  Dry signal level in dB.  
+  Ranges from -80.0 to 20.0
+
+  \param  Diffusion
+  Reverberation diffusion (echo density) in percent.  
+  Ranges from 0.0 to 100.0
+
+  \param  Density
+  Reverberation density (modal density) in percent.  
+  Ranges from 0.0 to 100.0
+
+  \param  Decay
+  Reverberation decay time at low-frequencies in milliseconds. 
+  Ranges from 100.0 to 20000.0
+
+  \param  EarlyR
+  Delay time of first reflection in milliseconds.  
+  Ranges from 0.0 to 300.0
+
+  \param  Delay
+  Late reverberation delay time relative to first reflection in milliseconds. 
+  Ranges from 0.0 to 100.0
+
+  \param  HF_ref
+  eference frequency for high-frequency decay in Hz.  
+  Ranges from 20.0 to 20000.0
+
+  \param  HF_decay
+  High-frequency decay time relative to decay time in percent.  
+  Ranges from 10.0 to 100.0
+
+  \param  LowShelf_Hz
+  Transition frequency of low-shelf filter in Hz.  
+  Ranges from 20.0 to 1000.0
+
+  \param  LowShelf_Gain
+  Gain of low-shelf filter in dB.  
+  Ranges from -36.0 to 12.0
+
+  \param  HighCut
+  Cutoff frequency of low-pass filter in Hz.  
+  Ranges from 20.0 to 20000.0
+
+  \param  EarlyLateMix
+  Blend ratio of late reverb to early reflections in percent.  
+  Ranges from 0.0 to 100.0
+
+  \return Returns nothing
+  */
+  /***************************************************************************/
+  void Sound::Reverb(
+                      float Wet,
+                      float Dry,
+                      float Diffusion,
+                      float Density,
+                      float Decay,
+                      float EarlyR,
+                      float Delay,
+                      float HF_ref,
+                      float HF_decay,
+                      float LowShelf_Hz,
+                      float LowShelf_Gain,
+                      float HighCut,
+                      float EarlyLateMix
+                    )
+  {
+    FMOD_RESULT result;
+    bool active;
+
+    result = pFMODAudioSystem->createDSPByType(FMOD_DSP_TYPE_SFXREVERB, &objects_DSP.dsp_reverb);
+    ErrCheck(result);
+
+    // Reverb signal level in dB.  Ranges from -80.0 to 20.0
+    result = objects_DSP.dsp_reverb->setParameterFloat(FMOD_DSP_SFXREVERB_WETLEVEL, Wet);
+    ErrCheck(result);
+    // Dry signal level in dB.  Ranges from -80.0 to 20.0
+    result = objects_DSP.dsp_reverb->setParameterFloat(FMOD_DSP_SFXREVERB_DRYLEVEL, Dry);
+    ErrCheck(result);
+
+    // Reverberation diffusion (echo density) in percent.  Ranges from 0.0 to 100.0.
+    result = objects_DSP.dsp_reverb->setParameterFloat(FMOD_DSP_SFXREVERB_DIFFUSION, Diffusion);
+    ErrCheck(result);
+
+    // Reverberation density (modal density) in percent.  Ranges from 0.0 to 100.0
+    result = objects_DSP.dsp_reverb->setParameterFloat(FMOD_DSP_SFXREVERB_DENSITY, Density);
+    ErrCheck(result);
+
+    // Reverberation decay time at low-frequencies in milliseconds.  Ranges from 100.0 to 20000.0
+    result = objects_DSP.dsp_reverb->setParameterFloat(FMOD_DSP_SFXREVERB_DECAYTIME, Decay);
+    ErrCheck(result);
+
+    // Delay time of first reflection in milliseconds.  Ranges from 0.0 to 300.0
+    result = objects_DSP.dsp_reverb->setParameterFloat(FMOD_DSP_SFXREVERB_EARLYDELAY, EarlyR);
+    ErrCheck(result);
+
+    // Late reverberation delay time relative to first reflection in milliseconds.  Ranges from 0.0 to 100.0
+    result = objects_DSP.dsp_reverb->setParameterFloat(FMOD_DSP_SFXREVERB_LATEDELAY, Delay);
+    ErrCheck(result);
+
+    // Reference frequency for high-frequency decay in Hz.  Ranges from 20.0 to 20000.0
+    result = objects_DSP.dsp_reverb->setParameterFloat(FMOD_DSP_SFXREVERB_HFREFERENCE, HF_ref);
+    ErrCheck(result);
+
+    // High-frequency decay time relative to decay time in percent.  Ranges from 10.0 to 100.0
+    result = objects_DSP.dsp_reverb->setParameterFloat(FMOD_DSP_SFXREVERB_HFDECAYRATIO, HF_decay);
+    ErrCheck(result);    
+
+    // Transition frequency of low-shelf filter in Hz.  Ranges from 20.0 to 1000.0
+    result = objects_DSP.dsp_reverb->setParameterFloat(FMOD_DSP_SFXREVERB_LOWSHELFFREQUENCY, LowShelf_Hz);
+    ErrCheck(result);
+
+    // Gain of low-shelf filter in dB.  Ranges from -36.0 to 12.0
+    result = objects_DSP.dsp_reverb->setParameterFloat(FMOD_DSP_SFXREVERB_LOWSHELFGAIN, LowShelf_Gain);
+    ErrCheck(result);
+
+    // Cutoff frequency of low-pass filter in Hz.  Ranges from 20.0 to 20000.0
+    result = objects_DSP.dsp_reverb->setParameterFloat(FMOD_DSP_SFXREVERB_HIGHCUT, HighCut);
+    ErrCheck(result);
+
+    // Blend ratio of late reverb to early reflections in percent.  Ranges from 0.0 to 100.0
+    result = objects_DSP.dsp_reverb->setParameterFloat(FMOD_DSP_SFXREVERB_EARLYLATEMIX, EarlyLateMix);
+    ErrCheck(result);
+
+    result = objects_DSP.dsp_reverb->getActive(&active);
+    ErrCheck(result);
+
+    if (active)
+    {
+      result = pChannel->removeDSP(objects_DSP.dsp_reverb);
+      ErrCheck(result);
+    }
+    else
+    {
+      result = pChannel->addDSP(0, objects_DSP.dsp_reverb, 0);
       ErrCheck(result);
     }
   }
