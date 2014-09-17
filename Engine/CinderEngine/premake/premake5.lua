@@ -12,6 +12,7 @@
 solution "CinderEngine"
   configurations { "Debug", "Release" }
   location "../"
+  linker    =   {"glfw3.lib", "glfw3dll.lib", "glew32.lib", "SOIL.lib", "opengl32.lib", "fmod_vc.lib", "Zilch.lib"}
   project "CinderEngine"
     targetname "CinderEngine"
     location "."
@@ -27,20 +28,22 @@ solution "CinderEngine"
       "../../Resources/Shaders/**.glsl",
     }
     
+    
     includedirs { "../dependency/opengl/include**",
                   "../dependency/zilch/include",
                   "../dependency/fmod/include",
                   "../include/**" }
     
-    libdirs { "../dependency/opengl/library**",
+    libdirs { "../dependency/opengl/library",
               "../dependency/zilch/library",
-       "../dependency/fmod/library"}
+              "../dependency/fmod/library"}
 
 
 --[[ Debug Configuration ]]
     configuration "Debug"
       flags   { "Symbols" }
       defines { "_DEBUG"  , "_CRT_SECURE_NO_WARNINGS" }
+      links {linker}
       targetdir "../bin/debug"
       postbuildcommands
               {
@@ -54,6 +57,7 @@ solution "CinderEngine"
       flags   { "Symbols" }
       defines { "NDEBUG"  , "_CRT_SECURE_NO_WARNINGS" }      
       optimize  "Full"
+      links {linker}
       targetdir "../bin/release"
       postbuildcommands
               {

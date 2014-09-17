@@ -113,7 +113,7 @@ namespace Framework
      //LOAD RESOURCES (TEXTURES, SHADERS)
     resourceManager.Load_Resources ();
 
-    sprite.Create (resourceManager.Get_Shader ("VertexShader.glsl")->shaderProgram);
+    sprite.Create (resourceManager.Get_Shader ("VertexShader.glsl")->shaderProgram, resourceManager.Get_Texture("ScarlettJohansson.jpg")->textureID);
 
 #pragma region BACKUP
     //////////////////////////////////////////////////////////////////////////

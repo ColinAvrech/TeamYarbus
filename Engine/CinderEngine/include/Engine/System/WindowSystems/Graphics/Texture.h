@@ -13,7 +13,7 @@ public:
 
   GLuint textureID;
   GLuint imageID;
-  GLuint Load_Texture (const char* filename);
+  void Load_Texture (const char* filename);
 
 private:
 };
