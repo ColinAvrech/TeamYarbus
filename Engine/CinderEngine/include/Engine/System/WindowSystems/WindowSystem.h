@@ -35,6 +35,8 @@ namespace Framework
 
     unsigned WindowHeight;
     unsigned WindowWidth;
+
+    void Setup_Buffer_Objects ();
   };
 
   extern WindowSystem* WINDOWSYSTEM;

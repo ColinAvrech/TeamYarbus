@@ -141,6 +141,7 @@ void Sprite::Draw ()
 
 void Sprite::Draw_Texture ()
 {
+  Use_Shader (shaderID);
   glBindTexture (GL_TEXTURE_2D, textureID);
   glDrawElements (GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
@@ -148,6 +149,7 @@ void Sprite::Draw_Texture ()
 
 void Sprite::Draw_No_Texture ()
 {
+  Use_Shader (shaderID);
   glDrawElements (GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
