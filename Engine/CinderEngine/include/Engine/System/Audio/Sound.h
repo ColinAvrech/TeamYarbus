@@ -63,6 +63,13 @@ namespace Framework
         MUSIC
       };
 
+      struct objects_DSP
+      {
+        FMOD::DSP                     *dsplpf = 0;
+        FMOD::DSP                     *dsphpf = 0;
+        FMOD::DSP                     *dspreverb = 0;
+      }objects_DSP;
+
       #pragma endregion   
 
       /*-----------------------------------------------------------------------
@@ -78,7 +85,11 @@ namespace Framework
       void            Play();
       void            PlayNew();
       void            AddSound(char* filename);
-      virtual void    Update(const double dt);     
+      virtual void    Update(const double dt);  
+
+      // DSP
+      void            LowPassFilter(float cutoff = 5000.0, float resonance = 1.0);
+      void            HighPassFilter(float cutoff = 5000.0, float resonance = 1.0);
 
       // Setters
       void            SetChannelGroup(FMOD::ChannelGroup* channelGroup);      

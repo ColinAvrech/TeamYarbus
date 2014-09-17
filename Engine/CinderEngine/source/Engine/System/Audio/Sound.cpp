@@ -132,6 +132,64 @@ namespace Framework
       pChannel->setVolume(volume);
   }
 
+  void Sound::LowPassFilter(float cutoff, float resonance)
+  {
+    FMOD_RESULT result;
+    bool active;
+
+    result = pFMODAudioSystem->createDSPByType(FMOD_DSP_TYPE_LOWPASS, &objects_DSP.dsplpf);
+    ErrCheck(result);
+
+    result = objects_DSP.dsplpf->setParameterFloat(FMOD_DSP_LOWPASS_CUTOFF, cutoff);
+    ErrCheck(result);
+
+    result = objects_DSP.dsplpf->setParameterFloat(FMOD_DSP_LOWPASS_RESONANCE, resonance);
+    ErrCheck(result);
+
+    result = objects_DSP.dsplpf->getActive(&active);
+    ErrCheck(result);
+
+    if (active)
+    {
+      result = pChannel->removeDSP(objects_DSP.dsplpf);
+      ErrCheck(result);
+    }
+    else
+    {
+      result = pChannel->addDSP(0, objects_DSP.dsplpf, 0);
+      ErrCheck(result);
+    }
+  }
+
+  void Sound::HighPassFilter(float cutoff, float resonance)
+  {
+    FMOD_RESULT result;
+    bool active;
+
+    result = pFMODAudioSystem->createDSPByType(FMOD_DSP_TYPE_HIGHPASS, &objects_DSP.dsphpf);
+    ErrCheck(result);
+
+    result = objects_DSP.dsphpf->setParameterFloat(FMOD_DSP_LOWPASS_CUTOFF, cutoff);
+    ErrCheck(result);
+
+    result = objects_DSP.dsphpf->setParameterFloat(FMOD_DSP_LOWPASS_RESONANCE, resonance);
+    ErrCheck(result);
+
+    result = objects_DSP.dsphpf->getActive(&active);
+    ErrCheck(result);
+
+    if (active)
+    {
+      result = pChannel->removeDSP(objects_DSP.dsphpf);
+      ErrCheck(result);
+    }
+    else
+    {
+      result = pChannel->addDSP(0, objects_DSP.dsphpf, 0);
+      ErrCheck(result);
+    }
+  }
+
   /***************************************************************************/
   /*!
   \brief  Sets the loop state of the Sound Object
@@ -527,7 +585,6 @@ namespace Framework
   #pragma region Private Functions
 
   #pragma endregion
-
 
   /*---------------------------------------------------------------------------
   // Static Functions

@@ -27,7 +27,13 @@ namespace Framework
   /***************************************************************************/
   void AudioSystem::LoadAllSounds()
   {
-    LoadSound("music.mp3", "Test", Sound::SOUND_2D, 0.7f)->Play();
+    SoundName.test = LoadSound("music2.mp3", "Test", Sound::SOUND_2D, 0.7f);
+
+    //SoundName.test->Play();
+    //SoundName.test->LowPassFilter();
+    //SoundName.test->HighPassFilter();
+
+    SoundName.test2 = LoadSound("music.mp3", "Test1", Sound::SOUND_2D, 0.7f);
 
     std::cout << "ALL SOUNDS LOADED" << std::endl;
   }

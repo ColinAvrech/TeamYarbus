@@ -40,17 +40,17 @@ int main(void)
   //! Create the core engine which manages all systems.
   CoreEngine * engine         = new CoreEngine;
   WindowSystem * windows      = new WindowSystem (WindowTitle, ClientWidth, ClientHeight);
-  //AudioSystem* audio          = new AudioSystem();
+  AudioSystem* audio          = new AudioSystem();
   EventSystem * events        = new EventSystem ();
 
 
   engine->AddSystem(windows);
-  //engine->AddSystem(audio);
+  engine->AddSystem(audio);
   engine->AddSystem(events);
 
   //! Initialize all added Systems. DON'T INIT YOUR OWN
   engine->Initialize();
-  //audio->LoadAllSounds();
+  audio->LoadAllSounds();
 
   //! activate the window.
 

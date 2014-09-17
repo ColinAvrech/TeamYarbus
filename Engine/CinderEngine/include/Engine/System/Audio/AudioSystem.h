@@ -11,13 +11,10 @@
 #ifndef _AUDIO_H
 #define _AUDIO_H
 
-#pragma comment (lib, "fmod_vc.lib")
-
 /*-----------------------------------------------------------------------------
 // Includes
 -----------------------------------------------------------------------------*/
 #pragma region Includes
-
 
 #include "BaseSystem.h"
 #include "fmod.hpp"
@@ -50,7 +47,7 @@ namespace Framework
       -----------------------------------------------------------------------*/
       #pragma region Public Variables
 
-      char* AudioAssetsPath = "../../Assets/Audio/";
+      char* AudioAssetsPath = "../../Resources/Audio/";
 
       #pragma endregion
 
@@ -58,6 +55,12 @@ namespace Framework
       // Public Structs
       /*---------------------------------------------------------------------*/
       #pragma region Public Structs
+
+      struct SoundName
+      {
+        Sound     *test;
+        Sound     *test2;
+      }SoundName;
 
       #pragma endregion
 
