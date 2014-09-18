@@ -10,6 +10,14 @@
 
 ResourceManager::~ResourceManager ()
 {
+  for (auto i : shaders)
+  {
+    delete (i.second);
+  }
+  for (auto i : textures)
+  {
+    delete (i.second);
+  }
 }
 
 void ResourceManager::Load_Resources ()

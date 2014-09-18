@@ -1,19 +1,5 @@
 #include "Sprite.h"
 
-GLfloat verts [] =
-{
-  //  Position   Color             Texcoords
-  -0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // Top-left
-  0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, // Top-right
-  0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, // Bottom-right
-  -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f  // Bottom-left
-};
-
-GLuint tris [] =
-{
-  0, 1, 2,
-  2, 3, 0
-};
 
 Sprite::Sprite ()
 {
@@ -36,6 +22,10 @@ Sprite::Sprite (GLuint _shader, GLuint _texture /*=NULL*/, GLfloat* _meshData /*
 }
 
 
+// Sprite can be created using this method of in the Non-Default Constructor
+// Get Shader will return Default shader if wrong name specified
+// Get Texture is optional
+// For Custom Mesh use the next two parameters
 void Sprite::Create (GLuint _shader, GLuint _texture, GLfloat* _meshData /*= NULL*/, GLuint* _triData /*= NULL*/)
 {
   shaderID = _shader;
@@ -45,6 +35,9 @@ void Sprite::Create (GLuint _shader, GLuint _texture, GLfloat* _meshData /*= NUL
   drawable = true;
 }
 
+
+// Create Sprite Only Using Shader.
+// No Texture - Solid Color Will BW Used
 void Sprite::Create (GLuint _shader)
 {
   shaderID= _shader;
@@ -53,21 +46,24 @@ void Sprite::Create (GLuint _shader)
   Specify_Attributes ();
 }
 
-// DESTRUCTOR
-// DELETE ALL BUFFER OBJECTS
+
+// Destructor
+// Destroy All Buffers Used By Sprite
+// This Might Be Used For Derived Classes Which Will Need Special Buffer Objects
+// This Destructor Does Nothing Right Now
 Sprite::~Sprite ()
 {
 }
 
 
-// CALL TO CHANGE SHADER ATTACHED TO SPRITE
+// Call To Change Shader Used By Sprite
 void Sprite::Change_Shader (GLuint changeShader)
 {
   shaderID = changeShader;
   Specify_Attributes ();
 }
 
-
+// Call To Change Texture Used By Sprite
 void Sprite::Change_Texture (GLuint _textureID)
 {
   textureID = _textureID;
@@ -75,7 +71,7 @@ void Sprite::Change_Texture (GLuint _textureID)
 }
 
 
-// USED TO COMMUNICATE WITH THE SHADER AND SSPECIFY ATTRIBUTES - POSITION, COLOR, TEX-COORDS
+// Used To Communicate With Shader and Specify Attributes from Vertex Data
 void Sprite::Specify_Attributes ()
 {
   // Specify the layout of the vertex data
@@ -94,29 +90,26 @@ void Sprite::Specify_Attributes ()
     glVertexAttribPointer (texAttrib, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*) (6 * sizeof(GLfloat)));
 
     glUniform1i (glGetUniformLocation (shaderID, "image"), 0);
+    
+    // If Texture Is To Be Used, Use Draw Texture Method To Draw Sprite
     DrawFunction = &Sprite::Draw_Texture;
   }
   else
   {
+    // If Texture Is Not Used, Use Draw No Texture Method To Draw Sprite
     DrawFunction = &Sprite::Draw_No_Texture;
   }
 }
 
 
-void Sprite::Create_Mesh (GLfloat* vertices, GLuint* faces)
+// This Is To Create A Custom Mesh
+// Not Complete
+void Sprite::Create_Mesh(GLfloat* vertices, GLuint* indices, GLuint arraySize)
 {
-  vao = new VAO ();
-  if (vertices == NULL)
-  {
-    vbo = new VBO (sizeof(verts), verts);
-    spriteData = verts;
-  }
-  else
-  {
-    spriteData = new GLfloat [48];
+  /*vao = new VAO ();
+    spriteData = new GLfloat [arraySize];
     spriteData = vertices;
     vbo = new VBO (sizeof(spriteData), spriteData);
-  }
 
   if (faces == NULL)
   {
@@ -128,17 +121,18 @@ void Sprite::Create_Mesh (GLfloat* vertices, GLuint* faces)
     faceData = new GLuint [6];
     faceData = faces;
     ebo = new EBO (sizeof(faceData), faceData);
-  }
+  }*/
 }
 
 
-// CALLED BY RENDERER
+// Called By Renderer Component
 void Sprite::Draw ()
 {
   (this->*DrawFunction)();
 }
 
 
+// Draw Sprite Using Texture
 void Sprite::Draw_Texture ()
 {
   Use_Shader (shaderID);
@@ -147,12 +141,15 @@ void Sprite::Draw_Texture ()
 }
 
 
+// Draw Sprite Without Using Texture
 void Sprite::Draw_No_Texture ()
 {
   Use_Shader (shaderID);
   glDrawElements (GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
+
+// Use Shader ID as the Shader
 void Sprite::Use_Shader (GLuint _shaderID)
 {
   glUseProgram (_shaderID);

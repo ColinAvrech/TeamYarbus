@@ -43,7 +43,7 @@ private:
   EBO* ebo;
   bool drawable;
 
-  void Create_Mesh (GLfloat*, GLuint*);
+  void Create_Mesh (GLfloat* vertices, GLuint* indices, GLuint arraySize);
   (void) (Sprite::*DrawFunction)(void);
   void Draw_Texture ();
   void Draw_No_Texture ();

@@ -17,14 +17,30 @@ function to handle windows Messages.
 #include "Core.h"
 
 
-Sprite sprite;
-Sprite sprite1;
-ResourceManager resourceManager;
-glm::vec3 position;
-float shininess = 64.0f;
-
 namespace Framework
 {
+  Sprite sprite;
+  Sprite sprite1;
+  ResourceManager resourceManager;
+  glm::vec3 position;
+  float shininess = 64.0f;
+  VAO* vao;
+  VBO* vbo;
+  EBO* ebo;
+  static GLfloat vertices [] =
+  {
+    //  Position   Color             Texcoords
+    -0.5f, 0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, // Top-left
+    0.5f, 0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, // Top-right
+    0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, // Bottom-right
+    -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f  // Bottom-left
+  };
+
+  static GLuint elements [] = {
+    0, 1, 2,
+    2, 3, 0
+  };
+
   //! Global pointer to  the windows system.
   WindowSystem* WINDOWSYSTEM = NULL;
 
@@ -97,60 +113,30 @@ namespace Framework
 
   bool WindowSystem::Initialize ()
   {
-    //////////////////////////////////////////////////////////////////////////
     // Create Vertex Array Object
-    GLuint vao;
-    glGenVertexArrays (1, &vao);
-    glBindVertexArray (vao);
-    //////////////////////////////////////////////////////////////////////////
+    vao = new VAO ();
+    // Create Vertex Buffer To Store Quad Vertices (Maybe replace it completely by creating a Geometry Shader which defines the Quad Shape)
+    vbo = new VBO (sizeof (vertices), vertices);
+    // Create Element/Index Buffer To Reduce Size Of Vertex Array (4 vertices instead of 6 for one Quad)
+    ebo = new EBO (sizeof (elements), elements);
 
-    //////////////////////////////////////////////////////////////////////////
-    // Create a Vertex Buffer Object and copy the vertex data to it
-    GLuint vbo;
-    glGenBuffers (1, &vbo);
-    //////////////////////////////////////////////////////////////////////////
-
-    //////////////////////////////////////////////////////////////////////////
-    GLfloat vertices [] =
-    {
-      //  Position   Color             Texcoords
-      -0.5f, 0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, // Top-left
-      0.5f, 0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, // Top-right
-      0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, // Bottom-right
-      -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f  // Bottom-left
-    };
-    //////////////////////////////////////////////////////////////////////////
-
-    //////////////////////////////////////////////////////////////////////////
-    glBindBuffer (GL_ARRAY_BUFFER, vbo);
-    glBufferData (GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-    //////////////////////////////////////////////////////////////////////////
-
-    //////////////////////////////////////////////////////////////////////////
-    // Create an element array
-    GLuint ebo;
-    glGenBuffers (1, &ebo);
-
-    GLuint elements [] = {
-      0, 1, 2,
-      2, 3, 0
-    };
-    //////////////////////////////////////////////////////////////////////////
-
-    //////////////////////////////////////////////////////////////////////////
-    glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, ebo);
-    glBufferData (GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
-     //LOAD RESOURCES (TEXTURES, SHADERS)
+    // Load all Resources (Textures, Shaders, Maps,...)
     resourceManager.Load_Resources ();
 
+    // Sprite can be created using this method of in the Non-Default Constructor
+    // Get Shader will return Default shader if wrong name specified
+    // Get Texture is optional
+    // For Custom Mesh use the next two parameters
     sprite.Create (resourceManager.Get_Shader ("FragmentLighting.frag")->shaderProgram, resourceManager.Get_Texture("ScarlettJohansson.jpg")->textureID);
-    //sprite1.Create (resourceManager.Get_Shader ("VertexShader1.glsl")->shaderProgram, resourceManager.Get_Texture ("Default")->textureID);
 
     return true;
   }
 
   WindowSystem::~WindowSystem()
   {
+    delete vao;
+    delete vbo;
+    delete ebo;
     glfwTerminate();
   }
   
@@ -164,7 +150,6 @@ namespace Framework
   {
     glfwSwapBuffers(window);
     glfwPollEvents ();
-    //sprite->Draw ();
   }
 
   void WindowSystem::GraphicsUpdate (const double dt)

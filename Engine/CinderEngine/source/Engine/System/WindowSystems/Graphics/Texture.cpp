@@ -5,6 +5,7 @@
 // WILL BE USE TO DYNAMICALLY GENERATE TEXTURE (FRAME BUFFER)
 Texture::Texture ()
 {
+  glDeleteTextures (1, &textureID);
 }
 
 
