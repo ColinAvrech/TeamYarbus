@@ -3,11 +3,11 @@
 
 #include "glew.h"
 #include "glfw3.h"
-#define GLM_FORCE_RADIANS
-#include "glm.hpp"
+#include "CinderMath.h"
 #include "VertexArrayObject.h"
 #include "VertexBufferObject.h"
 #include "ElementBufferObject.h"
+#include "Transform.h"
 
 #include "Resources.h"
 #include <fstream>

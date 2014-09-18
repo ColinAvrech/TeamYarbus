@@ -19,6 +19,7 @@ function to handle windows Messages.
 
 namespace Framework
 {
+  Transform light;
   Sprite sprite;
   Sprite sprite1;
   ResourceManager resourceManager;
@@ -51,16 +52,16 @@ namespace Framework
       switch (key)
       {
       case GLFW_KEY_W:
-        position.y += 0.01f;
+        light.Translate (0, 0.01f, 0);
         break;
       case GLFW_KEY_S:
-        position.y -= 0.01f;
+        light.Translate (0, -0.01f, 0);
         break;
       case GLFW_KEY_D:
-        position.x += 0.01f;
+        light.Translate (0.01f, 0, 0);
         break;
       case GLFW_KEY_A:
-        position.x -= 0.01f;
+        light.Translate (-0.01f, 0, 0);
         break;
       case GLFW_KEY_Q:
         shininess += 0.5f;
@@ -127,6 +128,9 @@ namespace Framework
     // Get Shader will return Default shader if wrong name specified
     // Get Texture is optional
     // For Custom Mesh use the next two parameters
+
+    light.MatrixMode (MODEL_MATRIX);
+
     sprite.Create (resourceManager.Get_Shader ("FragmentLighting.frag")->shaderProgram, resourceManager.Get_Texture("ScarlettJohansson.jpg")->textureID);
 
     return true;
@@ -157,8 +161,10 @@ namespace Framework
     glClearColor (0, 0, 0, 0);
     glClear (GL_COLOR_BUFFER_BIT);
 
+
+    std::cout <<"( " << light.GetPosition ().x << ", " << light.GetPosition().y << ", "<< light.GetPosition().z  << " )" << std::endl;
     //light position (is the same as the player position)
-    glUniform3f (glGetUniformLocation (sprite.shaderID, "lightPos"), position.x, position.y, position.z);
+    glUniform3f (glGetUniformLocation (sprite.shaderID, "lightPos"), light.GetPosition().x, light.GetPosition ().y, light.GetPosition ().z);
     glUniform3f (glGetUniformLocation (sprite.shaderID, "mambient"), 0.2f, 0.2f, 0.2f);
     glUniform3f (glGetUniformLocation (sprite.shaderID, "mdiffuse"), 0.6f, 0.6f, 0.6f);
     glUniform3f (glGetUniformLocation (sprite.shaderID, "mspecular"), 1.0f, 1.0f, 1.0f);
