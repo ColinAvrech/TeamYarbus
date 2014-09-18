@@ -13,7 +13,6 @@
 
 namespace Framework
 {
-
   class Renderer
   {
   public:
