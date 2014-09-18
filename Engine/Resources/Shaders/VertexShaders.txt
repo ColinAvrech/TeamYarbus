@@ -1,2 +1,2 @@
-VertexShader.glsl
-VertexShader1.glsl
+Basic.vs
+Basic1.vs

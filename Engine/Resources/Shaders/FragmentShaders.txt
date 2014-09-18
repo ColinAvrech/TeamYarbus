@@ -1,2 +1,2 @@
-FragmentShader.glsl
-FragmentShader1.glsl
+Basic.frag
+FragmentLighting.frag

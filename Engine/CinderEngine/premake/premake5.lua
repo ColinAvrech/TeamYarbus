@@ -26,7 +26,9 @@ solution "CinderEngine"
       "../include/**.h",
       "../source/**.cpp",
       "../../Resources/Shaders/**.glsl",
-      "../../Resources/**.txt"
+      "../../Resources/**.txt",
+      "../../Resources/**.frag",
+      "../../Resources/**.vs"
     }
     
     

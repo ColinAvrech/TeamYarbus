@@ -26,7 +26,8 @@ public:
 
 
   void Draw ();
-
+  GLuint shaderID;
+  GLuint textureID;
 private:
   // HOLDS ALL MESH DATA
   // SET TO DEFAULT MESH DATA IN DEFAULT CONSTRUCTOR
@@ -36,8 +37,6 @@ private:
 
   // POINTER TO SHADER AND TEXTURE ATTACHED TO SPRITE
   //Shader* shaderProgram;
-  GLuint shaderID;
-  GLuint textureID;
   //Texture* texture;
   VAO* vao;
   VBO* vbo;

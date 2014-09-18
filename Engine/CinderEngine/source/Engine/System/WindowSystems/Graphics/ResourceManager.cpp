@@ -43,7 +43,7 @@ void ResourceManager::Load_Textures ()
 
 void ResourceManager::Load_Shaders ()
 {
-  shaders ["Default"] = new Shader ((ShaderResourcePath + "VertexShader.glsl").c_str (), (ShaderResourcePath + "FragmentShader.glsl").c_str ());
+  shaders ["Default"] = new Shader ((ShaderResourcePath + "Basic.vs").c_str (), (ShaderResourcePath + "Basic.frag").c_str ());
 
   std::ifstream vertexShaderFile (ShaderResourcePath + "VertexShaders.txt");
   std::ifstream fragShaderFile (ShaderResourcePath + "FragmentShaders.txt");
@@ -62,7 +62,7 @@ void ResourceManager::Load_Shaders ()
     {
       vertexShaderFile >> vs;
       fragShaderFile >> fs;
-      shaders [vs] = new Shader (((ShaderResourcePath + vs).c_str ()), (ShaderResourcePath + fs).c_str ());
+      shaders [fs] = new Shader (((ShaderResourcePath + vs).c_str ()), (ShaderResourcePath + fs).c_str ());
     }
   }
 }
