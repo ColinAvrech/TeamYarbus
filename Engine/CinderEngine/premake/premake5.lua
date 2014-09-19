@@ -12,7 +12,7 @@
 solution "CinderEngine"
   configurations { "Debug", "Release" }
   location "../"
-  linker    =   {"glfw3.lib", "glfw3dll.lib", "glew32.lib", "SOIL.lib", "opengl32.lib", "fmod_vc.lib", "Zilch.lib"}
+  linker    =   {"glfw3.lib", "glfw3dll.lib", "glew32.lib", "SOIL.lib", "opengl32.lib", "fmod_vc.lib", "Zilch.lib", "AntTweakBar.lib"}
   project "CinderEngine"
     targetname "CinderEngine"
     location "."
@@ -35,11 +35,13 @@ solution "CinderEngine"
     includedirs { "../dependency/opengl/include**",
                   "../dependency/zilch/include",
                   "../dependency/fmod/include",
+									"../dependency/AntTweakBar/include",
                   "../include/**" }
     
     libdirs { "../dependency/opengl/library",
               "../dependency/zilch/library",
-              "../dependency/fmod/library"}
+              "../dependency/fmod/library",
+							"../dependency/AntTweakBar/library"}
 
 
 --[[ Debug Configuration ]]
@@ -52,7 +54,8 @@ solution "CinderEngine"
               {
                 "copy ..\\dependency\\opengl\\library\\glfw3.dll ..\\bin\\debug\\",
                 "copy ..\\dependency\\opengl\\library\\glew32.dll ..\\bin\\debug\\",
-        "copy ..\\dependency\\fmod\\library\\fmod.dll ..\\bin\\debug\\"
+        "copy ..\\dependency\\fmod\\library\\fmod.dll ..\\bin\\debug\\",
+				"copy ..\\dependency\\AntTweakBar\\library\\AntTweakBar.dll ..\\bin\\debug\\"
               }
         
 --[[ Release Configuration ]]        
@@ -65,5 +68,6 @@ solution "CinderEngine"
       postbuildcommands
               {
                 "copy ..\\dependency\\opengl\\library\\glut32.dll ..\\bin\\release\\",
-        "copy ..\\dependency\\fmod\\library\\fmod.dll ..\\bin\\debug\\"        
+								"copy ..\\dependency\\fmod\\library\\fmod.dll ..\\bin\\release\\",
+								"copy ..\\dependency\\AntTweakBar\\library\\AntTweakBar.dll ..\\bin\\release\\"        
               }
