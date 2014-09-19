@@ -42,7 +42,7 @@ int main(void)
   //! Create the core engine which manages all systems.
   CoreEngine * engine         = new CoreEngine;
   WindowSystem * windows      = new WindowSystem (WindowTitle, ClientWidth, ClientHeight);
-  //AudioSystem* audio          = new AudioSystem();
+  AudioSystem* audio          = new AudioSystem();
   EventSystem * events        = new EventSystem ();
   ScriptSystem::
     ScriptSystem * zilch      = new ScriptSystem::ScriptSystem();
@@ -50,14 +50,14 @@ int main(void)
     ThermodynamicsSystem * thermo = new Physics::ThermodynamicsSystem();
 
   engine->AddSystem(windows);
-  //engine->AddSystem(audio);
+  engine->AddSystem(audio);
   engine->AddSystem(events);
   engine->AddSystem(zilch);
   engine->AddSystem(thermo);
 
   //! Initialize all added Systems. DON'T INIT YOUR OWN
   engine->Initialize();
-  //audio->LoadAllSounds();
+  audio->LoadAllSounds();
 
   //! activate the window.
 

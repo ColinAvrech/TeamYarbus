@@ -9,14 +9,8 @@
 #pragma once
 
 #include "BaseSystem.h"
-#include "glew.h"
-#include "glfw3.h"
+#include "GraphicsCommon.h"
 
-#pragma comment(lib, "glfw3.lib")
-#pragma comment(lib, "glfw3dll.lib")
-#pragma comment(lib, "glew32.lib")
-#pragma comment(lib, "SOIL.lib")
-#pragma comment(lib, "opengl32.lib")
 
 namespace Framework
 {
@@ -41,6 +35,8 @@ namespace Framework
 
     unsigned WindowHeight;
     unsigned WindowWidth;
+
+    void Setup_Buffer_Objects ();
   };
 
   extern WindowSystem* WINDOWSYSTEM;

@@ -1,1 +1,3 @@
-FragmentShader.glsl
+Basic.frag
+FragmentLighting.frag
+QuadRender.frag

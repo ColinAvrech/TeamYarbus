@@ -17,11 +17,31 @@ function to handle windows Messages.
 #include "Core.h"
 
 
-Sprite sprite;
-ResourceManager resourceManager;
-
 namespace Framework
 {
+  Transform light;
+  Sprite sprite;
+  Sprite sprite1;
+  ResourceManager resourceManager;
+  glm::vec3 position;
+  float shininess = 64.0f;
+  VAO* vao;
+  VBO* vbo;
+  EBO* ebo;
+  static GLfloat vertices [] =
+  {
+    //  Position   Color             Texcoords
+    -0.5f, 0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, // Top-left
+    0.5f, 0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, // Top-right
+    0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, // Bottom-right
+    -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f  // Bottom-left
+  };
+
+  static GLuint elements [] = {
+    0, 1, 2,
+    2, 3, 0
+  };
+
   //! Global pointer to  the windows system.
   WindowSystem* WINDOWSYSTEM = NULL;
 
@@ -29,7 +49,32 @@ namespace Framework
   {
     void GLFWMessageHandler (GLFWwindow* window, int key, int scanCode, int state, int mod)
     {
-
+      switch (key)
+      {
+      case GLFW_KEY_W:
+        light.Translate (0, 0.01f, 0);
+        break;
+      case GLFW_KEY_S:
+        light.Translate (0, -0.01f, 0);
+        break;
+      case GLFW_KEY_D:
+        light.Translate (0.01f, 0, 0);
+        break;
+      case GLFW_KEY_A:
+        light.Translate (-0.01f, 0, 0);
+        break;
+      case GLFW_KEY_Q:
+        shininess += 0.5f;
+        break;
+      case GLFW_KEY_E:
+        shininess -= 0.5f;
+        break;
+      case GLFW_KEY_ESCAPE:
+        glfwSetWindowShouldClose (window, GL_TRUE);
+        break;
+      default:
+        break;
+      }
     }
 
     void Create_Context(GLFWwindow** GLFWwindowptr)
@@ -43,8 +88,8 @@ namespace Framework
 
       glfwWindowHint (GLFW_RESIZABLE, GL_FALSE);
 
-      *GLFWwindowptr = glfwCreateWindow (1280, 1280, "OpenGL", nullptr, nullptr); // Windowed
-      //GLFWwindow* window = glfwCreateWindow (800, 600, "OpenGL", glfwGetPrimaryMonitor (), nullptr);
+      *GLFWwindowptr = glfwCreateWindow (1920, 1920, "OpenGL", nullptr, nullptr); // Windowed
+      //*GLFWwindowptr = glfwCreateWindow (800, 600, "OpenGL", glfwGetPrimaryMonitor (), nullptr);
       glfwMakeContextCurrent (*GLFWwindowptr);
       glfwSetKeyCallback(*GLFWwindowptr, GLFWMessageHandler);
     }
@@ -54,6 +99,8 @@ namespace Framework
       glewExperimental = GL_TRUE;
       glewInit();
       std::cout << "OpenGl Version: " << Console::green << glGetString(GL_VERSION) << Console::gray << std::endl;
+
+      glEnable (GL_BLEND);
     }
 
   }
@@ -67,102 +114,33 @@ namespace Framework
 
   bool WindowSystem::Initialize ()
   {
-    //////////////////////////////////////////////////////////////////////////
     // Create Vertex Array Object
-    GLuint vao;
-    glGenVertexArrays (1, &vao);
-    glBindVertexArray (vao);
-    //////////////////////////////////////////////////////////////////////////
+    vao = new VAO ();
+    // Create Vertex Buffer To Store Quad Vertices (Maybe replace it completely by creating a Geometry Shader which defines the Quad Shape)
+    vbo = new VBO (sizeof (vertices), vertices);
+    // Create Element/Index Buffer To Reduce Size Of Vertex Array (4 vertices instead of 6 for one Quad)
+    ebo = new EBO (sizeof (elements), elements);
 
-    //////////////////////////////////////////////////////////////////////////
-    // Create a Vertex Buffer Object and copy the vertex data to it
-    GLuint vbo;
-    glGenBuffers (1, &vbo);
-    //////////////////////////////////////////////////////////////////////////
-
-    //////////////////////////////////////////////////////////////////////////
-    GLfloat vertices [] =
-    {
-      //  Position   Color             Texcoords
-      -0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // Top-left
-      0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, // Top-right
-      0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, // Bottom-right
-      -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f  // Bottom-left
-    };
-    //////////////////////////////////////////////////////////////////////////
-
-    //////////////////////////////////////////////////////////////////////////
-    glBindBuffer (GL_ARRAY_BUFFER, vbo);
-    glBufferData (GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-    //////////////////////////////////////////////////////////////////////////
-
-    //////////////////////////////////////////////////////////////////////////
-    // Create an element array
-    GLuint ebo;
-    glGenBuffers (1, &ebo);
-
-    GLuint elements [] = {
-      0, 1, 2,
-      2, 3, 0
-    };
-    //////////////////////////////////////////////////////////////////////////
-
-    //////////////////////////////////////////////////////////////////////////
-    glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, ebo);
-    glBufferData (GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
-     //LOAD RESOURCES (TEXTURES, SHADERS)
+    // Load all Resources (Textures, Shaders, Maps,...)
     resourceManager.Load_Resources ();
 
-    sprite.Create (resourceManager.Get_Shader ("VertexShader.glsl")->shaderProgram);
+    // Sprite can be created using this method of in the Non-Default Constructor
+    // Get Shader will return Default shader if wrong name specified
+    // Get Texture is optional
+    // For Custom Mesh use the next two parameters
 
-#pragma region BACKUP
-    //////////////////////////////////////////////////////////////////////////
+    light.MatrixMode (MODEL_MATRIX);
 
-    //////////////////////////////////////////////////////////////////////////
-    // Create and compile the vertex shader
-    //GLuint vertexShader = glCreateShader (GL_VERTEX_SHADER);
-    //glShaderSource (vertexShader, 1, &vertexSource, NULL);
-    //glCompileShader (vertexShader);
-    //////////////////////////////////////////////////////////////////////////
+    sprite.Create (resourceManager.Get_Shader ("FragmentLighting.frag")->shaderProgram, resourceManager.Get_Texture("ScarlettJohansson.jpg")->textureID);
 
-    //////////////////////////////////////////////////////////////////////////
-    // Create and compile the fragment shader
-    //GLuint fragmentShader = glCreateShader (GL_FRAGMENT_SHADER);
-    //glShaderSource (fragmentShader, 1, &fragmentSource, NULL);
-    //glCompileShader (fragmentShader);
-    //////////////////////////////////////////////////////////////////////////
-
-    //////////////////////////////////////////////////////////////////////////
-    // Link the vertex and fragment shader into a shader program
-    //GLuint shaderProgram = glCreateProgram ();
-    //glAttachShader (shaderProgram, vertexShader);
-    //glAttachShader (shaderProgram, fragmentShader);
-    //glBindFragDataLocation (shaderProgram, 0, "outColor");
-    //glLinkProgram (shaderProgram);
-    //glUseProgram (shaderProgram);
-    //////////////////////////////////////////////////////////////////////////
-
-    //////////////////////////////////////////////////////////////////////////
-    //// Load texture
-    //GLuint tex;
-    //glGenTextures (1, &tex);
-
-    //int width, height;
-    //unsigned char* image = SOIL_load_image ("Default.jpg", &width, &height, 0, SOIL_LOAD_RGB);
-    //glTexImage2D (GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
-    //SOIL_free_image_data (image);
-
-    //glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    //glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    //glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    //glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    //////////////////////////////////////////////////////////////////////////
-#pragma endregion
     return true;
   }
 
   WindowSystem::~WindowSystem()
   {
+    delete vao;
+    delete vbo;
+    delete ebo;
     glfwTerminate();
   }
   
@@ -176,21 +154,74 @@ namespace Framework
   {
     glfwSwapBuffers(window);
     glfwPollEvents ();
-    //sprite->Draw ();
   }
 
-  void WindowSystem::GraphicsUpdate(const double dt)
+  void WindowSystem::GraphicsUpdate (const double dt)
   {
     glClearColor (0, 0, 0, 0);
     glClear (GL_COLOR_BUFFER_BIT);
-    //glDrawElements (GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+
+    std::cout <<"( " << light.GetPosition ().x << ", " << light.GetPosition().y << ", "<< light.GetPosition().z  << " )" << std::endl;
+    //light position (is the same as the player position)
+    glUniform3f (glGetUniformLocation (sprite.shaderID, "lightPos"), light.GetPosition().x, light.GetPosition ().y, light.GetPosition ().z);
+    glUniform3f (glGetUniformLocation (sprite.shaderID, "mambient"), 0.2f, 0.2f, 0.2f);
+    glUniform3f (glGetUniformLocation (sprite.shaderID, "mdiffuse"), 0.6f, 0.6f, 0.6f);
+    glUniform3f (glGetUniformLocation (sprite.shaderID, "mspecular"), 1.0f, 1.0f, 1.0f);
+
+    //setting light property
+    glUniform3f (glGetUniformLocation (sprite.shaderID, "lambient"), 0.2f, 0.2f, 0.2f);
+    glUniform3f (glGetUniformLocation (sprite.shaderID, "ldiffuse"), 0.6f, 0.6f, 0.6f);
+    glUniform3f (glGetUniformLocation (sprite.shaderID, "lspecular"), 1.0f, 1.0f, 1.0f);
+    glUniform1f (glGetUniformLocation (sprite.shaderID, "shininess"), shininess);    //shininess
+
+    glNormal3f (0.0f, 0.0f, 1.0f);
     sprite.Draw ();
+
   }
 
-
-  ////////////////////////////////////////////////////////////
-  
-
-
-
 }
+
+#pragma region BACKUP
+//////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////
+// Create and compile the vertex shader
+//GLuint vertexShader = glCreateShader (GL_VERTEX_SHADER);
+//glShaderSource (vertexShader, 1, &vertexSource, NULL);
+//glCompileShader (vertexShader);
+//////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////
+// Create and compile the fragment shader
+//GLuint fragmentShader = glCreateShader (GL_FRAGMENT_SHADER);
+//glShaderSource (fragmentShader, 1, &fragmentSource, NULL);
+//glCompileShader (fragmentShader);
+//////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////
+// Link the vertex and fragment shader into a shader program
+//GLuint shaderProgram = glCreateProgram ();
+//glAttachShader (shaderProgram, vertexShader);
+//glAttachShader (shaderProgram, fragmentShader);
+//glBindFragDataLocation (shaderProgram, 0, "outColor");
+//glLinkProgram (shaderProgram);
+//glUseProgram (shaderProgram);
+//////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////
+//// Load texture
+//GLuint tex;
+//glGenTextures (1, &tex);
+
+//int width, height;
+//unsigned char* image = SOIL_load_image ("Default.jpg", &width, &height, 0, SOIL_LOAD_RGB);
+//glTexImage2D (GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+//SOIL_free_image_data (image);
+
+//glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+//glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+//glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+//glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+//////////////////////////////////////////////////////////////////////////
+#pragma endregion

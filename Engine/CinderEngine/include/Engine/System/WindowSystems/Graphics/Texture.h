@@ -4,19 +4,25 @@
 #include "GraphicsCommon.h"
 #include "SOIL.h"
 
-class Texture
+namespace Framework
 {
-public:
-  Texture ();
-  Texture (const char* filename);
-  ~Texture ();
 
-  GLuint textureID;
-  GLuint imageID;
-  GLuint Load_Texture (const char* filename);
 
-private:
-};
+  class Texture
+  {
+  public:
+    Texture ();
+    Texture (const char* filename);
+    ~Texture ();
+
+    GLuint textureID;
+    GLuint imageID;
+    void Load_Texture (const char* filename);
+
+  private:
+  };
+
+}
 
 #endif
 

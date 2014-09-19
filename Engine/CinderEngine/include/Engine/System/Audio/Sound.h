@@ -63,6 +63,13 @@ namespace Framework
         MUSIC
       };
 
+      struct objects_DSP
+      {
+        FMOD::DSP                     *dsp_lpf = 0;
+        FMOD::DSP                     *dsp_hpf = 0;
+        FMOD::DSP                     *dsp_reverb = 0;
+      }objects_DSP;
+
       #pragma endregion   
 
       /*-----------------------------------------------------------------------
@@ -78,7 +85,26 @@ namespace Framework
       void            Play();
       void            PlayNew();
       void            AddSound(char* filename);
-      virtual void    Update(const double dt);     
+      virtual void    Update(const double dt);  
+
+      // DSP
+      void            LowPassFilter(float cutoff = 5000.0, float resonance = 1.0);
+      void            HighPassFilter(float cutoff = 5000.0, float resonance = 1.0);
+      void            Reverb(
+                              float Wet = -6,
+                              float Dry = 0,
+                              float Diffusion = 100,
+                              float Density = 100,
+                              float Decay = 1500,
+                              float EarlyR = 20,
+                              float Delay = 40,
+                              float HF_ref = 5000,
+                              float HF_decay = 50,                              
+                              float LowShelf_Hz = 250,
+                              float LowShelf_Gain = 0,
+                              float HighCut = 20000,
+                              float EarlyLateMix = 50                              
+                            );
 
       // Setters
       void            SetChannelGroup(FMOD::ChannelGroup* channelGroup);      
