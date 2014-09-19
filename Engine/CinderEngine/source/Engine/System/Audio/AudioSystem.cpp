@@ -120,7 +120,7 @@ namespace Framework
   \return Returns a Sound class Object
   */
   /***************************************************************************/
-  Sound* AudioSystem::LoadSound(char* filename, 
+  Sound* AudioSystem::LoadSound(const char* filename, 
                                 char* soundName, 
                                 Sound::SoundID type, 
                                 float volume)
@@ -129,7 +129,7 @@ namespace Framework
     char Path[250];
 
     sprintf(Path, "%s%s", AudioAssetsPath, filename);
-    
+
     // Calls the load method from the Sound Class
     newSound->Load(pFMODAudioSystem, Path, soundName, type);
 

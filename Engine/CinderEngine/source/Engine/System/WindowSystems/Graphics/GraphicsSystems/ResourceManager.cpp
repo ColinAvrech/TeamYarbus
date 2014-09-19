@@ -4,11 +4,12 @@
 
 namespace Framework
 {
+  ResourceManager* ResourceManager::RESOURCE_MANAGER;
 
-
-  //ResourceManager::ResourceManager ()
-  //{
-  //}
+  ResourceManager::ResourceManager ()
+  {
+    RESOURCE_MANAGER = this;
+  }
 
 
   ResourceManager::~ResourceManager ()
@@ -27,6 +28,7 @@ namespace Framework
   {
     Load_Textures ();
     Load_Shaders ();
+    Load_Sounds();
   }
 
   void ResourceManager::Load_Textures ()
@@ -51,7 +53,6 @@ namespace Framework
     }
   }
 
-
   void ResourceManager::Load_Shaders ()
   {
     shaders ["Default"] = new Shader ((ShaderResourcePath + "Basic.vs").c_str (), (ShaderResourcePath + "Basic.frag").c_str ());
@@ -74,6 +75,31 @@ namespace Framework
         vertexShaderFile >> vs;
         fragShaderFile >> fs;
         shaders [fs] = new Shader (((ShaderResourcePath + vs).c_str ()), (ShaderResourcePath + fs).c_str ());
+      }
+    }
+  }
+
+
+  void ResourceManager::Load_Sounds()
+  {
+    std::ifstream audioFile(AudioResourcePath + "SoundAssets.txt");
+
+    if (!audioFile.good())
+    {
+      std::cout << "Failed to Load Sounds...\n";
+      return;
+    }
+    else
+    {
+      std::string str;
+      while (!audioFile.eof())
+      {
+        audioFile >> str;
+        char* c = strstr ((char*)str.c_str(), str.c_str ());
+        Sound* sound = new Sound();
+        sound = AUDIOSYSTEM->LoadSound((AudioResourcePath + str).c_str(), c, Sound::SOUND_2D, 0.7f);
+        sounds[str] = sound;
+        std::cout << str << std::endl;
       }
     }
   }
@@ -104,6 +130,19 @@ namespace Framework
     }
 
     return shaders ["Default"];
+  }
+
+  Sound* ResourceManager::Get_Sound(std::string soundName)
+  {
+    for (auto i : sounds)
+    {
+      if (i.first == soundName)
+      {
+        return i.second;
+      }
+    }
+
+    return NULL;
   }
 
 }

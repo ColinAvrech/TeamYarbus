@@ -1,0 +1,3 @@
+music.mp3 SOUND_2D 0.7f
+music2.mp3
+sfx.wav

@@ -17,6 +17,7 @@ function to handle windows Messages.
 #include "VertexData.h"
 #include "ShapeGenerator.h"
 #include "Core.h"
+#include "AudioSystem.h"
 
 
 namespace Framework
@@ -26,7 +27,6 @@ namespace Framework
   Transform light;
   Sprite sprite;
   Sprite sprite1;
-  ResourceManager resourceManager;
   glm::vec3 position;
   float shininess = 15.0f;
   bool isPressed = false;
@@ -84,6 +84,8 @@ namespace Framework
         break;
       default:
         break;
+
+        
       }
     }
 
@@ -165,11 +167,12 @@ namespace Framework
     // Free Allocated Memory
     quad.Clean ();
 
-    // Load all Resources (Textures, Shaders, Maps,...)
-    resourceManager.Load_Resources ();
-
     // Create Sprite
-    sprite.Create (resourceManager.Get_Shader ("FragmentLighting.frag")->shaderProgram, resourceManager.Get_Texture("ScarlettJohansson.jpg")->textureID);
+    sprite.Create
+      (
+      ResourceManager::RESOURCE_MANAGER->Get_Shader ("FragmentLighting.frag")->shaderProgram,
+      ResourceManager::RESOURCE_MANAGER->Get_Texture("ScarlettJohansson.jpg")->textureID
+      );
 
     return true;
   }
