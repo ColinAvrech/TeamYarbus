@@ -29,6 +29,9 @@ namespace Framework
     void GraphicsUpdate(const double dt);
 
     void GLFWMessageHandler(GLFWwindow* window, int key, int scanCode, int state, int mod);
+    void GLFWMouseButtonFunction (GLFWwindow *, int button, int action, int mod);
+    void GLFWMouseCursorMoved (GLFWwindow* window, double xPos, double yPos);
+
 
   private:
     GLFWwindow* window;

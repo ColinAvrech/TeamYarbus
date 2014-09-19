@@ -16,12 +16,11 @@
 
 namespace Framework
 {
-  struct vertexData
+  struct VertexData
   {
     glm::vec3 position;
-    glm::vec3 normal;
-    glm::vec3 tangent;
     glm::vec4 color;
+    glm::vec3 normal;
     glm::vec2 texCoord;
   };
 

@@ -1,6 +1,6 @@
 /******************************************************************************/
 /*!
-\file   Matrix.h
+\file   LightingShader.h
 \author Manas Sudhir Kulkarni
 \par    Course: GAM200
 \par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
@@ -8,19 +8,23 @@
 */
 /******************************************************************************/
 
-#ifndef _CINDER_MATH_H
-#define _CINDER_MATH_H
+#ifndef _LIGHTING_SHADER_H
+#define _LIGHTING_SHADER_H
 
-#define  GLM_FORCE_RADIANS
-#include "glm.hpp"
-#include "glm\gtc\matrix_transform.hpp"
-#include "glm\gtx\transform.hpp"
-#include "glm/gtc/type_ptr.hpp"
-#include "Vec2.h"
-#include <iostream>
-#include <vector>
-#include <string>
-#include <cmath>
+#include "Shader.h"
 
+namespace Framework
+{
+
+  class LightingShader : public Shader
+  {
+  public:
+    LightingShader (const char* vs, const char* fs, const char* gs = 0);
+  ~LightingShader ();
+  
+  private:
+
+  };  
+}
 
 #endif

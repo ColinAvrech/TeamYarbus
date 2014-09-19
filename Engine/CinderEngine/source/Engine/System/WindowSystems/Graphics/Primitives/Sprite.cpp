@@ -79,17 +79,21 @@ namespace Framework
     // Specify the layout of the vertex data
     GLint posAttrib = glGetAttribLocation (shaderID, "position");
     glEnableVertexAttribArray (posAttrib);
-    glVertexAttribPointer (posAttrib, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), 0);
+    glVertexAttribPointer (posAttrib, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), 0);
 
     GLint colAttrib = glGetAttribLocation (shaderID, "color");
     glEnableVertexAttribArray (colAttrib);
-    glVertexAttribPointer (colAttrib, 4, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*) (2 * sizeof(GLfloat)));
+    glVertexAttribPointer (colAttrib, 4, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), (void*) (3 * sizeof(GLfloat)));
+
+    GLint normalAttrib = glGetAttribLocation (shaderID, "normal");
+    glEnableVertexAttribArray (normalAttrib);
+    glVertexAttribPointer (normalAttrib, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), (void*) (7 * sizeof(GLfloat)));
 
     if (textureID != TEXTURE_NONE)
     {
       GLint texAttrib = glGetAttribLocation (shaderID, "texcoord");
       glEnableVertexAttribArray (texAttrib);
-      glVertexAttribPointer (texAttrib, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*) (6 * sizeof(GLfloat)));
+      glVertexAttribPointer (texAttrib, 2, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), (void*) (10 * sizeof(GLfloat)));
 
       glUniform1i (glGetUniformLocation (shaderID, "image"), 0);
 
@@ -101,6 +105,7 @@ namespace Framework
       // If Texture Is Not Used, Use Draw No Texture Method To Draw Sprite
       DrawFunction = &Sprite::Draw_No_Texture;
     }
+
   }
 
 
@@ -108,28 +113,32 @@ namespace Framework
   // Not Complete
   void Sprite::Create_Mesh (GLfloat* vertices, GLuint* indices, GLuint arraySize)
   {
-    /*vao = new VAO ();
-      spriteData = new GLfloat [arraySize];
-      spriteData = vertices;
-      vbo = new VBO (sizeof(spriteData), spriteData);
-
-      if (faces == NULL)
-      {
-      ebo = new EBO (sizeof(tris), tris);
-      faceData = tris;
-      }
-      else
-      {
-      faceData = new GLuint [6];
-      faceData = faces;
-      ebo = new EBO (sizeof(faceData), faceData);
-      }*/
   }
 
 
   // Called By Renderer Component
   void Sprite::Draw ()
   {
+    //////////////////////////////////////////////////////////////////////////
+    // THIS BLOCK WILL GO INTO TRANSFORM COMPONENT
+    //////////////////////////////////////////////////////////////////////////
+
+    // MODEL TO WORLD
+    glm::mat4 modelMatrix = glm::translate (glm::vec3 (0.0f, 0.0f, -1.0f));
+    GLuint uniModel = glGetUniformLocation (shaderID, "modelMatrix");
+    glUniformMatrix4fv (uniModel, 1, GL_FALSE, glm::value_ptr (modelMatrix));
+
+    // WORLD TO VIEW
+    GLuint uniView = glGetUniformLocation (shaderID, "viewMatrix");
+    glUniformMatrix4fv (uniView, 1, GL_FALSE, glm::value_ptr (Camera::GetWorldToViewMatrix()));
+
+    // VIEW TO PROJECTION
+    GLuint uniProjection = glGetUniformLocation (shaderID, "projectionMatrix");
+    glUniformMatrix4fv (uniProjection, 1, GL_FALSE, glm::value_ptr (Camera::GetViewToProjectionMatrix()));
+
+    //////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
+
     (this->*DrawFunction)();
   }
 
@@ -139,7 +148,8 @@ namespace Framework
   {
     Use_Shader (shaderID);
     glBindTexture (GL_TEXTURE_2D, textureID);
-    glDrawElements (GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    glDrawElements (GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);
+    glBindTexture (GL_TEXTURE_2D, 0);
   }
 
 
@@ -155,6 +165,11 @@ namespace Framework
   void Sprite::Use_Shader (GLuint _shaderID)
   {
     glUseProgram (_shaderID);
+  }
+
+  void Sprite::Update_Shader ()
+  {
+
   }
 
 }
