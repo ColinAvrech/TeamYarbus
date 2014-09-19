@@ -1,0 +1,8 @@
+{
+  "EqualizePressure" : {true},
+  "MapSize" : {
+     "x" : {10},
+     "y" : {10},
+     }
+  "CellSize" : {10}
+}

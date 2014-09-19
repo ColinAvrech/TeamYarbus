@@ -17,7 +17,9 @@ starts the game loop.
 #include "WindowSystem.h"
 #include "EventSystem.h"
 #include "AudioSystem.h"
+#include "ZilchCompiledLib.h"
 #include "Core.h"
+#include "Physics/Thermodynamics.h"
 
 #define _DEGUB
 using namespace Framework;
@@ -42,11 +44,16 @@ int main(void)
   WindowSystem * windows      = new WindowSystem (WindowTitle, ClientWidth, ClientHeight);
   AudioSystem* audio          = new AudioSystem();
   EventSystem * events        = new EventSystem ();
-
+  ScriptSystem::
+    ScriptSystem * zilch      = new ScriptSystem::ScriptSystem();
+  Physics::
+    ThermodynamicsSystem * thermo = new Physics::ThermodynamicsSystem();
 
   engine->AddSystem(windows);
   engine->AddSystem(audio);
   engine->AddSystem(events);
+  engine->AddSystem(zilch);
+  engine->AddSystem(thermo);
 
   //! Initialize all added Systems. DON'T INIT YOUR OWN
   engine->Initialize();

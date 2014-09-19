@@ -1,6 +1,9 @@
 class Player
 {
-  [Static]
+  constructor()
+  {
+  }
+  
   function SayHello()
   {
     Console.WriteLine("Fuck the world!");

@@ -17,6 +17,8 @@
 #include "Common.h"
 #include "Zilch.hpp"
 #include "BaseSystem.h"
+#include "ZilchCompiledLib.h"
+#include <unordered_map>
 
 namespace Framework
 {
@@ -32,8 +34,7 @@ namespace Framework
       // Constructors
       ------------------------------------------------------------------------------*/
 #pragma region Constructors
-      ScriptSystem()
-        : ScriptCount(0) {};
+      ScriptSystem();
 #pragma endregion
 
       /*------------------------------------------------------------------------------
@@ -56,16 +57,18 @@ namespace Framework
 #pragma region Public Functions
 
       // Called after System is Initialized
-      virtual bool Initialize();
+      bool Initialize();
 
       // Called every frame
-      virtual void Update(const double dt);
+      void Update(const double dt);
 
       // Returns name of System
-      virtual const std::string GetName()
-      {
-        return "ScriptSystem";
-      }
+      const std::string GetName();
+      //Returns pointer to the required LibraryRef
+      Zilch::LibraryRef *GetZilchLib(const char *ScriptName);
+
+      //Returns pointer to the dependency library
+      Zilch::ExecutableState *GetDependencies(){ return LinkedLibs; }
 
 #pragma endregion
 
@@ -115,6 +118,9 @@ namespace Framework
       /*// Link all the libraries together into one ExecutableState*/
       Zilch::ExecutableState* LinkedLibs;
 
+      //Unordered map of compiled Zilch libraries
+      std::unordered_map<const char*, Zilch::LibraryRef>* LibList;
+
 #pragma endregion
 
       /*------------------------------------------------------------------------------
@@ -134,7 +140,6 @@ namespace Framework
 
     };  //class ScriptSystem
   } //ScriptSystem
-  //extern ScriptSystem::ScriptSystem * SCRIPTSYSTEM;
 } //Framework
 
 

@@ -4,6 +4,13 @@ namespace Framework
 {
   namespace ScriptSystem
   {    
+
+    ScriptSystem::ScriptSystem() : ScriptCount(0)
+    {
+      //SCRIPTSYSTEM = this;
+      LibList = new std::unordered_map < const char*, Zilch::LibraryRef > ;
+    }
+
     bool ScriptSystem::Initialize()
     {
       // Any one time startup and static initialization Zilch needs to do
@@ -16,7 +23,7 @@ namespace Framework
       Zilch::Project project(Errors); //declared in init function. Loops through till all scripts are compiled
       
       //Test Code----------------------------------------------------------------------------
-      project.AddCodeFromFile("test.z");
+      project.AddCodeFromFile("../../Resources/Scripts/test.z");
 
       // Create a list of dependent libraries, in our case we're really not adding anything to this
       // A side note: the Core library in Zilch is always added as a dependency, because Core includes
@@ -47,7 +54,7 @@ namespace Framework
 
       // Setup the console so that when we call 'Console.WriteLine' it outputs to stdio
       Zilch::Console::AddWriteTextCallback(Zilch::DefaultWriteText, nullptr);
-
+      
       // We can also setup the console so that any 'Read' functions will attempt to read from stdin
       Zilch::Console::SetReadTextCallback(Zilch::DefaultReadText, nullptr);
 
@@ -73,6 +80,11 @@ namespace Framework
       return true;
     }
     
+    const std::string ScriptSystem::GetName()
+    {
+      return "ScriptSystem";
+    }
+
     void ScriptSystem::Update(const double dt)
     {
       
@@ -81,7 +93,13 @@ namespace Framework
     ScriptSystem::~ScriptSystem()
     {
       delete LinkedLibs;
+      delete LibList;
       Zilch::ZilchShutdown();
     }
-  }
-}
+
+    Zilch::LibraryRef *ScriptSystem::GetZilchLib(const char *ScriptName)
+    {
+      return &(*LibList)[ScriptName];
+    }
+  } //namespace ScriptSystem
+} //namespace Framework
