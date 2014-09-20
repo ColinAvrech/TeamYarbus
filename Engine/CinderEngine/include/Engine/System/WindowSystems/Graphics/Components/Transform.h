@@ -33,8 +33,8 @@ namespace Framework
 
     // Type of Projection to Be Used
     // Mostly Orthographic
-    void ortho (float left, float right, float bottom, float top, float near, float far);
-    void perspective (float angle, float aRatio, float near, float far);
+    void Ortho (float left, float right, float bottom, float top, float near, float far);
+    void Perspective (float angle, float aRatio, float near, float far);
 
     // Replace the Fixed Functionality glTranslatef, glScalef,...
     void Translate (float x, float y, float z);

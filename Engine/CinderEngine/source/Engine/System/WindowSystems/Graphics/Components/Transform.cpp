@@ -55,19 +55,19 @@ namespace Framework
   }
 
 
-  // Orthographic Projection
-  void Transform::ortho (float left, float right, float bottom, float top, float near, float far)
-  {
-    projectionMatrix [projectionMatrix.size () - 1] = glm::ortho (left, right, bottom, top, near, far);
-    matricesReady = false;
-  }
+  //// Orthographic Projection
+  //void Transform::Ortho (float left, float right, float bottom, float top, float near, float far)
+  //{
+  //  projectionMatrix [projectionMatrix.size () - 1] = glm::ortho (left, right, bottom, top, near, far);
+  //  matricesReady = false;
+  //}
 
-  // Perspective Projection
-  void Transform::perspective (float angle, float aRatio, float near, float far)
-  {
-    projectionMatrix [projectionMatrix.size () - 1] = glm::perspective (angle, aRatio, near, far);
-    matricesReady = false;
-  }
+  //// Perspective Projection
+  //void Transform::Perspective (float angle, float aRatio, float near, float far)
+  //{
+  //  projectionMatrix [projectionMatrix.size () - 1] = glm::perspective (angle, aRatio, near, far);
+  //  matricesReady = false;
+  //}
 
   // Replace the Fixed Functionality glTranslatef, glScalef,...
   void Transform::Translate (float x, float y, float z)
