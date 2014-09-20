@@ -18,13 +18,14 @@ function to handle windows Messages.
 #include "ShapeGenerator.h"
 #include "Core.h"
 #include "AudioSystem.h"
+#include "ComponentInclude.h"
 
 
 namespace Framework
 {
   Camera camera (true);
   float camScrollSpeed = 0.05f;
-  Transform light;
+  Transform light(NULL);
   Sprite sprite;
   Sprite sprite1;
   glm::vec3 position;
