@@ -7,9 +7,7 @@
 #include "VertexArrayObject.h"
 #include "VertexBufferObject.h"
 #include "ElementBufferObject.h"
-#include "Camera.h"
-
-
+#include "Sprite.h"
 #include "Resources.h"
 #include <fstream>
 #include <iostream>

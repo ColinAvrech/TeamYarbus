@@ -11,14 +11,18 @@
 #ifndef _RENDERER_H
 #define _RENDERER_H
 
+#include "ComponentInclude.h"
+
 namespace Framework
 {
-  class Renderer
+  class Renderer : public GameComponent
   {
   public:
-  Renderer ();
+  Renderer (GameObject* obj);
   ~Renderer ();
   
+  // The non-base component usees DefineComponentName macro to name component
+  const static std::string Name;
   private:
 
   };  

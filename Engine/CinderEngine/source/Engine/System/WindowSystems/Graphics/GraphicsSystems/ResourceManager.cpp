@@ -65,7 +65,6 @@ namespace Framework
       std::cout << "Failed to load Shader File" << std::endl;
       return;
     }
-
     else
     {
       std::string vs;
@@ -96,8 +95,7 @@ namespace Framework
       {
         audioFile >> str;
         char* c = strstr ((char*)str.c_str(), str.c_str ());
-        Sound* sound = new Sound();
-        sound = AUDIOSYSTEM->LoadSound((AudioResourcePath + str).c_str(), c, Sound::SOUND_2D, 0.7f);
+        Sound* sound = AUDIOSYSTEM->LoadSound ((AudioResourcePath + str).c_str (), c, Sound::SOUND_2D, 0.5f);
         sounds[str] = sound;
         std::cout << str << std::endl;
       }
@@ -132,7 +130,7 @@ namespace Framework
     return shaders ["Default"];
   }
 
-  Sound* ResourceManager::Get_Sound(std::string soundName)
+  Sound* ResourceManager::Get_Sound (std::string soundName)
   {
     for (auto i : sounds)
     {
@@ -142,7 +140,7 @@ namespace Framework
       }
     }
 
-    return NULL;
+    throw ("Invalid Name...");
   }
 
 }

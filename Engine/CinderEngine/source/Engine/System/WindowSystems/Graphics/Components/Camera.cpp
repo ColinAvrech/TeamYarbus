@@ -13,11 +13,13 @@
 
 namespace Framework
 {
+  DefineComponentName (Camera);
+
   std::vector<Camera*> Camera::allCameras;
   Camera* Camera::current = NULL;
   Camera* Camera::main = NULL;
 
-  Camera::Camera (bool _main) : viewDirection (0.0f, 0.0f, -1.0f), up (0.0f, 1.0f, 0.0f)
+  Camera::Camera (GameObject* obj, bool _main) : viewDirection (0.0f, 0.0f, -1.0f), up (0.0f, 1.0f, 0.0f), GameComponent (obj)
   {
     size = 2.0f;
     aspect = 1.0f;

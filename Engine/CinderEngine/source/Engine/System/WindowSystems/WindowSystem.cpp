@@ -14,7 +14,6 @@ function to handle windows Messages.
 #include "Resources.h"
 #include "ResourceManager.h"
 #include "Sprite.h"
-#include "VertexData.h"
 #include "ShapeGenerator.h"
 #include "Core.h"
 #include "AudioSystem.h"
@@ -23,12 +22,10 @@ function to handle windows Messages.
 
 namespace Framework
 {
-  Camera camera (true);
+  Camera camera (NULL, true);
+  Transform light (NULL);
   float camScrollSpeed = 0.05f;
-  Transform light(NULL);
   Sprite sprite;
-  Sprite sprite1;
-  glm::vec3 position;
   float shininess = 15.0f;
   bool isPressed = false;
   VAO* vao;

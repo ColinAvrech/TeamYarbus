@@ -13,9 +13,12 @@
 namespace Framework
 {
 
+  DefineComponentName (Renderer);
+
   // Constructor
-  Renderer::Renderer ()
-  {}
+  Renderer::Renderer (GameObject* obj) : GameComponent (obj)
+  {
+  }
   
   // Destructor
   Renderer::~Renderer ()

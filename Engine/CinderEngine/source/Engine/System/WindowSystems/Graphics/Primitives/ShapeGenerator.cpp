@@ -14,14 +14,6 @@
 namespace Framework
 {
 
-  //// Constructor
-  //ShapeGenerator::ShapeGenerator ()
-  //{}
-  //
-  //// Destructor
-  //ShapeGenerator::~ShapeGenerator ()
-  //{}
-
   ShapeData ShapeGenerator::Generate_Quad ()
   {
     ShapeData data;

@@ -12,14 +12,15 @@
 #define _CAMERA_H
 
 #include "GraphicsCommon.h"
+#include "ComponentInclude.h"
 
 namespace Framework
 {
 
-  class Camera
+  class Camera : public GameComponent
   {
   public:
-    Camera (bool main = false);
+    Camera (GameObject* obj, bool main = false);
     void MouseUpdate (const glm::vec2& newPosition);
     void MouseUpdateY (const glm::vec2& newPosition);
     void UpdatePosition (const glm::vec3& deltaPos);
@@ -34,7 +35,8 @@ namespace Framework
 
     ~Camera ();
 
-
+    // The non-base component usees DefineComponentName macro to name component
+    const static std::string Name;
   private:
     glm::vec3 position;
     glm::vec3 viewDirection;

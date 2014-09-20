@@ -1,4 +1,5 @@
 #include "Sprite.h"
+#include "Camera.h"
 
 namespace Framework
 {
