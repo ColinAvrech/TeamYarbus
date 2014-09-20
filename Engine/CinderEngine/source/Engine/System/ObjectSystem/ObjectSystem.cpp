@@ -50,7 +50,7 @@ namespace Framework
 
   void ObjectSystem::RegisterComponents(void)
   {
-    //RegisterComponent(Transform);
+    RegisterComponent(Transform);
     //RegisterComponent(Sprite);
   }
 

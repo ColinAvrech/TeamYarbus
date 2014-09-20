@@ -8,6 +8,7 @@
 */
 /******************************************************************************/
 
+#pragma once
 #ifndef _TRANSFORM_H
 #define _TRANSFORM_H
 
@@ -28,6 +29,7 @@ namespace Framework
   public:
     Transform (GameObject* obj);
     ~Transform ();
+
 
     void Load_Identity ();
 
@@ -56,6 +58,9 @@ namespace Framework
     //GLSL
     void UpdateMatrices (GLuint programId);
 
+
+    // The non-base component usees DefineComponentName macro to name component
+    const static std::string Name;
   private:
     int currentMatrix;
     //Matrix Stack
@@ -79,7 +84,7 @@ namespace Framework
     glm::mat4 modelViewProjectionMatrix;
     glm::mat3 normalMatrix;
 
-  };  
+  };
 }
 
 #endif
