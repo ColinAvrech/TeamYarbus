@@ -12,6 +12,7 @@
 #define _TRANSFORM_H
 
 #include "GraphicsCommon.h"
+#include "ComponentInclude.h"
 
 namespace Framework
 {
@@ -22,10 +23,10 @@ namespace Framework
     PROJECTION_MATRIX
   };
 
-  class Transform
+  class Transform : public GameComponent
   {
   public:
-    Transform ();
+    Transform (GameObject* obj);
     ~Transform ();
 
     void Load_Identity ();

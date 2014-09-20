@@ -17,13 +17,14 @@ function to handle windows Messages.
 #include "VertexData.h"
 #include "ShapeGenerator.h"
 #include "Core.h"
+#include "ComponentInclude.h"
 
 
 namespace Framework
 {
   Camera camera (true);
   float camScrollSpeed = 0.05f;
-  Transform light;
+  Transform light(NULL);
   Sprite sprite;
   Sprite sprite1;
   ResourceManager resourceManager;

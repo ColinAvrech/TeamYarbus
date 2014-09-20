@@ -11,6 +11,8 @@ deleted.
 /******************************************************************************/
 
 #include "ObjectSystem.h"
+#include "Component.h"
+#include "ComponentInclude.h"
 #include "Common.h"
 
 namespace Framework
@@ -34,6 +36,7 @@ namespace Framework
   {
     ErrorIf(OBJECTSYSTEM != NULL, "Factory Already Created");
     OBJECTSYSTEM = this;
+    RegisterComponents();
   }
 
   ObjectSystem::~ObjectSystem()
@@ -45,11 +48,22 @@ namespace Framework
   {
   }
 
+  void ObjectSystem::RegisterComponents(void)
+  {
+    //RegisterComponent(Transform);
+    //RegisterComponent(Sprite);
+  }
+
+  void ObjectSystem::AddComponentCreator(std::string name, ComponentCreator* creator)
+  {
+    SerialMap[name] = creator;
+  }
+
   void ObjectSystem::DestroyAllObjects()
   {    
 
   }
-
+  /*
   void ObjectSystem::LoadLevel(std::string level)
   {
     std::string levelpath(LevelAssetsPath);
@@ -69,12 +83,9 @@ namespace Framework
 
     levelfile.close();
   }
-
-
-
   std::string ObjectSystem::ReadLine(std::string line)
   {
     return NULL;
   }
-
+  */
 }

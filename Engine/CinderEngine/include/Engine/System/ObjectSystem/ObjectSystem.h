@@ -14,6 +14,7 @@
 
 #include "BaseSystem.h"
 #include "Component.h"
+#include "ComponentCreator.h"
 
 namespace Framework
 {
@@ -47,12 +48,17 @@ namespace Framework
     /*!Used to generator unique GOCIds*/
     static unsigned LastGameObjectId;
 
+
+
   private:
 
+    void RegisterComponents(void);
+    void AddComponentCreator(std::string name, ComponentCreator* creator);
 
-    std::string ReadLine(std::string line);
-    //typedef std::map<std::string, size_t> SerializationMap;
-    //SerializationMap  SerialMap;
+    //std::string ReadLine(std::string line);
+    
+    typedef std::map<std::string, ComponentCreator *> SerializationMap;
+    SerializationMap SerialMap;
 
 
   };

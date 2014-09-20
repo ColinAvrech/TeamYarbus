@@ -22,12 +22,12 @@ from externals, and stable elements within the engine.
 #include <map>
 #include <set>
 #include <string>
-#include <algorithm> //! std::sort
+#include <algorithm> //! std::sorts
+
 
 //Windows
 #define WIN32_LEAN_AND_MEAN
 #include "Windows.h"
-
 
 //! Global Headers
 #include "Console.h"

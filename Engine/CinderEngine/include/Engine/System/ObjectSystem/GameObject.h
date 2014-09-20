@@ -29,7 +29,7 @@ factory in the next loop.
 
 #pragma once
 
-#include "Common.h"
+#include <map>
 #include "Vec2.h"
 
 namespace Framework
@@ -49,9 +49,10 @@ namespace Framework
 
 
     template<typename T>
-    GameComponent* AddComponent()
+    GameComponent* AddComponent(std::string name)
     {
-      GameComponent* gc = new T(this);
+      OBJECTSYSTEM->
+      GameComponent* gc = new T(this, name);
       ComponentMap.Insert(T::Name, gc);
       return gc;
     }
@@ -79,7 +80,6 @@ namespace Framework
 
     //Public Variables
     GameObject* Parent;
-    Vec2 GOPosition;
     unsigned GameObjectID;
     /*
     std::list<GameObject*> ChildObjects;

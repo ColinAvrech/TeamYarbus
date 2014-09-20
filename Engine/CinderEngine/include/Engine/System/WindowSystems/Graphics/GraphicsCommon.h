@@ -8,7 +8,7 @@
 #include "VertexBufferObject.h"
 #include "ElementBufferObject.h"
 #include "Camera.h"
-#include "Transform.h"
+
 
 #include "Resources.h"
 #include <fstream>

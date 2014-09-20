@@ -13,6 +13,8 @@ starts the game loop.
 #define WINDOWSBUILD
 #ifdef WINDOWSBUILD
 
+
+
 #include "Common.h"
 #include "WindowSystem.h"
 #include "EventSystem.h"
@@ -20,6 +22,8 @@ starts the game loop.
 #include "ZilchCompiledLib.h"
 #include "Core.h"
 #include "Physics/Thermodynamics.h"
+
+
 
 #define _DEGUB
 using namespace Framework;
