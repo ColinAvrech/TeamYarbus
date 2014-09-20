@@ -34,15 +34,6 @@ namespace Framework
     //SoundName.test->HighPassFilter();
     //SoundName.test->Reverb();
 
-    Sound *soundA;
-    Sound *soundB;
-
-    soundA->Play();
-    soundA->SetVolume(0.5);
-
-    soundB->Play();
-    soundB->Reverb(100, 10, 43214);
-
     //SoundName.test2 = LoadSound("music.mp3", "Test1", Sound::SOUND_2D, 0.7f);
 
     std::cout << "ALL SOUNDS LOADED" << std::endl;

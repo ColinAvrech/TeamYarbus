@@ -52,11 +52,11 @@ namespace Framework
       {
       case GLFW_KEY_W:
         light.Translate (0, 0.01f, 0);
-        SoundName.test2->SetPause(true);
+        //SoundName.test2->SetPause(true);
         break;
       case GLFW_KEY_S:
         light.Translate (0, -0.01f, 0);
-        SoundName.test2->SetPause(false);
+        //SoundName.test2->SetPause(false);
         break;
       case GLFW_KEY_D:
         light.Translate (0.01f, 0, 0);
@@ -178,16 +178,17 @@ namespace Framework
 
     // Create Sprite
     sprite.Create
-      (
-      ResourceManager::RESOURCE_MANAGER->Get_Shader ("FragmentLighting.frag")->shaderProgram,
-      ResourceManager::RESOURCE_MANAGER->Get_Texture("ScarlettJohansson.jpg")->textureID
-      );
+    (
+    ResourceManager::RESOURCE_MANAGER->Get_Shader ("FragmentLighting.frag")->shaderProgram,
+    ResourceManager::RESOURCE_MANAGER->Get_Texture("TeamLogo.jpg")->textureID
+    );
 
     //SoundName.test1 = ResourceManager::RESOURCE_MANAGER->Get_Sound("music2.mp3");
-   //SoundName.test1->Play();
+    //SoundName.test1->Play();
+    //
+    //SoundName.test2 = ResourceManager::RESOURCE_MANAGER->Get_Sound("music.mp3");
+    //SoundName.test2->Play();
 
-    SoundName.test2 = ResourceManager::RESOURCE_MANAGER->Get_Sound("music.mp3");
-    SoundName.test2->Play();
     return true;
   }
 
