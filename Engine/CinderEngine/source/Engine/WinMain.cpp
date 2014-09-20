@@ -50,7 +50,7 @@ int main(void)
   AudioSystem* audio          = new AudioSystem();
   EventSystem * events        = new EventSystem ();
   ScriptSystem::
-    ScriptSystem * zilch      = new ScriptSystem::ScriptSystem();
+  ScriptSystem * zilch      = new ScriptSystem::ScriptSystem();
   Physics::
     ThermodynamicsSystem * thermo = new Physics::ThermodynamicsSystem();
 
@@ -65,13 +65,6 @@ int main(void)
 
   //! Initialize all added Systems. DON'T INIT YOUR OWN
   engine->Initialize();
-  //audio->LoadAllSounds();
-
-  ResourceManager::RESOURCE_MANAGER->Get_Sound("music2.mp3")->Play();
-  ResourceManager::RESOURCE_MANAGER->Get_Sound("music2.mp3")->SetVolume(1.0f);
-  ResourceManager::RESOURCE_MANAGER->Get_Sound("music2.mp3")->LowPassFilter(50, 10);
-
-  ResourceManager::RESOURCE_MANAGER->Get_Sound("music.mp3")->Play();
 
   //! activate the window.
 

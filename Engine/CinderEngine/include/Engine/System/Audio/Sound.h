@@ -83,9 +83,11 @@ namespace Framework
                            char* soundName, 
                            SoundID id);
       void            Play();
+      void            Stop();
       void            PlayNew();
       void            AddSound(char* filename);
       virtual void    Update(const double dt);  
+      void            volumeFade(float volume, float fadeTime);
 
       // DSP
       void            LowPassFilter(float cutoff = 5000.0, float resonance = 1.0);
@@ -109,6 +111,8 @@ namespace Framework
       // Setters
       void            SetChannelGroup(FMOD::ChannelGroup* channelGroup);      
       void            SetVolume(const float volume);
+      void            SetMute(bool muteState);
+      void            SetPause(bool pauseState);
       void            SetLoop(const bool loopState, int index);
       void            SetLoopPoints(const float startPos, 
                                     const float endPos = 0, 
@@ -118,7 +122,7 @@ namespace Framework
       // Getters
       float           GetMasterVolume(void);
       bool            GetPlaying();
-      bool            GetPaused();      
+      bool            GetPaused();
       float           GetVolume();      
       unsigned        GetID(){return ID;}
 

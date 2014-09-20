@@ -132,6 +132,69 @@ namespace Framework
       pChannel->setVolume(volume);
   }
 
+  void Sound::SetPause(bool pauseState)
+  {
+    if (Sound::system_on_ == false)
+    { 
+      return; 
+    }
+
+    if (pChannel)
+    {
+      if (pauseState == true)
+      {
+        pChannel->setPaused(true);
+        _paused = true;
+      }
+      else if (pauseState == false)
+      {
+        pChannel->setPaused(false);
+        _paused = false;
+      }
+      
+    }
+  }
+
+  void Sound::Stop()
+  {
+    if (Sound::system_on_ == false)
+    { 
+      return; 
+    }
+
+    if (pChannel)
+    {
+      bool playing = false;
+      pChannel->isPlaying(&playing);
+      if (playing)
+      {
+        ErrCheck(pChannel->stop());
+        pChannel = NULL;
+      }
+    }
+  }
+
+  void Sound::SetMute(bool muteState)
+  {
+    // Checks if system is not on
+    if (Sound::system_on_ == false)
+    {
+      return;
+    }
+
+    if (pChannel)
+    {
+      if (muteState == true)
+      {
+        pChannel->setMute(muteState);
+      }
+      else if (muteState == false)
+      {
+        pChannel->setMute(muteState);
+      }
+    }    
+  }
+
   /***************************************************************************/
   /*!
   \brief  Attaches a Low Pass Filter to the Signal Chain
@@ -149,6 +212,12 @@ namespace Framework
   {
     FMOD_RESULT result;
     bool active;
+
+    // Checks if system is not on
+    if (Sound::system_on_ == false)
+    {
+      return;
+    }
 
     result = pFMODAudioSystem->createDSPByType(FMOD_DSP_TYPE_LOWPASS, &objects_DSP.dsp_lpf);
     ErrCheck(result);
@@ -195,6 +264,12 @@ namespace Framework
   {
     FMOD_RESULT result;
     bool active;
+
+    // Checks if system is not on
+    if (Sound::system_on_ == false)
+    {
+      return;
+    }
 
     result = pFMODAudioSystem->createDSPByType(FMOD_DSP_TYPE_HIGHPASS, &objects_DSP.dsp_hpf);
     ErrCheck(result);
@@ -299,6 +374,12 @@ namespace Framework
   {
     FMOD_RESULT result;
     bool active;
+
+    // Checks if system is not on
+    if (Sound::system_on_ == false)
+    {
+      return;
+    }
 
     result = pFMODAudioSystem->createDSPByType(FMOD_DSP_TYPE_SFXREVERB, &objects_DSP.dsp_reverb);
     ErrCheck(result);

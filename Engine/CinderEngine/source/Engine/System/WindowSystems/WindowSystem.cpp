@@ -35,6 +35,12 @@ namespace Framework
   VBO* vbo;
   EBO* ebo;
 
+  struct SoundName
+  {
+    Sound *test1;
+    Sound *test2;
+  }SoundName;
+
   //! Global pointer to  the windows system.
   WindowSystem* WINDOWSYSTEM = NULL;
 
@@ -46,9 +52,11 @@ namespace Framework
       {
       case GLFW_KEY_W:
         light.Translate (0, 0.01f, 0);
+        SoundName.test2->SetPause(true);
         break;
       case GLFW_KEY_S:
         light.Translate (0, -0.01f, 0);
+        SoundName.test2->SetPause(false);
         break;
       case GLFW_KEY_D:
         light.Translate (0.01f, 0, 0);
@@ -157,7 +165,7 @@ namespace Framework
   bool WindowSystem::Initialize ()
   {
     light.Translate (0, 0.36f, 0);
-
+    ResourceManager::RESOURCE_MANAGER->Load_Resources();
     // Generate a Quad for Us
     ShapeData quad = ShapeGenerator::Generate_Quad ();
 
@@ -175,6 +183,11 @@ namespace Framework
       ResourceManager::RESOURCE_MANAGER->Get_Texture("ScarlettJohansson.jpg")->textureID
       );
 
+    //SoundName.test1 = ResourceManager::RESOURCE_MANAGER->Get_Sound("music2.mp3");
+   //SoundName.test1->Play();
+
+    SoundName.test2 = ResourceManager::RESOURCE_MANAGER->Get_Sound("music.mp3");
+    SoundName.test2->Play();
     return true;
   }
 
