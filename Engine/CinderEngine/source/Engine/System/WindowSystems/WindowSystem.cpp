@@ -187,12 +187,12 @@ namespace Framework
     // Create Sprite
     sprite.Create
       (
-      ResourceManager::RESOURCE_MANAGER->Get_Shader ("FragmentLighting.frag"),
+      ResourceManager::RESOURCE_MANAGER->Get_Shader ("LightingAnimation"),
       ResourceManager::RESOURCE_MANAGER->Get_SpriteSheet ("Logo.png")
       );
     sprite1.Create
       (
-      ResourceManager::RESOURCE_MANAGER->Get_Shader ("Basic.frag"),
+      ResourceManager::RESOURCE_MANAGER->Get_Shader ("Default"),
       ResourceManager::RESOURCE_MANAGER->Get_Texture ("TeamName.png")
       );
 

@@ -79,6 +79,21 @@ namespace Framework
   }
 
 
+  GLuint Shader::Create_Shader (std::string shaderSource, GLenum shaderType)
+  {
+    const char* source = shaderSource.c_str ();
+    GLuint shader = glCreateShader (shaderType);
+    glShaderSource (shader, 1, &source, NULL);
+    glCompileShader (shader);
+    char log [1000];
+    glGetShaderInfoLog (shader, 1000, NULL, log);
+
+    std::cout << "Compile Status..." << log << std::endl;
+
+    return shader;
+  }
+
+
   GLuint Shader::Create_Program (GLuint _vertexShader, GLuint _fragmentShader, GLuint _geometryShader/*= 0*/)
   {
     GLuint program = glCreateProgram ();
@@ -90,8 +105,8 @@ namespace Framework
     return program;
   }
 
-  GLuint Shader::Create_Shader_From_String ()
-  {
+  GLuint Shader::Create_Shader_From_String(std::string& vs, std::string& fs)
+{
     // Create and compile the vertex shader
     GLuint vertexShader = glCreateShader (GL_VERTEX_SHADER);
     glShaderSource (vertexShader, 1, &vertexSource, NULL);

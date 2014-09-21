@@ -18,9 +18,9 @@ uniform vec2 frameRatio;
 
 void main()
 {
-   Color = color;
-   Texcoord = vec2 (texOffset.x + texcoord.x * frameRatio.x, texOffset.y + texcoord.y * frameRatio.y);
-   gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(position, 0.5);
-   Position = vec3 (position.x, position.y, 1.0);
-   Normal = normal;
+  gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(position, 0.5);
+  Color = color;
+  Texcoord = vec2 (texOffset.x + texcoord.x * frameRatio.x, texOffset.y + texcoord.y * frameRatio.y);
+  Position = vec3 (position.x, position.y, 1.0);
+  Normal = normal;
 }

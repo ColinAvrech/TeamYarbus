@@ -1,3 +1,2 @@
 Basic.frag
-FragmentLighting.frag
-CubeRender.frag
+Lighting.frag

@@ -95,7 +95,7 @@ namespace Framework
 
   void ResourceManager::Load_Shaders ()
   {
-    shaders ["Default"] = new Shader ((ShaderResourcePath + "Basic.vs").c_str (), (ShaderResourcePath + "Basic.frag").c_str ());
+    /*shaders ["Default"] = new Shader ((ShaderResourcePath + "Basic.vs").c_str (), (ShaderResourcePath + "Basic.frag").c_str ());
 
     std::ifstream vertexShaderFile (ShaderResourcePath + "VertexShaders.txt");
     std::ifstream fragShaderFile (ShaderResourcePath + "FragmentShaders.txt");
@@ -114,6 +114,70 @@ namespace Framework
         vertexShaderFile >> vs;
         fragShaderFile >> fs;
         shaders [fs] = new Shader (((ShaderResourcePath + vs).c_str ()), (ShaderResourcePath + fs).c_str ());
+      }
+    }*/
+
+    std::ifstream vsList (ShaderResourcePath + "VertexShaders.txt");
+    std::ifstream fsList (ShaderResourcePath + "FragmentShaders.txt");
+    std::ifstream comp (ShaderResourcePath + "Shaders.txt");
+
+    if (!(vsList.good () || fsList.good () || comp.good ()))
+    {
+      if (!vsList.good ())
+      {
+        std::cout << "Failed to load Shader File..." << "VertexShaders.txt\n";
+      }
+      if (!fsList.good ())
+      {
+        std::cout << "Failed to load Shader File..." << "FragmentShaders.txt\n";
+      }
+      if (!comp.good ())
+      {
+        std::cout << "Failed to load Shader File..." << "Shaders.txt\n";
+      }
+      return;
+    }
+    else
+    {
+      std::string data;
+      Shader* s = new Shader ();
+      std::unordered_map <std::string, std::string> vSource;
+      std::unordered_map <std::string, std::string> fSource;
+
+      while (!vsList.eof())
+      {
+        vsList >> data;
+        vSource [data] = s->Read_Shader ((ShaderResourcePath + data).c_str ());
+      }
+
+      while (!fsList.eof ())
+      {
+        fsList >> data;
+        fSource [data] = s->Read_Shader ((ShaderResourcePath + data).c_str ());
+      }
+
+      while (!comp.eof())
+      {
+        unsigned vPos, fPos;
+        std::string vs;
+        std::string fs;
+        std::string name;
+        comp >> data;
+        vPos = data.find ("-");
+        fPos = data.find (">");
+        vs = data.substr (0, vPos);
+        
+        for (int i = vPos + 1; i < fPos; ++i)
+        {
+          fs += data [i];
+        }
+
+        name = data.substr (fPos + 1, data.size () - 1);
+
+        shaders [name] = new Shader ();
+        GLuint vID = shaders [name]->vertexShader = shaders [name]->Create_Shader (vSource [vs], GL_VERTEX_SHADER);
+        GLuint fID = shaders [name]->fragmentShader = shaders [name]->Create_Shader (fSource [fs], GL_FRAGMENT_SHADER);
+        shaders [name]->shaderProgram = shaders [name]->Create_Program (vID, fID);
       }
     }
   }
