@@ -117,6 +117,8 @@ namespace Framework
       }
     }*/
 
+
+    // List of Vertex Shaders, Fragment Shaders, Shader Programs
     std::ifstream vsList (ShaderResourcePath + "VertexShaders.txt");
     std::ifstream fsList (ShaderResourcePath + "FragmentShaders.txt");
     std::ifstream comp (ShaderResourcePath + "Shaders.txt");
@@ -141,19 +143,21 @@ namespace Framework
     {
       std::string data;
       Shader* s = new Shader ();
-      std::unordered_map <std::string, std::string> vSource;
-      std::unordered_map <std::string, std::string> fSource;
+      std::unordered_map <std::string, GLuint> vSource;
+      std::unordered_map <std::string, GLuint> fSource;
 
       while (!vsList.eof())
       {
+        // Compile All Vertex Shaders
         vsList >> data;
-        vSource [data] = s->Read_Shader ((ShaderResourcePath + data).c_str ());
+        vSource [data] = s->Create_Shader (s->Read_Shader ((ShaderResourcePath + data).c_str ()), GL_VERTEX_SHADER);
       }
 
       while (!fsList.eof ())
       {
+        // Compile All Fragment Shaders
         fsList >> data;
-        fSource [data] = s->Read_Shader ((ShaderResourcePath + data).c_str ());
+        fSource [data] = s->Create_Shader (s->Read_Shader ((ShaderResourcePath + data).c_str ()), GL_FRAGMENT_SHADER);
       }
 
       while (!comp.eof())
@@ -167,18 +171,20 @@ namespace Framework
         fPos = data.find (">");
         vs = data.substr (0, vPos);
         
-        for (int i = vPos + 1; i < fPos; ++i)
+        for (unsigned i = vPos + 1; i < fPos; ++i)
         {
           fs += data [i];
         }
 
         name = data.substr (fPos + 1, data.size () - 1);
 
+        // Link The Corresponding Vertex And Fragment Shaders in the Shader Program Document
         shaders [name] = new Shader ();
-        GLuint vID = shaders [name]->vertexShader = shaders [name]->Create_Shader (vSource [vs], GL_VERTEX_SHADER);
-        GLuint fID = shaders [name]->fragmentShader = shaders [name]->Create_Shader (fSource [fs], GL_FRAGMENT_SHADER);
-        shaders [name]->shaderProgram = shaders [name]->Create_Program (vID, fID);
+        shaders [name]->shaderProgram = shaders [name]->Create_Program (vSource[vs], fSource[fs]);
       }
+
+      // Free memory
+      delete s;
     }
   }
 
