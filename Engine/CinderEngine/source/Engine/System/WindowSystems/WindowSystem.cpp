@@ -246,6 +246,7 @@ namespace Framework
 
     glUseProgram (sprite.Get_Shader ()->Get_ID ());
 
+#pragma region Instance Drawing
     //////////////////////////////////////////////////////////////////////////
     // Instancing
     // Very Basic and Wrong
@@ -278,6 +279,7 @@ namespace Framework
     sprite.modelMatrix = glm::translate (glm::vec3 (1.5f, -1.5f, -1.0f));
     sprite.Draw ();
     //////////////////////////////////////////////////////////////////////////
+#pragma endregion
   }
 
 }
