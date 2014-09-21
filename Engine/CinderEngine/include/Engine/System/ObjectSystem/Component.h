@@ -30,11 +30,11 @@ namespace Framework
   /*! A Component is added to a Game object composition and is
   a small piece of logic for an object. 
   Ex, Transform component, Sprite Components*/
-  class GameComponent
+  class Component
   {
   public:
-    GameComponent(GameObject *obj)
-      : Obj(obj){}
+    Component(GameObject *obj)
+      : gameObject(obj){}
     
     /*!Telegraph that the component is active*/
     virtual void Initalize(){};
@@ -43,7 +43,7 @@ namespace Framework
     virtual void Serialize(){};
 
     //Variables that all components have
-    const GameObject* Obj;
+    const GameObject* gameObject;
   };
 
 }

@@ -15,7 +15,7 @@
 
 namespace Framework
 {
-  class Renderer : public GameComponent
+  class Renderer : public Component
   {
   public:
   Renderer (GameObject* obj);

@@ -1,6 +1,6 @@
 /******************************************************************************/
 /*!
-\file   Renderer.cpp
+\file   Color.h
 \author Manas Sudhir Kulkarni
 \par    Course: GAM200
 \par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
@@ -8,19 +8,14 @@
 */
 /******************************************************************************/
 
-#include "Renderer.h"
+#ifndef _COLOR_H
+#define _COLOR_H
 
-namespace Framework
+#include "glm.hpp"
+
+namespace Color
 {
 
-  DefineComponentName (Renderer);
-
-  // Constructor
-  Renderer::Renderer (GameObject* obj) : Component (obj)
-  {
-  }
-  
-  // Destructor
-  Renderer::~Renderer ()
-  {}
 }
+
+#endif

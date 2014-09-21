@@ -28,7 +28,7 @@ namespace Framework
     //pass std::string str.c_str() to convert to const char*
     //------------------------------------------------------------------
 
-    class ZilchComponent : public GameComponent
+    class ZilchComponent : public Component
     {
     public:
 

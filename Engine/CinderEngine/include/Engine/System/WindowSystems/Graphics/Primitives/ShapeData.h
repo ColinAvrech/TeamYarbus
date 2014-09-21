@@ -32,7 +32,7 @@ namespace Framework
       return numVertices * sizeof (VertexData);
     }
 
-    GLuint ibo_size ()
+    GLuint ebo_size ()
     {
       return numIndices * sizeof (GLuint);
     }

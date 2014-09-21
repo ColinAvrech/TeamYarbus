@@ -24,7 +24,7 @@ namespace Framework
     PROJECTION_MATRIX
   };
 
-  class Transform : public GameComponent
+  class Transform : public Component
   {
   public:
     Transform (GameObject* obj);
@@ -58,6 +58,7 @@ namespace Framework
     //GLSL
     void UpdateMatrices (GLuint programId);
 
+    static void Print (glm::vec3 position);
 
     // The non-base component usees DefineComponentName macro to name component
     const static std::string Name;

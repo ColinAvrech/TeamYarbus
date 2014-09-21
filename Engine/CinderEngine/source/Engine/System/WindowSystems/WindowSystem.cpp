@@ -13,7 +13,6 @@ function to handle windows Messages.
 #include "GraphicsCommon.h"
 #include "Resources.h"
 #include "ResourceManager.h"
-#include "Sprite.h"
 #include "ShapeGenerator.h"
 #include "Core.h"
 #include "AudioSystem.h"
@@ -24,8 +23,9 @@ namespace Framework
 {
   Camera camera (NULL, true);
   Transform light (NULL);
+  Sprite sprite (NULL);
+  Sprite sprite1 (NULL);
   float camScrollSpeed = 0.05f;
-  Sprite sprite;
   float shininess = 15.0f;
   bool isPressed = false;
   VAO* vao;
@@ -45,6 +45,7 @@ namespace Framework
   {
     void GLFWMessageHandler (GLFWwindow* window, int key, int scanCode, int state, int mod)
     {
+      //if (state == GLFW_REPEAT)
       switch (key)
       {
       case GLFW_KEY_W:
@@ -71,10 +72,18 @@ namespace Framework
         glfwSetWindowShouldClose (window, GL_TRUE);
         break;
       case GLFW_KEY_LEFT:
-        camera.UpdatePosition (glm::vec3 (-camScrollSpeed, 0.0f, 0.0f));
+        //////////////////////////////////////////////////////////////////////////
+        // Only For Testing
+        sprite.modelMatrix = glm::translate (sprite.modelMatrix, glm::vec3 (-0.1f, 0.0f, 0.0f));
+        //////////////////////////////////////////////////////////////////////////
+        //camera.UpdatePosition (glm::vec3 (-camScrollSpeed, 0.0f, 0.0f));
         break;
       case GLFW_KEY_RIGHT:
-        camera.UpdatePosition (glm::vec3 (camScrollSpeed, 0.0f, 0.0f));
+        //////////////////////////////////////////////////////////////////////////
+        // Only Fore Testing
+        sprite.modelMatrix = glm::translate (sprite.modelMatrix, glm::vec3 (0.1f, 0.0f, 0.0f));
+        //////////////////////////////////////////////////////////////////////////
+        //camera.UpdatePosition (glm::vec3 (camScrollSpeed, 0.0f, 0.0f));
         break;
       case GLFW_KEY_UP:
         camera.UpdatePosition (glm::vec3 (0.0f, camScrollSpeed, 0.0f));
@@ -149,6 +158,9 @@ namespace Framework
       glewInit();
       std::cout << "OpenGl Version: " << Console::green << glGetString(GL_VERSION) << Console::gray << std::endl;
       glEnable (GL_BLEND);
+      glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+      glEnable (GL_DEPTH_TEST);
+      glEnable (GL_ALPHA_TEST);
     }
   }
 
@@ -162,24 +174,29 @@ namespace Framework
   bool WindowSystem::Initialize ()
   {
     light.Translate (0, 0.36f, 0);
-    ResourceManager::RESOURCE_MANAGER->Load_Resources();
     // Generate a Quad for Us
     ShapeData quad = ShapeGenerator::Generate_Quad ();
 
     vao = new VAO ();
     vbo = new VBO (quad.vbo_size(), quad.vertices);
-    ebo = new EBO (quad.ibo_size(), quad.indices);
+    ebo = new EBO (quad.ebo_size(), quad.indices);
 
     // Free Allocated Memory
     quad.Clean ();
 
     // Create Sprite
     sprite.Create
-    (
-    ResourceManager::RESOURCE_MANAGER->Get_Shader ("FragmentLighting.frag")->shaderProgram,
-    ResourceManager::RESOURCE_MANAGER->Get_Texture("TeamLogo.jpg")->textureID
-    );
+      (
+      ResourceManager::RESOURCE_MANAGER->Get_Shader ("FragmentLighting.frag"),
+      ResourceManager::RESOURCE_MANAGER->Get_Texture("TeamLogo.png")
+      );
+    sprite1.Create
+      (
+      ResourceManager::RESOURCE_MANAGER->Get_Shader ("FragmentLighting.frag"),
+      ResourceManager::RESOURCE_MANAGER->Get_Texture ("TeamLogo.png")
+      );
 
+    sprite.modelMatrix = glm::translate (glm::vec3 (-1.5f, 0.0f, -1.0f));
     //SoundName.test1 = ResourceManager::RESOURCE_MANAGER->Get_Sound("music2.mp3");
     //SoundName.test1->Play();
     //
@@ -212,21 +229,55 @@ namespace Framework
   void WindowSystem::GraphicsUpdate (const double dt)
   {
     glClearColor (0, 0, 0, 0);
-    glClear (GL_COLOR_BUFFER_BIT);
+    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    light.UpdateMatrices (0);
+
 
     // Update Uniform Variables
-    glUniform3f (glGetUniformLocation (sprite.shaderID, "lightPos"), light.GetPosition().x, light.GetPosition ().y, light.GetPosition ().z);
-    glUniform3f (glGetUniformLocation (sprite.shaderID, "mambient"), 0.2f, 0.2f, 0.2f);
-    glUniform3f (glGetUniformLocation (sprite.shaderID, "mdiffuse"), 0.6f, 0.6f, 0.6f);
-    glUniform3f (glGetUniformLocation (sprite.shaderID, "mspecular"), 1.0f, 1.0f, 1.0f);
+    glUniform3fv (glGetUniformLocation (sprite.Get_Shader ()->Get_ID (), "lightPos"), 1, glm::value_ptr(light.GetPosition()));
+    glUniform3f (glGetUniformLocation (sprite.Get_Shader ()->Get_ID (), "mambient"), 0.2f, 0.2f, 0.2f);
+    glUniform3f (glGetUniformLocation (sprite.Get_Shader ()->Get_ID (), "mdiffuse"), 0.6f, 0.6f, 0.6f);
+    glUniform3f (glGetUniformLocation (sprite.Get_Shader ()->Get_ID (), "mspecular"), 1.0f, 1.0f, 1.0f);
 
-    glUniform3f (glGetUniformLocation (sprite.shaderID, "lambient"), 0.2f, 0.2f, 0.2f);
-    glUniform3f (glGetUniformLocation (sprite.shaderID, "ldiffuse"), 0.6f, 0.6f, 0.6f);
-    glUniform3f (glGetUniformLocation (sprite.shaderID, "lspecular"), 1.0f, 1.0f, 1.0f);
-    glUniform1f (glGetUniformLocation (sprite.shaderID, "shininess"), shininess);
+    glUniform3f (glGetUniformLocation (sprite.Get_Shader ()->Get_ID (), "lambient"), 0.2f, 0.2f, 0.2f);
+    glUniform3f (glGetUniformLocation (sprite.Get_Shader ()->Get_ID (), "ldiffuse"), 0.6f, 0.6f, 0.6f);
+    glUniform3f (glGetUniformLocation (sprite.Get_Shader ()->Get_ID (), "lspecular"), 1.0f, 1.0f, 1.0f);
+    glUniform1f (glGetUniformLocation (sprite.Get_Shader ()->Get_ID (), "shininess"), shininess);
 
+    glUseProgram (sprite.Get_Shader ()->Get_ID ());
+
+    //////////////////////////////////////////////////////////////////////////
+    // Instancing
+    // Very Basic and Wrong
+    // Will Be Replaced By glDrawElementsInstanced after some systems are ready
+    // Top Left
+    sprite.modelMatrix = glm::translate (glm::vec3 (-1.5f, 1.5f, -1.0f));
     sprite.Draw ();
-
+    // Center Left
+    sprite.modelMatrix = glm::translate (glm::vec3 (-1.5f, 0.0f, -1.0f));
+    sprite.Draw ();
+    // Bottom Left
+    sprite.modelMatrix = glm::translate (glm::vec3 (-1.5f, -1.5f, -1.0f));
+    sprite.Draw ();
+    // Center Top
+    sprite.modelMatrix = glm::translate (glm::vec3 (0.0f, 1.5f, -1.0f));
+    sprite.Draw ();
+    // Center
+    sprite.modelMatrix = glm::translate (glm::vec3 (0.0f, 0.0f, -1.0f));
+    sprite.Draw ();
+    // Center Bottom
+    sprite.modelMatrix = glm::translate (glm::vec3 (0.0f, -1.5f, -1.0f));
+    sprite.Draw ();
+    // Top Right
+    sprite.modelMatrix = glm::translate (glm::vec3 (1.5f, 1.5f, -1.0f));
+    sprite.Draw ();
+    // Center Right
+    sprite.modelMatrix = glm::translate (glm::vec3 (1.5f, 0.0f, -1.0f));
+    sprite.Draw ();
+    // Bottom Right
+    sprite.modelMatrix = glm::translate (glm::vec3 (1.5f, -1.5f, -1.0f));
+    sprite.Draw ();
+    //////////////////////////////////////////////////////////////////////////
   }
 
 }

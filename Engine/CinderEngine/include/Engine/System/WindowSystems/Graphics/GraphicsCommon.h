@@ -7,8 +7,8 @@
 #include "VertexArrayObject.h"
 #include "VertexBufferObject.h"
 #include "ElementBufferObject.h"
-#include "Sprite.h"
 #include "Resources.h"
+#include "Color.h"
 #include <fstream>
 #include <iostream>
 #endif

@@ -17,7 +17,7 @@
 namespace Framework
 {
 
-  class Camera : public GameComponent
+  class Camera : public Component
   {
   public:
     Camera (GameObject* obj, bool main = false);

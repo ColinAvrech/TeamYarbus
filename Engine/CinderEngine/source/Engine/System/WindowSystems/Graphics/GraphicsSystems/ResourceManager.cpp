@@ -33,7 +33,7 @@ namespace Framework
 
   void ResourceManager::Load_Textures ()
   {
-    textures ["Default"] = new Texture ((TextureResourcePath + "Default.jpg").c_str ());
+    textures ["Default"] = new Texture ((TextureResourcePath + "TeamLogo.png").c_str ());
     std::ifstream texFile (TextureResourcePath + "TextureAssets.txt");
 
     if (!texFile.good ())

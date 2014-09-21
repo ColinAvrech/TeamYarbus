@@ -37,7 +37,7 @@ namespace Framework
   class GameObject
   {
     //forward declairation
-    class GameComponent;
+    class Component;
 
   public:
     //! Called by Factory
@@ -49,7 +49,7 @@ namespace Framework
 
 
     template<typename T>
-    GameComponent* AddComponent(std::string name)
+    Component* AddComponent(std::string name)
     {
       OBJECTSYSTEM->
       GameComponent* gc = new T(this, name);
@@ -57,7 +57,7 @@ namespace Framework
       return gc;
     }
 
-    GameComponent* GetComponent(std::string component)
+    Component* GetComponent(std::string component)
     {
       ComponentMap::iterator it = Components.find(component);
       if (it == Components.end())
@@ -90,7 +90,7 @@ namespace Framework
     GameObject(unsigned gameObjectID, GameObject* parent)
       :GameObjectID(gameObjectID), Parent(parent){}*/
 
-    typedef std::map<std::string, GameComponent *> ComponentMap;
+    typedef std::map<std::string, Component *> ComponentMap;
     ComponentMap Components;
 
   };

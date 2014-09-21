@@ -186,4 +186,30 @@ namespace Framework
     return data;
   }
 
+  ShapeData ShapeGenerator::Generate_Normals (const ShapeData& z)
+  {
+    ShapeData data;
+    data.numVertices = z.numVertices * 2;
+    data.vertices = new VertexData [z.numVertices];
+    for (unsigned i = 0; i < data.numVertices; ++i)
+    {
+      GLuint vertIndex = i * 2;
+      VertexData& v1 = data.vertices [vertIndex];
+      VertexData& v2 = data.vertices [vertIndex + 1];
+      const VertexData& sourceVertex = data.vertices [i];
+      v1.position = sourceVertex.position;
+      v2.position = sourceVertex.position + sourceVertex.normal;
+      v1.color = v2.color = glm::vec4 (1.0f);
+    }
+
+    data.numIndices = data.numVertices;
+    data.indices = new GLuint [data.numIndices];
+    for (unsigned i = 0; i < data.numIndices; i++)
+    {
+      data.indices [i] = i;
+    }
+
+    return data;
+  }
+
 }

@@ -1,5 +1,2 @@
-ScarlettJohansson.jpg
-ScarlettJohansson1.jpg
-ScarlettJohansson2.jpg
-ScarlettJohansson3.jpg
-TeamLogo.jpg
+TeamLogo.png
+TeamLogo.png

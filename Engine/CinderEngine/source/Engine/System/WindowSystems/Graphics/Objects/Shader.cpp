@@ -84,7 +84,7 @@ namespace Framework
     GLuint program = glCreateProgram ();
     glAttachShader (program, _vertexShader);
     glAttachShader (program, _fragmentShader);
-    glBindFragDataLocation (shaderProgram, 0, "outColor");
+    //glBindFragDataLocation (shaderProgram, 0, "outColor");
     glLinkProgram (program);
 
     return program;
@@ -112,4 +112,8 @@ namespace Framework
     return shaderProgram;
   }
 
+  GLuint Shader::Get_ID ()
+  {
+    return shaderProgram;
+  }
 }

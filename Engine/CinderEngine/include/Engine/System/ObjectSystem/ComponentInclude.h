@@ -10,4 +10,4 @@
 #include "Component.h"
 #include "Transform.h"
 #include "Camera.h"
-#include "Renderer.h"
+#include "Sprite.h"

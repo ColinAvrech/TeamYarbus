@@ -19,7 +19,7 @@ namespace Framework
   Camera* Camera::current = NULL;
   Camera* Camera::main = NULL;
 
-  Camera::Camera (GameObject* obj, bool _main) : viewDirection (0.0f, 0.0f, -1.0f), up (0.0f, 1.0f, 0.0f), GameComponent (obj)
+  Camera::Camera (GameObject* obj, bool _main) : viewDirection (0.0f, 0.0f, -1.0f), up (0.0f, 1.0f, 0.0f), Component (obj)
   {
     size = 2.0f;
     aspect = 1.0f;
@@ -43,7 +43,17 @@ namespace Framework
   void Camera::MouseUpdate (const glm::vec2& newPosition)
   {
     glm::vec2 mouseDelta = newPosition - oldPosition;
-    viewDirection = glm::mat3 (glm::rotate (mouseDelta.x * 0.01f, up)) * viewDirection;
+
+    const float ROTATION_SPEED = 0.01f;
+    const float MAX_DELTA = 150.0f;
+
+    if (mouseDelta.length () < MAX_DELTA)
+    {
+      glm::vec3 vRotation = glm::cross (viewDirection, up);
+      glm::mat4 rotator = glm::mat4
+        (glm::rotate (mouseDelta.x * ROTATION_SPEED, up) * glm::rotate (mouseDelta.y * ROTATION_SPEED, vRotation));
+      viewDirection = glm::mat3 (rotator) * viewDirection;
+    }
     oldPosition = newPosition;
     matricesReady = false;
   }

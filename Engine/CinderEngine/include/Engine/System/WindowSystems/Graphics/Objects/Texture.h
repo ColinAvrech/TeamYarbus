@@ -15,11 +15,12 @@ namespace Framework
     Texture (const char* filename);
     ~Texture ();
 
-    GLuint textureID;
-    GLuint imageID;
+    GLuint Get_ID ();
     void Load_Texture (const char* filename);
 
   private:
+    GLuint textureID;
+
   };
 
 }

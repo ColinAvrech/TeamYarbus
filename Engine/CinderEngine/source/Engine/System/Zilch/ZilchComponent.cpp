@@ -7,7 +7,7 @@ namespace Framework
   {
     //CONSTRUCTOR
     ZilchComponent::ZilchComponent(GameObject *obj, std::string* name)
-      : GameComponent(obj), ZilchClass(Zero::String(name->c_str()))
+      : Component(obj), ZilchClass(Zero::String(name->c_str()))
     {
       //Do Stuff
     }
