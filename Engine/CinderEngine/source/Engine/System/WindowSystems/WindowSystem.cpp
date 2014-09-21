@@ -18,7 +18,6 @@ function to handle windows Messages.
 #include "AudioSystem.h"
 #include "ComponentInclude.h"
 
-
 namespace Framework
 {
   Camera camera (NULL, true);
@@ -26,12 +25,14 @@ namespace Framework
   Sprite sprite (NULL);
   Sprite sprite1 (NULL);
   float camScrollSpeed = 0.05f;
-  float shininess = 15.0f;
+  float shininess = 100.0f;
   bool isPressed = false;
   VAO* vao;
   VBO* vbo;
   EBO* ebo;
-
+  glm::vec2 texoffset (0.0f, 0.0f);
+  const int samples = 4;
+  int frames;
   struct SoundName
   {
     Sound *test1;
@@ -157,10 +158,9 @@ namespace Framework
       glewExperimental = GL_TRUE;
       glewInit();
       std::cout << "OpenGl Version: " << Console::green << glGetString(GL_VERSION) << Console::gray << std::endl;
-      glEnable (GL_BLEND);
-      glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
       glEnable (GL_DEPTH_TEST);
-      glEnable (GL_ALPHA_TEST);
+      glEnable (GL_BLEND);
+      glBlendFunc (GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
     }
   }
 
@@ -188,15 +188,20 @@ namespace Framework
     sprite.Create
       (
       ResourceManager::RESOURCE_MANAGER->Get_Shader ("FragmentLighting.frag"),
-      ResourceManager::RESOURCE_MANAGER->Get_Texture("TeamLogo.png")
+      ResourceManager::RESOURCE_MANAGER->Get_SpriteSheet ("Logo.png")
       );
     sprite1.Create
       (
-      ResourceManager::RESOURCE_MANAGER->Get_Shader ("FragmentLighting.frag"),
-      ResourceManager::RESOURCE_MANAGER->Get_Texture ("TeamLogo.png")
+      ResourceManager::RESOURCE_MANAGER->Get_Shader ("Basic.frag"),
+      ResourceManager::RESOURCE_MANAGER->Get_Texture ("TeamName.png")
       );
 
-    sprite.modelMatrix = glm::translate (glm::vec3 (-1.5f, 0.0f, -1.0f));
+    sprite.modelMatrix = glm::translate (glm::vec3 (0.0f, 0.0f, -1.0f));
+    sprite.modelMatrix = glm::scale (sprite.modelMatrix, glm::vec3 (1.5f, 1.5f, 1.0f));
+
+    sprite1.modelMatrix = glm::translate (glm::vec3 (0, -1, -1));
+    sprite1.modelMatrix = glm::scale (sprite1.modelMatrix, glm::vec3 (0.5f, 0.5f / sprite1.Get_Texture()->Get_Aspect_Ratio(), 1.0f));
+
     //SoundName.test1 = ResourceManager::RESOURCE_MANAGER->Get_Sound("music2.mp3");
     //SoundName.test1->Play();
     //
@@ -232,6 +237,9 @@ namespace Framework
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     light.UpdateMatrices (0);
 
+    if (shininess >= 4.0f)
+      shininess -= 0.5f;
+
 
     // Update Uniform Variables
     glUniform3fv (glGetUniformLocation (sprite.Get_Shader ()->Get_ID (), "lightPos"), 1, glm::value_ptr(light.GetPosition()));
@@ -244,42 +252,53 @@ namespace Framework
     glUniform3f (glGetUniformLocation (sprite.Get_Shader ()->Get_ID (), "lspecular"), 1.0f, 1.0f, 1.0f);
     glUniform1f (glGetUniformLocation (sprite.Get_Shader ()->Get_ID (), "shininess"), shininess);
 
-    glUseProgram (sprite.Get_Shader ()->Get_ID ());
 
+    glDisable (GL_DEPTH_TEST);
+    glEnable (GL_BLEND);
+    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 #pragma region Instance Drawing
     //////////////////////////////////////////////////////////////////////////
     // Instancing
     // Very Basic and Wrong
     // Will Be Replaced By glDrawElementsInstanced after some systems are ready
     // Top Left
-    sprite.modelMatrix = glm::translate (glm::vec3 (-1.5f, 1.5f, -1.0f));
-    sprite.Draw ();
-    // Center Left
-    sprite.modelMatrix = glm::translate (glm::vec3 (-1.5f, 0.0f, -1.0f));
-    sprite.Draw ();
-    // Bottom Left
-    sprite.modelMatrix = glm::translate (glm::vec3 (-1.5f, -1.5f, -1.0f));
-    sprite.Draw ();
-    // Center Top
-    sprite.modelMatrix = glm::translate (glm::vec3 (0.0f, 1.5f, -1.0f));
-    sprite.Draw ();
-    // Center
-    sprite.modelMatrix = glm::translate (glm::vec3 (0.0f, 0.0f, -1.0f));
-    sprite.Draw ();
-    // Center Bottom
-    sprite.modelMatrix = glm::translate (glm::vec3 (0.0f, -1.5f, -1.0f));
-    sprite.Draw ();
-    // Top Right
-    sprite.modelMatrix = glm::translate (glm::vec3 (1.5f, 1.5f, -1.0f));
-    sprite.Draw ();
-    // Center Right
-    sprite.modelMatrix = glm::translate (glm::vec3 (1.5f, 0.0f, -1.0f));
-    sprite.Draw ();
-    // Bottom Right
-    sprite.modelMatrix = glm::translate (glm::vec3 (1.5f, -1.5f, -1.0f));
-    sprite.Draw ();
+    //sprite.modelMatrix = glm::translate (glm::vec3 (-1.5f, 1.5f, -1.0f));
+    //sprite.Draw ();
+    //// Center Left
+    //sprite.modelMatrix = glm::translate (glm::vec3 (-1.5f, 0.0f, -1.0f));
+    //sprite.Draw ();
+    //// Bottom Left
+    //sprite.modelMatrix = glm::translate (glm::vec3 (-1.5f, -1.5f, -1.0f));
+    //sprite.Draw ();
+    //// Center Top
+    //sprite.modelMatrix = glm::translate (glm::vec3 (0.0f, 1.5f, -1.0f));
+    //sprite.Draw ();
+    //// Center
+    //sprite.modelMatrix = glm::translate (glm::vec3 (0.0f, 0.0f, -1.0f));
+    //sprite.Draw ();
+    //// Center Bottom
+    //sprite.modelMatrix = glm::translate (glm::vec3 (0.0f, -1.5f, -1.0f));
+    //sprite.Draw ();
+    //// Top Right
+    //sprite.modelMatrix = glm::translate (glm::vec3 (1.5f, 1.5f, -1.0f));
+    //sprite.Draw ();
+    //// Center Right
+    //sprite.modelMatrix = glm::translate (glm::vec3 (1.5f, 0.0f, -1.0f));
+    //sprite.Draw ();
+    //// Bottom Right
+    //sprite.modelMatrix = glm::translate (glm::vec3 (1.5f, -1.5f, -1.0f));
+    //sprite.Draw ();
     //////////////////////////////////////////////////////////////////////////
 #pragma endregion
+
+    glUseProgram (sprite1.Get_Shader ()->Get_ID ());
+    sprite1.Draw ();
+
+    glUseProgram (sprite.Get_Shader ()->Get_ID ());
+    sprite.Draw ();
+
+    glEnable (GL_DEPTH_TEST);
+    glDisable (GL_BLEND);
   }
 
 }

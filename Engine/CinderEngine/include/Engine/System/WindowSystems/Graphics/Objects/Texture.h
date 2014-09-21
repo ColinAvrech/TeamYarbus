@@ -16,10 +16,14 @@ namespace Framework
     ~Texture ();
 
     GLuint Get_ID ();
+    float Get_Aspect_Ratio ();
     void Load_Texture (const char* filename);
 
-  private:
+  protected:
     GLuint textureID;
+    int width;
+    int height;
+    float aspect;
 
   };
 

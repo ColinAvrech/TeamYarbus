@@ -8,5 +8,5 @@ uniform sampler2D image;
 
 void main()
 {
-   outColor = texture (image, Texcoord) * vec4 (Normal, 1.0);
+   outColor = texture (image, Texcoord) * vec4 (1.0, 1.0, 1.0, 1.0);
 }

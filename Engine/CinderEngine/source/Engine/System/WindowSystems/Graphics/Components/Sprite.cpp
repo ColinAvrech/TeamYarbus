@@ -6,7 +6,7 @@ namespace Framework
   Sprite::Sprite (GameObject* go) : Component (go)
   {
     modelMatrix = glm::translate (glm::vec3 (0.0f, 0.0f, -1.0f));
-    drawable = false;
+    animated = false;
   }
 
 
@@ -20,15 +20,36 @@ namespace Framework
 
     shader = _shader;
     texture = _texture;
-    drawable = true;
+    animated = false;
   }
+
+
+  Sprite::Sprite (GameObject* go, Shader* _shader, SpriteSheet* _atlas) : Component (go)
+  {
+    shader = _shader;
+    texture = _atlas;
+    atlas = _atlas;
+    animated = false;
+    Specify_Attributes ();
+  }
+
 
   void Sprite::Create (Shader* _shader, Texture* _texture /*= TEXTURE_NONE*/)
   {
     shader = _shader;
     texture = _texture;
+    animated = false;
     Specify_Attributes ();
-    drawable = true;
+  }
+
+
+  void Sprite::Create (Shader* _shader, SpriteSheet* _atlas)
+  {
+    shader = _shader;
+    texture = _atlas;
+    atlas = _atlas;
+    animated = true;
+    Specify_Attributes ();
   }
 
 
@@ -72,16 +93,30 @@ namespace Framework
     glEnableVertexAttribArray (normalAttrib);
     glVertexAttribPointer (normalAttrib, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), (void*) (7 * sizeof(GLfloat)));
 
-    if (texture->Get_ID() != TEXTURE_NONE)
+    if (animated || texture->Get_ID () != TEXTURE_NONE)
     {
+      //modelMatrix = glm::scale (glm::vec3 (1, 1 / texture->Get_Aspect_Ratio (), 1.0f));
+
       GLint texAttrib = glGetAttribLocation (shader->Get_ID(), "texcoord");
       glEnableVertexAttribArray (texAttrib);
       glVertexAttribPointer (texAttrib, 2, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), (void*) (10 * sizeof(GLfloat)));
 
       glUniform1i (glGetUniformLocation (shader->Get_ID(), "image"), 0);
 
-      // If Texture Is To Be Used, Use Draw Texture Method To Draw Sprite
-      DrawFunction = &Sprite::Draw_Texture;
+      if (animated)
+      {
+        DrawFunction = &Sprite::Draw_Animated;
+        uniTexOffset = glGetUniformLocation (shader->Get_ID (), "texOffset");
+        frameRatio.x = 1.0f / atlas->Get_Columns ();
+        frameRatio.y = 1.0f / atlas->Get_Rows ();
+        uniFrameRatio = glGetUniformLocation (shader->Get_ID (), "frameRatio");
+        glUniform2fv (uniFrameRatio, 1, glm::value_ptr (frameRatio));
+      }
+      else
+      {
+        // If Texture Is To Be Used, Use Draw Texture Method To Draw Sprite
+        DrawFunction = &Sprite::Draw_Texture;
+      }
     }
     else
     {
@@ -129,7 +164,6 @@ namespace Framework
   // Draw Sprite Using Texture
   void Sprite::Draw_Texture ()
   {
-    //Use_Shader (shader->Get_ID());
     glBindTexture (GL_TEXTURE_2D, texture->Get_ID());
     glDrawElements (GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     glBindTexture (GL_TEXTURE_2D, 0);
@@ -139,8 +173,34 @@ namespace Framework
   // Draw Sprite Without Using Texture
   void Sprite::Draw_No_Texture ()
   {
-    Use_Shader (shader->Get_ID());
     glDrawElements (GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+  }
+
+
+  void Sprite::Draw_Animated ()
+  {
+    //Specify_Attributes ();
+
+    ++frameNumber;
+    if (frameNumber % atlas->Get_Samples() == 0)
+    {
+      texOffset.x += frameRatio.x;
+      if (texOffset.x == 1.0f)
+      {
+        texOffset.x = 0.0f;
+        texOffset.y += frameRatio.y;
+        if (texOffset.y == 1.0f)
+        {
+          texOffset.y = 0.0f;
+        }
+      }
+    }
+    glUniform2fv (uniFrameRatio, 1, glm::value_ptr (frameRatio));
+    glUniform2fv (uniTexOffset, 1, glm::value_ptr (texOffset));
+
+    glBindTexture (GL_TEXTURE_2D, atlas->Get_ID ());
+    glDrawElements (GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    glBindTexture (GL_TEXTURE_2D, 0);
   }
 
 

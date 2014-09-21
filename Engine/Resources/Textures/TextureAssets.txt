@@ -1,2 +1,5 @@
+TeamLogo.jpg
 TeamLogo.png
-TeamLogo.png
+TeamName.png
+Logo.png
+Logo.jpg

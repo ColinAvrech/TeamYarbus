@@ -29,11 +29,12 @@ namespace Framework
     Load_Textures ();
     Load_Shaders ();
     Load_Sounds();
+    Load_SpriteSheets ();
   }
 
   void ResourceManager::Load_Textures ()
   {
-    textures ["Default"] = new Texture ((TextureResourcePath + "TeamLogo.png").c_str ());
+    textures ["Default"] = new Texture ((TextureResourcePath + "Default.jpg").c_str ());
     std::ifstream texFile (TextureResourcePath + "TextureAssets.txt");
 
     if (!texFile.good ())
@@ -49,6 +50,45 @@ namespace Framework
         texFile >> str;
         textures [str] = new Texture ((TextureResourcePath + str).c_str ());
         std::cout << str << std::endl;
+      }
+    }
+  }
+
+
+  void ResourceManager::Load_SpriteSheets ()
+  {
+    std::ifstream ssFile (SpriteSheetResourcePath + "SpriteSheetAssets.txt");
+
+    if (!ssFile.good ())
+    {
+      std::cout << "Failed to Load Sprite Sheets...\n";
+      return;
+    }
+    else
+    {
+      std::string data;
+      std::string filename;
+      std::string f;
+      int rows, columns, samples;
+      //while (!ssFile.eof())
+      {
+        while (data != ">")
+        {
+          ssFile >> data;
+          ssFile >> data;
+          f = data;
+          filename = (SpriteSheetResourcePath + data);
+          data = "";
+          ssFile >> data;
+          rows = std::stoi (data);
+          data = "";
+          ssFile >> data;
+          columns = std::stoi (data);
+          ssFile >> data;
+          samples = std::stoi (data);
+          ssFile >> data;
+          spriteSheets [f] = new SpriteSheet (filename.c_str(), rows, columns, samples);
+        }
       }
     }
   }
@@ -114,6 +154,20 @@ namespace Framework
     }
 
     return textures ["Default"];
+  }
+
+  SpriteSheet* ResourceManager::Get_SpriteSheet (std::string spriteSheetName)
+  {
+    //return textures [textureName];
+    for (auto i : spriteSheets)
+    {
+      if (i.first == spriteSheetName)
+      {
+        return i.second;
+      }
+    }
+
+    throw ("Invalid Name...");
   }
 
   Shader* ResourceManager::Get_Shader (std::string shaderName)
