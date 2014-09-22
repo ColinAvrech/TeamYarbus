@@ -22,6 +22,10 @@ namespace Framework
     {
       delete (i.second);
     }
+    for (auto i : spriteSheets)
+    {
+      delete (i.second);
+    }
   }
 
   void ResourceManager::Load_Resources ()
@@ -95,6 +99,7 @@ namespace Framework
 
   void ResourceManager::Load_Shaders ()
   {
+#pragma region OLD
     /*shaders ["Default"] = new Shader ((ShaderResourcePath + "Basic.vs").c_str (), (ShaderResourcePath + "Basic.frag").c_str ());
 
     std::ifstream vertexShaderFile (ShaderResourcePath + "VertexShaders.txt");
@@ -116,6 +121,7 @@ namespace Framework
         shaders [fs] = new Shader (((ShaderResourcePath + vs).c_str ()), (ShaderResourcePath + fs).c_str ());
       }
     }*/
+#pragma endregion
 
 
     // List of Vertex Shaders, Fragment Shaders, Shader Programs
