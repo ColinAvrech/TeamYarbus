@@ -32,14 +32,14 @@ namespace Framework
   bool SceneManager::Initialize ()
   {
     std::cout << GetName () << " initialized\n";
-    Load_Scene (particleEditor);
+    Load_Scene (splashScreen);
     return true;
   }
 
   // HARD CODED FOR NOW
   void SceneManager::Load_Scene (Scene* scene)
   {
-    scene = new ParticleEditor ();
+    scene = new Scene_SplashScreens ();
     scene->Load_Scene (NULL);
     current = scene;
   }
