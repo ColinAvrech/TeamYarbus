@@ -71,6 +71,8 @@ int main(void)
 
   //! activate the window.
 
+  resourceManager.Get_Sound ("music.mp3")->Play ();
+
   //! Run the game! NOW!
   engine->GameLoop();
 

@@ -45,7 +45,7 @@ namespace Framework
 
       // POSITION CALCULATION:
       m_posGenerators [0] = std::make_shared<BoxPosGen> ();
-      m_posGenerators [0]->m_pos = glm::vec4{ 0.0, 0.0, -0.25, 0.0 };
+      m_posGenerators [0]->m_pos = glm::vec4{ 2.0, 0.0, -0.25, 0.0 };
       m_posGenerators [0]->m_maxStartPosOffset = glm::vec4{ 0.0, 0.0, 0.0, 0.0 };
       particleEmitter->addGenerator (m_posGenerators [0]);
 

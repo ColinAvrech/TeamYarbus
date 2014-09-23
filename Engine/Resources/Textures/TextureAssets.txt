@@ -6,3 +6,4 @@ Logo.jpg
 Particle.png
 Particle1.png
 Particle2.png
+DigiPenLogo.png

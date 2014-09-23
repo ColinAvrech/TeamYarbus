@@ -16,9 +16,9 @@ uniform mat4 projectionMatrix;
 
 void main()
 {
-  Position = position;
+  gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(position, 0.5);
+  Position = vec3 (position.xy, 1.0);
   Color = color;
   Normal = normal;
   Texcoord = texcoord;
-  gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(position, 0.5);
 }

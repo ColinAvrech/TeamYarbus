@@ -18,6 +18,7 @@
 #include "TimeQuery.h"
 #include "Effect.h"
 #include "AntTweakBar.h"
+#include "WindowSystem.h"
 
 typedef CTwBar TwBar;
 TwBar* MainTweakBar;
@@ -116,24 +117,24 @@ namespace Framework
   }
 
 
-  void ParticleEditor::Key_Pressed (GLFWwindow* window, int key, int scanCode, int state, int mods)
+  void ParticleEditor::Key_Pressed(int key, int scanCode, int action, int mods)
   {
   }
 
 
-  void ParticleEditor::Mouse_Button (GLFWwindow* window, int button, int action, int mods)
-  {
+  void ParticleEditor::Mouse_Button(int button, int state, int mods)
+{
   }
 
 
-  void ParticleEditor::Mouse_Moved (float xPos, float yPos)
-  {
+  void ParticleEditor::Mouse_Moved(double xPos, double yPos)
+{
   }
 
 
   void ParticleEditor::Load_Scene (const char* filename)
   {
-    Change_Size (1920, 1280);
+    Change_Size (WINDOWSYSTEM->Get_Width(), WINDOWSYSTEM->Get_Height());
     //
     // some global GL states
     //
@@ -167,19 +168,19 @@ namespace Framework
     gpuUpdate.init ();
     gpuRender.init ();
 
-    /*AddTweak ("animate", &gAnimationOn, "");
-    AddVar ("particles", &gNumParticles, "");
-    AddVar ("alive", &gNumAlive, "");
-    AddVar ("cpu particles", &cpuParticlesUpdate.m_time, "precision=3 group=timers");
-    AddVar ("cpu buffers", &cpuBuffersUpdate.m_time, "precision=3 group=timers");
+    //AddTweak ("animate", &gAnimationOn, "");
+    //AddVar ("particles", &gNumParticles, "");
+    //AddVar ("alive", &gNumAlive, "");
+    //AddVar ("cpu particles", &cpuParticlesUpdate.m_time, "precision=3 group=timers");
+    //AddVar ("cpu buffers", &cpuBuffersUpdate.m_time, "precision=3 group=timers");
 
-    AddVar ("gpu buffer", &gpuUpdate.getTime (), "precision=3 group=timers");
-    AddVar ("gpu render", &gpuRender.getTime (), "precision=3 group=timers");
+    //AddVar ("gpu buffer", &gpuUpdate.getTime (), "precision=3 group=timers");
+    //AddVar ("gpu render", &gpuRender.getTime (), "precision=3 group=timers");
 
-    AddTweakDir3f ("camera", &camera_.cameraDir.x, "");
-    AddTweak ("camera distance", &camera_.camDistance, "min=0.05 max=4.0 step=0.01");
-    AddSeparator ();
-    AddTweak ("effect id", &gSelectedEffect, "min=0 max=2");*/
+    //AddTweakDir3f ("camera", &camera_.cameraDir.x, "");
+    //AddTweak ("camera distance", &camera_.camDistance, "min=0.05 max=4.0 step=0.01");
+    //AddSeparator ();
+    //AddTweak ("effect id", &gSelectedEffect, "min=0 max=2");
 
     Camera::main->worldToView = glm::lookAt (Camera::main->viewDirection * 0.5f, Camera::main->position, Camera::main->up);
   }
@@ -259,7 +260,7 @@ namespace Framework
     glViewport (0, 0, w, h);
 
     // setup projection matrix
-    Camera::main->viewToProjection = glm::perspective (45.0f, aspect, 0.1f, 1000.0f);
+    Camera::main->viewToProjection = glm::perspective (45.0f, aspect, 0.1f, 10.0f);
   }
 
 

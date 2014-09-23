@@ -75,4 +75,19 @@ namespace Framework
     current->Change_Size (w, h);
   }
 
+  void SceneManager::Key_Pressed (int key, int scanCode, int state, int mods)
+  {
+    current->Key_Pressed (key, scanCode, state, mods);
+  }
+
+  void SceneManager::Mouse_Position(double xPos, double yPos)
+{
+    current->Mouse_Moved (xPos, yPos);
+  }
+
+  void SceneManager::Mouse_Input (int button, int action, int mods)
+  {
+    current->Mouse_Button (button, action, mods);
+  }
+
 }

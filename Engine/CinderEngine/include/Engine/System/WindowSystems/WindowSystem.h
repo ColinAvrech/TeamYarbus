@@ -28,19 +28,21 @@ namespace Framework
     void WindowsUpdate(const double dt);
     void GraphicsUpdate(const double dt);
 
-    void (*GLFWMessageHandler)(GLFWwindow* window, int key, int scanCode, int state, int mod);
-    void (*GLFWMouseButtonFunction)(GLFWwindow *, int button, int action, int mod);
-    void (*GLFWMouseCursorMoved) (GLFWwindow* window, double xPos, double yPos);
+    void  GLFWMessageHandler(GLFWwindow* window, int key, int scanCode, int state, int mod);
+    void GLFWMouseButtonFunction(GLFWwindow *, int button, int action, int mod);
+    void GLFWMouseCursorMoved (GLFWwindow* window, double xPos, double yPos);
 
     void Resize (GLFWwindow* window, int w, int h);
+
+    unsigned Get_Width ();
+    unsigned Get_Height ();
+    void Set_W_H (unsigned, unsigned);
 
   private:
     GLFWwindow* window;
 
     unsigned WindowHeight;
     unsigned WindowWidth;
-
-    void Setup_Buffer_Objects ();
   };
 
   extern WindowSystem* WINDOWSYSTEM;
