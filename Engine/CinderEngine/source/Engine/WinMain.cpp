@@ -18,6 +18,7 @@ starts the game loop.
 #include "Common.h"
 #include "WindowSystem.h"
 #include "EventSystem.h"
+#include "SceneManager.h"
 #include "AudioSystem.h"
 #include "ZilchCompiledLib.h"
 #include "Core.h"
@@ -47,6 +48,7 @@ int main(void)
   //! Create the core engine which manages all systems.
   CoreEngine * engine         = new CoreEngine;
   WindowSystem * windows      = new WindowSystem (WindowTitle, ClientWidth, ClientHeight);
+  SceneManager* sceneManager = new SceneManager ();
   AudioSystem* audio          = new AudioSystem();
   EventSystem * events        = new EventSystem ();
   ScriptSystem::
@@ -55,12 +57,13 @@ int main(void)
     ThermodynamicsSystem * thermo = new Physics::ThermodynamicsSystem();
 
   engine->AddSystem(windows);
+  engine->AddSystem (sceneManager);
   engine->AddSystem(audio);
   engine->AddSystem(events);
   engine->AddSystem(zilch);
   engine->AddSystem(thermo);
 
-  ResourceManager resourceManager;
+  Resources resourceManager;
   resourceManager.Load_Resources();
 
   //! Initialize all added Systems. DON'T INIT YOUR OWN

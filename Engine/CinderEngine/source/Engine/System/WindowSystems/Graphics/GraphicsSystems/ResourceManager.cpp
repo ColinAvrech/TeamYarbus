@@ -4,15 +4,15 @@
 
 namespace Framework
 {
-  ResourceManager* ResourceManager::RESOURCE_MANAGER;
+  Resources* Resources::RS;
 
-  ResourceManager::ResourceManager ()
+  Resources::Resources ()
   {
-    RESOURCE_MANAGER = this;
+    RS = this;
   }
 
 
-  ResourceManager::~ResourceManager ()
+  Resources::~Resources ()
   {
     for (auto i : shaders)
     {
@@ -28,7 +28,7 @@ namespace Framework
     }
   }
 
-  void ResourceManager::Load_Resources ()
+  void Resources::Load_Resources ()
   {
     Load_Textures ();
     Load_Shaders ();
@@ -36,7 +36,7 @@ namespace Framework
     Load_SpriteSheets ();
   }
 
-  void ResourceManager::Load_Textures ()
+  void Resources::Load_Textures ()
   {
     textures ["Default"] = new Texture ((TextureResourcePath + "Default.jpg").c_str ());
     std::ifstream texFile (TextureResourcePath + "TextureAssets.txt");
@@ -59,7 +59,7 @@ namespace Framework
   }
 
 
-  void ResourceManager::Load_SpriteSheets ()
+  void Resources::Load_SpriteSheets ()
   {
     std::ifstream ssFile (SpriteSheetResourcePath + "SpriteSheetAssets.txt");
 
@@ -97,7 +97,7 @@ namespace Framework
     }
   }
 
-  void ResourceManager::Load_Shaders ()
+  void Resources::Load_Shaders ()
   {
 #pragma region OLD
     /*shaders ["Default"] = new Shader ((ShaderResourcePath + "Basic.vs").c_str (), (ShaderResourcePath + "Basic.frag").c_str ());
@@ -195,7 +195,7 @@ namespace Framework
   }
 
 
-  void ResourceManager::Load_Sounds()
+  void Resources::Load_Sounds()
   {
     std::ifstream audioFile(AudioResourcePath + "SoundAssets.txt");
 
@@ -218,7 +218,7 @@ namespace Framework
     }
   }
 
-  Texture* ResourceManager::Get_Texture (std::string textureName)
+  Texture* Resources::Get_Texture (std::string textureName)
   {
     //return textures [textureName];
     for (auto i : textures)
@@ -232,7 +232,7 @@ namespace Framework
     return textures ["Default"];
   }
 
-  SpriteSheet* ResourceManager::Get_SpriteSheet (std::string spriteSheetName)
+  SpriteSheet* Resources::Get_SpriteSheet (std::string spriteSheetName)
   {
     //return textures [textureName];
     for (auto i : spriteSheets)
@@ -246,7 +246,7 @@ namespace Framework
     throw ("Invalid Name...");
   }
 
-  Shader* ResourceManager::Get_Shader (std::string shaderName)
+  Shader* Resources::Get_Shader (std::string shaderName)
   {
     //return textures [textureName];
     for (auto i : shaders)
@@ -260,7 +260,7 @@ namespace Framework
     return shaders ["Default"];
   }
 
-  Sound* ResourceManager::Get_Sound (std::string soundName)
+  Sound* Resources::Get_Sound (std::string soundName)
   {
     for (auto i : sounds)
     {

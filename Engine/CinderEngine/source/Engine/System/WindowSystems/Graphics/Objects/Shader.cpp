@@ -105,8 +105,8 @@ namespace Framework
     return program;
   }
 
-  GLuint Shader::Create_Shader_From_String(std::string& vs, std::string& fs)
-{
+  GLuint Shader::Create_Shader_From_String (std::string& vs, std::string& fs)
+  {
     // Create and compile the vertex shader
     GLuint vertexShader = glCreateShader (GL_VERTEX_SHADER);
     glShaderSource (vertexShader, 1, &vertexSource, NULL);

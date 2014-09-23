@@ -10,11 +10,11 @@ namespace Framework
 {
 
 
-  class ResourceManager
+  class Resources
   {
   public:
-    ResourceManager();
-    ~ResourceManager ();
+    Resources();
+    ~Resources ();
 
     void Load_Resources ();
 
@@ -28,7 +28,7 @@ namespace Framework
     Shader* Get_Shader (std::string shaderName);
     Sound* Get_Sound (std::string soundName);
 
-    static ResourceManager* RESOURCE_MANAGER;
+    static Resources* RS;
 
   private:
     std::unordered_map <std::string, Texture*> textures;

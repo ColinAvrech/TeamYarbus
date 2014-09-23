@@ -8,6 +8,7 @@
 #include "VertexBufferObject.h"
 #include "ElementBufferObject.h"
 #include "Resources.h"
+#include "ShapeGenerator.h"
 #include "Color.h"
 #include <fstream>
 #include <iostream>
