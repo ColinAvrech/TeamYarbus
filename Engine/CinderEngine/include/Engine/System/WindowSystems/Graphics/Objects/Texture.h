@@ -2,7 +2,7 @@
 #define _TEXTURE_H
 
 #include "GraphicsCommon.h"
-#include "SOIL.h"
+#include "SOIL2.h"
 
 namespace Framework
 {

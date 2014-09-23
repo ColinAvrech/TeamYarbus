@@ -2,3 +2,4 @@ Basic.vs-Basic.frag>Default
 Basic.vs-Lighting.frag>Lighting
 Animation.vs-Basic.frag>Animation
 Animation.vs-Lighting.frag>LightingAnimation
+Particle.vs-Particle.frag>Particle

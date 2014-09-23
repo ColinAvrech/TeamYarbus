@@ -13,10 +13,10 @@
 
 #include "BaseSystem.h"
 #include "Scene_SplashScreens.h"
+#include "ParticleEditor.h"
 
 namespace Framework
 {
-
 
   class SceneManager : public BaseSystem
   {
@@ -30,9 +30,11 @@ namespace Framework
 
   void Load_Scene (Scene* scene);
   void Load_Next_Scene ();
+  void Change_Size (int w, int h);
 
   private:
     static Scene* current;
+    void Destroy (Scene*);
   }; 
 
   extern SceneManager* SCENEMANAGER;

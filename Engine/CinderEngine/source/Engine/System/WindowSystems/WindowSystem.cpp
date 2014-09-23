@@ -16,6 +16,7 @@ function to handle windows Messages.
 #include "ShapeGenerator.h"
 #include "Core.h"
 #include "AudioSystem.h"
+#include "SceneManager.h"
 #include "ComponentInclude.h"
 
 namespace Framework
@@ -32,6 +33,11 @@ namespace Framework
   namespace WindowNameSpace
   {
 
+    void Resize (GLFWwindow* window, int w, int h)
+    {
+      SCENEMANAGER->Change_Size (w, h);
+    }
+
     void Create_Context(GLFWwindow** GLFWwindowptr)
     {
       // Init GLFW Before Using Any Functionality
@@ -41,10 +47,10 @@ namespace Framework
       glfwWindowHint (GLFW_CONTEXT_VERSION_MINOR, 2);
       glfwWindowHint (GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
       glfwWindowHint (GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-      glfwWindowHint (GLFW_RESIZABLE, GL_FALSE);
+      glfwWindowHint (GLFW_RESIZABLE, GL_TRUE);
 
       // Window Creation
-      *GLFWwindowptr = glfwCreateWindow (1920, 1920, "OpenGL", nullptr, nullptr); // Windowed
+      *GLFWwindowptr = glfwCreateWindow (1920, 1280, "OpenGL", nullptr, nullptr); // Windowed
       //*GLFWwindowptr = glfwCreateWindow (800, 600, "OpenGL", glfwGetPrimaryMonitor (), nullptr);
       glfwMakeContextCurrent (*GLFWwindowptr);
 
@@ -52,6 +58,7 @@ namespace Framework
       //glfwSetKeyCallback(*GLFWwindowptr, GLFWMessageHandler);
       //glfwSetMouseButtonCallback (*GLFWwindowptr, GLFWMouseButtonFunction);
       //glfwSetCursorPosCallback (*GLFWwindowptr, GLFWMouseCursorMoved);
+      glfwSetWindowSizeCallback (*GLFWwindowptr, Resize);
     }
 
     void Init_Glew()

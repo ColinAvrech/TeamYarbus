@@ -127,8 +127,4 @@ namespace Framework
     return shaderProgram;
   }
 
-  GLuint Shader::Get_ID ()
-  {
-    return shaderProgram;
-  }
 }

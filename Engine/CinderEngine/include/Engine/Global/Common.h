@@ -26,7 +26,6 @@ from externals, and stable elements within the engine.
 
 
 //Windows
-#define WIN32_LEAN_AND_MEAN
 #include "Windows.h"
 
 //! Global Headers

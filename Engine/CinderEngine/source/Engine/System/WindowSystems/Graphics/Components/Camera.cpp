@@ -22,7 +22,7 @@ namespace Framework
   Camera::Camera (GameObject* obj, bool _main) : viewDirection (0.0f, 0.0f, -1.0f), up (0.0f, 1.0f, 0.0f), Component (obj)
   {
     size = 2.0f;
-    aspect = 1.0f;
+    aspect = 1920.f / 1280;
     nearPlane = 0.1f;
     farPlane = 10.0f;
 
@@ -32,7 +32,7 @@ namespace Framework
       Camera::current = this;
       Camera::main = this;
       worldToView = glm::lookAt (position, position + viewDirection, up);
-      viewToProjection = glm::ortho (-size, size, -size / aspect, size / aspect, nearPlane, farPlane);
+      viewToProjection = glm::perspective (70.0f, aspect, nearPlane, farPlane);
     }
     matricesReady = true;
   }
@@ -91,12 +91,10 @@ namespace Framework
     if (!Camera::main->matricesReady)
     {
       Camera::main->viewToProjection =
-        glm::ortho
+        glm::perspective
         (
-        -Camera::main->size,
-        Camera::main->size,
-        -Camera::main->size / Camera::main->aspect,
-        Camera::main->size / Camera::main->aspect,
+        45.0f,
+        Camera::main->aspect,
         Camera::main->nearPlane,
         Camera::main->farPlane
         );

@@ -1,6 +1,6 @@
 /******************************************************************************/
 /*!
-\file   Scene_SplashScreens.h
+\file   ParticleEditor.h
 \author Manas Sudhir Kulkarni
 \par    Course: GAM200
 \par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
@@ -8,20 +8,19 @@
 */
 /******************************************************************************/
 
-#ifndef _SCENE_SPLASH_H
-#define _SCENE_SPLASH_H
+#ifndef _PARTICLE_EDITOR_H
+#define _PARTICLE_EDITOR_H
 
 #include "Scene.h"
-
 
 namespace Framework
 {
 
-  class Scene_SplashScreens : public Scene
+  class ParticleEditor : public Scene
   {
   public:
-  Scene_SplashScreens ();
-  ~Scene_SplashScreens ();
+    ParticleEditor ();
+    ~ParticleEditor ();
 
   private:
     virtual void Key_Pressed (GLFWwindow* window, int key, int state, int action, int mods) override;
@@ -31,7 +30,8 @@ namespace Framework
     virtual void Draw () override;
     virtual void Load_Scene (const char* filename) override;
     virtual void Change_Size (int w, int h) override;
-  };  
+  };
+
 }
 
 #endif

@@ -32,6 +32,7 @@ namespace Framework
     void (*GLFWMouseButtonFunction)(GLFWwindow *, int button, int action, int mod);
     void (*GLFWMouseCursorMoved) (GLFWwindow* window, double xPos, double yPos);
 
+    void Resize (GLFWwindow* window, int w, int h);
 
   private:
     GLFWwindow* window;

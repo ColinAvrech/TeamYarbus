@@ -3,3 +3,6 @@ TeamLogo.png
 TeamName.png
 Logo.png
 Logo.jpg
+Particle.png
+Particle1.png
+Particle2.png

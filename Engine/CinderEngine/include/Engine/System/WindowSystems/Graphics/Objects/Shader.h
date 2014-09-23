@@ -13,12 +13,11 @@ namespace Framework
   public:
     Shader (const char* vs, const char* fs, const char* gs = 0);
     ~Shader ();
-    GLuint Get_ID ();
-    void Use ()
-    {
-      glUseProgram (shaderProgram);
-    }
 
+
+    inline GLuint Shader::Get_ID ();
+    inline void Use ();
+    inline void Disable ();
     inline GLint uniLocation (const char *varName);
 
     //
@@ -41,7 +40,7 @@ namespace Framework
     /// sends single 3x3 matrix
     inline bool uniMat3 (const char *varName, float *mat, bool transpose = false);
     /// sends single 4x4 matrix
-    inline bool uniMat4 (const char *varName, float *mat, bool transpose = false);
+    inline bool uniMat4 (const char *varName, const float*mat, bool transpose = false);
 
     friend class Resources;
 
@@ -162,13 +161,28 @@ namespace Framework
     return true;
   }
 
-  inline bool Shader::uniMat4 (const char *varName, GLfloat *mat, bool transpose)
-  {
+  inline bool Shader::uniMat4(const char *varName, const float*mat, bool transpose /*= false*/)
+{
     GLint i = uniLocation (varName);
     if (i == -1) return false;
 
     glUniformMatrix4fv (i, 1, transpose, mat);
     return true;
+  }
+
+  inline void Shader::Use ()
+  {
+    glUseProgram (shaderProgram);
+  }
+
+  inline void Shader::Disable ()
+  {
+    glUseProgram (0);
+  }
+
+  inline GLuint Shader::Get_ID ()
+  {
+    return shaderProgram;
   }
 }
 

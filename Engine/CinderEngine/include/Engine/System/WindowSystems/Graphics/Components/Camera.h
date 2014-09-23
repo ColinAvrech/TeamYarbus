@@ -34,17 +34,15 @@ namespace Framework
     static Camera* main;
 
     ~Camera ();
-
+    glm::vec3 position;
+    glm::vec3 viewDirection;
+    glm::mat4 worldToView;
+    glm::mat4 viewToProjection;
+    const glm::vec3 up;
     // The non-base component usees DefineComponentName macro to name component
     const static std::string Name;
   private:
-    glm::vec3 position;
-    glm::vec3 viewDirection;
     glm:: vec2 oldPosition;
-    const glm::vec3 up;
-
-    glm::mat4 worldToView;
-    glm::mat4 viewToProjection;
     bool matricesReady;
 
     float size;

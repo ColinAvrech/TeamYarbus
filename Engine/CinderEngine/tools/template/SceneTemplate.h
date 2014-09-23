@@ -1,23 +1,22 @@
 /******************************************************************************/
 /*!
-\file   Scene_SplashScreens.h
-\author Manas Sudhir Kulkarni
+\file   Scene_.h
+\author DarthVader
 \par    Course: GAM200
 \par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
 \brief  
 */
 /******************************************************************************/
 
-#ifndef _SCENE_SPLASH_H
-#define _SCENE_SPLASH_H
+#ifndef _SCENE_H
+#define _SCENE_H
 
 #include "Scene.h"
-
 
 namespace Framework
 {
 
-  class Scene_SplashScreens : public Scene
+  class Scene_ : public Scene
   {
   public:
   Scene_SplashScreens ();
@@ -30,8 +29,7 @@ namespace Framework
     virtual void Update (const double dt) override;
     virtual void Draw () override;
     virtual void Load_Scene (const char* filename) override;
-    virtual void Change_Size (int w, int h) override;
-  };  
+  }; 
 }
 
 #endif

@@ -32,6 +32,7 @@ namespace Framework
     virtual void Update (const double dt) = 0;
     virtual void Draw () = 0;
     virtual void Load_Scene (const char* filename) = 0;
+    virtual void Change_Size (int, int) = 0;
   };  
 }
 

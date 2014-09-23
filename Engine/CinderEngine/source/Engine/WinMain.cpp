@@ -56,8 +56,8 @@ int main(void)
   Physics::
     ThermodynamicsSystem * thermo = new Physics::ThermodynamicsSystem();
 
-  engine->AddSystem(windows);
   engine->AddSystem (sceneManager);
+  engine->AddSystem (windows);
   engine->AddSystem(audio);
   engine->AddSystem(events);
   engine->AddSystem(zilch);
