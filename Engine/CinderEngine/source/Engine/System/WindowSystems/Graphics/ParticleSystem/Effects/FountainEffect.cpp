@@ -8,6 +8,7 @@
 */
 /******************************************************************************/
 
+#include "EditorUI.h"
 #include "FountainEffect.h"
 
 namespace Framework
@@ -81,24 +82,24 @@ namespace Framework
     if (m_renderer) m_renderer->destroy ();
   }
 
-  void FountainEffect::addUI (CTwBar* tw)
+  void FountainEffect::addUI (TwBar* tw)
   {
-    //ui::AddTweakColor4f ("start col min", &m_colGenerator->m_minStartCol.x, "group=effect");
-    //ui::AddTweakColor4f ("start col max", &m_colGenerator->m_maxStartCol.x, "group=effect");
-    //ui::AddTweakColor4f ("end col min", &m_colGenerator->m_minEndCol.x, "group=effect");
-    //ui::AddTweakColor4f ("end col max", &m_colGenerator->m_maxEndCol.x, "group=effect");
-    //ui::AddTweak ("gravity", &m_eulerUpdater->m_globalAcceleration.y, "group=effect min=-20 max=0 step=0.05");
-    //ui::AddTweak ("bounce", &m_floorUpdater->m_bounceFactor, "group=effect min=0 max=1 step=0.05");
+    Editor::AddTweakColor4f (tw, "start col min", &m_colGenerator->m_minStartCol.x, "group=effect");
+    Editor::AddTweakColor4f (tw, "start col max", &m_colGenerator->m_maxStartCol.x, "group=effect");
+    Editor::AddTweakColor4f (tw, "end col min", &m_colGenerator->m_minEndCol.x, "group=effect");
+    Editor::AddTweakColor4f (tw, "end col max", &m_colGenerator->m_maxEndCol.x, "group=effect");
+    Editor::AddTweak (tw, "gravity", &m_eulerUpdater->m_globalAcceleration.y, "group=effect min=-20 max=0 step=0.05");
+    Editor::AddTweak (tw, "bounce", &m_floorUpdater->m_bounceFactor, "group=effect min=0 max=1 step=0.05");
   }
 
-  void FountainEffect::removeUI (CTwBar* tw)
+  void FountainEffect::removeUI (TwBar* tw)
   {
-    //ui::RemoveVar ("start col min");
-    //ui::RemoveVar ("start col max");
-    //ui::RemoveVar ("end col min");
-    //ui::RemoveVar ("end col max");
-    //ui::RemoveVar ("gravity");
-    //ui::RemoveVar ("bounce");
+    Editor::RemoveVar (tw, "start col min");
+    Editor::RemoveVar (tw, "start col max");
+    Editor::RemoveVar (tw, "end col min");
+    Editor::RemoveVar (tw, "end col max");
+    Editor::RemoveVar (tw, "gravity");
+    Editor::RemoveVar (tw, "bounce");
   }
 
   void FountainEffect::update (double dt)

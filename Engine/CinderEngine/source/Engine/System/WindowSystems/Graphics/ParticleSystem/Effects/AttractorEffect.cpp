@@ -8,6 +8,7 @@
 */
 /******************************************************************************/
 
+#include "EditorUI.h"
 #include "AttractorEffect.h"
 
 
@@ -131,28 +132,28 @@ namespace Framework
 
 
   // ANT-TWEAK BAR TODO
-  void AttractorEffect::addUI (CTwBar* tw)
+  void AttractorEffect::addUI (TwBar* tw)
   {
-    //AddTweakColor4f("start col min", &m_colGenerator->m_minStartCol.x, "group=effect");
-    //AddTweakColor4f("start col max", &m_colGenerator->m_maxStartCol.x, "group=effect");
-    //AddTweakColor4f("end col min", &m_colGenerator->m_minEndCol.x, "group=effect");
-    //AddTweakColor4f("end col max", &m_colGenerator->m_maxEndCol.x, "group=effect");
-    //AddTweak("z scale", &m_zScale, "min=0.0 max=1.0 step=0.05 group=effect");
-    //for (size_t i = 0; i < m_attractors->collectionSize(); ++i)
-    //AddTweak(("attr " + std::to_string(i + 1)).c_str(), &(m_attractors->get(i)).w, "min=-1.0 max=1.0 step=0.05 group=effect");
+    Editor::AddTweakColor4f (tw, "start col min", &m_colGenerator->m_minStartCol.x, "group=effect");
+    Editor::AddTweakColor4f (tw, "start col max", &m_colGenerator->m_maxStartCol.x, "group=effect");
+    Editor::AddTweakColor4f (tw, "end col min", &m_colGenerator->m_minEndCol.x, "group=effect");
+    Editor::AddTweakColor4f (tw, "end col max", &m_colGenerator->m_maxEndCol.x, "group=effect");
+    Editor::AddTweak (tw, "z scale", &m_zScale, "min=0.0 max=1.0 step=0.05 group=effect");
+    for (size_t i = 0; i < m_attractors->collectionSize(); ++i)
+      Editor::AddTweak (tw, ("attr " + std::to_string (i + 1)).c_str (), &(m_attractors->get (i)).w, "min=-1.0 max=1.0 step=0.05 group=effect");
   }
 
 
   // ANT-TWEAK BAR TODO
-  void AttractorEffect::removeUI (CTwBar* tw)
+  void AttractorEffect::removeUI (TwBar* tw)
   {
-    /*ui::RemoveVar("start col min");
-    ui::RemoveVar("start col max");
-    ui::RemoveVar("end col min");
-    ui::RemoveVar("end col max");
-    ui::RemoveVar("z scale");
+    Editor::RemoveVar(tw, "start col min");
+    Editor::RemoveVar(tw, "start col max");
+    Editor::RemoveVar(tw, "end col min");
+    Editor::RemoveVar(tw, "end col max");
+    Editor::RemoveVar(tw, "z scale");
     for (size_t i = 0; i < m_attractors->collectionSize(); ++i)
-    ui::RemoveVar(("attr " + std::to_string(i + 1)).c_str());*/
+    Editor::RemoveVar(tw, ("attr " + std::to_string(i + 1)).c_str());
   }
 
 

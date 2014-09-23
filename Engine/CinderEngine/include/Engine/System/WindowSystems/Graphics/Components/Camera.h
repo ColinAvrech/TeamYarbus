@@ -45,6 +45,7 @@ namespace Framework
     glm:: vec2 oldPosition;
     bool matricesReady;
 
+    float fov;
     float size;
     float aspect;
     float nearPlane;

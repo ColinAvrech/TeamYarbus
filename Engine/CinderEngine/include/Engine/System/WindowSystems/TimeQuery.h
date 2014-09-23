@@ -62,22 +62,16 @@ namespace Framework
     /// inits the query, deletes the query if it is created
     void init ();
 
-    /// call it before the code you want to measure
     inline void begin ();
 
-    /// call it just after the code you want to measure
     inline void end ();
 
-    /// call it after end() or at the end of a frame
     void updateResults (WaitOption wait);
 
-    /// resets all the time data (does not delete the query object!)
     inline void resetTime ();
 
-    /// @return average time of the whole tests, call it usually at the end of app, in miliseconds
     inline double getAverageTime () const;
 
-    /// @return average time from four tests, updated in updateResults(), in miliseconds 
     inline double &getTime ();
   private:
     void deleteQuery ();
@@ -121,7 +115,7 @@ namespace Framework
     return mTime;
   }
 
-  namespace utils
+  namespace Utils
   {
     bool initGL (bool vsync);
 

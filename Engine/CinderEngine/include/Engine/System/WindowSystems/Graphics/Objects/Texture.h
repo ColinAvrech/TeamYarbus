@@ -19,6 +19,9 @@ namespace Framework
     float Get_Aspect_Ratio ();
     void Load_Texture (const char* filename);
 
+    void Bind_Texture (int num = 0);
+    void Release_Texture ();
+
   protected:
     GLuint textureID;
     int width;

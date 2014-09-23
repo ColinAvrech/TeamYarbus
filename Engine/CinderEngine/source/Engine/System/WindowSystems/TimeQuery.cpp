@@ -14,20 +14,20 @@
 namespace Framework
 {
 
-  ///////////////////////////////////////////////////////////////////////////////
+  // CONSTRUCTOR
   GpuTimerQuery::GpuTimerQuery ()
   {
     mQuery = 0;
     resetTime ();
   }
 
-  ///////////////////////////////////////////////////////////////////////////////
+  // DESTRUCTOR
   GpuTimerQuery::~GpuTimerQuery ()
   {
     deleteQuery ();
   }
 
-  ///////////////////////////////////////////////////////////////////////////////
+  // INITIALIZES TIME QUERY
   void GpuTimerQuery::init ()
   {
     deleteQuery ();
@@ -35,7 +35,7 @@ namespace Framework
     glGenQueries (1, &mQuery);
   }
 
-  ///////////////////////////////////////////////////////////////////////////////
+  // UPDATES THE RESULTS OF CURRENT TIME QUERY
   void GpuTimerQuery::updateResults (WaitOption wait)
   {
     // query time results
@@ -49,7 +49,6 @@ namespace Framework
     glGetQueryObjectui64v (mQuery, GL_QUERY_RESULT, &t);
     mWholeTime += t;
     mCounter++;
-
     double msec = (double) t / 1000000.0;
     mTime = 0.25*(msec + mTimes [0] + mTimes [1] + mTimes [2]);
     mTimes [2] = mTimes [1];
@@ -58,8 +57,7 @@ namespace Framework
   }
 
 
-
-  ///////////////////////////////////////////////////////////////////////////////
+  // DELETES CURRENT QUERY
   void GpuTimerQuery::deleteQuery ()
   {
     if (mQuery > 0)
@@ -67,8 +65,10 @@ namespace Framework
     mQuery = 0;
   }
 
-  namespace utils
+  namespace Utils
   {
+
+    // CALCULATES FPS
     void calculateFps (float *fps)
     {
       static unsigned int frame = 0;
@@ -76,7 +76,7 @@ namespace Framework
 
       frame++;
 
-      int t = (int)glfwGetTime ();
+      int t = (int)glfwGetTime () * 1000;
       if (t - timeBase > 1000)
       {
         *fps = 0.5f*(*fps) + 0.5f*(frame*1000.0f / (float) (t - timeBase));
@@ -86,12 +86,13 @@ namespace Framework
 
     }
 
+    // UPDATES DELTA TIME AND APPLICATION TIME
+    // MAX_REFRESH_TIME - SET ACCORDING TO THE QUALITY
     void updateTimer (double *deltaTime, double *appTime, const double MAX_REFRESH_TIME)
     {
       static double lastDeltas [3] = { 0.0, 0.0, 0.0 };
-
       // in milisec
-      int t = (int)glfwGetTime();
+      int t = (int)glfwGetTime() * 1000;
       double newTime = (double) t*0.001;
 
       *deltaTime = newTime - *appTime;
@@ -109,6 +110,8 @@ namespace Framework
       lastDeltas [2] = *deltaTime;
     }
 
+
+    // CHECK IF ANY ERRORS OCCURED IN OPENGL CORE
     bool checkGLErrors (const char *func, const char * file, int line)
     {
       GLenum err;

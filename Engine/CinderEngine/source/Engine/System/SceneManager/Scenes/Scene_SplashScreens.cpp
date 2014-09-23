@@ -38,7 +38,7 @@ namespace Framework
   Sprite sprite (NULL);
   Sprite sprite1 (NULL);
   float camScrollSpeed = 0.05f;
-  const float minLight = 100.0f;
+  const float minLight = 200.0f;
   float shininess = minLight;
   const float maxLight = 3.0f;
   bool isPressed = false;
@@ -50,7 +50,7 @@ namespace Framework
   const int samples = 4;
   bool fadeOut;
   static int frames;
-  const float rate = 0.5f;
+  const float rate = 1.f;
 
   // Constructor
   Scene_SplashScreens::Scene_SplashScreens ()
@@ -268,7 +268,7 @@ namespace Framework
         break;
       case Framework::IDLE:
         ++frames;
-        if (frames > 60)
+        if (frames > 30)
           transition = FADE_OUT;
         break;
       case Framework::FADE_OUT:

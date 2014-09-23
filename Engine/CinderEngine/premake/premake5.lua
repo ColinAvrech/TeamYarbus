@@ -12,7 +12,8 @@
 solution "CinderEngine"
   configurations { "Debug", "Release" }
   location "../"
-  linker    =   {"glfw3.lib", "glfw3dll.lib", "glew32.lib", "SOIL.lib", "SOIL2.lib", "opengl32.lib", "fmod_vc.lib", "Zilch.lib", "AntTweakBar.lib"}
+  linker    =   {"glfw3.lib", "glfw3dll.lib", "glew32.lib", "SOIL.lib", "SOIL2.lib",
+                 "opengl32.lib", "fmod_vc.lib", "Zilch.lib", "AntTweakBar.lib"}
   project "CinderEngine"
     targetname "CinderEngine"
     location "."

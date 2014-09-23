@@ -8,6 +8,7 @@
 */
 /******************************************************************************/
 
+#include "EditorUI.h"
 #include "TunnelEffect.h"
 
 namespace Framework
@@ -81,20 +82,20 @@ namespace Framework
     if (m_renderer) m_renderer->destroy ();
   }
 
-  void TunnelEffect::addUI (CTwBar* tw)
+  void TunnelEffect::addUI (TwBar* tw)
   {
-    //ui::AddTweakColor4f ("start col min", &m_colGenerator->m_minStartCol.x, "group=effect");
-    //ui::AddTweakColor4f ("start col max", &m_colGenerator->m_maxStartCol.x, "group=effect");
-    //ui::AddTweakColor4f ("end col min", &m_colGenerator->m_minEndCol.x, "group=effect");
-    //ui::AddTweakColor4f ("end col max", &m_colGenerator->m_maxEndCol.x, "group=effect");
+    Editor::AddTweakColor4f (tw, "start col min", &m_colGenerator->m_minStartCol.x, "group=effect");
+    Editor::AddTweakColor4f (tw, "start col max", &m_colGenerator->m_maxStartCol.x, "group=effect");
+    Editor::AddTweakColor4f (tw, "end col min", &m_colGenerator->m_minEndCol.x, "group=effect");
+    Editor::AddTweakColor4f (tw, "end col max", &m_colGenerator->m_maxEndCol.x, "group=effect");
   }
 
-  void TunnelEffect::removeUI (CTwBar* tw)
+  void TunnelEffect::removeUI (TwBar* tw)
   {
-    //ui::RemoveVar ("start col min");
-    //ui::RemoveVar ("start col max");
-    //ui::RemoveVar ("end col min");
-    //ui::RemoveVar ("end col max");
+    Editor::RemoveVar (tw, "start col min");
+    Editor::RemoveVar (tw, "start col max");
+    Editor::RemoveVar (tw, "end col min");
+    Editor::RemoveVar (tw, "end col max");
   }
 
   void TunnelEffect::update (double dt)

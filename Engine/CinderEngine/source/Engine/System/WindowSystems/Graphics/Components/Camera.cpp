@@ -25,6 +25,7 @@ namespace Framework
     aspect = 1920.f / 1280;
     nearPlane = 0.1f;
     farPlane = 10.0f;
+    fov = 45.0f;
 
     allCameras.push_back (this);
     if (_main)
@@ -66,7 +67,7 @@ namespace Framework
 
   void Camera::Zoom (float zoom)
   {
-    size += zoom;
+    fov += zoom;
     matricesReady = false;
   }
 
@@ -93,7 +94,7 @@ namespace Framework
       Camera::main->viewToProjection =
         glm::perspective
         (
-        45.0f,
+        Camera::main->fov,
         Camera::main->aspect,
         Camera::main->nearPlane,
         Camera::main->farPlane

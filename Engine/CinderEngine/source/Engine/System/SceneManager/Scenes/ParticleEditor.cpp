@@ -19,69 +19,22 @@
 #include "Effect.h"
 #include "AntTweakBar.h"
 #include "WindowSystem.h"
+#include "EditorUI.h"
 
-typedef CTwBar TwBar;
-TwBar* MainTweakBar;
-
-template <typename T> struct TypeToTW
-{
-  static const TwType value{ TW_TYPE_UNDEF };
-};
-
-template <>	struct TypeToTW<int> { static const TwType value{ TW_TYPE_INT32 }; };
-template <>	struct TypeToTW<bool> { static const TwType value{ TW_TYPE_BOOLCPP }; };
-template <>	struct TypeToTW<float> { static const TwType value{ TW_TYPE_FLOAT }; };
-template <>	struct TypeToTW<double> { static const TwType value{ TW_TYPE_DOUBLE }; };
-
-template <typename T> void AddTweak (const char *name, T *var, const char *def)
-{
-  TwAddVarRW (MainTweakBar, name, TypeToTW<T>::value, var, def);
-}
-
-inline void AddTweakColor3f (const char *name, float *col, const char *def)
-{
-  TwAddVarRW (MainTweakBar, name, TW_TYPE_COLOR3F, col, def);
-}
-
-inline void AddTweakColor4f (const char *name, float *col, const char *def)
-{
-  TwAddVarRW (MainTweakBar, name, TW_TYPE_COLOR4F, col, def);
-}
-
-inline void AddTweakDir3f (const char *name, float *dir, const char *def)
-{
-  TwAddVarRW (MainTweakBar, name, TW_TYPE_DIR3F, dir, def);
-}
-
-template <typename T> void AddVar (const char *name, T *var, const char *def)
-{
-  TwAddVarRO (MainTweakBar, name, TypeToTW<T>::value, var, def);
-}
-
-inline void RemoveVar (const char *name)
-{
-  TwRemoveVar (MainTweakBar, name);
-}
-
-inline void RemoveAllVars ()
-{
-  TwRemoveAllVars (MainTweakBar);
-}
-
-inline void AddSeparator ()
-{
-  TwAddSeparator (MainTweakBar, "sep", "");
-}
 
 
 namespace Framework
 {
+  TwBar *myBar;
   std::shared_ptr<IEffect> gEffects [3];
   IEffect *gCurrentEffect = nullptr;
   int gCurrentEffectID = 0;
   int gSelectedEffect = 0;
   int gNumParticles = 0;
   int gNumAlive = 0;
+
+  static float Fps = 0.0f;
+  static double AppTime = 0;
 
   unsigned int gParticleTexture = 0;
   Shader* mProgram;
@@ -119,28 +72,51 @@ namespace Framework
 
   void ParticleEditor::Key_Pressed(int key, int scanCode, int action, int mods)
   {
+    switch (key)
+    {
+    case GLFW_KEY_0:
+      gSelectedEffect = 0;
+      break;
+    case GLFW_KEY_1:
+      gSelectedEffect = 1;
+      break;
+    case GLFW_KEY_2:
+      gSelectedEffect = 2;
+      break;
+    case GLFW_KEY_W:
+      camera1.Zoom (1.0f);
+      break;
+    default:
+      break;
+    }
   }
 
 
   void ParticleEditor::Mouse_Button(int button, int state, int mods)
-{
+  {
+    TwEventMouseButtonGLFW (button, state);
   }
 
 
   void ParticleEditor::Mouse_Moved(double xPos, double yPos)
-{
+  {
+    TwEventMousePosGLFW ((int)xPos, (int)yPos);
   }
 
 
   void ParticleEditor::Load_Scene (const char* filename)
   {
+    //TwInit (TW_OPENGL, NULL);
+    // or
+    TwInit (TW_OPENGL_CORE, NULL); // for core profile
+
     Change_Size (WINDOWSYSTEM->Get_Width(), WINDOWSYSTEM->Get_Height());
     //
     // some global GL states
     //
     glEnable (GL_DEPTH_TEST);
     glClearColor (0.f, 0.f, 0.f, 0.0f);
-
+    TwWindowSize (WINDOWSYSTEM->Get_Width(), WINDOWSYSTEM->Get_Height());
     //camera_.cameraDir [0] = 0.0f;
     //camera_.cameraDir [1] = 0.0f;
     //camera_.cameraDir [2] = 1.0f;
@@ -156,10 +132,10 @@ namespace Framework
     gEffects [0] = EffectFactory::create ("attractors");
     gEffects [0]->initialize (IEffect::DEFAULT_PARTICLE_NUM_FLAG);
     gEffects [0]->initializeRenderer ();
-    gEffects [1] = EffectFactory::create ("attractors");
+    gEffects [1] = EffectFactory::create ("fountain");
     gEffects [1]->initialize (IEffect::DEFAULT_PARTICLE_NUM_FLAG);
     gEffects [1]->initializeRenderer ();
-    gEffects [2] = EffectFactory::create ("fountain");
+    gEffects [2] = EffectFactory::create ("tunnel");
     gEffects [2]->initialize (IEffect::DEFAULT_PARTICLE_NUM_FLAG);
     gEffects [2]->initializeRenderer ();
     gCurrentEffectID = 0;
@@ -168,19 +144,23 @@ namespace Framework
     gpuUpdate.init ();
     gpuRender.init ();
 
-    //AddTweak ("animate", &gAnimationOn, "");
-    //AddVar ("particles", &gNumParticles, "");
-    //AddVar ("alive", &gNumAlive, "");
-    //AddVar ("cpu particles", &cpuParticlesUpdate.m_time, "precision=3 group=timers");
-    //AddVar ("cpu buffers", &cpuBuffersUpdate.m_time, "precision=3 group=timers");
+    myBar = TwNewBar ("NameOfMyTweakBar");
 
-    //AddVar ("gpu buffer", &gpuUpdate.getTime (), "precision=3 group=timers");
-    //AddVar ("gpu render", &gpuRender.getTime (), "precision=3 group=timers");
-
-    //AddTweakDir3f ("camera", &camera_.cameraDir.x, "");
-    //AddTweak ("camera distance", &camera_.camDistance, "min=0.05 max=4.0 step=0.01");
-    //AddSeparator ();
-    //AddTweak ("effect id", &gSelectedEffect, "min=0 max=2");
+    TwAddVarRO (myBar, "FPS", TW_TYPE_FLOAT, &Fps, NULL);
+    Editor::AddTweak (myBar, "animate", &gAnimationOn, "");
+    Editor::AddVar (myBar, "particles", &gNumParticles, "");
+    Editor::AddVar (myBar, "alive", &gNumAlive, "");
+    Editor::AddVar (myBar, "cpu particles", &cpuParticlesUpdate.m_time, "precision=3 group=timers");
+    Editor::AddVar (myBar, "cpu buffers", &cpuBuffersUpdate.m_time, "precision=3 group=timers");
+    //Editor::      myBar, 
+    Editor::AddVar (myBar, "gpu buffer", &gpuUpdate.getTime (), "precision=3 group=timers");
+    Editor::AddVar (myBar, "gpu render", &gpuRender.getTime (), "precision=3 group=timers");
+    //Editor::
+    //Editor::AddTweakDir3f (myBar, "camera", &camera1.viewDirection.x, "");
+    //Editor::AddTweak (myBar, "camera distance", &camera1.fov, "min=0.05 max=4.0 step=0.01");
+    Editor::AddSeparator (myBar);
+    Editor::AddTweak (myBar, "effect id", &gSelectedEffect, "min=0 max=2");
+    gCurrentEffect->addUI (myBar);
 
     Camera::main->worldToView = glm::lookAt (Camera::main->viewDirection * 0.5f, Camera::main->position, Camera::main->up);
   }
@@ -188,16 +168,18 @@ namespace Framework
 
   void ParticleEditor::Update (const double dt)
   {
-    const double deltaTime = 0.016;
+    double deltaTime;
+    Utils::updateTimer (&deltaTime, &AppTime);
+    Utils::calculateFps (&Fps);
     if (!gAnimationOn)
       return;
 
     if (gSelectedEffect != gCurrentEffectID)
     {
-      gCurrentEffect->removeUI (MainTweakBar);
+      gCurrentEffect->removeUI (myBar);
       gCurrentEffectID = gSelectedEffect;
       gCurrentEffect = gEffects [gCurrentEffectID].get ();
-      gCurrentEffect->addUI (MainTweakBar);
+      gCurrentEffect->addUI (myBar);
     }
 
     gCurrentEffect->update (deltaTime);
@@ -250,6 +232,8 @@ namespace Framework
     mProgram->Disable ();
 
     gpuRender.updateResults (GpuTimerQuery::WaitOption::WaitForResults);
+
+    TwDraw ();
   }
 
   void ParticleEditor::Change_Size (int w, int h)
@@ -261,6 +245,7 @@ namespace Framework
 
     // setup projection matrix
     Camera::main->viewToProjection = glm::perspective (45.0f, aspect, 0.1f, 10.0f);
+    TwWindowSize (w, h);
   }
 
 
