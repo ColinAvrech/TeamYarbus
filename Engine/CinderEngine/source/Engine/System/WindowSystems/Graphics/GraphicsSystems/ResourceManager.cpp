@@ -211,7 +211,7 @@ namespace Framework
       {
         audioFile >> str;
         char* c = strstr ((char*)str.c_str(), str.c_str ());
-        Sound* sound = AUDIOSYSTEM->LoadSound ((AudioResourcePath + str).c_str (), c, Sound::SOUND_2D, 0.5f);
+        Sound* sound = AUDIOSYSTEM->LoadSound ((AudioResourcePath + str).c_str (), c, Sound::SOUND_2D, 1.0f);
         sounds[str] = sound;
         std::cout << str << std::endl;
       }

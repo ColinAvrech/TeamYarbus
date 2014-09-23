@@ -68,6 +68,7 @@ namespace Framework
         FMOD::DSP                     *dsp_lpf = 0;
         FMOD::DSP                     *dsp_hpf = 0;
         FMOD::DSP                     *dsp_reverb = 0;
+        FMOD::DSP                     *dsp_noise = 0;
       }objects_DSP;
 
       #pragma endregion   
@@ -92,6 +93,7 @@ namespace Framework
       // DSP
       void            LowPassFilter(float cutoff = 5000.0, float resonance = 1.0);
       void            HighPassFilter(float cutoff = 5000.0, float resonance = 1.0);
+      void            GenerateNoise();
       void            Reverb(
                               float Wet = -6,
                               float Dry = 0,
