@@ -69,7 +69,8 @@ solution "CinderEngine"
       targetdir "../bin/release"
       postbuildcommands
               {
-                "copy ..\\dependency\\opengl\\library\\glut32.dll ..\\bin\\release\\",
+                "copy ..\\dependency\\opengl\\library\\glfw3.dll ..\\bin\\release\\",
+                "copy ..\\dependency\\opengl\\library\\glew32.dll ..\\bin\\release\\",
 								"copy ..\\dependency\\fmod\\library\\fmod.dll ..\\bin\\release\\",
 								"copy ..\\dependency\\AntTweakBar\\library\\AntTweakBar.dll ..\\bin\\release\\"        
               }
