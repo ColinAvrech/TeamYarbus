@@ -60,6 +60,7 @@ namespace Framework
   // Constructor
   ParticleEditor::ParticleEditor ()
   {
+    TwTerminate ();
   }
 
   // Destructor
