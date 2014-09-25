@@ -29,12 +29,8 @@ namespace Framework
 
   };
 
-
   //!Set the factory to null to indicate is hasn't been created yet
   ObjectSystem * OBJECTSYSTEM = NULL;
-  //!Set first object's id to zero
-  unsigned ObjectSystem::LastGameObjectId = 0;
-
 
   ObjectSystem::ObjectSystem()
   {
@@ -50,22 +46,8 @@ namespace Framework
   /*!Deletes all objects int eh ObjectsToBeDelted List.*/
   void ObjectSystem::Update(const double dt)
   {
-    DestroyGameObjectsToBeDestroyed();
-
   }
 
-  GameObject* ObjectSystem::CreateObject()
-  {
-    GameObject * obj = new GameObject(LastGameObjectId);
-
-    GameObjects[LastGameObjectId] = obj;
-    ++LastGameObjectId;
-    return obj;
-  }
-
-  /*
-  Called When the ObjectSystem is created
-  */
   void ObjectSystem::RegisterComponents(void)
   {
     RegisterComponent(Transform);
@@ -78,24 +60,9 @@ namespace Framework
   }
 
   void ObjectSystem::DestroyAllObjects()
-  {
-    for each(auto obj in GameObjects)
-    {
-      delete obj.second;
-      obj.second = NULL;
-    }
-  }
-
-  void ObjectSystem::DestroyGameObjectsToBeDestroyed()
-  {
-    for each(auto obj in GameObjectsToBeDestroyed)
-    {
-      delete obj;
-      obj = NULL;
-    }
+  {    
 
   }
-
   /*
   void ObjectSystem::LoadLevel(std::string level)
   {

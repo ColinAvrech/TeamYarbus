@@ -39,32 +39,26 @@ namespace Framework
     //!name of the system if the Factory, duh.
     virtual const std::string GetName(){ return "ObjectSystem"; }
 
-    GameObject* CreateObject();
-
     //!Destroy all the GOC. Used in final shutdown procedure.
     void DestroyAllObjects();
 
-    void DestroyGameObjectsToBeDestroyed();
-
     void LoadLevel(std::string level);
+
 
     /*!Used to generator unique GOCIds*/
     static unsigned LastGameObjectId;
+
+
 
   private:
 
     void RegisterComponents(void);
     void AddComponentCreator(std::string name, ComponentCreator* creator);
 
-
-    typedef std::map<unsigned, GameObject*> GameObjectMap;
-    GameObjectMap GameObjects;
+    //std::string ReadLine(std::string line);
     
     typedef std::map<std::string, ComponentCreator *> SerializationMap;
     SerializationMap SerialMap;
-
-    typedef std::vector<GameObject *> ObjectsToBeDestroyed;
-    ObjectsToBeDestroyed GameObjectsToBeDestroyed;
 
 
   };
