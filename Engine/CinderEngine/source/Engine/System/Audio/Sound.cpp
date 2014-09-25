@@ -391,7 +391,25 @@ namespace Framework
   \return Returns nothing
   */
   /***************************************************************************/
+<<<<<<< HEAD
   void Sound::Reverb(ReverbPresetName preset)
+=======
+  void Sound::Reverb(
+                      float Wet,
+                      float Dry,
+                      float Diffusion,
+                      float Density,
+                      float Decay,
+                      float EarlyR,
+                      float Delay,
+                      float HF_ref,
+                      float HF_decay,
+                      float LowShelf_Hz,
+                      float LowShelf_Gain,
+                      float HighCut,
+                      float EarlyLateMix
+                    )
+>>>>>>> origin/master
   {
     FMOD_RESULT result;
     ReverbPreset type;
@@ -474,6 +492,7 @@ namespace Framework
     }
   }
 
+<<<<<<< HEAD
   Sound::ReverbPreset Sound::SetReverbPreset(Sound::ReverbPresetName preset)
   {
     ReverbPreset type;
@@ -583,6 +602,8 @@ namespace Framework
     }
   }
 
+=======
+>>>>>>> origin/master
   /***************************************************************************/
   /*!
   \brief  Sets the loop state of the Sound Object
