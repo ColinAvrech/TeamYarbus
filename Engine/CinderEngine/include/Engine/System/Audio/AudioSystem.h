@@ -54,9 +54,9 @@ namespace Framework
       #pragma endregion
 
       /*---------------------------------------------------------------------*/
-      // Public Structs
+      // Public Structs/Enums
       /*---------------------------------------------------------------------*/
-      #pragma region Public Structs
+      #pragma region Public Structs      
 
       #pragma endregion
 
