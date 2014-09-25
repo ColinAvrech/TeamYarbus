@@ -223,12 +223,6 @@ namespace Framework
     {
       it->second->Update(dt);
     }
-
-    // Prints out to the console
-    //std::cout << GetName() + " Updating" << std::endl;
-
-    // Prints out the frametime
-    //std::cout << dt << std::endl;
   }
 
   /***************************************************************************/

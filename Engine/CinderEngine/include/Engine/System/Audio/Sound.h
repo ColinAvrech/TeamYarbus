@@ -121,24 +121,10 @@ namespace Framework
       void            LowPassFilter(float cutoff = 5000.0, float resonance = 1.0);
       void            HighPassFilter(float cutoff = 5000.0, float resonance = 1.0);
       void            GenerateNoise();
-      void            Reverb(                     
-                              float Decay = 1500,
-                              float EarlyR = 20,
-                              float Delay = 40,
-                              float HF_ref = 5000,
-                              float HF_decay = 50,  
-                              float Diffusion = 100,
-                              float Density = 100,
-                              float LowShelf_Hz = 250,
-                              float LowShelf_Gain = 0,
-                              float HighCut = 20000,
-                              float EarlyLateMix = 50,
-                              float Wet = -6,
-                              float Dry = 0
-                            );
+      void            Reverb(ReverbPresetName preset);
 
       // Setters
-      ReverbPreset*   SetReverbPreset(ReverbPresetName preset);
+      ReverbPreset   SetReverbPreset(ReverbPresetName preset);
       void            SetChannelGroup(FMOD::ChannelGroup* channelGroup);          
       void            SetVolume(const float volume);
       void            SetMute(bool muteState);
@@ -153,7 +139,8 @@ namespace Framework
       float           GetMasterVolume(void);
       bool            GetPlaying();
       bool            GetPaused();
-      float           GetVolume();      
+      float           GetVolume();    
+      unsigned        GetTime();
       unsigned        GetID(){return ID;}
 
       #pragma endregion

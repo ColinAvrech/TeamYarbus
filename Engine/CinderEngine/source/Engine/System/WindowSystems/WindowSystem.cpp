@@ -21,12 +21,6 @@ function to handle windows Messages.
 
 namespace Framework
 {
-  struct SoundName
-  {
-    Sound *test1;
-    Sound *test2;
-  }SoundName;
-
   //! Global pointer to  the windows system.
   WindowSystem* WINDOWSYSTEM = NULL;
 

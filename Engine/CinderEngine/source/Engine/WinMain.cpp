@@ -72,7 +72,7 @@ int main(void)
   //! activate the window.
 
   resourceManager.Get_Sound ("music2.mp3")->Play ();
-  resourceManager.Get_Sound("music2.mp3")->Reverb();
+  resourceManager.Get_Sound("music2.mp3")->Reverb(Sound::CONCERTHALL);
 
   //! Run the game! NOW!
   engine->GameLoop();
