@@ -63,6 +63,16 @@ namespace Framework
         MUSIC
       };
 
+      enum ReverbPresetName
+      {
+        OFF,              GENERIC,      PADDEDCELL,     ROOM,
+        BATHROOM,         LIVINGROOM,   STONEROOM,      AUDITORIUM,
+        CONCERTHALL,      CAVE,         ARENA,          HANGAR,
+        CARPETTEDHALLWAY, HALLWAY,      STONECORRIDOR,  ALLEY,
+        FOREST,           CITY,         MOUNTAINS,      QUARRY,
+        PLAIN,            PARKINGLOT,   SEWERPIPE,      UNDERWATER
+      };
+
       struct objects_DSP
       {
         FMOD::DSP                     *dsp_lpf = 0;
@@ -70,6 +80,23 @@ namespace Framework
         FMOD::DSP                     *dsp_reverb = 0;
         FMOD::DSP                     *dsp_noise = 0;
       }objects_DSP;
+
+      struct ReverbPreset
+      {
+        float DecayTime;
+        float EarlyDelay;
+        float LateDelay;
+        float HFReference;
+        float HFDecayRatio;
+        float Diffusion;
+        float Density;
+        float LowShelfFrequency;
+        float LowShelfGain;
+        float HighCut;
+        float EarlyLateMix;
+        float WetLevel;
+        float DryLevel;
+      };
 
       #pragma endregion   
 
@@ -94,32 +121,25 @@ namespace Framework
       void            LowPassFilter(float cutoff = 5000.0, float resonance = 1.0);
       void            HighPassFilter(float cutoff = 5000.0, float resonance = 1.0);
       void            GenerateNoise();
-<<<<<<< HEAD
-      void            Reverb(ReverbPresetName preset);
-
-      // Setters
-      ReverbPreset   SetReverbPreset(ReverbPresetName preset);
-      void            SetChannelGroup(FMOD::ChannelGroup* channelGroup);          
-=======
-      void            Reverb(
-                              float Wet = -6,
-                              float Dry = 0,
-                              float Diffusion = 100,
-                              float Density = 100,
+      void            Reverb(                     
                               float Decay = 1500,
                               float EarlyR = 20,
                               float Delay = 40,
                               float HF_ref = 5000,
-                              float HF_decay = 50,                              
+                              float HF_decay = 50,  
+                              float Diffusion = 100,
+                              float Density = 100,
                               float LowShelf_Hz = 250,
                               float LowShelf_Gain = 0,
                               float HighCut = 20000,
-                              float EarlyLateMix = 50                              
+                              float EarlyLateMix = 50,
+                              float Wet = -6,
+                              float Dry = 0
                             );
 
       // Setters
-      void            SetChannelGroup(FMOD::ChannelGroup* channelGroup);      
->>>>>>> origin/master
+      ReverbPreset*   SetReverbPreset(ReverbPresetName preset);
+      void            SetChannelGroup(FMOD::ChannelGroup* channelGroup);          
       void            SetVolume(const float volume);
       void            SetMute(bool muteState);
       void            SetPause(bool pauseState);
@@ -133,8 +153,7 @@ namespace Framework
       float           GetMasterVolume(void);
       bool            GetPlaying();
       bool            GetPaused();
-      float           GetVolume();    
-      unsigned        GetTime();
+      float           GetVolume();      
       unsigned        GetID(){return ID;}
 
       #pragma endregion
@@ -186,7 +205,7 @@ namespace Framework
       /*-----------------------------------------------------------------------
       // Private Structs
       -----------------------------------------------------------------------*/
-      #pragma region Private Structs    
+      #pragma region Private Structs        
 
       #pragma endregion
 

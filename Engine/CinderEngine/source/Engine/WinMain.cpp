@@ -71,12 +71,8 @@ int main(void)
 
   //! activate the window.
 
-<<<<<<< HEAD
   resourceManager.Get_Sound ("music2.mp3")->Play ();
-  resourceManager.Get_Sound("music2.mp3")->Reverb(Sound::CONCERTHALL);
-=======
-  resourceManager.Get_Sound ("music.mp3")->Play ();
->>>>>>> origin/master
+  resourceManager.Get_Sound("music2.mp3")->Reverb();
 
   //! Run the game! NOW!
   engine->GameLoop();
