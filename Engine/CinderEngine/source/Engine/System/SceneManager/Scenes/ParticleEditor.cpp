@@ -26,7 +26,7 @@
 namespace Framework
 {
   TwBar *myBar;
-  std::shared_ptr<IEffect> gEffects [3];
+  std::shared_ptr<IEffect> gEffects [4];
   IEffect *gCurrentEffect = nullptr;
   int gCurrentEffectID = 0;
   int gSelectedEffect = 0;
@@ -139,6 +139,9 @@ namespace Framework
     gEffects [2] = EffectFactory::create ("tunnel");
     gEffects [2]->initialize (IEffect::DEFAULT_PARTICLE_NUM_FLAG);
     gEffects [2]->initializeRenderer ();
+    gEffects [3] = EffectFactory::create ("explosion");
+    gEffects [3]->initialize (IEffect::DEFAULT_PARTICLE_NUM_FLAG);
+    gEffects [3]->initializeRenderer ();
     gCurrentEffectID = 0;
     gCurrentEffect = gEffects [0].get ();
 
@@ -160,7 +163,7 @@ namespace Framework
     //Editor::AddTweakDir3f (myBar, "camera", &camera1.viewDirection.x, "");
     //Editor::AddTweak (myBar, "camera distance", &camera1.fov, "min=0.05 max=4.0 step=0.01");
     Editor::AddSeparator (myBar);
-    Editor::AddTweak (myBar, "effect id", &gSelectedEffect, "min=0 max=2");
+    Editor::AddTweak (myBar, "effect id", &gSelectedEffect, "min=0 max=3");
     gCurrentEffect->addUI (myBar);
 
     Camera::main->worldToView = glm::lookAt (Camera::main->viewDirection * 0.5f, Camera::main->position, Camera::main->up);
