@@ -11,7 +11,17 @@
 
 #pragma once
 
+#include "Common.h"
 #include "BaseSystem.h"
+#include "BaseEvent.h"
+
+#include "Events.h"
+
+#include "MouseEvent.h"
+#include "UpdateEvent.h"
+#include "KeyEvent.h"
+#include "GameEvent.h"
+
 
 namespace Framework
 {
@@ -26,9 +36,22 @@ namespace Framework
 
     virtual const std::string GetName() { return "EventSystem";}
 
+    virtual bool Initialize();
+
+    unsigned NumberOfEvents();
+
+    void Connect(GameObject* obj, const std::string eventname, BaseEvent::BaseCall func);
+    void TriggerEvent(const std::string eventname);
 
   private:
-        
+
+    double _TotalTimePassed = 0;
+    double _dt = 0;
+
+    typedef std::unordered_map<std::string, BaseEvent*> EventMap;
+    EventMap RegisteredEvents;
+
+
   };
 
   extern EventSystem* EVENTSYSTEM;

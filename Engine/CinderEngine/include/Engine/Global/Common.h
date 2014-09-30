@@ -16,10 +16,13 @@ from externals, and stable elements within the engine.
 #include <iostream>
 #include <fstream>
 #include <chrono>
+#include <functional>
 #include <thread>
 #include <list>
 #include <vector>
+#include <utility>
 #include <map>
+#include <unordered_map>
 #include <set>
 #include <string>
 #include <algorithm> //! std::sorts
@@ -31,4 +34,5 @@ from externals, and stable elements within the engine.
 //! Global Headers
 #include "Console.h"
 #include "DebugCode.h"
+#include "Helpers.h"
 
