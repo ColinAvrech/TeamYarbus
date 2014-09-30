@@ -15,7 +15,6 @@
 
 namespace Framework
 {
-
   class CollisionEvent : public BaseEvent
   {
   public:
@@ -36,7 +35,6 @@ namespace Framework
     }
     
     GameObject * OtherObject;
-
 
   };
 

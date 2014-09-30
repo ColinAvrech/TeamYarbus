@@ -36,8 +36,6 @@ namespace Framework
       // We can also setup the console so that any 'Read' functions will attempt to read from stdin
       Zilch::Console::SetReadTextCallback(Zilch::DefaultReadText, nullptr);
 
-      
-
       return true;
     }
    
