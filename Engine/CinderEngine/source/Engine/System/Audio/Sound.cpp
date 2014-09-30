@@ -133,6 +133,31 @@ namespace Framework
       pChannel->setVolume(volume);
   }
 
+  void Sound::SetPan(char pan)
+  {
+    FMOD_RESULT result;
+    // Pans to left channel
+    if (pan == 'L')
+    {
+      result = pChannel->setPan(-1);
+      ErrCheck(result);
+    }
+
+    // Pans to Right channel
+    if (pan == 'R')
+    {
+      result = pChannel->setPan(1);
+      ErrCheck(result);
+    }
+
+    // Pans to center
+    if (pan == 'C')
+    {
+      result = pChannel->setPan(0);
+      ErrCheck(result);
+    }
+  }
+
   void Sound::SetPause(bool pauseState)
   {
     if (Sound::system_on_ == false)
