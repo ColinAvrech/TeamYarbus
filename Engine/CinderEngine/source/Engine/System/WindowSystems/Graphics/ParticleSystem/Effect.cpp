@@ -10,9 +10,10 @@
 
 #include "Effect.h"
 #include <string>
-#include "tunnelEffect.h"
-#include "fountainEffect.h"
-#include "attractorEffect.h"
+#include "TunnelEffect.h"
+#include "FountainEffect.h"
+#include "AttractorEffect.h"
+#include "ExplosionEffect.h"
 
 namespace Framework
 {
@@ -26,7 +27,9 @@ namespace Framework
       return std::make_shared<AttractorEffect> ();
     else if (effect == "fountain")
       return std::make_shared<FountainEffect> ();
-
-    return nullptr;
+    else if (effect == "explosion")
+      return std::make_shared<ExplosionEffect> ();
+    else
+      return nullptr;
   }
 }

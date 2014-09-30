@@ -1,31 +1,14 @@
 /******************************************************************************/
 /*!
-\file   InputEvent.h
+\file   Helpers.h
 \author Micah Rust
 \par    Course: GAM200
 \par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
-\brief
+\brief  This file contains several helper macros for programming
 */
 /******************************************************************************/
 
 #pragma once
 
-#include "Common.h"
-#include "BaseEvent.h"
-
-namespace Framework
-{
-
-  class MouseEvent : public BaseEvent
-  {
-  public:
-    MouseEvent(const std::string)
-    {}
-
-    ~MouseEvent()
-    {}
-
-    
-
-  };
-}
+#define FOREVER() for(true)
+#define RETURNIF(exp) do { if ((exp)) return;}  while (0)

@@ -16,16 +16,27 @@
 namespace Framework
 {
 
-  class MouseEvent : public BaseEvent
+  class UpdateEvent : public BaseEvent
   {
   public:
-    MouseEvent(const std::string)
+    typedef void(*UpdateCall)(GameObject*, UpdateEvent*);
+
+    UpdateEvent(const std::string eventname)
     {}
 
-    ~MouseEvent()
+    ~UpdateEvent()
     {}
-
     
+    void DispatchEvent()
+    {
+      for each(auto it in Listeners)
+      {
+        ((UpdateCall)(it.second))(it.first, this);
+      }
+    }
 
+    double TimePassed;
+    
   };
+
 }

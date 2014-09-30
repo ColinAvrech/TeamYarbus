@@ -4,7 +4,7 @@
 \author Micah Rust
 \par    Course: GAM200
 \par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
-\brief
+\brief  Sends an event Whenever there is a key state change
 */
 /******************************************************************************/
 
@@ -16,16 +16,27 @@
 namespace Framework
 {
 
-  class MouseEvent : public BaseEvent
+  class KeyEvent : public BaseEvent
   {
   public:
-    MouseEvent(const std::string)
+    typedef void(*KeyCall)(GameObject*, KeyEvent*);
+
+    KeyEvent(const std::string)
     {}
 
-    ~MouseEvent()
+    ~KeyEvent()
     {}
 
-    
+    void DispatchEvent()
+    {
+      for each(auto it in Listeners)
+      {
+        ((KeyCall)(it.second))(it.first, this);
+      }
+    }
 
+    double TimePassed;
+    bool KeyDown;
+    unsigned KeyValue;
   };
 }

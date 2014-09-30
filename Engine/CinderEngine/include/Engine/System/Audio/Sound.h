@@ -111,34 +111,20 @@ namespace Framework
                            char* soundName, 
                            SoundID id);
       void            Play();
+      void            VolumeFade(float volume, float fadeTime);
       void            Stop();
       void            PlayNew();
       void            AddSound(char* filename);
-      virtual void    Update(const double dt);  
-      void            volumeFade(float volume, float fadeTime);
+      virtual void    Update(const double dt);
 
       // DSP
-      void            LowPassFilter(float cutoff = 5000.0, float resonance = 1.0);
-      void            HighPassFilter(float cutoff = 5000.0, float resonance = 1.0);
+      void            LowPassFilter();
+      void            HighPassFilter();
       void            GenerateNoise();
-      void            Reverb(                     
-                              float Decay = 1500,
-                              float EarlyR = 20,
-                              float Delay = 40,
-                              float HF_ref = 5000,
-                              float HF_decay = 50,  
-                              float Diffusion = 100,
-                              float Density = 100,
-                              float LowShelf_Hz = 250,
-                              float LowShelf_Gain = 0,
-                              float HighCut = 20000,
-                              float EarlyLateMix = 50,
-                              float Wet = -6,
-                              float Dry = 0
-                            );
+      void            Reverb();
 
       // Setters
-      ReverbPreset*   SetReverbPreset(ReverbPresetName preset);
+      ReverbPreset    SetReverbPreset(ReverbPresetName preset);
       void            SetChannelGroup(FMOD::ChannelGroup* channelGroup);          
       void            SetVolume(const float volume);
       void            SetMute(bool muteState);
@@ -148,13 +134,39 @@ namespace Framework
                                     const float endPos = 0, 
                                     const int index = 0);
       void            SetType(unsigned type, unsigned index);
+      void            SetLPF(float cutoff = 5000.0f, float resonance = 1.0f);
+      void            SetHPF(float cutoff = 5000.0f, float resonance = 1.0f);
+      void            AddReverbPreset(Sound::ReverbPresetName preset);
 
       // Getters
       float           GetMasterVolume(void);
       bool            GetPlaying();
       bool            GetPaused();
-      float           GetVolume();      
+      float           GetVolume();   
+      unsigned        GetTime();
       unsigned        GetID(){return ID;}
+
+      float*          GetVolumePtr();
+
+      inline FMOD::Channel* Get_Channel()
+      {
+        return pChannel;
+      }
+
+      inline FMOD::DSP* Get_LPF ()
+      {
+        return objects_DSP.dsp_lpf;
+      }
+
+      inline FMOD::DSP* Get_HPF()
+      {
+        return objects_DSP.dsp_hpf;
+      }
+
+      inline FMOD::DSP* Get_RVRB()
+      {
+        return objects_DSP.dsp_reverb;
+      }
 
       #pragma endregion
 
@@ -193,6 +205,10 @@ namespace Framework
       float                         _volume;
       float                         _paused;
       float                         _pitch;
+      float                         _volValue;
+      float                         _fadeValue;
+      bool                          test = true;
+      bool                          test2 = false;
       std::vector<FMOD::Sound*>     sound_queue_;
       FMOD::Channel                 *pChannel;
       FMOD::ChannelGroup            *pChannelGroup;

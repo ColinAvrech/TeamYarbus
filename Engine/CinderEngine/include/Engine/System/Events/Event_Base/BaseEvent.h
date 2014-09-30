@@ -26,55 +26,23 @@ namespace Framework
 
     //static unsigned int totalevents;
 
-    BaseEvent::BaseEvent(Events::Types eventType)
-      : type(eventType)
+    BaseEvent::BaseEvent()
     {
-      //++totalevents;
     }
 
     BaseEvent::~BaseEvent()
     {
-      //--totalevents;
     }
-    
-    double Dt() { return _dt; }
-    const Events::Types type; 
 
-    /*static unsigned int GetTotalEvents()
-    {
-      return totalevents;
-    }*/
 
-  protected:
+    //typedef std::function<void(*(GameObject*, BaseEvent*))> BaseCall;
+    typedef void(*BaseCall)(GameObject*, BaseEvent*);
+    typedef std::pair<GameObject*, BaseCall> BaseEventListener;
+    typedef std::vector<BaseEventListener> VectorBaseEventListeners;
 
-    void AddDelagate();
+    VectorBaseEventListeners Listeners;
 
-    struct EventDelegate
-    {
-      GameObject *obj = NULL;
-
-      /*!All possible types of Events and their related data*/
-      union Action
-      {
-        void *Input(GameObject &obj, const class InputEvent &Event);
-        void *Engine(GameObject &obj, const class EngineEvent &Event);
-        void *Grapics(GameObject &obj, const class GraphicsEvent &Event);
-        void *Windows(GameObject &obj, const class WindowsEvent &Event);
-        void *Audio(GameObject &obj, const class AudioEvent &Event);
-        void *Physics(GameObject &obj, const class PhysicsEvent &Event);
-        void *Script(GameObject &obj, const class ScriptEvent &Event);
-      };
-    };
-
-    std::vector<EventDelegate> Delagates;
-
-  private:
-
-    /*!dt of the frame the event wa*/
-    double _dt;
+    double Dt;
   };
 
 }
-
-#include "WindowSystem.h"
-#include "EventSystem.h"

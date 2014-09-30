@@ -13,6 +13,7 @@
 -----------------------------------------------------------------------------*/
 #pragma region Includes
 
+#include "EditorUI.h"
 #include "Sound.h"
 #include <Windows.h>
 #include <vector>
@@ -208,7 +209,7 @@ namespace Framework
   \return Returns nothing
   */
   /***************************************************************************/
-  void Sound::LowPassFilter(float cutoff, float resonance)
+  void Sound::LowPassFilter()
   {
     FMOD_RESULT result;
     bool active;
@@ -222,13 +223,7 @@ namespace Framework
     result = pFMODAudioSystem->createDSPByType(FMOD_DSP_TYPE_LOWPASS, &objects_DSP.dsp_lpf);
     ErrCheck(result);
 
-    // Lowpass cutoff frequency in hz.   10.0 to 22000.0
-    result = objects_DSP.dsp_lpf->setParameterFloat(FMOD_DSP_LOWPASS_CUTOFF, cutoff);
-    ErrCheck(result);
-
-    // Lowpass resonance Q value. 1.0 to 10.0
-    result = objects_DSP.dsp_lpf->setParameterFloat(FMOD_DSP_LOWPASS_RESONANCE, resonance);
-    ErrCheck(result);
+    
 
     result = objects_DSP.dsp_lpf->getActive(&active);
     ErrCheck(result);
@@ -243,6 +238,19 @@ namespace Framework
       result = pChannel->addDSP(0, objects_DSP.dsp_lpf, 0);
       ErrCheck(result);
     }
+  }
+
+  void Sound::SetLPF(float cutoff, float resonance)
+  {
+    FMOD_RESULT result;
+
+    // Lowpass cutoff frequency in hz.   10.0 to 22000.0
+    result = objects_DSP.dsp_lpf->setParameterFloat(FMOD_DSP_LOWPASS_CUTOFF, cutoff);
+    ErrCheck(result);
+
+    // Lowpass resonance Q value. 1.0 to 10.0
+    result = objects_DSP.dsp_lpf->setParameterFloat(FMOD_DSP_LOWPASS_RESONANCE, resonance);
+    ErrCheck(result);
   }
 
   /***************************************************************************/
@@ -260,8 +268,8 @@ namespace Framework
   \return Returns nothing
   */
   /***************************************************************************/
-  void Sound::HighPassFilter(float cutoff, float resonance)
-  {
+  void Sound::HighPassFilter()
+  {    
     FMOD_RESULT result;
     bool active;
 
@@ -272,15 +280,7 @@ namespace Framework
     }
 
     result = pFMODAudioSystem->createDSPByType(FMOD_DSP_TYPE_HIGHPASS, &objects_DSP.dsp_hpf);
-    ErrCheck(result);
-
-    // Highpass cutoff frequency in hz.  1.0 to output 22000.0
-    result = objects_DSP.dsp_hpf->setParameterFloat(FMOD_DSP_HIGHPASS_CUTOFF, cutoff);
-    ErrCheck(result);
-
-    // Highpass resonance Q value.  1.0 to 10.0
-    result = objects_DSP.dsp_hpf->setParameterFloat(FMOD_DSP_HIGHPASS_RESONANCE, resonance);
-    ErrCheck(result);
+    ErrCheck(result);    
 
     result = objects_DSP.dsp_hpf->getActive(&active);
     ErrCheck(result);
@@ -295,6 +295,20 @@ namespace Framework
       result = pChannel->addDSP(0, objects_DSP.dsp_hpf, 0);
       ErrCheck(result);
     }
+  }
+
+  void Sound::SetHPF(float cutoff, float resonance)
+  {
+    FMOD_RESULT result;
+
+    // Highpass cutoff frequency in hz.  1.0 to output 22000.0
+    result = objects_DSP.dsp_hpf->setParameterFloat(FMOD_DSP_HIGHPASS_CUTOFF, cutoff);
+    ErrCheck(result);
+
+    // Highpass resonance Q value.  1.0 to 10.0
+    result = objects_DSP.dsp_hpf->setParameterFloat(FMOD_DSP_HIGHPASS_RESONANCE, resonance);
+    ErrCheck(result);
+  
   }
 
   void Sound::GenerateNoise()
@@ -391,84 +405,19 @@ namespace Framework
   \return Returns nothing
   */
   /***************************************************************************/
-  void Sound::Reverb(                     
-                      float Decay,
-                      float EarlyR,
-                      float Delay,
-                      float HF_ref,
-                      float HF_decay,
-                      float Diffusion,
-                      float Density,
-                      float LowShelf_Hz,
-                      float LowShelf_Gain,
-                      float HighCut,
-                      float EarlyLateMix,
-                      float Wet,
-                      float Dry
-                    )
+  void Sound::Reverb()
   {
-    FMOD_RESULT result;
+    FMOD_RESULT result;    
     bool active;
 
     // Checks if system is not on
     if (Sound::system_on_ == false)
     {
       return;
-    }
+    }    
 
     result = pFMODAudioSystem->createDSPByType(FMOD_DSP_TYPE_SFXREVERB, &objects_DSP.dsp_reverb);
-    ErrCheck(result);
-
-    // Reverb signal level in dB.  Ranges from -80.0 to 20.0
-    result = objects_DSP.dsp_reverb->setParameterFloat(FMOD_DSP_SFXREVERB_WETLEVEL, Wet);
-    ErrCheck(result);
-    // Dry signal level in dB.  Ranges from -80.0 to 20.0
-    result = objects_DSP.dsp_reverb->setParameterFloat(FMOD_DSP_SFXREVERB_DRYLEVEL, Dry);
-    ErrCheck(result);
-
-    // Reverberation diffusion (echo density) in percent.  Ranges from 0.0 to 100.0.
-    result = objects_DSP.dsp_reverb->setParameterFloat(FMOD_DSP_SFXREVERB_DIFFUSION, Diffusion);
-    ErrCheck(result);
-
-    // Reverberation density (modal density) in percent.  Ranges from 0.0 to 100.0
-    result = objects_DSP.dsp_reverb->setParameterFloat(FMOD_DSP_SFXREVERB_DENSITY, Density);
-    ErrCheck(result);
-
-    // Reverberation decay time at low-frequencies in milliseconds.  Ranges from 100.0 to 20000.0
-    result = objects_DSP.dsp_reverb->setParameterFloat(FMOD_DSP_SFXREVERB_DECAYTIME, Decay);
-    ErrCheck(result);
-
-    // Delay time of first reflection in milliseconds.  Ranges from 0.0 to 300.0
-    result = objects_DSP.dsp_reverb->setParameterFloat(FMOD_DSP_SFXREVERB_EARLYDELAY, EarlyR);
-    ErrCheck(result);
-
-    // Late reverberation delay time relative to first reflection in milliseconds.  Ranges from 0.0 to 100.0
-    result = objects_DSP.dsp_reverb->setParameterFloat(FMOD_DSP_SFXREVERB_LATEDELAY, Delay);
-    ErrCheck(result);
-
-    // Reference frequency for high-frequency decay in Hz.  Ranges from 20.0 to 20000.0
-    result = objects_DSP.dsp_reverb->setParameterFloat(FMOD_DSP_SFXREVERB_HFREFERENCE, HF_ref);
-    ErrCheck(result);
-
-    // High-frequency decay time relative to decay time in percent.  Ranges from 10.0 to 100.0
-    result = objects_DSP.dsp_reverb->setParameterFloat(FMOD_DSP_SFXREVERB_HFDECAYRATIO, HF_decay);
     ErrCheck(result);    
-
-    // Transition frequency of low-shelf filter in Hz.  Ranges from 20.0 to 1000.0
-    result = objects_DSP.dsp_reverb->setParameterFloat(FMOD_DSP_SFXREVERB_LOWSHELFFREQUENCY, LowShelf_Hz);
-    ErrCheck(result);
-
-    // Gain of low-shelf filter in dB.  Ranges from -36.0 to 12.0
-    result = objects_DSP.dsp_reverb->setParameterFloat(FMOD_DSP_SFXREVERB_LOWSHELFGAIN, LowShelf_Gain);
-    ErrCheck(result);
-
-    // Cutoff frequency of low-pass filter in Hz.  Ranges from 20.0 to 20000.0
-    result = objects_DSP.dsp_reverb->setParameterFloat(FMOD_DSP_SFXREVERB_HIGHCUT, HighCut);
-    ErrCheck(result);
-
-    // Blend ratio of late reverb to early reflections in percent.  Ranges from 0.0 to 100.0
-    result = objects_DSP.dsp_reverb->setParameterFloat(FMOD_DSP_SFXREVERB_EARLYLATEMIX, EarlyLateMix);
-    ErrCheck(result);
 
     result = objects_DSP.dsp_reverb->getActive(&active);
     ErrCheck(result);
@@ -485,111 +434,149 @@ namespace Framework
     }
   }
 
-  Sound::ReverbPreset* Sound::SetReverbPreset(Sound::ReverbPresetName preset)
+  void Sound::AddReverbPreset(Sound::ReverbPresetName preset)
   {
-    ReverbPreset *type;
+    FMOD_RESULT result; 
+    ReverbPreset type;
+
+    type = SetReverbPreset(preset);
+
+    // Reverb signal level in dB.  Ranges from -80.0 to 20.0
+    result = objects_DSP.dsp_reverb->setParameterFloat(FMOD_DSP_SFXREVERB_WETLEVEL, type.WetLevel);
+    ErrCheck(result);
+    // Dry signal level in dB.  Ranges from -80.0 to 20.0
+    result = objects_DSP.dsp_reverb->setParameterFloat(FMOD_DSP_SFXREVERB_DRYLEVEL, type.DryLevel);
+    ErrCheck(result);
+
+    // Reverberation diffusion (echo density) in percent.  Ranges from 0.0 to 100.0.
+    result = objects_DSP.dsp_reverb->setParameterFloat(FMOD_DSP_SFXREVERB_DIFFUSION, type.Diffusion);
+    ErrCheck(result);
+
+    // Reverberation density (modal density) in percent.  Ranges from 0.0 to 100.0
+    result = objects_DSP.dsp_reverb->setParameterFloat(FMOD_DSP_SFXREVERB_DENSITY, type.Density);
+    ErrCheck(result);
+
+    // Reverberation decay time at low-frequencies in milliseconds.  Ranges from 100.0 to 20000.0
+    result = objects_DSP.dsp_reverb->setParameterFloat(FMOD_DSP_SFXREVERB_DECAYTIME, type.DecayTime);
+    ErrCheck(result);
+
+    // Delay time of first reflection in milliseconds.  Ranges from 0.0 to 300.0
+    result = objects_DSP.dsp_reverb->setParameterFloat(FMOD_DSP_SFXREVERB_EARLYDELAY, type.EarlyDelay);
+    ErrCheck(result);
+
+    // Late reverberation delay time relative to first reflection in milliseconds.  Ranges from 0.0 to 100.0
+    result = objects_DSP.dsp_reverb->setParameterFloat(FMOD_DSP_SFXREVERB_LATEDELAY, type.LateDelay);
+    ErrCheck(result);
+
+    // Reference frequency for high-frequency decay in Hz.  Ranges from 20.0 to 20000.0
+    result = objects_DSP.dsp_reverb->setParameterFloat(FMOD_DSP_SFXREVERB_HFREFERENCE, type.HFReference);
+    ErrCheck(result);
+
+    // High-frequency decay time relative to decay time in percent.  Ranges from 10.0 to 100.0
+    result = objects_DSP.dsp_reverb->setParameterFloat(FMOD_DSP_SFXREVERB_HFDECAYRATIO, type.HFDecayRatio);
+    ErrCheck(result);
+
+    // Transition frequency of low-shelf filter in Hz.  Ranges from 20.0 to 1000.0
+    result = objects_DSP.dsp_reverb->setParameterFloat(FMOD_DSP_SFXREVERB_LOWSHELFFREQUENCY, type.LowShelfFrequency);
+    ErrCheck(result);
+
+    // Gain of low-shelf filter in dB.  Ranges from -36.0 to 12.0
+    result = objects_DSP.dsp_reverb->setParameterFloat(FMOD_DSP_SFXREVERB_LOWSHELFGAIN, type.LowShelfGain);
+    ErrCheck(result);
+
+    // Cutoff frequency of low-pass filter in Hz.  Ranges from 20.0 to 20000.0
+    result = objects_DSP.dsp_reverb->setParameterFloat(FMOD_DSP_SFXREVERB_HIGHCUT, type.HighCut);
+    ErrCheck(result);
+
+    // Blend ratio of late reverb to early reflections in percent.  Ranges from 0.0 to 100.0
+    result = objects_DSP.dsp_reverb->setParameterFloat(FMOD_DSP_SFXREVERB_EARLYLATEMIX, type.EarlyLateMix);
+    ErrCheck(result);
+  }
+
+  Sound::ReverbPreset Sound::SetReverbPreset(Sound::ReverbPresetName preset)
+  {
+    ReverbPreset type;
 
     switch (preset)
     {
     case Framework::Sound::OFF:
-      *type = { 1000, 7, 11, 5000, 100, 100, 100, 250, 0, 20, 96, -80.0f, 0};
-      return type;
+      type = { 1000, 7, 11, 5000, 100, 100, 100, 250, 0, 20, 96, -80.0f, 0};
       break;
     case Framework::Sound::GENERIC:
-      *type = { 1500, 7, 11, 5000, 83, 100, 100, 250, 0, 14500, 96, -8.0f, 0 };
-      return type;
+      type = { 1500, 7, 11, 5000, 83, 100, 100, 250, 0, 14500, 96, 20.0f, 0 };
       break;
     case Framework::Sound::PADDEDCELL:
-      *type = { 170, 1, 2, 5000, 10, 100, 100, 250, 0, 160, 84, -7.8f, 0 };
-      return type;
+      type = { 170, 1, 2, 5000, 10, 100, 100, 250, 0, 160, 84, 20.0f, 0 };
       break;
     case Framework::Sound::ROOM:
-      *type = { 400, 2, 3, 5000, 83, 100, 100, 250, 0, 6050, 88, -9.4f, 0 };
-      return type;
+      type = { 400, 2, 3, 5000, 83, 100, 100, 250, 0, 6050, 88, 20.0f, 0 };
       break;
     case Framework::Sound::BATHROOM:
-      *type = { 1500, 7, 11, 5000, 54, 100, 60, 250, 0, 2900, 83, 0.5f, 0 };
-      return type;
+      type = { 1500, 7, 11, 5000, 54, 100, 60, 250, 0, 2900, 83, 20.0f, 0 };
       break;
     case Framework::Sound::LIVINGROOM:
-      *type = { 500, 3, 4, 5000, 10, 100, 100, 250, 0, 160, 58, -19.0f, 0 };
-      return type;
+      type = { 500, 3, 4, 5000, 10, 100, 100, 250, 0, 160, 58, 20.0f, 0 };
       break;
     case Framework::Sound::STONEROOM:
-      *type = { 2300, 12, 17, 5000, 64, 100, 100, 250, 0, 7800, 71, -8.5f, 0 };
-      return type;
+      type = { 2300, 12, 17, 5000, 64, 100, 100, 250, 0, 7800, 71, 20.0f, 0 };
       break;
     case Framework::Sound::AUDITORIUM:
-      *type = { 4300, 20, 30, 5000, 59, 100, 100, 250, 0, 5850, 64, -11.7f, 0 };
-      return type;
+      type = { 4300, 20, 30, 5000, 59, 100, 100, 250, 0, 5850, 64, 20.0f, 0 };
       break;
     case Framework::Sound::CONCERTHALL:
-      *type = { 3900, 20, 29, 5000, 70, 100, 100, 250, 0, 5650, 80, -9.8f, 0 };
-      return type;
+      type = { 3900, 20, 29, 5000, 70, 100, 100, 250, 0, 5650, 80, -9.8f, 0 };
       break;
     case Framework::Sound::CAVE:
-      *type = { 2900, 15, 22, 5000, 100, 100, 100, 250, 0, 20000, 59, -11.3f, 0 };
-      return type;
+      type = { 2900, 15, 22, 5000, 100, 100, 100, 250, 0, 20000, 59, -11.3f, 0 };
       break;
     case Framework::Sound::ARENA:
-      *type = { 7200, 20, 30, 5000, 33, 100, 100, 250, 0, 4500, 80, -9.6f, 0 };
-      return type;
+      type = { 7200, 20, 30, 5000, 33, 100, 100, 250, 0, 4500, 80, -9.6f, 0 };
       break;
     case Framework::Sound::HANGAR:
-      *type = { 10000, 20, 30, 5000, 23, 100, 100, 250, 0, 3400, 72, -7.4f, 0 };
-      return type;
+      type = { 10000, 20, 30, 5000, 23, 100, 100, 250, 0, 3400, 72, -7.4f, 0 };
       break;
     case Framework::Sound::CARPETTEDHALLWAY:
-      *type = { 300, 2, 30, 5000, 10, 100, 100, 250, 0, 500, 56, -24.0f, 0 };
-      return type;
+      type = { 300, 2, 30, 5000, 10, 100, 100, 250, 0, 500, 56, -24.0f, 0 };
       break;
     case Framework::Sound::HALLWAY:
-      *type = { 1500, 7, 11, 5000, 59, 100, 100, 250, 0, 7800, 87, -5.5f, 0 };
-      return type;
+      type = { 1500, 7, 11, 5000, 59, 100, 100, 250, 0, 7800, 87, -5.5f, 0 };
       break;
     case Framework::Sound::STONECORRIDOR:
-      *type = { 270, 13, 20, 5000, 79, 100, 100, 250, 0, 9000, 86, -6.0f, 0 };
-      return type;
+      type = { 270, 13, 20, 5000, 79, 100, 100, 250, 0, 9000, 86, -6.0f, 0 };
       break;
     case Framework::Sound::ALLEY:
-      *type = { 1500, 7, 11, 5000, 86, 100, 100, 250, 0, 8300, 80, -9.8f, 0 };
-      return type;
+      type = { 1500, 7, 11, 5000, 86, 100, 100, 250, 0, 8300, 80, -9.8f, 0 };
       break;
     case Framework::Sound::FOREST:
-      *type = { 1500, 162, 88, 5000, 54, 79, 100, 250, 0, 760, 94, -12.3f, 0 };
-      return type;
+      type = { 1500, 162, 88, 5000, 54, 79, 100, 250, 0, 760, 94, -12.3f, 0 };
       break;
     case Framework::Sound::CITY:
-      *type = { 1500, 7, 11, 5000, 67, 50, 100, 250, 0, 4050, 66, -26.0f, 0 };
-      return type;
+      type = { 1500, 7, 11, 5000, 67, 50, 100, 250, 0, 4050, 66, -26.0f, 0 };
       break;
     case Framework::Sound::MOUNTAINS:
-      *type = { 1500, 300, 100, 5000, 21, 27, 100, 250, 0, 1220, 82, -24.0f, 0 };
-      return type;
+      type = { 1500, 300, 100, 5000, 21, 27, 100, 250, 0, 1220, 82, -24.0f, 0 };
       break;
     case Framework::Sound::QUARRY:
-      *type = { 1500, 61, 25, 5000, 83, 100, 100, 250, 0, 3400, 100, -5.0f, 0 };
-      return type;
+      type = { 1500, 61, 25, 5000, 83, 100, 100, 250, 0, 3400, 100, -5.0f, 0 };
       break;
     case Framework::Sound::PLAIN:
-      *type = { 1500, 179, 100, 5000, 50, 21, 100, 250, 0, 1670, 65, -28.0f, 0 };
-      return type;
+      type = { 1500, 179, 100, 5000, 50, 21, 100, 250, 0, 1670, 65, -28.0f, 0 };
       break;
     case Framework::Sound::PARKINGLOT:
-      *type = { 1700, 8, 12, 5000, 100, 100, 100, 250, 0, 20000, 56, -19.5f, 0 };
-      return type;
+      type = { 1700, 8, 12, 5000, 100, 100, 100, 250, 0, 20000, 56, -19.5f, 0 };
       break;
     case Framework::Sound::SEWERPIPE:
-      *type = { 1000, 7, 11, 5000, 100, 100, 100, 250, 0, 20, 96, -80.0f, 0 };
-      return type;
+      type = { 1000, 7, 11, 5000, 100, 100, 100, 250, 0, 20, 96, -80.0f, 0 };
       break;
     case Framework::Sound::UNDERWATER:
-      *type = { 1000, 7, 11, 5000, 100, 100, 100, 250, 0, 20, 96, -80.0f, 0 };
-      return type;
+      type = { 1000, 7, 11, 5000, 100, 100, 100, 250, 0, 20, 96, -80.0f, 0 };
       break;
     default:
+      type = { 1000, 7, 11, 5000, 100, 100, 100, 250, 0, 20, 96, -80.0f, 0 };
       break;
     }
+
+    return type;
   }
 
   /***************************************************************************/
@@ -855,6 +842,19 @@ namespace Framework
     _paused = false; // Set paused state to false
   }
 
+  void Sound::VolumeFade(float volume, float fadeTime)
+  {
+    float currentVolume;
+    float fadeSpeed;
+
+    _volValue = volume;
+
+    currentVolume = GetVolume();
+
+    fadeSpeed = (volume - currentVolume) / fadeTime;
+    _fadeValue = fadeSpeed;
+  }
+
   /***************************************************************************/
   /*!
   \brief  Gets the master volume
@@ -895,6 +895,34 @@ namespace Framework
     }
 
     return _volume;
+  }
+
+  float* Sound::GetVolumePtr ()
+  {
+    // Checks if system is not on
+    if (Sound::system_on_ == false)
+    {
+      return 0;
+    }
+
+    return &_volume;
+  }
+
+  unsigned Sound::GetTime()
+  {
+    if (Sound::system_on_ == false)
+    { 
+      return 0; 
+    }
+
+    unsigned milliseconds = 0;
+
+    if (pChannel)
+    {
+      pChannel->getPosition(&milliseconds, FMOD_TIMEUNIT_MS);
+    }   
+
+    return milliseconds;
   }
 
   /***************************************************************************/
@@ -943,13 +971,44 @@ namespace Framework
   /***************************************************************************/
   void Sound::Update(const double dt)
   {
+    float currentVolume;
+
     // Checks if system is not on
     if (Sound::system_on_ == false)
-    { 
-      return; 
+    {
+      return;
     }
 
+    
+      pChannel->getVolume(&currentVolume);
+
+      if (_volValue != currentVolume)
+      {
+        float newVolume;
+
+        newVolume = (float)(currentVolume + (_fadeValue * dt));
+
+        if (newVolume > _volValue && _fadeValue > 0.0f)
+        {
+          newVolume = _volValue;
+        }
+        else if (newVolume < _volValue && _fadeValue < 0.0f)
+        {
+          newVolume = _volValue;
+        }
+
+        pChannel->setVolume(newVolume);
+      }    
+
     SetVolume(GetVolume());
+
+    if (this->GetTime() > 5000 && this->GetTime() < 5500 && test == true)
+    {
+      test = false;
+      std::cout << Console::cyan << "FIVE SECONDS" << std::endl;
+      //this->pChannel->removeDSP(objects_DSP.dsp_lpf);
+      //this->AddReverbPreset(Sound::BATHROOM);
+    }
   }
  
   /*---------------------------------------------------------------------------

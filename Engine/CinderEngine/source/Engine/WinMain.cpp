@@ -18,14 +18,12 @@ starts the game loop.
 #include "Common.h"
 #include "WindowSystem.h"
 #include "EventSystem.h"
-#include "ObjectSystem.h"
 #include "SceneManager.h"
 #include "AudioSystem.h"
 #include "ZilchCompiledLib.h"
 #include "Core.h"
 #include "Physics/Thermodynamics.h"
 #include "ResourceManager.h"
-
 
 
 
@@ -37,7 +35,12 @@ const char WindowTitle[] = "CinderEngine";
 const int ClientWidth = 1024;
 const int ClientHeight = 768;
 
-
+void TestLogicUpdate(GameObject* obj, UpdateEvent* _event)
+{
+  std::cout << Console::red << "I am UpdateEvent!" << std::endl;
+  std::cout << Console::blue << "dt:" << _event->Dt << std::endl;
+  std::cout << Console::green << "TimePassed:" << _event->TimePassed << std::endl;
+}
 
 int main(void)
 {
@@ -74,9 +77,10 @@ int main(void)
   engine->Initialize();
 
   //! activate the window.
+  //resourceManager.Get_Sound("music2.mp3")->LowPassFilter(60, 10);
 
-  resourceManager.Get_Sound ("music2.mp3")->Play ();
-  resourceManager.Get_Sound("music2.mp3")->Reverb();
+  GameObject * myobj = new GameObject(1666);
+  EVENTSYSTEM->Connect(myobj, Events::LOGICUPDATE, BaseEvent::BaseCall(TestLogicUpdate));
 
   //! Run the game! NOW!
   engine->GameLoop();

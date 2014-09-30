@@ -1,13 +1,14 @@
 /******************************************************************************/
 /*!
 \file   SceneManager.cpp
-\author DarthVader
+\author Manas Sudhir Kulkarni
 \par    Course: GAM200
 \par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
 \brief  
 */
 /******************************************************************************/
 
+#include "EditorUI.h"
 #include "SceneManager.h"
 #include <ctime>
 
@@ -25,6 +26,8 @@ namespace Framework
     SCENEMANAGER = this;
     // random:
     srand ((unsigned int) time (NULL));
+
+
   }
   
   
@@ -32,14 +35,14 @@ namespace Framework
   bool SceneManager::Initialize ()
   {
     std::cout << GetName () << " initialized\n";
-    Load_Scene (splashScreen);
+    Load_Scene (particleEditor);
     return true;
   }
 
   // HARD CODED FOR NOW
   void SceneManager::Load_Scene (Scene* scene)
   {
-    scene = new Scene_SplashScreens ();
+    scene = new ParticleEditor ();
     scene->Load_Scene (NULL);
     current = scene;
   }

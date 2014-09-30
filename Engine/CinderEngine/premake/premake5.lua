@@ -49,7 +49,7 @@ solution "CinderEngine"
 --[[ Debug Configuration ]]
     configuration "Debug"
       flags   { "Symbols" }
-      defines { "_DEBUG"  , "_CRT_SECURE_NO_WARNINGS" }
+      defines { "_USE_ANTWEAK" , "_DEBUG"  , "_CRT_SECURE_NO_WARNINGS" }
       links {linker}
       targetdir "../bin/debug"
       postbuildcommands
@@ -63,7 +63,7 @@ solution "CinderEngine"
 --[[ Release Configuration ]]        
     configuration "Release"
       flags   { "Symbols" }
-      defines { "NDEBUG"  , "_CRT_SECURE_NO_WARNINGS" }      
+      defines { "_USE_ANTWEAK" , "NDEBUG"  , "_CRT_SECURE_NO_WARNINGS" }      
       optimize  "Full"
       links {linker}
       targetdir "../bin/release"

@@ -16,16 +16,23 @@
 namespace Framework
 {
 
-  class MouseEvent : public BaseEvent
+  class GameEvent : public BaseEvent
   {
   public:
-    MouseEvent(const std::string)
+    typedef void(*GameCall)(GameObject*, GameEvent*);
+    GameEvent(const std::string)
     {}
 
-    ~MouseEvent()
+    ~GameEvent()
     {}
 
-    
+    void DispatchEvent()
+    {
+      for each(auto it in Listeners)
+      {
+        ((GameCall)(it.second))(it.first, this);
+      }
+    }
 
   };
 }
