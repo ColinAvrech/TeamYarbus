@@ -21,6 +21,9 @@ namespace Framework
 				Dynamic
 			};
 
+			// The non-base component uses DefineComponentName macro to name component
+			const static std::string Name;
+
 		private:
 			Vec2 vel;
 			Vec2 angVel;

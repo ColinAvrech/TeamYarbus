@@ -1,5 +1,6 @@
 #include "ColliderShape.h"
 #include "Collision.h"
+#include "ObjectSystem.h"
 
 namespace Framework
 {
@@ -7,8 +8,10 @@ namespace Framework
 	{
 		bool Circle::DetectCircle(Circle c)
 		{
-			//Manifold m;
-			//m.massA = this->gameObject->GetComponent("RigidBody");
+			static_cast<Transform*>(Base->AddComponent(RigidBody::Name))->
+
+			Manifold m;
+			m.massA = this->gameObject->GetComponent("RigidBody");
 			//send message
 
 			// not counting offset
