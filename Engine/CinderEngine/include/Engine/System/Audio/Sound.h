@@ -169,6 +169,11 @@ namespace Framework
         return objects_DSP.dsp_reverb;
       }
 
+      inline FMOD::DSP* Get_NOISE()
+      {
+        return objects_DSP.dsp_noise;
+      }
+
       #pragma endregion
 
       /*-----------------------------------------------------------------------
