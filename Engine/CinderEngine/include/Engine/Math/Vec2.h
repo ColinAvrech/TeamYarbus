@@ -34,6 +34,9 @@ public:
 
   Vec2 operator*(const double scale) const;
   Vec2& operator*=(const double scale);
+  Vec2 operator/(const double scale) const;
+  Vec2& operator/=(const double scale);
+  friend Vec2 operator*(const double scale, const Vec2& vec);
 
   double x_;
   double y_;
