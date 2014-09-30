@@ -60,6 +60,11 @@ namespace Framework
         RegisteredEvents[eventname] = new GameEvent(eventname);
         RegisteredEvents[eventname]->Listeners.push_back(BaseEvent::BaseEventListener(obj, func));
       }
+      else if (eventname.substr(0, eventname.find_first_of("_")) == Events::Types::COLLISION)
+      {
+        RegisteredEvents[eventname] = new GameEvent(eventname);
+        RegisteredEvents[eventname]->Listeners.push_back(BaseEvent::BaseEventListener(obj, func));
+      }
     }
     else //Sign up to be called by the base event 
     {
@@ -72,8 +77,11 @@ namespace Framework
     EventMap::iterator eventToTrigger = RegisteredEvents.find(eventname);
     RETURNIF(eventToTrigger == RegisteredEvents.end());
     
-
-    if (eventname.substr(0, eventname.find_first_of("_")) == Events::LOGICUPDATE)
+    if (eventname.substr(0, eventname.find_first_of("_")) == Events::Types::COLLISION)
+    {
+      static_cast<CollisionEvent*>(eventToTrigger->second)->DispatchEvent();
+    }
+    else if (eventname.substr(0, eventname.find_first_of("_")) == Events::LOGICUPDATE)
     {
       static_cast<UpdateEvent*>(eventToTrigger->second)->Dt = _dt;
       static_cast<UpdateEvent*>(eventToTrigger->second)->TimePassed = _TotalTimePassed;

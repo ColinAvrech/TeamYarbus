@@ -21,6 +21,7 @@
 #include "UpdateEvent.h"
 #include "KeyEvent.h"
 #include "GameEvent.h"
+#include "CollisionEvent.h"
 
 
 namespace Framework

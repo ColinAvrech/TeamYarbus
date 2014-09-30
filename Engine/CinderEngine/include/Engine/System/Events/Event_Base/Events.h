@@ -20,8 +20,9 @@ namespace Framework
 
   DeclareEventType(GAME)
   DeclareEventType(MOUSE)
-  DeclareEventType(UPDATEEVENT)
+  DeclareEventType(UPDATE)
   DeclareEventType(KEY)
+  DeclareEventType(COLLISION)
 
   /*********************************************/
   // Input
