@@ -118,10 +118,10 @@ namespace Framework
       virtual void    Update(const double dt);
 
       // DSP
-      void            LowPassFilter(float cutoff = 5000.0, float resonance = 1.0);
-      void            HighPassFilter(float cutoff = 5000.0, float resonance = 1.0);
+      void            LowPassFilter();
+      void            HighPassFilter();
       void            GenerateNoise();
-      void            Reverb(ReverbPresetName preset);
+      void            Reverb();
 
       // Setters
       ReverbPreset    SetReverbPreset(ReverbPresetName preset);
@@ -134,6 +134,9 @@ namespace Framework
                                     const float endPos = 0, 
                                     const int index = 0);
       void            SetType(unsigned type, unsigned index);
+      void            SetLPF(float cutoff = 5000.0f, float resonance = 1.0f);
+      void            SetHPF(float cutoff = 5000.0f, float resonance = 1.0f);
+      void            AddReverbPreset(Sound::ReverbPresetName preset);
 
       // Getters
       float           GetMasterVolume(void);
@@ -142,6 +145,28 @@ namespace Framework
       float           GetVolume();   
       unsigned        GetTime();
       unsigned        GetID(){return ID;}
+
+      float*          GetVolumePtr();
+
+      inline FMOD::Channel* Get_Channel()
+      {
+        return pChannel;
+      }
+
+      inline FMOD::DSP* Get_LPF ()
+      {
+        return objects_DSP.dsp_lpf;
+      }
+
+      inline FMOD::DSP* Get_HPF()
+      {
+        return objects_DSP.dsp_hpf;
+      }
+
+      inline FMOD::DSP* Get_RVRB()
+      {
+        return objects_DSP.dsp_reverb;
+      }
 
       #pragma endregion
 

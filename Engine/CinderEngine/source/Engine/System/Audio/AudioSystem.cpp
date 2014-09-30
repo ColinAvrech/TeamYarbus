@@ -13,10 +13,12 @@
 -----------------------------------------------------------------------------*/
 #pragma region Includes
 
+#include "EditorUI.h"
+#include "WindowSystem.h"
 #include "AudioSystem.h"
 
 #pragma endregion
-
+static TwBar* myBar;
 namespace Framework
 {
   /*---------------------------------------------------------------------------

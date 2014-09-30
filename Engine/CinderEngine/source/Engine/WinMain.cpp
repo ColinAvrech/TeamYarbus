@@ -70,9 +70,7 @@ int main(void)
   engine->Initialize();
 
   //! activate the window.
-
-  resourceManager.Get_Sound ("music2.mp3")->Play();
-  //resourceManager.Get_Sound("music2.mp3")->Reverb(Sound::OFF);
+  //resourceManager.Get_Sound("music2.mp3")->LowPassFilter(60, 10);
 
   //! Run the game! NOW!
   engine->GameLoop();
