@@ -21,21 +21,19 @@ relaying information)
 */
 #pragma once
 
-#include "GameObject.h"
-
 #define DefineComponentName(Component) const std::string Component::Name("Component")
 
 namespace Framework
 {
+  class GameObject;
+
   /*! A Component is added to a Game object composition and is
   a small piece of logic for an object. 
   Ex, Transform component, Sprite Components*/
   class Component
   {
   public:
-    Component(GameObject *obj)
-      : gameObject(obj){}
-    
+
     /*!Telegraph that the component is active*/
     virtual void Initalize(){};
 
@@ -43,7 +41,7 @@ namespace Framework
     virtual void Serialize(){};
 
     //Variables that all components have
-    const GameObject* gameObject;
+    GameObject* Base;
   };
 
 }

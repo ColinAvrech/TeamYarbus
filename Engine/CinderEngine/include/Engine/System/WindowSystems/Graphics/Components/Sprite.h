@@ -13,9 +13,9 @@ namespace Framework
   class Sprite : public Component
   {
   public:
-    Sprite (GameObject* go);
-    Sprite (GameObject* go, Shader* _shader, Texture* _texture = NULL);
-    Sprite (GameObject* go, Shader* _shader, SpriteSheet* _atlas);
+    Sprite ();
+    Sprite (Shader* _shader, Texture* _texture = NULL);
+    Sprite (Shader* _shader, SpriteSheet* _atlas);
     ~Sprite ();
 
     void Create (Shader* _shader, Texture* _texture = NULL);

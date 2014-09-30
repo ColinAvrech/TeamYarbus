@@ -33,7 +33,7 @@ namespace Framework
     public:
 
       //Constructor. Initialize with owner and component name.
-      ZilchComponent(GameObject *obj, std::string* name);
+      ZilchComponent(std::string* name);
 
       //!Updated every frame.
       void Update(const double dt);

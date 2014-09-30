@@ -76,6 +76,5 @@ namespace Framework
 
 }
 
-#include "Factory.h"
 #include "WindowSystem.h"
 #include "EventSystem.h"

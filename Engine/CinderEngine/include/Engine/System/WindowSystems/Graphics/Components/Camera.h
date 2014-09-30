@@ -20,7 +20,7 @@ namespace Framework
   class Camera : public Component
   {
   public:
-    Camera (GameObject* obj, bool main = false);
+    Camera (bool main = false);
     void MouseUpdate (const glm::vec2& newPosition);
     void MouseUpdateY (const glm::vec2& newPosition);
     void UpdatePosition (const glm::vec3& deltaPos);

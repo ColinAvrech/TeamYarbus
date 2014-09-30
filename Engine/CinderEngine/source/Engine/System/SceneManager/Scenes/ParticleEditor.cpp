@@ -47,7 +47,7 @@ namespace Framework
   } camera_;
 
 
-  Camera camera1 (NULL, true);
+  Camera camera1 (true);
   CpuTimeQuery cpuParticlesUpdate;
   CpuTimeQuery cpuBuffersUpdate;
   GpuTimerQuery gpuUpdate;

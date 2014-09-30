@@ -3,7 +3,7 @@
 
 namespace Framework
 {
-  Sprite::Sprite (GameObject* go) : Component (go)
+  Sprite::Sprite ()
   {
     modelMatrix = glm::translate (glm::vec3 (0.0f, 0.0f, -1.0f));
     animated = false;
@@ -14,7 +14,7 @@ namespace Framework
   // MUST SPECIFY SHADER AND TEXTURE
   // MESH AND TRI DATA WILL BE PASSED TO CREATE CUSTOM MESH
   // ELSE THE DEFAULT QUAD WILL BE USED
-  Sprite::Sprite (GameObject* go, Shader* _shader, Texture* _texture /*=NULL*/) : Component (go)
+  Sprite::Sprite (Shader* _shader, Texture* _texture /*=NULL*/)
   {
     //Create_Mesh (_meshData, _triData);
 
@@ -24,7 +24,7 @@ namespace Framework
   }
 
 
-  Sprite::Sprite (GameObject* go, Shader* _shader, SpriteSheet* _atlas) : Component (go)
+  Sprite::Sprite (Shader* _shader, SpriteSheet* _atlas)
   {
     shader = _shader;
     texture = _atlas;

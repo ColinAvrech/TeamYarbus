@@ -27,7 +27,7 @@ namespace Framework
   class Transform : public Component
   {
   public:
-    Transform (GameObject* obj);
+    Transform ();
     ~Transform ();
 
 

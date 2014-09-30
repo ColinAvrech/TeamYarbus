@@ -6,8 +6,8 @@ namespace Framework
   namespace ScriptSystem
   {
     //CONSTRUCTOR
-    ZilchComponent::ZilchComponent(GameObject *obj, std::string* name)
-      : Component(obj), ZilchClass(Zero::String(name->c_str()))
+    ZilchComponent::ZilchComponent(std::string* name)
+      : ZilchClass(Zero::String(name->c_str()))
     {
       //Do Stuff
     }

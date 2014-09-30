@@ -11,25 +11,9 @@ deleted.
 /******************************************************************************/
 
 #include "ObjectSystem.h"
-#include "Component.h"
-#include "ComponentInclude.h"
-#include "Common.h"
 
 namespace Framework
 {
-  enum LineTypes
-  {
-    LeftBracket,
-    RightBracket,
-
-    Level,
-    Object,
-    Variables,
-    Property
-
-  };
-
-
   //!Set the factory to null to indicate is hasn't been created yet
   ObjectSystem * OBJECTSYSTEM = NULL;
   //!Set first object's id to zero

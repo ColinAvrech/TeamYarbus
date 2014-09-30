@@ -18,7 +18,7 @@ namespace Framework
   class Renderer : public Component
   {
   public:
-  Renderer (GameObject* obj);
+  Renderer ();
   ~Renderer ();
   
   // The non-base component usees DefineComponentName macro to name component

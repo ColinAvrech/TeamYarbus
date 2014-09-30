@@ -19,7 +19,7 @@ namespace Framework
   Camera* Camera::current = NULL;
   Camera* Camera::main = NULL;
 
-  Camera::Camera (GameObject* obj, bool _main) : viewDirection (0.0f, 0.0f, -1.0f), up (0.0f, 1.0f, 0.0f), Component (obj)
+  Camera::Camera (bool _main) : viewDirection (0.0f, 0.0f, -1.0f), up (0.0f, 1.0f, 0.0f)
   {
     size = 2.0f;
     aspect = 1920.f / 1280;

@@ -9,11 +9,13 @@
 /******************************************************************************/
 
 
-
 #pragma once
 
+#include "Common.h"
+#include "GameObject.h"
+#include "ComponentInclude.h"
 #include "BaseSystem.h"
-#include "Component.h"
+#include "GameObject.h"
 #include "ComponentCreator.h"
 
 namespace Framework
@@ -27,6 +29,9 @@ namespace Framework
   class ObjectSystem : public BaseSystem
   {
   public:
+
+    friend class GameObject;
+    friend class Component;
 
     const char* LevelAssetsPath = "../../Assets/Levels/";
 
@@ -65,10 +70,8 @@ namespace Framework
 
     typedef std::vector<GameObject *> ObjectsToBeDestroyed;
     ObjectsToBeDestroyed GameObjectsToBeDestroyed;
-
-
   };
 
-
+  //!Set the factory to null to indicate is hasn't been created yet
   extern ObjectSystem * OBJECTSYSTEM;
 }

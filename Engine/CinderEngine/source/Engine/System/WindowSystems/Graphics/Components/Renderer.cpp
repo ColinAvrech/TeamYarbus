@@ -16,7 +16,7 @@ namespace Framework
   DefineComponentName (Renderer);
 
   // Constructor
-  Renderer::Renderer (GameObject* obj) : Component (obj)
+  Renderer::Renderer ()
   {
   }
   

@@ -15,7 +15,7 @@ namespace Framework
   DefineComponentName(Transform);
   // Constructor
 
-  Transform::Transform(GameObject* obj) : Component(obj), position (0), scale (1)
+  Transform::Transform() : position (0), scale (1)
   {
     modelMatrix.push_back (glm::mat4 (1));
     viewMatrix.push_back (glm::mat4 (1));

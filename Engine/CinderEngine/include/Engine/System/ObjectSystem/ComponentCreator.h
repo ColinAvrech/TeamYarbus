@@ -8,12 +8,14 @@
 ///////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
+#include "GameObject.h"
 #include "Common.h"
 
 namespace Framework
 {
   //Forward declaration of component
   class Component;
+  class GameObject;
 
   ///Game Component Creator Interface.
   ///Used to create components in data driven method in the GameObjectFactory.
@@ -28,7 +30,7 @@ namespace Framework
     std::string m_ComponentCreatorName;
     ///Create the component
 
-    virtual Component * Create(GameObject* obj) = 0;
+    virtual Component * Create() = 0;
   };
 
   ///Templated helper class used to make concrete component creators.
@@ -41,9 +43,9 @@ namespace Framework
     {
     }
 
-    virtual Component * Create(GameObject* obj)
+    virtual Component * Create()
     {
-      return new type(obj);
+      return new type();
     }
   };
 

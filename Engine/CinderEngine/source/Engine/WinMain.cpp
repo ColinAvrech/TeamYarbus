@@ -18,12 +18,14 @@ starts the game loop.
 #include "Common.h"
 #include "WindowSystem.h"
 #include "EventSystem.h"
+#include "ObjectSystem.h"
 #include "SceneManager.h"
 #include "AudioSystem.h"
 #include "ZilchCompiledLib.h"
 #include "Core.h"
 #include "Physics/Thermodynamics.h"
 #include "ResourceManager.h"
+
 
 
 
@@ -34,6 +36,8 @@ using namespace Framework;
 const char WindowTitle[] = "CinderEngine";
 const int ClientWidth = 1024;
 const int ClientHeight = 768;
+
+
 
 int main(void)
 {

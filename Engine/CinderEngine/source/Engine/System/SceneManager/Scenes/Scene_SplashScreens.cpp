@@ -33,10 +33,10 @@ namespace Framework
   Transition transition;
   //namespace Splash_Screen
   //{
-  Camera camera (NULL, true);
-  Transform light (NULL);
-  Sprite sprite (NULL);
-  Sprite sprite1 (NULL);
+  Camera camera(true);
+  Transform light;
+  Sprite sprite;
+  Sprite sprite1;
   float camScrollSpeed = 0.05f;
   const float minLight = 200.0f;
   float shininess = minLight;
