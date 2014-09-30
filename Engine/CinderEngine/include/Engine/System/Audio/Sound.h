@@ -129,6 +129,7 @@ namespace Framework
       void            SetVolume(const float volume);
       void            SetMute(bool muteState);
       void            SetPause(bool pauseState);
+      void            SetPan(char pan);
       void            SetLoop(const bool loopState, int index);
       void            SetLoopPoints(const float startPos, 
                                     const float endPos = 0, 
@@ -166,6 +167,11 @@ namespace Framework
       inline FMOD::DSP* Get_RVRB()
       {
         return objects_DSP.dsp_reverb;
+      }
+
+      inline FMOD::DSP* Get_NOISE()
+      {
+        return objects_DSP.dsp_noise;
       }
 
       #pragma endregion

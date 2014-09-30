@@ -26,12 +26,14 @@
 namespace Framework
 {
   std::string s = "Hello";
-   int reverbPreset, oldReverbPreset;
+  int reverbPreset, oldReverbPreset;
   float LPFcutOff = 6000, LPFresonance = 1;
   float HPFcutOff = 5000, HPFresonance = 1;
   float oldLPFCutOff = LPFcutOff, oldLPFResonance = LPFresonance;
   float oldHPFCutOff = HPFcutOff, oldHPFResonance = HPFresonance;
   bool lpf = false, oldLPF = false, hpf = false, oldHPF = false, reverb = false, oldReverb = false;
+  bool song = false, oldSong = false, noise = false, oldNoise = false;
+  bool panLeft = false, oldPanLeft = false; bool panRight = false, oldPanRight = false;
   Sound* bg;
   TwBar *myBar;
   TwBar* audioBar;
@@ -182,17 +184,21 @@ namespace Framework
 
     gCurrentEffect->addUI (myBar);
     bg = Resources::RS->Get_Sound("music2.mp3");
-    bg->Play();
-    Editor::AddTweakText(audioBar, "string", &s, "");
-    Editor::AddTweak(audioBar, "volume", bg->GetVolumePtr (), "min=0.0 step=0.01 max=1.0");
-    Editor::AddTweak(audioBar, "lpf", &lpf, "group=LPF");
-    Editor::AddTweak(audioBar, "LPFcutoff", &LPFcutOff, "min=10.0 step=50 max=22000.0 group=LPF");
-    Editor::AddTweak(audioBar, "LPFresonance", &LPFresonance, "min=1.0 step=0.5 max=10.0 group=LPF");
-    Editor::AddTweak(audioBar, "hpf", &hpf, "group=HPF");
-    Editor::AddTweak(audioBar, "HPFcutoff", &HPFcutOff, "min=10.0 step=50 max=22000.0 group=HPF");
-    Editor::AddTweak(audioBar, "HPFresonance", &HPFresonance, "min=1.0 step=0.5 max=10.0 group=HPF");
-    Editor::AddTweak(audioBar, "reverb", &reverb, "group=REVERB");
-    Editor::AddTweak(audioBar, "preset", &reverbPreset, "min=0 max=23 group=REVERB");
+
+    Editor::AddTweakText(audioBar, "O HAI ENGINE PROOF", &s, "");
+    Editor::AddTweak(audioBar, "Play Song", &song, "group=Play");
+    Editor::AddTweak(audioBar, "Generate Noise", &noise, "group=Play");
+    Editor::AddTweak(audioBar, "Volume", bg->GetVolumePtr (), "min=0.0 step=0.01 max=1.0 group=Attributes");
+    Editor::AddTweak(audioBar, "Pan Left", &panLeft, "group=Attributes");
+    Editor::AddTweak(audioBar, "Pan Right", &panRight, "group=Attributes");
+    Editor::AddTweak(audioBar, "LPF On/Off", &lpf, "group=LowPassFilter");
+    Editor::AddTweak(audioBar, "LPF Cutoff", &LPFcutOff, "min=10.0 step=50 max=22000.0 group=LowPassFilter");
+    Editor::AddTweak(audioBar, "LPF Resonance", &LPFresonance, "min=1.0 step=0.5 max=10.0 group=LowPassFilter");
+    Editor::AddTweak(audioBar, "HPF On/Off", &hpf, "group=HighPassFilter");
+    Editor::AddTweak(audioBar, "HPF Cutoff", &HPFcutOff, "min=10.0 step=50 max=22000.0 group=HighPassFilter");
+    Editor::AddTweak(audioBar, "HPF Resonance", &HPFresonance, "min=1.0 step=0.5 max=10.0 group=HighPassFilter");
+    Editor::AddTweak(audioBar, "Reverb On/Off", &reverb, "group=Reverb");
+    Editor::AddTweak(audioBar, "Set Preset", &reverbPreset, "min=0 max=23 group=Reverb");
     Editor::AddSeparator(audioBar);    
 
     Camera::main->worldToView = glm::lookAt (Camera::main->viewDirection * 0.5f, Camera::main->position, Camera::main->up);
@@ -232,6 +238,38 @@ namespace Framework
     gNumParticles = gCurrentEffect->numAllParticles ();
     gNumAlive = gCurrentEffect->numAliveParticles ();
 
+    if (song != oldSong)
+    {
+      if (song)
+        bg->Play();
+      else
+        bg->Stop();
+      oldSong = song;
+    }
+    if (noise != oldNoise)
+    {
+      if (noise)
+        bg->GenerateNoise();
+      else
+        bg->Stop();
+      oldNoise = noise;
+    }
+    if (panLeft != oldPanLeft)
+    {
+      if (panLeft)
+        bg->SetPan('L');
+      else
+        bg->SetPan('C');
+      oldPanLeft = panLeft;
+    }
+    if (panRight != oldPanRight)
+    {
+      if (panRight)
+        bg->SetPan('R');
+      else
+        bg->SetPan('C');
+      oldPanRight = panRight;
+    }
     if (lpf != oldLPF)
     {
       if (lpf)
