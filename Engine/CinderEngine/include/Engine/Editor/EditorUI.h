@@ -46,6 +46,11 @@ namespace Editor
     TwAddVarRW (tw, name, TW_TYPE_DIR3F, dir, def);
   }
 
+  inline void AddTweakText(TwBar* tw, const char* name, std::string* s, const char* def)
+  {
+    TwAddVarRW(tw, name, TW_TYPE_STDSTRING, (void*)s, def);
+  }
+
   template <typename T> void AddVar (TwBar* tw, const char *name, T *var, const char *def)
   {
     TwAddVarRO (tw, name, TypeToTW<T>::value, var, def);

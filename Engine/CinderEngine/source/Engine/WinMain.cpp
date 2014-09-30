@@ -77,9 +77,7 @@ int main(void)
   engine->Initialize();
 
   //! activate the window.
-
-  resourceManager.Get_Sound ("music2.mp3")->Play();
-  //resourceManager.Get_Sound("music2.mp3")->Reverb(Sound::OFF);
+  //resourceManager.Get_Sound("music2.mp3")->LowPassFilter(60, 10);
 
   GameObject * myobj = new GameObject(1666);
   EVENTSYSTEM->Connect(myobj, Events::LOGICUPDATE, BaseEvent::BaseCall(TestLogicUpdate));

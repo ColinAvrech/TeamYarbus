@@ -25,14 +25,23 @@
 
 namespace Framework
 {
+  std::string s = "Hello";
+   int reverbPreset, oldReverbPreset;
+  float LPFcutOff = 6000, LPFresonance = 1;
+  float HPFcutOff = 5000, HPFresonance = 1;
+  float oldLPFCutOff = LPFcutOff, oldLPFResonance = LPFresonance;
+  float oldHPFCutOff = HPFcutOff, oldHPFResonance = HPFresonance;
+  bool lpf = false, oldLPF = false, hpf = false, oldHPF = false, reverb = false, oldReverb = false;
+  Sound* bg;
   TwBar *myBar;
+  TwBar* audioBar;
   std::shared_ptr<IEffect> gEffects [4];
   IEffect *gCurrentEffect = nullptr;
   int gCurrentEffectID = 0;
   int gSelectedEffect = 0;
   int gNumParticles = 0;
   int gNumAlive = 0;
-
+  static float volume = 1.0f;
   static float Fps = 0.0f;
   static double AppTime = 0;
 
@@ -109,7 +118,9 @@ namespace Framework
   {
     //TwInit (TW_OPENGL, NULL);
     // or
-    TwInit (TW_OPENGL_CORE, NULL); // for core profile
+#ifdef _USE_ANTWEAK
+    TwInit(TW_OPENGL_CORE, NULL); // for core profile
+#endif
 
     Change_Size (WINDOWSYSTEM->Get_Width(), WINDOWSYSTEM->Get_Height());
     //
@@ -150,6 +161,8 @@ namespace Framework
 
     myBar = TwNewBar ("NameOfMyTweakBar");
 
+    audioBar = TwNewBar("Audio");
+
     TwAddVarRO (myBar, "FPS", TW_TYPE_FLOAT, &Fps, NULL);
     Editor::AddTweak (myBar, "animate", &gAnimationOn, "");
     Editor::AddVar (myBar, "particles", &gNumParticles, "");
@@ -164,7 +177,23 @@ namespace Framework
     //Editor::AddTweak (myBar, "camera distance", &camera1.fov, "min=0.05 max=4.0 step=0.01");
     Editor::AddSeparator (myBar);
     Editor::AddTweak (myBar, "effect id", &gSelectedEffect, "min=0 max=3");
+
+
+
     gCurrentEffect->addUI (myBar);
+    bg = Resources::RS->Get_Sound("music2.mp3");
+    bg->Play();
+    Editor::AddTweakText(audioBar, "string", &s, "");
+    Editor::AddTweak(audioBar, "volume", bg->GetVolumePtr (), "min=0.0 step=0.01 max=1.0");
+    Editor::AddTweak(audioBar, "lpf", &lpf, "group=LPF");
+    Editor::AddTweak(audioBar, "LPFcutoff", &LPFcutOff, "min=10.0 step=50 max=22000.0 group=LPF");
+    Editor::AddTweak(audioBar, "LPFresonance", &LPFresonance, "min=1.0 step=0.5 max=10.0 group=LPF");
+    Editor::AddTweak(audioBar, "hpf", &hpf, "group=HPF");
+    Editor::AddTweak(audioBar, "HPFcutoff", &HPFcutOff, "min=10.0 step=50 max=22000.0 group=HPF");
+    Editor::AddTweak(audioBar, "HPFresonance", &HPFresonance, "min=1.0 step=0.5 max=10.0 group=HPF");
+    Editor::AddTweak(audioBar, "reverb", &reverb, "group=REVERB");
+    Editor::AddTweak(audioBar, "preset", &reverbPreset, "min=0 max=23 group=REVERB");
+    Editor::AddSeparator(audioBar);    
 
     Camera::main->worldToView = glm::lookAt (Camera::main->viewDirection * 0.5f, Camera::main->position, Camera::main->up);
   }
@@ -202,6 +231,53 @@ namespace Framework
 
     gNumParticles = gCurrentEffect->numAllParticles ();
     gNumAlive = gCurrentEffect->numAliveParticles ();
+
+    if (lpf != oldLPF)
+    {
+      if (lpf)
+        bg->LowPassFilter();
+      else
+        bg->Get_Channel()->removeDSP (bg->Get_LPF ());
+      oldLPF = lpf;      
+    }
+    if (lpf && oldLPFResonance != LPFresonance || oldLPFCutOff != LPFcutOff)
+    {
+      bg->SetLPF(LPFcutOff, LPFresonance);
+      oldLPFCutOff = LPFcutOff;
+      oldLPFResonance = LPFresonance;
+    }
+
+    if (hpf != oldHPF)
+    {
+      if (hpf)
+        bg->HighPassFilter();
+      else
+        bg->Get_Channel()->removeDSP(bg->Get_HPF());
+      oldHPF = hpf;
+    }
+    if (hpf && oldHPFResonance != HPFresonance || oldHPFCutOff != HPFcutOff)
+    {
+      bg->SetHPF(HPFcutOff, HPFresonance);
+      oldHPFCutOff = HPFcutOff;
+      oldHPFResonance = HPFresonance;
+    }
+
+    if (reverb != oldReverb)
+    {
+      if (reverb)
+      {
+        bg->Reverb();
+        bg->AddReverbPreset(Sound::ReverbPresetName(reverbPreset));
+      }
+      else
+        bg->Get_Channel()->removeDSP(bg->Get_RVRB());
+      oldReverb = reverb;
+    }
+    if (reverb && oldReverbPreset != reverbPreset)
+    {
+      bg->AddReverbPreset(Sound::ReverbPresetName (reverbPreset));
+      oldReverbPreset = reverbPreset;
+    }
   }
 
 
