@@ -37,7 +37,7 @@ namespace Framework
     }
     
     GameObject * OtherObject;
-	float penetration;
+	//float penetration;
 	Vec2 normal;
 
   };

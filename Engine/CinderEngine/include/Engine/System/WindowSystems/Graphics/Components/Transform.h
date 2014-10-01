@@ -53,6 +53,10 @@ namespace Framework
     glm::vec3 GetPosition ();
     glm::vec3 GetScale ();
 
+	//setter
+	void setPos(float x, float y, float z){ position.z = z; position.y = y; position.x = x; }
+
+
     bool MatrixMode (int m);
   
     //GLSL

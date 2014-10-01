@@ -11,6 +11,8 @@ namespace Framework
 		class RigidBody : public Component
 		{
 		public:
+			RigidBody() : vel(1, 0){}
+		
 			Vec2 getVel(void){
 				return vel;
 			};
