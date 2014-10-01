@@ -58,7 +58,7 @@ namespace Framework
       glfwWindowHint (GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
       glfwWindowHint (GLFW_RESIZABLE, GL_TRUE);
 
-      WINDOWSYSTEM->Set_W_H (800, 600);
+      WINDOWSYSTEM->Set_W_H (1920 , 1080);
       // Window Creation
       *GLFWwindowptr = glfwCreateWindow (WINDOWSYSTEM->Get_Width (), WINDOWSYSTEM->Get_Height (), "OpenGL", nullptr, nullptr); // Windowed
 

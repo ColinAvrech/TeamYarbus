@@ -62,7 +62,7 @@ namespace Framework
       }
       else if (eventname.substr(0, eventname.find_first_of("_")) == Events::Types::COLLISION)
       {
-        RegisteredEvents[eventname] = new GameEvent(eventname);
+        RegisteredEvents[eventname] = new CollisionEvent(eventname);
         RegisteredEvents[eventname]->Listeners.push_back(BaseEvent::BaseEventListener(obj, func));
       }
     }
@@ -72,16 +72,22 @@ namespace Framework
     }
   }
 
+  /* Finds the BaseEvent* of the given name */
+  BaseEvent* EventSystem::GetEvent(const std::string eventname)
+  {
+    EventMap::iterator eventToGet = RegisteredEvents.find(eventname);
+    if (eventToGet == RegisteredEvents.end())
+    {return nullptr;}
+    return eventToGet->second;
+  }
+
+  /* If the given event exists, Dispatch it */
   void EventSystem::TriggerEvent(const std::string eventname)
   {
     EventMap::iterator eventToTrigger = RegisteredEvents.find(eventname);
     RETURNIF(eventToTrigger == RegisteredEvents.end());
     
-    if (eventname.substr(0, eventname.find_first_of("_")) == Events::Types::COLLISION)
-    {
-      static_cast<CollisionEvent*>(eventToTrigger->second)->DispatchEvent();
-    }
-    else if (eventname.substr(0, eventname.find_first_of("_")) == Events::LOGICUPDATE)
+    if (eventname.substr(0, eventname.find_first_of("_")) == Events::LOGICUPDATE)
     {
       static_cast<UpdateEvent*>(eventToTrigger->second)->Dt = _dt;
       static_cast<UpdateEvent*>(eventToTrigger->second)->TimePassed = _TotalTimePassed;
@@ -104,6 +110,7 @@ namespace Framework
 
   }
 
+  /* Returns the total Number of Events */
   unsigned EventSystem::NumberOfEvents()
   {
     return RegisteredEvents.size();
@@ -114,12 +121,27 @@ namespace Framework
   //  Private
   /******************************************/
 
+  /* The Update Function which is called in the main loop*/
   void EventSystem::Update(const double dt)
   {
     _dt = dt;
     _TotalTimePassed += dt;
-
     TriggerEvent(Events::LOGICUPDATE);
+
+    // TEST       EXAMPLE FOR ANNA
+    
+    /*
+    std::string ColEvent = std::string("COLLISION");
+    std::cout << "Getting_Event_Called:" << ColEvent << std::endl;
+
+    CollisionEvent* colevent = (CollisionEvent*)GetEvent(ColEvent);
+    if (colevent == nullptr)
+      return;
+
+    // FILL OUT EVENT
+
+    colevent->DispatchEvent();
+    */
   }
 
 }
