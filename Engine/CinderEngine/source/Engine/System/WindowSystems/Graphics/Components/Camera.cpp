@@ -19,8 +19,8 @@ namespace Framework
 
   Camera::Camera (bool _main) : viewDirection (0.0f, 0.0f, -1.0f), up (0.0f, 1.0f, 0.0f)
   {
-    size = 2.0f;
-    aspect = 1.0f;
+    size = 10.0f;
+    aspect = 16.f/9;
     nearPlane = 0.1f;
     farPlane = 10.0f;
 

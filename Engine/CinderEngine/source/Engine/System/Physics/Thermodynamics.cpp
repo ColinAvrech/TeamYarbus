@@ -131,10 +131,10 @@ namespace Framework
       float dTemp = temp - HeatMap[sub_x][sub_y];
       if (dTemp > 0)
       {
-        HeatMap[sub_x][sub_y] += dTemp * dt;
-        return (temp - (dTemp * dt));
+        HeatMap[sub_x][sub_y] += dTemp * float(dt);
+        return (temp - (dTemp * float(dt)));
       }
-      return (temp + (dTemp * dt));
+      return (temp + (dTemp * float(dt)));
     }
 
     /*-----------------------------------------------------------------------
