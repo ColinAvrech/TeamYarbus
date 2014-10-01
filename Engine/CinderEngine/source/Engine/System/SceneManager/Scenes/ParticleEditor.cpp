@@ -71,12 +71,12 @@ namespace Framework
   // Constructor
   ParticleEditor::ParticleEditor ()
   {
-    TwTerminate ();
   }
 
   // Destructor
   ParticleEditor::~ParticleEditor ()
   {
+    TwTerminate ();
     gCurrentEffect->clean ();
     glDeleteTextures (1, &gParticleTexture);
   }
@@ -136,17 +136,18 @@ namespace Framework
     //camera_.cameraDir [2] = 1.0f;
     //camera_.camDistance = 0.5f;
 
-    gParticleTexture = Resources::RS->Get_Texture ("Particle2.png")->Get_ID ();
+    gParticleTexture = Resources::RS->Get_Texture ("Fire1.png")->Get_ID ();
     mProgram = Resources::RS->Get_Shader ("Particle");
     mProgram->Use ();
     mProgram->uni1i ("tex", 0);
+    mProgram->uni1f ("size", 15.0f);
     mProgram->Disable ();
 
 
-    gEffects [0] = EffectFactory::create ("attractors");
+    gEffects [0] = EffectFactory::create ("fountain");
     gEffects [0]->initialize (IEffect::DEFAULT_PARTICLE_NUM_FLAG);
     gEffects [0]->initializeRenderer ();
-    gEffects [1] = EffectFactory::create ("fountain");
+    gEffects [1] = EffectFactory::create ("attractors");
     gEffects [1]->initialize (IEffect::DEFAULT_PARTICLE_NUM_FLAG);
     gEffects [1]->initializeRenderer ();
     gEffects [2] = EffectFactory::create ("tunnel");
@@ -161,7 +162,7 @@ namespace Framework
     gpuUpdate.init ();
     gpuRender.init ();
 
-    myBar = TwNewBar ("NameOfMyTweakBar");
+    myBar = TwNewBar ("Particle System");
 
     audioBar = TwNewBar("Audio");
 
@@ -179,12 +180,9 @@ namespace Framework
     //Editor::AddTweak (myBar, "camera distance", &camera1.fov, "min=0.05 max=4.0 step=0.01");
     Editor::AddSeparator (myBar);
     Editor::AddTweak (myBar, "effect id", &gSelectedEffect, "min=0 max=3");
-
-
-
     gCurrentEffect->addUI (myBar);
-    bg = Resources::RS->Get_Sound("music2.mp3");
 
+    bg = Resources::RS->Get_Sound("music2.mp3");
     Editor::AddTweakText(audioBar, "O HAI ENGINE PROOF", &s, "");
     Editor::AddTweak(audioBar, "Play Song", &song, "group=Play");
     Editor::AddTweak(audioBar, "Generate Noise", &noise, "group=Play");
@@ -199,8 +197,8 @@ namespace Framework
     Editor::AddTweak(audioBar, "HPF Resonance", &HPFresonance, "min=1.0 step=0.5 max=10.0 group=HighPassFilter");
     Editor::AddTweak(audioBar, "Reverb On/Off", &reverb, "group=Reverb");
     Editor::AddTweak(audioBar, "Set Preset", &reverbPreset, "min=0 max=23 group=Reverb");
-    Editor::AddSeparator(audioBar);    
-
+    Editor::AddSeparator(audioBar);
+    TwDefine (" Audio position='20 500' ");
     Camera::main->worldToView = glm::lookAt (Camera::main->viewDirection * 0.5f, Camera::main->position, Camera::main->up);
   }
 
@@ -332,13 +330,14 @@ namespace Framework
     glEnable (GL_TEXTURE_2D);
     glBindTexture (GL_TEXTURE_2D, gParticleTexture);
 
+    glEnable (GL_POINT_SPRITE);
     glEnable (GL_PROGRAM_POINT_SIZE);
-
     mProgram->Use ();
     mProgram->uniMat4 ("matProjection", glm::value_ptr (Camera::main->GetViewToProjectionMatrix()));
     mProgram->uniMat4 ("matModelview", glm::value_ptr (Camera::main->GetWorldToViewMatrix()));
 
     glEnable (GL_BLEND);
+    //glEnable (GL_DEPTH_TEST);
     glBlendFunc (GL_SRC_ALPHA, GL_ONE);
 
     gpuRender.begin ();
@@ -346,6 +345,7 @@ namespace Framework
     gpuRender.end ();
 
     glDisable (GL_BLEND);
+    glDisable (GL_DEPTH_TEST);
 
     mProgram->Disable ();
 

@@ -22,6 +22,7 @@
 #include "BaseSystem.h"
 #include "Common.h"
 #include "Vec2.h"
+#include <unordered_map>
 
 #pragma endregion
 
@@ -73,6 +74,10 @@ namespace Framework
       const std::string GetName(){ return "ThermodynamicsSystem"; }
 
       // Getters
+      //Get Cell Pixel size
+      int GetCellSize(){ return CellSize; }
+      //Get Map size
+      Vec2 GetMapSize(){ return MapSize; }
       //Get cell temperature
       float GetCellTemperature(float x, float y);
       //Get cell pressure
@@ -147,13 +152,15 @@ namespace Framework
 #pragma region Private Structs    
       struct conductionProperties
       {
-        std::string name;
+        //std::string name will be used to map these;
         bool isFluid;    //Is the material a fluid
         bool Volatile; //Can this material catch fire
         float Hc;      //Heat transfer coefficient
         float Mass;    //Mass of 1 block of material
         float c;       //Specific heat
       };
+
+      std::unordered_map<std::string, conductionProperties*> materialList;
 #pragma endregion
 
       /*-----------------------------------------------------------------------

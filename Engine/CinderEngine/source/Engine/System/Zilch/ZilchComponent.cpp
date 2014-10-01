@@ -1,6 +1,8 @@
 #include "ScriptComponent.h"
 #include "ZilchCompiledLib.h"
 
+#pragma warning(disable:4413)
+
 namespace Framework
 {
   namespace ScriptSystem

@@ -2,7 +2,6 @@
 #define _GRAPHICS_COMMON_H
 
 #include "glew.h"
-#include "glfw3.h"
 #include "CinderMath.h"
 #include "VertexArrayObject.h"
 #include "VertexBufferObject.h"

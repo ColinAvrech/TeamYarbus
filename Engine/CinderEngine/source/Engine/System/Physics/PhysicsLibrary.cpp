@@ -26,8 +26,8 @@ namespace Framework
 
 		float Distance(const Vec2& pos1, const Vec2& pos2)
 		{
-			return sqrt((pos2.x_ - pos1.x_) * (pos2.x_ - pos1.x_)
-				+ (pos2.y_ - pos1.y_) * (pos2.y_ - pos1.y_));
+			return float(sqrt((pos2.x_ - pos1.x_) * (pos2.x_ - pos1.x_)
+				+ (pos2.y_ - pos1.y_) * (pos2.y_ - pos1.y_)));
 		}
 
 		Vec2 getNormal(Vec2 side)
@@ -41,7 +41,7 @@ namespace Framework
 
 		float DotProduct(const Vec2& vec1, const Vec2& vec2)
 		{
-			float result = (vec1.x_ * vec2.x_) + (vec1.y_ * vec2.y_);
+			float result = float((vec1.x_ * vec2.x_) + (vec1.y_ * vec2.y_));
 			return result;
 		}
 

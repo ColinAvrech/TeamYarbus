@@ -42,6 +42,8 @@
 #endif
 
 
+#pragma warning(disable:4005)
+
 namespace Zilch
 {
   // Defines

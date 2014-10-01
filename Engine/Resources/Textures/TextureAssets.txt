@@ -7,3 +7,7 @@ Particle.png
 Particle1.png
 Particle2.png
 DigiPenLogo.png
+Smoke.png
+Smoke1.png
+Fire.png
+Fire1.png

@@ -35,10 +35,10 @@ namespace Framework
       particleEmitter->addGenerator (m_posGenerator);
 
       m_colGenerator = std::make_shared<BasicColorGen> ();
-      m_colGenerator->m_minStartCol = glm::vec4{ 0.7, 0.4, 0.2, 1.0 };
-      m_colGenerator->m_maxStartCol = glm::vec4{ 1.0, 1.0, 1.0, 1.0 };
-      m_colGenerator->m_minEndCol = glm::vec4{ 1.0, 0.0, 0.6, 0.0 };
-      m_colGenerator->m_maxEndCol = glm::vec4{ 1.0, 0.5, 0.0, 0.0 };
+      m_colGenerator->m_minStartCol = glm::vec4{ 255.0/255, 120.0/255, 50.0/255, 0.0 };
+      m_colGenerator->m_maxStartCol = glm::vec4{ 255.0 / 255, 120.0 / 255, 50.0 / 255, 1.0 };
+      m_colGenerator->m_minEndCol = glm::vec4{ 255.0 / 255, 120.0 / 255, 50.0 / 255, 0.0 };
+      m_colGenerator->m_maxEndCol = glm::vec4{ 255.0 / 255, 120.0 / 255, 50.0 / 255, 0.0 };
       particleEmitter->addGenerator (m_colGenerator);
 
       auto velGenerator = std::make_shared<BasicVelGen> ();
