@@ -8,3 +8,82 @@
 */
 /*****************************************************************************/
 
+#include "Serializer/JSONSerializer.h"
+
+namespace Framework
+{
+  namespace Serializer
+  {
+    DataNode* ZeroSerializer::FindElement(DataNode* branch, const char* key)
+    {
+      auto it = branch;
+      std::string name(key);
+      while (it && it->objectName.compare(name) != 0)
+      {
+        it = it->next;
+      }
+      return it;
+    }
+
+    DataNode* ZeroSerializer::FindStem(DataNode* current)
+    {
+      auto it = current;
+      while (it && it == it->previous->next)
+      {
+        it = it->previous;
+      }
+      return it;
+    }
+
+    void ZeroSerializer::DumpArchive(DataNode* stem, int indentation)
+    {
+      int findent = indentation;
+      DataNode* it = stem;
+      while (it)
+      {
+        indent(findent);
+        std::cout << it->objectName << std::endl;
+        if (it->dataType == TYPE_OBJECT)
+        {
+          ++findent;
+          DumpArchive(it->branch, findent);
+        }
+
+        it = it->next;
+      }
+    }
+
+    DataNode* ZeroSerializer::GetValue(std::initializer_list<const char*> keys)
+    {
+      DataNode* walk = trunk;
+      for (auto it = keys.begin(); it != keys.end(); ++it)
+      {
+        if (walk)
+          walk = FindElement(walk, *it);
+        else
+        {
+          std::cout << "Branch not found";
+          return NULL;
+        }
+      }
+      if (walk)
+        return walk;
+      else
+        return NULL;
+    }
+
+    void ZeroSerializer::recursiveFree(DataNode* Obj)
+    {
+      while (Obj)
+      {
+        DataNode *temp = Obj->next;
+        if (Obj->dataType == TYPE_OBJECT)
+        {
+          recursiveFree(Obj->branch);
+        }
+        delete Obj;
+        Obj = temp;
+      }
+    }
+  } // serializer
+} // framework
