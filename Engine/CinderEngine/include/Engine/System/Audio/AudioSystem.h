@@ -26,6 +26,8 @@
 
 namespace Framework
 {
+
+  class Resources;
   /*---------------------------------------------------------------------------
   // Class
   ---------------------------------------------------------------------------*/
@@ -52,15 +54,9 @@ namespace Framework
       #pragma endregion
 
       /*---------------------------------------------------------------------*/
-      // Public Structs
+      // Public Structs/Enums
       /*---------------------------------------------------------------------*/
-      #pragma region Public Structs
-
-      struct SoundName
-      {
-        Sound     *test;
-        Sound     *test2;
-      }SoundName;
+      #pragma region Public Structs      
 
       #pragma endregion
 
@@ -71,7 +67,7 @@ namespace Framework
     
       void          ErrCheck(FMOD_RESULT result);
       bool          Initialize();
-      Sound*        LoadSound(char* filename,       char* soundName, 
+      Sound*        LoadSound(const char* filename,  char* soundName, 
                               Sound::SoundID type,  float volume);
       void          LoadAllSounds();
       void          StopSounds(int id);

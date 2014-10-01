@@ -11,41 +11,21 @@
 #pragma once
 
 #include "Common.h"
+#include "BaseEvent.h"
 
 namespace Framework
 {
 
-  class InputEvent : public BaseEvent
+  class MouseEvent : public BaseEvent
   {
   public:
+    MouseEvent(const std::string)
+    {}
 
-    InputEvent::InputEvent(Events::InputKeys inputKey)
-      : BaseEvent(Events::Types::Input), inputKey(inputKey)
-    {
-      //! Check for duplicate Key events
-#ifdef _DEBUG
-      for (auto it = _registeredKeys.begin(); it != _registeredKeys.end(); ++it)
-      {
-        Assert(*it != inputKey, "ERROR: InputEvent Key DUPLICATED!");
-      }
+    ~MouseEvent()
+    {}
 
-      //!Push key onto the list
-      _registeredKeys.push_back(inputKey);
-#endif
-    }
-
-    ~InputEvent(){}
-
-    /*!Key for this Event*/
-    const Events::InputKeys inputKey;
-
-    //TODO VEC2 for mouse position
     
 
-  private:
-#ifdef _DEBUG
-    /*!To check so that we don't create multiple events of the same type and key*/
-    std::vector<Events::InputKeys> _registeredKeys;
-#endif
   };
 }

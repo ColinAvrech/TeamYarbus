@@ -1,4 +1,13 @@
-ScarlettJohansson.jpg
-ScarlettJohansson1.jpg
-ScarlettJohansson2.jpg
-ScarlettJohansson3.jpg
+TeamLogo.jpg
+TeamLogo.png
+TeamName.png
+Logo.png
+Logo.jpg
+Particle.png
+Particle1.png
+Particle2.png
+DigiPenLogo.png
+Smoke.png
+Smoke1.png
+Fire.png
+Fire1.png

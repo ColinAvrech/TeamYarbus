@@ -29,16 +29,17 @@ factory in the next loop.
 
 #pragma once
 
-#include "Common.h"
+#include "Component.h"
+#include <map>
 #include "Vec2.h"
 
 namespace Framework
 {
+  class Component;
+
   class GameObject
   {
-    //forward declairation
-    class GameComponent;
-
+ 
   public:
     //! Called by Factory
     GameObject(unsigned gameObjectID)
@@ -48,15 +49,16 @@ namespace Framework
     }
 
 
-    template<typename T>
-    GameComponent* AddComponent()
+
+    Component* AddComponent(std::string name)
     {
-      GameComponent* gc = new T(this);
-      ComponentMap.Insert(T::Name, gc);
-      return gc;
+      //ErrorIf(Components.find(name) == Components.end(), "COMPONENT CREATED TWICE ON SAME OBJECT");
+      //Component* gc = OBJECTSYSTEM->SerialMap[name]->Create(this);
+      //Components[name] = gc;
+      //return gc;
     }
 
-    GameComponent* GetComponent(std::string component)
+    Component* GetComponent(std::string component)
     {
       ComponentMap::iterator it = Components.find(component);
       if (it == Components.end())
@@ -67,6 +69,8 @@ namespace Framework
       {
         return it->second;
       }
+      
+      return NULL;
     }
     /*
     GameObject* CreateChildObject()
@@ -79,7 +83,6 @@ namespace Framework
 
     //Public Variables
     GameObject* Parent;
-    Vec2 GOPosition;
     unsigned GameObjectID;
     /*
     std::list<GameObject*> ChildObjects;
@@ -90,7 +93,7 @@ namespace Framework
     GameObject(unsigned gameObjectID, GameObject* parent)
       :GameObjectID(gameObjectID), Parent(parent){}*/
 
-    typedef std::map<std::string, GameComponent *> ComponentMap;
+    typedef std::map<std::string, Component *> ComponentMap;
     ComponentMap Components;
 
   };

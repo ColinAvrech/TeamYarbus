@@ -12,9 +12,10 @@
 
 namespace Framework
 {
-
+  DefineComponentName(Transform);
   // Constructor
-  Transform::Transform () : position (0), scale (1)
+
+  Transform::Transform() : position (0), scale (1)
   {
     modelMatrix.push_back (glm::mat4 (1));
     viewMatrix.push_back (glm::mat4 (1));
@@ -55,19 +56,19 @@ namespace Framework
   }
 
 
-  // Orthographic Projection
-  void Transform::ortho (float left, float right, float bottom, float top, float near, float far)
-  {
-    projectionMatrix [projectionMatrix.size () - 1] = glm::ortho (left, right, bottom, top, near, far);
-    matricesReady = false;
-  }
+  //// Orthographic Projection
+  //void Transform::Ortho (float left, float right, float bottom, float top, float near, float far)
+  //{
+  //  projectionMatrix [projectionMatrix.size () - 1] = glm::ortho (left, right, bottom, top, near, far);
+  //  matricesReady = false;
+  //}
 
-  // Perspective Projection
-  void Transform::perspective (float angle, float aRatio, float near, float far)
-  {
-    projectionMatrix [projectionMatrix.size () - 1] = glm::perspective (angle, aRatio, near, far);
-    matricesReady = false;
-  }
+  //// Perspective Projection
+  //void Transform::Perspective (float angle, float aRatio, float near, float far)
+  //{
+  //  projectionMatrix [projectionMatrix.size () - 1] = glm::perspective (angle, aRatio, near, far);
+  //  matricesReady = false;
+  //}
 
   // Replace the Fixed Functionality glTranslatef, glScalef,...
   void Transform::Translate (float x, float y, float z)
@@ -75,12 +76,10 @@ namespace Framework
     if (currentMatrix == MODEL_MATRIX)
     {
       modelMatrix [modelMatrix.size () - 1] *= glm::translate (glm::vec3 (x, y, z));
-      position += glm::vec3 (x, y, z);
+      position += glm::mat3 (Camera::GetViewToProjectionMatrix () * Camera::GetWorldToViewMatrix () * modelMatrix [modelMatrix.size () - 1]) * glm::vec3 (x, y, z);
     }
-    else if (currentMatrix == VIEW_MATRIX)
-    {
-      viewMatrix [viewMatrix.size () - 1] *= glm::translate (glm::vec3 (-x, -y, -z));
-    }
+
+    Print (position);
     matricesReady = false;
   }
 
@@ -133,32 +132,6 @@ namespace Framework
     return modelMatrix [modelMatrix.size () - 1];
   }
 
-  glm::mat4& Transform::GetViewMatrix()
-  {
-    return viewMatrix [viewMatrix.size () - 1];
-  }
-
-
-  glm::mat4& Transform::GetProjectionMatrix()
-  {
-    return projectionMatrix [projectionMatrix.size () - 1];
-  }
-
-  glm::mat4& Transform::GetModelViewMatrix ()
-  {
-    if (!matricesReady)
-      return viewMatrix [viewMatrix.size () - 1] * modelMatrix [modelMatrix.size () - 1];
-    else
-      return modelViewMatrix;
-  }
-
-  glm::mat4& Transform::GetModelViewProjectionMatrix()
-  {
-    if (!matricesReady)
-      return viewMatrix [viewMatrix.size () - 1] * modelMatrix [modelMatrix.size () - 1] * projectionMatrix [projectionMatrix.size () - 1];
-    else
-      return modelViewProjectionMatrix;
-  }
 
   glm::vec3 Transform::GetPosition()
   {
@@ -180,16 +153,10 @@ namespace Framework
   {
     if (!matricesReady)
     {
-      modelViewMatrix = viewMatrix [viewMatrix.size () - 1] * modelMatrix [modelMatrix.size () - 1];
-      modelViewProjectionMatrix = projectionMatrix [projectionMatrix.size () - 1] * viewMatrix [viewMatrix.size () - 1] * modelMatrix [modelMatrix.size () - 1];
-      normalMatrix = glm::mat3 (modelViewMatrix);
+      glUniformMatrix4fv (glGetUniformLocation (programId, "modelMatrix"), 1, GL_FALSE, glm::value_ptr (modelMatrix [modelMatrix.size () - 1]));
+      glUniformMatrix4fv (glGetUniformLocation (programId, "viewMatrix"), 1, GL_FALSE, glm::value_ptr (Camera::GetWorldToViewMatrix ()));
+      glUniformMatrix4fv (glGetUniformLocation (programId, "prpjectionmatrix"), 1, GL_FALSE, glm::value_ptr (Camera::GetViewToProjectionMatrix ()));
     }
-
-    glUniformMatrix4fv (glGetUniformLocation (programId, "modelMatrix"), 1, GL_FALSE, &modelMatrix [modelMatrix.size () - 1][0][0]);
-    glUniformMatrix4fv (glGetUniformLocation (programId, "viewMatrix"), 1, GL_FALSE, &viewMatrix [viewMatrix.size () - 1][0][0]);
-    glUniformMatrix4fv (glGetUniformLocation (programId, "modelViewMatrix"), 1, GL_FALSE, &modelViewMatrix [0][0]);
-    glUniformMatrix4fv (glGetUniformLocation (programId, "modelViewProjectionMatrix"), 1, GL_FALSE, &modelViewProjectionMatrix [0][0]);
-    glUniformMatrix3fv (glGetUniformLocation (programId, "normalMatrix"), 1, GL_FALSE, &normalMatrix [0][0]);
   }
 
   // PRIVATE METHODS
@@ -204,5 +171,10 @@ namespace Framework
 
   Transform::~Transform ()
   {}
+
+  void Transform::Print (glm::vec3 position)
+  {
+    std::cout << "( " << position.x << ", " << position.y << ", " << position.z << " )\n";
+  }
 
 }

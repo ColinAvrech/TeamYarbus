@@ -2,15 +2,13 @@
 #define _GRAPHICS_COMMON_H
 
 #include "glew.h"
-#include "glfw3.h"
 #include "CinderMath.h"
 #include "VertexArrayObject.h"
 #include "VertexBufferObject.h"
 #include "ElementBufferObject.h"
-#include "Camera.h"
-#include "Transform.h"
-
 #include "Resources.h"
+#include "ShapeGenerator.h"
+#include "Color.h"
 #include <fstream>
 #include <iostream>
 #endif

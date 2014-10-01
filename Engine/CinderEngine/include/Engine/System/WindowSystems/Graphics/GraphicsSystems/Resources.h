@@ -4,5 +4,6 @@
 
 #include "Texture.h"
 #include "Shader.h"
+#include "AudioSystem.h"
 
-#endif // !_RESOURCES_H
+#endif // !_RESOURCES_H5

@@ -13,9 +13,12 @@
 namespace Framework
 {
 
+  DefineComponentName (Renderer);
+
   // Constructor
   Renderer::Renderer ()
-  {}
+  {
+  }
   
   // Destructor
   Renderer::~Renderer ()

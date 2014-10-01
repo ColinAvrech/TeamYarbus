@@ -9,11 +9,14 @@
 /******************************************************************************/
 
 
-
 #pragma once
 
+#include "Common.h"
+#include "GameObject.h"
+#include "ComponentInclude.h"
 #include "BaseSystem.h"
-#include "Component.h"
+#include "GameObject.h"
+#include "ComponentCreator.h"
 
 namespace Framework
 {
@@ -27,6 +30,9 @@ namespace Framework
   {
   public:
 
+    friend class GameObject;
+    friend class Component;
+
     const char* LevelAssetsPath = "../../Assets/Levels/";
 
     ObjectSystem();
@@ -38,25 +44,34 @@ namespace Framework
     //!name of the system if the Factory, duh.
     virtual const std::string GetName(){ return "ObjectSystem"; }
 
+    GameObject* CreateObject();
+
     //!Destroy all the GOC. Used in final shutdown procedure.
     void DestroyAllObjects();
 
-    void LoadLevel(std::string level);
+    void DestroyGameObjectsToBeDestroyed();
 
+    void LoadLevel(std::string level);
 
     /*!Used to generator unique GOCIds*/
     static unsigned LastGameObjectId;
 
   private:
 
-
-    std::string ReadLine(std::string line);
-    //typedef std::map<std::string, size_t> SerializationMap;
-    //SerializationMap  SerialMap;
+    void RegisterComponents(void);
+    void AddComponentCreator(std::string name, ComponentCreator* creator);
 
 
+    typedef std::map<unsigned, GameObject*> GameObjectMap;
+    GameObjectMap GameObjects;
+
+    typedef std::map<std::string, ComponentCreator *> SerializationMap;
+    SerializationMap SerialMap;
+
+    typedef std::vector<GameObject *> ObjectsToBeDestroyed;
+    ObjectsToBeDestroyed GameObjectsToBeDestroyed;
   };
 
-
+  //!Set the factory to null to indicate is hasn't been created yet
   extern ObjectSystem * OBJECTSYSTEM;
 }

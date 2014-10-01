@@ -6,6 +6,6 @@ class Player
   
   function SayHello()
   {
-    Console.WriteLine("Fuck the world!");
+    Console.WriteLine("HelloWorld in Zilch Function");
   }
 }

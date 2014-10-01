@@ -2,7 +2,7 @@
 #define _TEXTURE_H
 
 #include "GraphicsCommon.h"
-#include "SOIL.h"
+#include "SOIL2.h"
 
 namespace Framework
 {
@@ -15,11 +15,19 @@ namespace Framework
     Texture (const char* filename);
     ~Texture ();
 
-    GLuint textureID;
-    GLuint imageID;
+    GLuint Get_ID ();
+    float Get_Aspect_Ratio ();
     void Load_Texture (const char* filename);
 
-  private:
+    void Bind_Texture (int num = 0);
+    void Release_Texture ();
+
+  protected:
+    GLuint textureID;
+    int width;
+    int height;
+    float aspect;
+
   };
 
 }

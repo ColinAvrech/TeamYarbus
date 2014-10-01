@@ -28,18 +28,15 @@ namespace Framework
     //pass std::string str.c_str() to convert to const char*
     //------------------------------------------------------------------
 
-    class ZilchComponent : public GameComponent
+    class ZilchComponent : public Component
     {
     public:
 
       //Constructor. Initialize with owner and component name.
-      ZilchComponent(GameObject *obj, std::string name);
+      ZilchComponent(std::string* name);
 
       //!Updated every frame.
       void Update(const double dt);
-
-      //Return name of the component
-      //GetName function
 
       //!Initialize the system.
       virtual bool Initialize();

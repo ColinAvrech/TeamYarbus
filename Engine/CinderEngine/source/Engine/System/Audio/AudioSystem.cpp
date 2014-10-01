@@ -13,10 +13,12 @@
 -----------------------------------------------------------------------------*/
 #pragma region Includes
 
+#include "EditorUI.h"
+#include "WindowSystem.h"
 #include "AudioSystem.h"
 
 #pragma endregion
-
+static TwBar* myBar;
 namespace Framework
 {
   /*---------------------------------------------------------------------------
@@ -120,7 +122,7 @@ namespace Framework
   \return Returns a Sound class Object
   */
   /***************************************************************************/
-  Sound* AudioSystem::LoadSound(char* filename, 
+  Sound* AudioSystem::LoadSound(const char* filename, 
                                 char* soundName, 
                                 Sound::SoundID type, 
                                 float volume)
@@ -129,7 +131,7 @@ namespace Framework
     char Path[250];
 
     sprintf(Path, "%s%s", AudioAssetsPath, filename);
-    
+
     // Calls the load method from the Sound Class
     newSound->Load(pFMODAudioSystem, Path, soundName, type);
 
@@ -223,12 +225,6 @@ namespace Framework
     {
       it->second->Update(dt);
     }
-
-    // Prints out to the console
-    //std::cout << GetName() + " Updating" << std::endl;
-
-    // Prints out the frametime
-    //std::cout << dt << std::endl;
   }
 
   /***************************************************************************/

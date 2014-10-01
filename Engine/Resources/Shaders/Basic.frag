@@ -1,14 +1,14 @@
-#version 430
+#version 430 core
 
-in vec2 position;
-in vec4 color;
-in vec2 texcoord;
-out vec4 Color;
-out vec2 Texcoord;
+in vec4 Color;
+in vec3 Normal;
+in vec2 Texcoord;
+
+out vec4 outColor;
+
+uniform sampler2D image;
 
 void main()
 {
-   Color = color;
-   Texcoord = texcoord;
-   gl_Position = vec4(position * 0.6 + 0.5, 0.0, 1.0);
+  outColor = texture (image, Texcoord) * Color;
 }

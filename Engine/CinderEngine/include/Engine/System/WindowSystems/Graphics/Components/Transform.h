@@ -8,10 +8,12 @@
 */
 /******************************************************************************/
 
+#pragma once
 #ifndef _TRANSFORM_H
 #define _TRANSFORM_H
 
 #include "GraphicsCommon.h"
+#include "ComponentInclude.h"
 
 namespace Framework
 {
@@ -22,18 +24,19 @@ namespace Framework
     PROJECTION_MATRIX
   };
 
-  class Transform
+  class Transform : public Component
   {
   public:
     Transform ();
     ~Transform ();
 
+
     void Load_Identity ();
 
     // Type of Projection to Be Used
     // Mostly Orthographic
-    void ortho (float left, float right, float bottom, float top, float near, float far);
-    void perspective (float angle, float aRatio, float near, float far);
+    void Ortho (float left, float right, float bottom, float top, float near, float far);
+    void Perspective (float angle, float aRatio, float near, float far);
 
     // Replace the Fixed Functionality glTranslatef, glScalef,...
     void Translate (float x, float y, float z);
@@ -55,6 +58,10 @@ namespace Framework
     //GLSL
     void UpdateMatrices (GLuint programId);
 
+    static void Print (glm::vec3 position);
+
+    // The non-base component usees DefineComponentName macro to name component
+    const static std::string Name;
   private:
     int currentMatrix;
     //Matrix Stack
@@ -78,7 +85,7 @@ namespace Framework
     glm::mat4 modelViewProjectionMatrix;
     glm::mat3 normalMatrix;
 
-  };  
+  };
 }
 
 #endif

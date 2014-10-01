@@ -12,7 +12,8 @@
 solution "CinderEngine"
   configurations { "Debug", "Release" }
   location "../"
-  linker    =   {"glfw3.lib", "glfw3dll.lib", "glew32.lib", "SOIL.lib", "opengl32.lib", "fmod_vc.lib", "Zilch.lib", "AntTweakBar.lib"}
+  linker    =   {"glfw3.lib", "glfw3dll.lib", "glew32.lib", "SOIL.lib", "SOIL2.lib",
+                 "opengl32.lib", "fmod_vc.lib", "Zilch.lib", "AntTweakBar.lib"}
   project "CinderEngine"
     targetname "CinderEngine"
     location "."
@@ -25,6 +26,7 @@ solution "CinderEngine"
     {
       "../include/**.h",
       "../source/**.cpp",
+      "../source/**.c",
       "../../Resources/Shaders/**.glsl",
       "../../Resources/**.txt",
       "../../Resources/**.frag",
@@ -47,7 +49,7 @@ solution "CinderEngine"
 --[[ Debug Configuration ]]
     configuration "Debug"
       flags   { "Symbols" }
-      defines { "_DEBUG"  , "_CRT_SECURE_NO_WARNINGS" }
+      defines { "_USE_ANTWEAK" , "_DEBUG"  , "_CRT_SECURE_NO_WARNINGS" }
       links {linker}
       targetdir "../bin/debug"
       postbuildcommands
@@ -61,13 +63,14 @@ solution "CinderEngine"
 --[[ Release Configuration ]]        
     configuration "Release"
       flags   { "Symbols" }
-      defines { "NDEBUG"  , "_CRT_SECURE_NO_WARNINGS" }      
+      defines { "_USE_ANTWEAK" , "NDEBUG"  , "_CRT_SECURE_NO_WARNINGS" }      
       optimize  "Full"
       links {linker}
       targetdir "../bin/release"
       postbuildcommands
               {
-                "copy ..\\dependency\\opengl\\library\\glut32.dll ..\\bin\\release\\",
+                "copy ..\\dependency\\opengl\\library\\glfw3.dll ..\\bin\\release\\",
+                "copy ..\\dependency\\opengl\\library\\glew32.dll ..\\bin\\release\\",
 								"copy ..\\dependency\\fmod\\library\\fmod.dll ..\\bin\\release\\",
 								"copy ..\\dependency\\AntTweakBar\\library\\AntTweakBar.dll ..\\bin\\release\\"        
               }

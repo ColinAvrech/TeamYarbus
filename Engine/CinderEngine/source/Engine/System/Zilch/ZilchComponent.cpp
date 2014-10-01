@@ -1,15 +1,15 @@
 #include "ScriptComponent.h"
 #include "ZilchCompiledLib.h"
 
-#pragma warning( disable : 4413 )
+#pragma warning(disable:4413)
 
 namespace Framework
 {
   namespace ScriptSystem
   {
     //CONSTRUCTOR
-    ZilchComponent::ZilchComponent(GameObject *obj, std::string name)
-      : GameComponent(obj), ZilchClass(Zero::String(name.c_str()))
+    ZilchComponent::ZilchComponent(std::string* name)
+      : ZilchClass(Zero::String(name->c_str()))
     {
       //Do Stuff
     }
@@ -37,8 +37,6 @@ namespace Framework
 
       // We can also setup the console so that any 'Read' functions will attempt to read from stdin
       Zilch::Console::SetReadTextCallback(Zilch::DefaultReadText, nullptr);
-
-      
 
       return true;
     }

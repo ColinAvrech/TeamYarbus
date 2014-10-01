@@ -88,11 +88,32 @@ Vec2 Vec2::operator*(const double scale) const
   temp.y_ = temp.y_ * scale;
   return temp;
 }
+
+Vec2 operator*(const double scale, const Vec2& vec)
+{
+	Vec2 temp(vec);
+	return temp = vec * scale;
+}
+
 Vec2& Vec2::operator*=(const double scale)
 {
   x_ = x_ * scale;
   y_ = y_ * scale;
   return *this;
+}
+
+Vec2 Vec2::operator/(const double scale) const
+{
+	Vec2 temp(x_, y_);
+	temp.x_ = x_ / scale;
+	temp.y_ = y_ / scale;
+	return temp;
+}
+Vec2& Vec2::operator/=(const double scale)
+{
+	x_ = x_ / scale;
+	y_ = y_ / scale;
+	return *this;
 }
 
 

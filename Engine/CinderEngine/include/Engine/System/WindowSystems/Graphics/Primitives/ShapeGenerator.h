@@ -25,6 +25,7 @@ namespace Framework
 
   static ShapeData Generate_Quad ();
   static ShapeData Generate_Cube ();
+  static ShapeData Generate_Normals (const ShapeData& shapeData);
   
   private:
 
