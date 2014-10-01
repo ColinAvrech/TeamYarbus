@@ -22,7 +22,8 @@ namespace Framework
     typedef void(*CollisionCall)(GameObject*, CollisionEvent*);
 
     CollisionEvent(const std::string eventname)
-    {}
+    {
+	}
 
     ~CollisionEvent()
     {}
@@ -36,7 +37,8 @@ namespace Framework
     }
     
     GameObject * OtherObject;
-
+	float penetration;
+	Vec2 normal;
 
   };
 

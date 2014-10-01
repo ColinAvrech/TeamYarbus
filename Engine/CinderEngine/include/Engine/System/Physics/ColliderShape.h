@@ -21,17 +21,6 @@ namespace Framework
 	{
 		//contains collision data necessary for resolution
 		//base class of event system - include in collision.cpp
-		struct Manifold
-		{
-			Vec2 velA;
-			Vec2 velB;
-			RigidBody::DynamicState stateA;
-			RigidBody::DynamicState stateB;
-			float massA;
-			float massB;
-			float penetration;
-			Vec2 normal;
-		};
 
 		class Shape : public Component
 		{

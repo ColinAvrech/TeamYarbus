@@ -35,8 +35,13 @@ const char WindowTitle[] = "CinderEngine";
 const int ClientWidth = 1024;
 const int ClientHeight = 768;
 
-void TestLogicUpdate(GameObject* obj, UpdateEvent* _event)
+void TestEventTest(GameObject* obj, CollisionEvent* _event)
 {
+  // Test for CollisionEvent
+  std::cout << Console::darkmagenta << "COLLISION EVENT" << std::endl;
+
+
+  //Test for LogicUpdateEvent
   //std::cout << Console::red << "I am UpdateEvent!" << std::endl;
   //std::cout << Console::blue << "dt:" << _event->Dt << std::endl;
   //std::cout << Console::green << "TimePassed:" << _event->TimePassed << std::endl;
@@ -79,8 +84,13 @@ int main(void)
   //! activate the window.
   //resourceManager.Get_Sound("music2.mp3")->LowPassFilter(60, 10);
 
+  // Test of CollisionEvent
+  /*
   GameObject * myobj = new GameObject(1666);
-  EVENTSYSTEM->Connect(myobj, Events::LOGICUPDATE, BaseEvent::BaseCall(TestLogicUpdate));
+  std::string ColEvent = std::string("COLLISION_1666");
+  std::cout << "Connecting_To_Event_Called:" << ColEvent << std::endl;
+  EVENTSYSTEM->Connect(myobj, ColEvent, BaseEvent::BaseCall(TestEventTest));
+  */
 
   //! Run the game! NOW!
   engine->GameLoop();
