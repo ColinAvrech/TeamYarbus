@@ -8,10 +8,10 @@ namespace Framework
 	{
 		bool Circle::DetectCircle(Circle c)
 		{
-			static_cast<Transform*>(Base->AddComponent(RigidBody::Name))->
+			/*static_cast<Transform*>(Base->AddComponent(RigidBody::Name))->
 
 			Manifold m;
-			m.massA = this->gameObject->GetComponent("RigidBody");
+			m.massA = this->gameObject->GetComponent("RigidBody");*/
 			//send message
 
 			// not counting offset
