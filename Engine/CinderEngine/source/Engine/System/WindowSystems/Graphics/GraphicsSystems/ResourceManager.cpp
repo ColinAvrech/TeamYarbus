@@ -74,59 +74,32 @@ namespace Framework
       std::string filename;
       std::string f;
       int rows, columns, samples;
-      //while (!ssFile.eof())
+      while (!ssFile.eof())
       {
-        while (data != ">")
-        {
-          ssFile >> data;
-          ssFile >> data;
-          f = data;
-          filename = (SpriteSheetResourcePath + data);
-          data = "";
-          ssFile >> data;
-          rows = std::stoi (data);
-          data = "";
-          ssFile >> data;
-          columns = std::stoi (data);
-          ssFile >> data;
-          samples = std::stoi (data);
-          ssFile >> data;
-          spriteSheets [f] = new SpriteSheet (filename.c_str(), rows, columns, samples);
-        }
+        ssFile >> data;
+        ssFile >> data;
+        f = data;
+        filename = (SpriteSheetResourcePath + data);
+        data = "";
+        ssFile >> data;
+        rows = std::stoi (data);
+        data = "";
+        ssFile >> data;
+        columns = std::stoi (data);
+        ssFile >> data;
+        samples = std::stoi (data);
+        ssFile >> data;
+        spriteSheets [f] = new SpriteSheet (filename.c_str (), rows, columns, samples);
       }
     }
   }
 
   void Resources::Load_Shaders ()
   {
-#pragma region OLD
-    /*shaders ["Default"] = new Shader ((ShaderResourcePath + "Basic.vs").c_str (), (ShaderResourcePath + "Basic.frag").c_str ());
-
-    std::ifstream vertexShaderFile (ShaderResourcePath + "VertexShaders.txt");
-    std::ifstream fragShaderFile (ShaderResourcePath + "FragmentShaders.txt");
-
-    if (!vertexShaderFile.good () || !fragShaderFile.good ())
-    {
-      std::cout << "Failed to load Shader File" << std::endl;
-      return;
-    }
-    else
-    {
-      std::string vs;
-      std::string fs;
-      while (!vertexShaderFile.eof () && !fragShaderFile.eof ())
-      {
-        vertexShaderFile >> vs;
-        fragShaderFile >> fs;
-        shaders [fs] = new Shader (((ShaderResourcePath + vs).c_str ()), (ShaderResourcePath + fs).c_str ());
-      }
-    }*/
-#pragma endregion
-
-
     // List of Vertex Shaders, Fragment Shaders, Shader Programs
     std::ifstream vsList (ShaderResourcePath + "VertexShaders.txt");
     std::ifstream fsList (ShaderResourcePath + "FragmentShaders.txt");
+    std::ifstream gsList (ShaderResourcePath + "GeometryShaders.txt");
     std::ifstream comp (ShaderResourcePath + "Shaders.txt");
 
     if (!(vsList.good () || fsList.good () || comp.good ()))
@@ -138,6 +111,10 @@ namespace Framework
       if (!fsList.good ())
       {
         std::cout << "Failed to load Shader File..." << "FragmentShaders.txt\n";
+      }
+      if (!gsList.good ())
+      {
+        std::cout << "Failed to load Shader File..." << "GeometryShaders.txt\n";
       }
       if (!comp.good ())
       {
@@ -151,6 +128,7 @@ namespace Framework
       Shader* s = new Shader ();
       std::unordered_map <std::string, GLuint> vSource;
       std::unordered_map <std::string, GLuint> fSource;
+      std::unordered_map <std::string, GLuint> gSource;
 
       while (!vsList.eof())
       {
@@ -166,27 +144,33 @@ namespace Framework
         fSource [data] = s->Create_Shader (s->Read_Shader ((ShaderResourcePath + data).c_str ()), GL_FRAGMENT_SHADER);
       }
 
+      while (!gsList.eof ())
+      {
+        // Compile All Geometry Shaders
+        gsList >> data;
+        gSource [data] = s->Create_Shader (s->Read_Shader ((ShaderResourcePath + data).c_str ()), GL_GEOMETRY_SHADER);
+      }
+
       while (!comp.eof())
       {
-        unsigned vPos, fPos;
-        std::string vs;
-        std::string fs;
-        std::string name;
-        comp >> data;
-        vPos = data.find ("-");
-        fPos = data.find (">");
-        vs = data.substr (0, vPos);
-        
-        for (unsigned i = vPos + 1; i < fPos; ++i)
+        std::string vs, fs, gs, name;
+        comp >> name; name = "";
+        comp >> vs;
+        comp >> fs;
+        comp >> gs;
+        comp >> name;
+        if (gs == "0")
         {
-          fs += data [i];
+          // Link The Corresponding Vertex And Fragment Shaders in the Shader Program Document
+          shaders [name] = new Shader ();
+          shaders [name]->shaderProgram = shaders [name]->Create_Program (vSource [vs], fSource [fs]);
         }
-
-        name = data.substr (fPos + 1, data.size () - 1);
-
-        // Link The Corresponding Vertex And Fragment Shaders in the Shader Program Document
-        shaders [name] = new Shader ();
-        shaders [name]->shaderProgram = shaders [name]->Create_Program (vSource[vs], fSource[fs]);
+        else
+        {
+          // Link The Corresponding Vertex And Fragment Shaders in the Shader Program Document
+          shaders [name] = new Shader ();
+          shaders [name]->shaderProgram = shaders [name]->Create_Program (vSource [vs], fSource [fs], gSource[gs]);
+        }
       }
 
       // Free memory

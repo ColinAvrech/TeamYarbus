@@ -1,10 +1,10 @@
-#version 330
-
-uniform sampler2D tex;
+#version 430
 
 in vec4 outColor;
 
 out vec4 vFragColor;
+
+uniform sampler2D tex;
 
 void main()
 {

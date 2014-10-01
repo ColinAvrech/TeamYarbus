@@ -313,15 +313,11 @@ namespace Framework
     switch (state)
     {
     case Framework::DRAW_DP:
-      sprite1.Get_Shader ()->Use ();
       sprite1.Draw ();
-      sprite1.Get_Shader ()->Disable ();
       break;
 
     case Framework::DRAW_TEAM:
-      sprite.Get_Shader ()->Use ();
       sprite.Draw ();
-      sprite.Get_Shader ()->Disable ();
       break;
 
     case Framework::LOAD_NEXT:

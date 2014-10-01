@@ -99,6 +99,8 @@ namespace Framework
     GLuint program = glCreateProgram ();
     glAttachShader (program, _vertexShader);
     glAttachShader (program, _fragmentShader);
+    if (_geometryShader != 0)
+      glAttachShader (program, _geometryShader);
     //glBindFragDataLocation (shaderProgram, 0, "outColor");
     glLinkProgram (program);
 

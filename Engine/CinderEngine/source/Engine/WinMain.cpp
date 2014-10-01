@@ -37,9 +37,9 @@ const int ClientHeight = 768;
 
 void TestLogicUpdate(GameObject* obj, UpdateEvent* _event)
 {
-  std::cout << Console::red << "I am UpdateEvent!" << std::endl;
-  std::cout << Console::blue << "dt:" << _event->Dt << std::endl;
-  std::cout << Console::green << "TimePassed:" << _event->TimePassed << std::endl;
+  //std::cout << Console::red << "I am UpdateEvent!" << std::endl;
+  //std::cout << Console::blue << "dt:" << _event->Dt << std::endl;
+  //std::cout << Console::green << "TimePassed:" << _event->TimePassed << std::endl;
 }
 
 int main(void)
