@@ -36,6 +36,8 @@ namespace Framework
 				return velocity;
 			};
 
+			const static std::string Name;
+
 		private:
 			// Private data
 			struct MaterialProperties
@@ -77,8 +79,8 @@ namespace Framework
 
 		private:
 			// Private data
-			bool DetectCircle(Circle c);
-			bool DetectLine(LineSegment l);
+			void DetectCircle(Circle c);
+			void DetectLine(LineSegment l);
 
 			// Private member functions
 			/*Vec2 ResolvePointvsCircle(Circle c);
@@ -120,8 +122,8 @@ namespace Framework
 			float p1dotNormal;
 
 			// Private member functions
-			bool DetectCircle(Circle c);  //if player is a circle
-			bool DetectPoint(Point p);	  //if player is a point
+			void DetectCircle(Circle c);  //if player is a circle
+			void DetectPoint(Point p);	  //if player is a point
 			/*Vec2 ResolveLinevsCircle(Circle c);
 			Vec2 ResolveLinevsPoint(Point p);*/
 		};
@@ -156,9 +158,9 @@ namespace Framework
 			float radius;
 
 			// Private member functions
-			bool DetectCircle(Circle c);
-			bool DetectPoint(Vec2 p);
-			bool DetectLine(LineSegment l);
+			void DetectCircle(Circle c);
+			void DetectPoint(Point p);
+			void DetectLine(LineSegment l);
 			/*
 			Vec2 ResolveCirclevsCircle(Circle c);
 			Vec2 ResolveCirclevsPoint(Point p);

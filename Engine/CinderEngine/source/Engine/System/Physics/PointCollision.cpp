@@ -1,22 +1,41 @@
 #include "ColliderShape.h"
 #include "Collision.h"
+#include "CollisionEvent.h"
+#include "EventSystem.h"
+#include "ObjectSystem.h"
 
 namespace Framework
 {
 	namespace Physics
 	{
-		bool Point::DetectCircle(Circle c)
+		void Point::DetectCircle(Circle c)
 		{
 			Vec2 ppos = getPosition();
 			Vec2 cpos = c.getPosition();
 			float rad = c.GetRadius();
-			return CirclevsPoint(rad, cpos, ppos);
+			if (CirclevsPoint(rad, cpos, ppos))
+			{
+				std::string ColEvent = std::string("COLLISION");
+				CollisionEvent* collision = (CollisionEvent*)EVENTSYSTEM->GetEvent(ColEvent);
+				collision->OtherObject = c.Base;
+				collision->normal = cpos - ppos;
+				collision->normal.normalize();
+				collision->DispatchEvent();
+			}
 		}
 
-		bool Point::DetectLine(LineSegment l)
+		void Point::DetectLine(LineSegment l)
 		{
 			Vec2 pos = getPosition();
-			return PointvsLine(pos, l);
+			if (PointvsLine(pos, l))
+			{
+				std::string ColEvent = std::string("COLLISION");
+				CollisionEvent* collision = (CollisionEvent*)EVENTSYSTEM->GetEvent(ColEvent);
+				collision->OtherObject = l.Base;
+				collision->normal = l.GetNormal();
+				collision->normal.normalize();
+				collision->DispatchEvent();
+			}
 		}
 	}
 }

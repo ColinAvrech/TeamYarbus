@@ -25,6 +25,10 @@ starts the game loop.
 #include "Physics/Thermodynamics.h"
 #include "ResourceManager.h"
 
+//testing includes
+#include "ComponentInclude.h"
+#include "RigidBody.h"
+#include "ColliderShape.h"
 
 
 #define _DEGUB
@@ -91,6 +95,15 @@ int main(void)
   std::cout << "Connecting_To_Event_Called:" << ColEvent << std::endl;
   EVENTSYSTEM->Connect(myobj, ColEvent, BaseEvent::BaseCall(TestEventTest));
   */
+
+  /*
+  GameObject* myobj = new GameObject(1666);
+  myobj->AddComponent(Transform::Name)->Initalize();
+  static_cast<Transform*>(myobj->GetComponent("Transform"))->setPos(0, 0, 0);
+  myobj->AddComponent(Physics::RigidBody::Name);
+  myobj->AddComponent(Physics::Circle::Name);
+  */
+ 
 
   //! Run the game! NOW!
   engine->GameLoop();

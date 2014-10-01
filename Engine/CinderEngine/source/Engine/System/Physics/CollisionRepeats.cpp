@@ -6,13 +6,12 @@ namespace Framework
 {
 	namespace Physics
 	{
-
 		bool CirclevsLine(float rad, const Vec2& pos, LineSegment& l)
 		{
 			//Make sure buildlinesegment (private memb fuct) composes the right normals
 			float ldotProduct = l.GetP1DotNormal();
 			Vec2 normVec = l.GetNormal();
-			//normalize normal
+			normVec.normalize();
 			float dist = ldotProduct - DotProduct(normVec, pos);
 
 			return rad >= dist;
