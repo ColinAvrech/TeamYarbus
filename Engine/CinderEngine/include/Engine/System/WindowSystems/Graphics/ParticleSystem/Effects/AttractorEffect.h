@@ -28,6 +28,8 @@ namespace Framework
     std::shared_ptr<BasicColorGen> m_colGenerator;
     std::shared_ptr<AttractorUpdater> m_attractors;
     float m_zScale;
+    Texture* texture;
+    Shader* shader;
   public:
     AttractorEffect () { }
     ~AttractorEffect () { }

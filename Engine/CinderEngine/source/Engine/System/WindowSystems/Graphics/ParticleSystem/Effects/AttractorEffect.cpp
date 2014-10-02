@@ -17,7 +17,8 @@ namespace Framework
 {
   bool AttractorEffect::initialize (size_t numParticles)
   {
-
+    texture = Resources::RS->Get_Texture ("Particle1.png");
+    shader = Resources::RS->Get_Shader ("Particle");
     // CREATE PARTICLE SYSTEM
     const size_t NUM_PARTICLES = numParticles == 0 ? 25000 : numParticles;
     m_system = std::make_shared<ParticleSystem> (NUM_PARTICLES);
@@ -197,8 +198,8 @@ namespace Framework
   void AttractorEffect::render ()
   {
     glEnable (GL_TEXTURE_2D);
-    glBindTexture (GL_TEXTURE_2D, Resources::RS->Get_Texture("Particle1.png")->Get_ID());
-    Resources::RS->Get_Shader ("Particle")->uni1f ("size", 2.0f);
+    glBindTexture (GL_TEXTURE_2D, texture->Get_ID());
+    shader->uni1f ("size", 2.0f);
     m_renderer->render ();
   }
 }
