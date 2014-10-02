@@ -78,6 +78,7 @@ namespace Framework
     EventMap::iterator eventToGet = RegisteredEvents.find(eventname);
     if (eventToGet == RegisteredEvents.end())
     {return nullptr;}
+    eventToGet->second->Dt = _dt;
     return eventToGet->second;
   }
 
