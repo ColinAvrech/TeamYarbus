@@ -22,7 +22,7 @@ namespace Framework
     //
     // particles
     //
-    const size_t NUM_PARTICLES = numParticles == 0 ? 10000 : numParticles;
+    const size_t NUM_PARTICLES = numParticles == 0 ? 12000 : numParticles;
     m_system = std::make_shared<ParticleSystem> (NUM_PARTICLES);
 
     //
