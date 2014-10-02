@@ -18,7 +18,9 @@ namespace Framework
 
   class UpdateEvent : public BaseEvent
   {
+
   public:
+
     typedef void(*UpdateCall)(GameObject*, UpdateEvent*);
 
     UpdateEvent(const std::string eventname)

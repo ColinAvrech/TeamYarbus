@@ -41,3 +41,5 @@ from externals, and stable elements within the engine.
 #include "DebugCode.h"
 #include "Helpers.h"
 
+#include "Zilch.hpp"
+
