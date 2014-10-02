@@ -40,14 +40,14 @@ namespace Framework
     //!Gameloop
     while (GameActive)
     {
-      //!FPS limiter, FPS define can be found in Core.h
-      FrameLimiter();
       //! Marks the begining of a frame
       StartGameLoop_dt();
       
       for (unsigned i = 0; i < Systems.size(); ++i)
         Systems[i]->Update(_dt);
-      
+
+      //!FPS limiter, FPS define can be found in Core.h
+      FrameLimiter();
       //! marks the end of a frame and calculates the dt, average dt
       EndGameLoop_dt();
     }
