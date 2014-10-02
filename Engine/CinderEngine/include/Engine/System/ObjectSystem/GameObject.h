@@ -52,10 +52,10 @@ namespace Framework
 
     Component* AddComponent(std::string name)
     {
-      ErrorIf(Components.find(name) == Components.end(), "COMPONENT CREATED TWICE ON SAME OBJECT");
-      Component* gc = OBJECTSYSTEM->SerialMap[name]->Create();
-      Components[name] = gc;
-      return gc;
+      //ErrorIf(Components.find(name) == Components.end(), "COMPONENT CREATED TWICE ON SAME OBJECT");
+      //Component* gc = OBJECTSYSTEM->SerialMap[name]->Create();
+      //Components[name] = gc;
+      //return gc;
     }
 
     Component* GetComponent(std::string component)
