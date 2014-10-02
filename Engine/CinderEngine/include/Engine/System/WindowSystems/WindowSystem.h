@@ -11,10 +11,17 @@
 #include "BaseSystem.h"
 #include "GraphicsCommon.h"
 #include "glfw3.h"
+#include "KeyEvent.h"
 
 
 namespace Framework
 {
+
+  namespace WindowNameSpace
+  {
+    void SetupKeyEvent(KeyEvent* triggered_key_event, int key, int scanCode, int state, int mod);
+    void TriggerKeyEvent(const std::string eventname, int key, int scanCode, int state, int mod);
+  }
 
   class WindowSystem : public BaseSystem
   {
@@ -29,9 +36,10 @@ namespace Framework
     void WindowsUpdate(const double dt);
     void GraphicsUpdate(const double dt);
 
-    void  GLFWMessageHandler(GLFWwindow* window, int key, int scanCode, int state, int mod);
+    void GLFWMessageHandler(GLFWwindow* window, int key, int scanCode, int state, int mod);
     void GLFWMouseButtonFunction(GLFWwindow *, int button, int action, int mod);
     void GLFWMouseCursorMoved (GLFWwindow* window, double xPos, double yPos);
+
 
     void Resize (GLFWwindow* window, int w, int h);
 
@@ -45,6 +53,7 @@ namespace Framework
 
   private:
     GLFWwindow* window;
+
 
     unsigned WindowHeight;
     unsigned WindowWidth;

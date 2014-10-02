@@ -14,7 +14,7 @@ deleted.
 
 namespace Framework
 {
-  //!Set the factory to null to indicate is hasn't been created yet
+  //!Null untill the ObjectSystem has been created
   ObjectSystem * OBJECTSYSTEM = NULL;
   //!Set first object's id to zero
   unsigned ObjectSystem::LastGameObjectId = 0;
@@ -53,7 +53,7 @@ namespace Framework
   void ObjectSystem::RegisterComponents(void)
   {
     RegisterComponent(Transform);
-    //RegisterComponent(Sprite);
+    RegisterComponent(Sprite);
   }
 
   void ObjectSystem::AddComponentCreator(std::string name, ComponentCreator* creator)
