@@ -33,24 +33,24 @@ namespace Framework
   Transition transition;
   //namespace Splash_Screen
   //{
-  Camera camera(true);
-  Transform light;
-  Sprite sprite;
-  Sprite sprite1;
-  float camScrollSpeed = 0.05f;
-  const float minLight = 200.0f;
-  float shininess = minLight;
-  const float maxLight = 3.0f;
-  bool isPressed = false;
-  bool drawTeamLogo = false;
-  VAO* vao;
-  VBO* vbo;
-  EBO* ebo;
-  glm::vec2 texoffset (0.0f, 0.0f);
-  const int samples = 4;
-  bool fadeOut;
+  static Camera camera(true);
+  static Transform light;
+  static Sprite sprite;
+  static Sprite sprite1;
+  static float camScrollSpeed = 0.05f;
+  static const float minLight = 200.0f;
+  static float shininess = minLight;
+  static const float maxLight = 3.0f;
+  static bool isPressed = false;
+  static bool drawTeamLogo = false;
+  static VAO* vao;
+  static VBO* vbo;
+  static EBO* ebo;
+  static glm::vec2 texoffset (0.0f, 0.0f);
+  static const int samples = 4;
+  static bool fadeOut;
   static int frames;
-  const float rate = 1.f;
+  static const float rate = 1.f;
 
   // Constructor
   Scene_SplashScreens::Scene_SplashScreens ()
