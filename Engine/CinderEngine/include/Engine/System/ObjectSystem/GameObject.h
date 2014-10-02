@@ -29,6 +29,8 @@ factory in the next loop.
 
 #pragma once
 
+
+#include "ObjectSystem.h"
 #include "Component.h"
 #include <map>
 #include "Vec2.h"
@@ -48,12 +50,10 @@ namespace Framework
       Parent = NULL;
     }
 
-
-
     Component* AddComponent(std::string name)
     {
       //ErrorIf(Components.find(name) == Components.end(), "COMPONENT CREATED TWICE ON SAME OBJECT");
-      //Component* gc = OBJECTSYSTEM->SerialMap[name]->Create(this);
+      //Component* gc = OBJECTSYSTEM->SerialMap[name]->Create();
       //Components[name] = gc;
       //return gc;
     }
@@ -69,9 +69,9 @@ namespace Framework
       {
         return it->second;
       }
-      
       return NULL;
     }
+
     /*
     GameObject* CreateChildObject()
     {
