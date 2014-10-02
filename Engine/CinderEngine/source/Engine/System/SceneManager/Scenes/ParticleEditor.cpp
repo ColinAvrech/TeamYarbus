@@ -21,6 +21,8 @@
 #include "WindowSystem.h"
 #include "EditorUI.h"
 #include "EventSystem.h"
+#include "BaseEvent.h"
+#include "KeyEvent.h"
 
 
 
@@ -85,7 +87,6 @@ namespace Framework
 
   void ParticleEditor::Key_Pressed(int key, int scanCode, int action, int mods)
   {
-
     switch (key)
     {
     case GLFW_KEY_0:
@@ -98,11 +99,22 @@ namespace Framework
       gSelectedEffect = 2;
       break;
     case GLFW_KEY_W:
-      camera.Zoom (1.0f);
+      Camera::main->worldToView = glm::translate (Camera::main->worldToView, glm::vec3 (0, -0.01f, 0));
+      break;
+    case GLFW_KEY_S:
+      Camera::main->worldToView = glm::translate (Camera::main->worldToView, glm::vec3 (0, 0.01f, 0));
+      break;
+    case GLFW_KEY_D:
+      Camera::main->worldToView = glm::translate (Camera::main->worldToView, glm::vec3 (-0.01f, 0, 0));
       break;
     default:
       break;
     }
+  }
+
+  void OnKeyPressed (GameObject* go, KeyEvent* key)
+  {
+    Camera::main->worldToView = glm::translate (Camera::main->worldToView, glm::vec3 (0.01f, 0, 0));
   }
 
 
@@ -120,6 +132,8 @@ namespace Framework
 
   void ParticleEditor::Load_Scene (const char* filename)
   {
+    EVENTSYSTEM->Connect (NULL, Events::KEY_a, BaseEvent::BaseCall(OnKeyPressed));
+
     //TwInit (TW_OPENGL, NULL);
     // or
 #ifdef _USE_ANTWEAK
@@ -328,9 +342,6 @@ namespace Framework
     // camera
     //
     //camera_.modelviewMatrix = glm::lookAt (Camera::main->viewDirection * camera_.camDistance, glm::vec3 (0.0f, 0.0f, 0.0f), glm::vec3 (0.0f, 1.0f, 0.0f));
-
-    glEnable (GL_TEXTURE_2D);
-    glBindTexture (GL_TEXTURE_2D, gParticleTexture);
 
     glEnable (GL_POINT_SPRITE);
     glEnable (GL_PROGRAM_POINT_SIZE);

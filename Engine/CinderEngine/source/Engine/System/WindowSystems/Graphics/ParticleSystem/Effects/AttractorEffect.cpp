@@ -8,9 +8,10 @@
 */
 /******************************************************************************/
 
+#include "glew.h"
 #include "EditorUI.h"
 #include "AttractorEffect.h"
-
+#include "ResourceManager.h"
 
 namespace Framework
 {
@@ -195,6 +196,9 @@ namespace Framework
 
   void AttractorEffect::render ()
   {
+    glEnable (GL_TEXTURE_2D);
+    glBindTexture (GL_TEXTURE_2D, Resources::RS->Get_Texture("Particle1.png")->Get_ID());
+    Resources::RS->Get_Shader ("Particle")->uni1f ("size", 2.0f);
     m_renderer->render ();
   }
 }

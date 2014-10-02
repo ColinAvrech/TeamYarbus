@@ -8,8 +8,10 @@
 */
 /******************************************************************************/
 
+#include "glew.h"
 #include "EditorUI.h"
 #include "FountainEffect.h"
+#include "ResourceManager.h"
 
 namespace Framework
 {
@@ -123,6 +125,10 @@ namespace Framework
 
   void FountainEffect::render ()
   {
+    glEnable (GL_TEXTURE_2D);
+    glBindTexture (GL_TEXTURE_2D, Resources::RS->Get_Texture ("Fire1.png")->Get_ID ());
+    Resources::RS->Get_Shader ("Particle")->uni1f ("size", 15.0f);
+
     m_renderer->render ();
   }
 }
