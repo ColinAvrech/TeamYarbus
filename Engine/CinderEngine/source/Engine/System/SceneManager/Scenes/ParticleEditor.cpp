@@ -132,7 +132,7 @@ namespace Framework
 
   void ParticleEditor::Load_Scene (const char* filename)
   {
-    EVENTSYSTEM->Connect (NULL, Events::KEY_a, BaseEvent::BaseCall(OnKeyPressed));
+    EVENTSYSTEM->Connect (NULL, Events::KEY_ANY, BaseEvent::BaseCall(OnKeyPressed));
 
     //TwInit (TW_OPENGL, NULL);
     // or

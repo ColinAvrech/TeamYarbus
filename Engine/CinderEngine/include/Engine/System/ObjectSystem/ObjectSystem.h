@@ -14,7 +14,6 @@
 #include "Common.h"
 #include "ComponentInclude.h"
 #include "BaseSystem.h"
-#include "GameObject.h"
 #include "ComponentCreator.h"
 
 namespace Framework
