@@ -1,0 +1,32 @@
+/******************************************************************************/
+/*!
+\file   Helpers.h
+\author Micah Rust
+\par    Course: GAM200
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+\brief  This file contains several helper macros for programming
+*/
+/******************************************************************************/
+
+
+//! External Dependencies
+#include <iostream>
+#include <fstream>
+#include <chrono>
+#include <functional>
+#include <thread>
+#include <list>
+#include <vector>
+#include <utility>
+#include <map>
+#include <unordered_map>
+#include <set>
+#include <string>
+#include <algorithm> //! std::sorts
+
+
+//Windows
+#define WIN32_LEAN_AND_MEAN
+#include "Windows.h"
+
+#pragma hdrstop
