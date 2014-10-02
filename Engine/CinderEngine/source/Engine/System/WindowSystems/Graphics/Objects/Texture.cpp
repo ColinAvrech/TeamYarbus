@@ -76,10 +76,16 @@ namespace Framework
   }
 
 
-  void Texture::Bind_Texture (int num /*=0*/)
+  void Texture::Bind (int num /*=0*/)
   {
     glActiveTexture (GL_TEXTURE0 + num);
     glBindTexture (GL_TEXTURE_2D, textureID);
+  }
+
+
+  void Texture::Unbind (int num /*= 0*/)
+  {
+    glBindTexture (GL_TEXTURE_2D, 0);
   }
 
 

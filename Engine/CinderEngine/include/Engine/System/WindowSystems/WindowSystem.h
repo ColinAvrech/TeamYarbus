@@ -37,6 +37,10 @@ namespace Framework
 
     unsigned Get_Width ();
     unsigned Get_Height ();
+    inline GLFWwindow* Get_Window ()
+    {
+      return window;
+    }
     void Set_W_H (unsigned, unsigned);
 
   private:
