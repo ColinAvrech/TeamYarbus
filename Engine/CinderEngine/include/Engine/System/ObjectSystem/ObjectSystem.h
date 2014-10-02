@@ -11,10 +11,19 @@
 
 #pragma once
 
+namespace Framework
+{
+  //forward Declareation for ObjectSystem
+  class ObjectSystem;
+  //!Set the factory to null to indicate is hasn't been created yet
+  extern ObjectSystem * OBJECTSYSTEM;
+}
+
 #include "Common.h"
 #include "ComponentInclude.h"
 #include "BaseSystem.h"
 #include "ComponentCreator.h"
+#include "GameObject.h"
 
 namespace Framework
 {
@@ -24,6 +33,10 @@ namespace Framework
   it also provides an integer based Id system for safe referencing of game objects
   through integer Id Handles.
   */
+
+  //!Set the factory to null to indicate is hasn't been created yet
+  extern ObjectSystem * OBJECTSYSTEM;
+
   class ObjectSystem : public BaseSystem
   {
   public:
@@ -70,6 +83,4 @@ namespace Framework
     ObjectsToBeDestroyed GameObjectsToBeDestroyed;
   };
 
-  //!Set the factory to null to indicate is hasn't been created yet
-  extern ObjectSystem * OBJECTSYSTEM;
 }

@@ -22,7 +22,6 @@ access each aplicable component when running their update function.
 -R.I.P. : Composition is about to die and will be deleted by the
 factory in the next loop.
 
-
 */
 /******************************************************************************/
 
@@ -41,45 +40,14 @@ namespace Framework
 
   class GameObject
   {
- 
+
   public:
     //! Called by Factory
-    GameObject(unsigned gameObjectID)
-      :GameObjectID(gameObjectID)
-    {
-      Parent = NULL;
-    }
+    GameObject(unsigned gameObjectID);
 
-    Component* AddComponent(std::string name)
-    {
-      //ErrorIf(Components.find(name) == Components.end(), "COMPONENT CREATED TWICE ON SAME OBJECT");
-      //Component* gc = OBJECTSYSTEM->SerialMap[name]->Create();
-      //Components[name] = gc;
-      //return gc;
-    }
+    Component* AddComponent(std::string name);
 
-    Component* GetComponent(std::string component)
-    {
-      ComponentMap::iterator it = Components.find(component);
-      if (it == Components.end())
-      {
-        return NULL;
-      }
-      else
-      {
-        return it->second;
-      }
-      return NULL;
-    }
-
-    /*
-    GameObject* CreateChildObject()
-    {
-      GameObject* go = new GameObject(OBJECTSYSTEM->LastGameObjectId, this);
-      ++OBJECTSYSTEM->LastGameObjectId;
-      ChildObjects.push_back(go);
-      return go;
-    }*/
+    Component* GetComponent(std::string component);
 
     //Public Variables
     GameObject* Parent;
