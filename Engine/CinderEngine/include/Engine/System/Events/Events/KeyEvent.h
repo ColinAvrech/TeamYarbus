@@ -35,8 +35,17 @@ namespace Framework
       }
     }
 
-    double TimePassed;
+    //Key value as dictated by GLFW
+    int KeyValue;
+
+
+    // Set the Key's State
     bool KeyDown;
-    unsigned KeyValue;
+    bool KeyRepeat;
+
+    // Active Key Modifiers
+    bool CTRLPressed;
+    bool ALTPressed;
+    bool SHIFTPressed;
   };
 }

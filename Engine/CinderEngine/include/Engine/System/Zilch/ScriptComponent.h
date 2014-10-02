@@ -53,7 +53,7 @@ namespace Framework
       //Zilch class name
       Zilch::StringParam ZilchClass;
       //Zilch class (Zilch::BoundType*)
-      Zilch::BoundType* This;
+      Zilch::BoundType* Script;
       //Zilch library for this component
       Zilch::LibraryRef* library;
       //Zilch functions (Zilch::Function*)

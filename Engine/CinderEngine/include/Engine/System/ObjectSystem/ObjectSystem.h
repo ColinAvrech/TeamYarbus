@@ -12,7 +12,6 @@
 #pragma once
 
 #include "Common.h"
-#include "GameObject.h"
 #include "ComponentInclude.h"
 #include "BaseSystem.h"
 #include "GameObject.h"
@@ -56,17 +55,17 @@ namespace Framework
     /*!Used to generator unique GOCIds*/
     static unsigned LastGameObjectId;
 
-  private:
 
-    void RegisterComponents(void);
-    void AddComponentCreator(std::string name, ComponentCreator* creator);
-
+    typedef std::unordered_map<std::string, ComponentCreator *> SerializationMap;
+    SerializationMap SerialMap;
 
     typedef std::map<unsigned, GameObject*> GameObjectMap;
     GameObjectMap GameObjects;
 
-    typedef std::map<std::string, ComponentCreator *> SerializationMap;
-    SerializationMap SerialMap;
+  private:
+
+    void RegisterComponents(void);
+    void AddComponentCreator(std::string name, ComponentCreator* creator);
 
     typedef std::vector<GameObject *> ObjectsToBeDestroyed;
     ObjectsToBeDestroyed GameObjectsToBeDestroyed;
