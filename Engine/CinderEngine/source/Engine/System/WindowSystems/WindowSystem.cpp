@@ -92,6 +92,9 @@ namespace Framework
 
     void  GLFWMessageHandler (GLFWwindow* window, int key, int scanCode, int state, int mod)
     {
+      //A Key has been pressed
+      TriggerKeyEvent(Events::KEY_ANY, key, scanCode, state, mod);
+
       switch (key)
       {
         //Numbers

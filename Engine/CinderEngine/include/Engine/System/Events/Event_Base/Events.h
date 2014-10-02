@@ -104,7 +104,10 @@ namespace Framework
   DeclareEvent(KEY_X)
   DeclareEvent(KEY_Y)
   DeclareEvent(KEY_Z)
-  
+
+  // Called if any key is pressed
+  DeclareEvent(KEY_ANY)
+
   /*********************************************/
   // Misc Events Created by Systems always
   /*********************************************/
