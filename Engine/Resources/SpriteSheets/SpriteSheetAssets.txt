@@ -5,7 +5,7 @@ Logo.png
 4
 >
 <
-Logo.jpg
+HighResLogo.jpg
 2
 4
 4

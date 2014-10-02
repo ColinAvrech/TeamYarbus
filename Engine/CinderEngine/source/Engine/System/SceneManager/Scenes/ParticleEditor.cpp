@@ -98,6 +98,9 @@ namespace Framework
     case GLFW_KEY_2:
       gSelectedEffect = 2;
       break;
+    case GLFW_KEY_3:
+      gSelectedEffect = 3;
+      break;
     case GLFW_KEY_W:
       Camera::main->worldToView = glm::translate (Camera::main->worldToView, glm::vec3 (0, -0.01f, 0));
       break;
