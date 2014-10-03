@@ -44,8 +44,9 @@ namespace Framework
       {
         dataFile.close();
       }
-
-      dataFile.open(filepath);
+      std::string path("..//..//Resources//Levels//");
+      path.append(filepath);
+      dataFile.open(path);
 
       ErrorIf(dataFile.is_open() == false, "Could not open Level File");
 

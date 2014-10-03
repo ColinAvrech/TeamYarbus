@@ -64,7 +64,7 @@ int main(void)
   //Test parser
   Serializer::ZeroSerializer testarchive;
 
-  testarchive.open("..//..//Resources//Levels//Level.data");
+  testarchive.open("Level.data");
 
   testarchive.CreateArchive();
 
