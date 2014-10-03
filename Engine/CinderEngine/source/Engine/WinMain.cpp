@@ -64,11 +64,11 @@ int main(void)
   //Test parser
   Serializer::ZeroSerializer testarchive;
 
-  //testarchive.open("Level.data");
+  testarchive.open("..//..//Resources//Levels//Level.data");
 
-  //testarchive.CreateArchive();
+  testarchive.CreateArchive();
 
-  //testarchive.DumpArchive(testarchive.GetTrunk());
+  testarchive.DumpArchive(testarchive.GetTrunk());
 
   /*! Initialize the game engine*/
   
@@ -101,8 +101,10 @@ int main(void)
   //! Initialize all added Systems. DON'T INIT YOUR OWN
   engine->Initialize();
 
-  //! activate the window. 
+  //! activate the window.
+  //resourceManager.Get_Sound("music2.mp3")->LowPassFilter(60, 10);
 
+  
   //! Run the game! NOW!
   engine->GameLoop();
 
