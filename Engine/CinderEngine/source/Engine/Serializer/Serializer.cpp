@@ -44,18 +44,20 @@ namespace Framework
       {
         dataFile.close();
       }
+
       dataFile.open(filepath);
-      //if (dataFile)
-      //{
-        std::string dummy;
-        //Skip first 2 lines
-        std::getline(dataFile, dummy);
-        std::getline(dataFile, dummy);
-        ++inObject;
-        trunk = AddNode(trunk, TYPE_OBJECT, "Level", 0);
-        CurrentNode = CurrentStem = trunk;
-        return true;
-      //}
+
+      ErrorIf(dataFile.is_open() == false, "Could not open Level File");
+
+      //Skip first 2 lines
+      std::string dummy;
+      std::getline(dataFile, dummy);
+      std::getline(dataFile, dummy);
+      ++inObject;
+      trunk = AddNode(trunk, TYPE_OBJECT, "Level", 0);
+      CurrentNode = CurrentStem = trunk;
+      return true;
+      
       return false;
     } //function open
 

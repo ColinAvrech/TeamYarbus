@@ -72,10 +72,13 @@ namespace Framework
     typedef std::unordered_map<std::string, ComponentCreator *> SerializationMap;
     SerializationMap SerialMap;
 
-    typedef std::map<unsigned, GameObject*> GameObjectMap;
+    typedef std::unordered_map<unsigned, GameObject*> GameObjectMap;
     GameObjectMap GameObjects;
 
   private:
+
+    void ObjectSystem::SerializeObject(Serializer::DataNode* data);
+    void ObjectSystem::SerializeComponent(std::string ComponentName, Serializer::DataNode* data);
 
     void RegisterComponents(void);
     void AddComponentCreator(std::string name, ComponentCreator* creator);

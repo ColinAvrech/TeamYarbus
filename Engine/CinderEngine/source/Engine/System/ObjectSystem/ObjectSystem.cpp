@@ -88,7 +88,30 @@ namespace Framework
 
     data.open(level.c_str());
     data.CreateArchive();
+    Serializer::DataNode* Trunk = data.GetTrunk();
+  
+
   }
 
+  //Private function to create and serilize an object
+  void ObjectSystem::SerializeObject(Serializer::DataNode* data)
+  {
+    GameObject* go = new GameObject(data->branch->value_.UInt_);
+    go->Name = data->objectName;
+    GameObjects[go->GameObjectID] = go;
+
+    //Create and Serilize Objects
+    while (data->branch != NULL)
+    {
+
+    }
+  }
+
+  //Private function to create and serilize a component
+  void ObjectSystem::SerializeComponent(std::string ComponentName, Serializer::DataNode* data)
+  {
+
+
+  }
 
 }

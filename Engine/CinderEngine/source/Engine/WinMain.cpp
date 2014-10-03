@@ -64,7 +64,7 @@ int main(void)
   //Test parser
   Serializer::ZeroSerializer testarchive;
 
-  testarchive.open("Level.data");
+  testarchive.open("..//..//Resources//Levels//Level.data");
 
   testarchive.CreateArchive();
 
@@ -104,37 +104,7 @@ int main(void)
   //! activate the window.
   //resourceManager.Get_Sound("music2.mp3")->LowPassFilter(60, 10);
 
-  // Test of CollisionEvent
-  /*
-  GameObject * myobj = new GameObject(1666);
-  std::string ColEvent = std::string("COLLISION_1666");
-  std::cout << "Connecting_To_Event_Called:" << ColEvent << std::endl;
-  EVENTSYSTEM->Connect(myobj, ColEvent, BaseEvent::BaseCall(TestEventTest));
-  */
-
   
-  GameObject* myobj = objsys->CreateObject();
-  myobj->Transform = new Transform;
-  static_cast<Transform*>(myobj->Transform)->setPos(0, 0, 0);
-  static_cast<Transform*>(myobj->Transform)->setScale(100, 100, 0);
-  myobj->Collider = new Physics::Circle(myobj);
-
-  GameObject* myobj2 = objsys->CreateObject();
-  myobj2->Transform = new Transform;
-  static_cast<Transform*>(myobj2->Transform)->setPos(10, 0, 0);
-  static_cast<Transform*>(myobj2->Transform)->setScale(100, 100, 0);
-  myobj2->Collider = new Physics::Circle(myobj2);
-
-  static_cast<Physics::Circle*>(myobj->Collider)->DetectCircle(static_cast<Physics::Circle*>(myobj2->Collider));
-  std::cout << "I did naat";
-  ///*Transform* transform =*/ (myobj->AddComponent(Transform::Name))->Initalize();
-  //static_cast<Transform*>(myobj->GetComponent("Transform"))->setPos(0, 0, 0);
-  //static_cast<RigidBody*>(myobj->AddComponent(Physics::RigidBody::Name));
-  //static_cast<Circle*>myobj->AddComponent(Physics::Circle::Name);
-  
- 
-
-
   //! Run the game! NOW!
   engine->GameLoop();
 
