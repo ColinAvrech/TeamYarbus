@@ -10,25 +10,25 @@ namespace Framework
   {
     void Circle::DetectCircle(Circle* c)
     {
-      // not counting offset
-      Vec2 pos;
-      pos.x_ = static_cast<Transform*>(Base->Transform)->position.x;
-      pos.y_ = static_cast<Transform*>(Base->Transform)->position.y;
-      Vec2 cpos;
-      cpos.x_ = static_cast<Transform*>(c->Base->Transform)->position.x;
-      cpos.y_ = static_cast<Transform*>(c->Base->Transform)->position.y;
-      float rad = GetRadius() + c->GetRadius();
-      float dist = Distance(pos, cpos);
-      if (rad >= dist)
-      {
-        //std::string ColEvent = std::string("COLLISION");
-        //CollisionEvent* collision = (CollisionEvent*)EVENTSYSTEM->GetEvent(ColEvent);
-        //collision->OtherObject = c->Base;
-        //collision->normal = pos - cpos;
-        //collision->normal.normalize();
-        //collision->DispatchEvent();
-        std::cout << "COLLISION" << std::endl;
-      }
+      //// not counting offset
+      //Vec2 pos;
+      //pos.x_ = static_cast<Transform*>(Base->Transform)->position.x;
+      //pos.y_ = static_cast<Transform*>(Base->Transform)->position.y;
+      //Vec2 cpos;
+      //cpos.x_ = static_cast<Transform*>(c->Base->Transform)->position.x;
+      //cpos.y_ = static_cast<Transform*>(c->Base->Transform)->position.y;
+      //float rad = GetRadius() + c->GetRadius();
+      //float dist = Distance(pos, cpos);
+      //if (rad >= dist)
+      //{
+      //  //std::string ColEvent = std::string("COLLISION");
+      //  //CollisionEvent* collision = (CollisionEvent*)EVENTSYSTEM->GetEvent(ColEvent);
+      //  //collision->OtherObject = c->Base;
+      //  //collision->normal = pos - cpos;
+      //  //collision->normal.normalize();
+      //  //collision->DispatchEvent();
+      //  std::cout << "COLLISION" << std::endl;
+      //}
     }
 
     //repeat
