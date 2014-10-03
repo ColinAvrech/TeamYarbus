@@ -46,9 +46,12 @@ namespace Framework
       :GameObjectID(gameObjectID)
     {
       Parent = NULL;
+      Transform = NULL;
+      
     }
 
-
+    Component * Transform;
+    Component * Collider;
 
     Component* AddComponent(std::string name)
     {
@@ -56,6 +59,7 @@ namespace Framework
       //Component* gc = OBJECTSYSTEM->SerialMap[name]->Create(this);
       //Components[name] = gc;
       //return gc;
+
     }
 
     Component* GetComponent(std::string component)
