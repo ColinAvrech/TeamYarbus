@@ -18,6 +18,8 @@ namespace Framework
 
   bool ExplosionEffect::initialize (size_t numParticles)
   {
+    texture = Resources::RS->Get_Texture ("Fire1.png");
+    shader = Resources::RS->Get_Shader ("Particle");
     //
     // particles
     //
@@ -116,8 +118,8 @@ namespace Framework
   void ExplosionEffect::render ()
   {
     glEnable (GL_TEXTURE_2D);
-    glBindTexture (GL_TEXTURE_2D, Resources::RS->Get_Texture ("Fire1.png")->Get_ID ());
-    Resources::RS->Get_Shader ("Particle")->uni1f ("size", 15.0f);
+    glBindTexture (GL_TEXTURE_2D, texture->Get_ID());
+    shader->uni1f ("size", 15.0f);
     m_renderer->render ();
   }
 

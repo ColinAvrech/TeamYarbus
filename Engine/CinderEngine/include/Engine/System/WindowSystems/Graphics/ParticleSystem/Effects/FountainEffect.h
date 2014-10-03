@@ -29,6 +29,8 @@ namespace Framework
     std::shared_ptr<BasicColorGen> m_colGenerator;
     std::shared_ptr<EulerUpdater> m_eulerUpdater;
     std::shared_ptr<FloorUpdater> m_floorUpdater;
+    Texture* texture;
+    Shader* shader;
   public:
     FountainEffect () { }
     ~FountainEffect () { }

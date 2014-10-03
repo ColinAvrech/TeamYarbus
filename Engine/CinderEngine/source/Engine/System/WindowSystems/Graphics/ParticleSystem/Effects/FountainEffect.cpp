@@ -17,10 +17,12 @@ namespace Framework
 {
   bool FountainEffect::initialize (size_t numParticles)
   {
+    texture = Resources::RS->Get_Texture ("Fire1.png");
+    shader = Resources::RS->Get_Shader ("Particle");
     //
     // particles
     //
-    const size_t NUM_PARTICLES = numParticles == 0 ? 10000 : numParticles;
+    const size_t NUM_PARTICLES = numParticles == 0 ? 12000 : numParticles;
     m_system = std::make_shared<ParticleSystem> (NUM_PARTICLES);
 
     //
@@ -126,8 +128,8 @@ namespace Framework
   void FountainEffect::render ()
   {
     glEnable (GL_TEXTURE_2D);
-    glBindTexture (GL_TEXTURE_2D, Resources::RS->Get_Texture ("Fire1.png")->Get_ID ());
-    Resources::RS->Get_Shader ("Particle")->uni1f ("size", 15.0f);
+    glBindTexture (GL_TEXTURE_2D, texture->Get_ID ());
+    shader->uni1f ("size", 15.0f);
 
     m_renderer->render ();
   }

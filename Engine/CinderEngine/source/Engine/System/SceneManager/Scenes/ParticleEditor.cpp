@@ -278,8 +278,8 @@ namespace Framework
     cpuBuffersUpdate.end ();
     gpuUpdate.updateResults (GpuTimerQuery::WaitOption::WaitForResults);
 
-    gNumParticles = gCurrentEffect->numAllParticles () * 100;
-    gNumAlive = gCurrentEffect->numAliveParticles () * 100;
+    gNumParticles = gCurrentEffect->numAllParticles ();
+    gNumAlive = gCurrentEffect->numAliveParticles ();
 
     if (song != oldSong)
     {

@@ -26,6 +26,8 @@ namespace Framework
     std::shared_ptr<IParticleRenderer> m_renderer;
     std::shared_ptr<RoundPosGen> m_posGenerator;
     std::shared_ptr<BasicColorGen> m_colGenerator;
+    Texture* texture;
+    Shader* shader;
   public:
     TunnelEffect () { }
     ~TunnelEffect () { }
