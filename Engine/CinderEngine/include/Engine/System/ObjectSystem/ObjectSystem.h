@@ -24,6 +24,7 @@ namespace Framework
 #include "BaseSystem.h"
 #include "ComponentCreator.h"
 #include "GameObject.h"
+#include "JSONSerializer.h"
 
 namespace Framework
 {
@@ -62,7 +63,7 @@ namespace Framework
 
     void DestroyGameObjectsToBeDestroyed();
 
-    void LoadLevel(std::string level);
+    void ObjectSystem::LoadLevel(std::string level);
 
     /*!Used to generator unique GOCIds*/
     static unsigned LastGameObjectId;
