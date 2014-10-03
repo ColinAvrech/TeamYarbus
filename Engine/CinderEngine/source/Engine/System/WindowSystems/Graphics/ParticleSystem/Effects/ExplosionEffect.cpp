@@ -8,14 +8,18 @@
 */
 /******************************************************************************/
 
+#include "glew.h"
 #include "EditorUI.h"
 #include "ExplosionEffect.h"
+#include "ResourceManager.h"
 
 namespace Framework
 {
 
   bool ExplosionEffect::initialize (size_t numParticles)
   {
+    texture = Resources::RS->Get_Texture ("Fire1.png");
+    shader = Resources::RS->Get_Shader ("Particle");
     //
     // particles
     //
@@ -85,22 +89,10 @@ namespace Framework
 
   void ExplosionEffect::addUI (TwBar* tw)
   {
-    Editor::AddTweakColor4f (tw, "start col min", &m_colGenerator->m_minStartCol.x, "group=effect");
-    Editor::AddTweakColor4f (tw, "start col max", &m_colGenerator->m_maxStartCol.x, "group=effect");
-    Editor::AddTweakColor4f (tw, "end col min", &m_colGenerator->m_minEndCol.x, "group=effect");
-    Editor::AddTweakColor4f (tw, "end col max", &m_colGenerator->m_maxEndCol.x, "group=effect");
-    Editor::AddTweak (tw, "gravity", &m_eulerUpdater->m_globalAcceleration.y, "group=effect min=-20 max=0 step=0.05");
-    //Editor::AddTweak (tw, "bounce", &m_floorUpdater->m_bounceFactor, "group=effect min=0 max=1 step=0.05");
   }
 
   void ExplosionEffect::removeUI (TwBar* tw)
   {
-    Editor::RemoveVar (tw, "start col min");
-    Editor::RemoveVar (tw, "start col max");
-    Editor::RemoveVar (tw, "end col min");
-    Editor::RemoveVar (tw, "end col max");
-    Editor::RemoveVar (tw, "gravity");
-    Editor::RemoveVar (tw, "bounce");
   }
 
   void ExplosionEffect::update (double dt)
@@ -125,6 +117,9 @@ namespace Framework
 
   void ExplosionEffect::render ()
   {
+    glEnable (GL_TEXTURE_2D);
+    glBindTexture (GL_TEXTURE_2D, texture->Get_ID());
+    shader->uni1f ("size", 15.0f);
     m_renderer->render ();
   }
 

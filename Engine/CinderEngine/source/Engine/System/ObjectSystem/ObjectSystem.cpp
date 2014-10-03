@@ -14,7 +14,7 @@ deleted.
 
 namespace Framework
 {
-  //!Set the factory to null to indicate is hasn't been created yet
+  //!Null untill the ObjectSystem has been created
   ObjectSystem * OBJECTSYSTEM = NULL;
   //!Set first object's id to zero
   unsigned ObjectSystem::LastGameObjectId = 0;
@@ -53,7 +53,7 @@ namespace Framework
   void ObjectSystem::RegisterComponents(void)
   {
     RegisterComponent(Transform);
-    //RegisterComponent(Sprite);
+    RegisterComponent(Sprite);
   }
 
   void ObjectSystem::AddComponentCreator(std::string name, ComponentCreator* creator)
@@ -80,29 +80,15 @@ namespace Framework
 
   }
 
-  /*
   void ObjectSystem::LoadLevel(std::string level)
   {
-  std::string levelpath(LevelAssetsPath);
-  levelpath.append(level);
+    DestroyAllObjects();
 
-  std::ifstream levelfile;
-  levelfile.open(levelpath.c_str());
+    Serializer::ZeroSerializer data;
 
-  ErrorIf(!levelfile.is_open(), "Could Not Open Levelfile");
-
-  std::cout << "Loading Level: " << Console::magenta << levelpath << Console::gray << " Please Wait" << std::endl;
-
-  while (!levelfile.eof())
-  {
-  //ReadLine(levelfile.getline);
+    data.open(level.c_str());
+    data.CreateArchive();
   }
 
-  levelfile.close();
-  }
-  std::string ObjectSystem::ReadLine(std::string line)
-  {
-  return NULL;
-  }
-  */
+
 }

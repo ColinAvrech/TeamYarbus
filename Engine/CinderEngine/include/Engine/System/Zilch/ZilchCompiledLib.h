@@ -17,7 +17,6 @@
 #include "Common.h"
 #include "Zilch.hpp"
 #include "BaseSystem.h"
-#include "ZilchCompiledLib.h"
 #include <unordered_map>
 
 namespace Framework

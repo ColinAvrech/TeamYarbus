@@ -8,7 +8,6 @@
 ///////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include "GameObject.h"
 #include "Common.h"
 
 namespace Framework
@@ -52,4 +51,4 @@ namespace Framework
 };
 
 //Register component macro
-#define RegisterComponent(type) OBJECTSYSTEM->AddComponentCreator( #type, new ComponentCreatorType<type>("type") );
+#define RegisterComponent(type) AddComponentCreator( #type, new ComponentCreatorType<type>(#type) );

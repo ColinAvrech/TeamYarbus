@@ -11,12 +11,20 @@
 
 #pragma once
 
+namespace Framework
+{
+  //forward Declareation for ObjectSystem
+  class ObjectSystem;
+  //!Set the factory to null to indicate is hasn't been created yet
+  extern ObjectSystem * OBJECTSYSTEM;
+}
+
 #include "Common.h"
-#include "GameObject.h"
 #include "ComponentInclude.h"
 #include "BaseSystem.h"
-#include "GameObject.h"
 #include "ComponentCreator.h"
+#include "GameObject.h"
+#include "JSONSerializer.h"
 
 namespace Framework
 {
@@ -26,6 +34,10 @@ namespace Framework
   it also provides an integer based Id system for safe referencing of game objects
   through integer Id Handles.
   */
+
+  //!Set the factory to null to indicate is hasn't been created yet
+  extern ObjectSystem * OBJECTSYSTEM;
+
   class ObjectSystem : public BaseSystem
   {
   public:
@@ -51,27 +63,25 @@ namespace Framework
 
     void DestroyGameObjectsToBeDestroyed();
 
-    void LoadLevel(std::string level);
+    void ObjectSystem::LoadLevel(std::string level);
 
     /*!Used to generator unique GOCIds*/
     static unsigned LastGameObjectId;
+
+
+    typedef std::unordered_map<std::string, ComponentCreator *> SerializationMap;
+    SerializationMap SerialMap;
+
+    typedef std::map<unsigned, GameObject*> GameObjectMap;
+    GameObjectMap GameObjects;
 
   private:
 
     void RegisterComponents(void);
     void AddComponentCreator(std::string name, ComponentCreator* creator);
 
-
-    typedef std::map<unsigned, GameObject*> GameObjectMap;
-    GameObjectMap GameObjects;
-
-    typedef std::map<std::string, ComponentCreator *> SerializationMap;
-    SerializationMap SerialMap;
-
     typedef std::vector<GameObject *> ObjectsToBeDestroyed;
     ObjectsToBeDestroyed GameObjectsToBeDestroyed;
   };
 
-  //!Set the factory to null to indicate is hasn't been created yet
-  extern ObjectSystem * OBJECTSYSTEM;
 }

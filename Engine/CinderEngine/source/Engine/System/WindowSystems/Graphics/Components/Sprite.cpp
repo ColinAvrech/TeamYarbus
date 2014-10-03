@@ -143,18 +143,9 @@ namespace Framework
     // THIS BLOCK WILL GO INTO TRANSFORM COMPONENT
     //////////////////////////////////////////////////////////////////////////
  
-    // MODEL TO WORLD
-    //glm::mat4 modelMatrix = glm::translate (glm::vec3 (rand()% 5, 0.0f, -1.0f));
-    GLuint uniModel = glGetUniformLocation (shader->Get_ID(), "modelMatrix");
-    glUniformMatrix4fv (uniModel, 1, GL_FALSE, glm::value_ptr (modelMatrix));
-
-    // WORLD TO VIEW
-    GLuint uniView = glGetUniformLocation (shader->Get_ID(), "viewMatrix");
-    glUniformMatrix4fv (uniView, 1, GL_FALSE, glm::value_ptr (Camera::GetWorldToViewMatrix()));
-
-    // VIEW TO PROJECTION
-    GLuint uniProjection = glGetUniformLocation (shader->Get_ID(), "projectionMatrix");
-    glUniformMatrix4fv (uniProjection, 1, GL_FALSE, glm::value_ptr (Camera::GetViewToProjectionMatrix()));
+    shader->uniMat4 ("modelMatrix", glm::value_ptr (modelMatrix));
+    shader->uniMat4 ("viewMatrix", (glm::value_ptr (Camera::GetWorldToViewMatrix ())));
+    shader->uniMat4 ("projectionMatrix", (glm::value_ptr (Camera::GetViewToProjectionMatrix ())));
 
     //////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////
@@ -167,9 +158,9 @@ namespace Framework
   // Draw Sprite Using Texture
   void Sprite::Draw_Texture ()
   {
-    glBindTexture (GL_TEXTURE_2D, texture->Get_ID());
+    texture->Bind ();
     glDrawElements (GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-    glBindTexture (GL_TEXTURE_2D, 0);
+    texture->Unbind ();
   }
 
 
@@ -201,9 +192,9 @@ namespace Framework
     glUniform2fv (uniFrameRatio, 1, glm::value_ptr (frameRatio));
     glUniform2fv (uniTexOffset, 1, glm::value_ptr (texOffset));
 
-    glBindTexture (GL_TEXTURE_2D, atlas->Get_ID ());
+    atlas->Bind ();
     glDrawElements (GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-    glBindTexture (GL_TEXTURE_2D, 0);
+    atlas->Unbind ();
   }
 
 

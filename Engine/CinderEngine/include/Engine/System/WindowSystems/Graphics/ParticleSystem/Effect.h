@@ -13,6 +13,8 @@
 
 #include <memory>
 #include "AntTweakBar.h"
+#include "Texture.h"
+#include "Shader.h"
 
 namespace Framework
 {

@@ -19,6 +19,7 @@ namespace Framework
   {
     DRAW_DP,
     DRAW_TEAM,
+    DRAW_VECTOR,
     LOAD_NEXT,
   };
 
@@ -33,24 +34,28 @@ namespace Framework
   Transition transition;
   //namespace Splash_Screen
   //{
-  Camera camera(true);
-  Transform light;
-  Sprite sprite;
-  Sprite sprite1;
-  float camScrollSpeed = 0.05f;
-  const float minLight = 200.0f;
-  float shininess = minLight;
-  const float maxLight = 3.0f;
-  bool isPressed = false;
-  bool drawTeamLogo = false;
-  VAO* vao;
-  VBO* vbo;
-  EBO* ebo;
-  glm::vec2 texoffset (0.0f, 0.0f);
-  const int samples = 4;
-  bool fadeOut;
+  static float alpha = 0.0f;
+  static Camera camera(true);
+  static Transform light;
+  static Sprite teamLogo;
+  static Sprite dpLogo;
+  static Sprite vectorLogo;
+  static Sprite teamName;
+  static float camScrollSpeed = 0.05f;
+  static const float minLight = 200.0f;
+  static float shininess = minLight;
+  static const float maxLight = 3.0f;
+  static bool isPressed = false;
+  static bool drawTeamLogo = false;
+  static VAO* vao;
+  static VBO* vbo;
+  static EBO* ebo;
+  static glm::vec2 texoffset (0.0f, 0.0f);
+  static const int samples = 4;
+  static bool fadeOut;
   static int frames;
-  const float rate = 1.f;
+  static const float rate = 1.f;
+  static const float blendin = 0.0015f;
 
   // Constructor
   Scene_SplashScreens::Scene_SplashScreens ()
@@ -111,14 +116,14 @@ namespace Framework
     case GLFW_KEY_LEFT:
       //////////////////////////////////////////////////////////////////////////
       // Only For Testing
-      sprite.modelMatrix = glm::translate (sprite.modelMatrix, glm::vec3 (-0.1f, 0.0f, 0.0f));
+      teamLogo.modelMatrix = glm::translate (teamLogo.modelMatrix, glm::vec3 (-0.1f, 0.0f, 0.0f));
       //////////////////////////////////////////////////////////////////////////
       //camera.UpdatePosition (glm::vec3 (-camScrollSpeed, 0.0f, 0.0f));
       break;
     case GLFW_KEY_RIGHT:
       //////////////////////////////////////////////////////////////////////////
       // Only Fore Testing
-      sprite.modelMatrix = glm::translate (sprite.modelMatrix, glm::vec3 (0.1f, 0.0f, 0.0f));
+      teamLogo.modelMatrix = glm::translate (teamLogo.modelMatrix, glm::vec3 (0.1f, 0.0f, 0.0f));
       //////////////////////////////////////////////////////////////////////////
       //camera.UpdatePosition (glm::vec3 (camScrollSpeed, 0.0f, 0.0f));
       break;
@@ -185,22 +190,38 @@ namespace Framework
     quad.Clean ();
 
     // Create Sprite
-    sprite.Create
+    teamLogo.Create
       (
       Resources::RS->Get_Shader ("LightingAnimation"),
-      Resources::RS->Get_SpriteSheet ("Logo.png")
+      Resources::RS->Get_SpriteSheet ("HighResLogo.jpg")
       );
-    sprite1.Create
+    dpLogo.Create
       (
       Resources::RS->Get_Shader ("Lighting"),
       Resources::RS->Get_Texture ("DigiPenLogo.png")
       );
+    vectorLogo.Create
+      (
+      Resources::RS->Get_Shader ("Default"),
+      Resources::RS->Get_Texture ("VectorLogo.jpg")
+      );
+    teamName.Create
+      (
+      Resources::RS->Get_Shader ("BlendIn"),
+      Resources::RS->Get_Texture ("TeamYarbus.png")
+      );
 
-    sprite.modelMatrix = glm::translate (glm::vec3 (0.0f, 0.0f, -1.0f));
-    sprite.modelMatrix = glm::scale (sprite.modelMatrix, glm::vec3 (0.5f, 0.5f, 1.0f));
+    teamLogo.modelMatrix = glm::translate (glm::vec3 (0.0f, 0.0f, -1.0f));
+    teamLogo.modelMatrix = glm::scale (teamLogo.modelMatrix, glm::vec3 (0.5f, 0.5f, 1.0f));
 
-    sprite1.modelMatrix = glm::translate (glm::vec3 (0, 0.0f, -1));
-    sprite1.modelMatrix = glm::scale (sprite1.modelMatrix, glm::vec3 (0.5f, 0.5f / sprite1.Get_Texture ()->Get_Aspect_Ratio (), 1.0f));
+    vectorLogo.modelMatrix = glm::translate (glm::vec3 (0.0f, 0.0f, -1.0f));
+    vectorLogo.modelMatrix = glm::scale (vectorLogo.modelMatrix, glm::vec3 (0.5f, 0.5f, 1.0f));
+
+    teamName.modelMatrix = glm::translate (glm::vec3 (0.0f, -0.3f, -1.0f));
+    teamName.modelMatrix = glm::scale (teamName.modelMatrix, glm::vec3 (0.4f, 0.4f / teamName.Get_Texture()->Get_Aspect_Ratio(), 1.0f));
+
+    dpLogo.modelMatrix = glm::translate (glm::vec3 (0, 0.0f, -1));
+    dpLogo.modelMatrix = glm::scale (dpLogo.modelMatrix, glm::vec3 (0.5f, 0.5f / dpLogo.Get_Texture ()->Get_Aspect_Ratio (), 1.0f));
 
     //SoundName.test1 = ResourceManager::RESOURCE_MANAGER->Get_Sound("music2.mp3");
     //SoundName.test1->Play();
@@ -235,7 +256,7 @@ namespace Framework
         break;
       case Framework::IDLE:
         ++frames;
-        if (frames > 30)
+        if (frames > 60)
           transition = FADE_OUT;
         break;
       case Framework::FADE_OUT:
@@ -252,7 +273,7 @@ namespace Framework
       default:
         break;
       }
-      Update_Lighting (sprite1);
+      Update_Lighting (dpLogo);
       break;
 
       //////////////////////////////////////////////////////////////////////////
@@ -262,27 +283,48 @@ namespace Framework
       switch (transition)
       {
       case Framework::FADE_IN:
+        alpha += blendin;
         shininess -= rate;
         if (shininess <= maxLight)
           transition = IDLE;
         break;
       case Framework::IDLE:
+        alpha += blendin;
         ++frames;
-        if (frames > 30)
+        if (frames > 180)
           transition = FADE_OUT;
         break;
       case Framework::FADE_OUT:
+        alpha -= blendin * 2;
         shininess += rate;
         if (shininess >= minLight)
         {
+          frames = 0;
           state = LOAD_NEXT;
-          light.Translate (0.f, 0.36f, 0.f);
+          transition = IDLE;
         }
         break;
       default:
         break;
       }
-      Update_Lighting (sprite);
+      Update_Lighting (teamLogo);
+      break;
+
+    case Framework::DRAW_VECTOR:
+      switch (transition)
+      {
+      case Framework::IDLE:
+        ++frames;
+        if (frames > 120)
+          state = LOAD_NEXT;
+        break;
+      case Framework::FADE_IN:
+        break;
+      case Framework::FADE_OUT:
+        break;
+      default:
+        break;
+      }
       break;
 
       //////////////////////////////////////////////////////////////////////////
@@ -313,11 +355,18 @@ namespace Framework
     switch (state)
     {
     case Framework::DRAW_DP:
-      sprite1.Draw ();
+      dpLogo.Draw ();
       break;
 
     case Framework::DRAW_TEAM:
-      sprite.Draw ();
+      teamLogo.Draw ();
+      teamName.Get_Shader ()->Use ();
+      teamName.Get_Shader ()->uni1f ("alpha", alpha);
+      teamName.Draw ();
+      break;
+
+    case Framework::DRAW_VECTOR:
+      vectorLogo.Draw ();
       break;
 
     case Framework::LOAD_NEXT:

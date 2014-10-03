@@ -49,10 +49,10 @@ namespace Framework
 
   // Arrow Keys
 
-  DeclareEvent(KEY_UPARROW)
-  DeclareEvent(KEY_DOWNARROW)
-  DeclareEvent(KEY_LEFTARROW)
-  DeclareEvent(KEY_RIGHTARROW)
+  DeclareEvent(KEY_UP)
+  DeclareEvent(KEY_DOWN)
+  DeclareEvent(KEY_LEFT)
+  DeclareEvent(KEY_RIGHT)
 
   //Control Keys
   
@@ -65,46 +65,49 @@ namespace Framework
 
   // Numbers
 
-  DeclareEvent(KEY_ZERO)
-  DeclareEvent(KEY_ONE)
-  DeclareEvent(KEY_TWO)
-  DeclareEvent(KEY_THREE)
-  DeclareEvent(KEY_FOUR)
-  DeclareEvent(KEY_FIVE)
-  DeclareEvent(KEY_SIX)
-  DeclareEvent(KEY_SEVEN)
-  DeclareEvent(KEY_EIGHT)
-  DeclareEvent(KEY_NINE)
+  DeclareEvent(KEY_0)
+  DeclareEvent(KEY_1)
+  DeclareEvent(KEY_2)
+  DeclareEvent(KEY_3)
+  DeclareEvent(KEY_4)
+  DeclareEvent(KEY_5)
+  DeclareEvent(KEY_6)
+  DeclareEvent(KEY_7)
+  DeclareEvent(KEY_8)
+  DeclareEvent(KEY_9)
 
   // Letters: LowerCase || Upper Case
 
-  DeclareEvent(KEY_A)  DeclareEvent(KEY_a)
-  DeclareEvent(KEY_B)  DeclareEvent(KEY_b)
-  DeclareEvent(KEY_C)  DeclareEvent(KEY_c)
-  DeclareEvent(KEY_D)  DeclareEvent(KEY_d)
-  DeclareEvent(KEY_E)  DeclareEvent(KEY_e)
-  DeclareEvent(KEY_F)  DeclareEvent(KEY_f)
-  DeclareEvent(KEY_G)  DeclareEvent(KEY_g)
-  DeclareEvent(KEY_H)  DeclareEvent(KEY_h)
-  DeclareEvent(KEY_I)  DeclareEvent(KEY_i)
-  DeclareEvent(KEY_J)  DeclareEvent(KEY_j)
-  DeclareEvent(KEY_K)  DeclareEvent(KEY_k)
-  DeclareEvent(KEY_L)  DeclareEvent(KEY_l)
-  DeclareEvent(KEY_M)  DeclareEvent(KEY_m)
-  DeclareEvent(KEY_N)  DeclareEvent(KEY_n)
-  DeclareEvent(KEY_O)  DeclareEvent(KEY_o)
-  DeclareEvent(KEY_P)  DeclareEvent(KEY_p)
-  DeclareEvent(KEY_Q)  DeclareEvent(KEY_q)
-  DeclareEvent(KEY_R)  DeclareEvent(KEY_r)
-  DeclareEvent(KEY_S)  DeclareEvent(KEY_s)
-  DeclareEvent(KEY_T)  DeclareEvent(KEY_t)
-  DeclareEvent(KEY_U)  DeclareEvent(KEY_u)
-  DeclareEvent(KEY_V)  DeclareEvent(KEY_v)
-  DeclareEvent(KEY_W)  DeclareEvent(KEY_w)
-  DeclareEvent(KEY_X)  DeclareEvent(KEY_x)
-  DeclareEvent(KEY_Y)  DeclareEvent(KEY_y)
-  DeclareEvent(KEY_Z)  DeclareEvent(KEY_z)
-  
+  DeclareEvent(KEY_A)
+  DeclareEvent(KEY_B)
+  DeclareEvent(KEY_C)
+  DeclareEvent(KEY_D)
+  DeclareEvent(KEY_E)
+  DeclareEvent(KEY_F)
+  DeclareEvent(KEY_G)
+  DeclareEvent(KEY_H)
+  DeclareEvent(KEY_I)
+  DeclareEvent(KEY_J)
+  DeclareEvent(KEY_K)
+  DeclareEvent(KEY_L)
+  DeclareEvent(KEY_M)
+  DeclareEvent(KEY_N)
+  DeclareEvent(KEY_O)
+  DeclareEvent(KEY_P)
+  DeclareEvent(KEY_Q)
+  DeclareEvent(KEY_R)
+  DeclareEvent(KEY_S)
+  DeclareEvent(KEY_T)
+  DeclareEvent(KEY_U)
+  DeclareEvent(KEY_V)
+  DeclareEvent(KEY_W)
+  DeclareEvent(KEY_X)
+  DeclareEvent(KEY_Y)
+  DeclareEvent(KEY_Z)
+
+  // Called if any key is pressed
+  DeclareEvent(KEY_ANY)
+
   /*********************************************/
   // Misc Events Created by Systems always
   /*********************************************/

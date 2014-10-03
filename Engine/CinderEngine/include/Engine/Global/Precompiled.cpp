@@ -1,15 +1,11 @@
 /******************************************************************************/
 /*!
-\file   Console.h
+\file   Helpers.h
 \author Micah Rust
 \par    Course: GAM200
-\par    Global pointers to the systems.
-
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+\brief  This file contains several helper macros for programming
 */
 /******************************************************************************/
 
-//#include "Containers.h"
-// Serialization
-
-#include "GameObject.h"
-#include "ObjectSystem.h"
+#include "CinderEngine.pch"

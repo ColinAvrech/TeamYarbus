@@ -11,3 +11,6 @@ Smoke.png
 Smoke1.png
 Fire.png
 Fire1.png
+TeamYarbus.png
+VectorLogo.png
+VectorLogo.jpg

@@ -21,7 +21,6 @@ the level runs.
       return left->TypeId < right->TypeId;
     }
   };*/
-
   /* Binary Search in a sorted array of Components. If the component cannot be found NULL is returned.
   GameComponent* BinaryComponentSearch(ComponentArray& components, ComponentTypeId name)
   {
@@ -44,3 +43,38 @@ the level runs.
       return NULL;
   }*/
   
+#pragma once
+
+#include "GameObject.h"
+
+namespace Framework
+{
+  GameObject::GameObject(unsigned gameObjectID)
+  :GameObjectID(gameObjectID)
+  {
+    Parent = NULL;
+  }
+
+  Component* GameObject::AddComponent(std::string name)
+  {
+    ErrorIf(Components.find(name) == Components.end(), "COMPONENT CREATED TWICE ON SAME OBJECT");
+    Component* gc = OBJECTSYSTEM->SerialMap[name]->Create();
+    Components[name] = gc;
+    return gc;
+  }
+
+  Component* GameObject::GetComponent(std::string component)
+  {
+    ComponentMap::iterator it = Components.find(component);
+    if (it == Components.end())
+    {
+      return NULL;
+    }
+    else
+    {
+      return it->second;
+    }
+    return NULL;
+  }
+
+}

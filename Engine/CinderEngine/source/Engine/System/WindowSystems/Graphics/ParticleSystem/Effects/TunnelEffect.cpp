@@ -8,13 +8,17 @@
 */
 /******************************************************************************/
 
+#include "glew.h"
 #include "EditorUI.h"
 #include "TunnelEffect.h"
+#include "ResourceManager.h"
 
 namespace Framework
 {
   bool TunnelEffect::initialize (size_t numParticles)
   {
+    texture = Resources::RS->Get_Texture ("Particle1.png");
+    shader = Resources::RS->Get_Shader ("Particle");
     //
     // particles
     //
@@ -121,6 +125,9 @@ namespace Framework
 
   void TunnelEffect::render ()
   {
+    glEnable (GL_TEXTURE_2D);
+    glBindTexture (GL_TEXTURE_2D, texture->Get_ID ());
+    shader->uni1f ("size", 2.0f);
     m_renderer->render ();
   }
 }

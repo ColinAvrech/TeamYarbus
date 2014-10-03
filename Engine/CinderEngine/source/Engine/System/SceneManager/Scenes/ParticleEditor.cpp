@@ -13,43 +13,46 @@
 #include "ResourceManager.h"
 #include "Particles.h"
 #include "ParticleUpdaters.h"
-#include "particleGenerators.h"
+#include "ParticleGenerators.h"
 #include "ParticleRenderer.h"
 #include "TimeQuery.h"
 #include "Effect.h"
 #include "AntTweakBar.h"
 #include "WindowSystem.h"
 #include "EditorUI.h"
+#include "EventSystem.h"
+#include "BaseEvent.h"
+#include "KeyEvent.h"
 
 
 
 namespace Framework
 {
-  std::string s = "Hello";
-  int reverbPreset, oldReverbPreset;
-  float LPFcutOff = 6000, LPFresonance = 1;
-  float HPFcutOff = 5000, HPFresonance = 1;
-  float oldLPFCutOff = LPFcutOff, oldLPFResonance = LPFresonance;
-  float oldHPFCutOff = HPFcutOff, oldHPFResonance = HPFresonance;
-  bool lpf = false, oldLPF = false, hpf = false, oldHPF = false, reverb = false, oldReverb = false;
-  bool song = false, oldSong = false, noise = false, oldNoise = false;
-  bool panLeft = false, oldPanLeft = false; bool panRight = false, oldPanRight = false;
-  Sound* bg;
-  TwBar *myBar;
-  TwBar* audioBar;
-  std::shared_ptr<IEffect> gEffects [4];
-  IEffect *gCurrentEffect = nullptr;
-  int gCurrentEffectID = 0;
-  int gSelectedEffect = 0;
-  int gNumParticles = 0;
-  int gNumAlive = 0;
+  static std::string s = "Hello";
+  static int reverbPreset, oldReverbPreset;
+  static float LPFcutOff = 6000, LPFresonance = 1;
+  static float HPFcutOff = 5000, HPFresonance = 1;
+  static float oldLPFCutOff = LPFcutOff, oldLPFResonance = LPFresonance;
+  static float oldHPFCutOff = HPFcutOff, oldHPFResonance = HPFresonance;
+  static bool lpf = false, oldLPF = false, hpf = false, oldHPF = false, reverb = false, oldReverb = false;
+  static bool song = false, oldSong = false, noise = false, oldNoise = false;
+  static bool panLeft = false, oldPanLeft = false; bool panRight = false, oldPanRight = false;
+  static Sound* bg;
+  static TwBar *myBar;
+  static TwBar* audioBar;
+  static std::shared_ptr<IEffect> gEffects [4];
+  static IEffect *gCurrentEffect = nullptr;
+  static int gCurrentEffectID = 0;
+  static int gSelectedEffect = 0;
+  static int gNumParticles = 0;
+  static int gNumAlive = 0;
   static float volume = 1.0f;
   static float Fps = 0.0f;
   static double AppTime = 0;
 
-  unsigned int gParticleTexture = 0;
-  Shader* mProgram;
-  struct CAMERA
+  static unsigned int gParticleTexture = 0;
+  static Shader* mProgram;
+  static struct CAMERA
   {
     float camDistance;
     glm::vec3 cameraDir;
@@ -58,15 +61,15 @@ namespace Framework
   } camera_;
 
 
-  Camera camera1 (true);
-  CpuTimeQuery cpuParticlesUpdate;
-  CpuTimeQuery cpuBuffersUpdate;
-  GpuTimerQuery gpuUpdate;
-  double gpuUpdateTime = 0;
-  GpuTimerQuery gpuRender;
-  double gpuRenderTime = 0;
+  static Camera camera (true);
+  static CpuTimeQuery cpuParticlesUpdate;
+  static CpuTimeQuery cpuBuffersUpdate;
+  static GpuTimerQuery gpuUpdate;
+  static double gpuUpdateTime = 0;
+  static GpuTimerQuery gpuRender;
+  static double gpuRenderTime = 0;
 
-  bool gAnimationOn = true;
+  static bool gAnimationOn = true;
 
   // Constructor
   ParticleEditor::ParticleEditor ()
@@ -95,8 +98,48 @@ namespace Framework
     case GLFW_KEY_2:
       gSelectedEffect = 2;
       break;
+    case GLFW_KEY_3:
+      gSelectedEffect = 3;
+      break;
     case GLFW_KEY_W:
-      camera1.Zoom (1.0f);
+      Camera::main->worldToView = glm::translate (Camera::main->worldToView, glm::vec3 (0, -0.01f, 0));
+      break;
+    case GLFW_KEY_S:
+      Camera::main->worldToView = glm::translate (Camera::main->worldToView, glm::vec3 (0, 0.01f, 0));
+      break;
+    case GLFW_KEY_D:
+      Camera::main->worldToView = glm::translate (Camera::main->worldToView, glm::vec3 (-0.01f, 0, 0));
+      break;
+    default:
+      break;
+    }
+  }
+
+  void OnKeyPressed (GameObject* go, KeyEvent* key)
+  {
+    if (key->KeyDown)
+    switch (key->KeyValue)
+    {
+    case GLFW_KEY_0:
+      gSelectedEffect = 0;
+      break;
+    case GLFW_KEY_1:
+      gSelectedEffect = 1;
+      break;
+    case GLFW_KEY_2:
+      gSelectedEffect = 2;
+      break;
+    case GLFW_KEY_W:
+      Camera::main->worldToView = glm::translate (Camera::main->worldToView, glm::vec3 (0, -0.01f, 0));
+      break;
+    case GLFW_KEY_S:
+      Camera::main->worldToView = glm::translate (Camera::main->worldToView, glm::vec3 (0, 0.01f, 0));
+      break;
+    case GLFW_KEY_D:
+      Camera::main->worldToView = glm::translate (Camera::main->worldToView, glm::vec3 (-0.01f, 0, 0));
+      break;
+    case GLFW_KEY_A:
+      Camera::main->worldToView = glm::translate (Camera::main->worldToView, glm::vec3 (0.01f, 0, 0));
       break;
     default:
       break;
@@ -118,6 +161,8 @@ namespace Framework
 
   void ParticleEditor::Load_Scene (const char* filename)
   {
+    EVENTSYSTEM->Connect (NULL, Events::KEY_ANY, BaseEvent::BaseCall(OnKeyPressed));
+
     //TwInit (TW_OPENGL, NULL);
     // or
 #ifdef _USE_ANTWEAK
@@ -326,9 +371,6 @@ namespace Framework
     // camera
     //
     //camera_.modelviewMatrix = glm::lookAt (Camera::main->viewDirection * camera_.camDistance, glm::vec3 (0.0f, 0.0f, 0.0f), glm::vec3 (0.0f, 1.0f, 0.0f));
-
-    glEnable (GL_TEXTURE_2D);
-    glBindTexture (GL_TEXTURE_2D, gParticleTexture);
 
     glEnable (GL_POINT_SPRITE);
     glEnable (GL_PROGRAM_POINT_SIZE);
