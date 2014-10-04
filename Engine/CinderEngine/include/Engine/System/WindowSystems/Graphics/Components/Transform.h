@@ -55,6 +55,7 @@ namespace Framework
 
 	//setter
 	void setPos(float x, float y, float z){ position.z = z; position.y = y; position.x = x; }
+  void setScale(float x, float y, float z){ scale.x = x; scale.y = y; scale.z = z; }
 
 
     bool MatrixMode (int m);
@@ -66,6 +67,7 @@ namespace Framework
 
     // The non-base component usees DefineComponentName macro to name component
     const static std::string Name;
+    glm::vec3 position;
   private:
     int currentMatrix;
     //Matrix Stack
@@ -81,7 +83,7 @@ namespace Framework
 
     // To avoid Unnecesary calculation in Update Matrices
     bool matricesReady;
-    glm::vec3 position;
+    //glm::vec3 position;
     glm::vec3 scale;
     float rotation;
     // This Data Will Be Calculate By CPU instead of GPU

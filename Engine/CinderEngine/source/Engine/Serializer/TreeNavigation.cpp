@@ -28,7 +28,7 @@ namespace Framework
     DataNode* ZeroSerializer::FindStem(DataNode* current)
     {
       auto it = current;
-      while (it && it == it->previous->next)
+      while (it && it->dataType != TYPE_OBJECT/* == it->previous->next*/)
       {
         it = it->previous;
       }
@@ -37,16 +37,15 @@ namespace Framework
 
     void ZeroSerializer::DumpArchive(DataNode* stem, int indentation)
     {
-      int findent = indentation;
+      //int findent = indentation;
       DataNode* it = stem;
       while (it)
       {
-        indent(findent);
+        indent(indentation);
         std::cout << it->objectName << std::endl;
         if (it->dataType == TYPE_OBJECT)
         {
-          ++findent;
-          DumpArchive(it->branch, findent);
+          DumpArchive(it->branch, indentation + 1);
         }
 
         it = it->next;

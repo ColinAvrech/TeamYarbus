@@ -29,6 +29,8 @@ factory in the next loop.
 #pragma once
 
 
+#define ComponentPointer(Name) Name * Name = nullptr
+
 #include "ObjectSystem.h"
 #include "Component.h"
 #include <map>
@@ -37,7 +39,7 @@ factory in the next loop.
 namespace Framework
 {
   class Component;
-
+  
   class GameObject
   {
 
@@ -49,12 +51,25 @@ namespace Framework
 
     Component* GetComponent(std::string component);
 
+
     //Public Variables
+    std::string Name;
     GameObject* Parent;
     unsigned GameObjectID;
+
     /*
     std::list<GameObject*> ChildObjects;
     */
+
+    //Components
+    ComponentPointer(Transform);
+    ComponentPointer(Sprite);
+    
+    // when framework is removed
+    //ComponentPointer(Circle);
+    //ComponentPointer(Point);
+
+
 
   private:
     /*

@@ -16,13 +16,8 @@ namespace Framework
 {
   namespace Serializer
   {
-    ZeroSerializer::ZeroSerializer(const char* filename)
-    {
-      if (filename)
-      {
-        dataFile.open(filename);
-      }
-      
+    ZeroSerializer::ZeroSerializer()
+    {      
       //Create data type tree
       TypeList["int"]    = TYPE_INT;
       TypeList["uint"]   = TYPE_UINT;
@@ -40,6 +35,7 @@ namespace Framework
       CurrentNode = NULL;
       CurrentStem = NULL;
       inObject = 0;
+      exitted = false;
     } //constructor JSONSerializer
 
     bool ZeroSerializer::open(const char* filepath)
@@ -48,18 +44,21 @@ namespace Framework
       {
         dataFile.close();
       }
-      dataFile.open(filepath);
-      if (dataFile)
-      {
-        std::string dummy;
-        //Skip first 2 lines
-        std::getline(dataFile, dummy);
-        std::getline(dataFile, dummy);
-        ++inObject;
-        trunk = AddNode(trunk, TYPE_OBJECT, "Level", 0);
-        CurrentNode = CurrentStem = trunk;
-        return true;
-      }
+      std::string path("..//..//Resources//Levels//");
+      path.append(filepath);
+      dataFile.open(path);
+
+      ErrorIf(dataFile.is_open() == false, "Could not open Level File");
+
+      //Skip first 2 lines
+      std::string dummy;
+      std::getline(dataFile, dummy);
+      std::getline(dataFile, dummy);
+      ++inObject;
+      trunk = AddNode(trunk, TYPE_OBJECT, "Level", 0);
+      CurrentNode = CurrentStem = trunk;
+      return true;
+      
       return false;
     } //function open
 
@@ -78,7 +77,11 @@ namespace Framework
 
     void ZeroSerializer::CreateArchive()
     {
-
+      for (int it = 0; inObject > 0; ++it)
+      {
+        ReadLine();
+        ParseLine();
+      }
     }
     
 
@@ -94,14 +97,24 @@ namespace Framework
       std::vector<std::string> tokens = Tokenize();
       if (CurrentLine.back() == ' ')
       {
-        //Entering new object
+        //Encountered new object
         currentname = tokens[0];
-        
-        ++inObject;
-        CurrentNode->branch =  AddNode(CurrentNode->branch, TYPE_OBJECT, currentname.c_str(), 0);
-        CurrentNode->next->previous = CurrentNode;
-        CurrentStem = CurrentNode;
-        CurrentNode = CurrentNode->branch;        
+        if (!exitted) //Entering new object
+        {
+          ++inObject;
+          CurrentNode->branch = AddNode(CurrentNode->branch, TYPE_OBJECT, currentname.c_str(), 0);
+          CurrentNode->branch->previous = CurrentNode;
+          CurrentStem = CurrentNode;
+          CurrentNode = CurrentNode->branch;
+          exitted = false;
+        }
+        else  //This is a new parallel object
+        {
+          ++inObject;
+          CurrentNode->next = AddNode(CurrentNode->branch, TYPE_OBJECT, currentname.c_str(), 0);
+          CurrentNode->next->previous = CurrentNode;
+          CurrentNode = CurrentNode->next;
+        }
         //Skip the next line
         std::string dummy;
         std::getline(dataFile, dummy);
@@ -117,13 +130,25 @@ namespace Framework
           CurrentStem = FindStem(CurrentNode);
           CurrentNode = CurrentStem;
           CurrentStem = FindStem(CurrentNode);
+          exitted = true;
         }
         //if it is a data field
         else
         {
-          CurrentNode->next = AddNode(CurrentNode->next, TYPE_INT, currentname.c_str(), 20);
-          CurrentNode->next->previous = CurrentNode;
-          CurrentNode = CurrentNode->next;
+          currentname = tokens[1];
+          if (CurrentNode->dataType == TYPE_OBJECT)
+          {
+            CurrentNode->branch = AddNode(CurrentNode->branch, TYPE_INT, currentname.c_str(), 0);
+            CurrentNode->branch->previous = CurrentNode;
+            CurrentStem = CurrentNode;
+            CurrentNode = CurrentNode->branch;
+          }
+          else
+          {
+            CurrentNode->next = AddNode(CurrentNode->next, TYPE_INT, currentname.c_str(), 20);
+            CurrentNode->next->previous = CurrentNode;
+            CurrentNode = CurrentNode->next;
+          }
         }        
       }
     }

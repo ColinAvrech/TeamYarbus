@@ -80,29 +80,38 @@ namespace Framework
 
   }
 
-  /*
   void ObjectSystem::LoadLevel(std::string level)
   {
-  std::string levelpath(LevelAssetsPath);
-  levelpath.append(level);
+    DestroyAllObjects();
 
-  std::ifstream levelfile;
-  levelfile.open(levelpath.c_str());
+    Serializer::ZeroSerializer data;
 
-  ErrorIf(!levelfile.is_open(), "Could Not Open Levelfile");
+    data.open(level.c_str());
+    data.CreateArchive();
+    Serializer::DataNode* Trunk = data.GetTrunk();
+  
 
-  std::cout << "Loading Level: " << Console::magenta << levelpath << Console::gray << " Please Wait" << std::endl;
+  }
 
-  while (!levelfile.eof())
+  //Private function to create and serilize an object
+  void ObjectSystem::SerializeObject(Serializer::DataNode* data)
   {
-  //ReadLine(levelfile.getline);
+    GameObject* go = new GameObject(data->branch->value_.UInt_);
+    go->Name = data->objectName;
+    GameObjects[go->GameObjectID] = go;
+
+    //Create and Serilize Objects
+    while (data->branch != NULL)
+    {
+
+    }
   }
 
-  levelfile.close();
-  }
-  std::string ObjectSystem::ReadLine(std::string line)
+  //Private function to create and serilize a component
+  void ObjectSystem::SerializeComponent(std::string ComponentName, Serializer::DataNode* data)
   {
-  return NULL;
+
+
   }
-  */
+
 }

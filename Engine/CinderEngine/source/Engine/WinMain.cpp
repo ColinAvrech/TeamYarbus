@@ -24,11 +24,13 @@ starts the game loop.
 #include "Core.h"
 #include "Physics/Thermodynamics.h"
 #include "ResourceManager.h"
+#include "Serializer\JSONSerializer.h"
 
 //testing includes
 #include "ComponentInclude.h"
 #include "RigidBody.h"
 #include "ColliderShape.h"
+#include "ObjectSystem.h"
 
 
 #define _DEGUB
@@ -59,6 +61,15 @@ int main(void)
   Console::Create_Cinder_Console("CinderEngineConsole");
   // TODO Make console accept input by pressing '`', if '`' is pressed again return to game
 
+  //Test parser
+  Serializer::ZeroSerializer testarchive;
+
+  testarchive.open("Level.data");
+
+  testarchive.CreateArchive();
+
+  testarchive.DumpArchive(testarchive.GetTrunk());
+
   /*! Initialize the game engine*/
   
   //! Create the core engine which manages all systems.
@@ -72,12 +83,17 @@ int main(void)
   Physics::
     ThermodynamicsSystem * thermo = new Physics::ThermodynamicsSystem();
 
+  //test
+  ObjectSystem* objsys = new ObjectSystem();
+  
+
   engine->AddSystem (sceneManager);
   engine->AddSystem (windows);
   engine->AddSystem(audio);
   engine->AddSystem(events);
   engine->AddSystem(zilch);
   engine->AddSystem(thermo);
+  engine->AddSystem(objsys);
 
   Resources resourceManager;
   resourceManager.Load_Resources();
@@ -88,24 +104,7 @@ int main(void)
   //! activate the window.
   //resourceManager.Get_Sound("music2.mp3")->LowPassFilter(60, 10);
 
-  // Test of CollisionEvent
-  /*
-  GameObject * myobj = new GameObject(1666);
-  std::string ColEvent = std::string("COLLISION_1666");
-  std::cout << "Connecting_To_Event_Called:" << ColEvent << std::endl;
-  EVENTSYSTEM->Connect(myobj, ColEvent, BaseEvent::BaseCall(TestEventTest));
-  */
-
-  /*
-  GameObject* myobj = new GameObject(1666);
-  myobj->AddComponent(Transform::Name)->Initalize();
-  static_cast<Transform*>(myobj->GetComponent("Transform"))->setPos(0, 0, 0);
-  myobj->AddComponent(Physics::RigidBody::Name);
-  myobj->AddComponent(Physics::Circle::Name);
-  */
- 
-
-
+  
   //! Run the game! NOW!
   engine->GameLoop();
 

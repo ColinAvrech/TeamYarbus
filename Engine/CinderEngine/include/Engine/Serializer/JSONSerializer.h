@@ -33,7 +33,7 @@ namespace Framework
       //------------------------------------------------
       //CONSTRUCTOR
       //------------------------------------------------
-      ZeroSerializer(const char* filename = 0);
+      ZeroSerializer();
 
 
       /*-----------------------------------------------------------------------
@@ -60,6 +60,8 @@ namespace Framework
       bool open(const char* filepath);
       //Close file
       void close();
+      //Get trunk
+      DataNode* GetTrunk(){ return trunk; }
 
       //Find value from tree===========================================================
       //Overloaded functions
@@ -103,6 +105,8 @@ namespace Framework
       //::string type;
       //Is it an object or subobject ...
       int inObject;
+      //Did the program exit a branch?
+      bool exitted;
 
       //Data tree
       DynamicElement* trunk;
