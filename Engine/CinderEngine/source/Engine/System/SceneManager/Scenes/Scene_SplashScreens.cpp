@@ -12,6 +12,9 @@
 #include "ComponentInclude.h"
 #include "ResourceManager.h"
 #include "SceneManager.h"
+#include "EventSystem.h"
+#include "BaseEvent.h"
+#include "KeyEvent.h"
 
 namespace Framework
 {
@@ -88,10 +91,10 @@ namespace Framework
     s.Get_Shader ()->Disable ();
   }
 
-  void Scene_SplashScreens::Key_Pressed(int key, int scanCode, int action, int mods)
-{
+  static void OnKey_Pressed(GameObject* go, KeyEvent* key)
+  {
     //if (state == GLFW_REPEAT)
-    switch (key)
+    switch (key->KeyValue)
     {
     case GLFW_KEY_W:
       light.Translate (0, 0.01f, 0);
@@ -145,36 +148,37 @@ namespace Framework
   }
 
 
-  void Scene_SplashScreens::Mouse_Button(int button, int state, int mods)
-{
-    if (state == GLFW_PRESS)
-      switch (button)
-    {
-      case GLFW_MOUSE_BUTTON_1:
-        isPressed = true;
-        std::cout << "LMB Pressed\n";
-        break;
-      default:
-        break;
-    }
-    else
-    {
-      isPressed = false;
-    }
+  /*void Scene_SplashScreens::Mouse_Button(int button, int state, int mods)
+  {
+  if (state == GLFW_PRESS)
+  switch (button)
+  {
+  case GLFW_MOUSE_BUTTON_1:
+  isPressed = true;
+  std::cout << "LMB Pressed\n";
+  break;
+  default:
+  break;
+  }
+  else
+  {
+  isPressed = false;
+  }
   }
 
 
   void Scene_SplashScreens::Mouse_Moved(double xPos, double yPos)
-{
-    if (isPressed)
-    {
-      camera.MouseUpdate (glm::vec2 (float (xPos), float (yPos)));
-    }
+  {
+  if (isPressed)
+  {
+  camera.MouseUpdate (glm::vec2 (float (xPos), float (yPos)));
   }
+  }*/
 
 
   void Scene_SplashScreens::Load_Scene (const char* filename)
   {
+    EVENTSYSTEM->Connect (NULL, Events::KEY_ANY, BaseEvent::BaseCall (OnKey_Pressed));
     state = DRAW_DP;
     transition = FADE_IN;
     fadeOut = false;

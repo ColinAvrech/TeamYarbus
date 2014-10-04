@@ -85,36 +85,6 @@ namespace Framework
   }
 
 
-  void ParticleEditor::Key_Pressed(int key, int scanCode, int action, int mods)
-  {
-    switch (key)
-    {
-    case GLFW_KEY_0:
-      gSelectedEffect = 0;
-      break;
-    case GLFW_KEY_1:
-      gSelectedEffect = 1;
-      break;
-    case GLFW_KEY_2:
-      gSelectedEffect = 2;
-      break;
-    case GLFW_KEY_3:
-      gSelectedEffect = 3;
-      break;
-    case GLFW_KEY_W:
-      Camera::main->worldToView = glm::translate (Camera::main->worldToView, glm::vec3 (0, -0.01f, 0));
-      break;
-    case GLFW_KEY_S:
-      Camera::main->worldToView = glm::translate (Camera::main->worldToView, glm::vec3 (0, 0.01f, 0));
-      break;
-    case GLFW_KEY_D:
-      Camera::main->worldToView = glm::translate (Camera::main->worldToView, glm::vec3 (-0.01f, 0, 0));
-      break;
-    default:
-      break;
-    }
-  }
-
   static void OnKeyPressed (GameObject* go, KeyEvent* key)
   {
     if (key->KeyDown)
@@ -145,19 +115,6 @@ namespace Framework
       break;
     }
   }
-
-
-  void ParticleEditor::Mouse_Button(int button, int state, int mods)
-  {
-    TwEventMouseButtonGLFW (button, state);
-  }
-
-
-  void ParticleEditor::Mouse_Moved(double xPos, double yPos)
-  {
-    TwEventMousePosGLFW ((int)xPos, (int)yPos);
-  }
-
 
   void ParticleEditor::Load_Scene (const char* filename)
   {

@@ -201,18 +201,14 @@ namespace Framework
         default:
           break;
       }
-
-      SCENEMANAGER->Key_Pressed (key, scanCode, state, mod);
     }
 
 
     void GLFWMouseButtonFunction (GLFWwindow *, int button, int action, int mod)
     {
-      SCENEMANAGER->Mouse_Input (button, action, mod);
     }
     void GLFWMouseCursorMoved (GLFWwindow* window, double xPos, double yPos)
     {
-      SCENEMANAGER->Mouse_Position (xPos, yPos);
     }
 
     void Create_Context(GLFWwindow** GLFWwindowptr)

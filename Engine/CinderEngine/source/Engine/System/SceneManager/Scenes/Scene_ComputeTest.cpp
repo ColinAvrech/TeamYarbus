@@ -35,22 +35,7 @@ namespace Framework
   }
 
 
-  void Scene_ComputeTest::Key_Pressed (int key, int scanCode, int state, int mods)
-  {
-  }
-
-
-  void Scene_ComputeTest::Mouse_Button (int button, int action, int mods)
-  {
-  }
-
-
-  void Scene_ComputeTest::Mouse_Moved (double xPos, double yPos)
-  {
-  }
-
-
-  void OnKeyPressed (GameObject* go, KeyEvent* key)
+  static void OnKeyPressed (GameObject* go, KeyEvent* key)
   {
     if (key->KeyValue == GLFW_KEY_R && key->KeyDown)
       clRenderer.ResetBuffers ();
