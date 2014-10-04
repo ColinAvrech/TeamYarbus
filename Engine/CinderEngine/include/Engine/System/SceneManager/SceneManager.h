@@ -14,6 +14,7 @@
 #include "BaseSystem.h"
 #include "Scene_SplashScreens.h"
 #include "ParticleEditor.h"
+#include "Scene_ComputeTest.h"
 #include "glfw3.h"
 
 namespace Framework

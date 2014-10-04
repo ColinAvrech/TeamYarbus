@@ -115,7 +115,7 @@ namespace Framework
     }
   }
 
-  void OnKeyPressed (GameObject* go, KeyEvent* key)
+  static void OnKeyPressed (GameObject* go, KeyEvent* key)
   {
     if (key->KeyDown)
     switch (key->KeyValue)

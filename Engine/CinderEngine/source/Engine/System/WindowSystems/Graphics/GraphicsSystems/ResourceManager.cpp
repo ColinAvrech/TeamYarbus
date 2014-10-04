@@ -43,7 +43,7 @@ namespace Framework
 
     if (!texFile.good ())
     {
-      std::cout << "Failed to Load Textures...\n";
+      std::cout << Console::red << "Failed to Load Textures...\n" << Console::gray;
       return;
     }
     else
@@ -65,7 +65,7 @@ namespace Framework
 
     if (!ssFile.good ())
     {
-      std::cout << "Failed to Load Sprite Sheets...\n";
+      std::cout << Console::red << "Failed to Load Sprite Sheets...\n" << Console::gray;
       return;
     }
     else
@@ -100,25 +100,25 @@ namespace Framework
     std::ifstream vsList (ShaderResourcePath + "VertexShaders.txt");
     std::ifstream fsList (ShaderResourcePath + "FragmentShaders.txt");
     std::ifstream gsList (ShaderResourcePath + "GeometryShaders.txt");
-    std::ifstream comp (ShaderResourcePath + "Shaders.txt");
+    std::ifstream shaderComposition (ShaderResourcePath + "Shaders.txt");
 
-    if (!(vsList.good () || fsList.good () || comp.good ()))
+    if (!(vsList.good () || fsList.good () || shaderComposition.good ()))
     {
       if (!vsList.good ())
       {
-        std::cout << "Failed to load Shader File..." << "VertexShaders.txt\n";
+        std::cout << Console::red << "Failed to load Shader File..." << "VertexShaders.txt\n" << Console::gray;
       }
       if (!fsList.good ())
       {
-        std::cout << "Failed to load Shader File..." << "FragmentShaders.txt\n";
+        std::cout << Console::red << "Failed to load Shader File..." << "FragmentShaders.txt\n" << Console::gray;
       }
       if (!gsList.good ())
       {
-        std::cout << "Failed to load Shader File..." << "GeometryShaders.txt\n";
+        std::cout << Console::red << "Failed to load Shader File..." << "GeometryShaders.txt\n" << Console::gray;
       }
-      if (!comp.good ())
+      if (!shaderComposition.good ())
       {
-        std::cout << "Failed to load Shader File..." << "Shaders.txt\n";
+        std::cout << Console::red << "Failed to load Shader File..." << "Shaders.txt\n" << Console::gray;
       }
       return;
     }
@@ -151,14 +151,14 @@ namespace Framework
         gSource [data] = s->Create_Shader (s->Read_Shader ((ShaderResourcePath + data).c_str ()), GL_GEOMETRY_SHADER);
       }
 
-      while (!comp.eof())
+      while (!shaderComposition.eof())
       {
         std::string vs, fs, gs, name;
-        comp >> name; name = "";
-        comp >> vs;
-        comp >> fs;
-        comp >> gs;
-        comp >> name;
+        shaderComposition >> name; name = "";
+        shaderComposition >> vs;
+        shaderComposition >> fs;
+        shaderComposition >> gs;
+        shaderComposition >> name;
         if (gs == "0")
         {
           // Link The Corresponding Vertex And Fragment Shaders in the Shader Program Document
@@ -176,12 +176,33 @@ namespace Framework
       // Free memory
       delete s;
     }
+
+    //////////////////////////////////////////////////////////////////////////
+    // COMPUTE SHADERS
+    //////////////////////////////////////////////////////////////////////////
+
+    std::ifstream compute (ShaderResourcePath + "ComputeShaders.txt");
+
+    if (!compute.good ())
+    {
+      std::cout << Console::red << "Failed To Load Compute Shaders\n" << Console::gray;
+    }
+    else
+    {
+      std::string cs;
+      while (!compute.eof())
+      {
+        compute >> cs;
+        computeShaders [cs] = new ComputeShader ((ShaderResourcePath + cs).c_str());
+      }
+    }
+
   }
 
 
   void Resources::Load_Sounds()
   {
-    std::ifstream audioFile(AudioResourcePath + "SoundAssets.txt");
+    std::ifstream audioFile (AudioResourcePath + "SoundAssets.txt");
 
     if (!audioFile.good())
     {
@@ -249,6 +270,20 @@ namespace Framework
     for (auto i : sounds)
     {
       if (i.first == soundName)
+      {
+        return i.second;
+      }
+    }
+
+    throw ("Invalid Name...");
+  }
+
+  ComputeShader* Resources::Get_ComputeShader (std::string shaderName)
+  {
+    //return textures [textureName];
+    for (auto i : computeShaders)
+    {
+      if (i.first == shaderName)
       {
         return i.second;
       }

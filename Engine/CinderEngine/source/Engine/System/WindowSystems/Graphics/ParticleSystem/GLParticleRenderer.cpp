@@ -32,7 +32,7 @@ namespace Framework
 
     glGenBuffers (1, &m_bufPos);
     glBindBuffer (GL_ARRAY_BUFFER, m_bufPos);
-    glBufferData (GL_ARRAY_BUFFER, sizeof(float) * 4 * count, nullptr, GL_STREAM_DRAW);
+    glBufferData (GL_ARRAY_BUFFER, sizeof(float) * 4 * count, nullptr, GL_STATIC_DRAW);
     glEnableVertexAttribArray (0);
 
     if (GL_ARB_vertex_attrib_binding)
@@ -47,7 +47,7 @@ namespace Framework
 
     glGenBuffers (1, &m_bufCol);
     glBindBuffer (GL_ARRAY_BUFFER, m_bufCol);
-    glBufferData (GL_ARRAY_BUFFER, sizeof(float) * 4 * count, nullptr, GL_STREAM_DRAW);
+    glBufferData (GL_ARRAY_BUFFER, sizeof(float) * 4 * count, nullptr, GL_STATIC_DRAW);
     glEnableVertexAttribArray (1);
 
     if (GL_ARB_vertex_attrib_binding)

@@ -18,6 +18,7 @@ namespace Framework
     inline GLuint Shader::Get_ID ();
     inline void Use ();
     inline void Disable ();
+    inline GLint attribLocation (const char* attrib);
     inline GLint uniLocation (const char *varName);
 
     //
@@ -43,6 +44,7 @@ namespace Framework
     inline bool uniMat4 (const char *varName, const float*mat, bool transpose = false);
 
     friend class Resources;
+    friend class ComputeShader;
 
   private:
     Shader () {}
@@ -55,13 +57,25 @@ namespace Framework
     GLuint Create_Shader (std::string, GLenum shaderType);
     GLuint Create_Shader_From_String (std::string& vs, std::string& fs);
     GLuint Create_Program (GLuint _vertexShader, GLuint _fragmentShader, GLuint _geometryShader = 0);
-
   };
 
 
   //////////////////////////////////////////////////////////////////////////
   // Inline Methods
   //////////////////////////////////////////////////////////////////////////
+
+  inline GLint Shader::attribLocation (const char* attribName)
+  {
+    GLint _attribLoc = glGetAttribLocation (shaderProgram, attribName);
+
+#ifdef _DEBUG
+    if (_attribLoc == -1)
+      std::cout << "attribute " << attribName << "not found!\n";
+#endif
+
+    return _attribLoc;
+  }
+
 
   inline GLint Shader::uniLocation (const char *varName)
   {
@@ -71,7 +85,7 @@ namespace Framework
     // log msg only in the DEBUG version
 #ifdef _DEBUG
     if (i == -1)
-      std::cout << "uniform %s does not exist!", varName;
+      std::cout << "uniform" << varName << "does not exist!\n";
 #endif
 
     return i;

@@ -42,18 +42,6 @@ namespace Framework
     }
     // Load textures
     GLuint texture;
-    //texture = SOIL_load_OGL_texture
-    //  (
-    //  "Data/NeHe.bmp",
-    //  SOIL_LOAD_AUTO,
-    //  SOIL_CREATE_NEW_ID,
-    //  SOIL_FLAG_INVERT_Y
-    //  );
-
-    //if (texture == 0)
-    //{
-    //  std::cout << "Exit";
-    //}
     glGenTextures (1, &texture);
     glBindTexture (GL_TEXTURE_2D, texture);
     int w, h;
@@ -66,11 +54,22 @@ namespace Framework
     aspect = float (width) / height;
     SOIL_free_image_data (image);
 
-    glTexEnvf (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    if (hasAlpha) glTexEnvf (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+    if (format == "bmp")
+    {
+      glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+      glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+      glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+      glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+      glGenerateMipmap (GL_TEXTURE_2D);
+    }
+    else
+    {
+      glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+      glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+      glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+      glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    }
 
     textureID = texture;
   }
