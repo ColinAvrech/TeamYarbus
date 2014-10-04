@@ -66,13 +66,15 @@ namespace Framework
       clRenderer.pause = !clRenderer.pause;
     if (key->KeyValue == GLFW_KEY_X && key->KeyDown)
     {
-      clRenderer.particleCount += 1024;
+      clRenderer.particleCount += HT;
+      clRenderer.particleSize = MILLION * 1.6f / clRenderer.particleCount;
       printf ("particle count : %d\nRegenerating SSBOs...\n", clRenderer.particleCount);
       clRenderer.GenerateBuffers ();
     }
     if (key->KeyValue == GLFW_KEY_Z && key->KeyDown && clRenderer.particleCount > 1024)
     {
-      clRenderer.particleCount -= 100000;
+      clRenderer.particleCount -= HT;
+      clRenderer.particleSize = MILLION * 1.6f / clRenderer.particleCount;
       printf ("particle count : %d\nRegenerating SSBOs...\n", clRenderer.particleCount);
       clRenderer.GenerateBuffers ();
     }
