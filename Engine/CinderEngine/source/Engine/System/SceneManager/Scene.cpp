@@ -12,6 +12,4 @@
 
 namespace Framework
 {
-  //void Scene::Load_Scene (const char* filename)
-  //{}
 }

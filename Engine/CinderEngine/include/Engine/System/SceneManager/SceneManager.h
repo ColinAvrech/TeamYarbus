@@ -14,6 +14,7 @@
 #include "BaseSystem.h"
 #include "Scene_SplashScreens.h"
 #include "ParticleEditor.h"
+#include "Scene_ComputeTest.h"
 #include "glfw3.h"
 
 namespace Framework
@@ -32,9 +33,6 @@ namespace Framework
   void Load_Scene (Scene* scene);
   void Load_Next_Scene ();
   void Change_Size (int w, int h);
-  void Key_Pressed (int key, int scanCode, int state, int mods);
-  void Mouse_Position (double xPos, double yPos);
-  void Mouse_Input (int button, int action, int mods);
 
   private:
     static Scene* current;

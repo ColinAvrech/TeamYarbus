@@ -28,3 +28,8 @@ Basic.vs
 BlendIn.frag
 0
 BlendIn
+>
+Vertex.vs
+Fragment.frag
+0
+Simple

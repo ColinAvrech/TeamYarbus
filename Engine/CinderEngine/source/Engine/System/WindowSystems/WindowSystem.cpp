@@ -201,18 +201,14 @@ namespace Framework
         default:
           break;
       }
-
-      SCENEMANAGER->Key_Pressed (key, scanCode, state, mod);
     }
 
 
     void GLFWMouseButtonFunction (GLFWwindow *, int button, int action, int mod)
     {
-      SCENEMANAGER->Mouse_Input (button, action, mod);
     }
     void GLFWMouseCursorMoved (GLFWwindow* window, double xPos, double yPos)
     {
-      SCENEMANAGER->Mouse_Position (xPos, yPos);
     }
 
     void Create_Context(GLFWwindow** GLFWwindowptr)
@@ -220,13 +216,14 @@ namespace Framework
       // Init GLFW Before Using Any Functionality
       glfwInit ();
       // Properties
-      glfwWindowHint (GLFW_CONTEXT_VERSION_MAJOR, 3);
-      glfwWindowHint (GLFW_CONTEXT_VERSION_MINOR, 2);
-      glfwWindowHint (GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+      //Request an OpenGL 4.3 core context
+      glfwWindowHint (GLFW_CONTEXT_VERSION_MAJOR, 4);
+      glfwWindowHint (GLFW_CONTEXT_VERSION_MINOR, 3);
       glfwWindowHint (GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-      glfwWindowHint (GLFW_RESIZABLE, GL_TRUE);
+      glfwWindowHint (GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
+      glfwWindowHint (GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-      WINDOWSYSTEM->Set_W_H (1920 , 1080);
+      WINDOWSYSTEM->Set_W_H (1280 , 720);
       // Window Creation
       *GLFWwindowptr = glfwCreateWindow (WINDOWSYSTEM->Get_Width (), WINDOWSYSTEM->Get_Height (), "OpenGL", nullptr, nullptr); // Windowed
 
@@ -245,9 +242,9 @@ namespace Framework
       glewExperimental = GL_TRUE;
       glewInit();
       std::cout << "OpenGl Version: " << Console::green << glGetString(GL_VERSION) << Console::gray << std::endl;
-      glEnable (GL_DEPTH_TEST);
-      glEnable (GL_BLEND);
-      glBlendFunc (GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+      //glEnable (GL_DEPTH_TEST);
+      //glEnable (GL_BLEND);
+      //glBlendFunc (GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
     }
   } //namespace WindowNameSpace
 
@@ -278,7 +275,7 @@ namespace Framework
 
   void WindowSystem::WindowsUpdate(const double dt)
   {
-    glfwSwapBuffers(window);
+    //glfwSwapBuffers(window);
     glfwPollEvents ();
   }
 

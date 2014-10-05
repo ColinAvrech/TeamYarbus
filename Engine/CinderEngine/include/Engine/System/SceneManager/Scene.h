@@ -14,6 +14,8 @@
 
 #include "GraphicsCommon.h"
 #include "Resources.h"
+#include "GameObject.h"
+#include <vector>
 
 namespace Framework
 {
@@ -26,9 +28,7 @@ namespace Framework
 
   friend class SceneManager;
   protected:
-    virtual void Key_Pressed (int key, int state, int action, int mods) {}
-    virtual void Mouse_Button (int button, int state, int mods) {}
-    virtual void Mouse_Moved (double xPos, double yPos) {}
+    std::vector <GameObject*> sceneObjectList;
     virtual void Update (const double dt) = 0;
     virtual void Draw () = 0;
     virtual void Load_Scene (const char* filename) = 0;

@@ -1,0 +1,67 @@
+/******************************************************************************/
+/*!
+\file   CLParticleRenderer.h
+\author Manas Sudhir Kulkarni
+\par    Course: GAM200
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+\brief  
+*/
+/******************************************************************************/
+
+#ifndef _CL_PARTICLE_RENDERER
+#define _CL_PARTICLE_RENDERER
+
+#include "glew.h"
+#include "ResourceManager.h"
+#include "ShaderStorageBufferObject.h"
+
+#define MILLION 1000000
+#define HT       100000
+
+namespace Framework
+{
+
+  class CLParticleRenderer
+  {
+  public:
+    int particleCount;
+    float particleSize;
+    CLParticleRenderer ();
+    ~CLParticleRenderer();
+    void GenerateShaders ();
+    void GenerateBuffers ();
+    void ResetBuffers ();
+    void GenerateTextures ();
+    void Set_Cursor_Pos (double, double);
+    void Render ();
+
+    //////////////////////////////////////////////////////////////////////////
+    // Properties to be put in Updaters, Generators
+    float frameDelta = 0.0f;
+    float speedMultiplier = 0.15f;
+    bool borderEnabled = true;
+    bool colorFade = false;
+    bool pause = false;
+    float color [3];
+    float colVec [3];
+    float colorChangeTimer;
+    float colorChangeLength;
+    void ResetPosition ();
+    void ResetVelocity ();
+    //////////////////////////////////////////////////////////////////////////
+
+
+  private:
+    GLuint SSBOPos, SSBOVel;
+    Shader* shader;
+    ComputeShader* computeshader;
+    Texture* texture;
+  };
+
+  struct vertex4f
+  {
+    GLfloat x, y, z, w;
+  };
+}
+
+#endif

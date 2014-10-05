@@ -30,7 +30,8 @@ solution "CinderEngine"
       "../../Resources/Shaders/**.glsl",
       "../../Resources/**.txt",
       "../../Resources/**.frag",
-      "../../Resources/**.vs"
+      "../../Resources/**.vs",
+      "../../Resources/**.cl",
     }
     
     

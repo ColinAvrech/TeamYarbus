@@ -16,27 +16,27 @@ namespace Framework
 {
 
   // Constructor
-  Scene_::Scene_SplashScreens ()
+  Scene_::Scene_ ()
   {
   }
 
   // Destructor
-  Scene_::~Scene_SplashScreens ()
+  Scene_::~Scene_ ()
   {
   }
 
 
-  void Scene_::Key_Pressed (GLFWwindow* window, int key, int scanCode, int state, int mods)
+  void Scene_::Key_Pressed (int key, int scanCode, int state, int mods)
   {
   }
 
 
-  void Scene_ (GLFWwindow* window, int button, int action, int mods)
+  void Scene_::Mouse_Button (int button, int action, int mods)
   {
   }
 
 
-  void Scene_::Mouse_Moved (float xPos, float yPos)
+  void Scene_::Mouse_Moved (double xPos, double yPos)
   {
   }
 
@@ -52,6 +52,11 @@ namespace Framework
 
 
   void Scene_::Draw ()
+  {
+  }
+  
+  
+  void Scene_::Change_Size (int x, int y)
   {
   }
 

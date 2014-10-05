@@ -17,6 +17,7 @@ namespace Framework
   Scene* SceneManager::current = NULL;
   Scene_SplashScreens* splashScreen;
   ParticleEditor* particleEditor;
+  Scene_ComputeTest* computeTest;
 
   SceneManager* SCENEMANAGER = NULL;
 
@@ -24,10 +25,6 @@ namespace Framework
   SceneManager::SceneManager ()
   {
     SCENEMANAGER = this;
-    // random:
-    srand ((unsigned int) time (NULL));
-
-
   }
   
   
@@ -35,14 +32,14 @@ namespace Framework
   bool SceneManager::Initialize ()
   {
     std::cout << GetName () << " initialized\n";
-    Load_Scene (splashScreen);
+    Load_Scene (computeTest);
     return true;
   }
 
   // HARD CODED FOR NOW
   void SceneManager::Load_Scene (Scene* scene)
   {
-    scene = new Scene_SplashScreens ();
+    scene = new Scene_ComputeTest ();
     scene->Load_Scene (NULL);
     current = scene;
   }
@@ -75,22 +72,8 @@ namespace Framework
 
   void SceneManager::Change_Size (int w, int h)
   {
+    glViewport (0, 0, w, h);
     current->Change_Size (w, h);
-  }
-
-  void SceneManager::Key_Pressed (int key, int scanCode, int state, int mods)
-  {
-    current->Key_Pressed (key, scanCode, state, mods);
-  }
-
-  void SceneManager::Mouse_Position(double xPos, double yPos)
-{
-    current->Mouse_Moved (xPos, yPos);
-  }
-
-  void SceneManager::Mouse_Input (int button, int action, int mods)
-  {
-    current->Mouse_Button (button, action, mods);
   }
 
 }

@@ -3,23 +3,26 @@
 
 #include "glew.h"
 
-class VertexArrayObject
+namespace Framework
 {
-public:
-  VertexArrayObject ()
+  class VertexArrayObject
   {
-    glGenVertexArrays (1, &vao);
-    glBindVertexArray (vao);
-  }
-  ~VertexArrayObject ()
-  {
-    glDeleteVertexArrays (1, &vao);
-  }
+  public:
+    VertexArrayObject ()
+    {
+      glGenVertexArrays (1, &vao);
+      glBindVertexArray (vao);
+    }
+    ~VertexArrayObject ()
+    {
+      glDeleteVertexArrays (1, &vao);
+    }
 
-private:
-  GLuint vao;
-};
+  private:
+    GLuint vao;
+  };
 
-typedef VertexArrayObject VAO;
+  typedef VertexArrayObject VAO;
+}
 
 #endif

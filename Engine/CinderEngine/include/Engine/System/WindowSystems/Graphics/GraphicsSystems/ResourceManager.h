@@ -4,6 +4,7 @@
 
 #include "Resources.h"
 #include "SpriteSheet.h"
+#include "ComputeShader.h"
 #include <unordered_map>
 
 namespace Framework
@@ -27,6 +28,7 @@ namespace Framework
     SpriteSheet* Get_SpriteSheet (std::string spriteSheetName);
     Shader* Get_Shader (std::string shaderName);
     Sound* Get_Sound (std::string soundName);
+    ComputeShader* Get_ComputeShader (std::string shaderName);
 
     static Resources* RS;
 
@@ -34,6 +36,7 @@ namespace Framework
     std::unordered_map <std::string, Texture*> textures;
     std::unordered_map <std::string, SpriteSheet*> spriteSheets;
     std::unordered_map <std::string, Shader*> shaders;
+    std::unordered_map<std::string, ComputeShader*> computeShaders;
     std::unordered_map <std::string, Sound*> sounds;
     void Load_Textures ();
     void Load_SpriteSheets ();
