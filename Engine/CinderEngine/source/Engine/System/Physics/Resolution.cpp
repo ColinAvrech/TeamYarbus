@@ -1,4 +1,4 @@
-#include "ColliderShape.h"
+#include "ShapeCollider.h"
 #include "PhysicsLibrary.h"
 #include "Resolution.h"
 

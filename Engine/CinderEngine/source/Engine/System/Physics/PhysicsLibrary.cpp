@@ -1,59 +1,61 @@
 #include "PhysicsLibrary.h"
+#include "GraphicsCommon.h"
+#include "glmOverloads.h"
 
 namespace Framework
 {
 	namespace Physics
 	{
 		/*
-		Vec2 computeFriction(Manifold* m)
+		glm::vec2 computeFriction(Manifold* m)
 		{
 		  //
 		}
 		*/
-		Vec2 applyNetForce(Vec2 sumForce, float mass)
+		glm::vec2 applyNetForce(glm::vec2 sumForce, double mass)
 		{
-			Vec2 accel = sumForce / mass;
+			glm::vec2 accel = sumForce / (float)mass;
 			return accel;
 		}
 
-		Vec2 getReflection(Vec2& normal, Vec2& velocity)
+		glm::vec2 getReflection(glm::vec2& normal, glm::vec2& velocity)
 		{
-			Vec2 reflect;
-			double dP = DotProduct(velocity, normal);
-			reflect = velocity - (2 * dP * normal);
+			glm::vec2 reflect;
+			float dP = DotProduct(velocity, normal);
+			reflect = velocity - (2.0 * dP * normal);
 			return reflect;
 		}
 
-		float Distance(const Vec2& pos1, const Vec2& pos2)
+		float Distance(const glm::vec2& pos1, const glm::vec2& pos2)
 		{
-			return float(sqrt((pos2.x_ - pos1.x_) * (pos2.x_ - pos1.x_)
-				+ (pos2.y_ - pos1.y_) * (pos2.y_ - pos1.y_)));
+			return float(sqrt((pos2.x - pos1.x) * (pos2.x - pos1.x)
+				+ (pos2.y - pos1.y) * (pos2.y - pos1.y)));
 		}
 
-		Vec2 getNormal(Vec2 side)
+		glm::vec2 getNormal(glm::vec2 side)
 		{
-			Vec2 norm;
-			norm.x_ = -side.y_;
-			norm.y_ = side.x_;
+			glm::vec2 norm;
+			norm.x = -side.y;
+			norm.y = side.x;
 
 			return norm;
 		}
 
-		float DotProduct(const Vec2& vec1, const Vec2& vec2)
+		float DotProduct(const glm::vec2& u, const glm::vec2& v)
 		{
-			float result = float((vec1.x_ * vec2.x_) + (vec1.y_ * vec2.y_));
+			float result = float((u.x * v.x) + (u.y * v.y));
 			return result;
 		}
 
-		Vec2 applyAccel(Vec2 accel, double dt)
+		glm::vec2 applyAccel(glm::vec2 accel, double dt)
 		{
-			Vec2 velChange = accel * dt;
+			glm::vec2 velChange = accel * (float)dt;
 			return velChange;
 		}
 
-		Vec2 getAccel(Vec2& force, double mass)
+		glm::vec2 getAccel(glm::vec2& force, double mass)
 		{
-			Vec2 accel = force / mass;
+			glm::vec2 accel = force / (float)mass;
 			return accel;
 		}
 	}

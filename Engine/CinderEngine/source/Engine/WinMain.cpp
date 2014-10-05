@@ -23,13 +23,15 @@ starts the game loop.
 #include "ZilchCompiledLib.h"
 #include "Core.h"
 #include "Physics/Thermodynamics.h"
+#include "Physics/PhysicsSystem.h"
 #include "ResourceManager.h"
-#include "Serializer\JSONSerializer.h"
+#include "Serializer/JSONSerializer.h"
+
 
 //testing includes
 #include "ComponentInclude.h"
 #include "RigidBody.h"
-#include "ColliderShape.h"
+#include "ShapeCollider.h"
 #include "ObjectSystem.h"
 
 
@@ -82,10 +84,17 @@ int main(void)
   ScriptSystem * zilch      = new ScriptSystem::ScriptSystem();
   Physics::
     ThermodynamicsSystem * thermo = new Physics::ThermodynamicsSystem();
+	Physics::PhysicsSystem * phys = new Physics::PhysicsSystem();
 
   //test
   ObjectSystem* objsys = new ObjectSystem();
-  
+  /*
+  GameObject* testStaticCircle = new GameObject(1);
+  testStaticCircle->AddComponent("RigidBody");
+  testStaticCircle->AddComponent("CircleCollider");
+  */
+
+  //GameObject* testDynamicCircle = new GameObject(2);
 
   engine->AddSystem (sceneManager);
   engine->AddSystem (windows);
@@ -94,6 +103,7 @@ int main(void)
   engine->AddSystem(zilch);
   engine->AddSystem(thermo);
   engine->AddSystem(objsys);
+  engine->AddSystem(phys);
 
   Resources resourceManager;
   resourceManager.Load_Resources();
@@ -104,7 +114,6 @@ int main(void)
   //! activate the window.
   //resourceManager.Get_Sound("music2.mp3")->LowPassFilter(60, 10);
 
-  
   //! Run the game! NOW!
   engine->GameLoop();
 
