@@ -123,6 +123,9 @@ namespace Framework
       void ReadLine();
       void ParseLine();
 
+      void InterpretData(TYPE currentdatatype, std::vector<std::string>* tokens, DataNode** node);
+      TYPE DetermineType(std::string* typestring);
+
       //Tree navigation
       //implemented at the end of this header
       template<typename T>
