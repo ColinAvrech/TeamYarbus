@@ -13,33 +13,33 @@
 
 namespace Framework
 {
-  class RigidBody : public Component
-  {
-  public:
-    RigidBody (){};
-    ~RigidBody (){};
+	class RigidBody : public Component
+	{
+	public:
+		RigidBody(){};
+		~RigidBody(){};
 
-    Vec2 getVel (void)
-    {
-      return vel;
-    };
+		Vec2 getVel(void)
+		{
+			return vel;
+		};
 
-    enum DynamicState
-    {
-      Static,    //unmoving
-      Kinematic, //moving position, velocity acceleration
-      Dynamic    //moving with kinematic & all forces considered
-    };
+		enum DynamicState
+		{
+			Static,    //unmoving
+			Kinematic, //moving position, velocity acceleration
+			Dynamic    //moving with kinematic & all forces considered
+		};
 
-    // The non-base component uses DefineComponentName macro to name component
-    const static std::string Name;
+		// The non-base component uses DefineComponentName macro to name component
+		const static std::string Name;
 
-  private:
-    Vec2 vel;
-    Vec2 angVel;
-    float mass;
-    bool allowSleep;
-    bool rotationLocked;
-    DynamicState state;
-  };
+	private:
+		Vec2 vel;
+		Vec2 angVel;
+		float mass;
+		bool allowSleep;
+		bool rotationLocked;
+		DynamicState state;
+	};
 } //Framework

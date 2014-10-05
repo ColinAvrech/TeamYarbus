@@ -136,21 +136,162 @@ namespace Framework
         else
         {
           currentname = tokens[1];
+          TYPE currenttype = DetermineType(&tokens[0]);
           if (CurrentNode->dataType == TYPE_OBJECT)
           {
-            CurrentNode->branch = AddNode(CurrentNode->branch, TYPE_INT, currentname.c_str(), 0);
+            InterpretData(currenttype, &tokens, &(CurrentNode->branch));
             CurrentNode->branch->previous = CurrentNode;
             CurrentStem = CurrentNode;
             CurrentNode = CurrentNode->branch;
+            CurrentNode->typeString = tokens[0];
           }
           else
           {
-            CurrentNode->next = AddNode(CurrentNode->next, TYPE_INT, currentname.c_str(), 20);
+            InterpretData(currenttype, &tokens, &(CurrentNode->next));
             CurrentNode->next->previous = CurrentNode;
             CurrentNode = CurrentNode->next;
+            CurrentNode->typeString = tokens[0];
           }
         }        
       }
+    }
+
+    void ZeroSerializer::InterpretData(TYPE currentdatatype, std::vector<std::string>* tokens, DataNode** node)
+    {
+      switch (currentdatatype)
+      {
+      case TYPE_UINT:
+      {
+        unsigned int number = std::stoul((*tokens)[3]);
+        const char* currentname = (*tokens)[1].c_str();
+        *node = AddNode(*node, currentdatatype, currentname, number);
+        break;
+      }
+      case TYPE_INT:
+      {
+        int number = std::stoi((*tokens)[3]);
+        const char* currentname = (*tokens)[1].c_str();
+        *node = AddNode(*node, currentdatatype, currentname, number);
+        break;
+      }
+      case TYPE_LONG:
+      {
+        long number = std::stol((*tokens)[3]);
+        const char* currentname = (*tokens)[1].c_str();
+        *node = AddNode(*node, currentdatatype, currentname, number);
+        break;
+      }
+      case TYPE_FLOAT:
+      {
+        float number = std::stof((*tokens)[3]);
+        const char* currentname = (*tokens)[1].c_str();
+        *node = AddNode(*node, currentdatatype, currentname, number);
+        break;
+      }
+      case TYPE_DOUBLE:
+      {
+        double number = std::stod((*tokens)[3]);
+        const char* currentname = (*tokens)[1].c_str();
+        *node = AddNode(*node, currentdatatype, currentname, number);
+        break;
+      }
+      case TYPE_BOOL:
+      {
+        bool state;
+        if ((*tokens)[3].compare("true,") == 0)
+          state = true;
+        else
+          state = false;
+        const char* currentname = (*tokens)[1].c_str();
+        *node = AddNode(*node, currentdatatype, currentname, state);
+        break;
+      }
+      case TYPE_STRING:
+      {
+        const char* currentname = (*tokens)[1].c_str();
+        *node = AddNode(*node, currentdatatype, currentname, (*tokens)[3]);
+        break;
+      }
+      case TYPE_VEC2:
+      {
+        std::vector<float> numarray;
+        unsigned int spos = CurrentLine.find_first_of("[");
+        unsigned int epos;
+        for (int i = 0; i < 2; ++i)
+        {
+          std::string number;
+          epos = CurrentLine.find_first_of(",]", spos);
+          for (unsigned int j = spos+1; j != epos; ++j)
+            number.push_back(CurrentLine[j]);
+          numarray.push_back(std::stof(number));
+          spos = epos + 1;
+        }
+        const char* currentname = (*tokens)[1].c_str();
+        *node = AddNode(*node, currentdatatype, currentname, numarray);
+        break;
+      }
+      case TYPE_VEC3:
+      {
+        std::vector<float> numarray;
+        unsigned int spos = CurrentLine.find_first_of("[");
+        unsigned int epos;
+        for (int i = 0; i < 3; ++i)
+        {
+          std::string number;
+          epos = CurrentLine.find_first_of(",]", spos);
+          for (unsigned int j = spos+1; j != epos; ++j)
+            number.push_back(CurrentLine[j]);
+          numarray.push_back(std::stof(number));
+          spos = epos + 1;
+        }
+        const char* currentname = (*tokens)[1].c_str();
+        *node = AddNode(*node, currentdatatype, currentname, numarray);
+        break;
+      }
+      case TYPE_VEC4:
+      {
+        std::vector<float> numarray;
+        unsigned int spos = CurrentLine.find_first_of("[");
+        unsigned int epos;
+        for (int i = 0; i < 4; ++i)
+        {
+          std::string number;
+          epos = CurrentLine.find_first_of(",]", spos);
+          for (unsigned int j = spos+1; j != epos; ++j)
+            number.push_back(CurrentLine[j]);
+          numarray.push_back(std::stof(number));
+          spos = epos + 1;
+        }
+        const char* currentname = (*tokens)[1].c_str();
+        *node = AddNode(*node, currentdatatype, currentname, numarray);
+        break;
+      }
+      case TYPE_ENUM:
+      {
+        (*tokens)[3].pop_back();
+        const char* currentname = (*tokens)[1].c_str();
+        *node = AddNode(*node, currentdatatype, currentname, (*tokens)[3]);
+        break;
+      }
+      case TYPE_CUSTOM:
+      {
+        (*tokens)[3].pop_back();
+        const char* currentname = (*tokens)[1].c_str();
+        *node = AddNode(*node, currentdatatype, currentname, (*tokens)[3]);
+        break;
+      }
+      } //switch
+
+    }
+
+    TYPE ZeroSerializer::DetermineType(std::string* typestring)
+    {
+      for (auto it = TypeList.begin(); it != TypeList.end(); ++it)
+      {
+        if (*typestring == it->first)
+          return it->second;
+      }
+      return TYPE_CUSTOM;
     }
 
     /**************************************************************************/
@@ -160,21 +301,21 @@ namespace Framework
     std::vector<std::string> ZeroSerializer::Tokenize()
     {
       std::vector<std::string> tokens;
-      std::size_t found = CurrentLine.find_first_not_of(" \t\n");
+      std::size_t found = CurrentLine.find_first_not_of(" \t\n\"");
       std::size_t previous = found;
 
       unsigned int wordlength = CurrentLine.size();
 
       while (found != CurrentLine.npos)
       {
-        found = CurrentLine.find_first_of(" \t\n", previous);
+        found = CurrentLine.find_first_of(" \t\n\"", previous);
         std::string str;
         if (found >= wordlength)
           found = wordlength;
         for (unsigned int i = previous; i < found; ++i)
           str.push_back(CurrentLine[i]);
         previous = found;
-        found = CurrentLine.find_first_not_of(" \t\n", previous);
+        found = CurrentLine.find_first_not_of(" \t\n\"", previous);
         previous = found;
         if (str.size() > 0)
           tokens.push_back(str);
@@ -185,7 +326,7 @@ namespace Framework
     void ZeroSerializer::indent(int indentation)
     {
       for (int i = 0; i < indentation; ++i)
-        std::cout << "  ";
+        std::cout << "\t";
     }
 
    

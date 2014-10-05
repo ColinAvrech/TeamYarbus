@@ -14,6 +14,7 @@
 
 #include <string>
 #include <vector>
+#include "type_vec.hpp"
 
 namespace Framework
 {
@@ -47,6 +48,7 @@ namespace Framework
 
       DynamicElement* previous;
       TYPE dataType;
+      std::string typeString;
       std::string objectName;
       union
       {
@@ -72,7 +74,17 @@ namespace Framework
       void SetValue(bool& value);
       void SetValue(std::string& value);
       void SetValue(std::vector<float>& value);
-      ///////////////////////////////////////////////////////
+      //Overloaded getters///////////////////////////////////
+      void GetValue(unsigned int* store);
+      void GetValue(int* store);
+      void GetValue(long* store);
+      void GetValue(float* store);
+      void GetValue(double* store);
+      void GetValue(bool* store);
+      void GetValue(std::string* store);
+      void GetValue(glm::vec2* store);
+      void GetValue(glm::vec3* store);
+      void GetValue(glm::vec4* store);
     private:
       
     }DataNode;

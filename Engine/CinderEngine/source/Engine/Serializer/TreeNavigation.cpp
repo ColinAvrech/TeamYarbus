@@ -42,13 +42,81 @@ namespace Framework
       while (it)
       {
         indent(indentation);
-        std::cout << it->objectName << std::endl;
+        
         if (it->dataType == TYPE_OBJECT)
         {
+          std::cout << it->objectName << " = " << std::endl;
+          indent(indentation);
+          std::cout << "{" << std::endl;
           DumpArchive(it->branch, indentation + 1);
+        }
+        else
+        {
+          if (it->dataType == TYPE_UINT)
+            std::cout << it->typeString << " " << it->objectName << " = " << it->value_.UInt_ << "," << std::endl;
+          else if (it->dataType == TYPE_INT)
+            std::cout << it->typeString << " " << it->objectName << " = " << it->value_.Int_ << "," << std::endl;
+          else if (it->dataType == TYPE_LONG)
+            std::cout << it->typeString << " " << it->objectName << " = " << it->value_.Long_ << "," << std::endl;
+          else if (it->dataType == TYPE_FLOAT)
+            std::cout << it->typeString << " " << it->objectName << " = " << it->value_.Float_ << "," << std::endl;
+          else if (it->dataType == TYPE_DOUBLE)
+            std::cout << it->typeString << " " << it->objectName << " = " << it->value_.Double_ << "," << std::endl;
+          else if (it->dataType == TYPE_BOOL)
+          {
+            std::cout << it->typeString << " " << it->objectName << " = ";
+            if(it->value_.Bool_)
+              std::cout << "true" << "," << std::endl;
+            else
+              std::cout << "false" << "," << std::endl;
+          }
+          else if (it->dataType == TYPE_STRING)
+            std::cout << it->typeString << " " << it->objectName << " = \"" << *(it->value_.String_) << "\"," << std::endl;
+          else if (it->dataType == TYPE_VEC2)
+          {
+            std::cout << it->typeString << " " << it->objectName << " = [";
+            for(int i = 0; i < 2; ++i)
+            {
+              std::cout << (*it->value_.VecN_)[i];
+              if (i < 1)
+                std::cout << ", ";
+            }
+            std::cout << "]," << std::endl;
+          }
+          else if (it->dataType == TYPE_VEC3)
+          {
+            std::cout << it->typeString << " " << it->objectName << " = [";
+            for (int i = 0; i < 3; ++i)
+            {
+              std::cout << (*it->value_.VecN_)[i];
+              if (i < 2)
+                std::cout << ", ";
+            }
+            std::cout << "]," << std::endl;
+          }
+          else if (it->dataType == TYPE_VEC4)
+          {
+            std::cout << it->typeString << " " << it->objectName << " = [";
+            for (int i = 0; i < 4; ++i)
+            {
+              std::cout << (*it->value_.VecN_)[i];
+              if(i < 3)
+                std::cout << ", ";
+            }
+            std::cout << "]," << std::endl;
+          }
+          else if (it->dataType == TYPE_ENUM || it->dataType == TYPE_CUSTOM)
+          {
+            std::cout << it->typeString << " " << it->objectName << " = " << *(it->value_.String_) << "," << std::endl;
+          }
         }
 
         it = it->next;
+      }
+      if (indentation > 0)
+      {
+        indent(indentation - 1);
+        std::cout << "}," << std::endl;
       }
     }
 

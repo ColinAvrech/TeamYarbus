@@ -1,16 +1,19 @@
 /******************************************************************************/
 /*!
-\file   RigidBody.cpp
+\file   glmOverloads.h
 \author Anna Pearson
 \par    Course: GAM200
 \par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
 \brief
 */
 /******************************************************************************/
-#include "RigidBody.h"
-#include "ComponentInclude.h"
+#include "GraphicsCommon.h"
 
 namespace Framework
 {
-	DefineComponentName(RigidBody);
+	glm::vec2 operator*(float scale, glm::vec2& vec)
+	{
+		glm::vec2 temp(vec);
+		return temp = vec * scale;
+	}
 }

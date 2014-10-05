@@ -1,16 +1,22 @@
 /******************************************************************************/
 /*!
-\file   RigidBody.cpp
+\file   CollisionRepeats.h
 \author Anna Pearson
 \par    Course: GAM200
 \par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
 \brief
 */
 /******************************************************************************/
-#include "RigidBody.h"
-#include "ComponentInclude.h"
+#pragma once
+
+#include "ShapeCollider.h"
 
 namespace Framework
 {
-	DefineComponentName(RigidBody);
+	namespace Physics
+	{
+		bool CirclevsLine(const float rad, glm::vec2& pos, LineCollider& l);
+		bool CirclevsPoint(const float rad, glm::vec2& cpos, glm::vec2& ppos);
+		bool PointvsLine(glm::vec2& pos, LineCollider& l);
+	}
 }
