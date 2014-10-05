@@ -10,10 +10,10 @@
 
 #include "DebugCircle.h"
 #include "ResourceManager.h"
+#include "GameObject.h"
 
 namespace Framework
 {
-
   DebugCircleRenderer::DebugCircleRenderer ()
   {
   }
@@ -68,11 +68,8 @@ namespace Framework
     glEnableVertexAttribArray (1);
   }
 
-
-  // Will only take one parameter Circle* after we have all gameObject components
-  // working together
-  void DebugCircleRenderer::Draw(Transform* transform, CircleCollider* circle)
-{
+  void DebugCircleRenderer::Draw(CircleCollider* circle)
+  {
     glBindVertexArray (vao);
     glEnableVertexAttribArray (0);
     glEnableVertexAttribArray (1);
@@ -81,9 +78,9 @@ namespace Framework
 
     dShader->Use ();
 
-    dShader->uni1f ("radius", circle->GetRadius ());
+    dShader->uni1f ("radius", circle->GetRadius () * 10);
     dShader->uni1i ("divisions", (GLint) circleDivisions);
-    dShader->uniMat4 ("modelViewProjectionmatrix", glm::value_ptr (transform->GetModelViewProjectionMatrix ()));
+    dShader->uniMat4 ("modelViewProjectionmatrix", glm::value_ptr (circle->gameObject->Transform->GetModelViewProjectionMatrix()));
 
     glPointSize (16.0f);
     glDrawArrays (GL_POINTS, 0, 1);

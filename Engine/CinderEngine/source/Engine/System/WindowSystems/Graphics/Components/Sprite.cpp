@@ -1,12 +1,13 @@
 #include "Sprite.h"
 #include "Camera.h"
 #include "Transform.h"
+#include "GameObject.h"
 
 namespace Framework
 {
-  Sprite::Sprite () : transform (*(new Transform ())) {}
+  DefineComponentName (Sprite);
 
-  Sprite::Sprite (GameObject* go) : transform (*(new Transform (go)))
+  Sprite::Sprite (GameObject* go)
   {
     gameObject = go;
   }
@@ -155,10 +156,7 @@ namespace Framework
     shader->enableVertexAttribArray (posAttrib);
     shader->enableVertexAttribArray (colorAttrib);
     shader->enableVertexAttribArray (normalAttrib);
-    transform.UpdateMatrices ();
-    shader->uniMat4 ("modelViewProjectionMatrix", glm::value_ptr (transform.GetModelViewProjectionMatrix ()));
-    //shader->uniMat4 ("viewMatrix", glm::value_ptr (Camera::GetWorldToViewMatrix ()));
-    //shader->uniMat4 ("projectionMatrix", glm::value_ptr (Camera::GetViewToProjectionMatrix ()));
+    shader->uniMat4 ("modelViewProjectionMatrix", glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix ()));
 
     (this->*DrawFunction)();
     shader->Disable ();

@@ -48,6 +48,7 @@ namespace Framework
 
     friend class Resources;
     friend class ComputeShader;
+    friend class Sprite;
 
   private:
     Shader () {}

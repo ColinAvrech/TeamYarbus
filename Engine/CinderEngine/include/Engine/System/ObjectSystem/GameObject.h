@@ -35,6 +35,7 @@ factory in the next loop.
 #include "Component.h"
 #include <map>
 #include "Vec2.h"
+#include "ShapeCollider.h"
 
 namespace Framework
 {
@@ -64,6 +65,7 @@ namespace Framework
     //Components
     ComponentPointer(Transform);
     ComponentPointer(Sprite);
+    ComponentPointer (CircleCollider);
     
     // when framework is removed
     //ComponentPointer(Circle);

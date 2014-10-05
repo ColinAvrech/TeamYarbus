@@ -13,11 +13,9 @@
 
 #include "GraphicsCommon.h"
 #include "ComponentInclude.h"
-#include "ShapeCollider.h"
 
 namespace Framework
 {
-  using namespace Physics;
   class DebugCircleRenderer
   {
   public:
@@ -25,7 +23,7 @@ namespace Framework
     ~DebugCircleRenderer ();
     void Generate_Shaders ();
     void Generate_Buffers ();
-    void Draw (Transform* transform, CircleCollider* circle);
+    void Draw (CircleCollider* circle);
 
   private:
     Shader* dShader;

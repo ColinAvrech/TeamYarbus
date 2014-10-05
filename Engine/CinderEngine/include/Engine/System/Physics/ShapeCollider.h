@@ -19,13 +19,14 @@ namespace Framework
 	class ShapeCollider : public Component
 	{
 	public:
+    const static std::string Name;
 		// Getters
 		glm::vec2 getPosition(void){
 			return position;
-		};
+		}
 		glm::vec2 getOffset(void){
 			return offset;
-		};
+		}
 
 	private:
 		// Private data
@@ -43,9 +44,45 @@ namespace Framework
 	};
 	////////////////////////////////////////////////////////////
 
-	//Forward Declaration
-	class CircleCollider;
-	class LineCollider;
+  //Forward Declaration
+  class PointCollider;
+  class LineCollider;
+
+  class CircleCollider : public ShapeCollider
+  {
+  public:
+    const static std::string Name;
+    CircleCollider (GameObject* obj) : radius (0.1f)
+    {
+      gameObject = obj;
+    }
+    ~CircleCollider ()
+    {}
+
+    /*!Telegraph that the component is active*/
+    void Initalize ()
+    {
+      //PHYSICSSYSTEM->AddLineCollisder(this);
+    }
+
+    void Serialize ()
+    {
+    }
+
+    // Getters
+    float GetRadius (void){
+      return radius;
+    };
+
+    void DetectCircle (CircleCollider* c);
+    void DetectPoint (PointCollider* p);
+    void DetectLine (LineCollider* l);
+
+  private:
+    // Private data
+    float radius;
+  };
+
 
 	class PointCollider : public ShapeCollider
 	{
@@ -114,40 +151,5 @@ namespace Framework
 		float p1dotNormal;
 	};
 	////////////////////////////////////////////////////////////
-
-	class CircleCollider : public ShapeCollider
-	{
-	public:
-		const static std::string Name;
-    CircleCollider (GameObject* obj) : radius (1)
-		{
-			gameObject = obj;
-		}
-		~CircleCollider()
-		{}
-
-		/*!Telegraph that the component is active*/
-		void Initalize()
-		{
-			//PHYSICSSYSTEM->AddLineCollisder(this);
-		}
-
-		void Serialize()
-		{
-		}
-
-		// Getters
-		float GetRadius(void){
-			return radius;
-		};
-
-		void DetectCircle(CircleCollider* c);
-		void DetectPoint(PointCollider* p);
-		void DetectLine(LineCollider* l);
-
-	private:
-		// Private data
-		float radius;
-	};
 } //Framework
 

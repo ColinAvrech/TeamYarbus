@@ -17,11 +17,14 @@
 #include "EventSystem.h"
 #include "BaseEvent.h"
 #include "KeyEvent.h"
+#include "CollisionEvent.h"
+#include "TimeQuery.h"
 
 namespace Framework
 {
   using namespace Physics;
 
+  GameObject* go1, *go2;
   DebugCircleRenderer debugRenderer;
   int circleDivisions = 40;
   float circleRadius = 0.3f;
@@ -60,16 +63,16 @@ namespace Framework
     switch (_key->KeyValue)
     {
     case GLFW_KEY_A:
-      sprite.transform.Translate (-0.01f, 0, 0);
+      go1->Transform->Translate (-0.01f, 0, 0);
       break;
     case GLFW_KEY_D:
-      sprite.transform.Translate (0.01f, 0, 0);
+      go1->Transform->Translate (0.01f, 0, 0);
       break;
     case GLFW_KEY_S:
-      sprite.transform.Translate (0, -0.01f, 0);
+      go1->Transform->Translate (0, -0.01f, 0);
       break;
     case GLFW_KEY_W:
-      sprite.transform.Translate (0, 0.01f, 0);
+      go1->Transform->Translate (0, 0.01f, 0);
       break;
     default:
       break;
@@ -77,31 +80,62 @@ namespace Framework
   }
 
 
+  static void OnCollisionEnter (GameObject* go, CollisionEvent* collision)
+  {
+    collision->OtherObject->Transform->Translate (-collision->normal.x * 0.1f, -collision->normal.y * 0.1f, 0.0f);
+  }
+
+
   void Scene_CollisionTest::Load_Scene (const char* filename)
   {
     EVENTSYSTEM->Connect (NULL, Events::KEY_ANY, BaseEvent::BaseCall (OnKeyPressed));
+    EVENTSYSTEM->Connect (NULL, Events::Types::COLLISION, BaseEvent::BaseCall (OnCollisionEnter));
     debugRenderer = DebugCircleRenderer ();
     debugRenderer.Generate_Buffers ();
     debugRenderer.Generate_Shaders ();
+
+    go1 = new GameObject (0);
+    go2 = new GameObject (1);
+
+    ////go1->AddComponent (Transform::Name);
+    //go1->AddComponent (Sprite::Name);
+    //go1->AddComponent (CircleCollider::Name);
+
+    ////go2->AddComponent (Transform::Name);
+    //go2->AddComponent (Sprite::Name);
+    //go2->AddComponent (CircleCollider::Name);
+
+    delete go1->Transform, go1->Sprite, go1->CircleCollider, go2->Transform, go2->Sprite, go2->CircleCollider;
+    go1->Transform = new Transform (go1);
+    go1->Sprite = new Sprite (go1);
+    go1->CircleCollider = new CircleCollider (go1);
+
+    go2->Transform = new Transform (go2);
+    go2->Sprite = new Sprite (go2);
+    go2->CircleCollider = new CircleCollider (go2);
 
     ShapeData data = ShapeGenerator::Generate_Quad ();
 
     vao = new VAO ();
     vbo = new VBO (data.vbo_size (), data.vertices);
     ebo = new EBO (data.ebo_size (), data.indices);
-    sprite.Create_Sprite (Resources::RS->Get_Shader ("Default"), Resources::RS->Get_Texture ("Circle.png"));
-    sprite.transform.Translate (-0.5f, 0.0f, -1.0f);
-    sprite.transform.Scale (0.1f);
 
-    sprite1.Create_Sprite (Resources::RS->Get_Shader ("Default"), Resources::RS->Get_Texture ("Circle.png"));
-    sprite1.transform.Translate (0.5f, 0.0f, -1.0f);
-    sprite1.transform.Scale (0.1f);
+    go1->Sprite->Create_Sprite (Resources::RS->Get_Shader ("Default"), Resources::RS->Get_Texture ("Circle.png"));
+    go1->Transform->Translate (-0.5f, 0.0f, -1.0f);
+    go1->Transform->Scale (0.1f);
+
+    go2->Sprite->Create_Sprite (Resources::RS->Get_Shader ("Default"), Resources::RS->Get_Texture ("Circle.png"));
+    go2->Transform->Translate (0.5f, 0.0f, -1.0f);
+    go2->Transform->Scale (0.1f);
     data.Clean ();
   }
 
 
   void Scene_CollisionTest::Update (const double dt)
   {
+    go1->Transform->UpdateMatrices ();
+    go2->Transform->UpdateMatrices ();
+    go1->CircleCollider->DetectCircle (go2->CircleCollider);
   }
 
 
@@ -114,11 +148,11 @@ namespace Framework
     glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     vao->bindVAO ();
-    sprite.Draw ();
-    sprite1.Draw ();
+    go1->Sprite->Draw ();
+    go2->Sprite->Draw ();
     vao->unbindVAO ();
-    debugRenderer.Draw (&sprite.transform, &circle);
-    debugRenderer.Draw (&sprite1.transform, &circle1);
+    debugRenderer.Draw ((CircleCollider*)go1->CircleCollider);
+    debugRenderer.Draw ((CircleCollider*)go2->CircleCollider);
 
     glDisable (GL_BLEND);
   }

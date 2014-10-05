@@ -13,7 +13,7 @@ namespace Framework
   class Sprite : public Component
   {
   public:
-    Sprite ();
+    Sprite () {}
     Sprite (GameObject* go);
     ~Sprite ();
 
@@ -34,7 +34,7 @@ namespace Framework
     void Draw ();
     glm::mat4 modelMatrix;
 
-    Transform& transform;
+    const static std::string Name;
 
   private:
     GLint posAttrib, colorAttrib, normalAttrib, texAttrib;

@@ -11,3 +11,4 @@
 #include "Transform.h"
 #include "Camera.h"
 #include "Sprite.h"
+#include "ShapeCollider.h"

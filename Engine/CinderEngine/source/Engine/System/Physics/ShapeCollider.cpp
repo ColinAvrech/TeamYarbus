@@ -13,6 +13,7 @@
 #pragma once
 namespace Framework
 {
+  DefineComponentName (ShapeCollider);
 	DefineComponentName(CircleCollider);
 	DefineComponentName(PointCollider);
 	DefineComponentName(LineCollider);
