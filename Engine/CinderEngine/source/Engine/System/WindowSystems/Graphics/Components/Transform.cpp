@@ -69,8 +69,6 @@ namespace Framework
   void Transform::Translate (float x, float y, float z)
   {
     position += glm::vec3 (x, y, z);
-
-    Print (position);
     matricesReady = false;
   }
 
