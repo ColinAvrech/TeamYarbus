@@ -8,9 +8,14 @@
 */
 /******************************************************************************/
 
+
+#ifndef M_PI
+#define M_PI 		  3.1415926535897932384626433832795f
+#define M_2_PI 		6.28318530717958647692528676655901f		// PI*2
+#endif
+
 #include "ParticleGenerators.h"
 #include "glm\gtc\random.hpp"
-#include "CinderMath.h"
 
 namespace Framework
 {

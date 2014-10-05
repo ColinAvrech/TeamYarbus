@@ -12,45 +12,36 @@
 
 namespace Framework
 {
-  DefineComponentName (Transform);
+  DefineComponentName(Transform);
   // Constructor
 
-  Transform::Transform (GameObject* go) : position (0), scale (1), rotation (0)
+  Transform::Transform() : position (0), scale (1)
   {
     modelMatrix.push_back (glm::mat4 (1));
-    modelViewProjectionmatrix.push_back (glm::mat4 (1));
+    viewMatrix.push_back (glm::mat4 (1));
+    projectionMatrix.push_back (glm::mat4 (1));
+
+    modelViewMatrix = glm::mat4 (1);
+    modelViewProjectionMatrix = glm::mat4 (1);
     normalMatrix = glm::mat3 (1);
     matricesReady = true;
     currentMatrix = 0;
-    gameObject = go;
   }
-
+  
   void Transform::Load_Identity ()
   {
     if (currentMatrix == MODEL_MATRIX || currentMatrix == VIEW_MATRIX)
     {
-      modelMatrix [currentMatrix] = glm::mat4 (1.0);
+      modelMatrix [modelMatrix.size () - 1] = glm::mat4 (1.0);
+      viewMatrix [modelMatrix.size () - 1] = glm::mat4 (1.0);
       position = glm::vec3 (0);
       scale = glm::vec3 (1);
-      rotation = 0;
+    }
+    else
+    {
+      projectionMatrix [viewMatrix.size () - 1] = glm::mat4 (1.0);
     }
     matricesReady = false;
-  }
-
-
-  void Transform::Initalize ()
-  {
-  }
-
-
-  void Transform::Serialize ()
-  {
-    //////////////////////////////////////////////////////////////////////////
-    // DATA TO BE SERIALIZED
-    // position : glm::vec3 (Serialized Data)
-    // scale    : glm::vec3 (Serialized Data)
-    // rotation : float (Serialized Data)
-    //////////////////////////////////////////////////////////////////////////
   }
 
   bool Transform::MatrixMode (int m)
@@ -65,10 +56,28 @@ namespace Framework
   }
 
 
+  //// Orthographic Projection
+  //void Transform::Ortho (float left, float right, float bottom, float top, float near, float far)
+  //{
+  //  projectionMatrix [projectionMatrix.size () - 1] = glm::ortho (left, right, bottom, top, near, far);
+  //  matricesReady = false;
+  //}
+
+  //// Perspective Projection
+  //void Transform::Perspective (float angle, float aRatio, float near, float far)
+  //{
+  //  projectionMatrix [projectionMatrix.size () - 1] = glm::perspective (angle, aRatio, near, far);
+  //  matricesReady = false;
+  //}
+
   // Replace the Fixed Functionality glTranslatef, glScalef,...
   void Transform::Translate (float x, float y, float z)
   {
-    position += glm::vec3 (x, y, z);
+    if (currentMatrix == MODEL_MATRIX)
+    {
+      modelMatrix [modelMatrix.size () - 1] *= glm::translate (glm::vec3 (x, y, z));
+      position += glm::mat3 (Camera::GetViewToProjectionMatrix () * Camera::GetWorldToViewMatrix () * modelMatrix [modelMatrix.size () - 1]) * glm::vec3 (x, y, z);
+    }
 
     Print (position);
     matricesReady = false;
@@ -77,42 +86,60 @@ namespace Framework
   // Non-Uniform Scale
   void Transform::Scale (float x, float y, float z)
   {
-    scale = glm::vec3 (x, y, z);
+    if (currentMatrix == MODEL_MATRIX)
+    {
+      modelMatrix [modelMatrix.size () - 1] *= glm::scale (glm::vec3 (x, y, z));
+    }
+    else if (currentMatrix == VIEW_MATRIX)
+    {
+      viewMatrix [viewMatrix.size () - 1] *= glm::scale (-glm::vec3 (x, y, z));
+    }
     matricesReady = false;
   }
 
   // Uniform Scale
   void Transform::Scale (float v)
   {
-    scale = glm::vec3 (v);
+    if (currentMatrix == MODEL_MATRIX)
+    {
+      modelMatrix [modelMatrix.size () - 1] *= glm::scale (glm::vec3 (v, v, v));
+      scale = glm::vec3 (v);
+    }
+    else if (currentMatrix == VIEW_MATRIX)
+    {
+      viewMatrix [viewMatrix.size () - 1] *= glm::scale (-glm::vec3 (v, v, v));
+    }
     matricesReady = false;
   }
 
 
   void Transform::Rotate (float angle)
   {
-    rotation += angle;
+    if (currentMatrix == MODEL_MATRIX)
+    {
+      modelMatrix [modelMatrix.size () - 1] *= glm::rotate (angle, glm::vec3 (0.0f, 0.0f, 1.0f));
+    }
+    else if (currentMatrix == VIEW_MATRIX)
+    {
+      viewMatrix [viewMatrix.size () - 1] *= glm::rotate (-angle, glm::vec3 (0.0f, 0.0f, 1.0f));
+    }
     matricesReady = false;
   }
 
   //getters
-  glm::mat4 Transform::GetModelMatrix ()
+  glm::mat4& Transform::GetModelMatrix()
   {
-    return modelMatrix [currentMatrix];
-  }
-
-  glm::mat4 Transform::GetModelViewProjectionMatrix ()
-  {
-    if (!matricesReady)
-      return Camera::GetViewToProjectionMatrix () * Camera::GetWorldToViewMatrix () * modelMatrix [currentMatrix];
-
-    return modelViewProjectionmatrix [currentMatrix];
+    return modelMatrix [modelMatrix.size () - 1];
   }
 
 
   glm::vec3 Transform::GetPosition()
   {
-    return position;
+    //if (currentMatrix == 0)
+    {
+      //return glm::vec3 (GetModelMatrix()[3][0], GetModelMatrix() [3][1], GetModelMatrix() [3][2]);
+      return position;
+    }
   }
 
 
@@ -122,21 +149,13 @@ namespace Framework
   }
 
   //GLSL
-  void Transform::UpdateMatrices()
-{
+  void Transform::UpdateMatrices (GLuint programId)
+  {
     if (!matricesReady)
     {
-      modelMatrix [currentMatrix] =
-        glm::translate (position) *
-        glm::rotate (rotation, glm::vec3 (0, 0, 1)) *
-        glm::scale (scale);
-
-      modelViewProjectionmatrix [currentMatrix] =
-        Camera::GetViewToProjectionMatrix () *
-        Camera::GetWorldToViewMatrix () *
-        modelMatrix [currentMatrix];
-
-      matricesReady = true;
+      glUniformMatrix4fv (glGetUniformLocation (programId, "modelMatrix"), 1, GL_FALSE, glm::value_ptr (modelMatrix [modelMatrix.size () - 1]));
+      glUniformMatrix4fv (glGetUniformLocation (programId, "viewMatrix"), 1, GL_FALSE, glm::value_ptr (Camera::GetWorldToViewMatrix ()));
+      glUniformMatrix4fv (glGetUniformLocation (programId, "prpjectionmatrix"), 1, GL_FALSE, glm::value_ptr (Camera::GetViewToProjectionMatrix ()));
     }
   }
 
@@ -144,14 +163,10 @@ namespace Framework
 
   void Transform::push_matrix ()
   {
-    ++currentMatrix;
-    modelMatrix.push_back (glm::mat4 (1));
   }
 
   void Transform::pop_matrix ()
   {
-    modelMatrix.pop_back ();
-    --currentMatrix;
   }
 
   Transform::~Transform ()

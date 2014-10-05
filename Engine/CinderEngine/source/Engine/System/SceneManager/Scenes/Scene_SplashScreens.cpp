@@ -38,8 +38,12 @@ namespace Framework
   //namespace Splash_Screen
   //{
   static float alpha = 0.0f;
-  static Transform light (NULL);
-  static Sprite teamLogo (NULL), dpLogo (NULL), vectorLogo (NULL), teamName (NULL);
+  static Camera camera(true);
+  static Transform light;
+  static Sprite teamLogo;
+  static Sprite dpLogo;
+  static Sprite vectorLogo;
+  static Sprite teamName;
   static float camScrollSpeed = 0.05f;
   static const float minLight = 200.0f;
   static float shininess = minLight;
@@ -127,16 +131,16 @@ namespace Framework
       //camera.UpdatePosition (glm::vec3 (camScrollSpeed, 0.0f, 0.0f));
       break;
     case GLFW_KEY_UP:
-      Camera::current->UpdatePosition (glm::vec3 (0.0f, camScrollSpeed, 0.0f));
+      camera.UpdatePosition (glm::vec3 (0.0f, camScrollSpeed, 0.0f));
       break;
     case GLFW_KEY_DOWN:
-      Camera::current->UpdatePosition (glm::vec3 (0.0f, -camScrollSpeed, 0.0f));
+      camera.UpdatePosition (glm::vec3 (0.0f, -camScrollSpeed, 0.0f));
       break;
     case GLFW_KEY_Z:
-      Camera::current->Zoom (0.01f);
+      camera.Zoom (0.01f);
       break;
     case GLFW_KEY_X:
-      Camera::current->Zoom (-0.01f);
+      camera.Zoom (-0.01f);
       break;
     default:
       break;
@@ -181,6 +185,7 @@ namespace Framework
     light.Translate (0, 0.0f, 0);
     // Generate a Quad for Us
     ShapeData quad = ShapeGenerator::Generate_Quad ();
+
     vao = new VAO ();
     vbo = new VBO (quad.vbo_size (), quad.vertices);
     ebo = new EBO (quad.ebo_size (), quad.indices);
@@ -189,22 +194,22 @@ namespace Framework
     quad.Clean ();
 
     // Create Sprite
-    teamLogo.Create_Sprite
+    teamLogo.Create
       (
       Resources::RS->Get_Shader ("LightingAnimation"),
       Resources::RS->Get_SpriteSheet ("HighResLogo.jpg")
       );
-    dpLogo.Create_Sprite
+    dpLogo.Create
       (
       Resources::RS->Get_Shader ("Lighting"),
       Resources::RS->Get_Texture ("DigiPenLogo.png")
       );
-    vectorLogo.Create_Sprite
+    vectorLogo.Create
       (
       Resources::RS->Get_Shader ("Default"),
       Resources::RS->Get_Texture ("VectorLogo.jpg")
       );
-    teamName.Create_Sprite
+    teamName.Create
       (
       Resources::RS->Get_Shader ("BlendIn"),
       Resources::RS->Get_Texture ("TeamYarbus.png")
@@ -232,7 +237,7 @@ namespace Framework
 
   void Scene_SplashScreens::Update (const double dt)
   {
-    light.UpdateMatrices ();
+    light.UpdateMatrices (0);
 
     std::cout << shininess << std::endl;
 

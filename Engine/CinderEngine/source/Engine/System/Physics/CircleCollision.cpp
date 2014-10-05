@@ -41,7 +41,7 @@ namespace Framework
       {
         std::string ColEvent = std::string("COLLISION");
         CollisionEvent* collision = (CollisionEvent*)EVENTSYSTEM->GetEvent(ColEvent);
-        collision->OtherObject = p.gameObject;
+        collision->OtherObject = p.Base;
         collision->normal = pos - ppos;
         collision->normal.normalize();
         collision->DispatchEvent();
@@ -56,7 +56,7 @@ namespace Framework
       {
         std::string ColEvent = std::string("COLLISION");
         CollisionEvent* collision = (CollisionEvent*)EVENTSYSTEM->GetEvent(ColEvent);
-        collision->OtherObject = l.gameObject;
+        collision->OtherObject = l.Base;
         collision->normal = l.GetNormal();
         collision->normal.normalize();
         collision->DispatchEvent();

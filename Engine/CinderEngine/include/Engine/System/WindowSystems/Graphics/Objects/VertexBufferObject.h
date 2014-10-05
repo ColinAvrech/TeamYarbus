@@ -32,9 +32,8 @@ namespace Framework
     void* mapSubBufferToMemory (int usage, GLuint offset, GLuint stride);
     void unmapBuffer ();
 
-    void bindVBO (GLenum type = GL_ARRAY_BUFFER);
-    void unBindVBO ();
-    void uploadDataToGPU (GLenum drawMode);
+    void bindVBO (int a_iBufferType = GL_ARRAY_BUFFER);
+    void uploadDataToGPU (int iUsageHint);
 
     void addData (void* data, GLuint size);
 

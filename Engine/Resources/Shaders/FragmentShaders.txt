@@ -3,4 +3,3 @@ Lighting.frag
 Particle.frag
 BlendIn.frag
 Fragment.frag
-DebugDraw.frag

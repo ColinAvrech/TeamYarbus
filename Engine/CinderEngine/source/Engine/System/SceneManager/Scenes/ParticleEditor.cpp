@@ -60,6 +60,8 @@ namespace Framework
     glm::mat4 projectionMatrix;
   } camera_;
 
+
+  static Camera camera (true);
   static CpuTimeQuery cpuParticlesUpdate;
   static CpuTimeQuery cpuBuffersUpdate;
   static GpuTimerQuery gpuUpdate;
@@ -117,6 +119,7 @@ namespace Framework
   void ParticleEditor::Load_Scene (const char* filename)
   {
     EVENTSYSTEM->Connect (NULL, Events::KEY_ANY, BaseEvent::BaseCall(OnKeyPressed));
+
     //TwInit (TW_OPENGL, NULL);
     // or
 #ifdef _USE_ANTWEAK
@@ -198,7 +201,7 @@ namespace Framework
     Editor::AddTweak(audioBar, "Set Preset", &reverbPreset, "min=0 max=23 group=Reverb");
     Editor::AddSeparator(audioBar);
     TwDefine (" Audio position='20 500' ");
-    //Camera::main->worldToView = glm::lookAt (Camera::main->viewDirection * 0.5f, Camera::main->position, Camera::main->up);
+    Camera::main->worldToView = glm::lookAt (Camera::main->viewDirection * 0.5f, Camera::main->position, Camera::main->up);
   }
 
 

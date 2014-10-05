@@ -20,11 +20,6 @@ public:
     glDeleteBuffers (1, &ebo);
   }
 
-  inline void Bind ()
-  {
-    glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, ebo);
-  }
-
 private:
   GLuint ebo;
 };

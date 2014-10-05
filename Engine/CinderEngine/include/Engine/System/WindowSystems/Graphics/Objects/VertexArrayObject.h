@@ -18,16 +18,6 @@ namespace Framework
       glDeleteVertexArrays (1, &vao);
     }
 
-    inline void bindVAO ()
-    {
-      glBindVertexArray (vao);
-    }
-
-    inline void unbindVAO ()
-    {
-      glBindVertexArray (0);
-    }
-
   private:
     GLuint vao;
   };

@@ -111,7 +111,7 @@ namespace Framework
     {
       float rnd = (float) rand () / (float) (RAND_MAX);
       float rndVal = (float) rand () / (float) (RAND_MAX / (360.0f * 3.14f * 2.0f));
-      float rndRad = (float) rand () / (float) (RAND_MAX) * 0.2f;
+      float rndRad = (float) rand () / (float) (RAND_MAX) * 0.2f; // TODO : Change multiplier to get cool effects (e.g. wider range)
       verticesPos [i].x = destPosX + cos (rndVal) * rndRad;
       verticesPos [i].y = destPosY + sin (rndVal) * rndRad;
       verticesPos [i].z = 0.0f;
@@ -220,13 +220,15 @@ namespace Framework
     GLuint posAttrib = shader->attribLocation ("position");
 
     glBindBuffer (GL_ARRAY_BUFFER, SSBOPos);
-    shader->vertexAttribPtr (posAttrib, 4, GL_FLOAT, GL_FALSE, 0, 0);
-    shader->enableVertexAttribArray (posAttrib);
+    glVertexAttribPointer (posAttrib, 4, GL_FLOAT, GL_FALSE, 0, 0);
+    glEnableVertexAttribArray (posAttrib);
     glPointSize (particleSize);
     glDrawArrays (GL_POINTS, 0, particleCount);
 
     texture->Unbind ();
     shader->Disable ();
+
+    glfwSwapBuffers (WINDOWSYSTEM->Get_Window());
 
     frameDelta = (float) (glfwGetTime () - frameTimeStart) * 100.0f;
   }
