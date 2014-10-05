@@ -15,3 +15,4 @@ TeamYarbus.png
 VectorLogo.png
 VectorLogo.jpg
 Particle.bmp
+Circle.png

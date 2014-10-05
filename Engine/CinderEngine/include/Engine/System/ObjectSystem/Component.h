@@ -41,7 +41,7 @@ namespace Framework
     virtual void Serialize(){};
 
     //Variables that all components have
-    GameObject* Base;
+    GameObject* gameObject;
   };
 
 }

@@ -1,0 +1,49 @@
+/******************************************************************************/
+/*!
+\file   ColliderShape.cpp
+\author Anna Pearson
+\par    Course: GAM200
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+\brief  The base shape class, and its derived classes: point, line & circle.
+*/
+/******************************************************************************/
+
+#include "ColliderShape.h"
+
+namespace Framework
+{
+  namespace Physics
+  {
+
+    //////////////////////////////////////////////////////////////////////////
+    // Shape Class Implementations
+    //////////////////////////////////////////////////////////////////////////
+
+    //////////////////////////////////////////////////////////////////////////
+    // Point Collider Class Implementations
+    //////////////////////////////////////////////////////////////////////////
+
+    //////////////////////////////////////////////////////////////////////////
+    // Line Collider Class Implementations
+    //////////////////////////////////////////////////////////////////////////
+
+    //////////////////////////////////////////////////////////////////////////
+    // Circle Collider Class Implementations
+    //////////////////////////////////////////////////////////////////////////
+
+    void Circle::Initalize ()
+    {
+    }
+
+    void Circle::Serialize ()
+    {
+      //PHYSICSSYSTEM->AddLineCollisder(this);
+    }
+
+    void Circle::SetRadius (float radius_)
+    {
+      radius = radius_;
+    }
+
+  }
+}

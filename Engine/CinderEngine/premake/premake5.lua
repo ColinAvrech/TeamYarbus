@@ -31,6 +31,7 @@ solution "CinderEngine"
       "../../Resources/**.txt",
       "../../Resources/**.frag",
       "../../Resources/**.vs",
+      "../../Resources/**.gs",
       "../../Resources/**.cl",
     }
     

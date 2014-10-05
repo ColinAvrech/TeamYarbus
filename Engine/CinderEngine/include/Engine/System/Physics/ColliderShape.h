@@ -22,19 +22,23 @@ namespace Framework
     //contains collision data necessary for resolution
     //base class of event system - include in collision.cpp
 
+    //////////////////////////////////////////////////////////////////////////
+    // Collider Interface
+    //////////////////////////////////////////////////////////////////////////
+
     class Shape : public Component
     {
     public:
       // Getters
-      Vec2 getPosition(void){
+      inline Vec2 getPosition(void){
         return position;
-      };
-      Vec2 getOffset(void){
+      }
+      inline Vec2 getOffset(void){
         return offset;
-      };
-      Vec2 getVelocity(void){
+      }
+      inline Vec2 getVelocity(void){
         return velocity;
-      };
+      }
 
       const static std::string Name;
 
@@ -53,7 +57,7 @@ namespace Framework
       bool ghost;
       bool sendsEvents;
     };
-    ////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
 
     //forward Declariation
     class Circle;
@@ -86,10 +90,14 @@ namespace Framework
       /*Vec2 ResolvePointvsCircle(Circle c);
       Vec2 ResolvePointvsLine(Vec2 Line);*/
     };
-    ////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
 
     // forward Declairation
     class Point;
+
+    //////////////////////////////////////////////////////////////////////////
+    // Line Collider
+    //////////////////////////////////////////////////////////////////////////
 
     class LineSegment : public Shape
     {
@@ -111,8 +119,14 @@ namespace Framework
       }
 
       // Getters
-      Vec2 GetNormal(void) { return normalVec; }
-      float GetP1DotNormal(void) { return p1dotNormal; }
+      inline Vec2 GetNormal(void)
+      {
+        return normalVec;
+      }
+      inline float GetP1DotNormal(void)
+      {
+        return p1dotNormal;
+      }
 
     private:
       // Private data
@@ -127,39 +141,35 @@ namespace Framework
       /*Vec2 ResolveLinevsCircle(Circle c);
       Vec2 ResolveLinevsPoint(Point p);*/
     };
-    ////////////////////////////////////////////////////////////
+
+    //////////////////////////////////////////////////////////////////////////
+    // Circle Collider
+    //////////////////////////////////////////////////////////////////////////
 
     class Circle : public Shape
     {
     public:
-      Circle(GameObject* obj) : radius(5)
+      Circle(GameObject* obj) : radius(1.0f)
       {
-        Base = obj;
+        gameObject = obj;
       }
       ~Circle()
       {}
 
       /*!Telegraph that the component is active*/
-      void Initalize()
-      {
-        //PHYSICSSYSTEM->AddLineCollisder(this);
-      }
-
-      void Serialize()
-      {
-      }
+      virtual void Initalize ();
+      virtual void Serialize ();
 
       // Getters
-      float GetRadius(void){
+      inline float GetRadius(void)
+      {
         return radius;
-      };
-
-     
+      }
 
       void DetectCircle(Circle* c);
       void DetectPoint(Point p);
       void DetectLine(LineSegment l);
-
+      void SetRadius (float radius_);
     private:
       // Private data
       float radius;
@@ -172,5 +182,8 @@ namespace Framework
       Vec2 ResolveCirclevsLine(LineSegment l);
       */
     };
+    //////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
+
   } //Physics
 } //Framework

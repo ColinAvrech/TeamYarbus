@@ -18,6 +18,10 @@ namespace Framework
     {
       delete (i.second);
     }
+    for (auto i : computeShaders)
+    {
+      delete (i.second);
+    }
     for (auto i : textures)
     {
       delete (i.second);
@@ -225,7 +229,6 @@ namespace Framework
 
   Texture* Resources::Get_Texture (std::string textureName)
   {
-    //return textures [textureName];
     for (auto i : textures)
     {
       if (i.first == textureName)
@@ -234,12 +237,12 @@ namespace Framework
       }
     }
 
+    std::cout << Console::red << textureName << " Invalid Name...Using Default Texture\n" << Console::gray;
     return textures ["Default"];
   }
 
   SpriteSheet* Resources::Get_SpriteSheet (std::string spriteSheetName)
   {
-    //return textures [textureName];
     for (auto i : spriteSheets)
     {
       if (i.first == spriteSheetName)
@@ -248,12 +251,12 @@ namespace Framework
       }
     }
 
+    std::cout << Console::red << spriteSheetName << " Invalid Name...\n" << Console::gray;
     throw ("Invalid Name...");
   }
 
   Shader* Resources::Get_Shader (std::string shaderName)
   {
-    //return textures [textureName];
     for (auto i : shaders)
     {
       if (i.first == shaderName)
@@ -262,6 +265,7 @@ namespace Framework
       }
     }
 
+    std::cout << Console::red << shaderName << " Invalid Name...Using Default Shader\n" << Console::gray;
     return shaders ["Default"];
   }
 
@@ -275,6 +279,7 @@ namespace Framework
       }
     }
 
+    std::cout << Console::red << soundName << " Invalid Name...\n" << Console::gray;
     throw ("Invalid Name...");
   }
 
@@ -289,6 +294,7 @@ namespace Framework
       }
     }
 
+    std::cout << Console::red << shaderName << " Invalid Name...\n" << Console::gray;
     throw ("Invalid Name...");
   }
 

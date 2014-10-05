@@ -20,15 +20,22 @@ namespace Framework
   class Camera : public Component
   {
   public:
-    Camera (bool main = false);
+    Camera () : up (0, 1, 0) {}
+    Camera (GameObject* go);
+
+    virtual void Initalize ();
+    virtual void Serialize ();
+
     void MouseUpdate (const glm::vec2& newPosition);
     void MouseUpdateY (const glm::vec2& newPosition);
     void UpdatePosition (const glm::vec3& deltaPos);
     void Zoom (float zoom);
 
-    static glm::mat4 GetWorldToViewMatrix ();
-    static glm::mat4 GetViewToProjectionMatrix ();
-    static float GetOrthographicSize ();
+    glm::mat4 WorldToViewMatrix ();
+    glm::mat4 ViewToProjectionMatrix ();
+
+    inline static glm::mat4 GetWorldToViewMatrix ();
+    inline static glm::mat4 GetViewToProjectionMatrix ();
     static std::vector <Camera*> allCameras;
     static Camera* current;
     static Camera* main;
@@ -38,10 +45,11 @@ namespace Framework
     glm::vec3 viewDirection;
     glm::mat4 worldToView;
     glm::mat4 viewToProjection;
-    const glm::vec3 up;
+
     // The non-base component usees DefineComponentName macro to name component
     const static std::string Name;
   private:
+    const glm::vec3 up;
     glm:: vec2 oldPosition;
     bool matricesReady;
 
@@ -51,7 +59,43 @@ namespace Framework
     float nearPlane;
     float farPlane;
 
-  };  
+  };
+
+  //////////////////////////////////////////////////////////////////////////
+  // Inline Methods
+  //////////////////////////////////////////////////////////////////////////
+
+  inline glm::mat4 Camera::GetWorldToViewMatrix ()
+  {
+    if (!Camera::main->matricesReady)
+    {
+      Camera::main->worldToView = glm::lookAt
+        (
+        Camera::current->position,
+        Camera::current->position + Camera::current->viewDirection,
+        Camera::current->up
+        );
+    }
+
+    return Camera::main->worldToView;
+  }
+
+  inline glm::mat4 Camera::GetViewToProjectionMatrix ()
+  {
+    if (!Camera::main->matricesReady)
+    {
+      Camera::main->viewToProjection =
+        glm::perspective
+        (
+        Camera::main->fov,
+        Camera::main->aspect,
+        Camera::main->nearPlane,
+        Camera::main->farPlane
+        );
+    }
+
+    return Camera::main->viewToProjection;
+  }
 }
 
 #endif
