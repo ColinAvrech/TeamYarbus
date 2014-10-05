@@ -18,18 +18,18 @@ namespace Framework
 	{
 		// not counting offset
 		glm::vec2 pos;
-		pos.x = static_cast<Transform*>(Base->Transform)->position.x;
-		pos.y = static_cast<Transform*>(Base->Transform)->position.y;
+		pos.x = static_cast<Transform*>(gameObject->Transform)->GetPosition ().x;
+		pos.y = static_cast<Transform*>(gameObject->Transform)->GetPosition ().y;
 		glm::vec2 cpos;
-		cpos.x = static_cast<Transform*>(c->Base->Transform)->position.x;
-		cpos.y = static_cast<Transform*>(c->Base->Transform)->position.y;
+		cpos.x = static_cast<Transform*>(c->gameObject->Transform)->GetPosition ().x;
+		cpos.y = static_cast<Transform*>(c->gameObject->Transform)->GetPosition ().y;
 		float rad = GetRadius() + c->GetRadius();
 		float dist = Physics::Distance(pos, cpos);
 		if (rad >= dist)
 		{
 			std::string ColEvent = std::string("COLLISION");
 			CollisionEvent* collision = (CollisionEvent*)EVENTSYSTEM->GetEvent(ColEvent);
-			collision->OtherObject = c->Base;
+			collision->OtherObject = c->gameObject;
 			collision->normal = pos - cpos;
 			glm::normalize(collision->normal);
 			collision->DispatchEvent();
@@ -47,7 +47,7 @@ namespace Framework
 		{
 			std::string ColEvent = std::string("COLLISION");
 			CollisionEvent* collision = (CollisionEvent*)EVENTSYSTEM->GetEvent(ColEvent);
-			collision->OtherObject = p->Base;
+			collision->OtherObject = p->gameObject;
 			collision->normal = pos - ppos;
 			glm::normalize(collision->normal);
 			collision->DispatchEvent();
@@ -62,7 +62,7 @@ namespace Framework
 		{
 			std::string ColEvent = std::string("COLLISION");
 			CollisionEvent* collision = (CollisionEvent*)EVENTSYSTEM->GetEvent(ColEvent);
-			collision->OtherObject = l->Base;
+			collision->OtherObject = l->gameObject;
 			collision->normal = l->GetNormal();
 			glm::normalize(collision->normal);
 			collision->DispatchEvent();
