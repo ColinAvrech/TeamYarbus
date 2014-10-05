@@ -1,4 +1,11 @@
-
+/******************************************************************************/
+/*!
+\file   RigidBody.h
+\author Anna Pearson
+\par    Course: GAM200
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+*/
+/******************************************************************************/
 #pragma once
 
 #include "Vec2.h"
@@ -6,33 +13,33 @@
 
 namespace Framework
 {
-	namespace Physics
-	{
-		class RigidBody : public Component
-		{
-		public:
-			RigidBody() : vel(1, 0){}
-		
-			Vec2 getVel(void){
-				return vel;
-			};
-			enum DynamicState
-			{
-				Kinematic,
-				Static,
-				Dynamic
-			};
+  class RigidBody : public Component
+  {
+  public:
+    RigidBody (){};
+    ~RigidBody (){};
 
-			// The non-base component uses DefineComponentName macro to name component
-			const static std::string Name;
+    Vec2 getVel (void)
+    {
+      return vel;
+    };
 
-		private:
-			Vec2 vel;
-			Vec2 angVel;
-			float mass;
-			bool allowSleep;
-			bool rotationLocked;
-			DynamicState state;
-		};
-	} //Physics
+    enum DynamicState
+    {
+      Static,    //unmoving
+      Kinematic, //moving position, velocity acceleration
+      Dynamic    //moving with kinematic & all forces considered
+    };
+
+    // The non-base component uses DefineComponentName macro to name component
+    const static std::string Name;
+
+  private:
+    Vec2 vel;
+    Vec2 angVel;
+    float mass;
+    bool allowSleep;
+    bool rotationLocked;
+    DynamicState state;
+  };
 } //Framework

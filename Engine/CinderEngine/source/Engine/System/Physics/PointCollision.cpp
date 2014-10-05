@@ -1,41 +1,46 @@
-#include "ColliderShape.h"
-#include "Collision.h"
+/******************************************************************************/
+/*!
+\file   PointCollision.cpp
+\author Anna Pearson
+\par    Course: GAM200
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+*/
+/******************************************************************************/
+#include "ShapeCollider.h"
+#include "CollisionRepeats.h"
 #include "CollisionEvent.h"
 #include "EventSystem.h"
 #include "ObjectSystem.h"
 
 namespace Framework
 {
-	namespace Physics
-	{
-		void Point::DetectCircle(Circle c)
-		{
-			Vec2 ppos = getPosition();
-			Vec2 cpos = c.getPosition();
-			float rad = c.GetRadius();
-			if (CirclevsPoint(rad, cpos, ppos))
-			{
-				std::string ColEvent = std::string("COLLISION");
-				CollisionEvent* collision = (CollisionEvent*)EVENTSYSTEM->GetEvent(ColEvent);
-				collision->OtherObject = c.gameObject;
-				collision->normal = cpos - ppos;
-				collision->normal.normalize();
-				collision->DispatchEvent();
-			}
-		}
+  void PointCollider::DetectCircle (CircleCollider* c)
+  {
+    glm::vec2 ppos = getPosition ();
+    glm::vec2 cpos = c->getPosition ();
+    float rad = c->GetRadius ();
+    if (Physics::CirclevsPoint (rad, cpos, ppos))
+    {
+      std::string ColEvent = std::string ("COLLISION");
+      CollisionEvent* collision = (CollisionEvent*) EVENTSYSTEM->GetEvent (ColEvent);
+      collision->OtherObject = c->Base;
+      collision->normal = cpos - ppos;
+      glm::normalize (collision->normal);
+      collision->DispatchEvent ();
+    }
+  }
 
-		void Point::DetectLine(LineSegment l)
-		{
-			Vec2 pos = getPosition();
-			if (PointvsLine(pos, l))
-			{
-				std::string ColEvent = std::string("COLLISION");
-				CollisionEvent* collision = (CollisionEvent*)EVENTSYSTEM->GetEvent(ColEvent);
-				collision->OtherObject = l.gameObject;
-				collision->normal = l.GetNormal();
-				collision->normal.normalize();
-				collision->DispatchEvent();
-			}
-		}
-	}
+  void PointCollider::DetectLine (LineCollider* l)
+  {
+    glm::vec2 pos = getPosition ();
+    if (Physics::PointvsLine (pos, *l))
+    {
+      std::string ColEvent = std::string ("COLLISION");
+      CollisionEvent* collision = (CollisionEvent*) EVENTSYSTEM->GetEvent (ColEvent);
+      collision->OtherObject = l->Base;
+      collision->normal = l->GetNormal ();
+      glm::normalize (collision->normal);
+      collision->DispatchEvent ();
+    }
+  }
 }
