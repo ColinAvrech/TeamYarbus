@@ -13,7 +13,7 @@
 #include "ResourceManager.h"
 #include "WindowSystem.h"
 #include "DebugCircle.h"
-#include "ColliderShape.h"
+#include "ShapeCollider.h"
 #include "EventSystem.h"
 #include "BaseEvent.h"
 #include "KeyEvent.h"
@@ -25,7 +25,7 @@ namespace Framework
   DebugCircleRenderer debugRenderer;
   int circleDivisions = 40;
   float circleRadius = 0.3f;
-  Circle circle (NULL), circle1 (NULL);
+  CircleCollider circle (NULL), circle1 (NULL);
   Sprite sprite (NULL), sprite1 (NULL);
   VAO* vao;
   VBO* vbo;

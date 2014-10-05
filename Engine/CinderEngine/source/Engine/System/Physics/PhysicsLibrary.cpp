@@ -22,7 +22,7 @@ namespace Framework
 		{
 			glm::vec2 reflect;
 			float dP = DotProduct(velocity, normal);
-			reflect = velocity - (2.0 * dP * normal);
+			reflect = velocity - (2.0f * dP * normal);
 			return reflect;
 		}
 

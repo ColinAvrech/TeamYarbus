@@ -53,7 +53,7 @@ namespace Framework
 		const static std::string Name;
 		PointCollider(GameObject *obj)
 		{
-			Base = obj;
+			gameObject = obj;
 		}
 		~PointCollider()
 		{}
@@ -82,7 +82,7 @@ namespace Framework
 		const static std::string Name;
 		LineCollider(GameObject* obj)
 		{
-			Base = obj;
+			gameObject = obj;
 		}
 		~LineCollider()
 		{}
@@ -119,9 +119,9 @@ namespace Framework
 	{
 	public:
 		const static std::string Name;
-		CircleCollider(GameObject* obj)
+    CircleCollider (GameObject* obj) : radius (1)
 		{
-			Base = obj;
+			gameObject = obj;
 		}
 		~CircleCollider()
 		{}

@@ -13,7 +13,7 @@
 
 #include "GraphicsCommon.h"
 #include "ComponentInclude.h"
-#include "ColliderShape.h"
+#include "ShapeCollider.h"
 
 namespace Framework
 {
@@ -25,7 +25,7 @@ namespace Framework
     ~DebugCircleRenderer ();
     void Generate_Shaders ();
     void Generate_Buffers ();
-    void Draw (Transform* transform, Circle* circle);
+    void Draw (Transform* transform, CircleCollider* circle);
 
   private:
     Shader* dShader;
