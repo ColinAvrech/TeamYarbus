@@ -33,3 +33,8 @@ Vertex.vs
 Fragment.frag
 0
 Simple
+>
+DebugDraw.vs
+DebugDraw.frag
+Circle.gs
+DebugCircle

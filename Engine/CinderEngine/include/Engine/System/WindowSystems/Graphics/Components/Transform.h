@@ -27,70 +27,51 @@ namespace Framework
   class Transform : public Component
   {
   public:
-    Transform ();
+    Transform () {}
+    Transform (GameObject* go);
     ~Transform ();
 
+    virtual void Initalize ();
+    virtual void Serialize ();
 
+    //////////////////////////////////////////////////////////////////////////
+    // Transformations
     void Load_Identity ();
-
-    // Type of Projection to Be Used
-    // Mostly Orthographic
-    void Ortho (float left, float right, float bottom, float top, float near, float far);
-    void Perspective (float angle, float aRatio, float near, float far);
-
-    // Replace the Fixed Functionality glTranslatef, glScalef,...
     void Translate (float x, float y, float z);
     void Scale (float x, float y, float z);
     void Scale (float v);
     void Rotate (float angle);
+    //////////////////////////////////////////////////////////////////////////
+    bool MatrixMode (int m);
+    void UpdateMatrices ();
 
     //getters
-    glm::mat4& GetModelMatrix ();
-    glm::mat4& GetViewMatrix ();
-    glm::mat4& GetModelViewMatrix ();
-    glm::mat4& GetProjectionMatrix ();
-    glm::mat4& GetModelViewProjectionMatrix ();
+    glm::mat4 GetModelMatrix ();
+    glm::mat4 GetModelViewProjectionMatrix ();
     glm::vec3 GetPosition ();
     glm::vec3 GetScale ();
-
-	//setter
-	void setPos(float x, float y, float z){ position.z = z; position.y = y; position.x = x; }
-  void setScale(float x, float y, float z){ scale.x = x; scale.y = y; scale.z = z; }
-
-
-    bool MatrixMode (int m);
-  
-    //GLSL
-    void UpdateMatrices (GLuint programId);
+    float GetRotation ();
 
     static void Print (glm::vec3 position);
 
     // The non-base component usees DefineComponentName macro to name component
     const static std::string Name;
-    glm::vec3 position;
   private:
     int currentMatrix;
     //Matrix Stack
     // Useful When Using Parent-Child Structure For Complex Objects
     // Eg. Robot, Objects with many parts as children
-    std::vector<glm::mat4> modelMatrix;
-    std::vector<glm::mat4> viewMatrix;
-    std::vector<glm::mat4> projectionMatrix;
-
-    // Replace the Fixed Functionality glPushMatrix, glPopMatrix
+    std::vector <glm::mat4> modelMatrix;
+    std::vector <glm::mat4> modelViewProjectionmatrix;
     void push_matrix ();
     void pop_matrix ();
+    glm::vec3 position;
+    glm::vec3 scale;
+    float rotation;
+    glm::mat3 normalMatrix;
 
     // To avoid Unnecesary calculation in Update Matrices
     bool matricesReady;
-    //glm::vec3 position;
-    glm::vec3 scale;
-    float rotation;
-    // This Data Will Be Calculate By CPU instead of GPU
-    glm::mat4 modelViewMatrix;
-    glm::mat4 modelViewProjectionMatrix;
-    glm::mat3 normalMatrix;
-
   };
 }
 

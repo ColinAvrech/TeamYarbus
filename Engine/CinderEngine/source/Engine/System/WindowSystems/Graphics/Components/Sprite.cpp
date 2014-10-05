@@ -1,49 +1,65 @@
 #include "Sprite.h"
 #include "Camera.h"
+#include "Transform.h"
 
 namespace Framework
 {
-  Sprite::Sprite ()
+  Sprite::Sprite () : transform (*(new Transform ())) {}
+
+  Sprite::Sprite (GameObject* go) : transform (*(new Transform (go)))
   {
-    modelMatrix = glm::translate (glm::vec3 (0.0f, 0.0f, -1.0f));
-    animated = false;
+    gameObject = go;
   }
 
 
-  // NON-DEFAULT CONSTRUCTOR
-  // MUST SPECIFY SHADER AND TEXTURE
-  // MESH AND TRI DATA WILL BE PASSED TO CREATE CUSTOM MESH
-  // ELSE THE DEFAULT QUAD WILL BE USED
-  Sprite::Sprite (Shader* _shader, Texture* _texture /*=NULL*/)
-  {
-    //Create_Mesh (_meshData, _triData);
+  //// NON-DEFAULT CONSTRUCTOR
+  //// MUST SPECIFY SHADER AND TEXTURE
+  //// MESH AND TRI DATA WILL BE PASSED TO CREATE CUSTOM MESH
+  //// ELSE THE DEFAULT QUAD WILL BE USED
+  //Sprite::Sprite (Shader* _shader, Texture* _texture /*=NULL*/) : transform (*(new Transform ()))
+  //{
+  //  //Create_Mesh (_meshData, _triData);
+  //  shader = _shader;
+  //  texture = _texture;
+  //  animated = false;
+  //}
 
+
+  //Sprite::Sprite (Shader* _shader, SpriteSheet* _atlas) : transform (*(new Transform ()))
+  //{
+  //  shader = _shader;
+  //  texture = _atlas;
+  //  atlas = _atlas;
+  //  animated = false;
+  //  Specify_Attributes ();
+  //}
+
+  void Sprite::Initalize ()
+  {
+  }
+
+
+  void Sprite::Serialize ()
+  {
+    //////////////////////////////////////////////////////////////////////////
+    // DATA TO BE SERIALIZED
+    // shader   : Shader*       Resources::RS->Get_Shader (Serialized String Name);
+    // texture  : Texture*      Resources::RS->Get_Texture (Serialized String Name);
+    // atlas    : SpriteSheet*  Resources::RS->Get_SpriteSheet (Serialized String Name);
+    //////////////////////////////////////////////////////////////////////////
+  }
+
+
+  void Sprite::Create_Sprite (Shader* _shader, Texture* _texture /*= TEXTURE_NONE*/)
+  {
     shader = _shader;
     texture = _texture;
-    animated = false;
-  }
-
-
-  Sprite::Sprite (Shader* _shader, SpriteSheet* _atlas)
-  {
-    shader = _shader;
-    texture = _atlas;
-    atlas = _atlas;
     animated = false;
     Specify_Attributes ();
   }
 
 
-  void Sprite::Create (Shader* _shader, Texture* _texture /*= TEXTURE_NONE*/)
-  {
-    shader = _shader;
-    texture = _texture;
-    animated = false;
-    Specify_Attributes ();
-  }
-
-
-  void Sprite::Create (Shader* _shader, SpriteSheet* _atlas)
+  void Sprite::Create_Sprite (Shader* _shader, SpriteSheet* _atlas)
   {
     shader = _shader;
     texture = _atlas;
@@ -81,36 +97,34 @@ namespace Framework
   void Sprite::Specify_Attributes ()
   {
     // Specify the layout of the vertex data
-    GLint posAttrib = glGetAttribLocation (shader->Get_ID(), "position");
-    glEnableVertexAttribArray (posAttrib);
-    glVertexAttribPointer (posAttrib, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), 0);
+    posAttrib = shader->attribLocation ("position");
+    shader->enableVertexAttribArray (posAttrib);
+    shader->vertexAttribPtr (posAttrib, 3, GL_FLOAT, GL_FALSE, 12 * sizeof (GLfloat), 0);
 
-    GLint colAttrib = glGetAttribLocation (shader->Get_ID(), "color");
-    glEnableVertexAttribArray (colAttrib);
-    glVertexAttribPointer (colAttrib, 4, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), (void*) (3 * sizeof(GLfloat)));
+    colorAttrib = shader->attribLocation ("color");
+    shader->enableVertexAttribArray (colorAttrib);
+    shader->vertexAttribPtr (colorAttrib, 4, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), 3 * sizeof(GLfloat));
 
-    GLint normalAttrib = glGetAttribLocation (shader->Get_ID(), "normal");
-    glEnableVertexAttribArray (normalAttrib);
-    glVertexAttribPointer (normalAttrib, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), (void*) (7 * sizeof(GLfloat)));
+    normalAttrib = shader->attribLocation ("normal");
+    shader->enableVertexAttribArray (normalAttrib);
+    shader->vertexAttribPtr (normalAttrib, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), 7 * sizeof(GLfloat));
 
     if (animated || texture->Get_ID () != TEXTURE_NONE)
     {
-      //modelMatrix = glm::scale (glm::vec3 (1, 1 / texture->Get_Aspect_Ratio (), 1.0f));
+      texAttrib = shader->attribLocation ("texcoord");
+      shader->enableVertexAttribArray (texAttrib);
+      shader->vertexAttribPtr (texAttrib, 2, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), 10 * sizeof(GLfloat));
 
-      GLint texAttrib = glGetAttribLocation (shader->Get_ID(), "texcoord");
-      glEnableVertexAttribArray (texAttrib);
-      glVertexAttribPointer (texAttrib, 2, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), (void*) (10 * sizeof(GLfloat)));
-
-      glUniform1i (glGetUniformLocation (shader->Get_ID(), "image"), 0);
+      shader->uni1i ("image", 0);
 
       if (animated)
       {
         DrawFunction = &Sprite::Draw_Animated;
-        uniTexOffset = glGetUniformLocation (shader->Get_ID (), "texOffset");
+        uniTexOffset = shader->uniLocation ("texOffset");
         frameRatio.x = 1.0f / atlas->Get_Columns ();
         frameRatio.y = 1.0f / atlas->Get_Rows ();
-        uniFrameRatio = glGetUniformLocation (shader->Get_ID (), "frameRatio");
-        glUniform2fv (uniFrameRatio, 1, glm::value_ptr (frameRatio));
+        uniFrameRatio = shader->uniLocation ("frameRatio");
+        shader->uni2fv ("frameRatio", glm::value_ptr (frameRatio));
       }
       else
       {
@@ -138,17 +152,13 @@ namespace Framework
   void Sprite::Draw ()
   {
     shader->Use ();
-
-    //////////////////////////////////////////////////////////////////////////
-    // THIS BLOCK WILL GO INTO TRANSFORM COMPONENT
-    //////////////////////////////////////////////////////////////////////////
- 
-    shader->uniMat4 ("modelMatrix", glm::value_ptr (modelMatrix));
-    shader->uniMat4 ("viewMatrix", (glm::value_ptr (Camera::GetWorldToViewMatrix ())));
-    shader->uniMat4 ("projectionMatrix", (glm::value_ptr (Camera::GetViewToProjectionMatrix ())));
-
-    //////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////
+    shader->enableVertexAttribArray (posAttrib);
+    shader->enableVertexAttribArray (colorAttrib);
+    shader->enableVertexAttribArray (normalAttrib);
+    transform.UpdateMatrices ();
+    shader->uniMat4 ("modelViewProjectionMatrix", glm::value_ptr (transform.GetModelViewProjectionMatrix ()));
+    //shader->uniMat4 ("viewMatrix", glm::value_ptr (Camera::GetWorldToViewMatrix ()));
+    //shader->uniMat4 ("projectionMatrix", glm::value_ptr (Camera::GetViewToProjectionMatrix ()));
 
     (this->*DrawFunction)();
     shader->Disable ();
@@ -158,6 +168,7 @@ namespace Framework
   // Draw Sprite Using Texture
   void Sprite::Draw_Texture ()
   {
+    shader->enableVertexAttribArray (texAttrib);
     texture->Bind ();
     glDrawElements (GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     texture->Unbind ();

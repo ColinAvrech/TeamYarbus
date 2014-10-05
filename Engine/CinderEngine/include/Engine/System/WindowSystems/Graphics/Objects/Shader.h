@@ -21,18 +21,21 @@ namespace Framework
     inline GLint attribLocation (const char* attrib);
     inline GLint uniLocation (const char *varName);
 
-    //
-    // some useful glUniform* methods, returns false when no 'varName' found in shader
-    //
+    // Useful glAttrib* methods
+    inline void enableVertexAttribArray (GLint attr);
+    inline void vertexAttribPtr (GLint index, GLint size, GLenum type, GLboolean normalized, GLint stride, GLint offset);
+    inline void bindAttribLocation (GLint location, const char* attribName);
+    // Useful glUniform* methods, returns false when no 'varName' found in shader
 
-    inline bool uni1i (const char *varName, int value);
-    inline bool uni1f (const char *varName, float value);
-    inline bool uni2f (const char *varName, float x, float y);
-    inline bool uni3f (const char *varName, float x, float y, float z);
-    inline bool uni4f (const char *varName, float x, float y, float z, float w);
-    inline bool uni1fv (const char *varName, GLuint count, float *values);
-    inline bool uni3fv (const char *varName, const float*values);
-    inline bool uni4fv (const char *varName, float *values);
+    inline bool uni1i (const char* varName, int value);
+    inline bool uni1f (const char* varName, float value);
+    inline bool uni2f (const char* varName, float x, float y);
+    inline bool uni3f (const char* varName, float x, float y, float z);
+    inline bool uni4f (const char* varName, float x, float y, float z, float w);
+    inline bool uni1fv (const char* varName, GLuint count, float *values);
+    inline bool uni2fv (const char* varName, const float* value);
+    inline bool uni3fv (const char* varName, const float* values);
+    inline bool uni4fv (const char* varName, const float* values);
 
     //
     // uniform matrix
@@ -70,7 +73,7 @@ namespace Framework
 
 #ifdef _DEBUG
     if (_attribLoc == -1)
-      std::cout << "attribute " << attribName << "not found!\n";
+      std::cout << "ATTRIB " << attribName << " NOT FOUND!\n";
 #endif
 
     return _attribLoc;
@@ -89,6 +92,23 @@ namespace Framework
 #endif
 
     return i;
+  }
+
+  inline void Shader::bindAttribLocation(GLint location, const char* attribName)
+{
+    glBindAttribLocation (shaderProgram, location, attribName);
+  }
+
+
+  inline void Shader::enableVertexAttribArray (GLint attr)
+  {
+    glEnableVertexAttribArray (attr);
+  }
+
+
+  inline void Shader::vertexAttribPtr(GLint index, GLint size, GLenum type, GLboolean normalized, GLint stride, GLint offset)
+  {
+    glVertexAttribPointer (index, size, type, normalized, stride, (const void*) offset);
   }
   
 
@@ -148,8 +168,17 @@ namespace Framework
     return true;
   }
 
+  inline bool Shader::uni2fv (const char* varName, const float* values)
+  {
+    GLint i = uniLocation (varName);
+    if (i == -1) return false;
+
+    glUniform2fv (i, 1, values);
+    return true;
+  }
+
   inline bool Shader::uni3fv(const char *varName, const float*values)
-{
+  {
     GLint i = uniLocation (varName);
     if (i == -1) return false;
 
@@ -157,7 +186,7 @@ namespace Framework
     return true;
   }
 
-  inline bool Shader::uni4fv (const char *varName, GLfloat *values)
+  inline bool Shader::uni4fv (const char *varName, const float *values)
   {
     GLint i = uniLocation (varName);
     if (i == -1) return false;

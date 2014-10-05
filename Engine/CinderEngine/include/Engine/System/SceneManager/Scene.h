@@ -23,11 +23,15 @@ namespace Framework
   class Scene
   {
   public:
-  Scene () {};
-  virtual ~Scene () {}
+    Scene ()
+    {
+      camera.Initalize ();
+    }
+    virtual ~Scene () {}
 
   friend class SceneManager;
   protected:
+    Camera camera;
     std::vector <GameObject*> sceneObjectList;
     virtual void Update (const double dt) = 0;
     virtual void Draw () = 0;

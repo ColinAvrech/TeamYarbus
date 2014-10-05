@@ -2,3 +2,4 @@ Basic.vs
 Animation.vs
 Particle.vs
 Vertex.vs
+DebugDraw.vs

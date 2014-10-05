@@ -19,24 +19,43 @@ namespace Framework
   Camera* Camera::current = NULL;
   Camera* Camera::main = NULL;
 
-  Camera::Camera (bool _main) : viewDirection (0.0f, 0.0f, -1.0f), up (0.0f, 1.0f, 0.0f)
+  Camera::Camera (GameObject* go) : up (0, 1, 0)
   {
-    size = 2.0f;
+    gameObject = go;
+  }
+
+  void Camera::Initalize ()
+  {
+    viewDirection = glm::vec3 (0.0f, 0.0f, -1.0f);
     aspect = 1920.f / 1280;
     nearPlane = 0.1f;
     farPlane = 10.0f;
-    fov = 45.0f;
+    fov = 60.0f;
 
     allCameras.push_back (this);
-    if (_main)
+    //if (_main)
     {
-      Camera::current = this;
       Camera::main = this;
       worldToView = glm::lookAt (position, position + viewDirection, up);
-      viewToProjection = glm::perspective (70.0f, aspect, nearPlane, farPlane);
+      viewToProjection = glm::perspective (fov * M_PI / 180, aspect, nearPlane, farPlane);
     }
+    Camera::current = this;
     matricesReady = true;
   }
+
+  void Camera::Serialize ()
+  {
+    //////////////////////////////////////////////////////////////////////////
+    // DATA TO BE SERIALIZED
+    // viewDirection  : glm::vec3 (Serialized Data)
+    // aspect         : float     (Serialized Data)
+    // nearPlane      : float     (Serialized Data)
+    // farPlane       : float     (Serialized Data)
+    // fov            : float     (Serialized Data)
+    // main           : bool      (Serialized Data)
+    //////////////////////////////////////////////////////////////////////////
+  }
+
 
   Camera::~Camera ()
   {}
@@ -69,39 +88,6 @@ namespace Framework
   {
     fov += zoom;
     matricesReady = false;
-  }
-
-
-  glm::mat4 Camera::GetWorldToViewMatrix()
-  {
-    if (!Camera::main->matricesReady)
-    {
-      Camera::main->worldToView = glm::lookAt
-        (
-        Camera::current->position,
-        Camera::current->position + Camera::current->viewDirection,
-        Camera::current->up
-        );
-    }
-
-    return Camera::main->worldToView;
-  }
-
-  glm::mat4 Camera::GetViewToProjectionMatrix ()
-  {
-    if (!Camera::main->matricesReady)
-    {
-      Camera::main->viewToProjection =
-        glm::perspective
-        (
-        Camera::main->fov,
-        Camera::main->aspect,
-        Camera::main->nearPlane,
-        Camera::main->farPlane
-        );
-    }
-
-    return Camera::main->viewToProjection;
   }
 
 }

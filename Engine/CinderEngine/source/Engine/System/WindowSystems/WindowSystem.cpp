@@ -275,7 +275,7 @@ namespace Framework
 
   void WindowSystem::WindowsUpdate(const double dt)
   {
-    //glfwSwapBuffers(window);
+    glfwSwapBuffers(window);
     glfwPollEvents ();
   }
 
