@@ -28,11 +28,14 @@ namespace Framework
     DataNode* ZeroSerializer::FindStem(DataNode* current)
     {
       auto it = current;
-      while (it && it->dataType != TYPE_OBJECT/* == it->previous->next*/)
+      while (it && it->previous && it == it->previous->next)
       {
         it = it->previous;
       }
-      return it;
+      if (it->previous)
+        return it->previous;
+      else
+        return it;
     }
 
     void ZeroSerializer::DumpArchive(DataNode* stem, int indentation)

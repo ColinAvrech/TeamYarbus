@@ -114,6 +114,7 @@ namespace Framework
           CurrentNode->next = AddNode(CurrentNode->branch, TYPE_OBJECT, currentname.c_str(), 0);
           CurrentNode->next->previous = CurrentNode;
           CurrentNode = CurrentNode->next;
+          exitted = false;
         }
         //Skip the next line
         std::string dummy;
