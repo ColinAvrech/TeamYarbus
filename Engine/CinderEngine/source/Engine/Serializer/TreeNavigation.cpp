@@ -32,10 +32,7 @@ namespace Framework
       {
         it = it->previous;
       }
-      if (it->previous)
-        return it->previous;
-      else
-        return it;
+      return it->previous;
     }
 
     void ZeroSerializer::DumpArchive(DataNode* stem, int indentation)
@@ -108,6 +105,8 @@ namespace Framework
             }
             std::cout << "]," << std::endl;
           }
+          else if (it->dataType == TYPE_QUAT)
+            std::cout << it->typeString << " " << it->objectName << " = " << it->value_.Float_ << "," << std::endl;
           else if (it->dataType == TYPE_ENUM || it->dataType == TYPE_CUSTOM)
           {
             std::cout << it->typeString << " " << it->objectName << " = " << *(it->value_.String_) << "," << std::endl;

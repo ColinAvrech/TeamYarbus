@@ -102,7 +102,7 @@ namespace Framework
       //Name of current object
       std::string CurrentLine;
       //Type of current object
-      //::string type;
+      char prev;
       //Is it an object or subobject ...
       int inObject;
       //Did the program exit a branch?

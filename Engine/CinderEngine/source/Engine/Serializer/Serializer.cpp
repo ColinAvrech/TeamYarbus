@@ -29,6 +29,7 @@ namespace Framework
       TypeList["Vec2"]   = TYPE_VEC2;
       TypeList["Vec3"]   = TYPE_VEC3;
       TypeList["Vec4"]   = TYPE_VEC4;
+      TypeList["Quat"]   = TYPE_QUAT;
       TypeList["Enum"]   = TYPE_ENUM;
 
       trunk = NULL;
@@ -128,9 +129,12 @@ namespace Framework
         {
           //Close object
           --inObject;
-          CurrentStem = FindStem(CurrentNode);
-          CurrentNode = CurrentStem;
-          CurrentStem = FindStem(CurrentNode);
+          if (prev != ' ')
+          {
+            CurrentStem = FindStem(CurrentNode);
+            CurrentNode = CurrentStem;
+            CurrentStem = FindStem(CurrentNode);
+          }
           exitted = true;
         }
         //if it is a data field
@@ -155,6 +159,7 @@ namespace Framework
           }
         }        
       }
+      prev = CurrentLine.back();
     }
 
     void ZeroSerializer::InterpretData(TYPE currentdatatype, std::vector<std::string>* tokens, DataNode** node)
@@ -210,7 +215,12 @@ namespace Framework
       case TYPE_STRING:
       {
         const char* currentname = (*tokens)[1].c_str();
-        *node = AddNode(*node, currentdatatype, currentname, (*tokens)[3]);
+        std::string str;
+        unsigned int spos = CurrentLine.find_first_of("\"");
+        unsigned int epos = CurrentLine.find_first_of("\"", spos + 1);
+        for (unsigned int i = spos+1; i != epos; ++i)
+          str.push_back(CurrentLine[i]);
+        *node = AddNode(*node, currentdatatype, currentname, str);
         break;
       }
       case TYPE_VEC2:
@@ -265,6 +275,25 @@ namespace Framework
         }
         const char* currentname = (*tokens)[1].c_str();
         *node = AddNode(*node, currentdatatype, currentname, numarray);
+        break;
+      }
+      case TYPE_QUAT:
+      {
+        std::vector<float> quat;
+        unsigned int spos = CurrentLine.find_first_of("[");
+        unsigned int epos;
+        for (int i = 0; i < 4; ++i)
+        {
+          std::string number;
+          epos = CurrentLine.find_first_of(",]", spos);
+          for (unsigned int j = spos + 1; j != epos; ++j)
+            number.push_back(CurrentLine[j]);
+          quat.push_back(std::stof(number));
+          spos = epos + 1;
+        }
+        const char* currentname = (*tokens)[1].c_str();
+        float ZRot = std::atan2(2 * (quat[0] * quat[1] + quat[3] * quat[2]), (1 - (2 * (quat[1] * quat[1] + quat[2] * quat[2]))));
+        *node = AddNode(*node, currentdatatype, currentname, ZRot);
         break;
       }
       case TYPE_ENUM:
