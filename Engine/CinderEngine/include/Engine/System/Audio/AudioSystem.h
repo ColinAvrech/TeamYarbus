@@ -24,6 +24,8 @@
 
 #pragma endregion
 
+#define LATENCY_MS (50)
+
 namespace Framework
 {
 
@@ -67,12 +69,16 @@ namespace Framework
     
       void          ErrCheck(FMOD_RESULT result);
       bool          Initialize();
+      void          InitMicData();
       Sound*        LoadSound(const char* filename,  char* soundName, 
                               Sound::SoundID type,  float volume);
+      Sound*        LoadMicData(char* soundName, Sound::SoundID type,
+                                                    float volume);
       void          StopSounds(int id);
 
       // Called every frame
       virtual void  Update(const double dt);
+      void          UpdateMicData();
 
       // Returns name of System
       virtual const std::string GetName(){ return "AudioSystem";}
@@ -123,6 +129,20 @@ namespace Framework
       FMOD::ChannelGroup                *GroupMusic;
       FMOD::ChannelGroup                *Group2DSFX;
       FMOD::ChannelGroup                *Group3DSFX;
+      Sound*                            _newSound;
+      FMOD_CREATESOUNDEXINFO            _exinfo;
+      unsigned int                      _soundlength;
+      unsigned int                      _recordpos;
+      unsigned int                      _recorddelta;
+      unsigned int                      _minrecorddelta;
+      unsigned int                      _lastrecordpos;
+      unsigned int                      _samplesrecorded;
+      unsigned int                      _playpos;
+      unsigned int                      _adjustedlatency;
+      unsigned int                      _driftthreshold;
+      int                               _recordrate;
+      int                               _recordchannels;
+      float                             _smootheddelta;      
 
       #pragma endregion
 
