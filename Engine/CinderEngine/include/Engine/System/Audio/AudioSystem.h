@@ -69,7 +69,6 @@ namespace Framework
       bool          Initialize();
       Sound*        LoadSound(const char* filename,  char* soundName, 
                               Sound::SoundID type,  float volume);
-      void          LoadAllSounds();
       void          StopSounds(int id);
 
       // Called every frame
