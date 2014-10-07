@@ -28,7 +28,7 @@ namespace Framework
     {
       return;
     }
-
+    
     result = pFMODAudioSystem->createDSPByType(FMOD_DSP_TYPE_OSCILLATOR, &objects_DSP.dsp_noise);
     ErrCheck(result);
 
