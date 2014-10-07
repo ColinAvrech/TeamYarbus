@@ -75,7 +75,8 @@ int main(void)
   /*! Initialize the game engine*/
   
   //! Create the core engine which manages all systems.
-  CoreEngine * engine         = new CoreEngine;
+  
+  CoreEngine * engine         = new CoreEngine();
   WindowSystem * windows      = new WindowSystem (WindowTitle, ClientWidth, ClientHeight);
   SceneManager* sceneManager = new SceneManager ();
   AudioSystem* audio          = new AudioSystem();
@@ -84,7 +85,7 @@ int main(void)
   ScriptSystem * zilch      = new ScriptSystem::ScriptSystem();
   Physics::
     ThermodynamicsSystem * thermo = new Physics::ThermodynamicsSystem();
-	Physics::PhysicsSystem * phys = new Physics::PhysicsSystem();
+  Physics::PhysicsSystem * phys = new Physics::PhysicsSystem();
 
   //test
   ObjectSystem* objsys = new ObjectSystem();
@@ -125,7 +126,7 @@ int main(void)
 
   //! Free console
   Console::Free_Cinder_Console();
-
+  
   return 0;
 }
 

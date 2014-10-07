@@ -143,8 +143,8 @@ namespace Framework
 
     if (useDebug)
     {
-      debugRenderer.Draw ((CircleCollider*) go1->CircleCollider);
-      debugRenderer.Draw ((CircleCollider*) go2->CircleCollider);
+      debugRenderer.Draw (go1->CircleCollider);
+      debugRenderer.Draw (go2->CircleCollider);
     }
 
     glDisable (GL_BLEND);
