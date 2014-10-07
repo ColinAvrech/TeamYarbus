@@ -292,8 +292,9 @@ namespace Framework
           spos = epos + 1;
         }
         const char* currentname = (*tokens)[1].c_str();
-        float ZRot = std::atan2(2 * (quat[0] * quat[1] + quat[3] * quat[2]), (1 - (2 * (quat[1] * quat[1] + quat[2] * quat[2]))));
-        *node = AddNode(*node, currentdatatype, currentname, ZRot);
+        //Use the following function to get the z axis rotation
+        //float ZRot = std::atan2(2 * (quat[0] * quat[1] + quat[3] * quat[2]), (1 - (2 * (quat[1] * quat[1] + quat[2] * quat[2]))));
+        *node = AddNode(*node, currentdatatype, currentname, quat);
         break;
       }
       case TYPE_ENUM:

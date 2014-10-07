@@ -108,7 +108,15 @@ namespace Framework
     {
       if (it->objectName.compare("Cog") == 0)
       {
-        //add object
+        GameObject* newobj = new GameObject(it->branch->value_.UInt_);
+        newobj->Name = *it->branch->next->value_.String_;
+        auto ct = it->branch->next->next;
+        while (ct)
+        {
+          
+          ct = ct->next;
+        }
+        GameObjects[newobj->GameObjectID] = newobj;
       }
       it = it->next;
     }

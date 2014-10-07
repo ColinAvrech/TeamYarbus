@@ -106,7 +106,16 @@ namespace Framework
             std::cout << "]," << std::endl;
           }
           else if (it->dataType == TYPE_QUAT)
-            std::cout << it->typeString << " " << it->objectName << " = " << it->value_.Float_ << "," << std::endl;
+          {
+            std::cout << it->typeString << " " << it->objectName << " = [";
+            for (int i = 0; i < 4; ++i)
+            {
+              std::cout << (*it->value_.VecN_)[i];
+              if (i < 3)
+                std::cout << ", ";
+            }
+            std::cout << "]," << std::endl;
+          }
           else if (it->dataType == TYPE_ENUM || it->dataType == TYPE_CUSTOM)
           {
             std::cout << it->typeString << " " << it->objectName << " = " << *(it->value_.String_) << "," << std::endl;
