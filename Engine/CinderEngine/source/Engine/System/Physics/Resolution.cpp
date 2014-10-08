@@ -9,17 +9,17 @@ namespace Framework
 	{
 		void Resolve(CollisionEvent* pre)
 		{
-			CollisionEvent* post;
+			CollisionEvent post("CollisionEvent");
 			RigidBody::DynamicState stateA = pre->thisObject->RigidBody->state;
 			RigidBody::DynamicState stateB = pre->OtherObject->RigidBody->state;
 
 			if (stateA == RigidBody::Static || stateB == RigidBody::Static)
 			{
-				ResolveStatic(pre, post, stateA, stateB);
+				ResolveStatic(pre, &post, stateA, stateB);
 			}
 			else
 			{
-				ResolveDynamic(pre, post);
+				ResolveDynamic(pre, &post);
 			}
 		}
 
