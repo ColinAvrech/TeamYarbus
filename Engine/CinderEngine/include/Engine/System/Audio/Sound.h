@@ -47,6 +47,7 @@ namespace Framework
       #pragma region Public Variables
 
       static bool system_on_;
+      FMOD::Sound *pSound;
 
       #pragma endregion
 
@@ -110,6 +111,10 @@ namespace Framework
                            char* filename, 
                            char* soundName, 
                            SoundID id);
+      FMOD::Sound*    LoadMic(FMOD::System* pSystem,
+                              char* soundName,
+                              SoundID id,
+                              FMOD_CREATESOUNDEXINFO exinfo);
       void            Play();
       void            VolumeFade(float volume, float fadeTime);
       void            Stop();

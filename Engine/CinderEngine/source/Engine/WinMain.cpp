@@ -75,7 +75,8 @@ int main(void)
   /*! Initialize the game engine*/
   
   //! Create the core engine which manages all systems.
-  CoreEngine * engine         = new CoreEngine;
+  
+  CoreEngine * engine         = new CoreEngine();
   WindowSystem * windows      = new WindowSystem (WindowTitle, ClientWidth, ClientHeight);
   SceneManager* sceneManager = new SceneManager ();
   AudioSystem* audio          = new AudioSystem();
@@ -84,7 +85,7 @@ int main(void)
   ScriptSystem * zilch      = new ScriptSystem::ScriptSystem();
   Physics::
     ThermodynamicsSystem * thermo = new Physics::ThermodynamicsSystem();
-	Physics::PhysicsSystem * phys = new Physics::PhysicsSystem();
+  Physics::PhysicsSystem * phys = new Physics::PhysicsSystem();
 
   //test
   ObjectSystem* objsys = new ObjectSystem();
@@ -108,11 +109,14 @@ int main(void)
   Resources resourceManager;
   resourceManager.Load_Resources();
 
+  Sound *test;
+
   //! Initialize all added Systems. DON'T INIT YOUR OWN
   engine->Initialize();
 
+  test = audio->LoadMicData("Mic", Sound::SOUND_2D, 1.0);
+
   //! activate the window.
-  //resourceManager.Get_Sound("music2.mp3")->LowPassFilter(60, 10);
 
   //! Run the game! NOW!
   engine->GameLoop();
@@ -125,7 +129,7 @@ int main(void)
 
   //! Free console
   Console::Free_Cinder_Console();
-
+  
   return 0;
 }
 

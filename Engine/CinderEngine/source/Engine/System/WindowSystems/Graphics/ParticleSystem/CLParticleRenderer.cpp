@@ -23,7 +23,7 @@ namespace Framework
 
   CLParticleRenderer::CLParticleRenderer ()
   {
-    particleCount = MILLION;
+    particleCount = 10000;
     particleSize = 1.0f;
     srand ((unsigned) time (NULL));
     color [0] = random (64, 255);

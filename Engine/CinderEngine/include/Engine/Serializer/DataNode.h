@@ -36,6 +36,7 @@ namespace Framework
       TYPE_VEC2,
       TYPE_VEC3,
       TYPE_VEC4,
+      TYPE_QUAT,
       TYPE_ENUM,
       TYPE_CUSTOM
     }; //enum TYPE

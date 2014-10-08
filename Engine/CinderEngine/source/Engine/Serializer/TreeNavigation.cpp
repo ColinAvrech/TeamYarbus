@@ -28,11 +28,11 @@ namespace Framework
     DataNode* ZeroSerializer::FindStem(DataNode* current)
     {
       auto it = current;
-      while (it && it->dataType != TYPE_OBJECT/* == it->previous->next*/)
+      while (it && it->previous && it == it->previous->next)
       {
         it = it->previous;
       }
-      return it;
+      return it->previous;
     }
 
     void ZeroSerializer::DumpArchive(DataNode* stem, int indentation)
@@ -101,6 +101,17 @@ namespace Framework
             {
               std::cout << (*it->value_.VecN_)[i];
               if(i < 3)
+                std::cout << ", ";
+            }
+            std::cout << "]," << std::endl;
+          }
+          else if (it->dataType == TYPE_QUAT)
+          {
+            std::cout << it->typeString << " " << it->objectName << " = [";
+            for (int i = 0; i < 4; ++i)
+            {
+              std::cout << (*it->value_.VecN_)[i];
+              if (i < 3)
                 std::cout << ", ";
             }
             std::cout << "]," << std::endl;

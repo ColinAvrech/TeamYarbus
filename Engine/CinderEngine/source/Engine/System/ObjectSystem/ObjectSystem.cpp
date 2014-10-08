@@ -96,14 +96,29 @@ namespace Framework
   //Private function to create and serilize an object
   void ObjectSystem::SerializeObject(Serializer::DataNode* data)
   {
-    GameObject* go = new GameObject(data->branch->value_.UInt_);
+    //GameObject* go = new GameObject(data->branch->value_.UInt_);
+    auto it = data->branch;
+    /*
     go->Name = data->objectName;
     GameObjects[go->GameObjectID] = go;
+    */
 
     //Create and Serilize Objects
-    while (data->branch != NULL)
+    while (it)
     {
-
+      if (it->objectName.compare("Cog") == 0)
+      {
+        GameObject* newobj = new GameObject(it->branch->value_.UInt_);
+        newobj->Name = *it->branch->next->value_.String_;
+        auto ct = it->branch->next->next;
+        while (ct)
+        {
+          
+          ct = ct->next;
+        }
+        GameObjects[newobj->GameObjectID] = newobj;
+      }
+      it = it->next;
     }
   }
 
