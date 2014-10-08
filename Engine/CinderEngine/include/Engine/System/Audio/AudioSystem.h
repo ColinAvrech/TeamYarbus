@@ -72,8 +72,7 @@ namespace Framework
       void          InitMicData();
       Sound*        LoadSound(const char* filename,  char* soundName, 
                               Sound::SoundID type,  float volume);
-      Sound*        LoadMicData(char* soundName, Sound::SoundID type,
-                                                    float volume);
+      void        LoadMicData();
       void          StopSounds(int id);
 
       // Called every frame
