@@ -107,14 +107,12 @@ int main(void)
   engine->AddSystem(phys);
 
   Resources resourceManager;
-  resourceManager.Load_Resources();
-
-  Sound *test;
+  resourceManager.Load_Resources();  
 
   //! Initialize all added Systems. DON'T INIT YOUR OWN
   engine->Initialize();
-
-  test = audio->LoadMicData("Mic", Sound::SOUND_2D, 1.0);
+  
+  audio->LoadMicData();
 
   //! activate the window.
 
