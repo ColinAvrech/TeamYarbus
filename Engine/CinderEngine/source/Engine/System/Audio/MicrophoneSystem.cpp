@@ -27,8 +27,22 @@ namespace Framework
     _recorddelta = 0;
     _minrecorddelta = (unsigned int)-1;
     _lastrecordpos = 0;
+    _samplesrecorded = 0;
     _playpos = 0;
+    _adjustedlatency = 0;
+    _driftthreshold = 0;
     _smootheddelta = 0;
+    _recordrate = 0;
+    _recordchannels = 1;
+    _recordnumdrivers = 0;
+
+    result = pFMODAudioSystem->getRecordNumDrivers(&_recordnumdrivers);
+    ErrCheck(result);
+
+    if (_recordnumdrivers <= 0)
+    {
+      std::cout << Console::red << "No recording devices found/plugged in!";
+    }
 
     result = pFMODAudioSystem->getRecordDriverInfo(0, NULL, NULL, 0, 0, 
                                         &_recordrate, 0, &_recordchannels);
@@ -42,25 +56,49 @@ namespace Framework
   {
     _newSound = new Sound();    
     FMOD_RESULT result;
+    FMOD::Sound *test;
 
     memset(&_exinfo, 0, sizeof(FMOD_CREATESOUNDEXINFO));
     _exinfo.cbsize = sizeof(FMOD_CREATESOUNDEXINFO);
-    _exinfo.numchannels = _recordchannels;
+    _exinfo.numchannels = 1;
     _exinfo.format = FMOD_SOUND_FORMAT_PCM16;
     _exinfo.defaultfrequency = _recordrate;
-    _exinfo.length = _exinfo.defaultfrequency * sizeof(short) * _exinfo.numchannels * 5;
+    _exinfo.length = _exinfo.defaultfrequency * sizeof(short) * _exinfo.numchannels * 1;
 
-    _newSound->pSound = _newSound->LoadMic(pFMODAudioSystem, soundName, type, _exinfo);
+    test = _newSound->LoadMic(pFMODAudioSystem, soundName, type, _exinfo);
     
     result = _newSound->pSound->getLength(&_soundlength, FMOD_TIMEUNIT_PCM);
 
     return _newSound;
   }
 
+  FMOD::Sound* Sound::LoadMic(FMOD::System* pSystem, char* soundName, SoundID id, FMOD_CREATESOUNDEXINFO exinfo)
+  {
+    FMOD_RESULT result;
+
+    pFMODAudioSystem = pSystem;
+    _soundName = soundName;
+    ID = id;
+
+    result = pSystem->createSound(0, FMOD_LOOP_NORMAL | FMOD_OPENUSER, &exinfo, &pSound);
+    ErrCheck(result);
+
+    result = pSystem->recordStart(0, pSound, true);
+    ErrCheck(result);
+
+    sound_queue_.push_back(pSound);
+
+    unsigned index = sound_queue_.size() - 1;
+
+    SetType(ID, index);
+
+    return pSound;
+  }
+
   void AudioSystem::UpdateMicData()
   {
     FMOD_RESULT result;
-    FMOD::Channel *pChannel;
+    FMOD::Channel *pChannel = 0;
 
     result = pFMODAudioSystem->getRecordPosition(0, &_recordpos);
     ErrCheck(result);
@@ -119,34 +157,7 @@ namespace Framework
         pChannel->setFrequency(_recordrate);
       }
     }
-  }
-
-  FMOD::Sound* Sound::LoadMic(FMOD::System* pSystem, char* soundName, SoundID id, FMOD_CREATESOUNDEXINFO exinfo)
-  {
-    FMOD_RESULT result;
-
-    pFMODAudioSystem = pSystem;
-    _soundName = soundName;
-    ID = id;
-
-    result = pSystem->createSound(0, FMOD_LOOP_NORMAL | FMOD_OPENUSER, &exinfo, &pSound);
-    ErrCheck(result);
-
-    result = pSystem->recordStart(0, pSound, true);
-    ErrCheck(result);
-
-    sound_queue_.push_back(pSound);
-
-    unsigned index = sound_queue_.size() - 1;
-
-    SetType(ID, index);
-
-    return pSound;
-  }
-
-
-
-  
+  }  
 }
 
 //-----------------------------------------------------------------------------

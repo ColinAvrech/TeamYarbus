@@ -142,6 +142,7 @@ namespace Framework
       unsigned int                      _driftthreshold;
       int                               _recordrate;
       int                               _recordchannels;
+      int                               _recordnumdrivers;
       float                             _smootheddelta;      
 
       #pragma endregion

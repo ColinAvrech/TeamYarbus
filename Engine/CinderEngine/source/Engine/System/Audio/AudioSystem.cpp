@@ -18,7 +18,7 @@
 #include "AudioSystem.h"
 
 #pragma endregion
-static TwBar* myBar;
+
 namespace Framework
 {
   /*---------------------------------------------------------------------------
@@ -98,7 +98,7 @@ namespace Framework
   {
     // Calls function the creates FMOD groups
     CreateSoundGroups();
-    //InitMicData();
+    InitMicData();
 
     Trace("Audio System Initialized");
 	  return true;
@@ -219,7 +219,7 @@ namespace Framework
 
     // Updates the audio system
     pFMODAudioSystem->update();
-    //UpdateMicData();
+    UpdateMicData();
 
     // Updates all the Sound Object Instances
     std::map<std::string, Sound*>::iterator it;
