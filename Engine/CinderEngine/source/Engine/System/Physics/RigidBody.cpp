@@ -12,5 +12,12 @@
 
 namespace Framework
 {
+
+	//Destructor
+	RigidBody::~RigidBody()
+	{
+
+	}
+
 	DefineComponentName(RigidBody);
 }

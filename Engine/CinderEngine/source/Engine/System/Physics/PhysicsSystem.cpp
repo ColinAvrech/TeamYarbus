@@ -22,9 +22,11 @@ namespace Framework
 
 		// Called every frame
 		void PhysicsSystem::Update(const double dt)
-		{
-			//UpdateCollision
-			//UpdateResolution
-		}
+		{}
+		//{
+		//	UpdateCollision();
+		//	UpdateResolution();
+		//	UpdateForces();
+		//}
 	}
 }

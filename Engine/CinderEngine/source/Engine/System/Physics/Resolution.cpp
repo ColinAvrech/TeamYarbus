@@ -1,50 +1,63 @@
 #include "ShapeCollider.h"
 #include "PhysicsLibrary.h"
 #include "Resolution.h"
+#include "RigidBody.h"
 
 namespace Framework
 {
 	namespace Physics
 	{
-		//void Resolve(CollisionEvent* pre)
-		//{
-		//	Manifold post;
-		//	if (pre->stateA == RigidBody::Static ||
-		//		pre->stateB == RigidBody::Static)
-		//	{
-		//		ResolveStatic(pre, &post);
-		//	}
-		//	else
-		//	{
-		//		ResolveDynamic(pre, &post);
-		//	}
-		//}
+		void Resolve(CollisionEvent* pre)
+		{
+			CollisionEvent* post;
+			RigidBody::DynamicState stateA = pre->thisObject->RigidBody->state;
+			RigidBody::DynamicState stateB = pre->OtherObject->RigidBody->state;
 
-		//void ResolveStatic(Manifold* pre, Manifold* post)
-		//{
-		//	*post = *pre;
-		//	if (pre->stateA == RigidBody::Static)
-		//	{
-		//		post->velB = getReflection(pre->normal, pre->velB);
-		//	}
-		//	else
-		//	{
-		//		post->velA = getReflection(pre->normal, pre->velA);
-		//	}
-		//}
+			if (stateA == RigidBody::Static || stateB == RigidBody::Static)
+			{
+				ResolveStatic(pre, post, stateA, stateB);
+			}
+			else
+			{
+				ResolveDynamic(pre, post);
+			}
+		}
 
-		//void ResolveDynamic(Manifold* pre, Manifold* post)
-		//{
-		//	*post = *pre;
-		//	float bunch11 = (pre->massA - pre->massB) / (pre->massA + pre->massB);
-		//	float bunch12 = (2 * pre->massB) / (pre->massA + pre->massB);
-		//	post->velA.x_ = bunch11 * pre->velA.x_ + bunch12 * pre->velB.x_;
-		//	post->velA.y_ = bunch11 * pre->velA.y_ + bunch12 * pre->velB.y_;
+		void ResolveStatic(CollisionEvent* pre, CollisionEvent* post,
+						   RigidBody::DynamicState stateA, RigidBody::DynamicState stateB)
+		{
+			*post = *pre;
+			glm::vec2 velA = post->thisObject->RigidBody->vel;
+			glm::vec2 velB = post->OtherObject->RigidBody->vel;
 
-		//	float bunch21 = (pre->massB - pre->massA) / (pre->massA + pre->massB);
-		//	float bunch22 = (2 * pre->massA) / (pre->massA + pre->massB);
-		//	post->velA.x_ = bunch21 * pre->velA.x_ + bunch22 * pre->velB.x_;
-		//	post->velA.y_ = bunch21 * pre->velA.y_ + bunch22 * pre->velB.y_;
-		//}
+			if (stateA == RigidBody::Static)
+			{
+				velB = getReflection(pre->normal, velB);
+			}
+			else
+			{
+				velA = getReflection(pre->normal, velA);
+			}
+		}
+
+		void ResolveDynamic(CollisionEvent* pre, CollisionEvent* post)
+		{
+			*post = *pre;
+			float massA = pre->thisObject->RigidBody->getMass();
+			float massB = pre->OtherObject->RigidBody->getMass();
+
+			glm::vec2 velA = pre->thisObject->RigidBody->vel;
+			glm::vec2 velB = pre->OtherObject->RigidBody->vel;
+
+			float bunch11 = (massA - massB) / (massA + massB);
+			float bunch12 = (2 * massB) / (massA + massB);
+			post->thisObject->RigidBody->vel.x = bunch11 * velA.x + bunch12 * velB.x;
+			post->thisObject->RigidBody->vel.y = bunch11 * velA.y + bunch12 * velB.y;
+
+			float bunch21 = (massB - massA) / (massA + massB);
+			float bunch22 = (2 * massA) / (massA + massB);
+			post->OtherObject->RigidBody->vel.x = bunch21 * velA.x + bunch22 * velB.x;
+			post->OtherObject->RigidBody->vel.y = bunch21 * velA.y + bunch22 * velB.y;
+		}
 	} //Physics
 } //Framework

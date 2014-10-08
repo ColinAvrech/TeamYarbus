@@ -13,7 +13,30 @@
 #pragma once
 namespace Framework
 {
-  DefineComponentName (ShapeCollider);
+
+	CircleCollider::~CircleCollider()
+	{
+	}
+
+	PointCollider::PointCollider(GameObject *obj)
+	{
+		gameObject = obj;
+	}
+
+	PointCollider::~PointCollider()
+	{
+	}
+
+	LineCollider::LineCollider(GameObject* obj)
+	{
+		gameObject = obj;
+	}
+
+	LineCollider::~LineCollider()
+	{
+	}
+
+    DefineComponentName(ShapeCollider);
 	DefineComponentName(CircleCollider);
 	DefineComponentName(PointCollider);
 	DefineComponentName(LineCollider);

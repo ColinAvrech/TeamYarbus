@@ -52,12 +52,12 @@ namespace Framework
   {
   public:
     const static std::string Name;
-    CircleCollider (GameObject* obj) : radius (0.1f)
-    {
-      gameObject = obj;
-    }
-    ~CircleCollider ()
-    {}
+	CircleCollider(GameObject* obj) : radius(0.1f)
+	{
+		gameObject = obj;
+	}
+
+	~CircleCollider();
 
     /*!Telegraph that the component is active*/
     void Initalize ()
@@ -88,12 +88,9 @@ namespace Framework
 	{
 	public:
 		const static std::string Name;
-		PointCollider(GameObject *obj)
-		{
-			gameObject = obj;
-		}
-		~PointCollider()
-		{}
+		PointCollider(GameObject *obj);
+
+		~PointCollider();
 
 		/*!Telegraph that the component is active*/
 		void Initalize()
@@ -117,12 +114,9 @@ namespace Framework
 	{
 	public:
 		const static std::string Name;
-		LineCollider(GameObject* obj)
-		{
-			gameObject = obj;
-		}
-		~LineCollider()
-		{}
+		LineCollider(GameObject* obj);
+
+		~LineCollider();
 
 		// Public member functions - Overriden
 		/*!Telegraph that the component is active*/

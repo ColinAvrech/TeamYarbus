@@ -10,19 +10,15 @@
 
 #include "Vec2.h"
 #include "Component.h"
+#include "Common.h"
+#include "glm.hpp"
 
 namespace Framework
 {
 	class RigidBody : public Component
 	{
 	public:
-		RigidBody(){};
-		~RigidBody(){};
-
-		Vec2 getVel(void)
-		{
-			return vel;
-		};
+		// The non-base component uses DefineComponentName macro to name component
 
 		enum DynamicState
 		{
@@ -31,15 +27,29 @@ namespace Framework
 			Dynamic    //moving with kinematic & all forces considered
 		};
 
-		// The non-base component uses DefineComponentName macro to name component
 		const static std::string Name;
-
-	private:
-		Vec2 vel;
-		Vec2 angVel;
-		float mass;
 		bool allowSleep;
 		bool rotationLocked;
 		DynamicState state;
+		glm::vec2 vel;
+		glm::vec2 angVel;
+
+
+		RigidBody(GameObject * obj)
+		{
+			gameObject = obj;
+		};
+
+		~RigidBody();
+
+		float getMass(void)
+		{
+			return mass;
+		}
+
+
+	private:
+		float mass;
+
 	};
 } //Framework

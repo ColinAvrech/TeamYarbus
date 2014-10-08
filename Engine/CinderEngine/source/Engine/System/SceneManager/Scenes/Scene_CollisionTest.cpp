@@ -19,6 +19,8 @@
 #include "KeyEvent.h"
 #include "CollisionEvent.h"
 #include "TimeQuery.h"
+#include "glmOverloads.h"
+#include "PhysicsLibrary.h"
 
 namespace Framework
 {
@@ -27,13 +29,14 @@ namespace Framework
   static GameObject* go1, *go2;
   static DebugCircleRenderer debugRenderer;
   static int circleDivisions = 40;
-  static float circleRadius = 0.3f;
-  static bool useDebug = false;
+  static float circleRadius = 0.5f;
+  static bool useDebug = true;
   static CircleCollider circle (NULL), circle1 (NULL);
   static Sprite sprite (NULL), sprite1 (NULL);
   static VAO* vao;
   static VBO* vbo;
   static EBO* ebo;
+  static glm::vec2 testLine = {100, 100};
 
   // Constructor
   Scene_CollisionTest::Scene_CollisionTest ()
@@ -61,10 +64,20 @@ namespace Framework
 
     if (_key->KeyDown)
     {
-      if (glfwGetKey (WINDOWSYSTEM->Get_Window(), GLFW_KEY_A))
-        go1->Transform->Translate (-0.01f, 0, 0);
-      else if (glfwGetKey (WINDOWSYSTEM->Get_Window (), GLFW_KEY_D))
-        go1->Transform->Translate (0.01f, 0, 0);
+		if (glfwGetKey(WINDOWSYSTEM->Get_Window(), GLFW_KEY_A))
+		{
+			//glm::vec2 force, accel;
+			//glm::vec2 newVel = { 0, 0 };
+			//force = { -5.0f, 0 };
+			//float mass = 2;
+			//accel = getAccel(force, mass);
+			//newVel = applyAccel(accel, .064f);
+			go1->Transform->Translate(-.01f, 0, 0);
+		}
+			
+		else if (glfwGetKey(WINDOWSYSTEM->Get_Window(), GLFW_KEY_D))
+			go1->Transform->Translate (0.01f, 0, 0);
+		//go->RigidBody->vel += 3;
 
       if (glfwGetKey (WINDOWSYSTEM->Get_Window (), GLFW_KEY_S))
         go1->Transform->Translate (0, -0.01f, 0);
@@ -96,10 +109,12 @@ namespace Framework
     go1->Transform = new Transform (go1);
     go1->Sprite = new Sprite (go1);
     go1->CircleCollider = new CircleCollider (go1);
+	go1->RigidBody = new RigidBody (go1);
 
     go2->Transform = new Transform (go2);
     go2->Sprite = new Sprite (go2);
     go2->CircleCollider = new CircleCollider (go2);
+	go2->RigidBody = new RigidBody(go2);
 
     ShapeData data = ShapeGenerator::Generate_Quad ();
 
@@ -107,7 +122,7 @@ namespace Framework
     vbo = new VBO (data.vbo_size (), data.vertices);
     ebo = new EBO (data.ebo_size (), data.indices);
 
-    go1->Sprite->Create_Sprite (Resources::RS->Get_Shader ("Default"), Resources::RS->Get_Texture ("Smoke.png"));
+    go1->Sprite->Create_Sprite (Resources::RS->Get_Shader ("Default"), Resources::RS->Get_Texture ("Circle.png"));
     go1->Transform->Translate (-0.5f, 0.0f, -1.0f);
     go1->Transform->Scale (0.1f);
 
@@ -130,7 +145,7 @@ namespace Framework
 
   void Scene_CollisionTest::Draw ()
   {
-    glClearColor (1, 0, 0, 0);
+    glClearColor (0, 0, 0, 0);
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glEnable (GL_BLEND);

@@ -11,9 +11,5 @@
 
 namespace Framework
 {
-	glm::vec2 operator*(float scale, glm::vec2& vec)
-	{
-		glm::vec2 temp(vec);
-		return temp = vec * scale;
-	}
+	glm::vec2 operator*(glm::vec2 vec, float scale);
 }
