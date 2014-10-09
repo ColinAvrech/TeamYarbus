@@ -66,7 +66,7 @@ int main(void)
   //Test parser
   Serializer::ZeroSerializer testarchive;
 
-  testarchive.open("Level.data");
+  testarchive.open("EnemyProjectile.Archetype.data");
 
   testarchive.CreateArchive();
 
