@@ -1,17 +1,23 @@
 #include "PhysicsLibrary.h"
 #include "GraphicsCommon.h"
-#include "glmOverloads.h"
 
 namespace Framework
 {
 	namespace Physics
 	{
-		/*
-		glm::vec2 computeFriction(Manifold* m)
-		{
-		  //
-		}
-		*/
+		
+		//glm::vec2 computeStaticFriction(Manifold* m)
+		//{
+		//  //compute static friction
+		//}
+
+		//glm::vec2 computeDynamicFriction(Manifold* m)
+		//{
+		//	//compute dynamic friction
+		//}
+
+
+		
 		glm::vec2 applyNetForce(glm::vec2 sumForce, double mass)
 		{
 			glm::vec2 accel = sumForce / (float)mass;
@@ -53,10 +59,15 @@ namespace Framework
 			return velChange;
 		}
 
-		glm::vec2 getAccel(glm::vec2& force, double mass)
+		glm::vec2 getAccel(glm::vec2 force, double mass)
 		{
 			glm::vec2 accel = force / (float)mass;
 			return accel;
 		}
+
+		//glm::vec2 applyConstVelocity(GameObject * go, glm::vec2 initial)
+		//{
+
+		//}
 	}
 }

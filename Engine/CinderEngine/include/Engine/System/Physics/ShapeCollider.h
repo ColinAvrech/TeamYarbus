@@ -16,33 +16,33 @@
 
 namespace Framework
 {
-  class ShapeCollider : public Component
-  {
-  public:
+	class ShapeCollider : public Component
+	{
+	public:
     const static std::string Name;
-    // Getters
-    glm::vec2 getPosition(void){
-      return position;
-    }
-    glm::vec2 getOffset(void){
-      return offset;
-    }
+		// Getters
+		glm::vec2 getPosition(void){
+			return position;
+		}
+		glm::vec2 getOffset(void){
+			return offset;
+		}
 
-  private:
-    // Private data
-    struct MaterialProperties
-    {
-      std::string name;
-      float density;
-      float restitution;
-      float friction;
-    };
-    glm::vec2 position;
-    glm::vec2 offset;
-    bool ghost;
-    bool sendsEvents;
-  };
-  ////////////////////////////////////////////////////////////
+	private:
+		// Private data
+		struct MaterialProperties
+		{
+			std::string name;
+			float density;
+			float restitution;
+			float friction;
+		};
+		glm::vec2 position;
+		glm::vec2 offset;
+		bool ghost;
+		bool sendsEvents;
+	};
+	////////////////////////////////////////////////////////////
 
   //Forward Declaration
   class PointCollider;
@@ -52,12 +52,12 @@ namespace Framework
   {
   public:
     const static std::string Name;
-    CircleCollider (GameObject* obj) : radius (0.1f)
-    {
-      gameObject = obj;
-    }
-    ~CircleCollider ()
-    {}
+	CircleCollider(GameObject* obj) : radius(0.1f)
+	{
+		gameObject = obj;
+	}
+
+	~CircleCollider();
 
     /*!Telegraph that the component is active*/
     void Initalize ()
@@ -84,72 +84,66 @@ namespace Framework
   };
 
 
-  class PointCollider : public ShapeCollider
-  {
-  public:
-    const static std::string Name;
-    PointCollider(GameObject *obj)
-    {
-      gameObject = obj;
-    }
-    ~PointCollider()
-    {}
+	class PointCollider : public ShapeCollider
+	{
+	public:
+		const static std::string Name;
+		PointCollider(GameObject *obj);
 
-    /*!Telegraph that the component is active*/
-    void Initalize()
-    {
-      //PHYSICSSYSTEM->AddLineCollisder(this);
-    }
+		~PointCollider();
 
-    void Serialize()
-    {
-    }
+		/*!Telegraph that the component is active*/
+		void Initalize()
+		{
+			//PHYSICSSYSTEM->AddLineCollisder(this);
+		}
 
-    void DetectCircle(CircleCollider* c);
-    void DetectLine(LineCollider* l);
-  };
-  ////////////////////////////////////////////////////////////
+		void Serialize()
+		{
+		}
 
-  // forward Declairation
-  //class PointCollider;
+		void DetectCircle(CircleCollider* c);
+		void DetectLine(LineCollider* l);
+	};
+	////////////////////////////////////////////////////////////
 
-  class LineCollider : public ShapeCollider
-  {
-  public:
-    const static std::string Name;
-    LineCollider(GameObject* obj)
-    {
-      gameObject = obj;
-    }
-    ~LineCollider()
-    {}
+	// forward Declairation
+	//class PointCollider;
 
-    // Public member functions - Overriden
-    /*!Telegraph that the component is active*/
-    void Initalize()
-    {
-      //PHYSICSSYSTEM->AddLineCollisder(this);
-    }
+	class LineCollider : public ShapeCollider
+	{
+	public:
+		const static std::string Name;
+		LineCollider(GameObject* obj);
 
-    void Serialize()
-    {
-    }
+		~LineCollider();
 
-    // Getters
-    glm::vec2 GetNormal(void) { return normalVec; }
-    float GetP1DotNormal(void) { return p1dotNormal; }
+		// Public member functions - Overriden
+		/*!Telegraph that the component is active*/
+		void Initalize()
+		{
+			//PHYSICSSYSTEM->AddLineCollisder(this);
+		}
 
-    // Private member functions
-    void DetectCircle(CircleCollider* c);  //if player is a circle
-    void DetectPoint(PointCollider* p);	  //if player is a point
+		void Serialize()
+		{
+		}
 
-  private:
-    // Private data
-    glm::vec2 p1; //points
-    glm::vec2 p2;
-    glm::vec2 normalVec;
-    float p1dotNormal;
-  };
-  ////////////////////////////////////////////////////////////
+		// Getters
+		glm::vec2 GetNormal(void) { return normalVec; }
+		float GetP1DotNormal(void) { return p1dotNormal; }
+
+		// Private member functions
+		void DetectCircle(CircleCollider* c);  //if player is a circle
+		void DetectPoint(PointCollider* p);	  //if player is a point
+
+	private:
+		// Private data
+		glm::vec2 p1; //points
+		glm::vec2 p2;
+		glm::vec2 normalVec;
+		float p1dotNormal;
+	};
+	////////////////////////////////////////////////////////////
 } //Framework
 

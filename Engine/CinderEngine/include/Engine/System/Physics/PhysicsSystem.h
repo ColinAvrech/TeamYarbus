@@ -22,6 +22,8 @@ namespace Framework
 		class PhysicsSystem : public BaseSystem
 		{
 		public:
+			// Returns name of System
+			const std::string GetName(){ return "PhysicsSystem"; }
 
 			/*-----------------------------------------------------------------------
 			// Constructor / Destructor
@@ -46,9 +48,11 @@ namespace Framework
 
 			// Called every frame
 			void Update(const double dt);
+			//void UpdateCollision(void);
+			//void UpdateResolution(void);
+			//void UpdateForces(void);
 
-			// Returns name of System
-			const std::string GetName(){ return "PhysicsSystem"; }
+
 		private:
 
 

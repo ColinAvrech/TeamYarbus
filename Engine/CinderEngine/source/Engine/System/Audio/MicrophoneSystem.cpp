@@ -18,6 +18,10 @@ static char THIS_FILE[] = __FILE__;
 
 namespace Framework
 {
+
+  FMOD::Sound *test = 0;
+  FMOD::Channel *pChannel = 0;
+
   void AudioSystem::InitMicData()
   {
     FMOD_RESULT result;
@@ -52,24 +56,29 @@ namespace Framework
     _driftthreshold = _adjustedlatency / 2;
   }
 
-  Sound* AudioSystem::LoadMicData(char* soundName, Sound::SoundID type, float volume)
+  void AudioSystem::LoadMicData()
   {
-    _newSound = new Sound();    
+    //_newSound = new Sound();    
     FMOD_RESULT result;
-    FMOD::Sound *test;
 
     memset(&_exinfo, 0, sizeof(FMOD_CREATESOUNDEXINFO));
     _exinfo.cbsize = sizeof(FMOD_CREATESOUNDEXINFO);
     _exinfo.numchannels = 1;
     _exinfo.format = FMOD_SOUND_FORMAT_PCM16;
     _exinfo.defaultfrequency = _recordrate;
-    _exinfo.length = _exinfo.defaultfrequency * sizeof(short) * _exinfo.numchannels * 1;
+    _exinfo.length = _exinfo.defaultfrequency * sizeof(short) * _exinfo.numchannels * 5;
 
-    test = _newSound->LoadMic(pFMODAudioSystem, soundName, type, _exinfo);
+    //test = _newSound->LoadMic(pFMODAudioSystem, soundName, type, _exinfo);
     
-    result = _newSound->pSound->getLength(&_soundlength, FMOD_TIMEUNIT_PCM);
+    result = pFMODAudioSystem->createSound(0, FMOD_LOOP_NORMAL | FMOD_OPENUSER, &_exinfo, &test);
+    ErrCheck(result);
 
-    return _newSound;
+    result = pFMODAudioSystem->recordStart(0, test, true);
+    ErrCheck(result);
+
+    result = test->getLength(&_soundlength, FMOD_TIMEUNIT_PCM);
+
+    //return _newSound;
   }
 
   FMOD::Sound* Sound::LoadMic(FMOD::System* pSystem, char* soundName, SoundID id, FMOD_CREATESOUNDEXINFO exinfo)
@@ -98,7 +107,6 @@ namespace Framework
   void AudioSystem::UpdateMicData()
   {
     FMOD_RESULT result;
-    FMOD::Channel *pChannel = 0;
 
     result = pFMODAudioSystem->getRecordPosition(0, &_recordpos);
     ErrCheck(result);
@@ -110,11 +118,11 @@ namespace Framework
 
     _samplesrecorded += _recorddelta;
 
-    if (_samplesrecorded >= _adjustedlatency && !(_newSound->Get_Channel()))
+    if (_samplesrecorded >= _adjustedlatency && !pChannel)
     {
-      pChannel = _newSound->Get_Channel();
+      //pChannel = _newSound->Get_Channel();
 
-      result = pFMODAudioSystem->playSound(_newSound->pSound, 0, false, &pChannel);
+      result = pFMODAudioSystem->playSound(test, 0, false, &pChannel);
       ErrCheck(result);
     }
 
@@ -146,17 +154,18 @@ namespace Framework
       if (_smootheddelta < (_adjustedlatency - _driftthreshold) || 
           _smootheddelta > _soundlength / 2)
       {
-        pChannel->setFrequency(_recordrate - (_recordrate / 50));
+        pChannel->setFrequency((float)_recordrate - (_recordrate / 50));
       }
       else if (_smootheddelta > (_adjustedlatency + _driftthreshold))
       {
-        pChannel->setFrequency(_recordrate + (_recordrate / 50));
+        pChannel->setFrequency((float)_recordrate + (_recordrate / 50));
       }
       else
       {
-        pChannel->setFrequency(_recordrate);
+        pChannel->setFrequency((float)_recordrate);
       }
     }
+    std::cout << Console::red << "playback latency : " << (int)_smootheddelta << " samples" << "," << (int)_smootheddelta * 1000 / _recordrate << " MS" << std::endl;
   }  
 }
 
