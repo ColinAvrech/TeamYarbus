@@ -41,7 +41,7 @@ namespace Framework
   void CLParticleRenderer::GenerateShaders ()
   {
     shader = Resources::RS->Get_Shader ("Simple");
-    computeshader = Resources::RS->Get_ComputeShader ("Velocities.cl");
+    computeshader = Resources::RS->Get_ComputeShader ("Velocities.cl.glsl");
   }
 
 

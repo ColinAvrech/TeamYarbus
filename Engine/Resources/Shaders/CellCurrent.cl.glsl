@@ -3,7 +3,7 @@
 // Target 0 : Vertex position
 layout(std140, binding = 0) buffer Pos
 {
-   vec4 Positions[];
+   vec2 grid[];
 };
 
 // Target 1 : Vertex velocity

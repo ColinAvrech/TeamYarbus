@@ -1,5 +1,5 @@
-Basic.vs
-Animation.vs
-Particle.vs
-Vertex.vs
-DebugDraw.vs
+Basic.vs.glsl
+Animation.vs.glsl
+Particle.vs.glsl
+Vertex.vs.glsl
+DebugDraw.vs.glsl
