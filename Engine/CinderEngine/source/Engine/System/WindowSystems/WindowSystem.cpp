@@ -211,6 +211,11 @@ namespace Framework
     {
     }
 
+    void GLFWWindowClosed(GLFWwindow* window)
+    {
+      CORE->QuitGame();
+    }
+
     void Create_Context(GLFWwindow** GLFWwindowptr)
     {
       // Init GLFW Before Using Any Functionality
@@ -235,6 +240,7 @@ namespace Framework
       glfwSetMouseButtonCallback (*GLFWwindowptr, GLFWMouseButtonFunction);
       glfwSetCursorPosCallback (*GLFWwindowptr, GLFWMouseCursorMoved);
       glfwSetWindowSizeCallback (*GLFWwindowptr, Resize);
+      glfwSetWindowCloseCallback(*GLFWwindowptr, GLFWWindowClosed);
     }
 
     void Init_Glew()
