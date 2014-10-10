@@ -21,6 +21,7 @@ namespace Framework
 
   FMOD::Sound *test = 0;
   FMOD::Channel *pChannel = 0;
+  bool fly = true;
 
   void AudioSystem::InitMicData()
   {
@@ -39,6 +40,7 @@ namespace Framework
     _recordrate = 0;
     _recordchannels = 1;
     _recordnumdrivers = 0;
+    input = {};
 
     result = pFMODAudioSystem->getRecordNumDrivers(&_recordnumdrivers);
     ErrCheck(result);
@@ -78,6 +80,8 @@ namespace Framework
 
     result = test->getLength(&_soundlength, FMOD_TIMEUNIT_PCM);
 
+    
+
     //return _newSound;
   }
 
@@ -102,7 +106,7 @@ namespace Framework
     SetType(ID, index);
 
     return pSound;
-  }
+  }  
 
   void AudioSystem::UpdateMicData()
   {
@@ -164,8 +168,86 @@ namespace Framework
       {
         pChannel->setFrequency((float)_recordrate);
       }
+
+      FMOD::DSP *reverb;
+      FMOD::DSP *lpf;
+      
+      bool active;
+
+      if (fly == true)
+      {
+        pChannel->getDSP(FMOD_CHANNELCONTROL_DSP_HEAD, &meter);
+
+        meter->setMeteringEnabled(true, false);
+
+
+        //result = pFMODAudioSystem->createDSPByType(FMOD_DSP_TYPE_FFT, &fft);
+        //ErrCheck(result);
+
+        result = pFMODAudioSystem->createDSPByType(FMOD_DSP_TYPE_LOWPASS, &lpf);
+        ErrCheck(result);
+
+        lpf->setParameterFloat(FMOD_DSP_LOWPASS_CUTOFF, 200);
+        lpf->setParameterFloat(FMOD_DSP_LOWPASS_RESONANCE, 1);
+
+        //FMOD_REVERB_PROPERTIES propon = FMOD_PRESET_BATHROOM;
+        //result = pFMODAudioSystem->setReverbProperties(0, &propon);
+
+        result = meter->getActive(&active);
+        //result = reverb->getActive(&active);
+        result = lpf->getActive(&active);
+        //result = fft->getActive(&active);
+        ErrCheck(result);
+
+        if (active)
+        {
+          result = pChannel->removeDSP(meter);
+          //result = pChannel->removeDSP(reverb);
+          result = pChannel->removeDSP(lpf);
+          //result = pChannel->removeDSP(fft);
+          ErrCheck(result);
+        }
+        else
+        {
+          result = pChannel->addDSP(0, meter, 0);
+          //result = pChannel->addDSP(0, reverb, 0);
+          result = pChannel->addDSP(0, lpf, 0);
+          //result = pChannel->addDSP(0, fft, 0);
+          ErrCheck(result);
+        }
+
+        fly = false;        
+      } 
+      
+      
+
+      meter->getMeteringInfo(&input, 0);
+      //if (input.peaklevel[0] < 0.2)
+      //  std::cout << Console::cyan << "RMS Peak : " << Console::darkgreen << input.peaklevel[0] << std::endl;
+      //else if (input.peaklevel[0] < 0.4)
+      //  std::cout << Console::cyan << "RMS Peak : " << Console::green << input.peaklevel[0] << std::endl;
+      //else if (input.peaklevel[0] < 0.6)
+      //  std::cout << Console::cyan << "RMS Peak : " << Console::yellow << input.peaklevel[0] << std::endl;
+      //else if (input.peaklevel[0] < 0.9)
+      //  std::cout << Console::cyan << "RMS Peak : " << Console::red << input.peaklevel[0] << std::endl;
+      //else
+      //  std::cout << Console::cyan << "RMS Peak : " << Console::darkred << input.peaklevel[0] << std::endl;
+     //int sampleSize = 64;
+     //char *specLeft;
+     //specLeft = new char[sampleSize];
+     //float val;
+     //
+     //fft->getParameterFloat(FMOD_DSP_FFT_DOMINANT_FREQ, &val, specLeft, 1000);
+     //       
+     //std::cout << Console::red << "playback latency : " << specLeft << std::endl; 
+     //
+     //delete[] specLeft;
+      
     }
-    std::cout << Console::red << "playback latency : " << (int)_smootheddelta << " samples" << "," << (int)_smootheddelta * 1000 / _recordrate << " MS" << std::endl;
+    //std::cout << Console::red << "playback latency : " << (int)_smootheddelta << " samples" << "," << (int)_smootheddelta * 1000 / _recordrate << " MS" << std::endl;
+    
+
+    
   }  
 }
 

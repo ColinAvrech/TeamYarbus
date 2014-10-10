@@ -42,7 +42,7 @@ namespace Framework
     bool borderEnabled = true;
     bool colorFade = false;
     bool pause = false;
-    float color [3];
+    float color [4];
     float colVec [3];
     float colorChangeTimer;
     float colorChangeLength;

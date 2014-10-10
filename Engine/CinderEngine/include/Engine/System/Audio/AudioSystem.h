@@ -52,6 +52,10 @@ namespace Framework
       #pragma region Public Variables
 
       char* AudioAssetsPath = "../../Resources/Audio/";
+      FMOD::DSP *fft;
+      FMOD::DSP *meter;
+      FMOD_DSP_METERING_INFO input;
+
 
       #pragma endregion
 
