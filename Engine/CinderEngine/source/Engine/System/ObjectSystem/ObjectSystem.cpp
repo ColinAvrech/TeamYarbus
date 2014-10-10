@@ -110,10 +110,14 @@ namespace Framework
       {
         GameObject* newobj = new GameObject(it->branch->value_.UInt_);
         newobj->Name = *it->branch->next->value_.String_;
+        GameObjects[newobj->GameObjectID] = newobj;
         auto ct = it->branch->next->next;
         while (ct)
         {
-          
+          Component* newcomp = newobj->AddComponent(ct->objectName);
+
+          newcomp->Serialize(ct->branch);
+
           ct = ct->next;
         }
         GameObjects[newobj->GameObjectID] = newobj;
