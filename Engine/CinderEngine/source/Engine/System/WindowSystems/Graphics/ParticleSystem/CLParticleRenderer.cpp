@@ -177,8 +177,8 @@ namespace Framework
 
     if (AUDIOSYSTEM->input.peaklevel[0] > 0.05f)
     {
-      if (color [3] < 1) color[3] += AUDIOSYSTEM->input.peaklevel[0];
-      printf("%f\n", color[3]);
+      if (color [3] < 1) color[3] += AUDIOSYSTEM->input.peaklevel[0] * 0.1f;
+      //printf("%f\n", color[3]);
     }
     else
     {
