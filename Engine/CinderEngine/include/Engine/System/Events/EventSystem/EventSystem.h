@@ -41,6 +41,7 @@ namespace Framework
 
     unsigned NumberOfEvents();
 
+	//pass null as obj for now
     void Connect(GameObject* obj, const std::string eventname, BaseEvent::BaseCall func);
 
     BaseEvent* GetEvent(const std::string eventname);

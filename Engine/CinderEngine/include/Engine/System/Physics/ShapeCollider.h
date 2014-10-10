@@ -57,13 +57,13 @@ namespace Framework
 		gameObject = obj;
 	}
 
-	~CircleCollider();
+	~CircleCollider(){};
 
     /*!Telegraph that the component is active*/
-    void Initalize ()
-    {
-      //PHYSICSSYSTEM->AddLineCollisder(this);
-    }
+	void Initialize();
+    //{
+    //  //PHYSICSSYSTEM->AddLineCollisder(this);
+    //}
 
     void Serialize ()
     {
@@ -88,15 +88,15 @@ namespace Framework
 	{
 	public:
 		const static std::string Name;
-		PointCollider(GameObject *obj);
+		PointCollider(GameObject *obj)
+		{
+			gameObject = obj;
+		}
 
-		~PointCollider();
+		~PointCollider(){};
 
 		/*!Telegraph that the component is active*/
-		void Initalize()
-		{
-			//PHYSICSSYSTEM->AddLineCollisder(this);
-		}
+		void Initialize();
 
 		void Serialize()
 		{
@@ -114,24 +114,33 @@ namespace Framework
 	{
 	public:
 		const static std::string Name;
-		LineCollider(GameObject* obj);
+		float p1dotNormal;
+		glm::vec2 normalVec;
+		glm::vec2 p1; //points
+		glm::vec2 p2;
 
-		~LineCollider();
+		LineCollider(GameObject *obj)
+		{
+			gameObject = obj;
+		}
+
+		~LineCollider(){};
 
 		// Public member functions - Overriden
 		/*!Telegraph that the component is active*/
-		void Initalize()
-		{
-			//PHYSICSSYSTEM->AddLineCollisder(this);
-		}
+		void Initialize();
 
 		void Serialize()
 		{
 		}
 
 		// Getters
-		glm::vec2 GetNormal(void) { return normalVec; }
-		float GetP1DotNormal(void) { return p1dotNormal; }
+		//glm::vec2 GetNormal(void) { return normalVec; }
+		//float GetP1DotNormal(void) { return p1dotNormal; }
+
+		// Setters
+		void setP1(glm::vec2 passer) { p1 = passer; }
+		void setP2(glm::vec2 passer) { p2 = passer; }
 
 		// Private member functions
 		void DetectCircle(CircleCollider* c);  //if player is a circle
@@ -139,10 +148,7 @@ namespace Framework
 
 	private:
 		// Private data
-		glm::vec2 p1; //points
-		glm::vec2 p2;
-		glm::vec2 normalVec;
-		float p1dotNormal;
+		
 	};
 	////////////////////////////////////////////////////////////
 } //Framework

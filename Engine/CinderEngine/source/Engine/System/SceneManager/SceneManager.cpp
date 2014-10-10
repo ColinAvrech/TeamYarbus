@@ -37,14 +37,14 @@ namespace Framework
   bool SceneManager::Initialize ()
   {
     std::cout << GetName () << " initialized\n";
-    Load_Scene (computeTest);
+    Load_Scene (collisionTest);
     return true;
   }
 
   // HARD CODED FOR NOW
   void SceneManager::Load_Scene (Scene* scene)
   {
-    scene = new Scene_ComputeTest ();
+    scene = new Scene_CollisionTest ();
     scene->Load_Scene (NULL);
     current = scene;
   }

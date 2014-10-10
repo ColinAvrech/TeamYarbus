@@ -63,7 +63,7 @@ namespace Framework
 			std::string ColEvent = std::string("COLLISION");
 			CollisionEvent* collision = (CollisionEvent*)EVENTSYSTEM->GetEvent(ColEvent);
 			collision->OtherObject = l->gameObject;
-			collision->normal = l->GetNormal();
+			collision->normal = l->normalVec;
 			glm::normalize(collision->normal);
 			collision->DispatchEvent();
 		}

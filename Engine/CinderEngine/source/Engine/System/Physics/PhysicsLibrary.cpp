@@ -16,7 +16,6 @@ namespace Framework
 		//	//compute dynamic friction
 		//}
 
-
 		
 		glm::vec2 applyNetForce(glm::vec2 sumForce, double mass)
 		{
@@ -38,11 +37,13 @@ namespace Framework
 				+ (pos2.y - pos1.y) * (pos2.y - pos1.y)));
 		}
 
-		glm::vec2 getNormal(glm::vec2 side)
+		glm::vec2 getNormal(glm::vec2 p1, glm::vec2 p2)
 		{
 			glm::vec2 norm;
-			norm.x = -side.y;
-			norm.y = side.x;
+			glm::vec2 line = p1 - p2;
+			norm.x = -line.y;
+			norm.y = line.x;
+			glm::vec2 normalize(norm);
 
 			return norm;
 		}

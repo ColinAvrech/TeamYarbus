@@ -26,7 +26,7 @@ namespace Framework
 {
   using namespace Physics;
 
-  static GameObject* go1, *go2;
+  static GameObject* go1, *go2, *go3line;
   static DebugCircleRenderer debugRenderer;
   static int circleDivisions = 40;
   static float circleRadius = 0.5f;
@@ -36,7 +36,9 @@ namespace Framework
   static VAO* vao;
   static VBO* vbo;
   static EBO* ebo;
-  static glm::vec2 testLine = {100, 100};
+  //Test floor
+  static LineCollider testLine (go3line);
+
 
   // Constructor
   Scene_CollisionTest::Scene_CollisionTest ()
@@ -66,13 +68,13 @@ namespace Framework
     {
 		if (glfwGetKey(WINDOWSYSTEM->Get_Window(), GLFW_KEY_A))
 		{
-			//glm::vec2 force, accel;
-			//glm::vec2 newVel = { 0, 0 };
-			//force = { -5.0f, 0 };
+			glm::vec2 force, accel;
+			force = { -5.0f, 0 }; //WASD control    
 			//float mass = 2;
-			//accel = getAccel(force, mass);
-			//newVel = applyAccel(accel, .064f);
-			go1->Transform->Translate(-.01f, 0, 0);
+			//force should be multiplied by friction to get smaller every update
+			accel = getAccel(force, 0.01);
+			go->RigidBody->vel = applyAccel(accel, .064f);
+			go1->Transform->Translate(go->RigidBody->vel.x, 0, 0);
 		}
 			
 		else if (glfwGetKey(WINDOWSYSTEM->Get_Window(), GLFW_KEY_D))
@@ -105,6 +107,7 @@ namespace Framework
 
     go1 = new GameObject (0);
     go2 = new GameObject (1);
+	go3line = new GameObject (2);
 
     go1->Transform = new Transform (go1);
     go1->Sprite = new Sprite (go1);
@@ -114,7 +117,17 @@ namespace Framework
     go2->Transform = new Transform (go2);
     go2->Sprite = new Sprite (go2);
     go2->CircleCollider = new CircleCollider (go2);
-	go2->RigidBody = new RigidBody(go2);
+	go2->RigidBody = new RigidBody (go2);
+
+
+	//Testing floor
+	go3line->LineCollider = new LineCollider(go3line);
+	go3line->LineCollider->p1 = { 0, -100 };
+	go3line->LineCollider->p2 = { 0, 100 };
+	go3line->LineCollider->normalVec = Physics::getNormal(go3line->LineCollider->p1, go3line->LineCollider->p2);
+	go3line->LineCollider->p1dotNormal = Physics::DotProduct(go3line->LineCollider->p1, go3line->LineCollider->normalVec);
+	//debug draw line
+
 
     ShapeData data = ShapeGenerator::Generate_Quad ();
 

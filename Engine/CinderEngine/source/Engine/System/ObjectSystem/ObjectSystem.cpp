@@ -54,6 +54,10 @@ namespace Framework
   {
     RegisterComponent(Transform);
     RegisterComponent(Sprite);
+	//RegisterComponent(CircleCollider);
+	//RegisterComponent(PointCollider);
+	//RegisterComponent(LineCollider);
+	//RegisterComponent(RigidBody);
   }
 
   void ObjectSystem::AddComponentCreator(std::string name, ComponentCreator* creator)
