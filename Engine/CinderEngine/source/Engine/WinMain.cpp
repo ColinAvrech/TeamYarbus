@@ -66,11 +66,12 @@ int main(void)
   //Test parser
   Serializer::ZeroSerializer testarchive;
 
-  testarchive.open("Level.data");
+  testarchive.open("EnemyProjectile.Archetype.data");
 
   testarchive.CreateArchive();
-
+  
   testarchive.DumpArchive(testarchive.GetTrunk());
+
 
   /*! Initialize the game engine*/
   
@@ -107,14 +108,15 @@ int main(void)
   engine->AddSystem(phys);
 
   Resources resourceManager;
-  resourceManager.Load_Resources();
-
-  Sound *test;
+  resourceManager.Load_Resources();  
 
   //! Initialize all added Systems. DON'T INIT YOUR OWN
   engine->Initialize();
 
-  test = audio->LoadMicData("Mic", Sound::SOUND_2D, 1.0);
+  //resourceManager.Get_Sound("music.mp3")->Play();
+  //resourceManager.Get_Sound("music.mp3")->SetVolume(0.1f);
+  
+  audio->LoadMicData();
 
   //! activate the window.
 

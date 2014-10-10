@@ -1,6 +1,6 @@
 /******************************************************************************/
 /*!
-\file   glmOverloads.h
+\file   glmOverloads.cpp
 \author Anna Pearson
 \par    Course: GAM200
 \par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
@@ -11,7 +11,18 @@
 
 namespace Framework
 {
-  glm::vec2 operator*(const glm::vec2& vec, const float scale);
-  glm::vec2 operator*(const float scale, const glm::vec2& vec);
+  glm::vec2 operator*(const glm::vec2& vec, const float scale)
+  {
+    glm::vec2 newvec = vec;
+    newvec *= scale;
+    return newvec;
+  }
+
+  glm::vec2 operator*(const float scale, const glm::vec2& vec)
+  {
+    glm::vec2 newvec = vec;
+    newvec *= scale;
+    return newvec;
+  }
 
 }

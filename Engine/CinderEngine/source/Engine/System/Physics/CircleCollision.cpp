@@ -45,7 +45,7 @@ namespace Framework
 		float rad = GetRadius();
 		if (Physics::CirclevsPoint(rad, pos, ppos))
 		{
-			std::string ColEvent = std::string("COLLISION");
+      std::string ColEvent = CollisionEventName(p->gameObject->GameObjectID);
 			CollisionEvent* collision = (CollisionEvent*)EVENTSYSTEM->GetEvent(ColEvent);
 			collision->OtherObject = p->gameObject;
 			collision->normal = pos - ppos;

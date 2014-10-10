@@ -11,19 +11,23 @@
 
 #pragma once
 
-#define CollisionEventName(ObjId) std::string(COLLISION##ObjId )
+#include "Common.h"
 
-#define DeclareEvent(Name) namespace Events { static const std::string Name(#Name); }
-#define DeclareEventType(Name) namespace Events { namespace Types { static const std::string Name(#Name); }}
 
+//EventPrefixes
+#define UpdateEventPrefix 'U'
+#define CollisionEventPrefix 'C'
+#define MouseEventPrefix 'M'
+#define KeyEventPrefix 'K'
+#define GameEventPrefix 'G'
+
+//#define DeclareEvent(Name) namespace Events { static const std::string Name(#Name); }
+#define DeclareEvent(Name, String) namespace Events { static const std::string Name(#String); }
 
 namespace Framework
 {
-  DeclareEventType(GAME)
-  DeclareEventType(MOUSE)
-  DeclareEventType(UPDATE)
-  DeclareEventType(KEY)
-  DeclareEventType(COLLISION)
+
+  std::string CollisionEventName(unsigned GameObjectID);
 
   /*********************************************/
   // Input
@@ -31,82 +35,73 @@ namespace Framework
 
   //Mouse Input
 
-  DeclareEvent(MOUSE_MOVE)
-  DeclareEvent(MOUSE_LEFT)
-  DeclareEvent(MOUSE_RIGHT)
-  DeclareEvent(MOUSE_MIDDLE)
-  DeclareEvent(MOUSE_SCROLLUP)
-  DeclareEvent(MOUSE_SCROLLDOWN)
-
-  // Key Modifiers
-
-  DeclareEvent(KEY_CTRLIN)
-  DeclareEvent(KEY_CTRLOUT)
-  DeclareEvent(KEY_ALTIN)
-  DeclareEvent(KEY_ALTOUT)
-  DeclareEvent(KEY_SHIFTOUT)
-  DeclareEvent(KEY_SHIFTIN)
+  DeclareEvent(MOUSE_MOVE, MMOVE)
+  DeclareEvent(MOUSE_LEFT, MLEFT)
+  DeclareEvent(MOUSE_RIGHT, MRIGHT)
+  DeclareEvent(MOUSE_MIDDLE, MMIDDLE)
+  DeclareEvent(MOUSE_SCROLLUP, MSCROLLUP)
+  DeclareEvent(MOUSE_SCROLLDOWN, MSCROLLDOWN)
 
   // Arrow Keys
 
-  DeclareEvent(KEY_UP)
-  DeclareEvent(KEY_DOWN)
-  DeclareEvent(KEY_LEFT)
-  DeclareEvent(KEY_RIGHT)
+  DeclareEvent(KEY_UP, KUP)
+  DeclareEvent(KEY_DOWN, KDOWN)
+  DeclareEvent(KEY_LEFT, KLEFT)
+  DeclareEvent(KEY_RIGHT, KRIGHT)
 
   //Control Keys
   
-  DeclareEvent(KEY_BACKSPACE)
-  DeclareEvent(KEY_TAB)
-  DeclareEvent(KEY_ENTER)
-  DeclareEvent(KEY_ESCAPE)
-  DeclareEvent(KEY_SPACE)
-  DeclareEvent(KEY_GRAVEACCENT)
+  DeclareEvent(KEY_BACKSPACE, KBACKSPACE)
+  DeclareEvent(KEY_TAB, KTAB)
+  DeclareEvent(KEY_ENTER, KENTER)
+  DeclareEvent(KEY_ESCAPE, KESCAPE)
+  DeclareEvent(KEY_SPACE, KSPACE)
+  DeclareEvent(KEY_GRAVEACCENT, KGRAVEACCENT)
 
   // Numbers
 
-  DeclareEvent(KEY_0)
-  DeclareEvent(KEY_1)
-  DeclareEvent(KEY_2)
-  DeclareEvent(KEY_3)
-  DeclareEvent(KEY_4)
-  DeclareEvent(KEY_5)
-  DeclareEvent(KEY_6)
-  DeclareEvent(KEY_7)
-  DeclareEvent(KEY_8)
-  DeclareEvent(KEY_9)
+  DeclareEvent(KEY_0, K0)
+  DeclareEvent(KEY_1, K1)
+  DeclareEvent(KEY_2, K2)
+  DeclareEvent(KEY_3, K3)
+  DeclareEvent(KEY_4, K4)
+  DeclareEvent(KEY_5, K5)
+  DeclareEvent(KEY_6, K6)
+  DeclareEvent(KEY_7, K7)
+  DeclareEvent(KEY_8, K8)
+  DeclareEvent(KEY_9, K9)
 
   // Letters: LowerCase || Upper Case
 
-  DeclareEvent(KEY_A)
-  DeclareEvent(KEY_B)
-  DeclareEvent(KEY_C)
-  DeclareEvent(KEY_D)
-  DeclareEvent(KEY_E)
-  DeclareEvent(KEY_F)
-  DeclareEvent(KEY_G)
-  DeclareEvent(KEY_H)
-  DeclareEvent(KEY_I)
-  DeclareEvent(KEY_J)
-  DeclareEvent(KEY_K)
-  DeclareEvent(KEY_L)
-  DeclareEvent(KEY_M)
-  DeclareEvent(KEY_N)
-  DeclareEvent(KEY_O)
-  DeclareEvent(KEY_P)
-  DeclareEvent(KEY_Q)
-  DeclareEvent(KEY_R)
-  DeclareEvent(KEY_S)
-  DeclareEvent(KEY_T)
-  DeclareEvent(KEY_U)
-  DeclareEvent(KEY_V)
-  DeclareEvent(KEY_W)
-  DeclareEvent(KEY_X)
-  DeclareEvent(KEY_Y)
-  DeclareEvent(KEY_Z)
+  DeclareEvent(KEY_A, KA)
+  DeclareEvent(KEY_B, KB)
+  DeclareEvent(KEY_C, KC)
+  DeclareEvent(KEY_D, KD)
+  DeclareEvent(KEY_E, KE)
+  DeclareEvent(KEY_F, KF)
+  DeclareEvent(KEY_G, KG)
+  DeclareEvent(KEY_H, KH)
+  DeclareEvent(KEY_I, KI)
+  DeclareEvent(KEY_J, KJ)
+  DeclareEvent(KEY_K, KK)
+  DeclareEvent(KEY_L, KL)
+  DeclareEvent(KEY_M, KM)
+  DeclareEvent(KEY_N, KN)
+  DeclareEvent(KEY_O, KO)
+  DeclareEvent(KEY_P, KP)
+  DeclareEvent(KEY_Q, KQ)
+  DeclareEvent(KEY_R, KR)
+  DeclareEvent(KEY_S, KS)
+  DeclareEvent(KEY_T, KT)
+  DeclareEvent(KEY_U, KU)
+  DeclareEvent(KEY_V, KV)
+  DeclareEvent(KEY_W, KW)
+  DeclareEvent(KEY_X, KX)
+  DeclareEvent(KEY_Y, KY)
+  DeclareEvent(KEY_Z, KZ)
 
   // Called if any key is pressed
-  DeclareEvent(KEY_ANY)
+  DeclareEvent(KEY_ANY, KANY)
 
   /*********************************************/
   // Misc Events Created by Systems always
@@ -114,10 +109,10 @@ namespace Framework
 
   // Windows System Related Events
 
-  DeclareEvent(GAME_WINDOW)
+  //DeclareEvent(GAME_WINDOW)
 
   // Time Related Events
 
-  DeclareEvent(LOGICUPDATE)
+  DeclareEvent(UPDATEEVENT, U)
 
 }

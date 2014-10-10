@@ -1,6 +1,6 @@
-Basic.frag
-Lighting.frag
-Particle.frag
-BlendIn.frag
-Fragment.frag
-DebugDraw.frag
+Basic.frag.glsl
+Lighting.frag.glsl
+Particle.frag.glsl
+BlendIn.frag.glsl
+Fragment.frag.glsl
+DebugDraw.frag.glsl

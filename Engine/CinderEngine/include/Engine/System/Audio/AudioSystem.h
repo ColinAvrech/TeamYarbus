@@ -51,7 +51,8 @@ namespace Framework
       -----------------------------------------------------------------------*/
       #pragma region Public Variables
 
-      char* AudioAssetsPath = "../../Resources/Audio/";
+      char* AudioAssetsPath = "../../Resources/Audio/";      
+      FMOD_DSP_METERING_INFO input;
 
       #pragma endregion
 
@@ -69,16 +70,24 @@ namespace Framework
     
       void          ErrCheck(FMOD_RESULT result);
       bool          Initialize();
-      void          InitMicData();
       Sound*        LoadSound(const char* filename,  char* soundName, 
-                              Sound::SoundID type,  float volume);
-      Sound*        LoadMicData(char* soundName, Sound::SoundID type,
-                                                    float volume);
+                              Sound::SoundID type,  float volume);      
       void          StopSounds(int id);
+
+      // Microphone Functions
+      void          InitMicData();
+      void          LoadMicData();
+      void          UpdateMicData();
+      void          micMeter();
+      void          micFrequencyData();
+      void          micFilter(float cutoff = 150, float resonance = 1);
+      void          meterConsoleOut();
+      void          frequencyConsoleOut();
+      void          latencyConsoleOut();
 
       // Called every frame
       virtual void  Update(const double dt);
-      void          UpdateMicData();
+      
 
       // Returns name of System
       virtual const std::string GetName(){ return "AudioSystem";}
@@ -129,7 +138,12 @@ namespace Framework
       FMOD::ChannelGroup                *GroupMusic;
       FMOD::ChannelGroup                *Group2DSFX;
       FMOD::ChannelGroup                *Group3DSFX;
-      Sound*                            _newSound;
+      FMOD::DSP                         *fft;
+      FMOD::DSP                         *meter;
+      FMOD::DSP                         *filter;
+      FMOD::Sound                       *micSound = 0;
+      FMOD::Channel                     *micChannel = 0;
+      Sound                             *_newSound;
       FMOD_CREATESOUNDEXINFO            _exinfo;
       unsigned int                      _soundlength;
       unsigned int                      _recordpos;
@@ -143,7 +157,8 @@ namespace Framework
       int                               _recordrate;
       int                               _recordchannels;
       int                               _recordnumdrivers;
-      float                             _smootheddelta;      
+      float                             _smootheddelta;  
+      bool                              _check;
 
       #pragma endregion
 

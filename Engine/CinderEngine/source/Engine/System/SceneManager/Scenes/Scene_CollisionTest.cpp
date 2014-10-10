@@ -24,7 +24,7 @@
 
 namespace Framework
 {
-  using namespace Physics;
+  //using namespace Physics;
 
   static GameObject* go1, *go2, *go3line;
   static DebugCircleRenderer debugRenderer;
@@ -72,8 +72,8 @@ namespace Framework
 			force = { -5.0f, 0 }; //WASD control    
 			//float mass = 2;
 			//force should be multiplied by friction to get smaller every update
-			accel = getAccel(force, 0.01);
-			go->RigidBody->vel = applyAccel(accel, .064f);
+			accel = Physics::getAccel(force, 0.01);
+			go->RigidBody->vel = Physics::applyAccel(accel, .064f);
 			go1->Transform->Translate(go->RigidBody->vel.x, 0, 0);
 		}
 			
@@ -100,7 +100,7 @@ namespace Framework
   void Scene_CollisionTest::Load_Scene (const char* filename)
   {
     EVENTSYSTEM->Connect (NULL, Events::KEY_ANY, BaseEvent::BaseCall (OnKeyPressed));
-    EVENTSYSTEM->Connect (go2, Events::Types::COLLISION, BaseEvent::BaseCall (OnCollisionEnter));
+    //EVENTSYSTEM->Connect (go2, Events::Types::COLLISION, BaseEvent::BaseCall (OnCollisionEnter));
     debugRenderer = DebugCircleRenderer ();
     debugRenderer.Generate_Buffers ();
     debugRenderer.Generate_Shaders ();

@@ -57,10 +57,18 @@ namespace Framework
 
   Component* GameObject::AddComponent(std::string name)
   {
-    ErrorIf(Components.find(name) == Components.end(), "COMPONENT CREATED TWICE ON SAME OBJECT");
-    Component* gc = OBJECTSYSTEM->SerialMap[name]->Create();
-    Components[name] = gc;
-    return gc;
+    ErrorIf(Components.find(name) != Components.end(), "COMPONENT CREATED TWICE ON SAME OBJECT");
+    if (OBJECTSYSTEM->SerialMap.find(name) != OBJECTSYSTEM->SerialMap.end())
+    {
+      Component* gc = OBJECTSYSTEM->SerialMap[name]->Create();
+      Components[name] = gc;
+      return gc;
+    }
+    else
+    {
+      std::cout << Console::red << "ERROR, Object System requested to create unregistered component" << std::endl;
+      return NULL;
+    }
   }
 
   Component* GameObject::GetComponent(std::string component)

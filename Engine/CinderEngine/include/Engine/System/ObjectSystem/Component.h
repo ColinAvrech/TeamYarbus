@@ -20,6 +20,7 @@ relaying information)
 
 */
 #pragma once
+#include "Serializer/DataNode.h"
 
 #define DefineComponentName(Component) const std::string Component::Name("Component")
 
@@ -38,7 +39,7 @@ namespace Framework
     virtual void Initalize(){};
 
     /*!TODO IMPLIMENT SERIALIZATION!*/
-    virtual void Serialize(){};
+    virtual void Serialize(Serializer::DataNode* data){};
 
     //Variables that all components have
     GameObject* gameObject;

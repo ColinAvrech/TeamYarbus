@@ -13,7 +13,8 @@
 
 namespace Framework
 {
-
+  static float decayRate = 2.0f;
+  static float breathRate = 0.01f;
   static float random (float fMin, float fMax)
   {
     float fRandNum = (float) rand () / RAND_MAX;
@@ -23,12 +24,12 @@ namespace Framework
 
   CLParticleRenderer::CLParticleRenderer ()
   {
-    particleCount = 10000;
+    particleCount = MILLION;
     particleSize = 1.0f;
     srand ((unsigned) time (NULL));
     color [0] = random (64, 255);
-    color [1] = random (64, 255);
-    color [2] = random (64, 255);
+    color [1] = random (0, 120);
+    color [2] = random (0, 40);
     colorChangeTimer = 1000.0f;
   }
 
@@ -40,7 +41,7 @@ namespace Framework
   void CLParticleRenderer::GenerateShaders ()
   {
     shader = Resources::RS->Get_Shader ("Simple");
-    computeshader = Resources::RS->Get_ComputeShader ("Velocities.cl");
+    computeshader = Resources::RS->Get_ComputeShader ("Velocities.cl.glsl");
   }
 
 
@@ -137,7 +138,7 @@ namespace Framework
 
   void CLParticleRenderer::Render ()
   {
-    if (colorFade)
+    /*if (colorFade)
     {
       colorChangeTimer -= frameDelta * 25.0f;
 
@@ -172,9 +173,17 @@ namespace Framework
       color [0] = 255.0f;
       color [1] = 64.0f;
       color [2] = 0.0f;
+    }*/
+
+    if (AUDIOSYSTEM->input.peaklevel[0] > 0.05f)
+    {
+      if (color [3] < 1) color[3] += AUDIOSYSTEM->input.peaklevel[0] * 0.1f;
+      //printf("%f\n", color[3]);
     }
-
-
+    else
+    {
+      if (color[3] > 0.1f) color[3] -= 0.016f;
+    }
     double frameTimeStart = glfwGetTime ();
 
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -212,7 +221,7 @@ namespace Framework
 
     shader->Use ();
 
-    shader->uni4f ("Color", color [0] / 255.0f, color [1] / 255.0f, color [2] / 255.0f, 1.0f);
+    shader->uni4f ("Color", color [0] / 255.0f, color [1] / 255.0f, color [2] / 255.0f, color [3]);
 
     glGetError ();
 

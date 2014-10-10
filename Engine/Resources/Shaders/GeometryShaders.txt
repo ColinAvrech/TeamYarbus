@@ -1,2 +1,2 @@
-Particle.gs
-Circle.gs
+Particle.gs.glsl
+Circle.gs.glsl
