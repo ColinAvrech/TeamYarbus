@@ -98,7 +98,7 @@ namespace Framework
   void Scene_CollisionTest::Load_Scene (const char* filename)
   {
     EVENTSYSTEM->Connect (NULL, Events::KEY_ANY, BaseEvent::BaseCall (OnKeyPressed));
-    EVENTSYSTEM->Connect (go2, Events::Types::COLLISION, BaseEvent::BaseCall (OnCollisionEnter));
+    //EVENTSYSTEM->Connect (go2, Events::Types::COLLISION, BaseEvent::BaseCall (OnCollisionEnter));
     debugRenderer = DebugCircleRenderer ();
     debugRenderer.Generate_Buffers ();
     debugRenderer.Generate_Shaders ();

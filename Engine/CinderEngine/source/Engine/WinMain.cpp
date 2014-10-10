@@ -69,8 +69,9 @@ int main(void)
   testarchive.open("EnemyProjectile.Archetype.data");
 
   testarchive.CreateArchive();
-
+  
   testarchive.DumpArchive(testarchive.GetTrunk());
+
 
   /*! Initialize the game engine*/
   
