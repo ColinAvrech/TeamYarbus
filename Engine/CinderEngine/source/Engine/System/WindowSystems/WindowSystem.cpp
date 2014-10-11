@@ -25,6 +25,8 @@ namespace Framework
   //! Global pointer to  the windows system.
   WindowSystem* WINDOWSYSTEM = NULL;
 
+  std::vector <Sprite*> WindowSystem::spriteList;
+
   namespace WindowNameSpace
   {
     void Resize (GLFWwindow* window, int w, int h)
@@ -261,10 +263,18 @@ namespace Framework
     WindowNameSpace::Init_Glew();
   }
 
-
+  static VAO* vao;
+  static VBO* vbo;
+  static EBO* ebo;
   bool WindowSystem::Initialize ()
   {
     std::cout << GetName () << " initialized\n";
+    
+    ShapeData data = ShapeGenerator::Generate_Quad ();
+    vao = new VAO ();
+    vbo = new VBO (data.vbo_size (), data.vertices);
+    ebo = new EBO (data.ebo_size (), data.indices);
+    data.Clean ();
     return true;
   }
 
@@ -287,6 +297,19 @@ namespace Framework
 
   void WindowSystem::GraphicsUpdate (const double dt)
   {
+    glClearColor (0, 0, 0, 0);
+    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    
+    glDisable (GL_DEPTH_TEST);
+    glEnable (GL_BLEND);
+    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    vao->bindVAO ();
+    for (auto i : spriteList)
+    {
+      i->gameObject->Transform->UpdateMatrices ();
+      i->Draw ();
+    }
+    vao->unbindVAO ();
   }
   
   unsigned WindowSystem::Get_Width ()

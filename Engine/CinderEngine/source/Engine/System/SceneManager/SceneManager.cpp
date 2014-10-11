@@ -44,31 +44,31 @@ namespace Framework
   // HARD CODED FOR NOW
   void SceneManager::Load_Scene (Scene* scene)
   {
-    scene = new Scene_CollisionTest ();
-    scene->Load_Scene (NULL);
-    current = scene;
+    //scene = new Scene_CollisionTest ();
+    //scene->Load_Scene (NULL);
+    //current = scene;
   }
 
 
   void SceneManager::Load_Next_Scene ()
   {
-    Destroy (current);
-    current = new ParticleEditor ();
-    current->Load_Scene (NULL);
+    //Destroy (current);
+    //current = new ParticleEditor ();
+    //current->Load_Scene (NULL);
   }
   
   // Called Every Frame
   void SceneManager::Update (const double dt)
   {
-    current->Update (dt);
-    current->Draw ();
+    //current->Update (dt);
+    //current->Draw ();
   }
 
 
   void SceneManager::Destroy (Scene* scene)
   {
-    delete scene;
-    scene = NULL;
+    //delete scene;
+    //scene = NULL;
   }
   
   // Destructor
@@ -78,7 +78,7 @@ namespace Framework
   void SceneManager::Change_Size (int w, int h)
   {
     glViewport (0, 0, w, h);
-    current->Change_Size (w, h);
+    //current->Change_Size (w, h);
   }
 
 }

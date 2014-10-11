@@ -14,6 +14,7 @@
 
 #include "GraphicsCommon.h"
 #include "ComponentInclude.h"
+#include "JSONSerializer.h"
 
 namespace Framework
 {
@@ -32,7 +33,7 @@ namespace Framework
     ~Transform ();
 
     virtual void Initalize ();
-    virtual void Serialize ();
+    virtual void Serialize (Serializer::DataNode* data);
 
     //////////////////////////////////////////////////////////////////////////
     // Transformations

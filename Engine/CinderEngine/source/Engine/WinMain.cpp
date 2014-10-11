@@ -98,14 +98,13 @@ int main(void)
 
   //GameObject* testDynamicCircle = new GameObject(2);
 
-  engine->AddSystem (sceneManager);
+  engine->AddSystem (phys);
   engine->AddSystem (windows);
   engine->AddSystem(audio);
   engine->AddSystem(events);
   engine->AddSystem(zilch);
   engine->AddSystem(thermo);
   engine->AddSystem(objsys);
-  engine->AddSystem(phys);
 
   Resources resourceManager;
   resourceManager.Load_Resources();  

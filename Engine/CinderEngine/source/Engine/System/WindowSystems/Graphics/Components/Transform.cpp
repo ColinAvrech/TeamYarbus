@@ -15,13 +15,8 @@ namespace Framework
   DefineComponentName (Transform);
   // Constructor
 
-  Transform::Transform (GameObject* go) : position (0), scale (1), rotation (0)
+  Transform::Transform (GameObject* go)
   {
-    modelMatrix.push_back (glm::mat4 (1));
-    modelViewProjectionmatrix.push_back (glm::mat4 (1));
-    normalMatrix = glm::mat3 (1);
-    matricesReady = true;
-    currentMatrix = 0;
     gameObject = go;
   }
 
@@ -40,10 +35,16 @@ namespace Framework
 
   void Transform::Initalize ()
   {
+    modelMatrix.push_back (glm::mat4 (1));
+    modelViewProjectionmatrix.push_back (glm::mat4 (1));
+    normalMatrix = glm::mat3 (1);
+    matricesReady = false;
+    currentMatrix = 0;
+    //UpdateMatrices ();
   }
 
 
-  void Transform::Serialize ()
+  void Transform::Serialize (Serializer::DataNode* data)
   {
     //////////////////////////////////////////////////////////////////////////
     // DATA TO BE SERIALIZED
@@ -51,6 +52,17 @@ namespace Framework
     // scale    : glm::vec3 (Serialized Data)
     // rotation : float (Serialized Data)
     //////////////////////////////////////////////////////////////////////////
+    for (unsigned i = 0; i < data->value_.VecN_->size (); ++i)
+    {
+      position [i] = data->value_.VecN_->at (i);
+    }
+    data = data->next;
+    for (unsigned i = 0; i < data->value_.VecN_->size (); ++i)
+    {
+      scale [i] = data->value_.VecN_->at (i);
+    }
+    data = data->next;
+    rotation = data->value_.VecN_->at (2);
   }
 
   bool Transform::MatrixMode (int m)
