@@ -16,21 +16,38 @@
 
 namespace Framework
 {
-  class DebugCircleRenderer
+  class DebugRenderer
   {
   public:
-    DebugCircleRenderer ();
-    ~DebugCircleRenderer ();
+    DebugRenderer ();
+    ~DebugRenderer ();
     void Generate_Shaders ();
     void Generate_Buffers ();
     void Draw (CircleCollider* circle);
+    void Draw (LineCollider* circle);
+    void Draw (PointCollider* point);
+    void Draw (ShapeCollider* shape, int sides = 3);
 
+    template <typename T>
+    void DrawT (T* shape);
+
+    void Initialize ();
   private:
-    Shader* dShader;
-    GLuint vao;
-    GLuint VBO [2];
+    Shader* circleShader;
+    Shader* lineShader;
+    Shader* pointShader;
+    VAO* vao;
+    VBO* vbo;
     int circleDivisions = 40;
     bool wireframe = true;
+
+    inline void EnableVertexArrays ()
+    {
+      vao->bindVAO ();
+      circleShader->enableVertexAttribArray (circleShader->attribLocation ("position"));
+      circleShader->enableVertexAttribArray (circleShader->attribLocation ("color"));
+    }
+
   };
 }
 

@@ -29,7 +29,12 @@ namespace Framework
 			return offset;
 		}
 
-	private:
+    void setOffset (glm::vec2 _offset)
+    {
+      offset = _offset;
+    }
+
+	protected:
 		// Private data
 		struct MaterialProperties
 		{
@@ -53,21 +58,41 @@ namespace Framework
   {
   public:
     const static std::string Name;
-	CircleCollider(GameObject* obj) : radius(0.1f)
-	{
-		gameObject = obj;
-	}
+    CircleCollider () {}
+	  CircleCollider(GameObject* obj) : radius(0.1f)
+	  {
+		  gameObject = obj;
+	  }
 
-	~CircleCollider(){};
+	  ~CircleCollider() {};
 
     /*!Telegraph that the component is active*/
-	void Initialize();
+    virtual void Initialize ();
     //{
     //  //PHYSICSSYSTEM->AddLineCollisder(this);
     //}
 
-    void Serialize ()
+    void Serialize (Serializer::DataNode* data)
     {
+      //////////////////////////////////////////////////////////////////////////
+      // Radius       : float
+      // Offset       : glm::vec2
+      // Ghost        : bool
+      // Sends Events : bool
+      //////////////////////////////////////////////////////////////////////////
+
+      // Radius
+      radius = data->value_.Float_;
+      data = data->next;
+      // Offset
+      for (unsigned i = 0; i < data->value_.VecN_->size (); ++i)
+        offset [i] = data->value_.VecN_->at (i);
+      data = data->next;
+      // Ghost?
+      ghost = data->value_.Bool_;
+      data = data->next;
+      // Send Events?
+      sendsEvents = data->value_.Bool_;
     }
 
     // Getters

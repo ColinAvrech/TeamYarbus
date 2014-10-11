@@ -1,7 +1,7 @@
 #version 430
 
-layout (points) in;
-layout (triangle_strip, max_vertices=140) out;
+layout(points) in;
+layout(line_strip, max_vertices = 64) out;
 
 in vec3 Color[];
 
@@ -9,29 +9,26 @@ out vec3 fragColor;
 
 uniform float radius;
 uniform int divisions;
-uniform mat4 modelViewProjectionmatrix;
+uniform mat4 modelViewProjectionMatrix;
 
-void main ()
+const float PI = 3.1415926;
+
+void main()
 {
-	// Generate a circle based on points center position
-	for (int i=0; i < divisions; i++)
+  fragColor = Color[0];
+
+  // Safe, GLfloats can represent small integers exactly
+  for (int i = 0; i <= divisions; i++)
   {
-		float degInRad = i*3.14159f/180.0f * (360.0f/divisions);
-		float degInRadB = (i+1)*3.14159f/180.0f * (360.0f/divisions);
+    // Angle between each side in radians
+    float ang = PI * 2.0 / divisions * i;
 
-		// For each subdivision we create a single triangle
-		gl_Position = modelViewProjectionmatrix * gl_in[0].gl_Position;
-		fragColor = Color[0];
-		EmitVertex();
+    // Offset from center of point (0.3 to accomodate for aspect ratio)
+    vec4 offset = vec4(cos(ang) * 0.3, -sin(ang) * 0.4, 0.0, 0.0);
+    gl_Position = modelViewProjectionMatrix * (gl_in[0].gl_Position + offset);
 
-		gl_Position = modelViewProjectionmatrix * (gl_in[0].gl_Position + vec4(radius * cos(degInRad), radius * sin(degInRad), 0.0f, 0.0f));
-		fragColor = Color[0];
-		EmitVertex();
+    EmitVertex();
+  }
 
-		gl_Position = modelViewProjectionmatrix * (gl_in[0].gl_Position + vec4(radius * cos(degInRadB), radius * sin(degInRadB), 0.0f, 0.0f));
-		fragColor = Color[0];
-		EmitVertex();
-
-		EndPrimitive();
-	}
+  EndPrimitive();
 }
