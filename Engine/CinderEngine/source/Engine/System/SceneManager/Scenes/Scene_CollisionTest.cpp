@@ -124,7 +124,7 @@ namespace Framework
 	go3line->LineCollider = new LineCollider(go3line);
 	go3line->LineCollider->p1 = { 0, -100 };
 	go3line->LineCollider->p2 = { 0, 100 };
-	go3line->LineCollider->normalVec = Physics::getNormal(go3line->LineCollider->p1, go3line->LineCollider->p2);
+	//go3line->LineCollider->normalVec = Physics::getNormal(go3line->LineCollider->p1, go3line->LineCollider->p2);
 	go3line->LineCollider->p1dotNormal = Physics::DotProduct(go3line->LineCollider->p1, go3line->LineCollider->normalVec);
 	//debug draw line
 

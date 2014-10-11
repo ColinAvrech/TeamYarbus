@@ -147,6 +147,9 @@ namespace Framework
 		void DetectCircle(CircleCollider* c);  //if player is a circle
 		void DetectPoint(PointCollider* p);	  //if player is a point
 
+    // TODO GET NORMAL
+    glm::vec2 GetNormal () { return glm::vec2 (0); }
+
 	private:
 		// Private data
 		
