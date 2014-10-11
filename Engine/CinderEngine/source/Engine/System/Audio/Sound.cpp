@@ -454,6 +454,7 @@ namespace Framework
 
     // Play new sound
     PlayNew();
+    VolumeFade(1, 0);
   }
 
   /***************************************************************************/
@@ -621,7 +622,8 @@ namespace Framework
       return;
     }
 
-    
+    if (pChannel != NULL)
+    {
       pChannel->getVolume(&currentVolume);
 
       if (_volValue != currentVolume)
@@ -639,8 +641,9 @@ namespace Framework
           newVolume = _volValue;
         }
 
-        pChannel->setVolume(newVolume);
-      }    
+        SetVolume(newVolume);
+      }
+    }
 
     SetVolume(GetVolume());
 
@@ -648,8 +651,6 @@ namespace Framework
     {
       test = false;
       std::cout << Console::cyan << "FIVE SECONDS" << std::endl;
-      //this->pChannel->removeDSP(objects_DSP.dsp_lpf);
-      //this->AddReverbPreset(Sound::BATHROOM);
     }
   }
  

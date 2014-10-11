@@ -112,8 +112,7 @@ int main(void)
   //! Initialize all added Systems. DON'T INIT YOUR OWN
   engine->Initialize();
 
-  //resourceManager.Get_Sound("music.mp3")->Play();
-  //resourceManager.Get_Sound("music.mp3")->SetVolume(0.1f);
+  resourceManager.Get_Sound("music.mp3")->Play();
   
   audio->LoadMicData();
 

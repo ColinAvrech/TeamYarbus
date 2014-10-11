@@ -143,7 +143,7 @@ namespace Framework
       }      
 
       //frequencyConsoleOut();   
-      meterConsoleOut();
+      //meterConsoleOut();
       //latencyConsoleOut();
     }   
   }
