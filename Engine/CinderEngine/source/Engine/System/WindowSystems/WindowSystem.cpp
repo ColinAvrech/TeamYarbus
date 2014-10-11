@@ -327,8 +327,8 @@ namespace Framework
     // Can draw lines
     // Can draw polygon with n number of shapes. max is 140
     //////////////////////////////////////////////////////////////////////////
-
-    dr.Draw ((CircleCollider*)nullptr);
+    CircleCollider c;
+    dr.Draw (&c);
     dr.Draw ((LineCollider*)nullptr);
     dr.Draw (nullptr, 3);
     dr.Draw (nullptr, 5);

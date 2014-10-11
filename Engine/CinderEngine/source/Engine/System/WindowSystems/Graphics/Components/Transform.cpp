@@ -119,18 +119,6 @@ namespace Framework
     return modelViewProjectionmatrix [currentMatrix];
   }
 
-
-  glm::vec3 Transform::GetPosition()
-  {
-    return position;
-  }
-
-
-  glm::vec3 Transform::GetScale ()
-  {
-    return scale;
-  }
-
   //GLSL
   void Transform::UpdateMatrices()
 {

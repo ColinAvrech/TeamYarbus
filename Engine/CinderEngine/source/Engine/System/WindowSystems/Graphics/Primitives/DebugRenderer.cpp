@@ -14,6 +14,16 @@
 
 namespace Framework
 {
+  static glm::mat4 Circle_Matrix (CircleCollider* circle)
+  {
+    float radius = circle->GetRadius ();
+    glm::vec2 offset = circle->getOffset ();
+
+    glm::mat4 cm = glm::translate (glm::vec3 (offset, -1.0f)) * glm::scale (glm::vec3 (radius, radius, 1.0f)); //* glm::rotate (circle->gameObject->Transform->GetRotation (), glm::vec3 (0, 0, 1));
+    return Camera::GetViewToProjectionMatrix () * Camera::GetWorldToViewMatrix () * cm;
+  }
+
+
   DebugRenderer::DebugRenderer ()
   {
   }
@@ -76,7 +86,7 @@ namespace Framework
     circleShader->uni1i ("divisions", (GLint) circleDivisions);
 
     if (circle != nullptr)
-      circleShader->uniMat4 ("modelViewProjectionMatrix", glm::value_ptr (circle->gameObject->Transform->GetModelViewProjectionMatrix ()));
+      circleShader->uniMat4 ("modelViewProjectionMatrix", glm::value_ptr (Circle_Matrix(circle)));
     else
       circleShader->uniMat4 ("modelViewProjectionMatrix", glm::value_ptr (glm::mat4 (1)));
 
