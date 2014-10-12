@@ -66,7 +66,11 @@ namespace Framework
     ComponentPointer(Transform);
     ComponentPointer(Sprite);
     ComponentPointer(CircleCollider);
+	ComponentPointer(LineCollider);
 	ComponentPointer(RigidBody);
+ //   ComponentPointer(PointCollider);
+
+
     // when framework is removed
     //ComponentPointer(Circle);
     //ComponentPointer(Point);

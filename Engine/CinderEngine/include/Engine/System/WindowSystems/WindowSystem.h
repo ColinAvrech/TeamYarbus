@@ -36,10 +36,11 @@ namespace Framework
     void WindowsUpdate(const double dt);
     void GraphicsUpdate(const double dt);
 
+    // GLFW callbacks
     void GLFWMessageHandler(GLFWwindow* window, int key, int scanCode, int state, int mod);
     void GLFWMouseButtonFunction(GLFWwindow *, int button, int action, int mod);
     void GLFWMouseCursorMoved (GLFWwindow* window, double xPos, double yPos);
-
+    void GLFWWindowClosed(GLFWwindow* window);
 
     void Resize (GLFWwindow* window, int w, int h);
 
@@ -50,6 +51,8 @@ namespace Framework
       return window;
     }
     void Set_W_H (unsigned, unsigned);
+
+    static std::vector <Sprite*> spriteList;
 
   private:
     GLFWwindow* window;

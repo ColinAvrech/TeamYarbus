@@ -14,6 +14,7 @@
 
 #include "GraphicsCommon.h"
 #include "ComponentInclude.h"
+#include "JSONSerializer.h"
 
 namespace Framework
 {
@@ -32,7 +33,7 @@ namespace Framework
     ~Transform ();
 
     virtual void Initalize ();
-    virtual void Serialize ();
+    virtual void Serialize (Serializer::DataNode* data);
 
     //////////////////////////////////////////////////////////////////////////
     // Transformations
@@ -48,9 +49,9 @@ namespace Framework
     //getters
     glm::mat4 GetModelMatrix ();
     glm::mat4 GetModelViewProjectionMatrix ();
-    glm::vec3 GetPosition ();
-    glm::vec3 GetScale ();
-    float GetRotation ();
+    inline glm::vec3 GetPosition ();
+    inline glm::vec3 GetScale ();
+    inline float GetRotation ();
 
     static void Print (glm::vec3 position);
 
@@ -73,6 +74,21 @@ namespace Framework
     // To avoid Unnecesary calculation in Update Matrices
     bool matricesReady;
   };
+
+  inline glm::vec3 Transform::GetPosition ()
+  {
+    return position;
+  }
+
+  inline glm::vec3 Transform::GetScale ()
+  {
+    return scale;
+  }
+
+  inline float Transform::GetRotation ()
+  {
+    return rotation;
+  }
 }
 
 #endif

@@ -454,6 +454,7 @@ namespace Framework
 
     // Play new sound
     PlayNew();
+    VolumeFade(1, 0);
   }
 
   /***************************************************************************/
@@ -613,15 +614,28 @@ namespace Framework
   /***************************************************************************/
   void Sound::Update(const double dt)
   {
-    float currentVolume;
-
     // Checks if system is not on
     if (Sound::system_on_ == false)
     {
       return;
-    }
+    }    
 
-    
+    UpdateVolumeFade(dt);
+    SetVolume(GetVolume());
+
+    if (this->GetTime() > 5000 && this->GetTime() < 5500 && test == true)
+    {
+      test = false;
+      std::cout << Console::cyan << "FIVE SECONDS" << std::endl;
+    }
+  }
+
+  void Sound::UpdateVolumeFade(const double dt)
+  {
+    float currentVolume;
+
+    if (pChannel != NULL)
+    {
       pChannel->getVolume(&currentVolume);
 
       if (_volValue != currentVolume)
@@ -639,18 +653,9 @@ namespace Framework
           newVolume = _volValue;
         }
 
-        pChannel->setVolume(newVolume);
-      }    
-
-    SetVolume(GetVolume());
-
-    if (this->GetTime() > 5000 && this->GetTime() < 5500 && test == true)
-    {
-      test = false;
-      std::cout << Console::cyan << "FIVE SECONDS" << std::endl;
-      //this->pChannel->removeDSP(objects_DSP.dsp_lpf);
-      //this->AddReverbPreset(Sound::BATHROOM);
-    }
+        SetVolume(newVolume);
+      }
+    }  
   }
  
   /*---------------------------------------------------------------------------

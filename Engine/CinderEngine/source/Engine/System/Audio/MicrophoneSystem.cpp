@@ -18,10 +18,6 @@ static char THIS_FILE[] = __FILE__;
 
 namespace Framework
 {
-
-  FMOD::Sound *test = 0;
-  FMOD::Channel *pChannel = 0;
-
   void AudioSystem::InitMicData()
   {
     FMOD_RESULT result;
@@ -39,6 +35,8 @@ namespace Framework
     _recordrate = 0;
     _recordchannels = 1;
     _recordnumdrivers = 0;
+    _check = true;
+    input = {};
 
     result = pFMODAudioSystem->getRecordNumDrivers(&_recordnumdrivers);
     ErrCheck(result);
@@ -57,8 +55,7 @@ namespace Framework
   }
 
   void AudioSystem::LoadMicData()
-  {
-    //_newSound = new Sound();    
+  {  
     FMOD_RESULT result;
 
     memset(&_exinfo, 0, sizeof(FMOD_CREATESOUNDEXINFO));
@@ -66,42 +63,15 @@ namespace Framework
     _exinfo.numchannels = 1;
     _exinfo.format = FMOD_SOUND_FORMAT_PCM16;
     _exinfo.defaultfrequency = _recordrate;
-    _exinfo.length = _exinfo.defaultfrequency * sizeof(short) * _exinfo.numchannels * 5;
-
-    //test = _newSound->LoadMic(pFMODAudioSystem, soundName, type, _exinfo);
+    _exinfo.length = _exinfo.defaultfrequency * sizeof(short) * _exinfo.numchannels * 5;    
     
-    result = pFMODAudioSystem->createSound(0, FMOD_LOOP_NORMAL | FMOD_OPENUSER, &_exinfo, &test);
+    result = pFMODAudioSystem->createSound(0, FMOD_LOOP_NORMAL | FMOD_OPENUSER, &_exinfo, &micSound);
     ErrCheck(result);
 
-    result = pFMODAudioSystem->recordStart(0, test, true);
+    result = pFMODAudioSystem->recordStart(0, micSound, true);
     ErrCheck(result);
 
-    result = test->getLength(&_soundlength, FMOD_TIMEUNIT_PCM);
-
-    //return _newSound;
-  }
-
-  FMOD::Sound* Sound::LoadMic(FMOD::System* pSystem, char* soundName, SoundID id, FMOD_CREATESOUNDEXINFO exinfo)
-  {
-    FMOD_RESULT result;
-
-    pFMODAudioSystem = pSystem;
-    _soundName = soundName;
-    ID = id;
-
-    result = pSystem->createSound(0, FMOD_LOOP_NORMAL | FMOD_OPENUSER, &exinfo, &pSound);
-    ErrCheck(result);
-
-    result = pSystem->recordStart(0, pSound, true);
-    ErrCheck(result);
-
-    sound_queue_.push_back(pSound);
-
-    unsigned index = sound_queue_.size() - 1;
-
-    SetType(ID, index);
-
-    return pSound;
+    result = micSound->getLength(&_soundlength, FMOD_TIMEUNIT_PCM);
   }
 
   void AudioSystem::UpdateMicData()
@@ -118,15 +88,13 @@ namespace Framework
 
     _samplesrecorded += _recorddelta;
 
-    if (_samplesrecorded >= _adjustedlatency && !pChannel)
+    if (_samplesrecorded >= _adjustedlatency && !micChannel)
     {
-      //pChannel = _newSound->Get_Channel();
-
-      result = pFMODAudioSystem->playSound(test, 0, false, &pChannel);
+      result = pFMODAudioSystem->playSound(micSound, 0, false, &micChannel);
       ErrCheck(result);
     }
 
-    if (pChannel && _recorddelta)
+    if (micChannel && _recorddelta)
     {
       if (_recorddelta < _minrecorddelta)
       {
@@ -137,7 +105,7 @@ namespace Framework
         }
       }
 
-      result = pChannel->getPosition(&_playpos, FMOD_TIMEUNIT_PCM);
+      result = micChannel->getPosition(&_playpos, FMOD_TIMEUNIT_PCM);
       ErrCheck(result);
 
       {
@@ -154,19 +122,214 @@ namespace Framework
       if (_smootheddelta < (_adjustedlatency - _driftthreshold) || 
           _smootheddelta > _soundlength / 2)
       {
-        pChannel->setFrequency((float)_recordrate - (_recordrate / 50));
+        micChannel->setFrequency((float)_recordrate - (_recordrate / 50));
       }
       else if (_smootheddelta > (_adjustedlatency + _driftthreshold))
       {
-        pChannel->setFrequency((float)_recordrate + (_recordrate / 50));
+        micChannel->setFrequency((float)_recordrate + (_recordrate / 50));
       }
       else
       {
-        pChannel->setFrequency((float)_recordrate);
-      }
+        micChannel->setFrequency((float)_recordrate);
+      }      
+
+      if (_check == true)
+      {
+        micFilter();
+        micMeter();
+        //micFrequencyData();        
+
+        _check = false;        
+      }      
+
+      meter->getMeteringInfo(&input, 0);
+
+      //frequencyConsoleOut();   
+      //meterConsoleOut();
+      //latencyConsoleOut();
+    }   
+  }
+
+  void AudioSystem::micMeter()
+  {
+    FMOD_RESULT result;
+
+    result = micChannel->getDSP(FMOD_CHANNELCONTROL_DSP_HEAD, &meter);
+    ErrCheck(result);
+
+    result = meter->setMeteringEnabled(true, false);
+    ErrCheck(result);
+  }
+
+  void AudioSystem::micFrequencyData()
+  {
+    FMOD_RESULT result;
+    bool active;
+
+    result = pFMODAudioSystem->createDSPByType(FMOD_DSP_TYPE_FFT, &fft);
+    ErrCheck(result);        
+
+    result = fft->getActive(&active);
+    ErrCheck(result);
+
+    if (active)
+    {
+      
+      result = micChannel->removeDSP(fft);
+      ErrCheck(result);
     }
-    std::cout << Console::red << "playback latency : " << (int)_smootheddelta << " samples" << "," << (int)_smootheddelta * 1000 / _recordrate << " MS" << std::endl;
+    else
+    {      
+      result = micChannel->addDSP(0, fft, 0);
+      ErrCheck(result);
+    }
+  }
+
+  void AudioSystem::micFilter(float cutoff, float resonance)
+  {
+    FMOD_RESULT result;
+    bool active;
+
+    result = pFMODAudioSystem->createDSPByType(FMOD_DSP_TYPE_LOWPASS, &filter);
+    ErrCheck(result);
+
+    result = filter->setParameterFloat(FMOD_DSP_LOWPASS_CUTOFF, cutoff);
+    ErrCheck(result);
+
+    result = filter->setParameterFloat(FMOD_DSP_LOWPASS_RESONANCE, resonance);
+    ErrCheck(result);
+
+    result = filter->getActive(&active);
+    ErrCheck(result);
+
+    if (active)
+    {
+      result = micChannel->removeDSP(filter);
+      ErrCheck(result);
+    }
+    else
+    {
+      result = micChannel->addDSP(0, filter, 0);
+      ErrCheck(result);
+    }  
+  }
+
+  void AudioSystem::meterConsoleOut()
+  {
+    if (input.peaklevel[0] < 0.2)
+      std::cout << Console::cyan 
+                << "RMS Peak : " 
+                << Console::darkgreen 
+                << input.peaklevel[0] 
+                << std::endl;
+
+    else if (input.peaklevel[0] < 0.4)
+      std::cout << Console::cyan 
+                << "RMS Peak : " 
+                << Console::green 
+                << input.peaklevel[0] 
+                << std::endl;
+
+    else if (input.peaklevel[0] < 0.6)
+      std::cout << Console::cyan 
+                << "RMS Peak : " 
+                << Console::yellow 
+                << input.peaklevel[0] 
+                << std::endl;
+
+    else if (input.peaklevel[0] < 0.9)
+      std::cout << Console::cyan 
+                << "RMS Peak : " 
+                << Console::red 
+                << input.peaklevel[0] 
+                << std::endl;
+    else
+      std::cout << Console::cyan 
+                << "RMS Peak : " 
+                << Console::darkred 
+                << input.peaklevel[0] 
+                << std::endl;    
+  } 
+
+  void AudioSystem::frequencyConsoleOut()
+  {
+    int sampleSize = 64;
+    char *specLeft;
+    specLeft = new char[sampleSize];
+    float val;
+    
+    fft->getParameterFloat(FMOD_DSP_FFT_DOMINANT_FREQ, &val, specLeft, 20000);
+    
+    if (val < 80)
+      std::cout << Console::red 
+                << "Dominant Frequency = " 
+                << Console::white
+                << val
+                << " (SUPER LOW)"
+                << std::endl; 
+
+    else if (val < 1500)
+      std::cout << Console::red
+                << "Dominant Frequency : "
+                << Console::gray
+                << val
+                << " (LOW)"
+                << std::endl;
+
+    else if (val < 3000)
+      std::cout << Console::red
+                << "Dominant Frequency : "
+                << Console::yellow
+                << val
+                << " (LOW MIDS)"
+                << std::endl;
+
+    else if (val < 4500)
+      std::cout << Console::red
+                << "Dominant Frequency : "
+                << Console::darkyellow
+                << val
+                << " (UPPER MIDS)"
+                << std::endl;
+
+    else if (val < 6000)
+      std::cout << Console::red
+                << "Dominant Frequency : "
+                << Console::cyan
+                << val
+                << " (HIGH)"
+                << std::endl;
+    else if (val < 15000)
+      std::cout << Console::red
+                << "Dominant Frequency : "
+                << Console::darkcyan
+                << val
+                << " (UPPER HIGH)"
+                << std::endl;
+    else
+      std::cout << Console::red
+                << "Dominant Frequency : "
+                << Console::blue
+                << val
+                << " (UPPER HIGH)"
+                << std::endl;
+    
+    delete[] specLeft;
   }  
+
+  void AudioSystem::latencyConsoleOut()
+  {
+    std::cout << Console::red 
+              << "Samples: " 
+              << Console::yellow
+              << (int)_smootheddelta 
+              << Console::green
+              << " Playback Latency: "
+              << Console::cyan
+              << (int)_smootheddelta * 1000 / _recordrate 
+              << " milliseconds" 
+              << std::endl;
+  }
 }
 
 //-----------------------------------------------------------------------------

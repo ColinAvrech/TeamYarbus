@@ -31,6 +31,15 @@ namespace Framework
   {
   }
 
+
+  bool ObjectSystem::Initialize ()
+  {
+    LoadLevel ("Level.data");
+
+    return true;
+  }
+
+
   /*!Deletes all objects int eh ObjectsToBeDelted List.*/
   void ObjectSystem::Update(const double dt)
   {
@@ -54,6 +63,12 @@ namespace Framework
   {
     RegisterComponent(Transform);
     RegisterComponent(Sprite);
+    RegisterComponent (Camera);
+    RegisterComponent (ShapeCollider);
+	  RegisterComponent(CircleCollider);
+	//RegisterComponent(PointCollider);
+	//RegisterComponent(LineCollider);
+	//RegisterComponent(RigidBody);
   }
 
   void ObjectSystem::AddComponentCreator(std::string name, ComponentCreator* creator)
@@ -89,8 +104,8 @@ namespace Framework
     data.open(level.c_str());
     data.CreateArchive();
     Serializer::DataNode* Trunk = data.GetTrunk();
-  
-
+    SerializeObject (Trunk);
+    //InitializeObject ();
   }
 
   //Private function to create and serilize an object
@@ -109,11 +124,21 @@ namespace Framework
       if (it->objectName.compare("Cog") == 0)
       {
         GameObject* newobj = new GameObject(it->branch->value_.UInt_);
-        newobj->Name = *it->branch->next->value_.String_;
+        newobj->Name = "ball";
+        GameObjects[newobj->GameObjectID] = newobj;
         auto ct = it->branch->next->next;
         while (ct)
         {
-          
+          Component* newcomp = newobj->AddComponent(ct->objectName);
+          newcomp->gameObject = newobj;
+          if (ct->objectName == "Transform")
+            newobj->Transform = (Transform*) (newcomp);
+          else if (ct->objectName == "Sprite")
+            newobj->Sprite = (Sprite*) (newcomp);
+          else if (ct->objectName == "CircleCollider")
+            newobj->CircleCollider = (CircleCollider*) (newcomp);
+          newcomp->Serialize(ct->branch);
+          newcomp->Initalize ();
           ct = ct->next;
         }
         GameObjects[newobj->GameObjectID] = newobj;
@@ -127,6 +152,16 @@ namespace Framework
   {
 
 
+  }
+
+  void ObjectSystem::InitializeObject ()
+  {
+    // Need Component List
+    for each (auto i in GameObjects)
+    {
+      i.second->Transform->Initalize ();
+      i.second->Sprite->Initalize ();
+    }
   }
 
 }

@@ -38,3 +38,13 @@ DebugDraw.vs.glsl
 DebugDraw.frag.glsl
 Circle.gs.glsl
 DebugCircle
+>
+DebugDraw.vs.glsl
+DebugDraw.frag.glsl
+Line.gs.glsl
+DebugLine
+>
+DebugDraw.vs.glsl
+DebugDraw.frag.glsl
+0
+DebugPoint

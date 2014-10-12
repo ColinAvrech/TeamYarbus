@@ -16,8 +16,8 @@ namespace Framework
 		bool CirclevsLine(const float rad, glm::vec2& pos, LineCollider& l)
 		{
 			//Make sure buildlinesegment (private memb fuct) composes the right normals
-			float ldotProduct = l.GetP1DotNormal();
-			glm::vec2 normVec = l.GetNormal();
+			float ldotProduct = l.p1dotNormal;
+			glm::vec2 normVec = l.normalVec;
 			glm::normalize(normVec);
 			float dist = ldotProduct - DotProduct(normVec, pos);
 
@@ -31,8 +31,8 @@ namespace Framework
 
 		bool PointvsLine(glm::vec2& pos, LineCollider& l)
 		{
-			float ldotProduct = l.GetP1DotNormal();
-			glm::vec2 normVec = l.GetNormal();
+			float ldotProduct = l.p1dotNormal;
+			glm::vec2 normVec = l.normalVec;
 			glm::normalize(normVec);
 			float dist = ldotProduct - DotProduct(normVec, pos);
 

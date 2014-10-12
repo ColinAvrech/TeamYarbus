@@ -69,8 +69,9 @@ int main(void)
   testarchive.open("EnemyProjectile.Archetype.data");
 
   testarchive.CreateArchive();
-
+  
   testarchive.DumpArchive(testarchive.GetTrunk());
+
 
   /*! Initialize the game engine*/
   
@@ -97,20 +98,21 @@ int main(void)
 
   //GameObject* testDynamicCircle = new GameObject(2);
 
-  engine->AddSystem (sceneManager);
+  engine->AddSystem (phys);
   engine->AddSystem (windows);
   engine->AddSystem(audio);
   engine->AddSystem(events);
   engine->AddSystem(zilch);
   engine->AddSystem(thermo);
   engine->AddSystem(objsys);
-  engine->AddSystem(phys);
 
   Resources resourceManager;
   resourceManager.Load_Resources();  
 
   //! Initialize all added Systems. DON'T INIT YOUR OWN
   engine->Initialize();
+
+  resourceManager.Get_Sound("music.mp3")->Play();
   
   audio->LoadMicData();
 

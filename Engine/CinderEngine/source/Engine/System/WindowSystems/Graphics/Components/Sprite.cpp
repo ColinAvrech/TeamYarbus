@@ -2,6 +2,8 @@
 #include "Camera.h"
 #include "Transform.h"
 #include "GameObject.h"
+#include "ResourceManager.h"
+#include "WindowSystem.h"
 
 namespace Framework
 {
@@ -37,17 +39,23 @@ namespace Framework
 
   void Sprite::Initalize ()
   {
+    WINDOWSYSTEM->spriteList.push_back (this);
+    Specify_Attributes ();
   }
 
 
-  void Sprite::Serialize ()
-  {
+  void Sprite::Serialize(Serializer::DataNode* data)
+{
     //////////////////////////////////////////////////////////////////////////
     // DATA TO BE SERIALIZED
     // shader   : Shader*       Resources::RS->Get_Shader (Serialized String Name);
     // texture  : Texture*      Resources::RS->Get_Texture (Serialized String Name);
     // atlas    : SpriteSheet*  Resources::RS->Get_SpriteSheet (Serialized String Name);
     //////////////////////////////////////////////////////////////////////////
+    texture = Resources::RS->Get_Texture (*data->value_.String_);
+    data = data->next;
+    shader = Resources::RS->Get_Shader (*data->value_.String_);
+    animated = false;
   }
 
 

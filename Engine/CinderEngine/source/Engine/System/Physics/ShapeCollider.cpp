@@ -9,34 +9,33 @@
 /******************************************************************************/
 #include "ComponentInclude.h"
 #include "ShapeCollider.h"
+#include "EventSystem.h"
 
 #pragma once
 namespace Framework
 {
-
-	CircleCollider::~CircleCollider()
+	void LineCollider::Initialize()
 	{
+		std::string ColEvent = std::string("UpdateEvent");
+
+		CollisionEvent* colevent = (CollisionEvent*)EVENTSYSTEM->GetEvent(ColEvent);
+		if (colevent == nullptr)
+		return;
+
+		// FILL OUT EVENT
+		//EVENTSYSTEM->Connect(gameObject, "UpdateEvent", Events::LOGICUPDATE);
 	}
 
-	PointCollider::PointCollider(GameObject *obj)
+	void CircleCollider::Initialize()
 	{
-		gameObject = obj;
+		std::string ColEvent = std::string("UpdateEvent");
+
+		CollisionEvent* colevent = (CollisionEvent*)EVENTSYSTEM->GetEvent(ColEvent);
+		if (colevent == nullptr)
+			return;
 	}
 
-	PointCollider::~PointCollider()
-	{
-	}
-
-	LineCollider::LineCollider(GameObject* obj)
-	{
-		gameObject = obj;
-	}
-
-	LineCollider::~LineCollider()
-	{
-	}
-
-    DefineComponentName(ShapeCollider);
+  DefineComponentName(ShapeCollider);
 	DefineComponentName(CircleCollider);
 	DefineComponentName(PointCollider);
 	DefineComponentName(LineCollider);
