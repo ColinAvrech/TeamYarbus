@@ -25,7 +25,7 @@ void main()
 
     // Offset from center of point (0.3 to accomodate for aspect ratio)
     vec4 offset = vec4(cos(ang) * 0.3, -sin(ang) * 0.4, 0.0, 0.0);
-    gl_Position = modelViewProjectionMatrix * (gl_in[0].gl_Position + offset);
+    gl_Position = modelViewProjectionMatrix * (gl_in[0].gl_Position) + offset;
 
     EmitVertex();
   }
