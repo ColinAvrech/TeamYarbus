@@ -10,8 +10,6 @@
 
 #pragma once
 
-#ifndef _THERMO_H
-#define _THERMO_H
 
 /*-----------------------------------------------------------------------------
 // Includes
@@ -21,7 +19,7 @@
 
 #include "BaseSystem.h"
 #include "Common.h"
-#include "Vec2.h"
+#include "glm.hpp"
 #include <unordered_map>
 
 #pragma endregion
@@ -77,15 +75,13 @@ namespace Framework
       //Get Cell Pixel size
       int GetCellSize(){ return CellSize; }
       //Get Map size
-      Vec2 GetMapSize(){ return MapSize; }
+      glm::vec2 GetMapSize(){ return MapSize; }
       //Get cell temperature
       float GetCellTemperature(float x, float y);
-      //Get cell pressure
-      float GetCellPressure(float x, float y);
       //Get cell oxygen content
       float GetCellOxygen(float x, float y);
       //Get cell velocity
-      Vec2 GetCellVelocity(float x, float y);
+      glm::vec2 GetCellVelocity(float x, float y);
 
       // Setters
       void ToggleAutoDissipation();
@@ -126,22 +122,20 @@ namespace Framework
 #pragma region Private Variables
       //Automatically equalize pressure over time
       bool EqualizePressure;
-      Vec2 MapSize;
-      int CellSize;
-      Vec2 MapOffset;
+      glm::vec2 MapSize;
+      float CellSize;
+      glm::vec2 MapOffset;
 
       //Temperature Map. Temperature is stored in Kelvin.
-      float **HeatMap;
-      //Pressure Map. Pressure is stored in Pascals.
-      float **PressureMap;
+      float     **HeatMap;
       //Oxygen density. Stored in Kg/m^2.
-      float **OxygenMap;
+      float     **OxygenMap;
       //Velocity Map. Stores 2d vectors.
-      Vec2 **VelocityMap;
-      //Terrain. Simple collision table using enumed ints.
-      int **Terrain;
-      //Fire Map. Stores intensity of flame on a scale of 1 - 10.
-      float **FireMap;
+      glm::vec2 **VelocityMap;
+      //Terrain. Simple collision table using enums.
+      int       **Terrain;
+      //Fire Map. Stores intensity of flame on a scale of 0 - 10.
+      float     **FireMap;
 
 #pragma endregion
 
@@ -153,11 +147,11 @@ namespace Framework
       struct conductionProperties
       {
         //std::string name will be used to map these;
-        bool isFluid;    //Is the material a fluid
-        bool Volatile; //Can this material catch fire
-        float Hc;      //Heat transfer coefficient
-        float Mass;    //Mass of 1 block of material
-        float c;       //Specific heat
+        bool  isFluid;  //Is the material a fluid
+        bool  Volatile; //Can this material catch fire
+        float Hc;       //Heat transfer coefficient
+        float Mass;     //Mass of 1 block of material
+        float c;        //Specific heat
       };
 
       std::unordered_map<std::string, conductionProperties*> materialList;
@@ -191,5 +185,3 @@ namespace Framework
 } //namespace framework
 
 //-----------------------------------------------------------------------------
-
-#endif				// _AUDIO_H
