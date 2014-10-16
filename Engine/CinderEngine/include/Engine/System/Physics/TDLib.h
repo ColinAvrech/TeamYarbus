@@ -18,10 +18,10 @@ namespace Framework
     namespace Constant
     {
       //Add physics constants here
-      static const long  c = 299792458;  //m.s-1       | Speed of light in vaccum
+      static const long  c   = 299792458;  //m.s-1       | Speed of light in vaccum
       static const long  atm = 101325;     //Pa          | Standard Atmospheric pressure
-      static const float R = 8.31451;    //J.mol-1.K-1 | Molar gas constant
-      static const int   M_a = 28.97;      //Kg.Kmol-1   | Molar mass of air
+      static const float R   = 8.31451;    //J.mol-1.K-1 | Molar gas constant
+      static const float M_a = 28.97;      //Kg.Kmol-1   | Molar mass of air
 
       //Properties of specific materials--------------------
       //Specific heat
@@ -66,7 +66,6 @@ namespace Framework
     float ConductiveHeatTransfer(float K, float T1, float T2, const double dt, float Size);
     float ConvectiveHeatTransfer(float Hc, float T1, float T2, const double dt);
     float dTemp(float dQ, float m, float c);
-    float DiffuseDensity();
 
   } //namespace Physics
 } //namespace Framework

@@ -1,9 +1,11 @@
 #include "Physics/Thermodynamics.h"
+#include "TDLib.h"
 
 namespace Framework
 {
   namespace Physics
   {
+    namespace Const = Constant;
     //Constructor
     ThermodynamicsSystem::ThermodynamicsSystem() :
       HeatMap(NULL), OxygenMap(NULL),
@@ -134,15 +136,16 @@ namespace Framework
     {
       int sub_x = static_cast<int>((x / CellSize) + MapOffset.x);
       int sub_y = static_cast<int>((y / CellSize) + MapOffset.y);
+      float dQ;
       if (sub_x < 0 || sub_x > MapSize.x || sub_y < 0 || sub_y > MapSize.y)
-        return 0;
-      float dTemp = temp - HeatMap[sub_x][sub_y];
-      if (dTemp > 0)
+        dQ = ConductiveHeatTransfer(Const::K_Wood, 0, temp, dt, 1);
+      else
       {
-        HeatMap[sub_x][sub_y] += dTemp * float (dt);
-        return (temp - (dTemp * float (dt)));
+        dQ = ConductiveHeatTransfer(Const::K_Wood, HeatMap[sub_x][sub_y], temp, dt, 1);
+        float deltaTemp = dTemp(dQ, OxygenMap[sub_x][sub_y] * CellSize*CellSize*CellSize, Const::c_Air);
+        HeatMap[sub_x][sub_y] += deltaTemp;
       }
-      return (temp + (dTemp * float (dt)));
+      return dQ;
     }
 
     /*-----------------------------------------------------------------------

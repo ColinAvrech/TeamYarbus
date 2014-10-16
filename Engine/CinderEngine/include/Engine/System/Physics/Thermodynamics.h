@@ -73,7 +73,7 @@ namespace Framework
 
       // Getters
       //Get Cell Pixel size
-      int GetCellSize(){ return CellSize; }
+      float GetCellSize(){ return CellSize; }
       //Get Map size
       glm::vec2 GetMapSize(){ return MapSize; }
       //Get cell temperature
