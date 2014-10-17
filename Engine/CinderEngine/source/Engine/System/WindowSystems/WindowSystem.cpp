@@ -20,6 +20,7 @@ function to handle windows Messages.
 #include "ComponentInclude.h"
 #include "EventSystem.h"
 #include "DebugRenderer.h"
+#include "ShapeCollider.h"
 
 namespace Framework
 {
@@ -327,8 +328,8 @@ namespace Framework
     // Can draw lines
     // Can draw polygon with n number of shapes. max is 140
     //////////////////////////////////////////////////////////////////////////
-    CircleCollider *c;
-    dr.Draw (c);
+    //CircleCollider c;
+    //dr.Draw (&c);
     dr.Draw ((LineCollider*)nullptr);
     dr.Draw (nullptr, 3);
     dr.Draw (nullptr, 5);

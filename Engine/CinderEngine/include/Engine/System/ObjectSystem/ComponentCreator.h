@@ -33,7 +33,7 @@ namespace Framework
   };
 
   ///Templated helper class used to make concrete component creators.
-  template<typename type>
+  template<typename T>
   class ComponentCreatorType : public ComponentCreator
   {
   public:
