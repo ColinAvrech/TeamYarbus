@@ -123,8 +123,8 @@ namespace Framework
     {
       if (it->objectName.compare("Cog") == 0)
       {
-        GameObject* newobj = new GameObject(it->branch->value_.UInt_);
-        newobj->Name = "ball";
+        GameObject* newobj = new GameObject(it->branch->branch->value_.UInt_);
+        newobj->Name = *it->branch->next->branch->value_.String_;
         GameObjects[newobj->GameObjectID] = newobj;
         auto ct = it->branch->next->next;
         while (ct)
@@ -135,7 +135,7 @@ namespace Framework
             newobj->Transform = (Transform*) (newcomp);
           else if (ct->objectName == "Sprite")
             newobj->Sprite = (Sprite*) (newcomp);
-          else if (ct->objectName == "CircleCollider")
+          else if (ct->objectName == "SphereCollider")
             newobj->CircleCollider = (CircleCollider*) (newcomp);
           newcomp->Serialize(ct->branch);
           newcomp->Initalize ();

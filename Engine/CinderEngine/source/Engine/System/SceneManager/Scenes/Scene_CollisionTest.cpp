@@ -1,19 +1,18 @@
-<<<<<<< HEAD
-/******************************************************************************/
-/*!
-\file   Scene_CollisionTest.cpp
-\author Manas Sudhir Kulkarni
-\par    Course: GAM200
-\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
-\brief  
-*/
-/******************************************************************************/
+///******************************************************************************/
+///*!
+//\file   Scene_CollisionTest.cpp
+//\author Manas Sudhir Kulkarni
+//\par    Course: GAM200
+//\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+//\brief  
+//*/
+///******************************************************************************/
 
 #include "Scene_CollisionTest.h"
 #include "ComponentInclude.h"
 #include "ResourceManager.h"
 #include "WindowSystem.h"
-#include "DebugCircle.h"
+#include "DebugRenderer.h"
 #include "ShapeCollider.h"
 #include "EventSystem.h"
 #include "BaseEvent.h"
@@ -28,7 +27,7 @@ namespace Framework
   //using namespace Physics;
 
   static GameObject* go1, *go2, *go3line;
-  static DebugCircleRenderer debugRenderer;
+  static DebugRenderer debugRenderer;
   static int circleDivisions = 40;
   static float circleRadius = 0.5f;
   static bool useDebug = true;
@@ -101,10 +100,10 @@ namespace Framework
   {
     EVENTSYSTEM->Connect (NULL, Events::KEY_ANY, BaseEvent::BaseCall (OnKeyPressed));
     //EVENTSYSTEM->Connect (go2, Events::Types::COLLISION, BaseEvent::BaseCall (OnCollisionEnter));
-    debugRenderer = DebugCircleRenderer ();
+    debugRenderer = DebugRenderer ();
     debugRenderer.Generate_Buffers ();
     debugRenderer.Generate_Shaders ();
-
+   
     go1 = new GameObject (0);
     go2 = new GameObject (1);
 	go3line = new GameObject (2);
@@ -146,7 +145,7 @@ namespace Framework
     go2->Transform->Translate (0.5f, 0.0f, -1.0f);
     go2->Transform->Scale (0.1f);
 
-	go3line->Sprite->Create_Sprite(Resources::RS->Get_Shader("Default"), Resources::RS->Get_Texture("\.png"));
+	go3line->Sprite->Create_Sprite(Resources::RS->Get_Shader("Default"), Resources::RS->Get_Texture("\\.png"));
 	go3line->Transform->Translate(0.0f, -0.55f, -1.0f);
 	go3line->Transform->Scale(100.f, 0.02f, 1.0f);
     data.Clean ();
@@ -162,7 +161,7 @@ namespace Framework
 	go3line->Transform->UpdateMatrices();
 	go1->CircleCollider->DetectLine (go3line->LineCollider);
     go1->CircleCollider->DetectCircle (go2->CircleCollider);
-	go1->Transform->Translate(go1->RigidBody->vel.x*dt, go1->RigidBody->vel.y*dt, 0);
+	go1->Transform->Translate(go1->RigidBody->vel.x*(float)dt, go1->RigidBody->vel.y*(float)dt, 0);
   }
 
 
@@ -179,11 +178,11 @@ namespace Framework
     go2->Sprite->Draw ();
 	//go3line->Sprite->Draw();
     vao->unbindVAO ();
-	debugRenderer.Draw(go3line->LineCollider);
+	//debugRenderer.Draw(go3line->LineCollider);
     if (useDebug)
     {
-      debugRenderer.Draw (go1->CircleCollider);
-      debugRenderer.Draw (go2->CircleCollider);
+      //debugRenderer.Draw (go1->CircleCollider);
+      //debugRenderer.Draw (go2->CircleCollider);
     }
 
     glDisable (GL_BLEND);
@@ -196,22 +195,21 @@ namespace Framework
   }
 
 }
-=======
-///******************************************************************************/
-///*!
-//\file   Scene_CollisionTest.cpp
-//\author Manas Sudhir Kulkarni
-//\par    Course: GAM200
-//\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
-//\brief  
-//*/
-///******************************************************************************/
+/////******************************************************************************/
+/////*!
+////\file   Scene_CollisionTest.cpp
+////\author Manas Sudhir Kulkarni
+////\par    Course: GAM200
+////\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+////\brief  
+////*/
+/////******************************************************************************/
 //
 //#include "Scene_CollisionTest.h"
 //#include "ComponentInclude.h"
 //#include "ResourceManager.h"
 //#include "WindowSystem.h"
-//#include "DebugCircle.h"
+////#include "DebugCircle.h"
 //#include "ShapeCollider.h"
 //#include "EventSystem.h"
 //#include "BaseEvent.h"
@@ -220,6 +218,7 @@ namespace Framework
 //#include "TimeQuery.h"
 //#include "glmOverloads.h"
 //#include "PhysicsLibrary.h"
+//#include "WindowSystem.cpp"
 //
 //namespace Framework
 //{
@@ -384,4 +383,3 @@ namespace Framework
 //  }
 //
 //}
->>>>>>> origin/master
