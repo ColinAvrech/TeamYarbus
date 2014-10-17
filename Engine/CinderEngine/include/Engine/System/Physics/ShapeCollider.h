@@ -29,12 +29,7 @@ namespace Framework
 			return offset;
 		}
 
-    void setOffset (glm::vec2 _offset)
-    {
-      offset = _offset;
-    }
-
-	protected:
+	private:
 		// Private data
 		struct MaterialProperties
 		{
@@ -58,41 +53,21 @@ namespace Framework
   {
   public:
     const static std::string Name;
-    CircleCollider () { radius = 0.5f; }
-	  CircleCollider(GameObject* obj) : radius(0.1f)
-	  {
-		  gameObject = obj;
-	  }
+	CircleCollider(GameObject* obj) : radius(0.5f)
+	{
+		gameObject = obj;
+	}
 
-	  ~CircleCollider() {};
+	~CircleCollider(){};
 
     /*!Telegraph that the component is active*/
-    virtual void Initialize ();
+	void Initialize();
     //{
     //  //PHYSICSSYSTEM->AddLineCollisder(this);
     //}
 
-    void Serialize (Serializer::DataNode* data)
+    void Serialize ()
     {
-      //////////////////////////////////////////////////////////////////////////
-      // Radius       : float
-      // Offset       : glm::vec2
-      // Ghost        : bool
-      // Sends Events : bool
-      //////////////////////////////////////////////////////////////////////////
-
-      // Radius
-      radius = data->value_.Float_;
-      data = data->next;
-      // Offset
-      for (unsigned i = 0; i < data->value_.VecN_->size (); ++i)
-        offset [i] = data->value_.VecN_->at (i);
-      data = data->next;
-      // Ghost?
-      ghost = data->value_.Bool_;
-      data = data->next;
-      // Send Events?
-      sendsEvents = data->value_.Bool_;
     }
 
     // Getters
@@ -171,9 +146,6 @@ namespace Framework
 		// Private member functions
 		void DetectCircle(CircleCollider* c);  //if player is a circle
 		void DetectPoint(PointCollider* p);	  //if player is a point
-
-    // TODO GET NORMAL
-    glm::vec2 GetNormal () { return glm::vec2 (0); }
 
 	private:
 		// Private data
