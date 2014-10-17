@@ -9,7 +9,8 @@
 /*****************************************************************************/
 
 #include "Serializer/JSONSerializer.h"
-
+#include <iostream>
+#include "Common.h"
 #include <cstdarg> //for variadic crap
 
 namespace Framework

@@ -11,7 +11,6 @@
 #ifndef SERIALIZER_H
 
 #define SERIALIZER_H
-#include "BaseSystem.h"
 #include <fstream>
 #include <string>
 #include <unordered_map>

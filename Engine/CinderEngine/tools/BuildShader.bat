@@ -1,8 +1,8 @@
 @echo off
 set /p shaderName=Shader Name:
-set /p type= Shader Type(vs, frag, geom, cl):
+set /p type= Shader Type(vs, frag, gs, cl):
 
-copy /y template\ShaderTemplate.%type% ..\..\Resources\Shaders\%shaderName%.%type%
+copy /y template\ShaderTemplate.%type%.glsl ..\..\Resources\Shaders\%shaderName%.%type%.glsl
 
 cd ..\premake
 .\premake5 vs2013

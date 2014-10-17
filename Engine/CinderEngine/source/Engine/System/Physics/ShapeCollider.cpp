@@ -35,7 +35,7 @@ namespace Framework
 			return;
 	}
 
-    DefineComponentName(ShapeCollider);
+  DefineComponentName(ShapeCollider);
 	DefineComponentName(CircleCollider);
 	DefineComponentName(PointCollider);
 	DefineComponentName(LineCollider);

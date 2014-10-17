@@ -24,6 +24,7 @@ namespace Framework
     void Generate_Shaders ();
     void Generate_Buffers ();
     void Draw (CircleCollider* circle);
+	void Draw (LineCollider* line);
 
   private:
     Shader* dShader;

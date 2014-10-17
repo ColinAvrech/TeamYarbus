@@ -50,6 +50,7 @@ namespace Framework
     ObjectSystem();
     ~ObjectSystem();
 
+    virtual bool Initialize ();
     //!Update the factory, Destroying dead objects
     virtual void Update(const double dt);
 
@@ -82,7 +83,7 @@ namespace Framework
 
     void RegisterComponents(void);
     void AddComponentCreator(std::string name, ComponentCreator* creator);
-
+    void InitializeObject ();
     typedef std::vector<GameObject *> ObjectsToBeDestroyed;
     ObjectsToBeDestroyed GameObjectsToBeDestroyed;
   };

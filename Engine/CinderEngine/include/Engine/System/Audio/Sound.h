@@ -111,16 +111,13 @@ namespace Framework
                            char* filename, 
                            char* soundName, 
                            SoundID id);
-      FMOD::Sound*    LoadMic(FMOD::System* pSystem,
-                              char* soundName,
-                              SoundID id,
-                              FMOD_CREATESOUNDEXINFO exinfo);
       void            Play();
       void            VolumeFade(float volume, float fadeTime);
       void            Stop();
       void            PlayNew();
       void            AddSound(char* filename);
       virtual void    Update(const double dt);
+      void            UpdateVolumeFade(const double dt);
 
       // DSP
       void            LowPassFilter();
@@ -151,7 +148,6 @@ namespace Framework
       float           GetVolume();   
       unsigned        GetTime();
       unsigned        GetID(){return ID;}
-
       float*          GetVolumePtr();
 
       inline FMOD::Channel* Get_Channel()

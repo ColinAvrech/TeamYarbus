@@ -29,10 +29,7 @@ solution "CinderEngine"
       "../source/**.c",
       "../../Resources/Shaders/**.glsl",
       "../../Resources/**.txt",
-      "../../Resources/**.frag",
-      "../../Resources/**.vs",
-      "../../Resources/**.gs",
-      "../../Resources/**.cl",
+      "../../Resources/**.data",
     }
     
     

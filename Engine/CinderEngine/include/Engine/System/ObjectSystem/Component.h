@@ -39,7 +39,7 @@ namespace Framework
     virtual void Initalize(){};
 
     /*!TODO IMPLIMENT SERIALIZATION!*/
-    virtual void Serialize(Serializer::DataNode* data){};
+    virtual void Serialize (Serializer::DataNode* data){};
 
     //Variables that all components have
     GameObject* gameObject;

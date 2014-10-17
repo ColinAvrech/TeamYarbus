@@ -24,7 +24,7 @@ namespace Framework
     Camera (GameObject* go);
 
     virtual void Initalize ();
-    virtual void Serialize ();
+    virtual void Serialize (Serializer::DataNode* data);
 
     void MouseUpdate (const glm::vec2& newPosition);
     void MouseUpdateY (const glm::vec2& newPosition);
@@ -53,6 +53,7 @@ namespace Framework
     glm:: vec2 oldPosition;
     bool matricesReady;
 
+    bool mainCamera;
     float fov;
     float size;
     float aspect;

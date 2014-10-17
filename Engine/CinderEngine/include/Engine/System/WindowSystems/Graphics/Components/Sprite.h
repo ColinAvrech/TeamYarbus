@@ -4,6 +4,7 @@
 #include "GraphicsCommon.h"
 #include "ComponentInclude.h"
 #include "SpriteSheet.h"
+#include "JSONSerializer.h"
 
 #define TEXTURE_NONE -100
 
@@ -18,7 +19,7 @@ namespace Framework
     ~Sprite ();
 
     virtual void Initalize ();
-    virtual void Serialize ();
+    virtual void Serialize (Serializer::DataNode* data);
 
     void Create_Sprite (Shader* _shader, Texture* _texture = NULL);
     void Create_Sprite (Shader* _shader, SpriteSheet* _atlas);

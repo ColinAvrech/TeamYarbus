@@ -42,7 +42,7 @@ namespace Framework
       virtual bool Initialize();
 
       /*!TODO IMPLIMENT SERIALIZATION!*/
-      virtual void Serialize(){};
+      virtual void Serialize(Serializer::DataNode* componentData){};
 
       //Destructor
       ~ZilchComponent();

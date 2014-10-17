@@ -87,4 +87,9 @@ namespace Framework
 
     glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
   }
+
+  void DebugCircleRenderer::Draw(LineCollider* line)
+  {
+	  glDrawElements(GL_LINE_STRIP, 2, GL_UNSIGNED_INT, 0);
+  }
 }

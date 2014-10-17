@@ -9,6 +9,7 @@
 /******************************************************************************/
 
 #include "Camera.h"
+#include "GameObject.h"
 
 
 namespace Framework
@@ -26,25 +27,24 @@ namespace Framework
 
   void Camera::Initalize ()
   {
-    viewDirection = glm::vec3 (0.0f, 0.0f, -1.0f);
-    aspect = 1920.f / 1280;
-    nearPlane = 0.1f;
-    farPlane = 10.0f;
-    fov = 60.0f;
-
+    //viewDirection = glm::vec3 (0.0f, 0.0f, -1.0f);
+    //aspect = 1920.f / 1280;
+    //nearPlane = 0.1f;
+    //farPlane = 10.0f;
+    //fov = 120.0f;
     allCameras.push_back (this);
-    //if (_main)
+    if (mainCamera)
     {
       Camera::main = this;
-      worldToView = glm::lookAt (position, position + viewDirection, up);
+      worldToView = glm::lookAt (gameObject->Transform->GetPosition(), gameObject->Transform->GetPosition() + viewDirection, up);
       viewToProjection = glm::perspective (fov * M_PI / 180, aspect, nearPlane, farPlane);
     }
     Camera::current = this;
     matricesReady = true;
   }
 
-  void Camera::Serialize ()
-  {
+  void Camera::Serialize(Serializer::DataNode* data)
+{
     //////////////////////////////////////////////////////////////////////////
     // DATA TO BE SERIALIZED
     // viewDirection  : glm::vec3 (Serialized Data)
@@ -54,6 +54,27 @@ namespace Framework
     // fov            : float     (Serialized Data)
     // main           : bool      (Serialized Data)
     //////////////////////////////////////////////////////////////////////////
+
+    // Main?
+    mainCamera = data->value_.Bool_;
+    data = data->next;
+    // View Direction
+    for (unsigned i = 0; i < data->value_.VecN_->size (); ++i)
+    {
+      viewDirection [i] = data->value_.VecN_->at (i);
+    }
+    data = data->next;
+    // FOV
+    fov = data->value_.Float_;
+    data = data->next;
+    // Near Plane
+    nearPlane = data->value_.Float_;
+    data = data->next;
+    // Far Plane
+    farPlane = data->value_.Float_;
+    data = data->next;
+    // Aspect Ratio
+    aspect = data->value_.Float_;
   }
 
 

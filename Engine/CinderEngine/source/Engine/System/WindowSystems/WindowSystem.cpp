@@ -19,11 +19,19 @@ function to handle windows Messages.
 #include "SceneManager.h"
 #include "ComponentInclude.h"
 #include "EventSystem.h"
+#include "DebugRenderer.h"
 
 namespace Framework
 {
   //! Global pointer to  the windows system.
   WindowSystem* WINDOWSYSTEM = NULL;
+
+  std::vector <Sprite*> WindowSystem::spriteList;
+
+  static VAO* vao;
+  static VBO* vbo;
+  static EBO* ebo;
+  static DebugRenderer dr;
 
   namespace WindowNameSpace
   {
@@ -265,11 +273,18 @@ namespace Framework
   bool WindowSystem::Initialize ()
   {
     std::cout << GetName () << " initialized\n";
+    dr.Initialize ();
+    ShapeData data = ShapeGenerator::Generate_Quad ();
+    vao = new VAO ();
+    vbo = new VBO (data.vbo_size (), data.vertices);
+    ebo = new EBO (data.ebo_size (), data.indices);
+    data.Clean ();
     return true;
   }
 
   WindowSystem::~WindowSystem()
   {
+    delete vao, vbo, ebo;
     glfwTerminate();
   }
   
@@ -287,6 +302,39 @@ namespace Framework
 
   void WindowSystem::GraphicsUpdate (const double dt)
   {
+    glClearColor (0, 0, 0, 0);
+    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    
+    glDisable (GL_DEPTH_TEST);
+    glEnable (GL_BLEND);
+    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    vao->bindVAO ();
+    for (auto i : spriteList)
+    {
+      i->gameObject->Transform->UpdateMatrices ();
+      i->Draw ();
+    }
+    vao->unbindVAO ();
+
+
+    //////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
+    // To use Debug Draw:
+    // Create a DebugRenderer
+    // Initialize
+    // Use Draw Function
+    // Can draw points
+    // Can draw lines
+    // Can draw polygon with n number of shapes. max is 140
+    //////////////////////////////////////////////////////////////////////////
+    CircleCollider c;
+    dr.Draw (&c);
+    dr.Draw ((LineCollider*)nullptr);
+    dr.Draw (nullptr, 3);
+    dr.Draw (nullptr, 5);
+    dr.Draw ((PointCollider*)nullptr);
+
+    //////////////////////////////////////////////////////////////////////////
   }
   
   unsigned WindowSystem::Get_Width ()

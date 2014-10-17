@@ -18,7 +18,7 @@ namespace Framework
 			//Make sure buildlinesegment (private memb fuct) composes the right normals
 			float ldotProduct = l.p1dotNormal;
 			glm::vec2 normVec = l.normalVec;
-			glm::normalize(normVec);
+			normVec = glm::normalize(normVec);
 			float dist = ldotProduct - DotProduct(normVec, pos);
 
 			return rad >= dist;

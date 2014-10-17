@@ -142,8 +142,10 @@ namespace Framework
         _check = false;        
       }      
 
+      meter->getMeteringInfo(&input, 0);
+
       //frequencyConsoleOut();   
-      meterConsoleOut();
+      //meterConsoleOut();
       //latencyConsoleOut();
     }   
   }
@@ -151,27 +153,12 @@ namespace Framework
   void AudioSystem::micMeter()
   {
     FMOD_RESULT result;
-    bool active;
 
     result = micChannel->getDSP(FMOD_CHANNELCONTROL_DSP_HEAD, &meter);
     ErrCheck(result);
 
     result = meter->setMeteringEnabled(true, false);
     ErrCheck(result);
-
-    result = meter->getActive(&active);
-    ErrCheck(result);
-
-    if (active)
-    {
-      result = micChannel->removeDSP(meter);
-      ErrCheck(result);
-    }
-    else
-    {
-      result = micChannel->addDSP(0, meter, 0);
-      ErrCheck(result);
-    }  
   }
 
   void AudioSystem::micFrequencyData()
@@ -229,8 +216,6 @@ namespace Framework
 
   void AudioSystem::meterConsoleOut()
   {
-    meter->getMeteringInfo(&input, 0);
-
     if (input.peaklevel[0] < 0.2)
       std::cout << Console::cyan 
                 << "RMS Peak : " 
