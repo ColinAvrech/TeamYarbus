@@ -62,22 +62,57 @@ namespace Framework
       //Scan level
       
       //Allocate heatmap
-      HeatMap = new float*[1000];
-      for (int i = 0; i < 1000; ++i)
-        HeatMap[i] = new float[1000];
+      HeatMap = new float*[100];
+      for (int i = 0; i < 100; ++i)
+        HeatMap[i] = new float[100];
+      for (int j = 0; j < 100; ++j)
+      {
+        for (int i = 0; i < 100; ++i)
+        {
+          HeatMap[i][j] = 293;
+        }
+      }
 
       //Allocate Oxygen/Density map
-      OxygenMap = new float*[1000];
-      for (int i = 0; i < 1000; ++i)
-        OxygenMap[i] = new float[1000];
+      OxygenMap = new float*[100];
+      for (int i = 0; i < 100; ++i)
+        OxygenMap[i] = new float[100];
+
+      for (int j = 0; j < 100; ++j)
+      {
+        for (int i = 0; i < 100; ++i)
+        {
+          OxygenMap[i][j] = 1.225f;
+        }
+      }
 
       //Allocate Velocity map
-      VelocityMap = new glm::vec2*[1000];
-      for (int i = 0; i < 1000; ++i)
-        VelocityMap[i] = new glm::vec2[1000];
+      VelocityMap = new glm::vec2*[100];
+      for (int i = 0; i < 100; ++i)
+        VelocityMap[i] = new glm::vec2[100];
+      for (int j = 0; j < 100; ++j)
+      {
+        for (int i = 0; i < 100; ++i)
+        {
+          VelocityMap[i][j] = { 0, 0 };
+        }
+      }
+
 
       //Allocate Terrain map
-      Terrain = new int*[1000];
+      Terrain = new int*[100];
+      for (int i = 0; i < 100; ++i)
+        Terrain[i] = new int[100];
+
+      for (int j = 0; j < 100; ++j)
+      {
+        for (int i = 0; i < 100; ++i)
+        {
+          Terrain[i][j] = 0;
+        }
+      }
+      for (int i = 0; i < 100; ++i)
+        Terrain[i][0] = 1;
 
       return true;
     }
@@ -85,9 +120,9 @@ namespace Framework
     // Called every frame
     void ThermodynamicsSystem::Update(const double dt)
     {
-      UpdateTemp();
-      ComputeVelocity();
-      UpdateFire();
+      UpdateTemp(dt);
+      ComputeVelocity(dt);
+      //UpdateFire();
     }
 
     // Getters
@@ -153,16 +188,96 @@ namespace Framework
     -----------------------------------------------------------------------*/
 
     //Update temperatures
-    void ThermodynamicsSystem::UpdateTemp()
+    void ThermodynamicsSystem::UpdateTemp(const double dt)
     {
       //std::cout << "Updated Temperature/Density/Pressure" << std::endl;
-
-    }
+      for (int j = 1; j < 99; ++j)
+      {
+        for (int i = 1; i < 99; ++i)
+        {
+          float netdQ = 0.f;
+          float oTemp = HeatMap[i][j];
+          for (int y = j - 1; y <= j + 1; ++y)
+          {
+            for (int x = i - 1; x <= i + 1; ++x)
+            {
+              if (x != i && y != j)
+              {
+                float dQ = ConductiveHeatTransfer(Const::K_Air, HeatMap[i][j], HeatMap[x][y], dt, 0.1f);
+                netdQ += dQ / 8;
+                float oTemp = HeatMap[i][j + 1];
+                HeatMap[x][y] -= dTemp(dQ / 8, OxygenMap[i][j + 1] * 0.001f, Const::c_Air);
+                float factor = HeatMap[x][y] / oTemp;
+                OxygenMap[x][y] /= factor;
+              }
+            }
+          }
+          if (Terrain[i][j] == 0 && Terrain[i][j + 1] == 0)
+          {
+            float dQConv = ConvectiveHeatTransfer(Const::Hc_Air, HeatMap[i][j], HeatMap[i][j + 1], dt);
+            float oTempConv = HeatMap[i][j + 1];
+            netdQ += dQConv;
+            HeatMap[i][j + 1] -= dTemp(dQConv, OxygenMap[i][j + 1] * 0.001f, Const::c_Air);
+            float factor2 = HeatMap[i][j + 1] / oTempConv;
+            OxygenMap[i][j + 1] /= factor2;
+          }
+          HeatMap[i][j] += dTemp(netdQ, OxygenMap[i][j] * 0.001f, Const::c_Air);
+          float factor1 = HeatMap[i][j] / oTemp;
+          OxygenMap[i][j] /= factor1;
+        }//for
+      }//for
+    }//function
     
     //Update velocity vectors
-    void ThermodynamicsSystem::ComputeVelocity()
+    void ThermodynamicsSystem::ComputeVelocity(const double dt)
     {
-      //std::cout << "Updated Velocities" << std::endl;
+      glm::vec2 dirvec[8] = {
+          { -1, -1 },
+          { 0, -1 },
+          { 1, -1 },
+          { -1, 0 },
+          { 1, 0 },
+          { -1, 1 },
+          { 0, 1 },
+          { 1, 1 }
+      };
+      for (int j = 1; j < 99; ++j)
+      {
+        for (int i = 1; i < 99; ++i)
+        {
+          float dSum = 0.f;
+          for (int y = j - 1; y <= j + 1; ++y)
+          {
+            for (int x = i - 1; x <= i + 1; ++x)
+            {
+              dSum += OxygenMap[x][y];
+            }
+          }
+          float meanDensity = dSum / 8;
+          float buoyancy = Buoyancy(dSum, OxygenMap[i][j] * 0.001f, 0.1f);
+          int vectorindex = 0;
+          float dDenseSum = 0.f;
+          for (int y = j - 1; y <= j + 1; ++y)
+          {
+            for (int x = i - 1; x <= i + 1; ++x)
+            {
+              if (x != i && y != j)
+              {
+                float dDense = OxygenMap[x][y] - OxygenMap[i][j];
+                VelocityMap[i][j] += (dirvec[vectorindex] * dDense);
+                if (EqualizePressure)
+                {
+                  OxygenMap[x][y] -= (dDense / 8) * (float)dt;
+                  dDenseSum += (dDense / 8);
+                }
+              }
+              ++vectorindex;
+            } //for x
+          } //for y
+          OxygenMap[i][j] += dDenseSum;
+          //VelocityMap[i][j]
+        }//for i
+      } //for j
     }
     
     //Update fire

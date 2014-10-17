@@ -162,9 +162,9 @@ namespace Framework
       -----------------------------------------------------------------------*/
 #pragma region Private Functions
       //Update temperatures
-      void UpdateTemp();
+      void UpdateTemp(const double dt);
       //Calculate velocity vectors
-      void ComputeVelocity();
+      void ComputeVelocity(const double dt);
       //Update fire
       void UpdateFire();
 
