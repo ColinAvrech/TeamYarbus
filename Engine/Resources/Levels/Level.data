@@ -74,7 +74,7 @@ Level =
 		},
 		Named = 
 		{
-			string Name = "ball",
+			string Name = "ball1",
 		},
 		Transform = 
 		{
@@ -97,7 +97,7 @@ Level =
 		},
 		Named = 
 		{
-			string Name = "ball",
+			string Name = "ball2",
 		},
 		Transform = 
 		{

@@ -47,6 +47,16 @@ namespace Framework
 
       //Heat transfer coefficient
       static const float Hc_Air = 10;
+
+      //Ignition temperatures (in K)
+      static const float IT_Carbon = 973.f;
+      static const float IT_Charcoal = 622.f;
+      static const float IT_Fuel = 483.f;
+      static const float IT_Petrol = 523.f;
+      static const float IT_Paper = 498.f;
+      static const float IT_Wood = 700.f;
+      static const float IT_Grass = 451.f;
+      static const float IT_Gun_Powder = 561.f;
     } //namespace Constant
 
     enum Material

@@ -65,10 +65,10 @@ namespace Framework
     RegisterComponent(Sprite);
     RegisterComponent (Camera);
     RegisterComponent (ShapeCollider);
-	  RegisterComponent(CircleCollider);
-	//RegisterComponent(PointCollider);
-	//RegisterComponent(LineCollider);
-	//RegisterComponent(RigidBody);
+    RegisterComponent(CircleCollider);
+  //RegisterComponent(PointCollider);
+  //RegisterComponent(LineCollider);
+  //RegisterComponent(RigidBody);
   }
 
   void ObjectSystem::AddComponentCreator(std::string name, ComponentCreator* creator)
@@ -123,8 +123,8 @@ namespace Framework
     {
       if (it->objectName.compare("Cog") == 0)
       {
-        GameObject* newobj = new GameObject(it->branch->value_.UInt_);
-        newobj->Name = "ball";
+        GameObject* newobj = new GameObject(it->branch->branch->value_.UInt_);
+        newobj->Name = *it->branch->next->branch->value_.String_;
         GameObjects[newobj->GameObjectID] = newobj;
         auto ct = it->branch->next->next;
         while (ct)
