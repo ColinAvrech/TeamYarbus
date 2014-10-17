@@ -65,10 +65,10 @@ namespace Framework
     RegisterComponent(Sprite);
     RegisterComponent (Camera);
     RegisterComponent (ShapeCollider);
-	  RegisterComponent(CircleCollider);
-	//RegisterComponent(PointCollider);
-	//RegisterComponent(LineCollider);
-	//RegisterComponent(RigidBody);
+    RegisterComponent(CircleCollider);
+  //RegisterComponent(PointCollider);
+  //RegisterComponent(LineCollider);
+  //RegisterComponent(RigidBody);
   }
 
   void ObjectSystem::AddComponentCreator(std::string name, ComponentCreator* creator)
@@ -135,7 +135,7 @@ namespace Framework
             newobj->Transform = (Transform*) (newcomp);
           else if (ct->objectName == "Sprite")
             newobj->Sprite = (Sprite*) (newcomp);
-          else if (ct->objectName == "SphereCollider")
+          else if (ct->objectName == "CircleCollider")
             newobj->CircleCollider = (CircleCollider*) (newcomp);
           newcomp->Serialize(ct->branch);
           newcomp->Initalize ();
