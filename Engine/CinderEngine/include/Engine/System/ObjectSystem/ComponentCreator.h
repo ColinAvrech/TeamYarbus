@@ -44,7 +44,7 @@ namespace Framework
 
     virtual Component * Create()
     {
-      return new type();
+      return new Component();
     }
   };
 

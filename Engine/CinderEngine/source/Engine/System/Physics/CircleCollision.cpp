@@ -17,7 +17,6 @@ namespace Framework
 {
 	void CircleCollider::DetectCircle(CircleCollider* c)
 	{
-<<<<<<< HEAD
 		// not counting offset
 		glm::vec2 pos;
 		pos.x = static_cast<Transform*>(gameObject->Transform)->GetPosition ().x;
@@ -40,7 +39,6 @@ namespace Framework
 				std::cout << "COLLISION" << std::endl;
 			}
 		}
-=======
     // CODE IS BREAKING
     // FIX
 		//// not counting offset
@@ -66,7 +64,7 @@ namespace Framework
 		//	collision->DispatchEvent();
 		//	std::cout << "COLLISION" << std::endl;
 		//}
->>>>>>> origin/master
+
 	}
 
 	//repeat
@@ -77,12 +75,9 @@ namespace Framework
 		float rad = GetRadius();
 		if (Physics::CirclevsPoint(rad, pos, ppos))
 		{
-<<<<<<< HEAD
       //std::string ColEvent = CollisionEventName(p->gameObject->GameObjectID);
 			std::string ColEvent = std::string("POINTCOLLISION");
-=======
-			std::string ColEvent = std::string("COLLISION");
->>>>>>> origin/master
+
 			CollisionEvent* collision = (CollisionEvent*)EVENTSYSTEM->GetEvent(ColEvent);
 			collision->OtherObject = p->gameObject;
 			collision->normal = pos - ppos;
@@ -99,7 +94,6 @@ namespace Framework
 		pos.y = static_cast<Transform*>(gameObject->Transform)->GetPosition().y;
 		if (Physics::CirclevsLine(rad, pos, *l))
 		{
-<<<<<<< HEAD
 			std::string ColEvent = std::string("LINECOLLISION");
 			CollisionEvent* collision = new CollisionEvent(ColEvent);
 			if (collision)
@@ -111,14 +105,6 @@ namespace Framework
 				collision->DispatchEvent();
 			}
 			Physics::Resolve(collision);
-=======
-			std::string ColEvent = std::string("COLLISION");
-			CollisionEvent* collision = (CollisionEvent*)EVENTSYSTEM->GetEvent(ColEvent);
-			collision->OtherObject = l->gameObject;
-			collision->normal = l->GetNormal();
-			glm::normalize(collision->normal);
-			collision->DispatchEvent();
->>>>>>> origin/master
 		}
 	}
 } //Framework

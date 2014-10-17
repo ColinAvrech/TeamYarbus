@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /******************************************************************************/
 /*!
 \file   Scene_CollisionTest.cpp
@@ -13,7 +12,7 @@
 #include "ComponentInclude.h"
 #include "ResourceManager.h"
 #include "WindowSystem.h"
-#include "DebugCircle.h"
+#include "DebugRenderer.h"
 #include "ShapeCollider.h"
 #include "EventSystem.h"
 #include "BaseEvent.h"
@@ -28,7 +27,7 @@ namespace Framework
   //using namespace Physics;
 
   static GameObject* go1, *go2, *go3line;
-  static DebugCircleRenderer debugRenderer;
+  static DebugRenderer debugRenderer;
   static int circleDivisions = 40;
   static float circleRadius = 0.5f;
   static bool useDebug = true;
@@ -101,7 +100,7 @@ namespace Framework
   {
     EVENTSYSTEM->Connect (NULL, Events::KEY_ANY, BaseEvent::BaseCall (OnKeyPressed));
     //EVENTSYSTEM->Connect (go2, Events::Types::COLLISION, BaseEvent::BaseCall (OnCollisionEnter));
-    debugRenderer = DebugCircleRenderer ();
+    debugRenderer = DebugRenderer ();
     debugRenderer.Generate_Buffers ();
     debugRenderer.Generate_Shaders ();
 
@@ -196,7 +195,6 @@ namespace Framework
   }
 
 }
-=======
 ///******************************************************************************/
 ///*!
 //\file   Scene_CollisionTest.cpp
@@ -384,4 +382,3 @@ namespace Framework
 //  }
 //
 //}
->>>>>>> origin/master
