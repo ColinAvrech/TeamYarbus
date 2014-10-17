@@ -1,12 +1,14 @@
 #include "Physics/Thermodynamics.h"
+#include "TDLib.h"
 
 namespace Framework
 {
   namespace Physics
   {
+    namespace Const = Constant;
     //Constructor
     ThermodynamicsSystem::ThermodynamicsSystem() :
-      HeatMap(NULL), PressureMap(NULL), OxygenMap(NULL),
+      HeatMap(NULL), OxygenMap(NULL),
       VelocityMap(NULL), Terrain(NULL), FireMap(NULL)
     {
       //Do stuff
@@ -18,37 +20,31 @@ namespace Framework
       //Delete all the shit-load of allocated memory
       if (HeatMap)
       {
-        for (int i = 0; i < MapSize.x_; ++i)
+        for (int i = 0; i < MapSize.x; ++i)
           delete[] HeatMap[i];
         delete[] HeatMap;
       }
-      if (PressureMap)
-      {
-        for (int i = 0; i < MapSize.x_; ++i)
-          delete[] PressureMap[i];
-        delete[] PressureMap;
-      }
       if (OxygenMap)
       {
-        for (int i = 0; i < MapSize.x_; ++i)
+        for (int i = 0; i < MapSize.x; ++i)
           delete[] OxygenMap[i];
         delete[] OxygenMap;
       }
       if (VelocityMap)
       {
-        for (int i = 0; i < MapSize.x_; ++i)
+        for (int i = 0; i < MapSize.x; ++i)
           delete[] VelocityMap[i];
         delete[] VelocityMap;
       }
       if (Terrain)
       {
-        for (int i = 0; i < MapSize.x_; ++i)
+        for (int i = 0; i < MapSize.x; ++i)
           delete[] Terrain[i];
         delete[] Terrain;
       }
       if (FireMap)
       {
-        for (int i = 0; i < MapSize.x_; ++i)
+        for (int i = 0; i < MapSize.x; ++i)
           delete[] FireMap[i];
         delete[] FireMap;
       }
@@ -61,53 +57,102 @@ namespace Framework
     bool ThermodynamicsSystem::Initialize()
     {
       std::cout << "Thermodynamics Initialized." << std::endl;
+      std::cout << "Grid 1000 x 1000" << std::endl;
+
+      //Scan level
+      
+      //Allocate heatmap
+      HeatMap = new float*[100];
+      for (int i = 0; i < 100; ++i)
+        HeatMap[i] = new float[100];
+      for (int j = 0; j < 100; ++j)
+      {
+        for (int i = 0; i < 100; ++i)
+        {
+          HeatMap[i][j] = 293;
+        }
+      }
+
+      //Allocate Oxygen/Density map
+      OxygenMap = new float*[100];
+      for (int i = 0; i < 100; ++i)
+        OxygenMap[i] = new float[100];
+
+      for (int j = 0; j < 100; ++j)
+      {
+        for (int i = 0; i < 100; ++i)
+        {
+          OxygenMap[i][j] = 1.225f;
+        }
+      }
+
+      //Allocate Velocity map
+      VelocityMap = new glm::vec2*[100];
+      for (int i = 0; i < 100; ++i)
+        VelocityMap[i] = new glm::vec2[100];
+      for (int j = 0; j < 100; ++j)
+      {
+        for (int i = 0; i < 100; ++i)
+        {
+          VelocityMap[i][j] = { 0, 0 };
+        }
+      }
+
+
+      //Allocate Terrain map
+      Terrain = new int*[100];
+      for (int i = 0; i < 100; ++i)
+        Terrain[i] = new int[100];
+
+      for (int j = 0; j < 100; ++j)
+      {
+        for (int i = 0; i < 100; ++i)
+        {
+          Terrain[i][j] = 0;
+        }
+      }
+      for (int i = 0; i < 100; ++i)
+        Terrain[i][0] = 1;
+
       return true;
     }
    
     // Called every frame
     void ThermodynamicsSystem::Update(const double dt)
     {
-      UpdateTemp();
-      ComputeVelocity();
-      UpdateFire();
+      UpdateTemp(dt);
+      ComputeVelocity(dt);
+      //UpdateFire();
     }
 
     // Getters
     //Get cell temperature
     float ThermodynamicsSystem::GetCellTemperature(float x, float y)
     {
-      int sub_x = static_cast<int>((x / CellSize) + MapOffset.x_);
-      int sub_y = static_cast<int>((y / CellSize) + MapOffset.y_);
-      if (sub_x < 0 || sub_x > MapSize.x_ || sub_y < 0 || sub_y > MapSize.y_)
+      int sub_x = static_cast<int>((x / CellSize) + MapOffset.x);
+      int sub_y = static_cast<int>((y / CellSize) + MapOffset.y);
+      if (sub_x < 0 || sub_x > MapSize.x || sub_y < 0 || sub_y > MapSize.y)
         return 0.f;
       return HeatMap[sub_x][sub_y];
     }
-    //Get cell pressure
-    float ThermodynamicsSystem::GetCellPressure(float x, float y)
-    {
-      int sub_x = static_cast<int>((x / CellSize) + MapOffset.x_);
-      int sub_y = static_cast<int>((y / CellSize) + MapOffset.y_);
-      if (sub_x < 0 || sub_x > MapSize.x_ || sub_y < 0 || sub_y > MapSize.y_)
-        return 0.f;
-      return PressureMap[sub_x][sub_y];
-    }
+
     //Get cell oxygen content
     float ThermodynamicsSystem::GetCellOxygen(float x, float y)
     {
-      int sub_x = static_cast<int>((x / CellSize) + MapOffset.x_);
-      int sub_y = static_cast<int>((y / CellSize) + MapOffset.y_);
-      if (sub_x < 0 || sub_x > MapSize.x_ || sub_y < 0 || sub_y > MapSize.y_)
+      int sub_x = static_cast<int>((x / CellSize) + MapOffset.x);
+      int sub_y = static_cast<int>((y / CellSize) + MapOffset.y);
+      if (sub_x < 0 || sub_x > MapSize.x || sub_y < 0 || sub_y > MapSize.y)
         return 0.f;
       return OxygenMap[sub_x][sub_y];
     }
     //Get cell velocity
-    Vec2 ThermodynamicsSystem::GetCellVelocity(float x, float y)
+    glm::vec2 ThermodynamicsSystem::GetCellVelocity(float x, float y)
     {
-      int sub_x = static_cast<int>((x / CellSize) + MapOffset.x_);
-      int sub_y = static_cast<int>((y / CellSize) + MapOffset.y_);
-      if (sub_x < 0 || sub_x > MapSize.x_ || sub_y < 0 || sub_y > MapSize.y_)
+      int sub_x = static_cast<int>((x / CellSize) + MapOffset.x);
+      int sub_y = static_cast<int>((y / CellSize) + MapOffset.y);
+      if (sub_x < 0 || sub_x > MapSize.x || sub_y < 0 || sub_y > MapSize.y)
       {
-        Vec2 space(0, 0);
+        glm::vec2 space(0, 0);
         return space;
       }
       return VelocityMap[sub_x][sub_y];
@@ -124,17 +169,18 @@ namespace Framework
 
     float ThermodynamicsSystem::SetCellTemperature(const float x, const float y, const float temp, const double dt)
     {
-      int sub_x = static_cast<int>((x / CellSize) + MapOffset.x_);
-      int sub_y = static_cast<int>((y / CellSize) + MapOffset.y_);
-      if (sub_x < 0 || sub_x > MapSize.x_ || sub_y < 0 || sub_y > MapSize.y_)
-        return 0;
-      float dTemp = temp - HeatMap[sub_x][sub_y];
-      if (dTemp > 0)
+      int sub_x = static_cast<int>((x / CellSize) + MapOffset.x);
+      int sub_y = static_cast<int>((y / CellSize) + MapOffset.y);
+      float dQ;
+      if (sub_x < 0 || sub_x > MapSize.x || sub_y < 0 || sub_y > MapSize.y)
+        dQ = ConductiveHeatTransfer(Const::K_Wood, 0, temp, dt, 1);
+      else
       {
-        HeatMap[sub_x][sub_y] += dTemp * float (dt);
-        return (temp - (dTemp * float (dt)));
+        dQ = ConductiveHeatTransfer(Const::K_Wood, HeatMap[sub_x][sub_y], temp, dt, 1);
+        float deltaTemp = dTemp(dQ, OxygenMap[sub_x][sub_y] * CellSize*CellSize*CellSize, Const::c_Air);
+        HeatMap[sub_x][sub_y] += deltaTemp;
       }
-      return (temp + (dTemp * float (dt)));
+      return dQ;
     }
 
     /*-----------------------------------------------------------------------
@@ -142,15 +188,96 @@ namespace Framework
     -----------------------------------------------------------------------*/
 
     //Update temperatures
-    void ThermodynamicsSystem::UpdateTemp()
+    void ThermodynamicsSystem::UpdateTemp(const double dt)
     {
       //std::cout << "Updated Temperature/Density/Pressure" << std::endl;
-    }
+      for (int j = 1; j < 99; ++j)
+      {
+        for (int i = 1; i < 99; ++i)
+        {
+          float netdQ = 0.f;
+          float oTemp = HeatMap[i][j];
+          for (int y = j - 1; y <= j + 1; ++y)
+          {
+            for (int x = i - 1; x <= i + 1; ++x)
+            {
+              if (x != i && y != j)
+              {
+                float dQ = ConductiveHeatTransfer(Const::K_Air, HeatMap[i][j], HeatMap[x][y], dt, 0.1f);
+                netdQ += dQ / 8;
+                float oTemp = HeatMap[i][j + 1];
+                HeatMap[x][y] -= dTemp(dQ / 8, OxygenMap[i][j + 1] * 0.001f, Const::c_Air);
+                float factor = HeatMap[x][y] / oTemp;
+                OxygenMap[x][y] /= factor;
+              }
+            }
+          }
+          if (Terrain[i][j] == 0 && Terrain[i][j + 1] == 0)
+          {
+            float dQConv = ConvectiveHeatTransfer(Const::Hc_Air, HeatMap[i][j], HeatMap[i][j + 1], dt);
+            float oTempConv = HeatMap[i][j + 1];
+            netdQ += dQConv;
+            HeatMap[i][j + 1] -= dTemp(dQConv, OxygenMap[i][j + 1] * 0.001f, Const::c_Air);
+            float factor2 = HeatMap[i][j + 1] / oTempConv;
+            OxygenMap[i][j + 1] /= factor2;
+          }
+          HeatMap[i][j] += dTemp(netdQ, OxygenMap[i][j] * 0.001f, Const::c_Air);
+          float factor1 = HeatMap[i][j] / oTemp;
+          OxygenMap[i][j] /= factor1;
+        }//for
+      }//for
+    }//function
     
     //Update velocity vectors
-    void ThermodynamicsSystem::ComputeVelocity()
+    void ThermodynamicsSystem::ComputeVelocity(const double dt)
     {
-      //std::cout << "Updated Velocities" << std::endl;
+      glm::vec2 dirvec[8] = {
+          { -1, -1 },
+          { 0, -1 },
+          { 1, -1 },
+          { -1, 0 },
+          { 1, 0 },
+          { -1, 1 },
+          { 0, 1 },
+          { 1, 1 }
+      };
+      for (int j = 1; j < 99; ++j)
+      {
+        for (int i = 1; i < 99; ++i)
+        {
+          float dSum = 0.f;
+          for (int y = j - 1; y <= j + 1; ++y)
+          {
+            for (int x = i - 1; x <= i + 1; ++x)
+            {
+              dSum += OxygenMap[x][y];
+            }
+          }
+          float meanDensity = dSum / 8;
+          float buoyancy = Buoyancy(dSum, OxygenMap[i][j] * 0.001f, 0.1f);
+          int vectorindex = 0;
+          float dDenseSum = 0.f;
+          for (int y = j - 1; y <= j + 1; ++y)
+          {
+            for (int x = i - 1; x <= i + 1; ++x)
+            {
+              if (x != i && y != j)
+              {
+                float dDense = OxygenMap[x][y] - OxygenMap[i][j];
+                VelocityMap[i][j] += (dirvec[vectorindex] * dDense);
+                if (EqualizePressure)
+                {
+                  OxygenMap[x][y] -= (dDense / 8) * (float)dt;
+                  dDenseSum += (dDense / 8);
+                }
+              }
+              ++vectorindex;
+            } //for x
+          } //for y
+          OxygenMap[i][j] += dDenseSum;
+          //VelocityMap[i][j]
+        }//for i
+      } //for j
     }
     
     //Update fire

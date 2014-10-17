@@ -38,7 +38,7 @@ namespace Framework
 		RigidBody(GameObject * obj)
 		{
 			gameObject = obj;
-			vel = { -1, 0 };
+			vel = { 1, -1 };
 			angVel = { 0, 0 };
 		};
 

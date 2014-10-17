@@ -614,13 +614,25 @@ namespace Framework
   /***************************************************************************/
   void Sound::Update(const double dt)
   {
-    float currentVolume;
-
     // Checks if system is not on
     if (Sound::system_on_ == false)
     {
       return;
+    }    
+
+    UpdateVolumeFade(dt);
+    SetVolume(GetVolume());
+
+    if (this->GetTime() > 5000 && this->GetTime() < 5500 && test == true)
+    {
+      test = false;
+      std::cout << Console::cyan << "FIVE SECONDS" << std::endl;
     }
+  }
+
+  void Sound::UpdateVolumeFade(const double dt)
+  {
+    float currentVolume;
 
     if (pChannel != NULL)
     {
@@ -643,15 +655,7 @@ namespace Framework
 
         SetVolume(newVolume);
       }
-    }
-
-    SetVolume(GetVolume());
-
-    if (this->GetTime() > 5000 && this->GetTime() < 5500 && test == true)
-    {
-      test = false;
-      std::cout << Console::cyan << "FIVE SECONDS" << std::endl;
-    }
+    }  
   }
  
   /*---------------------------------------------------------------------------

@@ -18,17 +18,64 @@ namespace Framework
     namespace Constant
     {
       //Add physics constants here
-      long c   = 299792458;  //m.s-1       | Speed of light in vaccum
-      long atm = 101325;     //Pa          | Standard Atmospheric pressure
-      long R   = 8.31451;    //J.mol-1.K-1 | Molar gas constant
-      int  M_a = 28.97;      //Kg.Kmol-1   | Molar mass of air
+      static const long  c   = 299792458;  //m.s-1       | Speed of light in vaccum
+      static const long  atm = 101325;     //Pa          | Standard Atmospheric pressure
+      static const float R   = 8.31451f;   //J.mol-1.K-1 | Molar gas constant
+      static const float M_a = 28.97f;     //Kg.Kmol-1   | Molar mass of air
+
+      //Properties of specific materials--------------------
+      //Specific heat
+      static const float c_Air = 1046.f;
+      static const float c_Water = 4186.f;
+      static const float c_Soil = 1046.f;
+      static const float c_Stone = 858.f;
+      static const float c_Iron = 452.f;
+      static const float c_Steel = 452.f;
+      static const float c_Lead = 128.f;
+      static const float c_Wood = 1674.f;
+
+      //Thermal Conductivity
+      static const float K_Air = 0.024f;
+      static const float K_Wood = 0.048f;
+      static const float K_drySoil = 1.5f;
+      static const float K_Bronze = 110.f;
+      static const float K_Carbon = 1.7f;
+      static const float K_cotton = 0.029f;
+      static const float K_Cement = 1.73f;
+      static const float K_Stone = 1.7f;
+      static const float K_Copper = 401.f;
+
+      //Heat transfer coefficient
+      static const float Hc_Air = 10;
+
+      //Ignition temperatures (in K)
+      static const float IT_Carbon = 973.f;
+      static const float IT_Charcoal = 622.f;
+      static const float IT_Fuel = 483.f;
+      static const float IT_Petrol = 523.f;
+      static const float IT_Paper = 498.f;
+      static const float IT_Wood = 700.f;
+      static const float IT_Grass = 451.f;
+      static const float IT_Gun_Powder = 561.f;
     } //namespace Constant
 
-    float ComputeBuoyancy(float density, float mass);
-    float ComputeDensity();
-    float DiffuseHeat();
-    float DiffuseDensity();
-    glm::vec2 ComputeAdvection();
+    enum Material
+    {
+      AIR,
+      WATER,
+      SOIL,
+      STONE,
+      LEAD,
+      IRON,
+      STEEL,
+      WOOD,
+      COTTON
+    };
+
+    float Buoyancy(float density, float mass, float CellSize);
+    float ConductiveHeatTransfer(float K, float T1, float T2, const double dt, float Size);
+    float ConvectiveHeatTransfer(float Hc, float T1, float T2, const double dt);
+    float dTemp(float dQ, float m, float c);
 
   } //namespace Physics
 } //namespace Framework

@@ -10,8 +10,18 @@ namespace Framework
 		void Resolve(CollisionEvent* pre)
 		{
 			CollisionEvent post("CollisionEvent");
-			RigidBody::DynamicState stateA = pre->thisObject->RigidBody->state;
-			RigidBody::DynamicState stateB = pre->OtherObject->RigidBody->state;
+			RigidBody::DynamicState stateA;
+			RigidBody::DynamicState stateB;
+
+			if (pre->thisObject->RigidBody == NULL)
+				stateA = RigidBody::Static;
+			else
+				stateA = pre->thisObject->RigidBody->state;
+
+			if (pre->OtherObject->RigidBody == NULL)
+				stateB = RigidBody::Static;
+			else
+				stateB = pre->OtherObject->RigidBody->state;
 
 			if (stateA == RigidBody::Static || stateB == RigidBody::Static)
 			{
@@ -26,17 +36,25 @@ namespace Framework
 		void ResolveStatic(CollisionEvent* pre, CollisionEvent* post,
 						   RigidBody::DynamicState stateA, RigidBody::DynamicState stateB)
 		{
+			glm::vec2 velA = { 0, 0 };
+			glm::vec2 velB = { 0, 0 };
+
 			*post = *pre;
-			glm::vec2 velA = post->thisObject->RigidBody->vel;
-			glm::vec2 velB = post->OtherObject->RigidBody->vel;
+			if (stateA != RigidBody::Static)
+			velA = post->thisObject->RigidBody->vel;
+
+			if (stateB != RigidBody::Static)
+			velB = post->OtherObject->RigidBody->vel;
 
 			if (stateA == RigidBody::Static)
 			{
 				velB = getReflection(pre->normal, velB);
+				post->OtherObject->RigidBody->vel = velB;
 			}
 			else
 			{
 				velA = getReflection(pre->normal, velA);
+				post->thisObject->RigidBody->vel = velA;
 			}
 		}
 

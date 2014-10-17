@@ -43,7 +43,7 @@ namespace Framework
 			glm::vec2 line = p1 - p2;
 			norm.x = -line.y;
 			norm.y = line.x;
-			glm::vec2 normalize(norm);
+			norm = glm::normalize(norm);
 
 			return norm;
 		}

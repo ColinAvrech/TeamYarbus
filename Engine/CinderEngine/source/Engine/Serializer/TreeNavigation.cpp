@@ -9,6 +9,7 @@
 /*****************************************************************************/
 
 #include "Serializer/JSONSerializer.h"
+#include <iostream>
 
 namespace Framework
 {
