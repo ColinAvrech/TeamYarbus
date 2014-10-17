@@ -57,6 +57,11 @@ namespace Framework
       static const float IT_Wood = 700.f;
       static const float IT_Grass = 451.f;
       static const float IT_Gun_Powder = 561.f;
+
+      //Burn temperatures
+      static const float BT_Organics = 2250.f;
+      static const float BT_Candle = 1273.f;
+      static const float BT_Spark = 1589.f;
     } //namespace Constant
 
     enum Material
