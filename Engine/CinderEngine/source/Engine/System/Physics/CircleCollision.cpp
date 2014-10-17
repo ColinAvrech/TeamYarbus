@@ -77,10 +77,10 @@ namespace Framework
 		float rad = GetRadius();
 		if (Physics::CirclevsPoint(rad, pos, ppos))
 		{
-//<<<<<<< HEAD
-      //std::string ColEvent = CollisionEventName(p->gameObject->GameObjectID);
-			std::string ColEvent = std::string("POINTCOLLISION");
-//=======
+////<<<<<<< HEAD
+//      //std::string ColEvent = CollisionEventName(p->gameObject->GameObjectID);
+//			std::string ColEvent = std::string("POINTCOLLISION");
+////=======
 			std::string ColEvent = std::string("COLLISION");
 //>>>>>>> origin/master
 			CollisionEvent* collision = (CollisionEvent*)EVENTSYSTEM->GetEvent(ColEvent);
@@ -111,14 +111,14 @@ namespace Framework
 				collision->DispatchEvent();
 			}
 			Physics::Resolve(collision);
-//=======
-			std::string ColEvent = std::string("COLLISION");
-			CollisionEvent* collision = (CollisionEvent*)EVENTSYSTEM->GetEvent(ColEvent);
-			collision->OtherObject = l->gameObject;
-			//collision->normal = l->GetNormal();
-			glm::normalize(collision->normal);
-			collision->DispatchEvent();
-//>>>>>>> origin/master
+////=======
+//			std::string ColEvent = std::string("COLLISION");
+//			CollisionEvent* collision = (CollisionEvent*)EVENTSYSTEM->GetEvent(ColEvent);
+//			collision->OtherObject = l->gameObject;
+//			//collision->normal = l->GetNormal();
+//			glm::normalize(collision->normal);
+//			collision->DispatchEvent();
+////>>>>>>> origin/master
 		}
 	}
 } //Framework

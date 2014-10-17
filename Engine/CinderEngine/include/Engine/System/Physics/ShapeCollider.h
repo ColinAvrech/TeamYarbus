@@ -53,6 +53,7 @@ namespace Framework
   {
   public:
     const static std::string Name;
+    CircleCollider (){}
 	CircleCollider(GameObject* obj) : radius(0.5f)
 	{
 		gameObject = obj;
