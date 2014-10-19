@@ -114,30 +114,6 @@ namespace Framework
       for (int i = 0; i < 100; ++i)
         Terrain[i][0] = 1;
 
-      FireMap = new float*[100];
-      for (int i = 0; i < 100; ++i)
-        FireMap[i] = new float[100];
-
-      for (int j = 0; j < 100; ++j)
-      {
-        for (int i = 0; i < 100; ++i)
-          FireMap[i][j] = 0;
-      }
-
-      FuelMap = new float*[100];
-      for (int i = 0; i < 100; ++i)
-        FuelMap[i] = new float[100];
-
-      for (int j = 0; j < 100; ++j)
-      {
-        for (int i = 0; i < 100; ++i)
-        {
-          FuelMap[i][j] = 0;
-        }
-      }
-      for (int i = 0; i < 100; ++i)
-        FuelMap[i][0] = 10.f;
-
       return true;
     }
    
@@ -146,7 +122,7 @@ namespace Framework
     {
       UpdateTemp(dt);
       ComputeVelocity(dt);
-      UpdateFire(dt);
+      //UpdateFire();
     }
 
     // Getters
@@ -231,7 +207,6 @@ namespace Framework
                 netdQ += dQ / 8;
                 float oTemp = HeatMap[i][j + 1];
                 HeatMap[x][y] -= dTemp(dQ / 8, OxygenMap[i][j + 1] * 0.001f, Const::c_Air);
-                
                 float factor = HeatMap[x][y] / oTemp;
                 OxygenMap[x][y] /= factor;
               }
@@ -306,49 +281,9 @@ namespace Framework
     }
     
     //Update fire
-    void ThermodynamicsSystem::UpdateFire(const double dt)
+    void ThermodynamicsSystem::UpdateFire()
     {
       //std::cout << "Updated Fire" << std::endl;
-      for (int j = 1; j < 99; ++j)
-      {
-        for (int i = 1; i < 99; ++i)
-        {
-          int OxyCount = 0;
-          float OxyAmount = 0.f;
-          for (int y = j - 1; y <= j + 1; ++y)
-          {
-            for (int x = i - 1; x <= i + 1; ++i)
-            {
-              if (x != i && y != j && Terrain[x][y] == 0)
-              {
-                ++OxyCount;
-                //OxyAmount += OxygenMap[x][y] * CellSize*CellSize*CellSize;
-              }
-            } //for x
-          } //for y
-          float tempRange = Const::BT_Organics - Const::IT_Wood;
-          float tempDiff = HeatMap[i][j] - Const::IT_Wood;
-          float tempFactor = tempDiff / tempRange;
-          tempFactor *= 10;
-          if (FuelMap[i][j] >= 0.f &&
-              OxyCount > 0)
-          {
-            if (HeatMap[i][j] <= Const::BT_Organics)
-            {
-              HeatMap[i][j] += tempRange * (float)dt;
-            }
-            //float oxyfactor = 
-          }//if
-          else
-          {
-            if (HeatMap[i][j] >= Const::IT_Wood)
-            {
-              HeatMap[i][j] -= tempRange * (float)dt;
-            }
-          }
-          FireMap[i][j] = tempFactor;
-        }//for i
-      }//for j
-    }//function
-  }//namespace Physics
-}//namespace Framework
+    }
+  }
+}

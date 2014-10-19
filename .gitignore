@@ -12,4 +12,3 @@ Engine/CinderEngine/premake/CinderEngine.vcxproj.filters
 /Engine/CinderEngine/source/Engine/System/Physics/BoxCollider.cpp
 /Engine/CinderEngine/include/Engine/System/Physics/BoxCollider.h
 Engine/CinderEngine/include/Engine/System/Physics/ShapeCollider.h
-/Engine/CinderEngine/bin/debug/cinderengine.pdb
