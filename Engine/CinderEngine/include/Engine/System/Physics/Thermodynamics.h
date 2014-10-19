@@ -136,6 +136,8 @@ namespace Framework
       int       **Terrain;
       //Fire Map. Stores intensity of flame on a scale of 0 - 10.
       float     **FireMap;
+      //Amount of fuel in the cell
+      float     **FuelMap;
 
 #pragma endregion
 
@@ -166,7 +168,7 @@ namespace Framework
       //Calculate velocity vectors
       void ComputeVelocity(const double dt);
       //Update fire
-      void UpdateFire();
+      void UpdateFire(const double dt);
 
 #pragma endregion
 
