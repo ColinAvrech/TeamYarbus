@@ -363,5 +363,291 @@ namespace Framework
 
     return type;
   }
+
+  void Sound::SetFrequency1()
+  {
+    FMOD_RESULT result;
+    bool active;
+
+    result = pFMODAudioSystem->createDSPByType(FMOD_DSP_TYPE_PARAMEQ, &objects_DSP.dsp_sweepA);
+    ErrCheck(result);
+
+    result = objects_DSP.dsp_sweepA->setParameterFloat(FMOD_DSP_PARAMEQ_CENTER, 0.0f);
+    ErrCheck(result);
+
+    result = objects_DSP.dsp_sweepA->setParameterFloat(FMOD_DSP_PARAMEQ_BANDWIDTH, 0.0f);
+    ErrCheck(result);
+
+    result = objects_DSP.dsp_sweepA->setParameterFloat(FMOD_DSP_PARAMEQ_GAIN, 1.0f);
+    ErrCheck(result);
+
+    result = objects_DSP.dsp_sweepA->getActive(&active);
+    ErrCheck(result);
+
+    if (active)
+    {
+      result = pChannel->removeDSP(objects_DSP.dsp_sweepA);
+      ErrCheck(result);
+    }
+    else
+    {
+      result = pChannel->addDSP(0, objects_DSP.dsp_sweepA, 0);
+      ErrCheck(result);
+    }
+  }
+
+  void Sound::SweepEQ1(float center, float bandwidth, float gain, float sweepTime)
+  {
+    FMOD_RESULT result;
+
+    float currentCenter;
+    float currentBandwidth;
+    float currentGain;
+    char buffer[16];
+
+    if (pChannel == NULL)
+      return;
+
+    _centerValA = center;
+    _bandwidthValA = bandwidth;
+    _gainValA = gain;
+
+    result = objects_DSP.dsp_sweepA->getParameterFloat(FMOD_DSP_PARAMEQ_CENTER, &currentCenter, buffer, 16);
+    ErrCheck(result);
+
+    result = objects_DSP.dsp_sweepA->getParameterFloat(FMOD_DSP_PARAMEQ_BANDWIDTH, &currentBandwidth, buffer, 16);
+    ErrCheck(result);
+
+    result = objects_DSP.dsp_sweepA->getParameterFloat(FMOD_DSP_PARAMEQ_GAIN, &currentGain, buffer, 16);
+    ErrCheck(result);
+
+    _sweepSpeedA1 = (center - currentCenter) / sweepTime;
+    _centerValA = _sweepSpeedA1;
+
+    _sweepSpeedA2 = (bandwidth - currentBandwidth) / sweepTime;
+    _bandwidthValA = _sweepSpeedA2;
+
+    _sweepSpeedA3 = (gain - currentGain) / sweepTime;
+    _gainValA = _sweepSpeedA3;
+  }
+
+  void Sound::UpdateFrequency1(const double dt)
+  {
+    FMOD_RESULT result;
+    float currentCenter;
+    float currentBandwidth;
+    float currentGain;
+
+    if (pChannel != NULL && objects_DSP.dsp_sweepA)
+    {
+      char buffer[16];
+
+      result = objects_DSP.dsp_sweepA->getParameterFloat(FMOD_DSP_PARAMEQ_CENTER, &currentCenter, buffer, 16);
+      ErrCheck(result);
+
+      result = objects_DSP.dsp_sweepA->getParameterFloat(FMOD_DSP_PARAMEQ_BANDWIDTH, &currentBandwidth, buffer, 16);
+      ErrCheck(result);
+
+      result = objects_DSP.dsp_sweepA->getParameterFloat(FMOD_DSP_PARAMEQ_GAIN, &currentGain, buffer, 16);
+      ErrCheck(result);
+
+      if (_centerValA != currentCenter)
+      {
+        float newParameter;
+
+        newParameter = (float)(currentCenter + ((double)_sweepSpeedA1 * dt));
+        if (newParameter > _centerValA && _sweepSpeedA1 > 0.0f)
+        {
+          newParameter = _centerValA;
+        }
+        else if (newParameter < _centerValA && _sweepSpeedA1 < 0.0f)
+        {
+          newParameter = _centerValA;
+        }
+
+        result = objects_DSP.dsp_sweepA->setParameterFloat(FMOD_DSP_PARAMEQ_CENTER, newParameter);
+        ErrCheck(result);
+      }
+
+      if (_bandwidthValA != currentBandwidth)
+      {
+        float newParameter;
+
+        newParameter = (float)(currentBandwidth + ((double)_sweepSpeedA2 * dt));
+        if (newParameter > _bandwidthValA && _sweepSpeedA2 > 0.0f)
+        {
+          newParameter = _bandwidthValA;
+        }
+        else if (newParameter < _bandwidthValA && _sweepSpeedA2 < 0.0f)
+        {
+          newParameter = _bandwidthValA;
+        }
+
+        result = objects_DSP.dsp_sweepA->setParameterFloat(FMOD_DSP_PARAMEQ_BANDWIDTH, newParameter);
+        ErrCheck(result);
+      }
+
+      if (_gainValA != currentGain)
+      {
+        float newParameter;
+
+        newParameter = (float)(currentGain + ((double)_sweepSpeedA3 * dt));
+        if (newParameter > _gainValA && _sweepSpeedA3 > 0.0f)
+        {
+          newParameter = _gainValA;
+        }
+        else if (newParameter < _gainValA && _sweepSpeedA3 < 0.0f)
+        {
+          newParameter = _gainValA;
+        }
+
+        result = objects_DSP.dsp_sweepA->setParameterFloat(FMOD_DSP_PARAMEQ_GAIN, newParameter);
+        ErrCheck(result);
+      }
+    }
+  }
+
+  void Sound::SetFrequency2()
+  {
+    FMOD_RESULT result;
+    bool active;
+
+    result = pFMODAudioSystem->createDSPByType(FMOD_DSP_TYPE_PARAMEQ, &objects_DSP.dsp_sweepB);
+    ErrCheck(result);
+
+    result = objects_DSP.dsp_sweepB->setParameterFloat(FMOD_DSP_PARAMEQ_CENTER, 0.0f);
+    ErrCheck(result);
+
+    result = objects_DSP.dsp_sweepB->setParameterFloat(FMOD_DSP_PARAMEQ_BANDWIDTH, 0.0f);
+    ErrCheck(result);
+
+    result = objects_DSP.dsp_sweepB->setParameterFloat(FMOD_DSP_PARAMEQ_GAIN, 1.0f);
+    ErrCheck(result);
+
+    result = objects_DSP.dsp_sweepB->getActive(&active);
+    ErrCheck(result);
+
+    if (active)
+    {
+      result = pChannel->removeDSP(objects_DSP.dsp_sweepB);
+      ErrCheck(result);
+    }
+    else
+    {
+      result = pChannel->addDSP(0, objects_DSP.dsp_sweepB, 0);
+      ErrCheck(result);
+    }
+  }
+
+  void Sound::SweepEQ2(float center, float bandwidth, float gain, float sweepTime)
+  {
+    FMOD_RESULT result;
+
+    float currentCenter;
+    float currentBandwidth;
+    float currentGain;
+    char buffer[16];
+
+    if (pChannel == NULL)
+      return;
+
+    _centerValB = center;
+    _bandwidthValB = bandwidth;
+    _gainValB = gain;
+
+    result = objects_DSP.dsp_sweepB->getParameterFloat(FMOD_DSP_PARAMEQ_CENTER, &currentCenter, buffer, 16);
+    ErrCheck(result);
+
+    result = objects_DSP.dsp_sweepB->getParameterFloat(FMOD_DSP_PARAMEQ_BANDWIDTH, &currentBandwidth, buffer, 16);
+    ErrCheck(result);
+
+    result = objects_DSP.dsp_sweepB->getParameterFloat(FMOD_DSP_PARAMEQ_GAIN, &currentGain, buffer, 16);
+    ErrCheck(result);
+
+    _sweepSpeedB1 = (center - currentCenter) / sweepTime;
+    _centerValB = _sweepSpeedB1;
+
+    _sweepSpeedB2 = (bandwidth - currentBandwidth) / sweepTime;
+    _bandwidthValB = _sweepSpeedB2;
+
+    _sweepSpeedB3 = (gain - currentGain) / sweepTime;
+    _gainValB = _sweepSpeedB3;
+  }  
+
+  void Sound::UpdateFrequency2(const double dt)
+  {
+    FMOD_RESULT result;
+    float currentCenter;
+    float currentBandwidth;
+    float currentGain;
+
+    if (pChannel != NULL && objects_DSP.dsp_sweepB)
+    {
+      char buffer[16];
+
+      result = objects_DSP.dsp_sweepB->getParameterFloat(FMOD_DSP_PARAMEQ_CENTER, &currentCenter, buffer, 16);
+      ErrCheck(result);
+
+      result = objects_DSP.dsp_sweepB->getParameterFloat(FMOD_DSP_PARAMEQ_BANDWIDTH, &currentBandwidth, buffer, 16);
+      ErrCheck(result);
+
+      result = objects_DSP.dsp_sweepB->getParameterFloat(FMOD_DSP_PARAMEQ_GAIN, &currentGain, buffer, 16);
+      ErrCheck(result);
+
+      if (_centerValB != currentCenter)
+      {
+        float newParameter;
+
+        newParameter = (float)(currentCenter + ((double)_sweepSpeedB1 * dt));
+        if (newParameter > _centerValB && _sweepSpeedB1 > 0.0f)
+        {
+          newParameter = _centerValB;
+        }
+        else if (newParameter < _centerValB && _sweepSpeedB1 < 0.0f)
+        {
+          newParameter = _centerValB;
+        }
+
+        result = objects_DSP.dsp_sweepB->setParameterFloat(FMOD_DSP_PARAMEQ_CENTER, newParameter);
+        ErrCheck(result);
+      }
+
+      if (_bandwidthValB != currentBandwidth)
+      {
+        float newParameter;
+
+        newParameter = (float)(currentBandwidth + ((double)_sweepSpeedB2 * dt));
+        if (newParameter > _bandwidthValB && _sweepSpeedB2 > 0.0f)
+        {
+          newParameter = _bandwidthValB;
+        }
+        else if (newParameter < _bandwidthValB && _sweepSpeedB2 < 0.0f)
+        {
+          newParameter = _bandwidthValB;
+        }
+
+        result = objects_DSP.dsp_sweepB->setParameterFloat(FMOD_DSP_PARAMEQ_BANDWIDTH, newParameter);
+        ErrCheck(result);
+      }
+
+      if (_gainValB != currentGain)
+      {
+        float newParameter;
+
+        newParameter = (float)(currentGain + ((double)_sweepSpeedB3 * dt));
+        if (newParameter > _gainValB && _sweepSpeedB3 > 0.0f)
+        {
+          newParameter = _gainValB;
+        }
+        else if (newParameter < _gainValB && _sweepSpeedB3 < 0.0f)
+        {
+          newParameter = _gainValB;
+        }
+
+        result = objects_DSP.dsp_sweepB->setParameterFloat(FMOD_DSP_PARAMEQ_GAIN, newParameter);
+        ErrCheck(result);
+      }
+    }
+  }
 }
 //-----------------------------------------------------------------------------

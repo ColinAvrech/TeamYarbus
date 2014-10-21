@@ -483,6 +483,9 @@ namespace Framework
     }
     
     _paused = false; // Set paused state to false
+
+    SetFrequency1();
+    SetFrequency2();
   }
 
   void Sound::VolumeFade(float volume, float fadeTime)
@@ -621,12 +624,23 @@ namespace Framework
     }    
 
     UpdateVolumeFade(dt);
+    UpdateFrequency1(dt);
+    UpdateFrequency2(dt);
     SetVolume(GetVolume());
 
     if (this->GetTime() > 5000 && this->GetTime() < 5500 && test == true)
     {
       test = false;
       std::cout << Console::cyan << "FIVE SECONDS" << std::endl;
+      this->SweepEQ1(40000.0f, 1.5f, -2.0f, 10.0f);
+      this->SweepEQ2(14000.0f, 5.0f, -2.0f, 10.0f);
+    }
+    if (this->GetTime() > 10000 && this->GetTime() < 10500 && test2 == true)
+    {
+      test2 = false;
+      std::cout << Console::red<< "TEN SECONDS" << std::endl;
+      this->SweepEQ1(0.0f, 0.0f, 1.0f, 4.0f);
+      this->SweepEQ2(0.0f, 0.0f, 1.0f, 4.0f);
     }
   }
 

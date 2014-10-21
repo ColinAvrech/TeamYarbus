@@ -80,6 +80,8 @@ namespace Framework
         FMOD::DSP                     *dsp_hpf = 0;
         FMOD::DSP                     *dsp_reverb = 0;
         FMOD::DSP                     *dsp_noise = 0;
+        FMOD::DSP                     *dsp_sweepA = 0;
+        FMOD::DSP                     *dsp_sweepB = 0;
       }objects_DSP;
 
       struct ReverbPreset
@@ -121,9 +123,18 @@ namespace Framework
 
       // DSP
       void            LowPassFilter();
+      void            SetLPF(float cutoff = 5000.0f, float resonance = 1.0f);
       void            HighPassFilter();
+      void            SetHPF(float cutoff = 5000.0f, float resonance = 1.0f);
       void            GenerateNoise();
       void            Reverb();
+      void            AddReverbPreset(Sound::ReverbPresetName preset);
+      void            SetFrequency1();
+      void            SweepEQ1(float center, float bandwidth, float gain, float sweepTime);
+      void            UpdateFrequency1(const double dt);
+      void            SetFrequency2();
+      void            SweepEQ2(float center, float bandwidth, float gain, float sweepTime);
+      void            UpdateFrequency2(const double dt);
 
       // Setters
       ReverbPreset    SetReverbPreset(ReverbPresetName preset);
@@ -137,9 +148,6 @@ namespace Framework
                                     const float endPos = 0, 
                                     const int index = 0);
       void            SetType(unsigned type, unsigned index);
-      void            SetLPF(float cutoff = 5000.0f, float resonance = 1.0f);
-      void            SetHPF(float cutoff = 5000.0f, float resonance = 1.0f);
-      void            AddReverbPreset(Sound::ReverbPresetName preset);
 
       // Getters
       float           GetMasterVolume(void);
@@ -214,8 +222,22 @@ namespace Framework
       float                         _pitch;
       float                         _volValue;
       float                         _fadeValue;
+      float                         _sweepValA;
+      float                         _sweepValB;
+      float                         _centerValA;
+      float                         _centerValB;
+      float                         _bandwidthValA;
+      float                         _bandwidthValB;
+      float                         _gainValA;
+      float                         _gainValB;
+      float                         _sweepSpeedA1;
+      float                         _sweepSpeedA2;
+      float                         _sweepSpeedA3;
+      float                         _sweepSpeedB1;
+      float                         _sweepSpeedB2;
+      float                         _sweepSpeedB3;
       bool                          test = true;
-      bool                          test2 = false;
+      bool                          test2 = true;
       std::vector<FMOD::Sound*>     sound_queue_;
       FMOD::Channel                 *pChannel;
       FMOD::ChannelGroup            *pChannelGroup;
