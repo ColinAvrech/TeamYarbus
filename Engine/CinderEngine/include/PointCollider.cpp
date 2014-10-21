@@ -1,19 +1,39 @@
 /******************************************************************************/
 /*!
-\file   PointCollision.cpp
+\file   PointCollider.cpp
 \author Anna Pearson
 \par    Course: GAM200
 \par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
 */
 /******************************************************************************/
-#include "ShapeCollider.h"
-#include "CollisionRepeats.h"
-#include "CollisionEvent.h"
+#include "ComponentInclude.h"
+#include "IncludeForAllCollision.h"
 #include "EventSystem.h"
-#include "ObjectSystem.h"
+#include "CollisionRepeats.h"
+#include "Resolution.h"
 
 namespace Framework
 {
+	//serialize, initialize, update
+	void PointCollider::Serialize()
+	{
+		return;
+	}
+
+	void PointCollider::Initialize()
+	{
+		std::string ColEvent = std::string("UpdateEvent");
+
+		CollisionEvent* colevent = (CollisionEvent*)EVENTSYSTEM->GetEvent(ColEvent);
+		if (colevent == nullptr)
+			return;
+	}
+	void PointCollider::Update()
+	{
+		
+	}
+
+	//collision
 	void PointCollider::DetectCircle(CircleCollider* c)
 	{
 		glm::vec2 ppos = getPosition();

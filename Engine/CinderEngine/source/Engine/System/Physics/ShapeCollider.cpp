@@ -14,29 +14,5 @@
 #pragma once
 namespace Framework
 {
-	void LineCollider::Initialize()
-	{
-		std::string ColEvent = std::string("UpdateEvent");
-
-		CollisionEvent* colevent = (CollisionEvent*)EVENTSYSTEM->GetEvent(ColEvent);
-		if (colevent == nullptr)
-		return;
-
-		// FILL OUT EVENT
-		//EVENTSYSTEM->Connect(gameObject, "UpdateEvent", Events::LOGICUPDATE);
-	}
-
-	void CircleCollider::Initialize()
-	{
-		std::string ColEvent = std::string("UpdateEvent");
-
-		CollisionEvent* colevent = (CollisionEvent*)EVENTSYSTEM->GetEvent(ColEvent);
-		if (colevent == nullptr)
-			return;
-	}
-
-  DefineComponentName(ShapeCollider);
-	DefineComponentName(CircleCollider);
-	DefineComponentName(PointCollider);
-	DefineComponentName(LineCollider);
+    DefineComponentName(ShapeCollider);
 }

@@ -11,6 +11,7 @@ deleted.
 /******************************************************************************/
 
 #include "ObjectSystem.h"
+#include "IncludeForAllCollision.h"
 
 namespace Framework
 {
@@ -63,7 +64,7 @@ namespace Framework
     RegisterComponent(Sprite);
     RegisterComponent (Camera);
     RegisterComponent (ShapeCollider);
-    RegisterComponent(CircleCollider);
+  //RegisterComponent(CircleCollider);
   //RegisterComponent(PointCollider);
   //RegisterComponent(LineCollider);
   //RegisterComponent(RigidBody);

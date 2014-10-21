@@ -9,7 +9,7 @@
 /******************************************************************************/
 #pragma once
 
-#include "ShapeCollider.h"
+#include "IncludeForAllCollision.h"
 
 namespace Framework
 {
