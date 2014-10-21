@@ -112,15 +112,15 @@ namespace Framework
       ErrorIf(value_.VecN_->size() < 3, "Wrong data type");
       store->x = (*value_.VecN_)[0];
       store->y = (*value_.VecN_)[1];
-      store->y = (*value_.VecN_)[2];
+      store->z = (*value_.VecN_)[2];
     }
     void DataNode::GetValue(glm::vec4* store)
     {
       ErrorIf(value_.VecN_->size() < 4, "Wrong data type");
       store->x = (*value_.VecN_)[0];
       store->y = (*value_.VecN_)[1];
-      store->y = (*value_.VecN_)[2];
-      store->z = (*value_.VecN_)[3];
+      store->z = (*value_.VecN_)[2];
+      store->w = (*value_.VecN_)[3];
     }
     /////////////////////////////////////////////////////////////////
   }
