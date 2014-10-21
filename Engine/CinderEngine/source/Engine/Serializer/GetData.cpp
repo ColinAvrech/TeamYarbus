@@ -80,16 +80,5 @@ namespace Framework
         store = new std::vector<float>(*(found->value_.VecN_));
       }
     } //function GetData
-
-	DataNode* DataNode::FindElement(DataNode* branch, const char* key)
-	{
-		auto it = branch;
-		std::string name(key);
-		while (it && it->objectName.compare(name) != 0)
-		{
-			it = it->next;
-		}
-		return it;
-	}
   } //Serializer
 } //Framework
