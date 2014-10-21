@@ -15,16 +15,23 @@ namespace Framework
 {
 	DefineComponentName(Template_Component);
 
-	Template_Component::Template_Component(GameObject* ob)
-	 : GameComponent(obj)
-	 {
-	 
+	Template_Component::Template_Component()
+	 {	 
 	 }
 	 
 	Template_Component::~Template_Component()
 	{
 	
 	}
-
-
+	
+	
+	void Template_Component::Initialize ()
+	{
+	
+	}
+	
+	void Template_Component::Serialize (Serializer::DataNode* data)
+	{
+	
+	}
 }

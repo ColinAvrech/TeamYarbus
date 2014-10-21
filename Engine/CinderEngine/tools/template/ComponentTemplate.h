@@ -13,11 +13,15 @@
 
 namespace Framework
 {
-	class Template_Component : public GameComponent
+	class Template_Component : public Component
 	{
 		public:
-			Template_Component(GameObject* ob);
+			Template_Component();
 			~Template_Component();
+			
+				
+			virtual void Initialize ();
+			virtual void Serialize (Serializer::DataNode* data);
 
 
 

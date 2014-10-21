@@ -15,10 +15,6 @@ namespace Framework
   DefineComponentName (Transform);
   // Constructor
 
-  Transform::Transform (GameObject* go)
-  {
-    gameObject = go;
-  }
 
   void Transform::Load_Identity ()
   {

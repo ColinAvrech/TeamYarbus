@@ -29,7 +29,6 @@ namespace Framework
   {
   public:
     Transform () {}
-    Transform (GameObject* go);
     ~Transform ();
 
     virtual void Initialize ();
