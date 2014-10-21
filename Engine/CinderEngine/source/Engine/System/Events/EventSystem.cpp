@@ -15,11 +15,6 @@ namespace Framework
   //! Global pointer to  the Event System
   EventSystem* EVENTSYSTEM = NULL;
 
-  std::string CollisionEventName (unsigned GameObjectID)
-  {
-    return "COLLISION";
-  }
-
   EventSystem::EventSystem()
   {
     ErrorIf(EVENTSYSTEM != NULL, "EVENTSYSTEM ALREADY CREATED");

@@ -26,7 +26,6 @@
 
 namespace Framework
 {
-
   std::string CollisionEventName (unsigned GameObjectID);
 
   /*********************************************/
