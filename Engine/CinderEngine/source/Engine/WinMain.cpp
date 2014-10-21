@@ -103,7 +103,7 @@ int main(void)
   engine->AddSystem(audio);
   engine->AddSystem(events);
   engine->AddSystem(zilch);
-  //engine->AddSystem(thermo);
+  engine->AddSystem(thermo);
   engine->AddSystem(objsys);
 
   Resources resourceManager;

@@ -317,7 +317,7 @@ namespace Framework
           float OxyAmount = 0.f;
           for (int y = j - 1; y <= j + 1; ++y)
           {
-            for (int x = i - 1; x <= i + 1; ++i)
+            for (int x = i - 1; x <= i + 1; ++x)
             {
               if (x != i && y != j && Terrain[x][y] == 0)
               {
