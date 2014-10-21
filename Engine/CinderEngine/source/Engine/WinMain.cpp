@@ -112,7 +112,7 @@ int main(void)
   //! Initialize all added Systems. DON'T INIT YOUR OWN
   engine->Initialize();
 
-  resourceManager.Get_Sound("gametheme.mp3")->Play();
+  resourceManager.Get_Sound("music.mp3")->Play();
   
   audio->LoadMicData();
 

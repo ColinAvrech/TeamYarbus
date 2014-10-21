@@ -1,4 +1,3 @@
 music.mp3
 music2.mp3
-gametheme.mp3
 sfx.wav
