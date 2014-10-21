@@ -23,7 +23,7 @@ namespace Framework
     Camera () : up (0, 1, 0) {}
     Camera (GameObject* go);
 
-    virtual void Initalize ();
+    virtual void Initialize ();
     virtual void Serialize (Serializer::DataNode* data);
 
     void MouseUpdate (const glm::vec2& newPosition);

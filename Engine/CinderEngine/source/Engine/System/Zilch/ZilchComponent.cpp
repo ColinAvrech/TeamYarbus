@@ -15,7 +15,7 @@ namespace Framework
     }
 
     //INITIALIZE
-    bool ZilchComponent::Initialize()
+    void ZilchComponent::Initialize()
     {
       //Get pointer to appropriate library
       //library = SCRIPTSYSTEM->GetZilchLib(ZilchClass.c_str());
@@ -37,8 +37,6 @@ namespace Framework
 
       // We can also setup the console so that any 'Read' functions will attempt to read from stdin
       Zilch::Console::SetReadTextCallback(Zilch::DefaultReadText, nullptr);
-
-      return true;
     }
    
   }

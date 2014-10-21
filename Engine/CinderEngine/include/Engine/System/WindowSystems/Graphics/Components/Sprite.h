@@ -18,7 +18,7 @@ namespace Framework
     Sprite (GameObject* go);
     ~Sprite ();
 
-    virtual void Initalize ();
+    virtual void Initialize ();
     virtual void Serialize (Serializer::DataNode* data);
 
     void Create_Sprite (Shader* _shader, Texture* _texture = NULL);

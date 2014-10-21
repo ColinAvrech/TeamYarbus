@@ -25,7 +25,7 @@ namespace Framework
     gameObject = go;
   }
 
-  void Camera::Initalize ()
+  void Camera::Initialize ()
   {
     //viewDirection = glm::vec3 (0.0f, 0.0f, -1.0f);
     //aspect = 1920.f / 1280;

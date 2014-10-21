@@ -25,7 +25,7 @@ namespace Framework
   public:
     Scene ()
     {
-      camera.Initalize ();
+      camera.Initialize ();
     }
     virtual ~Scene () {}
 

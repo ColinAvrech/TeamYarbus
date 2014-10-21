@@ -20,6 +20,7 @@ relaying information)
 
 */
 #pragma once
+#include "Common.h"
 #include "Serializer/DataNode.h"
 
 #define DefineComponentName(Component) const std::string Component::Name("Component")
@@ -36,10 +37,16 @@ namespace Framework
   public:
 
     /*!Telegraph that the component is active*/
-    virtual void Initalize(){};
+    virtual void Initialize ()
+    {
+      ErrorIf (true, "Initialize Component Not Overriden");
+    }
 
     /*!TODO IMPLIMENT SERIALIZATION!*/
-    virtual void Serialize (Serializer::DataNode* data){};
+    virtual void Serialize (Serializer::DataNode* data)
+    {
+      ErrorIf (true, "Serialize Component Not Overriden");
+    }
 
     //Variables that all components have
     GameObject* gameObject;

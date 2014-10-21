@@ -34,8 +34,6 @@ namespace Framework
 
   bool ObjectSystem::Initialize ()
   {
-    LoadLevel ("Level.data");
-
     return true;
   }
 
@@ -138,7 +136,7 @@ namespace Framework
           else if (ct->objectName == "CircleCollider")
             newobj->CircleCollider = (CircleCollider*) (newcomp);
           newcomp->Serialize(ct->branch);
-          newcomp->Initalize ();
+          newcomp->Initialize ();
           ct = ct->next;
         }
         GameObjects[newobj->GameObjectID] = newobj;
@@ -159,8 +157,8 @@ namespace Framework
     // Need Component List
     for each (auto i in GameObjects)
     {
-      i.second->Transform->Initalize ();
-      i.second->Sprite->Initalize ();
+      i.second->Transform->Initialize ();
+      i.second->Sprite->Initialize ();
     }
   }
 

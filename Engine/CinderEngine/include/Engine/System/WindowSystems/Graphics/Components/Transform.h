@@ -32,7 +32,7 @@ namespace Framework
     Transform (GameObject* go);
     ~Transform ();
 
-    virtual void Initalize ();
+    virtual void Initialize ();
     virtual void Serialize (Serializer::DataNode* data);
 
     //////////////////////////////////////////////////////////////////////////

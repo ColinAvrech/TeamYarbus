@@ -29,7 +29,7 @@ namespace Framework
 
     //virtual member functions===================
     /*!Telegraph that the component is active*/
-    virtual void Initalize();
+    virtual void Initialize();
 
     /*!TODO IMPLIMENT SERIALIZATION!*/
     virtual void Serialize(Serializer::DataNode* data);

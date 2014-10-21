@@ -33,7 +33,7 @@ namespace Framework
   }
 
 
-  void Transform::Initalize ()
+  void Transform::Initialize ()
   {
     modelMatrix.push_back (glm::mat4 (1));
     modelViewProjectionmatrix.push_back (glm::mat4 (1));

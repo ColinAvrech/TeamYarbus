@@ -39,7 +39,7 @@ namespace Framework
       void Update(const double dt);
 
       //!Initialize the system.
-      virtual bool Initialize();
+      virtual void Initialize();
 
       /*!TODO IMPLIMENT SERIALIZATION!*/
       virtual void Serialize(Serializer::DataNode* componentData){};

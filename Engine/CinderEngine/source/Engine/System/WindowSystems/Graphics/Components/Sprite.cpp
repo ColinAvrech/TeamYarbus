@@ -37,7 +37,7 @@ namespace Framework
   //  Specify_Attributes ();
   //}
 
-  void Sprite::Initalize ()
+  void Sprite::Initialize ()
   {
     WINDOWSYSTEM->spriteList.push_back (this);
     Specify_Attributes ();
