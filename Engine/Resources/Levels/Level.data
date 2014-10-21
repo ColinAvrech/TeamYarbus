@@ -52,18 +52,18 @@ Level =
 	  },
     Transform = 
 	  {
-		  Vec3 Translation = [0, 0, 0],
+		  Vec3 Translation = [0, 0, 40],
 		  Vec3 Scale = [1, 1, 1],
 		  Quat Rotation = [0, 0, 0, 1],
 	  },
     Camera = 
 		{
       bool main = true,
-      Vec3 ViewDirection = [0, 0, -1],
+      Vec3 Facing = [0, 0, -1],
 			float FieldOfView = 120,
 			float NearPlane = 0.1,
 			float FarPlane = 10,
-			float Aspect = 1.5,
+			float Size = 1.5,
 		},
   },
 	Cog = 
@@ -93,7 +93,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 4,
+			uint Id = 5,
 		},
 		Named = 
 		{

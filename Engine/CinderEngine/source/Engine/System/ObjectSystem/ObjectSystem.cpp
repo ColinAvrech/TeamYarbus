@@ -130,16 +130,20 @@ namespace Framework
         while (ct)
         {
           Component* newcomp = newobj->AddComponent(ct->objectName);
-          newcomp->gameObject = newobj;
-          if (ct->objectName == "Transform")
-            newobj->Transform = (Transform*) (newcomp);
-          else if (ct->objectName == "Sprite")
-            newobj->Sprite = (Sprite*) (newcomp);
-          else if (ct->objectName == "CircleCollider")
-            newobj->CircleCollider = (CircleCollider*) (newcomp);
-          newcomp->Serialize(ct->branch);
-          newcomp->Initalize ();
-          ct = ct->next;
+		  if (newcomp)
+		  {
+			  newcomp->gameObject = newobj;
+			  if (ct->objectName == "Transform")
+				  newobj->Transform = (Transform*)(newcomp);
+			  else if (ct->objectName == "Sprite")
+				  newobj->Sprite = (Sprite*)(newcomp);
+			  else if (ct->objectName == "CircleCollider")
+				  newobj->CircleCollider = (CircleCollider*)(newcomp);
+			  newcomp->Serialize(ct->branch);
+			  newcomp->Initalize();
+		  }
+			  ct = ct->next;
+		  
         }
         GameObjects[newobj->GameObjectID] = newobj;
       }

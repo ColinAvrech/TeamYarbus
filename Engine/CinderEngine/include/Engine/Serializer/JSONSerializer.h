@@ -64,13 +64,13 @@ namespace Framework
 
       //Find value from tree===========================================================
       //Overloaded functions
-      void GetData(unsigned int* store, std::initializer_list<const char*> keys);
-      void GetData(int* store, std::initializer_list<const char*> keys);
-      void GetData(long* store, std::initializer_list<const char*> keys);
-      void GetData(float* store, std::initializer_list<const char*> keys);
-      void GetData(double* store, std::initializer_list<const char*> keys);
-      void GetData(bool* store, std::initializer_list<const char*> keys);
-      void GetData(std::string* store, std::initializer_list<const char*> keys);
+      void GetData(unsigned int* store,       std::initializer_list<const char*> keys);
+      void GetData(int* store,                std::initializer_list<const char*> keys);
+      void GetData(long* store,               std::initializer_list<const char*> keys);
+      void GetData(float* store,              std::initializer_list<const char*> keys);
+      void GetData(double* store,             std::initializer_list<const char*> keys);
+      void GetData(bool* store,               std::initializer_list<const char*> keys);
+      void GetData(std::string* store,        std::initializer_list<const char*> keys);
       void GetData(std::vector<float>* store, std::initializer_list<const char*> keys);
       //===============================================================================
 
@@ -134,7 +134,6 @@ namespace Framework
 
       //find item in current list (list, string)
       //Run this as many times as necessary
-      DataNode* FindElement(DataNode* branch, const char* name);
       //find stem of a list
       DataNode* FindStem(DataNode* current);
 

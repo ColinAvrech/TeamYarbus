@@ -57,24 +57,35 @@ namespace Framework
 
     // Main?
     mainCamera = data->value_.Bool_;
-    data = data->next;
+    //data = data->next;
+	//test
     // View Direction
-    for (unsigned i = 0; i < data->value_.VecN_->size (); ++i)
-    {
-      viewDirection [i] = data->value_.VecN_->at (i);
-    }
-    data = data->next;
+    //for (unsigned i = 0; i < data->value_.VecN_->size (); ++i)
+    //{
+    //  viewDirection [i] = data->value_.VecN_->at (i);
+    //}
+	Serializer::DataNode* value = data->FindElement(data, "Facing");
+	value->GetValue(&viewDirection);
+
+    //data = data->next;
     // FOV
-    fov = data->value_.Float_;
-    data = data->next;
+	value = data->FindElement(data, "FieldOfView");
+	value->GetValue(&fov);
+    //data = data->next;
     // Near Plane
-    nearPlane = data->value_.Float_;
-    data = data->next;
+	value = data->FindElement(data, "NearPlane");
+	value->GetValue(&nearPlane);
+    //nearPlane = data->value_.Float_;
+    //data = data->next;
     // Far Plane
-    farPlane = data->value_.Float_;
-    data = data->next;
+	value = data->FindElement(data, "FarPlane");
+	value->GetValue(&farPlane);
+    //farPlane = data->value_.Float_;
+    //data = data->next;
     // Aspect Ratio
-    aspect = data->value_.Float_;
+	value = data->FindElement(data, "Size");
+	value->GetValue(&aspect);
+    //aspect = data->value_.Float_;
   }
 
 
