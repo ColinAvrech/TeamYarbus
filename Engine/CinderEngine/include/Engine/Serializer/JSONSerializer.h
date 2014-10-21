@@ -22,7 +22,7 @@ namespace Framework
 {
   namespace Serializer
   {
-    
+
 
     //////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////
@@ -39,7 +39,7 @@ namespace Framework
       // Public Variables
       -----------------------------------------------------------------------*/
 #pragma region Public Variables
-      
+
 #pragma endregion
 
       /*---------------------------------------------------------------------*/
@@ -79,15 +79,15 @@ namespace Framework
 
       //Print archive for debugging
       void DumpArchive(DataNode* stem, int indentation = 0); //DONE
-      
+
       //Get object name
-      
+
       //is the file open
       bool is_open() { return dataFile.is_open(); }
       //Skip data
-      
+
 #pragma endregion
-      
+
       //------------------------------------------------
       //DESTRUCTOR
       //------------------------------------------------
@@ -111,7 +111,7 @@ namespace Framework
       DynamicElement* trunk;
       DataNode* CurrentNode;
       DataNode* CurrentStem;
-      
+
 
 #pragma endregion
 
@@ -129,12 +129,11 @@ namespace Framework
       //implemented at the end of this header
       template<typename T>
       DataNode* AddNode(DataNode* at, TYPE type, const char* name, T value);
-      
+
       //walk current list
 
       //find item in current list (list, string)
       //Run this as many times as necessary
-      DataNode* FindElement(DataNode* branch, const char* name);
       //find stem of a list
       DataNode* FindStem(DataNode* current);
 
@@ -145,7 +144,7 @@ namespace Framework
       std::vector<std::string> Tokenize();
       void indent(int indentation);
 
-      
+
 #pragma endregion
     }; //class JSONSerializer
 
@@ -155,7 +154,7 @@ namespace Framework
     {
       at = new DataNode(type, name);
       at->SetValue(value);
-      return at;     
+      return at;
     }
 
 

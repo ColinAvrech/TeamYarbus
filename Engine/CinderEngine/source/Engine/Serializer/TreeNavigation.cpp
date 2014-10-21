@@ -15,17 +15,6 @@ namespace Framework
 {
   namespace Serializer
   {
-    DataNode* ZeroSerializer::FindElement(DataNode* branch, const char* key)
-    {
-      auto it = branch;
-      std::string name(key);
-      while (it && it->objectName.compare(name) != 0)
-      {
-        it = it->next;
-      }
-      return it;
-    }
-
     DataNode* ZeroSerializer::FindStem(DataNode* current)
     {
       auto it = current;
@@ -43,7 +32,7 @@ namespace Framework
       while (it)
       {
         indent(indentation);
-        
+
         if (it->dataType == TYPE_OBJECT)
         {
           std::cout << it->objectName << " = " << std::endl;
@@ -66,7 +55,7 @@ namespace Framework
           else if (it->dataType == TYPE_BOOL)
           {
             std::cout << it->typeString << " " << it->objectName << " = ";
-            if(it->value_.Bool_)
+            if (it->value_.Bool_)
               std::cout << "true" << "," << std::endl;
             else
               std::cout << "false" << "," << std::endl;
@@ -76,7 +65,7 @@ namespace Framework
           else if (it->dataType == TYPE_VEC2)
           {
             std::cout << it->typeString << " " << it->objectName << " = [";
-            for(int i = 0; i < 2; ++i)
+            for (int i = 0; i < 2; ++i)
             {
               std::cout << (*it->value_.VecN_)[i];
               if (i < 1)
@@ -101,7 +90,7 @@ namespace Framework
             for (int i = 0; i < 4; ++i)
             {
               std::cout << (*it->value_.VecN_)[i];
-              if(i < 3)
+              if (i < 3)
                 std::cout << ", ";
             }
             std::cout << "]," << std::endl;
@@ -135,16 +124,16 @@ namespace Framework
     DataNode* ZeroSerializer::GetValue(std::initializer_list<const char*> keys)
     {
       DataNode* walk = trunk;
-      for (auto it = keys.begin(); it != keys.end(); ++it)
+      /*for (auto it = keys.begin(); it != keys.end(); ++it)
       {
-        if (walk)
-          walk = FindElement(walk, *it);
-        else
-        {
-          std::cout << "Branch not found";
-          return NULL;
-        }
+      if (walk)
+      walk = FindElement(walk, *it);
+      else
+      {
+      std::cout << "Branch not found";
+      return NULL;
       }
+      }*/
       if (walk)
         return walk;
       else

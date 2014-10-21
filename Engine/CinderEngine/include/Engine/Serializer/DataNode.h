@@ -86,8 +86,10 @@ namespace Framework
       void GetValue(glm::vec2* store);
       void GetValue(glm::vec3* store);
       void GetValue(glm::vec4* store);
+      //Find specific object
+      DynamicElement* FindElement(DynamicElement* branch, const char* name);
     private:
-      
+
     }DataNode;
   } //namespace serializer
 } //namespace framework
