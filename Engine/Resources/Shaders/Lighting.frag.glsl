@@ -10,18 +10,18 @@ out vec4 outColor;
 // TEXTURE TO BE MAPPED ON QUAD
 uniform sampler2D image;
 
-uniform vec3 lightPos;
+uniform vec3 lightPos = vec3 (0, -0.3, 0);
 
 // MATERIAL PROPERTIES OF SELF
-uniform vec3 mambient;
-uniform vec3 mdiffuse;
-uniform vec3 mspecular;
-uniform float shininess;
+uniform vec3 mambient = vec3 (0.2, 0.2, 0.2);
+uniform vec3 mdiffuse = vec3 (0.6, 0.6, 0.6);
+uniform vec3 mspecular = vec3 (1, 1, 1);
+uniform float shininess = 40;
 
 // MATERIAL PROPERTIES OF LIGHT
-uniform vec3 lambient;
-uniform vec3 ldiffuse;
-uniform vec3 lspecular;
+uniform vec3 lambient = vec3 (0.2, 0.2, 0.2);
+uniform vec3 ldiffuse = vec3 (0.6, 0.6, 0.6);
+uniform vec3 lspecular = vec3 (1, 1, 1);
 
 
 void main()

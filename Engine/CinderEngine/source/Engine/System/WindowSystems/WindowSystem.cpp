@@ -32,6 +32,7 @@ namespace Framework
   static VBO* vbo;
   static EBO* ebo;
   static DebugRenderer dr;
+  static float shininess = 200;
 
   namespace WindowNameSpace
   {
@@ -302,20 +303,19 @@ namespace Framework
 
   void WindowSystem::GraphicsUpdate (const double dt)
   {
-    glClearColor (0, 0, 0, 0);
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    
-    glDisable (GL_DEPTH_TEST);
     glEnable (GL_BLEND);
     glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     vao->bindVAO ();
+    std::cout << shininess << std::endl;
+
     for (auto i : spriteList)
     {
       i->gameObject->Transform->UpdateMatrices ();
       i->Draw ();
     }
     vao->unbindVAO ();
-
+    
 
     //////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////
@@ -327,12 +327,12 @@ namespace Framework
     // Can draw lines
     // Can draw polygon with n number of shapes. max is 140
     //////////////////////////////////////////////////////////////////////////
-    CircleCollider c (NULL);
-    dr.Draw (&c);
-    dr.Draw ((LineCollider*)nullptr);
-    dr.Draw (nullptr, 3);
-    dr.Draw (nullptr, 5);
-    dr.Draw ((PointCollider*)nullptr);
+    //CircleCollider c (NULL);
+    //dr.Draw (&c);
+    //dr.Draw ((LineCollider*)nullptr);
+    //dr.Draw (nullptr, 3);
+    //dr.Draw (nullptr, 5);
+    //dr.Draw ((PointCollider*)nullptr);
 
     //////////////////////////////////////////////////////////////////////////
   }

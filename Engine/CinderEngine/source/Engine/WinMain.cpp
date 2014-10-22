@@ -99,6 +99,7 @@ int main(void)
   //GameObject* testDynamicCircle = new GameObject(2);
 
   engine->AddSystem (phys);
+  engine->AddSystem (sceneManager);
   engine->AddSystem (windows);
   engine->AddSystem(audio);
   engine->AddSystem(events);

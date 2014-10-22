@@ -48,11 +48,12 @@ namespace Framework
     float colorChangeLength;
     void ResetPosition ();
     void ResetVelocity ();
+    void Interpolate_Colors ();
     //////////////////////////////////////////////////////////////////////////
 
 
   private:
-    GLuint SSBOPos, SSBOVel;
+    GLuint vao, SSBOPos, SSBOVel;
     Shader* shader;
     ComputeShader* computeshader;
     Texture* texture;

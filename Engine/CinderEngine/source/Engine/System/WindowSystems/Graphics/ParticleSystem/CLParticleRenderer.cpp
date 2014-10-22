@@ -13,8 +13,10 @@
 
 namespace Framework
 {
+  static GLuint fbo, rbo;
   static float decayRate = 2.0f;
   static float breathRate = 0.01f;
+  static float offset = 0.75f;
   static float random (float fMin, float fMax)
   {
     float fRandNum = (float) rand () / RAND_MAX;
@@ -24,12 +26,13 @@ namespace Framework
 
   CLParticleRenderer::CLParticleRenderer ()
   {
-    particleCount = MILLION;
-    particleSize = 1.0f;
+    particleCount = 400;
+    particleSize = 100;
     srand ((unsigned) time (NULL));
-    color [0] = random (64, 255);
-    color [1] = random (0, 120);
-    color [2] = random (0, 40);
+    color [0] = 255;
+    color [1] = 80;
+    color [2] = 0;
+    color [3] = 0.1f;
     colorChangeTimer = 1000.0f;
   }
 
@@ -49,9 +52,8 @@ namespace Framework
   {
     // OpenGL 3.3+
     // Create a VAO and never use it again!!!
-    GLuint VAO;
-    glGenVertexArrays (1, &VAO);
-    glBindVertexArray (VAO);
+    glGenVertexArrays (1, &vao);
+    glBindVertexArray (vao);
 
     // Position SSBO
     if (glIsBuffer (SSBOPos)) {
@@ -104,8 +106,8 @@ namespace Framework
     glfwGetCursorPos (WINDOWSYSTEM->Get_Window(), &cursorX, &cursorY);
     glfwGetWindowSize (WINDOWSYSTEM->Get_Window(), &windowWidth, &windowHeight);
 
-    float destPosX = (float) (cursorX / (windowWidth) -0.5f) * 2.0f;
-    float destPosY = (float) ((windowHeight - cursorY) / windowHeight - 0.5f) * 2.0f;
+    float destPosX = 0.1f;
+    float destPosY = (float) ((windowHeight - windowHeight * offset) / windowHeight - 0.5f) * 2.0f;
 
     struct vertex4f* verticesPos = (struct vertex4f*) glMapBufferRange (GL_SHADER_STORAGE_BUFFER, 0, particleCount * sizeof(vertex4f), GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_BUFFER_BIT);
     for (int i = 0; i < particleCount; i++)
@@ -113,7 +115,7 @@ namespace Framework
       float rnd = (float) rand () / (float) (RAND_MAX);
       float rndVal = (float) rand () / (float) (RAND_MAX / (360.0f * 3.14f * 2.0f));
       float rndRad = (float) rand () / (float) (RAND_MAX) * 0.2f;
-      verticesPos [i].x = destPosX + cos (rndVal) * rndRad;
+      verticesPos [i].x = destPosX + cos (rndVal) * rndRad * 1.5f;
       verticesPos [i].y = destPosY + sin (rndVal) * rndRad;
       verticesPos [i].z = 0.0f;
       verticesPos [i].w = 1.0f;
@@ -138,7 +140,77 @@ namespace Framework
 
   void CLParticleRenderer::Render ()
   {
-    /*if (colorFade)
+    //Interpolate_Colors ();
+    glBindVertexArray (vao);
+    glBindBufferBase (GL_SHADER_STORAGE_BUFFER, 0, SSBOPos);
+    glBindBufferBase (GL_SHADER_STORAGE_BUFFER, 1, SSBOVel);
+
+    if (AUDIOSYSTEM->input.peaklevel[0] > 0.05f)
+    {
+      if (color [3] < 1) color[3] += AUDIOSYSTEM->input.peaklevel[0] * 0.1f;
+      //printf("%f\n", color[3]);
+    }
+    else
+    {
+      if (color[3] > 0.1f) color[3] -= 0.016f;
+    }
+    double frameTimeStart = glfwGetTime () * 1000;
+
+    glEnable (GL_BLEND);
+    glBlendFunc (GL_SRC_ALPHA, GL_ONE);
+
+    // Run compute shader
+
+    double cursorX, cursorY;
+    int windowWidth, windowHeight;
+    glfwGetCursorPos (WINDOWSYSTEM->Get_Window(), &cursorX, &cursorY);
+    glfwGetWindowSize (WINDOWSYSTEM->Get_Window(), &windowWidth, &windowHeight);
+
+    float destPosX = 0.1f;
+    float destPosY = (float) ((windowHeight - windowHeight * offset) / windowHeight - 0.5f) * 2.0f;
+
+    computeshader->Use ();
+    computeshader->uni1f ("deltaT", 2 * speedMultiplier * (pause ? 0 : 1));
+    computeshader->uni3f ("destPos", destPosX, destPosY, 0);
+    computeshader->uni2f ("vpDim", 1, 1);
+    computeshader->uni1i("borderClamp", (int) borderEnabled);
+
+    int workingGroups = particleCount / 16;
+
+    //glDispatchCompute (workingGroups, 1, 1);
+    computeshader->Dispatch_Compute (workingGroups + 1, 1, 1);
+
+    computeshader->Disable ();
+
+    // Set memory barrier on per vertex base to make sure we get what was written by the compute shaders
+    glMemoryBarrier (GL_VERTEX_ATTRIB_ARRAY_BARRIER_BIT);
+
+    // Render scene
+
+    shader->Use ();
+
+    shader->uni4f ("Color", color [0] / 255.0f, color [1] / 255.0f, color [2] / 255.0f, color [3]);
+
+    glGetError ();
+
+    texture->Bind ();
+    GLuint posAttrib = shader->attribLocation ("position");
+
+    glBindBuffer (GL_ARRAY_BUFFER, SSBOPos);
+    shader->vertexAttribPtr (posAttrib, 4, GL_FLOAT, GL_FALSE, 0, 0);
+    shader->enableVertexAttribArray (posAttrib);
+    glPointSize (particleSize);
+    glDrawArrays (GL_POINTS, 0, particleCount);
+
+    texture->Unbind ();
+    shader->Disable ();
+
+    frameDelta = (float) (glfwGetTime () - frameTimeStart) * 1000.0f;
+  }
+
+  void CLParticleRenderer::Interpolate_Colors ()
+  {
+    if (colorFade)
     {
       colorChangeTimer -= frameDelta * 25.0f;
 
@@ -173,71 +245,7 @@ namespace Framework
       color [0] = 255.0f;
       color [1] = 64.0f;
       color [2] = 0.0f;
-    }*/
-
-    if (AUDIOSYSTEM->input.peaklevel[0] > 0.05f)
-    {
-      if (color [3] < 1) color[3] += AUDIOSYSTEM->input.peaklevel[0] * 0.1f;
-      //printf("%f\n", color[3]);
     }
-    else
-    {
-      if (color[3] > 0.1f) color[3] -= 0.016f;
-    }
-    double frameTimeStart = glfwGetTime ();
-
-    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    glEnable (GL_BLEND);
-    glBlendFunc (GL_SRC_ALPHA, GL_ONE);
-
-    // Run compute shader
-
-    double cursorX, cursorY;
-    int windowWidth, windowHeight;
-    glfwGetCursorPos (WINDOWSYSTEM->Get_Window(), &cursorX, &cursorY);
-    glfwGetWindowSize (WINDOWSYSTEM->Get_Window(), &windowWidth, &windowHeight);
-
-    float destPosX = (float) (cursorX / (windowWidth) -0.5f) * 2.0f;
-    float destPosY = (float) ((windowHeight - cursorY) / windowHeight - 0.5f) * 2.0f;
-
-    computeshader->Use ();
-    computeshader->uni1f ("deltaT", frameDelta * speedMultiplier * (pause ? 0 : 1));
-    computeshader->uni3f ("destPos", destPosX, destPosY, 0);
-    computeshader->uni2f ("vpDim", 1, 1);
-    computeshader->uni1i("borderClamp", (int) borderEnabled);
-
-    int workingGroups = particleCount / 16;
-
-    //glDispatchCompute (workingGroups, 1, 1);
-    computeshader->Dispatch_Compute (workingGroups, 1, 1);
-
-    computeshader->Disable ();
-
-    // Set memory barrier on per vertex base to make sure we get what was written by the compute shaders
-    glMemoryBarrier (GL_VERTEX_ATTRIB_ARRAY_BARRIER_BIT);
-
-    // Render scene
-
-    shader->Use ();
-
-    shader->uni4f ("Color", color [0] / 255.0f, color [1] / 255.0f, color [2] / 255.0f, color [3]);
-
-    glGetError ();
-
-    texture->Bind ();
-    GLuint posAttrib = shader->attribLocation ("position");
-
-    glBindBuffer (GL_ARRAY_BUFFER, SSBOPos);
-    shader->vertexAttribPtr (posAttrib, 4, GL_FLOAT, GL_FALSE, 0, 0);
-    shader->enableVertexAttribArray (posAttrib);
-    glPointSize (particleSize);
-    glDrawArrays (GL_POINTS, 0, particleCount);
-
-    texture->Unbind ();
-    shader->Disable ();
-
-    frameDelta = (float) (glfwGetTime () - frameTimeStart) * 100.0f;
   }
 
 }
