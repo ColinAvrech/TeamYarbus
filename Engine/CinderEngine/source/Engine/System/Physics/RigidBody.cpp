@@ -9,6 +9,7 @@
 /******************************************************************************/
 #include "RigidBody.h"
 #include "ComponentInclude.h"
+#include "GameObject.h"
 
 namespace Framework
 {
@@ -16,8 +17,17 @@ namespace Framework
 	//Destructor
 	RigidBody::~RigidBody()
 	{
-
 	}
+
+  void RigidBody::Initialize ()
+  {
+    gameObject->RigidBody = this;
+  }
+
+  void RigidBody::Serialize (Serializer::DataNode* data)
+  {
+
+  }
 
 	DefineComponentName(RigidBody);
 }

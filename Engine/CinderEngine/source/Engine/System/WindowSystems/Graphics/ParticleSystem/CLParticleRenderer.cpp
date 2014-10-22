@@ -10,9 +10,13 @@
 
 #include "CLParticleRenderer.h"
 #include "WindowSystem.h"
+#include "EventSystem.h"
+#include "BaseEvent.h"
+#include "KeyEvent.h"
 
 namespace Framework
 {
+  static double cursorX = 0, cursorY = 0;
   static GLuint fbo, rbo;
   static float decayRate = 2.0f;
   static float breathRate = 0.01f;
@@ -75,22 +79,44 @@ namespace Framework
     ResetVelocity ();
   }
 
+
+  static void OnKeyPressed (GameObject* go, KeyEvent* key)
+  {
+    std::cout << cursorX << std::endl;
+    if (key->KeyDown)
+    {
+      if (key->KeyValue == GLFW_KEY_A)
+        cursorX -= 5.f;
+      else if (key->KeyValue == GLFW_KEY_D)
+        cursorX += 5.f;
+
+      if (key->KeyValue == GLFW_KEY_D)
+        cursorY -= 5.f;
+      else if (key->KeyValue == GLFW_KEY_W)
+        cursorY += 5.f;
+    }
+  }
+
+
   void CLParticleRenderer::GenerateTextures ()
   {
     texture = Resources::RS->Get_Texture ("Particle.bmp");
+    EVENTSYSTEM->Connect (NULL, Events::KEY_ANY, BaseEvent::BaseCall (OnKeyPressed));
+    cursorX = WINDOWSYSTEM->Get_Width () / 2;
+    cursorY = WINDOWSYSTEM->Get_Height () / 2;
   }
 
   void CLParticleRenderer::ResetPosition ()
   {
     // Reset to mouse cursor pos
-    double cursorX, cursorY;
+    //double cursorX, cursorY;
     int windowWidth, windowHeight;
     glfwPollEvents ();
-    glfwGetCursorPos (WINDOWSYSTEM->Get_Window(), &cursorX, &cursorY);
+    //glfwGetCursorPos (WINDOWSYSTEM->Get_Window(), &cursorX, &cursorY);
     glfwGetWindowSize (WINDOWSYSTEM->Get_Window(), &windowWidth, &windowHeight);
 
-    float destPosX = 0.1f;
-    float destPosY = (float) ((windowHeight - windowHeight * offset) / windowHeight - 0.5f) * 2.0f;
+    float destPosX = (float) (cursorX / (windowWidth) -0.5f) * 2.0f;
+    float destPosY = (float) ((windowHeight - cursorY) / windowHeight - 0.5f) * 2.0f;
 
     glm::vec4* verticesPos = (glm::vec4*) SSBOPos->MapBufferRange<glm::vec4> (0, particleCount);
     for (int i = 0; i < particleCount; i++)
@@ -98,7 +124,7 @@ namespace Framework
       float rnd = (float) rand () / (float) (RAND_MAX);
       float rndVal = (float) rand () / (float) (RAND_MAX / (360.0f * 3.14f * 2.0f));
       float rndRad = (float) rand () / (float) (RAND_MAX) * 0.2f;
-      verticesPos [i].x = destPosX + cos (rndVal) * rndRad * 1.5f;
+      verticesPos [i].x = destPosX + cos (rndVal) * rndRad;
       verticesPos [i].y = destPosY + sin (rndVal) * rndRad;
       verticesPos [i].z = 0.0f;
       verticesPos [i].w = 1.0f;
@@ -110,7 +136,6 @@ namespace Framework
   void CLParticleRenderer::ResetVelocity ()
   {
     glm::vec4* verticesVel = SSBOVel->MapBufferRange<glm::vec4> (0, particleCount);
-    //struct vertex4f* verticesVel = (struct vertex4f*) glMapBufferRange (GL_SHADER_STORAGE_BUFFER, 0, particleCount * sizeof(vertex4f), GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_BUFFER_BIT);
     for (int i = 0; i < particleCount; i++)
     {
       verticesVel [i].x = 0.0f;
@@ -145,13 +170,13 @@ namespace Framework
 
     // Run compute shader
 
-    double cursorX, cursorY;
+    //double cursorX, cursorY;
     int windowWidth, windowHeight;
-    glfwGetCursorPos (WINDOWSYSTEM->Get_Window(), &cursorX, &cursorY);
+    //glfwGetCursorPos (WINDOWSYSTEM->Get_Window(), &cursorX, &cursorY);
     glfwGetWindowSize (WINDOWSYSTEM->Get_Window(), &windowWidth, &windowHeight);
 
-    float destPosX = 0.1f;
-    float destPosY = (float) ((windowHeight - windowHeight * offset) / windowHeight - 0.5f) * 2.0f;
+    float destPosX = (float) (cursorX / (windowWidth) -0.5f) * 2.0f;
+    float destPosY = (float) ((windowHeight - cursorY) / windowHeight - 0.5f) * 2.0f;
 
     computeshader->Use ();
     computeshader->uni1f ("deltaT", 2 * speedMultiplier * (pause ? 0 : 1));

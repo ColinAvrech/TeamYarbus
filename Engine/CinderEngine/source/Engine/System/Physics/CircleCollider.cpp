@@ -23,6 +23,7 @@ namespace Framework
 
 	void CircleCollider::Initialize()
 	{
+    gameObject->CircleCollider = this;
 		std::string ColEvent = std::string("UpdateEvent");
 
 		CollisionEvent* colevent = (CollisionEvent*)EVENTSYSTEM->GetEvent(ColEvent);

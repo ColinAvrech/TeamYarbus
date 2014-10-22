@@ -18,12 +18,8 @@ namespace Framework
 	{
 	public:
 		const static std::string Name;
-		PointCollider(GameObject *obj)
-		{
-			gameObject = obj;
-		}
-
-		~PointCollider(){};
+    PointCollider () {}
+		~PointCollider(){}
 
 		/*!Telegraph that the component is active*/
 		void Initialize();

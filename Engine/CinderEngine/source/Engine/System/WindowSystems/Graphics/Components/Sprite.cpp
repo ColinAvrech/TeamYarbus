@@ -39,6 +39,7 @@ namespace Framework
 
   void Sprite::Initialize ()
   {
+    gameObject->Sprite = this;
     WINDOWSYSTEM->spriteList.push_back (this);
     Specify_Attributes ();
   }

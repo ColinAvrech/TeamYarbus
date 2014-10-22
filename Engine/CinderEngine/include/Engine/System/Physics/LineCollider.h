@@ -23,11 +23,7 @@ namespace Framework
 		glm::vec2 p1; //points
 		glm::vec2 p2;
 
-		LineCollider(GameObject *obj)
-		{
-			gameObject = obj;
-		}
-
+    LineCollider (){}
 		~LineCollider(){};
 
 		void Initialize();

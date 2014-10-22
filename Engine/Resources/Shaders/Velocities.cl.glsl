@@ -43,14 +43,11 @@ void main()
   vec3 vPos = Positions[index].xyz;
   vec3 vVel = Velocities[index].xyz;
 
-
-  {
   // Calculate new velocity depending on attraction point
   vVel += normalize(destPos - vPos) * 0.001 * deltaT;
 
   // Move by velocity
   vPos += vVel * deltaT;
-  }
 
 
   if (borderClamp == 1.0f)

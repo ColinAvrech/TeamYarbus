@@ -20,6 +20,12 @@
 
 namespace Framework
 {
+  class CLParticleEmitter
+  {
+    glm::vec4 position;
+    int particles;
+  };
+
 
   class CLParticleRenderer
   {
@@ -58,11 +64,7 @@ namespace Framework
     Shader* shader;
     ComputeShader* computeshader;
     Texture* texture;
-  };
-
-  struct vertex4f
-  {
-    GLfloat x, y, z, w;
+    CLParticleEmitter emitters [3];
   };
 }
 

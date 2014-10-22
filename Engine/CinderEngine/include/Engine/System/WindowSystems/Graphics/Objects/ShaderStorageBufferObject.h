@@ -32,7 +32,7 @@ namespace Framework
     template <typename T>
     T* MapBufferRange (int offset, int size)
     {
-      return (T*) glMapBufferRange (GL_SHADER_STORAGE_BUFFER, offset, size * sizeof (T), GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_BUFFER_BIT);
+      return (T*) glMapBufferRange (GL_SHADER_STORAGE_BUFFER, offset * sizeof (T), size * sizeof (T), GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_BUFFER_BIT);
     }
     void UnMapBuffer ();
     void UnBindBuffer ();

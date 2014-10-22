@@ -34,16 +34,11 @@ namespace Framework
 		glm::vec2 vel;
 		glm::vec2 angVel;
 
-
-		RigidBody(GameObject * obj)
-		{
-			gameObject = obj;
-			vel = { 1, -1 };
-			angVel = { 0, 0 };
-		};
-
+    RigidBody (){}
 		~RigidBody();
 
+    virtual void Initialize ();
+    virtual void Serialize (Serializer::DataNode* data);
 		float getMass(void)
 		{
 			return mass;
