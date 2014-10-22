@@ -28,7 +28,12 @@ namespace Framework
     void BindBuffer (GLenum mode = GL_SHADER_STORAGE_BUFFER);
     void BindBufferBase (GLuint index = 0);
     void BufferData (GLuint size, const void* data = NULL, GLenum mode = GL_STATIC_DRAW);
-    glm::vec4* MapBufferRange (GLuint offset, GLuint size);
+
+    template <typename T>
+    T* MapBufferRange (int offset, int size)
+    {
+      return (T*) glMapBufferRange (GL_SHADER_STORAGE_BUFFER, offset, size * sizeof (T), GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_BUFFER_BIT);
+    }
     void UnMapBuffer ();
     void UnBindBuffer ();
     void DeleteBuffer ();
@@ -37,7 +42,7 @@ namespace Framework
     {
       return bufferPos;
     }
-
+    bool IsBuffer ();
   private:
     GLuint bufferPos;
   };

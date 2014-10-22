@@ -38,7 +38,7 @@ namespace Framework
 
   CLParticleRenderer::~CLParticleRenderer ()
   {
-
+    delete SSBOPos, SSBOVel, vao;
   }
 
   void CLParticleRenderer::GenerateShaders ()
@@ -52,43 +52,26 @@ namespace Framework
   {
     // OpenGL 3.3+
     // Create a VAO and never use it again!!!
-    glGenVertexArrays (1, &vao);
-    glBindVertexArray (vao);
+    vao = new VAO ();
+    SSBOPos = new SSBO (particleCount * sizeof (glm::vec4));
 
-    // Position SSBO
-    if (glIsBuffer (SSBOPos)) {
-      glDeleteBuffers (1, &SSBOPos);
-    };
-    glGenBuffers (1, &SSBOPos);
-    // Bind to SSBO
-    glBindBuffer (GL_SHADER_STORAGE_BUFFER, SSBOPos);
-    // Generate empty storage for the SSBO
-    glBufferData (GL_SHADER_STORAGE_BUFFER, particleCount * sizeof(vertex4f), NULL, GL_STATIC_DRAW);
     // Fill
     ResetPosition ();
     // Bind buffer to target index 0
-    glBindBufferBase (GL_SHADER_STORAGE_BUFFER, 0, SSBOPos);
+    SSBOPos->BindBufferBase (0);
 
-    // Velocity SSBO
-    if (glIsBuffer (SSBOVel)) {
-      glDeleteBuffers (1, &SSBOVel);
-    };
-    glGenBuffers (1, &SSBOVel);
-    // Bind to SSBO
-    glBindBuffer (GL_SHADER_STORAGE_BUFFER, SSBOVel);
-    // Generate empty storage for the SSBO
-    glBufferData (GL_SHADER_STORAGE_BUFFER, particleCount * sizeof(vertex4f), NULL, GL_STATIC_DRAW);
-    // Fill
+
+    SSBOVel = new SSBO (particleCount * sizeof(glm::vec4));
     ResetVelocity ();
     // Bind buffer to target index 1
-    glBindBufferBase (GL_SHADER_STORAGE_BUFFER, 1, SSBOVel);
+    SSBOVel->BindBufferBase (1);
   }
 
   void CLParticleRenderer::ResetBuffers ()
   {
-    glBindBuffer (GL_SHADER_STORAGE_BUFFER, SSBOPos);
+    SSBOPos->BindBuffer ();
     ResetPosition ();
-    glBindBuffer (GL_SHADER_STORAGE_BUFFER, SSBOVel);
+    SSBOVel->BindBuffer ();
     ResetVelocity ();
   }
 
@@ -109,7 +92,7 @@ namespace Framework
     float destPosX = 0.1f;
     float destPosY = (float) ((windowHeight - windowHeight * offset) / windowHeight - 0.5f) * 2.0f;
 
-    struct vertex4f* verticesPos = (struct vertex4f*) glMapBufferRange (GL_SHADER_STORAGE_BUFFER, 0, particleCount * sizeof(vertex4f), GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_BUFFER_BIT);
+    glm::vec4* verticesPos = (glm::vec4*) SSBOPos->MapBufferRange<glm::vec4> (0, particleCount);
     for (int i = 0; i < particleCount; i++)
     {
       float rnd = (float) rand () / (float) (RAND_MAX);
@@ -120,13 +103,14 @@ namespace Framework
       verticesPos [i].z = 0.0f;
       verticesPos [i].w = 1.0f;
     }
-    glUnmapBuffer (GL_SHADER_STORAGE_BUFFER);
+    SSBOPos->UnMapBuffer ();
   }
 
 
   void CLParticleRenderer::ResetVelocity ()
   {
-    struct vertex4f* verticesVel = (struct vertex4f*) glMapBufferRange (GL_SHADER_STORAGE_BUFFER, 0, particleCount * sizeof(vertex4f), GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_BUFFER_BIT);
+    glm::vec4* verticesVel = SSBOVel->MapBufferRange<glm::vec4> (0, particleCount);
+    //struct vertex4f* verticesVel = (struct vertex4f*) glMapBufferRange (GL_SHADER_STORAGE_BUFFER, 0, particleCount * sizeof(vertex4f), GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_BUFFER_BIT);
     for (int i = 0; i < particleCount; i++)
     {
       verticesVel [i].x = 0.0f;
@@ -134,16 +118,16 @@ namespace Framework
       verticesVel [i].z = 0.0f;
       verticesVel [i].w = 1.0f;
     }
-    glUnmapBuffer (GL_SHADER_STORAGE_BUFFER);
+    SSBOVel->UnMapBuffer ();
   }
 
 
   void CLParticleRenderer::Render ()
   {
-    //Interpolate_Colors ();
-    glBindVertexArray (vao);
-    glBindBufferBase (GL_SHADER_STORAGE_BUFFER, 0, SSBOPos);
-    glBindBufferBase (GL_SHADER_STORAGE_BUFFER, 1, SSBOVel);
+    Interpolate_Colors ();
+    vao->BindVAO ();
+    SSBOPos->BindBufferBase (0);
+    SSBOVel->BindBufferBase (1);
 
     if (AUDIOSYSTEM->input.peaklevel[0] > 0.05f)
     {
@@ -177,7 +161,6 @@ namespace Framework
 
     int workingGroups = particleCount / 16;
 
-    //glDispatchCompute (workingGroups, 1, 1);
     computeshader->Dispatch_Compute (workingGroups + 1, 1, 1);
 
     computeshader->Disable ();
@@ -196,7 +179,7 @@ namespace Framework
     texture->Bind ();
     GLuint posAttrib = shader->attribLocation ("position");
 
-    glBindBuffer (GL_ARRAY_BUFFER, SSBOPos);
+    glBindBuffer (GL_ARRAY_BUFFER, SSBOPos->Get_POS());
     shader->vertexAttribPtr (posAttrib, 4, GL_FLOAT, GL_FALSE, 0, 0);
     shader->enableVertexAttribArray (posAttrib);
     glPointSize (particleSize);

@@ -53,7 +53,8 @@ namespace Framework
 
 
   private:
-    GLuint vao, SSBOPos, SSBOVel;
+    SSBO* SSBOPos, *SSBOVel;
+    VAO* vao;
     Shader* shader;
     ComputeShader* computeshader;
     Texture* texture;

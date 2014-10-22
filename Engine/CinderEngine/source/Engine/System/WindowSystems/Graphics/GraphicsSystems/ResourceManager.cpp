@@ -42,6 +42,8 @@ namespace Framework
 
   void Resources::Load_Textures ()
   {
+    std::cout << Console::cyan << "--------------------------------\nLoading Textures...\n" << Console::gray;
+
     textures ["Default"] = new Texture ((TextureResourcePath + "Default.jpg").c_str ());
     std::ifstream texFile (TextureResourcePath + "TextureAssets.txt");
 
@@ -57,14 +59,17 @@ namespace Framework
       {
         texFile >> str;
         textures [str] = new Texture ((TextureResourcePath + str).c_str ());
-        std::cout << str << std::endl;
+        std::cout << Console::green << str << std::endl << Console::gray;
       }
     }
+    std::cout << Console::cyan << "--------------------------------\n" << Console::gray;
   }
 
 
   void Resources::Load_SpriteSheets ()
   {
+    std::cout << Console::cyan << "--------------------------------\nLoading SpriteSheets...\n" << Console::gray;
+
     std::ifstream ssFile (SpriteSheetResourcePath + "SpriteSheetAssets.txt");
 
     if (!ssFile.good ())
@@ -83,6 +88,7 @@ namespace Framework
         ssFile >> data;
         ssFile >> data;
         f = data;
+        std::cout << Console::green << data << std::endl << Console::gray;
         filename = (SpriteSheetResourcePath + data);
         data = "";
         ssFile >> data;
@@ -96,6 +102,8 @@ namespace Framework
         spriteSheets [f] = new SpriteSheet (filename.c_str (), rows, columns, samples);
       }
     }
+
+    std::cout << Console::cyan << "--------------------------------\n" << Console::gray;
   }
 
   void Resources::Load_Shaders ()
@@ -134,25 +142,27 @@ namespace Framework
       std::unordered_map <std::string, GLuint> fSource;
       std::unordered_map <std::string, GLuint> gSource;
 
+      std::cout << Console::cyan << "--------------------------------\nCompiling Shaders...\n" << Console::gray;
+
       while (!vsList.eof())
       {
         // Compile All Vertex Shaders
         vsList >> data;
-        vSource [data] = s->Create_Shader (s->Read_Shader ((ShaderResourcePath + data).c_str ()), GL_VERTEX_SHADER);
+        vSource [data] = s->Create_Shader ((data).c_str (), s->Read_Shader ((ShaderResourcePath + data).c_str ()), GL_VERTEX_SHADER);
       }
 
       while (!fsList.eof ())
       {
         // Compile All Fragment Shaders
         fsList >> data;
-        fSource [data] = s->Create_Shader (s->Read_Shader ((ShaderResourcePath + data).c_str ()), GL_FRAGMENT_SHADER);
+        fSource [data] = s->Create_Shader ((data).c_str (), s->Read_Shader ((ShaderResourcePath + data).c_str ()), GL_FRAGMENT_SHADER);
       }
 
       while (!gsList.eof ())
       {
         // Compile All Geometry Shaders
         gsList >> data;
-        gSource [data] = s->Create_Shader (s->Read_Shader ((ShaderResourcePath + data).c_str ()), GL_GEOMETRY_SHADER);
+        gSource [data] = s->Create_Shader ((data).c_str (), s->Read_Shader ((ShaderResourcePath + data).c_str ()), GL_GEOMETRY_SHADER);
       }
 
       while (!shaderComposition.eof())
@@ -201,11 +211,13 @@ namespace Framework
       }
     }
 
+    std::cout << Console::cyan << "--------------------------------\n" << Console::gray;
   }
 
 
   void Resources::Load_Sounds()
   {
+    std::cout << Console::cyan << "--------------------------------\nLoading Sounds...\n" << Console::gray;
     std::ifstream audioFile (AudioResourcePath + "SoundAssets.txt");
 
     if (!audioFile.good())
@@ -222,9 +234,11 @@ namespace Framework
         char* c = strstr ((char*)str.c_str(), str.c_str ());
         Sound* sound = AUDIOSYSTEM->LoadSound ((AudioResourcePath + str).c_str (), c, Sound::SOUND_2D, 1.0f);
         sounds[str] = sound;
-        std::cout << str << std::endl;
+        std::cout << Console::green << str << std::endl << Console::gray;
       }
     }
+
+    std::cout << Console::cyan << "--------------------------------\n" << Console::gray;
   }
 
   Texture* Resources::Get_Texture (std::string textureName)

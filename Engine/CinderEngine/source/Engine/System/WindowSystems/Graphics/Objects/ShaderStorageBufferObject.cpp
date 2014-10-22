@@ -13,7 +13,7 @@
 namespace Framework
 {
 
-  ShaderStorageBufferObject::ShaderStorageBufferObject (GLuint size, GLenum mode)
+  ShaderStorageBufferObject::ShaderStorageBufferObject (GLuint size, GLenum mode /*= GL_STATIC_DRAW*/)
   {
     glGenBuffers (1, &bufferPos);
     BindBuffer ();
@@ -50,10 +50,6 @@ namespace Framework
     DeleteBuffer ();
   }
 
-  glm::vec4* ShaderStorageBufferObject::MapBufferRange(GLuint offset, GLuint size)
-  {
-    return (glm::vec4*)glMapBufferRange (GL_SHADER_STORAGE_BUFFER, offset, size, GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_BUFFER_BIT);
-  }
 
   void ShaderStorageBufferObject::UnMapBuffer ()
   {
@@ -63,6 +59,18 @@ namespace Framework
   void ShaderStorageBufferObject::UnBindBuffer ()
   {
     glBindBuffer (GL_SHADER_STORAGE_BUFFER, 0);
+  }
+
+  bool ShaderStorageBufferObject::IsBuffer ()
+  {
+    if (glIsBuffer (bufferPos))
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
   }
 
   void ShaderStorageBufferObject::DeleteBuffer ()

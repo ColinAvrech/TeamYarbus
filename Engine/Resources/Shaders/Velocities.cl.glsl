@@ -1,5 +1,12 @@
 #version 430
 
+struct Particle
+{
+  vec4 Position;
+  vec4 Color;
+};
+
+
 // Target 0 : Vertex position
 layout(std140, binding = 0) buffer Pos
 {

@@ -73,13 +73,13 @@ namespace Framework
     char log [1000];
     glGetShaderInfoLog (shader, 1000, NULL, log);
 
-    std::cout << filename << " Compile Status:\n" << log << std::endl;
+    std::cout << Console::green << filename << Console::yellow << "\nCompile Status...\n" << Console::red << log << Console::gray << "\n--------------" << std::endl;
 
     return shader;
   }
 
 
-  GLuint Shader::Create_Shader (std::string shaderSource, GLenum shaderType)
+  GLuint Shader::Create_Shader (const char* filename, std::string shaderSource, GLenum shaderType)
   {
     const char* source = shaderSource.c_str ();
     GLuint shader = glCreateShader (shaderType);
@@ -88,7 +88,7 @@ namespace Framework
     char log [1000];
     glGetShaderInfoLog (shader, 1000, NULL, log);
 
-    std::cout << "Compile Status..." << log << std::endl;
+    std::cout << Console::green << filename << Console::yellow << "\nCompile Status...\n" << Console::red << log << Console::gray << "\n--------------" << std::endl;
 
     return shader;
   }

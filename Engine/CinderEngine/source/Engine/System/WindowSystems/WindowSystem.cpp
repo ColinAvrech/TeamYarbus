@@ -20,6 +20,7 @@ function to handle windows Messages.
 #include "ComponentInclude.h"
 #include "EventSystem.h"
 #include "DebugRenderer.h"
+#include "CLParticleRenderer.h"
 
 namespace Framework
 {
@@ -32,6 +33,7 @@ namespace Framework
   static VBO* vbo;
   static EBO* ebo;
   static DebugRenderer dr;
+  static CLParticleRenderer clRenderer;
   static float shininess = 200;
 
   namespace WindowNameSpace
@@ -274,6 +276,11 @@ namespace Framework
   bool WindowSystem::Initialize ()
   {
     std::cout << GetName () << " initialized\n";
+
+    clRenderer.GenerateTextures ();
+    clRenderer.GenerateBuffers ();
+    clRenderer.GenerateShaders ();
+
     dr.Initialize ();
     ShapeData data = ShapeGenerator::Generate_Quad ();
     vao = new VAO ();
@@ -306,8 +313,8 @@ namespace Framework
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable (GL_BLEND);
     glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    vao->bindVAO ();
-    std::cout << shininess << std::endl;
+    clRenderer.Render ();
+    vao->BindVAO ();
 
     for (auto i : spriteList)
     {
