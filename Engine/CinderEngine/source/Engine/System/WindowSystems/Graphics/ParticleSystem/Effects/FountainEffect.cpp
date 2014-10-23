@@ -17,45 +17,18 @@ namespace Framework
 {
   bool FountainEffect::initialize (size_t numParticles)
   {
-    texture = Resources::RS->Get_Texture ("Fire1.png");
+    texture = Resources::RS->Get_Texture ("Capture.png");
     shader = Resources::RS->Get_Shader ("Particle");
     //
     // particles
     //
-    const size_t NUM_PARTICLES = numParticles == 0 ? 12000 : numParticles;
+    const size_t NUM_PARTICLES = numParticles == 0 ? 20000 : numParticles;
     m_system = std::make_shared<ParticleSystem> (NUM_PARTICLES);
 
-    //
-    // emitter:
-    //
-    auto particleEmitter = std::make_shared<ParticleEmitter> ();
-    {
-      particleEmitter->m_emitRate = (float) NUM_PARTICLES*0.25f;
-
-      // pos:
-      m_posGenerator = std::make_shared<BoxPosGen> ();
-      m_posGenerator->m_pos = glm::vec4{ 0.0, 0.0, 0.0, 0.0 };
-      m_posGenerator->m_maxStartPosOffset = glm::vec4{ 0.0, 0.0, 0.0, 0.0 };
-      particleEmitter->addGenerator (m_posGenerator);
-
-      m_colGenerator = std::make_shared<BasicColorGen> ();
-      m_colGenerator->m_minStartCol = glm::vec4{ 255.0/255, 120.0/255, 50.0/255, 0.0 };
-      m_colGenerator->m_maxStartCol = glm::vec4{ 255.0 / 255, 120.0 / 255, 50.0 / 255, 1.0 };
-      m_colGenerator->m_minEndCol = glm::vec4{ 255.0 / 255, 120.0 / 255, 50.0 / 255, 0.0 };
-      m_colGenerator->m_maxEndCol = glm::vec4{ 255.0 / 255, 120.0 / 255, 50.0 / 255, 0.0 };
-      particleEmitter->addGenerator (m_colGenerator);
-
-      auto velGenerator = std::make_shared<BasicVelGen> ();
-      velGenerator->m_minStartVel = glm::vec4{ -0.05f, 0.22f, -0.05f, 0.0f };
-      velGenerator->m_maxStartVel = glm::vec4{ 0.05f, 0.25f, 0.05f, 0.0f };
-      particleEmitter->addGenerator (velGenerator);
-
-      auto timeGenerator = std::make_shared<BasicTimeGen> ();
-      timeGenerator->m_minTime = 3.0f;
-      timeGenerator->m_maxTime = 4.0f;
-      particleEmitter->addGenerator (timeGenerator);
-    }
-    m_system->addEmitter (particleEmitter);
+    // Emitters
+    AddFireEmitter ({ 0, 0, 0 }, { -0.05f, 0.05f, -0.05f }, {0.05f, 0.1f, 0.05f}, 25);
+    AddFireEmitter ({ -0.2f, 0, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 25);
+    AddFireEmitter ({ 0.2f, 0, 0 }, { -0.1f, 0.1f, -0.05f }, { 0.1f, 0.25f, 0.05f }, 25);
 
     auto timeUpdater = std::make_shared<BasicTimeUpdater> ();
     m_system->addUpdater (timeUpdater);
@@ -64,7 +37,7 @@ namespace Framework
     m_system->addUpdater (colorUpdater);
 
     m_eulerUpdater = std::make_shared<EulerUpdater> ();
-    m_eulerUpdater->m_globalAcceleration = glm::vec4{ 0.0, -15.0, 0.0, 0.0 };
+    m_eulerUpdater->m_globalAcceleration = glm::vec4{ 0.0, 0.0, 0.0, 0.0 };
     m_system->addUpdater (m_eulerUpdater);
 
     m_floorUpdater = std::make_shared<FloorUpdater> ();
@@ -111,8 +84,8 @@ namespace Framework
     static double time = 0.0;
     time += dt;
 
-    m_posGenerator->m_pos.x = 0.1f*sin ((float) time*2.5f);
-    m_posGenerator->m_pos.z = 0.1f*cos ((float) time*2.5f);
+  /*  m_posGenerator->m_pos.x = 0.1f*sin ((float) time*2.5f);
+    m_posGenerator->m_pos.z = 0.1f*cos ((float) time*2.5f);*/
   }
 
   void FountainEffect::cpuUpdate (double dt)
@@ -129,8 +102,42 @@ namespace Framework
   {
     glEnable (GL_TEXTURE_2D);
     glBindTexture (GL_TEXTURE_2D, texture->Get_ID ());
-    shader->uni1f ("size", 15.0f);
+    shader->uni1f ("size", 30.0f);
 
     m_renderer->render ();
   }
+
+  void FountainEffect::AddFireEmitter(glm::vec3 position, glm::vec3 minVelocity, glm::vec3 maxVelocity, float emitRate)
+{
+    auto particleEmitter = std::make_shared<ParticleEmitter> ();
+    {
+      particleEmitter->m_emitRate = emitRate;
+      particleEmitter->position = position;
+
+      // pos:
+      m_posGenerator = std::make_shared<BoxPosGen> ();
+      m_posGenerator->m_pos = glm::vec4{ particleEmitter->position, 0.0 };
+      m_posGenerator->m_maxStartPosOffset = glm::vec4{ 0.0, 0.0, 0.0, 0.0 };
+      particleEmitter->addGenerator (m_posGenerator);
+
+      m_colGenerator = std::make_shared<BasicColorGen> ();
+      m_colGenerator->m_minStartCol = glm::vec4{ 255.0 / 255, 64.0 / 255, 00.0 / 255, 0.0 };
+      m_colGenerator->m_maxStartCol = glm::vec4{ 255.0 / 255, 64.0 / 255, 0.0 / 255, 1.0 };
+      m_colGenerator->m_minEndCol = glm::vec4{ 0, 0, 0, 0.0 };
+      m_colGenerator->m_maxEndCol = glm::vec4{ 0, 0, 0, 0.0 };
+      particleEmitter->addGenerator (m_colGenerator);
+
+      auto velGenerator = std::make_shared<BasicVelGen> ();
+      velGenerator->m_minStartVel = glm::vec4{ minVelocity, 0.0f };
+      velGenerator->m_maxStartVel = glm::vec4{ maxVelocity, 0.0f };
+      particleEmitter->addGenerator (velGenerator);
+
+      auto timeGenerator = std::make_shared<BasicTimeGen> ();
+      timeGenerator->m_minTime = 0.0f;
+      timeGenerator->m_maxTime = 1.0f;
+      particleEmitter->addGenerator (timeGenerator);
+    }
+    m_system->addEmitter (particleEmitter);
+  }
+
 }

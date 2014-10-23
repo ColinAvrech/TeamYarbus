@@ -17,3 +17,4 @@ VectorLogo.jpg
 Particle.bmp
 Circle.png
 Env.png
+Capture.png

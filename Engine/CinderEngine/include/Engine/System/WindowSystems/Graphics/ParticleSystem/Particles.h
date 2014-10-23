@@ -76,6 +76,7 @@ namespace Framework
   protected:
     std::vector<std::shared_ptr<ParticleGenerator>> m_generators;
   public:
+    glm::vec3 position;
     float m_emitRate{ 0.0 };
   public:
     ParticleEmitter () { }
