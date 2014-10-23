@@ -5,6 +5,8 @@ namespace Framework
 {
   namespace Physics
   {
+    //!Null untill the ObjectSystem has been created
+    ThermodynamicsSystem * THERMODYNAMICS = NULL;
     namespace Const = Constant;
     //Constructor
     ThermodynamicsSystem::ThermodynamicsSystem() :
@@ -12,6 +14,9 @@ namespace Framework
       VelocityMap(NULL), Terrain(NULL), FireMap(NULL)
     {
       //Do stuff
+      CellSize = 0.1f;
+      THERMODYNAMICS = this;
+      MapSize = { 100, 100 };
     }
 
     //Destructor
@@ -69,7 +74,7 @@ namespace Framework
       {
         for (int i = 0; i < 100; ++i)
         {
-          HeatMap[i][j] = 293;
+          HeatMap[i][j] = float (rand () % 1000);
         }
       }
 
@@ -144,17 +149,17 @@ namespace Framework
     // Called every frame
     void ThermodynamicsSystem::Update(const double dt)
     {
-      UpdateTemp(dt);
-      ComputeVelocity(dt);
-      UpdateFire(dt);
+      UpdateTemp(0.016);
+      ComputeVelocity(0.016);
+      UpdateFire(0.016);
     }
 
     // Getters
     //Get cell temperature
     float ThermodynamicsSystem::GetCellTemperature(float x, float y)
     {
-      int sub_x = static_cast<int>((x / CellSize) + MapOffset.x);
-      int sub_y = static_cast<int>((y / CellSize) + MapOffset.y);
+      int sub_x = static_cast<int>((x) + MapOffset.x);
+      int sub_y = static_cast<int>((y) + MapOffset.y);
       if (sub_x < 0 || sub_x > MapSize.x || sub_y < 0 || sub_y > MapSize.y)
         return 0.f;
       return HeatMap[sub_x][sub_y];
@@ -172,12 +177,11 @@ namespace Framework
     //Get cell velocity
     glm::vec2 ThermodynamicsSystem::GetCellVelocity(float x, float y)
     {
-      int sub_x = static_cast<int>((x / CellSize) + MapOffset.x);
-      int sub_y = static_cast<int>((y / CellSize) + MapOffset.y);
+      int sub_x = static_cast<int>((x) + MapOffset.x);
+      int sub_y = static_cast<int>((y) + MapOffset.y);
       if (sub_x < 0 || sub_x > MapSize.x || sub_y < 0 || sub_y > MapSize.y)
       {
-        glm::vec2 space(0, 0);
-        return space;
+        return glm::vec2 (0, 0);
       }
       return VelocityMap[sub_x][sub_y];
     }

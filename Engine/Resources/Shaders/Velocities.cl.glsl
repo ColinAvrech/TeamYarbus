@@ -28,6 +28,7 @@ const vec3 gravity = vec3(0, -9.8f, 0);
 uniform float deltaT;
 uniform vec3 destPos;
 uniform int animate;
+uniform vec2 cellVelocity;
 
 // Viewport dimensions for border clamp
 uniform vec2 vpDim;
