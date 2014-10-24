@@ -99,7 +99,7 @@ namespace Framework
     void DataNode::GetValue(std::string* store)
     {
       ErrorIf(!store, "Pointer Uninitialized");
-      store = value_.String_;
+      *store = *value_.String_;
     }
     void DataNode::GetValue(glm::vec2* store)
     {
