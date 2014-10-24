@@ -77,19 +77,19 @@ int main(void)
   
   //! Create the core engine which manages all systems.
   
-  CoreEngine * engine         = new CoreEngine();
-  WindowSystem * windows      = new WindowSystem (WindowTitle, ClientWidth, ClientHeight);
-  SceneManager* sceneManager = new SceneManager ();
-  AudioSystem* audio          = new AudioSystem();
-  EventSystem * events        = new EventSystem ();
+  CoreEngine             *engine       = new CoreEngine();
+  WindowSystem           *windows      = new WindowSystem (WindowTitle, ClientWidth, ClientHeight);
+  SceneManager           *sceneManager = new SceneManager ();
+  AudioSystem            *audio        = new AudioSystem();
+  EventSystem            *events       = new EventSystem ();
   ScriptSystem::
-  ScriptSystem * zilch      = new ScriptSystem::ScriptSystem();
+  ScriptSystem           *zilch        = new ScriptSystem::ScriptSystem();
   Physics::
-    ThermodynamicsSystem * thermo = new Physics::ThermodynamicsSystem();
-  Physics::PhysicsSystem * phys = new Physics::PhysicsSystem();
+    ThermodynamicsSystem *thermo       = new Physics::ThermodynamicsSystem();
+  Physics::PhysicsSystem *phys         = new Physics::PhysicsSystem();
 
   //test
-  ObjectSystem* objsys = new ObjectSystem();
+  ObjectSystem           *objsys       = new ObjectSystem();
   /*
   GameObject* testStaticCircle = new GameObject(1);
   testStaticCircle->AddComponent("RigidBody");
@@ -98,9 +98,9 @@ int main(void)
 
   //GameObject* testDynamicCircle = new GameObject(2);
 
-  engine->AddSystem (phys);
-  engine->AddSystem (sceneManager);
-  engine->AddSystem (windows);
+  engine->AddSystem(phys);
+  engine->AddSystem(sceneManager);
+  engine->AddSystem(windows);
   engine->AddSystem(audio);
   engine->AddSystem(events);
   engine->AddSystem(zilch);
