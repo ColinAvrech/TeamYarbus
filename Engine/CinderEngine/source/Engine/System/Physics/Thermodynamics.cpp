@@ -79,7 +79,7 @@ namespace Framework
           HeatMap[i][j] = 300.f;
         }
       }
-      HeatMap[20][18] = 400.f;
+      HeatMap[1][1] = 400.f;
 
       //Allocate Oxygen/Density map
       OxygenMap = new float*[100];
@@ -155,6 +155,8 @@ namespace Framework
       UpdateTemp(0.016);
       ComputeVelocity(0.016);
       UpdateFire(0.016);
+      //std::cout << "{ " << Physics::THERMODYNAMICS->GetCellVelocity(20, 20).x << ", " << Physics::THERMODYNAMICS->GetCellVelocity(20, 20).y << " }\n";
+      std::cout << HeatMap[1][1] << ", " << HeatMap[1][2] << "\n";
     }
 
     // Getters
@@ -235,9 +237,9 @@ namespace Framework
               if (x != i || y != j)
               {
                 float dQ = ConductiveHeatTransfer(Const::K_Air, HeatMap[i][j], HeatMap[x][y], dt, 1.f);
-                netdQ += dQ / 8;
-                float oTemp = HeatMap[i][j + 1];
-                HeatMap[x][y] -= dTemp(dQ / 8, OxygenMap[i][j + 1], Const::c_Air);
+                netdQ += dQ;
+                float oTemp = HeatMap[x][y];
+                HeatMap[x][y] -= dTemp(dQ, OxygenMap[x][y], Const::c_Air);
                 
                 float factor = HeatMap[x][y] / oTemp;
                 OxygenMap[x][y] /= factor;
@@ -345,7 +347,7 @@ namespace Framework
           {
             if (HeatMap[i][j] <= Const::BT_Organics)
             {
-              HeatMap[i][j] += tempRange * (float)dt;
+             // HeatMap[i][j] += tempRange * (float)dt;
             }
             //float oxyfactor = 
           }//if
@@ -353,7 +355,7 @@ namespace Framework
           {
             if (HeatMap[i][j] >= Const::IT_Wood)
             {
-              HeatMap[i][j] -= tempRange * (float)dt;
+              //HeatMap[i][j] -= tempRange * (float)dt;
             }
           }
           FireMap[i][j] = tempFactor;

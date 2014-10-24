@@ -151,7 +151,7 @@ namespace Framework
   void CLParticleRenderer::Render ()
   {
     Interpolate_Colors ();
-    vao->BindVAO ();
+    vao->bindVAO ();
     SSBOPos->BindBufferBase (0);
     SSBOVel->BindBufferBase (1);
 
