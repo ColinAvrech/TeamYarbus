@@ -177,13 +177,13 @@ namespace Framework
         {
           // Link The Corresponding Vertex And Fragment Shaders in the Shader Program Document
           shaders [name] = new Shader ();
-          shaders [name]->shaderProgram = shaders [name]->Create_Program (vSource [vs], fSource [fs]);
+          shaders [name]->shaderProgram = shaders [name]->Create_Program (name, vSource [vs], fSource [fs]);
         }
         else
         {
           // Link The Corresponding Vertex And Fragment Shaders in the Shader Program Document
           shaders [name] = new Shader ();
-          shaders [name]->shaderProgram = shaders [name]->Create_Program (vSource [vs], fSource [fs], gSource[gs]);
+          shaders [name]->shaderProgram = shaders [name]->Create_Program (name, vSource [vs], fSource [fs], gSource[gs]);
         }
       }
 

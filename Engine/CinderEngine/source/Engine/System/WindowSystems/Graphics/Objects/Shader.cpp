@@ -33,7 +33,7 @@ namespace Framework
   {
     vertexShader = Create_Shader (vs, GL_VERTEX_SHADER);
     fragmentShader = Create_Shader (fs, GL_FRAGMENT_SHADER);
-    shaderProgram = Create_Program (vertexShader, fragmentShader, geometryShader);
+    shaderProgram = Create_Program ("", vertexShader, fragmentShader, geometryShader);
   }
 
 
@@ -94,8 +94,8 @@ namespace Framework
   }
 
 
-  GLuint Shader::Create_Program (GLuint _vertexShader, GLuint _fragmentShader, GLuint _geometryShader/*= 0*/)
-  {
+  GLuint Shader::Create_Program(std::string name, GLuint _vertexShader, GLuint _fragmentShader, GLuint _geometryShader /*= 0*/)
+{
     GLuint program = glCreateProgram ();
     glAttachShader (program, _vertexShader);
     glAttachShader (program, _fragmentShader);
@@ -103,6 +103,9 @@ namespace Framework
       glAttachShader (program, _geometryShader);
     //glBindFragDataLocation (shaderProgram, 0, "outColor");
     glLinkProgram (program);
+    char log [1000];
+    glGetProgramInfoLog (program, 1000, NULL, log);
+    std::cout << Console::yellow << "\n" << name << "\nLink Status...\n" << Console::red << log << Console::gray << "\n--------------" << std::endl;
 
     return program;
   }

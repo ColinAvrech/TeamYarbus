@@ -18,7 +18,7 @@ namespace Framework
       glDeleteVertexArrays (1, &vao);
     }
 
-    inline void BindVAO ()
+    inline void bindVAO ()
     {
       glBindVertexArray (vao);
     }

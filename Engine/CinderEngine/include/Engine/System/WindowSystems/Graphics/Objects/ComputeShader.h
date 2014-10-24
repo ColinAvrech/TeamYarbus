@@ -22,7 +22,7 @@ namespace Framework
     ComputeShader (const char* cs);
     ~ComputeShader ();
 
-    GLuint Create_Program (GLuint _computeShader);
+    GLuint Create_Program (std::string name, GLuint _computeShader);
 
     inline void Dispatch_Compute (GLuint workGroups_x, GLuint workGroups_y, GLuint workGroups_z)
     {

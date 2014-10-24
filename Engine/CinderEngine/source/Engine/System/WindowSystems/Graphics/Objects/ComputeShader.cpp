@@ -15,7 +15,7 @@ namespace Framework
   ComputeShader::ComputeShader (const char* cs)
   {
     computeShader = Create_Shader (cs, GL_COMPUTE_SHADER);
-    Create_Program (computeShader);
+    Create_Program ("", computeShader);
   }
 
 
@@ -27,8 +27,8 @@ namespace Framework
     glDeleteProgram (shaderProgram);
   }
 
-  GLuint ComputeShader::Create_Program (GLuint _computeShader)
-  {
+  GLuint ComputeShader::Create_Program(std::string name, GLuint _computeShader /*= 0*/)
+{
     GLuint program = glCreateProgram ();
     glAttachShader (program, computeShader);
     glLinkProgram (program);
