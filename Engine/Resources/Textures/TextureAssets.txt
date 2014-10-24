@@ -18,3 +18,5 @@ Particle.bmp
 Circle.png
 Env.png
 Capture.png
+EnvHighRes.jpg
+EnvHighRes.png

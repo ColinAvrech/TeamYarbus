@@ -79,12 +79,12 @@ Level =
 		Transform = 
 		{
 			Vec3 Translation = [0, 0, -1],
-			Vec3 Scale = [1, 1, 1],
+			Vec3 Scale = [3, 3, 3],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Sprite = 
 		{
-			string SpriteSource = "Env.png",
+			string SpriteSource = "EnvHighRes.png",
 			string Shader = "Lighting",
 			bool AnimationActive = false,
 		},
