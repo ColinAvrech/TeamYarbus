@@ -103,6 +103,7 @@ namespace Framework
     AddFireEmitter (true, { -x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
     AddFireEmitter (true, { x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
     AddFireEmitter (true, { -x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
+    /*
     x = -0.15f, y = 0.05f;
     AddFireEmitter (true, { x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
     AddFireEmitter (true, { -x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
@@ -132,7 +133,7 @@ namespace Framework
     AddFireEmitter (true, { x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
     AddFireEmitter (true, { -x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
     AddFireEmitter (true, { x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    AddFireEmitter (true, { -x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
+    AddFireEmitter (true, { -x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);*/
 #pragma endregion
 
     auto timeUpdater = std::make_shared<BasicTimeUpdater> ();
@@ -210,7 +211,7 @@ namespace Framework
     glEnable (GL_TEXTURE_2D);
     texture->Bind();
     shader->Use ();
-    shader->uni1f ("size", 30.0f);
+    shader->uni1f ("size", 1.0f);
 
     m_renderer->render ();
     shader->Disable ();

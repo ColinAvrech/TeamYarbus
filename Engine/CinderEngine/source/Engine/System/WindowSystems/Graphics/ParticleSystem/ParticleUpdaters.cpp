@@ -22,7 +22,7 @@ namespace Framework
     glm::vec4* vPos = SSBOPos->MapBufferRange<glm::vec4> (0, maxCount);
     for (int i = 0; i < maxCount; ++i)
     {
-      vPos [i] = { 0, 0, 0, 0 };
+      vPos [i] = { 0.5f, 0, 0, 0 };
     }
     SSBOPos->UnMapBuffer ();
     SSBOPos->BindBufferBase (0);
@@ -36,17 +36,6 @@ namespace Framework
     glm::vec4 * __restrict acc = p->m_acc.get ();
     glm::vec4 * __restrict vel = p->m_vel.get ();
     glm::vec4 * __restrict pos = p->m_pos.get ();
-
-    cs->Use ();
-    cs->uni1f ("deltaT", localDT);
-    int workingGroups = particleCount / 16;
-
-    cs->Dispatch_Compute (workingGroups + 1, 1, 1);
-
-    cs->Disable ();
-
-    // Set memory barrier on per vertex base to make sure we get what was written by the compute shaders
-    glMemoryBarrier (GL_VERTEX_ATTRIB_ARRAY_BARRIER_BIT);
 
     const unsigned int endId = p->m_countAlive;
     for (size_t i = 0; i < endId; ++i)
