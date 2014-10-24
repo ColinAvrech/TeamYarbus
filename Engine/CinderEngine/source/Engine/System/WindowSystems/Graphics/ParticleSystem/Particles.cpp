@@ -103,16 +103,19 @@ namespace Framework
 
   void ParticleEmitter::emit (double dt, ParticleData *p)
   {
-    const size_t maxNewParticles = static_cast<size_t>(0.1f * m_emitRate);
-    const size_t startId = p->m_countAlive;
-    const size_t endId = std::min (startId + maxNewParticles, p->m_count - 1);
-
-    for (auto &gen : m_generators)
-      gen->generate (dt, p, startId, endId);
-
-    for (size_t i = startId; i < endId; ++i)
+    if (active)
     {
-      p->wake (i);
+      const size_t maxNewParticles = static_cast<size_t>(0.1f * m_emitRate);
+      const size_t startId = p->m_countAlive;
+      const size_t endId = std::min (startId + maxNewParticles, p->m_count - 1);
+
+      for (auto &gen : m_generators)
+        gen->generate (dt, p, startId, endId);
+
+      for (size_t i = startId; i < endId; ++i)
+      {
+        p->wake (i);
+      }
     }
   }
 
@@ -129,6 +132,14 @@ namespace Framework
     for (size_t i = 0; i < maxCount; ++i)
       m_particles.m_alive [i] = false;
   }
+
+
+  void ParticleSystem::init (int maxCount)
+  {
+    //SSBOParticles = new SSBO (maxCount * (7 * sizeof (glm::vec4) + sizeof(bool) +2 * sizeof(size_t)));
+    //std::cout << maxCount * (7 * sizeof (glm::vec4) + sizeof(bool) +2 * sizeof(size_t)) << "\n";
+  }
+
 
   void ParticleSystem::update (double dt)
   {
@@ -159,4 +170,5 @@ namespace Framework
   {
     return 2 * ParticleData::computeMemoryUsage (p.m_particles);
   }
+
 }

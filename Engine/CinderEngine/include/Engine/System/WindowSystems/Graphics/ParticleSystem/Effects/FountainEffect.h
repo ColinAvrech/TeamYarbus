@@ -49,7 +49,7 @@ namespace Framework
 
     int numAllParticles () override { return m_system->numAllParticles (); }
     int numAliveParticles () override { return m_system->numAliveParticles (); }
-    void AddFireEmitter (glm::vec3 position, glm::vec3 minVelocity, glm::vec3 maxVelocity, float emitRate);
+    void AddFireEmitter (bool active, glm::vec3 position, glm::vec3 minVelocity, glm::vec3 maxVelocity, float emitRate);
   };
 }
 

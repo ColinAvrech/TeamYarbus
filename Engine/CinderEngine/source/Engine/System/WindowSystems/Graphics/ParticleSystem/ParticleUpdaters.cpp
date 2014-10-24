@@ -9,9 +9,25 @@
 /******************************************************************************/
 
 #include "ParticleUpdaters.h"
+#include "ResourceManager.h"
 
 namespace Framework
 {
+  void EulerUpdater::init(int maxCount)
+  {
+    particleCount = maxCount;
+    cs = Resources::RS->Get_ComputeShader ("ParticleSystem.cs.glsl");
+    SSBOPos = new SSBO (maxCount * sizeof (glm::vec4));
+
+    glm::vec4* vPos = SSBOPos->MapBufferRange<glm::vec4> (0, maxCount);
+    for (int i = 0; i < maxCount; ++i)
+    {
+      vPos [i] = { 0, 0, 0, 0 };
+    }
+    SSBOPos->UnMapBuffer ();
+    SSBOPos->BindBufferBase (0);
+  }
+
   void EulerUpdater::update (double dt, ParticleData *p)
   {
     const glm::vec4 globalA{ dt * m_globalAcceleration.x, dt * m_globalAcceleration.y, dt * m_globalAcceleration.z, 0.0 };
@@ -21,15 +37,24 @@ namespace Framework
     glm::vec4 * __restrict vel = p->m_vel.get ();
     glm::vec4 * __restrict pos = p->m_pos.get ();
 
+    cs->Use ();
+    cs->uni1f ("deltaT", localDT);
+    int workingGroups = particleCount / 16;
+
+    cs->Dispatch_Compute (workingGroups + 1, 1, 1);
+
+    cs->Disable ();
+
+    // Set memory barrier on per vertex base to make sure we get what was written by the compute shaders
+    glMemoryBarrier (GL_VERTEX_ATTRIB_ARRAY_BARRIER_BIT);
+
     const unsigned int endId = p->m_countAlive;
     for (size_t i = 0; i < endId; ++i)
-      acc [i] += globalA;
-
-    for (size_t i = 0; i < endId; ++i)
-      vel [i] += localDT * acc [i];
-
-    for (size_t i = 0; i < endId; ++i)
+    {
+      //acc [i] += globalA;
+      ////vel [i] += localDT * acc [i];
       pos [i] += localDT * vel [i];
+    }
   }
 
   void FloorUpdater::update (double dt, ParticleData *p)

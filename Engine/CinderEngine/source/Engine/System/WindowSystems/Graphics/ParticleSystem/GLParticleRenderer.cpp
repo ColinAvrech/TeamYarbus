@@ -27,8 +27,7 @@ namespace Framework
 
     const size_t count = sys->numAllParticles ();
 
-    glGenVertexArrays (1, &m_vao);
-    glBindVertexArray (m_vao);
+    vao = new VAO ();
 
     glGenBuffers (1, &m_bufPos);
     glBindBuffer (GL_ARRAY_BUFFER, m_bufPos);
@@ -110,12 +109,12 @@ namespace Framework
 
   void GLParticleRenderer::render ()
   {
-    glBindVertexArray (m_vao);
+    vao->bindVAO ();
 
     const size_t count = m_system->numAliveParticles ();
     if (count > 0)
       glDrawArrays (GL_POINTS, 0, count);
 
-    glBindVertexArray (0);
+    vao->unbindVAO ();
   }
 }

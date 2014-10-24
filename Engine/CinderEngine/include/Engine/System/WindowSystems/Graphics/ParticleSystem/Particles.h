@@ -14,6 +14,7 @@
 #include <vector>
 #include <memory>
 #include "glm.hpp"
+#include "ShaderStorageBufferObject.h"
 
 namespace Framework
 {
@@ -76,6 +77,7 @@ namespace Framework
   protected:
     std::vector<std::shared_ptr<ParticleGenerator>> m_generators;
   public:
+    bool active;
     glm::vec3 position;
     float m_emitRate{ 0.0 };
   public:
@@ -116,12 +118,15 @@ namespace Framework
     std::vector<std::shared_ptr<ParticleUpdater>> m_updaters;
 
   public:
+    SSBO* SSBOParticles;
     explicit ParticleSystem (size_t maxCount);
     virtual ~ParticleSystem () { }
 
     // AVOID UNNECESARY COPIES
     ParticleSystem (const ParticleSystem &) = delete;
     ParticleSystem &operator=(const ParticleSystem &) = delete;
+
+    virtual void init (int particleCount);
 
     // CALLED EVERY FRAME
     virtual void update (double dt);
