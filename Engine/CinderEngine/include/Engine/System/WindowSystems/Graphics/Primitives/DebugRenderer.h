@@ -43,7 +43,7 @@ namespace Framework
 
     inline void EnableVertexArrays ()
     {
-      vao->BindVAO ();
+      vao->bindVAO ();
       circleShader->enableVertexAttribArray (circleShader->attribLocation ("position"));
       circleShader->enableVertexAttribArray (circleShader->attribLocation ("color"));
     }

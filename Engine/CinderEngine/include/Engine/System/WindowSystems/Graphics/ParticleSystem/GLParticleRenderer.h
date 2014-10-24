@@ -12,6 +12,8 @@
 #define _GL_PARTICLE_RENDERER_H
 
 #include "ParticleRenderer.h"
+#include "VertexArrayObject.h"
+#include "VertexBufferObject.h"
 
 namespace Framework
 {
@@ -20,6 +22,8 @@ namespace Framework
   // RENDERS PARTICLES AS POINTS
   class GLParticleRenderer : public IParticleRenderer
   {
+    VAO* vao;
+    VBO* vbo;
   protected:
     ParticleSystem *m_system{ nullptr };
 

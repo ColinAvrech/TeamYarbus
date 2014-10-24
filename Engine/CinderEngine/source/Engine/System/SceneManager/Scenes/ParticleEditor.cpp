@@ -48,6 +48,7 @@ namespace Framework
   static int gNumAlive = 0;
   static float volume = 1.0f;
   static float Fps = 0.0f;
+  static float fps = 0.0f;
   static double AppTime = 0;
 
   static unsigned int gParticleTexture = 0;
@@ -165,7 +166,7 @@ namespace Framework
 
     audioBar = TwNewBar("Audio");
 
-    //TwAddVarRO (myBar, "FPS", TW_TYPE_FLOAT, &Fps, NULL);
+    TwAddVarRO (myBar, "FPS", TW_TYPE_FLOAT, &fps, NULL);
     Editor::AddTweak (myBar, "animate", &gAnimationOn, "");
     Editor::AddVar (myBar, "particles", &gNumParticles, "");
     Editor::AddVar (myBar, "alive", &gNumAlive, "");
@@ -207,6 +208,7 @@ namespace Framework
     double deltaTime;
     Utils::updateTimer (&deltaTime, &AppTime);
     Utils::calculateFps (&Fps);
+    fps = Fps * 2;
     if (!gAnimationOn)
       return;
 
@@ -220,17 +222,17 @@ namespace Framework
 
     gCurrentEffect->update (deltaTime);
 
-    cpuParticlesUpdate.begin ();
+    //cpuParticlesUpdate.begin ();
     gCurrentEffect->cpuUpdate (deltaTime);
     gNumAlive = 0;// gParticleSystem->numAliveParticles();
-    cpuParticlesUpdate.end ();
+    //cpuParticlesUpdate.end ();
 
-    cpuBuffersUpdate.begin ();
-    gpuUpdate.begin ();
+    //cpuBuffersUpdate.begin ();
+    //gpuUpdate.begin ();
     gCurrentEffect->gpuUpdate (deltaTime);
-    gpuUpdate.end ();
-    cpuBuffersUpdate.end ();
-    gpuUpdate.updateResults (GpuTimerQuery::WaitOption::WaitForResults);
+    //gpuUpdate.end ();
+    //cpuBuffersUpdate.end ();
+    //gpuUpdate.updateResults (GpuTimerQuery::WaitOption::WaitForResults);
 
     gNumParticles = gCurrentEffect->numAllParticles ();
     gNumAlive = gCurrentEffect->numAliveParticles ();
