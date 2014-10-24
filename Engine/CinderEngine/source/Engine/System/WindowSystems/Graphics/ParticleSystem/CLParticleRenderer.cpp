@@ -184,8 +184,9 @@ namespace Framework
     computeshader->uni3f ("destPos", destPosX, destPosY, 0);
     computeshader->uni2f ("vpDim", 1, 1);
     computeshader->uni1i("borderClamp", (int) borderEnabled);
+    std::cout << "{ " << Physics::THERMODYNAMICS->GetCellVelocity(20, 20).x << ", " << Physics::THERMODYNAMICS->GetCellVelocity(20, 20).y << " }\n";
     computeshader->uni2fv ("cellVelocity", glm::value_ptr (Physics::THERMODYNAMICS->GetCellVelocity (20, 20)));
-    std::cout << "{ " << Physics::THERMODYNAMICS->GetCellVelocity (20, 20).x << ", " << Physics::THERMODYNAMICS->GetCellVelocity (20, 20).y << " }\n";
+    
     //std::cout << Physics::THERMODYNAMICS->GetCellTemperature (20, 20) << "\n";
 
     int workingGroups = particleCount / 16;
