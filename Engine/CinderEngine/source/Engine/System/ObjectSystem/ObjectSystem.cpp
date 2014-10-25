@@ -12,6 +12,7 @@ deleted.
 
 #include "ObjectSystem.h"
 #include "IncludeForAllCollision.h"
+#include "CharacterController.h"
 
 namespace Framework
 {
@@ -64,11 +65,11 @@ namespace Framework
     RegisterComponent(Sprite);
     RegisterComponent (Camera);
     RegisterComponent (ShapeCollider);
-    RegisterComponent (Camera);
-    RegisterComponent(CircleCollider);
-    RegisterComponent(PointCollider);
-    RegisterComponent(LineCollider);
-    RegisterComponent(RigidBody);
+	RegisterComponent(CharacterController);
+	//RegisterComponent(CircleCollider);	
+	//RegisterComponent(PointCollider);
+	//RegisterComponent(LineCollider);
+	RegisterComponent(RigidBody);
   }
 
   void ObjectSystem::AddComponentCreator(std::string name, ComponentCreator* creator)
@@ -131,6 +132,17 @@ namespace Framework
         {
           Component* newcomp = newobj->AddComponent(ct->objectName);
           newcomp->gameObject = newobj;
+          if (ct->objectName == "Transform")
+            newobj->Transform = (Transform*) (newcomp);
+          else if (ct->objectName == "Sprite")
+            newobj->Sprite = (Sprite*) (newcomp);
+          else if (ct->objectName == "CircleCollider")
+            newobj->CircleCollider = (CircleCollider*) (newcomp);
+		 
+
+		  //test
+		  else if (ct->objectName == "CharacterController")
+			  newobj->CharacterController = (CharacterController*)(newcomp);
           newcomp->Serialize(ct->branch);
           newcomp->Initialize ();
           ct = ct->next;

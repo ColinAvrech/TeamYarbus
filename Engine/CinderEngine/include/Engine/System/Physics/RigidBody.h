@@ -34,19 +34,38 @@ namespace Framework
 		glm::vec2 vel;
 		glm::vec2 angVel;
 
-    RigidBody (){}
+
+		RigidBody(GameObject * obj)
+		{
+			gameObject = obj;
+			vel = { 1, -1 };
+			angVel = { 0, 0 };
+		};
+
+		RigidBody(){}
+
 		~RigidBody();
 
-    virtual void Initialize ();
-    virtual void Serialize (Serializer::DataNode* data);
+		/*!Telegraph that the component is active*/
+		void Initialize();
+		void Serialize(Serializer::DataNode* data);
+		void Update();
+
 		float getMass(void)
 		{
 			return mass;
 		}
 
+		float getInvMass(void)
+		{
+			return invMass;
+		}
+
+		void Integrate(float _dt, GameObject * obj);
 
 	private:
 		float mass;
+		float invMass;
 
 	};
 } //Framework

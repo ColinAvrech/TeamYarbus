@@ -113,5 +113,6 @@ namespace Framework
   // Time Related Events
 
   DeclareEvent(UPDATEEVENT, U)
+  DeclareEvent(COLLISION, C)
 
 }

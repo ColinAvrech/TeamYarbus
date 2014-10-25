@@ -35,7 +35,8 @@ factory in the next loop.
 #include "Component.h"
 #include <map>
 #include "Vec2.h"
-#include "ShapeCollider.h"
+#include "IncludeForAllCollision.h"
+#include "CharacterController.h"
 
 namespace Framework
 {
@@ -63,13 +64,13 @@ namespace Framework
     */
 
     //Components
-    ComponentPointer (Transform);
-    ComponentPointer (Sprite);
-    ComponentPointer (CircleCollider);
-    ComponentPointer (LineCollider);
-    ComponentPointer (PointCollider);
-    ComponentPointer (RigidBody);
-    ComponentPointer (Camera);
+    ComponentPointer(Transform);
+    ComponentPointer(Sprite);
+    ComponentPointer(CircleCollider);
+	ComponentPointer(LineCollider);
+	ComponentPointer(RigidBody);
+    ComponentPointer(PointCollider);
+	ComponentPointer(CharacterController);
 
 
     // when framework is removed

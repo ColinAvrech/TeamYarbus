@@ -8,12 +8,13 @@
 /******************************************************************************/
 #include "ShapeCollider.h"
 
+#pragma once
 namespace Framework
 {
 	class PointCollider;
 	class CircleCollider;
 
-	class LineCollider : public ShapeCollider
+	class SplineCollider : public ShapeCollider
 	{
 	public:
 		const static std::string Name;
@@ -22,12 +23,12 @@ namespace Framework
 		glm::vec2 p1; //points
 		glm::vec2 p2;
 
-		LineCollider(GameObject *obj)
+		SplineCollider(GameObject *obj)
 		{
 			gameObject = obj;
 		}
 
-		~LineCollider(){};
+		~SplineCollider(){};
 
 		void Initialize();
 		void Serialize();

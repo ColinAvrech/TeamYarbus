@@ -13,6 +13,8 @@ starts the game loop.
 #define WINDOWSBUILD
 #ifdef WINDOWSBUILD
 
+
+
 #include "Common.h"
 #include "WindowSystem.h"
 #include "EventSystem.h"
@@ -26,8 +28,11 @@ starts the game loop.
 #include "Serializer/JSONSerializer.h"
 
 
-#include "Delegates.h"
-#include "UpdateEvent.h"
+//testing includes
+#include "ComponentInclude.h"
+#include "RigidBody.h"
+#include "ShapeCollider.h"
+#include "ObjectSystem.h"
 
 
 #define _DEGUB
@@ -38,20 +43,17 @@ const char WindowTitle[] = "CinderEngine";
 const int ClientWidth = 1024;
 const int ClientHeight = 768;
 
-void MyGlobal(UpdateEvent * e)
+void TestEventTest(GameObject* obj, CollisionEvent* _event)
 {
-  std::cout << "MyGlobal's Time is:" << e->Dt << std::endl;
+  // Test for CollisionEvent
+  std::cout << Console::darkmagenta << "COLLISION EVENT" << std::endl;
+
+
+  //Test for LogicUpdateEvent
+  //std::cout << Console::red << "I am UpdateEvent!" << std::endl;
+  //std::cout << Console::blue << "dt:" << _event->Dt << std::endl;
+  //std::cout << Console::green << "TimePassed:" << _event->TimePassed << std::endl;
 }
-
-class MyClass
-{
-public:
-  void print(UpdateEvent* e)
-  {
-    std::cout << "MyClass's Time is:" << e->Dt << std::endl;
-  }
-
-};
 
 int main(void)
 {
@@ -61,23 +63,33 @@ int main(void)
   Console::Create_Cinder_Console("CinderEngineConsole");
   // TODO Make console accept input by pressing '`', if '`' is pressed again return to game
 
+  //Test parser
+  Serializer::ZeroSerializer testarchive;
+
+  testarchive.open("EnemyProjectile.Archetype.data");
+
+  testarchive.CreateArchive();
+  
+  testarchive.DumpArchive(testarchive.GetTrunk());
+  
+
   /*! Initialize the game engine*/
   
   //! Create the core engine which manages all systems.
   
-  CoreEngine             *engine       = new CoreEngine();
-  WindowSystem           *windows      = new WindowSystem (WindowTitle, ClientWidth, ClientHeight);
-  SceneManager           *sceneManager = new SceneManager ();
-  AudioSystem            *audio        = new AudioSystem();
-  EventSystem            *events       = new EventSystem ();
+  CoreEngine * engine         = new CoreEngine();
+  WindowSystem * windows      = new WindowSystem (WindowTitle, ClientWidth, ClientHeight);
+  SceneManager* sceneManager = new SceneManager ();
+  AudioSystem* audio          = new AudioSystem();
+  EventSystem * events        = new EventSystem ();
   ScriptSystem::
-  ScriptSystem           *zilch        = new ScriptSystem::ScriptSystem();
+  ScriptSystem * zilch      = new ScriptSystem::ScriptSystem();
   Physics::
-    ThermodynamicsSystem *thermo       = new Physics::ThermodynamicsSystem();
-  Physics::PhysicsSystem *phys         = new Physics::PhysicsSystem();
+    ThermodynamicsSystem * thermo = new Physics::ThermodynamicsSystem();
+  Physics::PhysicsSystem * phys = new Physics::PhysicsSystem();
 
   //test
-  ObjectSystem           *objsys       = new ObjectSystem();
+  ObjectSystem* objsys = new ObjectSystem();
   /*
   GameObject* testStaticCircle = new GameObject(1);
   testStaticCircle->AddComponent("RigidBody");
@@ -86,9 +98,8 @@ int main(void)
 
   //GameObject* testDynamicCircle = new GameObject(2);
 
-  engine->AddSystem(phys);
-  engine->AddSystem(sceneManager);
-  engine->AddSystem(windows);
+  engine->AddSystem (phys);
+  engine->AddSystem (windows);
   engine->AddSystem(audio);
   engine->AddSystem(events);
   engine->AddSystem(zilch);
@@ -101,25 +112,13 @@ int main(void)
   //! Initialize all added Systems. DON'T INIT YOUR OWN
   engine->Initialize();
 
-  //resourceManager.Get_Sound("music.mp3")->Play();
+  resourceManager.Get_Sound("music.mp3")->Play();
   
   audio->LoadMicData();
 
   //! activate the window.
-  OBJECTSYSTEM->LoadLevel ("Level.data");
+  OBJECTSYSTEM->LoadLevel ("PhysicsTest.data");
   //! Run the game! NOW!
-
-
-  //Example Code for Event System
-  /*
-  //Global function
-  EVENTSYSTEM->gConnect<UpdateEvent>(Events::UPDATEEVENT, &MyGlobal);
-
-  //Member Function
-  MyClass My_class;
-  EVENTSYSTEM->mConnect<UpdateEvent, MyClass>(Events::UPDATEEVENT, &My_class, &MyClass::print);
-  */
-
   engine->GameLoop();
 
   //! Delete all systems

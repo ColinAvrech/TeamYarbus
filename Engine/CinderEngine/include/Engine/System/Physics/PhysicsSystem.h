@@ -54,7 +54,10 @@ namespace Framework
 
 
 		private:
-
+			float accumlator;
+			float frameStart;
+			float CurrentTime;
+			
 
 		};
 		extern PhysicsSystem *PHYSICSSYSTEM;

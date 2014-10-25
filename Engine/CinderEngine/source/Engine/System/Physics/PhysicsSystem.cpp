@@ -22,7 +22,12 @@ namespace Framework
 
 		// Called every frame
 		void PhysicsSystem::Update(const double dt)
-		{}
+		{
+			const float currentTime = GetCurrentTime();
+			//accumulator += currentTime - frameStart;
+			frameStart = currentTime;
+		
+		}
 		//{
 		//	UpdateCollision();
 		//	UpdateResolution();

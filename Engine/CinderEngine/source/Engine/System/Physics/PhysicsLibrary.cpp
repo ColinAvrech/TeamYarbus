@@ -1,4 +1,5 @@
 #include "PhysicsLibrary.h"
+#include "RigidBody.h"
 #include "GraphicsCommon.h"
 
 namespace Framework
