@@ -79,7 +79,7 @@ namespace Framework
           HeatMap[i][j] = (rand() % 10) +300.f;
         }
       }
-      HeatMap[1][1] = 400.f;
+      HeatMap[1][1] = 410.f;
 
       //Allocate Oxygen/Density map
       OxygenMap = new float*[100];
