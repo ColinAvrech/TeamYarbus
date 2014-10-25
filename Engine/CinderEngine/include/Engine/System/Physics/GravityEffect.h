@@ -21,11 +21,11 @@ namespace Framework
     GravityEffect(){};
     ~GravityEffect(){};
     //Properties==================================
-    bool Active;
-    bool WakeUpOnChange;
-    bool LocalSpace;
-    float Strength;      //scale gravity vector by this
-    glm::vec3 Direction; //not normalized
+    bool active;
+    bool wakeUpOnChange;
+    bool localSpace;
+    float strength;      //scale gravity vector by this
+    glm::vec3 direction; //not normalized
 
     //virtual member functions===================
     /*!Telegraph that the component is active*/

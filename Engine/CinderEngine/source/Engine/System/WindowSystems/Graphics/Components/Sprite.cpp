@@ -52,10 +52,17 @@ namespace Framework
     // texture  : Texture*      Resources::RS->Get_Texture (Serialized String Name);
     // atlas    : SpriteSheet*  Resources::RS->Get_SpriteSheet (Serialized String Name);
     //////////////////////////////////////////////////////////////////////////
-    texture = Resources::RS->Get_Texture (*data->value_.String_);
-    data = data->next;
-    shader = Resources::RS->Get_Shader (*data->value_.String_);
-    animated = false;
+	  Serializer::DataNode* value = data->FindElement(data, "SpriteSource");
+	  std::string texname;
+	  value->GetValue(&texname);
+	  texture = Resources::RS->Get_Texture(texname);
+
+	  value = data->FindElement(data, "Shader");
+	  std::string shadername;
+	  value->GetValue(&shadername);
+	  shader = Resources::RS->Get_Shader(shadername);
+
+	  animated = false;
   }
 
 

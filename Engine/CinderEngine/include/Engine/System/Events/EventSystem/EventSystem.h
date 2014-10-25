@@ -14,9 +14,7 @@
 #include "Common.h"
 #include "BaseSystem.h"
 #include "BaseEvent.h"
-
 #include "Events.h"
-
 #include "MouseEvent.h"
 #include "UpdateEvent.h"
 #include "KeyEvent.h"

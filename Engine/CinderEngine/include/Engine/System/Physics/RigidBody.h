@@ -42,16 +42,30 @@ namespace Framework
 			angVel = { 0, 0 };
 		};
 
+		RigidBody(){}
+
 		~RigidBody();
+
+		/*!Telegraph that the component is active*/
+		void Initialize();
+		void Serialize(Serializer::DataNode* data);
+		void Update();
 
 		float getMass(void)
 		{
 			return mass;
 		}
 
+		float getInvMass(void)
+		{
+			return invMass;
+		}
+
+		void Integrate(float _dt, GameObject * obj);
 
 	private:
 		float mass;
+		float invMass;
 
 	};
 } //Framework

@@ -71,7 +71,7 @@ int main(void)
   testarchive.CreateArchive();
   
   testarchive.DumpArchive(testarchive.GetTrunk());
-
+  
 
   /*! Initialize the game engine*/
   
@@ -117,7 +117,7 @@ int main(void)
   audio->LoadMicData();
 
   //! activate the window.
-  OBJECTSYSTEM->LoadLevel ("Level.data");
+  OBJECTSYSTEM->LoadLevel ("PhysicsTest.data");
   //! Run the game! NOW!
   engine->GameLoop();
 
