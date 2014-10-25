@@ -27,6 +27,7 @@ solution "CinderEngine"
       "../include/**.h",
       "../source/**.cpp",
       "../source/**.c",
+	  "../source/**.tpp",
       "../../Resources/Shaders/**.glsl",
       "../../Resources/**.txt",
       "../../Resources/**.data",
@@ -37,7 +38,9 @@ solution "CinderEngine"
                   "../dependency/zilch/include",
                   "../dependency/fmod/include",
 									"../dependency/AntTweakBar/include",
-                  "../include/**" }
+                  "../include/**",
+			      "../source/Engine/System/Events/**",
+				  }
     
     libdirs { "../dependency/opengl/library",
               "../dependency/zilch/library",

@@ -13,8 +13,6 @@ starts the game loop.
 #define WINDOWSBUILD
 #ifdef WINDOWSBUILD
 
-
-
 #include "Common.h"
 #include "WindowSystem.h"
 #include "EventSystem.h"
@@ -28,11 +26,8 @@ starts the game loop.
 #include "Serializer/JSONSerializer.h"
 
 
-//testing includes
-#include "ComponentInclude.h"
-#include "RigidBody.h"
-#include "ShapeCollider.h"
-#include "ObjectSystem.h"
+#include "Delegates.h"
+#include "UpdateEvent.h"
 
 
 #define _DEGUB
@@ -43,17 +38,20 @@ const char WindowTitle[] = "CinderEngine";
 const int ClientWidth = 1024;
 const int ClientHeight = 768;
 
-void TestEventTest(GameObject* obj, CollisionEvent* _event)
+void MyGlobal(UpdateEvent * e)
 {
-  // Test for CollisionEvent
-  std::cout << Console::darkmagenta << "COLLISION EVENT" << std::endl;
-
-
-  //Test for LogicUpdateEvent
-  //std::cout << Console::red << "I am UpdateEvent!" << std::endl;
-  //std::cout << Console::blue << "dt:" << _event->Dt << std::endl;
-  //std::cout << Console::green << "TimePassed:" << _event->TimePassed << std::endl;
+  std::cout << "MyGlobal's Time is:" << e->Dt << std::endl;
 }
+
+class MyClass
+{
+public:
+  void print(UpdateEvent* e)
+  {
+    std::cout << "MyClass's Time is:" << e->Dt << std::endl;
+  }
+
+};
 
 int main(void)
 {
@@ -62,16 +60,6 @@ int main(void)
   // TODO (EXTRA): make a window to show while the game is loading
   Console::Create_Cinder_Console("CinderEngineConsole");
   // TODO Make console accept input by pressing '`', if '`' is pressed again return to game
-
-  //Test parser
-  Serializer::ZeroSerializer testarchive;
-
-  testarchive.open("EnemyProjectile.Archetype.data");
-
-  testarchive.CreateArchive();
-  
-  testarchive.DumpArchive(testarchive.GetTrunk());
-
 
   /*! Initialize the game engine*/
   
@@ -120,6 +108,13 @@ int main(void)
   //! activate the window.
   OBJECTSYSTEM->LoadLevel ("Level.data");
   //! Run the game! NOW!
+
+  EVENTSYSTEM->gConnect<UpdateEvent>(Events::UPDATEEVENT, &MyGlobal);
+
+  MyClass My_class;
+  EVENTSYSTEM->mConnect<UpdateEvent, MyClass>(Events::UPDATEEVENT, &My_class, &MyClass::print);
+
+
   engine->GameLoop();
 
   //! Delete all systems

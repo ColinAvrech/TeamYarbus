@@ -9,7 +9,7 @@ namespace Framework
 	{
 		void Resolve(CollisionEvent* pre)
 		{
-			CollisionEvent post("CollisionEvent");
+			CollisionEvent post;
 			RigidBody::DynamicState stateA;
 			RigidBody::DynamicState stateB;
 

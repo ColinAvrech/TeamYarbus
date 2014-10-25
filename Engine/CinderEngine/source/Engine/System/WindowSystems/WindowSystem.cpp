@@ -47,12 +47,8 @@ namespace Framework
     /*Triggers a Key event if there are any listeners*/
     void TriggerKeyEvent(const std::string eventname, int key, int scanCode, int state, int mod)
     {
-      KeyEvent * triggered_key_event = (KeyEvent*)EVENTSYSTEM->GetEvent(eventname);
-      if (triggered_key_event != nullptr)
-      {
-        SetupKeyEvent(triggered_key_event, key, scanCode, state, mod);
-        triggered_key_event->DispatchEvent();
-      }
+      KeyEvent triggered_key_event;
+      SetupKeyEvent(&triggered_key_event, key, scanCode, state, mod);
     }
 
     /*Sets up the Key event before dispatching it*/

@@ -70,8 +70,8 @@ namespace Framework
 
   void Scene_ComputeTest::Load_Scene (const char* filename)
   {
-
-    EVENTSYSTEM->Connect (NULL, Events::KEY_ANY, BaseEvent::BaseCall (OnKeyPressed));
+    //#Connect
+    //EVENTSYSTEM->Connect (NULL, Events::KEY_ANY, BaseEvent::BaseCall (OnKeyPressed));
     clRenderer.GenerateTextures ();
     clRenderer.GenerateBuffers ();
     clRenderer.GenerateShaders ();

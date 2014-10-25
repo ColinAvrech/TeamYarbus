@@ -22,11 +22,7 @@ namespace Framework
 
 	void PointCollider::Initialize()
 	{
-		std::string ColEvent = std::string("UpdateEvent");
-
-		CollisionEvent* colevent = (CollisionEvent*)EVENTSYSTEM->GetEvent(ColEvent);
-		if (colevent == nullptr)
-			return;
+    gameObject->PointCollider = this;
 	}
 	void PointCollider::Update()
 	{
@@ -41,12 +37,10 @@ namespace Framework
 		float rad = c->GetRadius();
 		if (Physics::CirclevsPoint(rad, cpos, ppos))
 		{
-			std::string ColEvent = std::string("COLLISION");
-			CollisionEvent* collision = (CollisionEvent*)EVENTSYSTEM->GetEvent(ColEvent);
-			collision->OtherObject = c->gameObject;
-			collision->normal = cpos - ppos;
-			glm::normalize(collision->normal);
-			collision->DispatchEvent();
+      CollisionEvent collision;
+			collision.OtherObject = c->gameObject;
+			collision.normal = cpos - ppos;
+			glm::normalize(collision.normal);
 		}
 	}
 
@@ -55,12 +49,10 @@ namespace Framework
 		glm::vec2 pos = getPosition();
 		if (Physics::PointvsLine(pos, *l))
 		{
-			std::string ColEvent = std::string("COLLISION");
-			CollisionEvent* collision = (CollisionEvent*)EVENTSYSTEM->GetEvent(ColEvent);
-			collision->OtherObject = l->gameObject;
-			collision->normal = l->normalVec;
-			glm::normalize(collision->normal);
-			collision->DispatchEvent();
+      CollisionEvent collision;
+			collision.OtherObject = l->gameObject;
+			collision.normal = l->normalVec;
+			glm::normalize(collision.normal);
 		}
 	}
 	DefineComponentName(PointCollider);

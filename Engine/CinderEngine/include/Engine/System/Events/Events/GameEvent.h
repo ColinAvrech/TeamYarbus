@@ -19,20 +19,6 @@ namespace Framework
   class GameEvent : public BaseEvent
   {
   public:
-    typedef void(*GameCall)(GameObject*, GameEvent*);
-    GameEvent(const std::string)
-    {}
-
-    ~GameEvent()
-    {}
-
-    void DispatchEvent()
-    {
-      for each(auto it in Listeners)
-      {
-        ((GameCall)(it.second))(it.first, this);
-      }
-    }
 
   };
 }

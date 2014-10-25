@@ -19,21 +19,6 @@ namespace Framework
   class MouseEvent : public BaseEvent
   {
   public:
-    typedef void(*MouseCall)(GameObject*, MouseEvent*);
-
-    MouseEvent(const std::string)
-    {}
-
-    ~MouseEvent()
-    {}
-
-    void DispatchEvent()
-    {
-      for each(auto it in Listeners)
-      {
-        ((MouseCall)(it.second))(it.first, this);
-      }
-    }
     
     Vec2 MouseScreenPosition;
     Vec2 MouseScenePosition;
