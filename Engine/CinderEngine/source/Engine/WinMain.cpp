@@ -109,11 +109,16 @@ int main(void)
   OBJECTSYSTEM->LoadLevel ("Level.data");
   //! Run the game! NOW!
 
+
+  //Example Code for Event System
+  /*
+  //Global function
   EVENTSYSTEM->gConnect<UpdateEvent>(Events::UPDATEEVENT, &MyGlobal);
 
+  //Member Function
   MyClass My_class;
   EVENTSYSTEM->mConnect<UpdateEvent, MyClass>(Events::UPDATEEVENT, &My_class, &MyClass::print);
-
+  */
 
   engine->GameLoop();
 

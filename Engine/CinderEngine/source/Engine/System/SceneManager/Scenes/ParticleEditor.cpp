@@ -84,7 +84,7 @@ namespace Framework
   }
 
 
-  static void OnKeyPressed (GameObject* go, KeyEvent* key)
+  static void OnKeyPressed (KeyEvent* key)
   {
     if (key->KeyDown)
     switch (key->KeyValue)
@@ -117,8 +117,7 @@ namespace Framework
 
   void ParticleEditor::Load_Scene (const char* filename)
   {
-    // #Connect
-    // EVENTSYSTEM->Connect (NULL, Events::KEY_ANY, BaseEvent::BaseCall(OnKeyPressed));
+    EVENTSYSTEM->gConnect<KeyEvent>(Events::KEY_ANY, &OnKeyPressed);
 
     //TwInit (TW_OPENGL, NULL);
     // or
