@@ -19,24 +19,8 @@ namespace Framework
   class CollisionEvent : public BaseEvent
   {
   public:
-    typedef void(*CollisionCall)(GameObject*, CollisionEvent*);
 
-    CollisionEvent(const std::string eventname)
-    {
-	}
-
-    ~CollisionEvent()
-    {}
-    
-    void DispatchEvent()
-    {
-      for each(auto it in Listeners)
-      {
-        ((CollisionCall)(it.second))(it.first, this);
-      }
-    }
-    
-    GameObject * OtherObject;
+  GameObject * OtherObject;
 	GameObject * thisObject;
 	//float penetration;
 	glm::vec2 normal;

@@ -12,6 +12,10 @@
 #define _GL_PARTICLE_RENDERER_H
 
 #include "ParticleRenderer.h"
+#include "VertexArrayObject.h"
+#include "VertexBufferObject.h"
+#include "ShaderStorageBufferObject.h"
+#include "ComputeShader.h"
 
 namespace Framework
 {
@@ -20,6 +24,11 @@ namespace Framework
   // RENDERS PARTICLES AS POINTS
   class GLParticleRenderer : public IParticleRenderer
   {
+    VAO* vao;
+    VBO* vbo;
+    SSBO* SSBOCol;
+    ComputeShader* cs;
+    Shader* shader;
   protected:
     ParticleSystem *m_system{ nullptr };
 
@@ -34,6 +43,7 @@ namespace Framework
     void destroy () override;
     void update () override;
     void render () override;
+    void ResetColor (int particleCount);
   };
 }
 

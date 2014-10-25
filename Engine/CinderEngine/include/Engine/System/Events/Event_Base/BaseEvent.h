@@ -33,16 +33,7 @@ namespace Framework
     BaseEvent::~BaseEvent()
     {
     }
-
-
-    //typedef std::function<void(*(GameObject*, BaseEvent*))> BaseCall;
-    typedef void(*BaseCall)(GameObject*, BaseEvent*);
-    typedef std::pair<GameObject*, BaseCall> BaseEventListener;
-    typedef std::vector<BaseEventListener> VectorBaseEventListeners;
-
-    VectorBaseEventListeners Listeners;
-
-    double Dt;
   };
+
 
 }

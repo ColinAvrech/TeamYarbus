@@ -1,6 +1,6 @@
 /******************************************************************************/
 /*!
-\file   Events.cpp
+\file   Delegates.cpp
 \author Micah Rust
 \par    Course: GAM200
 \par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
@@ -9,16 +9,30 @@
 /******************************************************************************/
 
 
-
 #include "Common.h"
-#include "Events.h"
+#include "Delegates.h"
+
 
 namespace Framework
 {
-  std::string CollisionEventName(unsigned GameObjectID)
+
+
+
+  void EventDeployer::TriggerEvent(BaseEvent& e)
   {
-    std::string ColEventStr = std::string("C");
-    ColEventStr.append(std::to_string(GameObjectID));
-    return ColEventStr;
+    for each(auto del in Delegates)
+    {
+      del->Invoke(&e);
+    }
   }
+
+  void EventDeployer::DisconnectAll()
+  {
+    for each(auto del in Delegates)
+    {
+      delete del;
+    }
+    Delegates.clear();
+  }
+
 }

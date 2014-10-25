@@ -18,27 +18,9 @@ namespace Framework
 
   class UpdateEvent : public BaseEvent
   {
-
   public:
-
-    typedef void(*UpdateCall)(GameObject*, UpdateEvent*);
-
-    UpdateEvent(const std::string eventname)
-    {}
-
-    ~UpdateEvent()
-    {}
-    
-    void DispatchEvent()
-    {
-      for each(auto it in Listeners)
-      {
-        ((UpdateCall)(it.second))(it.first, this);
-      }
-    }
-
-    double TimePassed;
-    
+    float Dt;
+    float TimePassed;
   };
 
 }

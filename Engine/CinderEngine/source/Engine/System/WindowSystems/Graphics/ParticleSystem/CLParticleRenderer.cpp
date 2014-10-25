@@ -10,11 +10,18 @@
 
 #include "CLParticleRenderer.h"
 #include "WindowSystem.h"
+#include "EventSystem.h"
+#include "BaseEvent.h"
+#include "KeyEvent.h"
+#include "Thermodynamics.h"
 
 namespace Framework
 {
+  static double cursorX = 0, cursorY = 0;
+  static GLuint fbo, rbo;
   static float decayRate = 2.0f;
   static float breathRate = 0.01f;
+  static float offset = 0.75f;
   static float random (float fMin, float fMax)
   {
     float fRandNum = (float) rand () / RAND_MAX;
@@ -24,18 +31,19 @@ namespace Framework
 
   CLParticleRenderer::CLParticleRenderer ()
   {
-    particleCount = MILLION;
-    particleSize = 1.0f;
+    particleCount = 400;
+    particleSize = 100;
     srand ((unsigned) time (NULL));
-    color [0] = random (64, 255);
-    color [1] = random (0, 120);
-    color [2] = random (0, 40);
+    color [0] = 255;
+    color [1] = 80;
+    color [2] = 0;
+    color [3] = 0.1f;
     colorChangeTimer = 1000.0f;
   }
 
   CLParticleRenderer::~CLParticleRenderer ()
   {
-
+    delete SSBOPos, SSBOVel, vao;
   }
 
   void CLParticleRenderer::GenerateShaders ()
@@ -49,65 +57,70 @@ namespace Framework
   {
     // OpenGL 3.3+
     // Create a VAO and never use it again!!!
-    GLuint VAO;
-    glGenVertexArrays (1, &VAO);
-    glBindVertexArray (VAO);
+    vao = new VAO ();
+    SSBOPos = new SSBO (particleCount * sizeof (glm::vec4));
 
-    // Position SSBO
-    if (glIsBuffer (SSBOPos)) {
-      glDeleteBuffers (1, &SSBOPos);
-    };
-    glGenBuffers (1, &SSBOPos);
-    // Bind to SSBO
-    glBindBuffer (GL_SHADER_STORAGE_BUFFER, SSBOPos);
-    // Generate empty storage for the SSBO
-    glBufferData (GL_SHADER_STORAGE_BUFFER, particleCount * sizeof(vertex4f), NULL, GL_STATIC_DRAW);
     // Fill
     ResetPosition ();
     // Bind buffer to target index 0
-    glBindBufferBase (GL_SHADER_STORAGE_BUFFER, 0, SSBOPos);
+    SSBOPos->BindBufferBase (0);
 
-    // Velocity SSBO
-    if (glIsBuffer (SSBOVel)) {
-      glDeleteBuffers (1, &SSBOVel);
-    };
-    glGenBuffers (1, &SSBOVel);
-    // Bind to SSBO
-    glBindBuffer (GL_SHADER_STORAGE_BUFFER, SSBOVel);
-    // Generate empty storage for the SSBO
-    glBufferData (GL_SHADER_STORAGE_BUFFER, particleCount * sizeof(vertex4f), NULL, GL_STATIC_DRAW);
-    // Fill
+
+    SSBOVel = new SSBO (particleCount * sizeof(glm::vec4));
     ResetVelocity ();
     // Bind buffer to target index 1
-    glBindBufferBase (GL_SHADER_STORAGE_BUFFER, 1, SSBOVel);
+    SSBOVel->BindBufferBase (1);
   }
 
   void CLParticleRenderer::ResetBuffers ()
   {
-    glBindBuffer (GL_SHADER_STORAGE_BUFFER, SSBOPos);
+    SSBOPos->BindBuffer ();
     ResetPosition ();
-    glBindBuffer (GL_SHADER_STORAGE_BUFFER, SSBOVel);
+    SSBOVel->BindBuffer ();
     ResetVelocity ();
   }
+
+
+  static void OnKeyPressed (GameObject* go, KeyEvent* key)
+  {
+    std::cout << cursorX << std::endl;
+    if (key->KeyDown)
+    {
+      if (key->KeyValue == GLFW_KEY_A)
+        cursorX -= 5.f;
+      else if (key->KeyValue == GLFW_KEY_D)
+        cursorX += 5.f;
+
+      if (key->KeyValue == GLFW_KEY_D)
+        cursorY -= 5.f;
+      else if (key->KeyValue == GLFW_KEY_W)
+        cursorY += 5.f;
+    }
+  }
+
 
   void CLParticleRenderer::GenerateTextures ()
   {
     texture = Resources::RS->Get_Texture ("Particle.bmp");
+    // #Connect
+    // EVENTSYSTEM->Connect (NULL, Events::KEY_ANY, BaseEvent::BaseCall (OnKeyPressed));
+    cursorX = WINDOWSYSTEM->Get_Width () / 2;
+    cursorY = WINDOWSYSTEM->Get_Height () / 2;
   }
 
   void CLParticleRenderer::ResetPosition ()
   {
     // Reset to mouse cursor pos
-    double cursorX, cursorY;
+    //double cursorX, cursorY;
     int windowWidth, windowHeight;
     glfwPollEvents ();
-    glfwGetCursorPos (WINDOWSYSTEM->Get_Window(), &cursorX, &cursorY);
+    //glfwGetCursorPos (WINDOWSYSTEM->Get_Window(), &cursorX, &cursorY);
     glfwGetWindowSize (WINDOWSYSTEM->Get_Window(), &windowWidth, &windowHeight);
 
     float destPosX = (float) (cursorX / (windowWidth) -0.5f) * 2.0f;
     float destPosY = (float) ((windowHeight - cursorY) / windowHeight - 0.5f) * 2.0f;
 
-    struct vertex4f* verticesPos = (struct vertex4f*) glMapBufferRange (GL_SHADER_STORAGE_BUFFER, 0, particleCount * sizeof(vertex4f), GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_BUFFER_BIT);
+    glm::vec4* verticesPos = (glm::vec4*) SSBOPos->MapBufferRange<glm::vec4> (0, particleCount);
     for (int i = 0; i < particleCount; i++)
     {
       float rnd = (float) rand () / (float) (RAND_MAX);
@@ -118,13 +131,13 @@ namespace Framework
       verticesPos [i].z = 0.0f;
       verticesPos [i].w = 1.0f;
     }
-    glUnmapBuffer (GL_SHADER_STORAGE_BUFFER);
+    SSBOPos->UnMapBuffer ();
   }
 
 
   void CLParticleRenderer::ResetVelocity ()
   {
-    struct vertex4f* verticesVel = (struct vertex4f*) glMapBufferRange (GL_SHADER_STORAGE_BUFFER, 0, particleCount * sizeof(vertex4f), GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_BUFFER_BIT);
+    glm::vec4* verticesVel = SSBOVel->MapBufferRange<glm::vec4> (0, particleCount);
     for (int i = 0; i < particleCount; i++)
     {
       verticesVel [i].x = 0.0f;
@@ -132,13 +145,86 @@ namespace Framework
       verticesVel [i].z = 0.0f;
       verticesVel [i].w = 1.0f;
     }
-    glUnmapBuffer (GL_SHADER_STORAGE_BUFFER);
+    SSBOVel->UnMapBuffer ();
   }
 
 
   void CLParticleRenderer::Render ()
   {
-    /*if (colorFade)
+    Interpolate_Colors ();
+    vao->bindVAO ();
+    SSBOPos->BindBufferBase (0);
+    SSBOVel->BindBufferBase (1);
+
+    if (AUDIOSYSTEM->input.peaklevel[0] > 0.05f)
+    {
+      if (color [3] < 1) color[3] += AUDIOSYSTEM->input.peaklevel[0] * 0.1f;
+      //printf("%f\n", color[3]);
+    }
+    else
+    {
+      if (color[3] > 0.1f) color[3] -= 0.016f;
+    }
+    double frameTimeStart = glfwGetTime () * 1000;
+
+    glEnable (GL_BLEND);
+    glBlendFunc (GL_SRC_ALPHA, GL_ONE);
+
+    // Run compute shader
+
+    //double cursorX, cursorY;
+    int windowWidth, windowHeight;
+    //glfwGetCursorPos (WINDOWSYSTEM->Get_Window(), &cursorX, &cursorY);
+    glfwGetWindowSize (WINDOWSYSTEM->Get_Window(), &windowWidth, &windowHeight);
+
+    float destPosX = (float) (cursorX / (windowWidth) -0.5f) * 2.0f;
+    float destPosY = (float) ((windowHeight - cursorY) / windowHeight - 0.5f) * 2.0f;
+
+    computeshader->Use ();
+    computeshader->uni1f ("deltaT", 2 * speedMultiplier * (pause ? 0 : 1));
+    computeshader->uni3f ("destPos", destPosX, destPosY, 0);
+    computeshader->uni2f ("vpDim", 1, 1);
+    computeshader->uni1i("borderClamp", (int) borderEnabled);
+    std::cout << "{ " << Physics::THERMODYNAMICS->GetCellVelocity(20, 20).x << ", " << Physics::THERMODYNAMICS->GetCellVelocity(20, 20).y << " }\n";
+    computeshader->uni2fv ("cellVelocity", glm::value_ptr (Physics::THERMODYNAMICS->GetCellVelocity (20, 20)));
+    
+    //std::cout << Physics::THERMODYNAMICS->GetCellTemperature (20, 20) << "\n";
+
+    int workingGroups = particleCount / 16;
+
+    computeshader->Dispatch_Compute (workingGroups + 1, 1, 1);
+
+    computeshader->Disable ();
+
+    // Set memory barrier on per vertex base to make sure we get what was written by the compute shaders
+    glMemoryBarrier (GL_VERTEX_ATTRIB_ARRAY_BARRIER_BIT);
+
+    // Render scene
+
+    shader->Use ();
+
+    shader->uni4f ("Color", color [0] / 255.0f, color [1] / 255.0f, color [2] / 255.0f, color [3]);
+
+    glGetError ();
+
+    texture->Bind ();
+    GLuint posAttrib = shader->attribLocation ("position");
+
+    glBindBuffer (GL_ARRAY_BUFFER, SSBOPos->Get_POS());
+    shader->vertexAttribPtr (posAttrib, 4, GL_FLOAT, GL_FALSE, 0, 0);
+    shader->enableVertexAttribArray (posAttrib);
+    glPointSize (particleSize);
+    glDrawArrays (GL_POINTS, 0, particleCount);
+
+    texture->Unbind ();
+    shader->Disable ();
+
+    frameDelta = (float) (glfwGetTime () - frameTimeStart) * 1000.0f;
+  }
+
+  void CLParticleRenderer::Interpolate_Colors ()
+  {
+    if (colorFade)
     {
       colorChangeTimer -= frameDelta * 25.0f;
 
@@ -173,71 +259,7 @@ namespace Framework
       color [0] = 255.0f;
       color [1] = 64.0f;
       color [2] = 0.0f;
-    }*/
-
-    if (AUDIOSYSTEM->input.peaklevel[0] > 0.05f)
-    {
-      if (color [3] < 1) color[3] += AUDIOSYSTEM->input.peaklevel[0] * 0.1f;
-      //printf("%f\n", color[3]);
     }
-    else
-    {
-      if (color[3] > 0.1f) color[3] -= 0.016f;
-    }
-    double frameTimeStart = glfwGetTime ();
-
-    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    glEnable (GL_BLEND);
-    glBlendFunc (GL_SRC_ALPHA, GL_ONE);
-
-    // Run compute shader
-
-    double cursorX, cursorY;
-    int windowWidth, windowHeight;
-    glfwGetCursorPos (WINDOWSYSTEM->Get_Window(), &cursorX, &cursorY);
-    glfwGetWindowSize (WINDOWSYSTEM->Get_Window(), &windowWidth, &windowHeight);
-
-    float destPosX = (float) (cursorX / (windowWidth) -0.5f) * 2.0f;
-    float destPosY = (float) ((windowHeight - cursorY) / windowHeight - 0.5f) * 2.0f;
-
-    computeshader->Use ();
-    computeshader->uni1f ("deltaT", frameDelta * speedMultiplier * (pause ? 0 : 1));
-    computeshader->uni3f ("destPos", destPosX, destPosY, 0);
-    computeshader->uni2f ("vpDim", 1, 1);
-    computeshader->uni1i("borderClamp", (int) borderEnabled);
-
-    int workingGroups = particleCount / 16;
-
-    //glDispatchCompute (workingGroups, 1, 1);
-    computeshader->Dispatch_Compute (workingGroups, 1, 1);
-
-    computeshader->Disable ();
-
-    // Set memory barrier on per vertex base to make sure we get what was written by the compute shaders
-    glMemoryBarrier (GL_VERTEX_ATTRIB_ARRAY_BARRIER_BIT);
-
-    // Render scene
-
-    shader->Use ();
-
-    shader->uni4f ("Color", color [0] / 255.0f, color [1] / 255.0f, color [2] / 255.0f, color [3]);
-
-    glGetError ();
-
-    texture->Bind ();
-    GLuint posAttrib = shader->attribLocation ("position");
-
-    glBindBuffer (GL_ARRAY_BUFFER, SSBOPos);
-    shader->vertexAttribPtr (posAttrib, 4, GL_FLOAT, GL_FALSE, 0, 0);
-    shader->enableVertexAttribArray (posAttrib);
-    glPointSize (particleSize);
-    glDrawArrays (GL_POINTS, 0, particleCount);
-
-    texture->Unbind ();
-    shader->Disable ();
-
-    frameDelta = (float) (glfwGetTime () - frameTimeStart) * 100.0f;
   }
 
 }

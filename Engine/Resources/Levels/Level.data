@@ -66,29 +66,6 @@ Level =
 			float Size = 1.5,
 		},
   },
-	Cog = 
-	{
-		LinkId = 
-		{
-			uint Id = 4,
-		},
-		Named = 
-		{
-			string Name = "ball1",
-		},
-		Transform = 
-		{
-			Vec3 Translation = [0, 0, -1],
-			Vec3 Scale = [0.1, 0.1, 0.1],
-			Quat Rotation = [0, 0, 0, 1],
-		},
-		Sprite = 
-		{
-			string SpriteSource = "Circle.png",
-      string Shader = "Default",
-			bool AnimationActive = false,
-		},
-  },
   Cog = 
 	{
 		LinkId = 
@@ -97,18 +74,18 @@ Level =
 		},
 		Named = 
 		{
-			string Name = "ball2",
+			string Name = "bg",
 		},
 		Transform = 
 		{
-			Vec3 Translation = [1, 0, -1],
-			Vec3 Scale = [0.1, 0.1, 0.1],
+			Vec3 Translation = [0, 0, -1],
+			Vec3 Scale = [3, 3, 3],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Sprite = 
 		{
-			string SpriteSource = "Circle.png",
-      string Shader = "Default",
+			string SpriteSource = "EnvHighRes.png",
+			string Shader = "Lighting",
 			bool AnimationActive = false,
 		},
   },

@@ -16,13 +16,14 @@ namespace Framework
 {
 	void LineCollider::Initialize()
 	{
-	};
+    gameObject->LineCollider = this;
+	}
 	void LineCollider::Serialize()
 	{
-	};
+	}
 	void LineCollider::Update()
 	{
-	};
+	}
 
 	// Getters
 	//glm::vec2 GetNormal(void) { return normalVec; }

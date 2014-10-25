@@ -1,5 +1,12 @@
 #version 430
 
+struct Particle
+{
+  vec4 Position;
+  vec4 Color;
+};
+
+
 // Target 0 : Vertex position
 layout(std140, binding = 0) buffer Pos
 {
@@ -21,6 +28,7 @@ const vec3 gravity = vec3(0, -9.8f, 0);
 uniform float deltaT;
 uniform vec3 destPos;
 uniform int animate;
+uniform vec2 cellVelocity;
 
 // Viewport dimensions for border clamp
 uniform vec2 vpDim;
@@ -36,14 +44,11 @@ void main()
   vec3 vPos = Positions[index].xyz;
   vec3 vVel = Velocities[index].xyz;
 
-
-  {
   // Calculate new velocity depending on attraction point
-  vVel += normalize(destPos - vPos) * 0.001 * deltaT;
+  vVel += normalize(destPos - vPos) * 0.001 * sin (destPos);
 
   // Move by velocity
   vPos += vVel * deltaT;
-  }
 
 
   if (borderClamp == 1.0f)

@@ -9,6 +9,7 @@
 /******************************************************************************/
 
 #include "Transform.h"
+#include "GameObject.h"
 
 namespace Framework
 {
@@ -31,6 +32,7 @@ namespace Framework
 
   void Transform::Initialize ()
   {
+    gameObject->Transform = this;
     modelMatrix.push_back (glm::mat4 (1));
     modelViewProjectionmatrix.push_back (glm::mat4 (1));
     normalMatrix = glm::mat3 (1);

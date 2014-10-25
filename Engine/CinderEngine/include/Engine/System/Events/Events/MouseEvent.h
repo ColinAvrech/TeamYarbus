@@ -21,22 +21,7 @@ namespace Framework
   {
   public:
 
-    typedef void(*MouseCall)(GameObject*, MouseEvent*);
-    MouseEvent(const std::string)
-    {}
-
-    ~MouseEvent()
-    {}
-
-    void DispatchEvent()
-    {
-      for each(auto it in Listeners)
-      {
-        ((MouseCall)(it.second))(it.first, this);
-      }
-    }
-
     bool ButtonDown;
-    Vec2 MousePosition;
+    glm::vec2 MousePosition;
   };
 }

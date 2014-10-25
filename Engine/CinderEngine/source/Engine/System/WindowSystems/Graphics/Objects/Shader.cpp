@@ -33,7 +33,7 @@ namespace Framework
   {
     vertexShader = Create_Shader (vs, GL_VERTEX_SHADER);
     fragmentShader = Create_Shader (fs, GL_FRAGMENT_SHADER);
-    shaderProgram = Create_Program (vertexShader, fragmentShader, geometryShader);
+    shaderProgram = Create_Program ("", vertexShader, fragmentShader, geometryShader);
   }
 
 
@@ -73,13 +73,13 @@ namespace Framework
     char log [1000];
     glGetShaderInfoLog (shader, 1000, NULL, log);
 
-    std::cout << filename << " Compile Status:\n" << log << std::endl;
+    std::cout << Console::green << filename << Console::yellow << "\nCompile Status...\n" << Console::red << log << Console::gray << "\n--------------" << std::endl;
 
     return shader;
   }
 
 
-  GLuint Shader::Create_Shader (std::string shaderSource, GLenum shaderType)
+  GLuint Shader::Create_Shader (const char* filename, std::string shaderSource, GLenum shaderType)
   {
     const char* source = shaderSource.c_str ();
     GLuint shader = glCreateShader (shaderType);
@@ -88,14 +88,14 @@ namespace Framework
     char log [1000];
     glGetShaderInfoLog (shader, 1000, NULL, log);
 
-    std::cout << "Compile Status..." << log << std::endl;
+    std::cout << Console::green << filename << Console::yellow << "\nCompile Status...\n" << Console::red << log << Console::gray << "\n--------------" << std::endl;
 
     return shader;
   }
 
 
-  GLuint Shader::Create_Program (GLuint _vertexShader, GLuint _fragmentShader, GLuint _geometryShader/*= 0*/)
-  {
+  GLuint Shader::Create_Program(std::string name, GLuint _vertexShader, GLuint _fragmentShader, GLuint _geometryShader /*= 0*/)
+{
     GLuint program = glCreateProgram ();
     glAttachShader (program, _vertexShader);
     glAttachShader (program, _fragmentShader);
@@ -103,6 +103,9 @@ namespace Framework
       glAttachShader (program, _geometryShader);
     //glBindFragDataLocation (shaderProgram, 0, "outColor");
     glLinkProgram (program);
+    char log [1000];
+    glGetProgramInfoLog (program, 1000, NULL, log);
+    std::cout << Console::yellow << "\n" << name << "\nLink Status...\n" << Console::red << log << Console::gray << "\n--------------" << std::endl;
 
     return program;
   }

@@ -44,9 +44,9 @@ namespace Framework
   // HARD CODED FOR NOW
   void SceneManager::Load_Scene (Scene* scene)
   {
-    //scene = new Scene_CollisionTest ();
-    //scene->Load_Scene (NULL);
-    //current = scene;
+    scene = new ParticleEditor ();
+    scene->Load_Scene (NULL);
+    current = scene;
   }
 
 
@@ -60,8 +60,8 @@ namespace Framework
   // Called Every Frame
   void SceneManager::Update (const double dt)
   {
-    //current->Update (dt);
-    //current->Draw ();
+    current->Update (dt);
+    current->Draw ();
   }
 
 
@@ -78,7 +78,7 @@ namespace Framework
   void SceneManager::Change_Size (int w, int h)
   {
     glViewport (0, 0, w, h);
-    //current->Change_Size (w, h);
+    current->Change_Size (w, h);
   }
 
 }

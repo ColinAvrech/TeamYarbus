@@ -12,6 +12,8 @@
 #define _PARTICLE_UPDATERS_H
 
 #include "Particles.h"
+#include "ShaderStorageBufferObject.h"
+#include "ComputeShader.h"
 
 namespace Framework
 {
@@ -23,9 +25,12 @@ namespace Framework
   {
   public:
     glm::vec4 m_globalAcceleration;
+    ComputeShader* cs;
+    SSBO* SSBOPos;
+    int particleCount;
   public:
     EulerUpdater () : m_globalAcceleration (0.0) { }
-
+    void init (int maxCount);
     virtual void update (double dt, ParticleData *p) override;
   };
 
@@ -61,7 +66,12 @@ namespace Framework
 
   class BasicColorUpdater : public ParticleUpdater
   {
+    ComputeShader* computeShader;
+    SSBO* SSBOColor;
+    void ResetColorSSBO ();
+    size_t particleCount;
   public:
+    GLuint Init (size_t n);
     virtual void update (double dt, ParticleData *p) override;
   };
 

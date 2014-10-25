@@ -20,18 +20,9 @@ namespace Framework
   Camera* Camera::current = NULL;
   Camera* Camera::main = NULL;
 
-  Camera::Camera(GameObject* go) : up(0, 1, 0)
+  void Camera::Initialize ()
   {
-    gameObject = go;
-  }
-
-  void Camera::Initialize()
-  {
-    //viewDirection = glm::vec3 (0.0f, 0.0f, -1.0f);
-    //aspect = 1920.f / 1280;
-    //nearPlane = 0.1f;
-    //farPlane = 10.0f;
-    //fov = 120.0f;
+    gameObject->Camera = this;
     allCameras.push_back(this);
     if (mainCamera)
     {

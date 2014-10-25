@@ -20,6 +20,7 @@ function to handle windows Messages.
 #include "ComponentInclude.h"
 #include "EventSystem.h"
 #include "DebugRenderer.h"
+#include "CLParticleRenderer.h"
 
 namespace Framework
 {
@@ -32,6 +33,8 @@ namespace Framework
   static VBO* vbo;
   static EBO* ebo;
   static DebugRenderer dr;
+  static CLParticleRenderer clRenderer;
+  static float shininess = 200;
 
   namespace WindowNameSpace
   {
@@ -44,12 +47,8 @@ namespace Framework
     /*Triggers a Key event if there are any listeners*/
     void TriggerKeyEvent(const std::string eventname, int key, int scanCode, int state, int mod)
     {
-      KeyEvent * triggered_key_event = (KeyEvent*)EVENTSYSTEM->GetEvent(eventname);
-      if (triggered_key_event != nullptr)
-      {
-        SetupKeyEvent(triggered_key_event, key, scanCode, state, mod);
-        triggered_key_event->DispatchEvent();
-      }
+      KeyEvent triggered_key_event;
+      SetupKeyEvent(&triggered_key_event, key, scanCode, state, mod);
     }
 
     /*Sets up the Key event before dispatching it*/
@@ -273,6 +272,11 @@ namespace Framework
   bool WindowSystem::Initialize ()
   {
     std::cout << GetName () << " initialized\n";
+
+    clRenderer.GenerateTextures ();
+    clRenderer.GenerateBuffers ();
+    clRenderer.GenerateShaders ();
+
     dr.Initialize ();
     ShapeData data = ShapeGenerator::Generate_Quad ();
     vao = new VAO ();
@@ -302,20 +306,18 @@ namespace Framework
 
   void WindowSystem::GraphicsUpdate (const double dt)
   {
-    glClearColor (0, 0, 0, 0);
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    
-    glDisable (GL_DEPTH_TEST);
     glEnable (GL_BLEND);
     glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    ///*clRenderer.Render ();
     vao->bindVAO ();
+
     for (auto i : spriteList)
     {
       i->gameObject->Transform->UpdateMatrices ();
       i->Draw ();
     }
     vao->unbindVAO ();
-
 
     //////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////
@@ -327,12 +329,12 @@ namespace Framework
     // Can draw lines
     // Can draw polygon with n number of shapes. max is 140
     //////////////////////////////////////////////////////////////////////////
-    CircleCollider c (NULL);
-    dr.Draw (&c);
-    dr.Draw ((LineCollider*)nullptr);
-    dr.Draw (nullptr, 3);
-    dr.Draw (nullptr, 5);
-    dr.Draw ((PointCollider*)nullptr);
+    //CircleCollider c (NULL);
+    //dr.Draw (&c);
+    //dr.Draw ((LineCollider*)nullptr);
+    //dr.Draw (nullptr, 3);
+    //dr.Draw (nullptr, 5);
+    //dr.Draw ((PointCollider*)nullptr);
 
     //////////////////////////////////////////////////////////////////////////
   }

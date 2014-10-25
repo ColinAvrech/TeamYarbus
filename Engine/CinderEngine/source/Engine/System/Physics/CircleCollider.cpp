@@ -23,11 +23,7 @@ namespace Framework
 
 	void CircleCollider::Initialize()
 	{
-		std::string ColEvent = std::string("UpdateEvent");
-
-		CollisionEvent* colevent = (CollisionEvent*)EVENTSYSTEM->GetEvent(ColEvent);
-		if (colevent == nullptr)
-			return;
+    gameObject->CircleCollider = this;
 	}
 
 	void CircleCollider::Update()
@@ -49,16 +45,11 @@ namespace Framework
 		float dist = Physics::Distance(pos, cpos);
 		if (rad >= dist)
 		{
-			std::string ColEvent = std::string("CIRCLECOLLISION");
-			CollisionEvent* collision = (CollisionEvent*)EVENTSYSTEM->GetEvent(ColEvent);
-			if (collision)
-			{
-				collision->OtherObject = c->gameObject;
-				collision->normal = pos - cpos;
-				glm::normalize(collision->normal);
-				collision->DispatchEvent();
-				std::cout << "COLLISION" << std::endl;
-			}
+      CollisionEvent collision;
+			//if (collision)
+			//{
+      //  //Trigger Event
+			//}
 		}
 	}
 
@@ -70,12 +61,10 @@ namespace Framework
 		float rad = GetRadius();
 		if (Physics::CirclevsPoint(rad, pos, ppos))
 		{
-			std::string ColEvent = std::string("COLLISION");
-			CollisionEvent* collision = (CollisionEvent*)EVENTSYSTEM->GetEvent(ColEvent);
-			collision->OtherObject = p->gameObject;
-			collision->normal = pos - ppos;
-			glm::normalize(collision->normal);
-			collision->DispatchEvent();
+      CollisionEvent collision;
+			collision.OtherObject = p->gameObject;
+			collision.normal = pos - ppos;
+			glm::normalize(collision.normal);
 		}
 	}
 
@@ -87,17 +76,13 @@ namespace Framework
 		pos.y = static_cast<Transform*>(gameObject->Transform)->GetPosition().y;
 		if (Physics::CirclevsLine(rad, pos, *l))
 		{
-			std::string ColEvent = std::string("LINECOLLISION");
-			CollisionEvent* collision = new CollisionEvent(ColEvent);
-			if (collision)
-			{
-				collision->OtherObject = l->gameObject;
-				collision->thisObject = this->gameObject;
-				collision->normal = l->normalVec;
-				collision->normal = glm::normalize(collision->normal);
-				collision->DispatchEvent();
-			}
-			Physics::Resolve(collision);
+			CollisionEvent collision;
+			collision.OtherObject = l->gameObject;
+			collision.thisObject = this->gameObject;
+			collision.normal = l->normalVec;
+			collision.normal = glm::normalize(collision.normal);
+
+			Physics::Resolve(&collision);
 		}
 	}
 

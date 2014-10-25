@@ -58,9 +58,9 @@ namespace Framework
     GLuint shaderProgram;
     std::string Read_Shader (const char* filename);
     GLuint Create_Shader (const char* filename, GLenum shaderType);
-    GLuint Create_Shader (std::string, GLenum shaderType);
+    GLuint Create_Shader (const char*, std::string, GLenum shaderType);
     GLuint Create_Shader_From_String (std::string& vs, std::string& fs);
-    GLuint Create_Program (GLuint _vertexShader, GLuint _fragmentShader, GLuint _geometryShader = 0);
+    GLuint Create_Program (std::string name, GLuint _vertexShader, GLuint _fragmentShader, GLuint _geometryShader = 0);
   };
 
 
@@ -71,11 +71,11 @@ namespace Framework
   inline GLint Shader::attribLocation (const char* attribName)
   {
     GLint _attribLoc = glGetAttribLocation (shaderProgram, attribName);
-
-#ifdef _DEBUG
-    if (_attribLoc == -1)
-      std::cout << "ATTRIB " << attribName << " NOT FOUND!\n";
-#endif
+//
+//#ifdef _DEBUG
+//    if (_attribLoc == -1)
+//      std::cout << "ATTRIB " << attribName << " NOT FOUND!\n";
+//#endif
 
     return _attribLoc;
   }
@@ -86,11 +86,11 @@ namespace Framework
     assert (shaderProgram > 0 && "create the program id first!");
     GLint i = glGetUniformLocation (shaderProgram, varName);
 
-    // log msg only in the DEBUG version
-#ifdef _DEBUG
-    if (i == -1)
-      std::cout << "uniform" << varName << "does not exist!\n";
-#endif
+//    // log msg only in the DEBUG version
+//#ifdef _DEBUG
+//    if (i == -1)
+//      std::cout << "uniform" << varName << "does not exist!\n";
+//#endif
 
     return i;
   }

@@ -20,6 +20,12 @@
 
 namespace Framework
 {
+  class CLParticleEmitter
+  {
+    glm::vec4 position;
+    int particles;
+  };
+
 
   class CLParticleRenderer
   {
@@ -48,19 +54,17 @@ namespace Framework
     float colorChangeLength;
     void ResetPosition ();
     void ResetVelocity ();
+    void Interpolate_Colors ();
     //////////////////////////////////////////////////////////////////////////
 
 
   private:
-    GLuint SSBOPos, SSBOVel;
+    SSBO* SSBOPos, *SSBOVel;
+    VAO* vao;
     Shader* shader;
     ComputeShader* computeshader;
     Texture* texture;
-  };
-
-  struct vertex4f
-  {
-    GLfloat x, y, z, w;
+    CLParticleEmitter emitters [3];
   };
 }
 
