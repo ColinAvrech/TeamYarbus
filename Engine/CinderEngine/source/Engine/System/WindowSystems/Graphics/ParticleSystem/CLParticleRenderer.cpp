@@ -102,8 +102,6 @@ namespace Framework
   void CLParticleRenderer::GenerateTextures ()
   {
     texture = Resources::RS->Get_Texture ("Particle.bmp");
-    // #Connect
-    // EVENTSYSTEM->Connect (NULL, Events::KEY_ANY, BaseEvent::BaseCall (OnKeyPressed));
     cursorX = WINDOWSYSTEM->Get_Width () / 2;
     cursorY = WINDOWSYSTEM->Get_Height () / 2;
   }

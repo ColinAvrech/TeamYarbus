@@ -39,7 +39,7 @@ solution "CinderEngine"
                   "../dependency/fmod/include",
 									"../dependency/AntTweakBar/include",
                   "../include/**",
-			      "../source/Engine/System/Events/**",
+			      "../source/**",
 				  }
     
     libdirs { "../dependency/opengl/library",

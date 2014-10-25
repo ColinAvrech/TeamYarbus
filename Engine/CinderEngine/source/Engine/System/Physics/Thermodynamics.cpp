@@ -76,7 +76,7 @@ namespace Framework
       {
         for (int i = 0; i < 100; ++i)
         {
-          HeatMap[i][j] = 300.f;
+          HeatMap[i][j] = (rand() % 10) +300.f;
         }
       }
       HeatMap[1][1] = 400.f;
@@ -155,8 +155,8 @@ namespace Framework
       UpdateTemp(0.016);
       ComputeVelocity(0.016);
       UpdateFire(0.016);
-      //std::cout << "{ " << Physics::THERMODYNAMICS->GetCellVelocity(20, 20).x << ", " << Physics::THERMODYNAMICS->GetCellVelocity(20, 20).y << " }\n";
-      std::cout << HeatMap[1][1] << ", " << HeatMap[1][2] << "\n";
+      std::cout << "{ " << Physics::THERMODYNAMICS->GetCellVelocity(20, 20).x << ", " << Physics::THERMODYNAMICS->GetCellVelocity(20, 20).y << " }\n";
+      //std::cout << HeatMap[1][1] << ", " << HeatMap[1][2] << "\n";
     }
 
     // Getters
@@ -292,7 +292,7 @@ namespace Framework
           
           int vectorindex = 0;
           float dDenseSum = 0.f;
-          //VelocityMap[i][j] = { 0, 0 };
+          VelocityMap[i][j] = { 0, 0 };
           for (int y = j - 1; y <= j + 1; ++y)
           {
             for (int x = i - 1; x <= i + 1; ++x)
@@ -303,7 +303,7 @@ namespace Framework
                 VelocityMap[i][j] -= (dirvec[vectorindex] * (dDense/8));
                 //if (EqualizePressure)
                 //{
-                  OxygenMap[x][y] += (dDense / 8) * (float)dt;
+                  //OxygenMap[x][y] += (dDense / 8) * (float)dt;
                   dDenseSum += (dDense / 8);
                 //}
                 ++vectorindex;
@@ -311,7 +311,7 @@ namespace Framework
               
             } //for x
           } //for y
-          OxygenMap[i][j] -= dDenseSum * (float)dt;
+          //OxygenMap[i][j] -= dDenseSum * (float)dt;
           VelocityMap[i][j] += (glm::vec2(0, 1) * buoyancy);
         }//for i
       } //for j
