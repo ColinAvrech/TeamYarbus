@@ -1,6 +1,8 @@
 #include "Physics/Thermodynamics.h"
 #include "TDLib.h"
 
+#define SIZE 10
+
 namespace Framework
 {
   namespace Physics
@@ -74,9 +76,10 @@ namespace Framework
       {
         for (int i = 0; i < 100; ++i)
         {
-          HeatMap[i][j] = float (rand () % 1000);
+          HeatMap[i][j] = 300.f;
         }
       }
+      HeatMap[1][1] = 400.f;
 
       //Allocate Oxygen/Density map
       OxygenMap = new float*[100];
@@ -152,6 +155,8 @@ namespace Framework
       UpdateTemp(0.016);
       ComputeVelocity(0.016);
       UpdateFire(0.016);
+      //std::cout << "{ " << Physics::THERMODYNAMICS->GetCellVelocity(20, 20).x << ", " << Physics::THERMODYNAMICS->GetCellVelocity(20, 20).y << " }\n";
+      std::cout << HeatMap[1][1] << ", " << HeatMap[1][2] << "\n";
     }
 
     // Getters
@@ -229,12 +234,12 @@ namespace Framework
           {
             for (int x = i - 1; x <= i + 1; ++x)
             {
-              if (x != i && y != j)
+              if (x != i || y != j)
               {
-                float dQ = ConductiveHeatTransfer(Const::K_Air, HeatMap[i][j], HeatMap[x][y], dt, 0.1f);
-                netdQ += dQ / 8;
-                float oTemp = HeatMap[i][j + 1];
-                HeatMap[x][y] -= dTemp(dQ / 8, OxygenMap[i][j + 1] * 0.001f, Const::c_Air);
+                float dQ = ConductiveHeatTransfer(Const::K_Air, HeatMap[i][j], HeatMap[x][y], dt, 1.f);
+                netdQ += dQ;
+                float oTemp = HeatMap[x][y];
+                HeatMap[x][y] -= dTemp(dQ, OxygenMap[x][y], Const::c_Air);
                 
                 float factor = HeatMap[x][y] / oTemp;
                 OxygenMap[x][y] /= factor;
@@ -246,11 +251,11 @@ namespace Framework
             float dQConv = ConvectiveHeatTransfer(Const::Hc_Air, HeatMap[i][j], HeatMap[i][j + 1], dt);
             float oTempConv = HeatMap[i][j + 1];
             netdQ += dQConv;
-            HeatMap[i][j + 1] -= dTemp(dQConv, OxygenMap[i][j + 1] * 0.001f, Const::c_Air);
+            HeatMap[i][j + 1] -= dTemp(dQConv, OxygenMap[i][j + 1], Const::c_Air);
             float factor2 = HeatMap[i][j + 1] / oTempConv;
             OxygenMap[i][j + 1] /= factor2;
           }
-          HeatMap[i][j] += dTemp(netdQ, OxygenMap[i][j] * 0.001f, Const::c_Air);
+          HeatMap[i][j] += dTemp(netdQ, OxygenMap[i][j], Const::c_Air);
           float factor1 = HeatMap[i][j] / oTemp;
           OxygenMap[i][j] /= factor1;
         }//for
@@ -283,28 +288,31 @@ namespace Framework
             }
           }
           float meanDensity = dSum / 8;
-          float buoyancy = Buoyancy(dSum, OxygenMap[i][j] * 0.001f, 0.1f);
+          float buoyancy = Buoyancy(meanDensity, OxygenMap[i][j], 1.f);
+          
           int vectorindex = 0;
           float dDenseSum = 0.f;
+          //VelocityMap[i][j] = { 0, 0 };
           for (int y = j - 1; y <= j + 1; ++y)
           {
             for (int x = i - 1; x <= i + 1; ++x)
             {
-              if (x != i && y != j)
+              if (x != i || y != j)
               {
                 float dDense = OxygenMap[x][y] - OxygenMap[i][j];
-                VelocityMap[i][j] += (dirvec[vectorindex] * dDense);
-                if (EqualizePressure)
-                {
-                  OxygenMap[x][y] -= (dDense / 8) * (float)dt;
+                VelocityMap[i][j] -= (dirvec[vectorindex] * (dDense/8));
+                //if (EqualizePressure)
+                //{
+                  OxygenMap[x][y] += (dDense / 8) * (float)dt;
                   dDenseSum += (dDense / 8);
-                }
+                //}
+                ++vectorindex;
               }
-              ++vectorindex;
+              
             } //for x
           } //for y
-          OxygenMap[i][j] += dDenseSum;
-          //VelocityMap[i][j]
+          OxygenMap[i][j] -= dDenseSum * (float)dt;
+          VelocityMap[i][j] += (glm::vec2(0, 1) * buoyancy);
         }//for i
       } //for j
     }
@@ -323,7 +331,7 @@ namespace Framework
           {
             for (int x = i - 1; x <= i + 1; ++x)
             {
-              if (x != i && y != j && Terrain[x][y] == 0)
+              if ((x != i || y != j) && Terrain[x][y] == 0)
               {
                 ++OxyCount;
                 //OxyAmount += OxygenMap[x][y] * CellSize*CellSize*CellSize;
@@ -339,7 +347,7 @@ namespace Framework
           {
             if (HeatMap[i][j] <= Const::BT_Organics)
             {
-              HeatMap[i][j] += tempRange * (float)dt;
+             // HeatMap[i][j] += tempRange * (float)dt;
             }
             //float oxyfactor = 
           }//if
@@ -347,7 +355,7 @@ namespace Framework
           {
             if (HeatMap[i][j] >= Const::IT_Wood)
             {
-              HeatMap[i][j] -= tempRange * (float)dt;
+              //HeatMap[i][j] -= tempRange * (float)dt;
             }
           }
           FireMap[i][j] = tempFactor;

@@ -31,8 +31,8 @@ namespace Framework
 
   CLParticleRenderer::CLParticleRenderer ()
   {
-    particleCount = 10000;
-    particleSize = 50;
+    particleCount = 400;
+    particleSize = 100;
     srand ((unsigned) time (NULL));
     color [0] = 255;
     color [1] = 80;
@@ -114,7 +114,7 @@ namespace Framework
     //double cursorX, cursorY;
     int windowWidth, windowHeight;
     glfwPollEvents ();
-    glfwGetCursorPos (WINDOWSYSTEM->Get_Window(), &cursorX, &cursorY);
+    //glfwGetCursorPos (WINDOWSYSTEM->Get_Window(), &cursorX, &cursorY);
     glfwGetWindowSize (WINDOWSYSTEM->Get_Window(), &windowWidth, &windowHeight);
 
     float destPosX = (float) (cursorX / (windowWidth) -0.5f) * 2.0f;
@@ -163,7 +163,7 @@ namespace Framework
     }
     else
     {
-      if (color[3] > 0.0f) color[3] -= 0.016f;
+      if (color[3] > 0.1f) color[3] -= 0.016f;
     }
     double frameTimeStart = glfwGetTime () * 1000;
 
@@ -174,7 +174,7 @@ namespace Framework
 
     //double cursorX, cursorY;
     int windowWidth, windowHeight;
-    glfwGetCursorPos (WINDOWSYSTEM->Get_Window(), &cursorX, &cursorY);
+    //glfwGetCursorPos (WINDOWSYSTEM->Get_Window(), &cursorX, &cursorY);
     glfwGetWindowSize (WINDOWSYSTEM->Get_Window(), &windowWidth, &windowHeight);
 
     float destPosX = (float) (cursorX / (windowWidth) -0.5f) * 2.0f;
@@ -185,8 +185,9 @@ namespace Framework
     computeshader->uni3f ("destPos", destPosX, destPosY, 0);
     computeshader->uni2f ("vpDim", 1, 1);
     computeshader->uni1i("borderClamp", (int) borderEnabled);
+    std::cout << "{ " << Physics::THERMODYNAMICS->GetCellVelocity(20, 20).x << ", " << Physics::THERMODYNAMICS->GetCellVelocity(20, 20).y << " }\n";
     computeshader->uni2fv ("cellVelocity", glm::value_ptr (Physics::THERMODYNAMICS->GetCellVelocity (20, 20)));
-    //std::cout << "{ " << Physics::THERMODYNAMICS->GetCellVelocity (20, 20).x << ", " << Physics::THERMODYNAMICS->GetCellVelocity (20, 20).y << " }\n";
+    
     //std::cout << Physics::THERMODYNAMICS->GetCellTemperature (20, 20) << "\n";
 
     int workingGroups = particleCount / 16;
@@ -202,7 +203,7 @@ namespace Framework
 
     shader->Use ();
 
-    shader->uni4f ("Color", color [0] / 255.0f, color [1] / 255.0f, color [2] / 255.0f, 1);
+    shader->uni4f ("Color", color [0] / 255.0f, color [1] / 255.0f, color [2] / 255.0f, color [3]);
 
     glGetError ();
 
