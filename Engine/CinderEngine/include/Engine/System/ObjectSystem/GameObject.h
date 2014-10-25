@@ -68,6 +68,7 @@ namespace Framework
     ComponentPointer(Sprite);
     ComponentPointer(CircleCollider);
 	ComponentPointer(LineCollider);
+  ComponentPointer (Camera);
 	ComponentPointer(RigidBody);
     ComponentPointer(PointCollider);
 	ComponentPointer(CharacterController);
