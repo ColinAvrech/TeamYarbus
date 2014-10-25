@@ -49,6 +49,7 @@ namespace Framework
     {
       KeyEvent triggered_key_event;
       SetupKeyEvent(&triggered_key_event, key, scanCode, state, mod);
+      EVENTSYSTEM->TriggerEvent(eventname, triggered_key_event);
     }
 
     /*Sets up the Key event before dispatching it*/
