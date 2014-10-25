@@ -35,7 +35,7 @@ namespace Framework
   }
 
 
-  static void OnKeyPressed (GameObject* go, KeyEvent* key)
+  static void OnKeyPressed (KeyEvent* key)
   {
     if (key->KeyValue == GLFW_KEY_R && key->KeyDown)
       clRenderer.ResetBuffers ();
@@ -70,8 +70,7 @@ namespace Framework
 
   void Scene_ComputeTest::Load_Scene (const char* filename)
   {
-
-    EVENTSYSTEM->Connect (NULL, Events::KEY_ANY, BaseEvent::BaseCall (OnKeyPressed));
+    EVENTSYSTEM->gConnect<KeyEvent>(Events::KEY_ANY, &OnKeyPressed);
     clRenderer.GenerateTextures ();
     clRenderer.GenerateBuffers ();
     clRenderer.GenerateShaders ();

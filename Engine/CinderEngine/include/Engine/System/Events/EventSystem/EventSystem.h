@@ -13,19 +13,12 @@
 
 #include "Common.h"
 #include "BaseSystem.h"
-#include "BaseEvent.h"
-
-#include "Events.h"
-
-#include "MouseEvent.h"
-#include "UpdateEvent.h"
-#include "KeyEvent.h"
-#include "GameEvent.h"
-#include "CollisionEvent.h"
 
 
 namespace Framework
 {
+  class EventDeployer;
+  class BaseEvent;
 
   class EventSystem : public BaseSystem
   {
@@ -41,23 +34,30 @@ namespace Framework
 
     unsigned NumberOfEvents();
 
-	//pass null as obj for now
-    void Connect(GameObject* obj, const std::string eventname, BaseEvent::BaseCall func);
 
-    BaseEvent* GetEvent(const std::string eventname);
+    //Global functions use this connect function to conntect to events.
+    template<typename EventType>
+    void gConnect(const std::string eventname, void(*func)(EventType*));
 
-    void TriggerEvent(const std::string eventname);
+    // C++ Member functions use this connect function to connect to events.
+    template<typename EventType, typename ClassType>
+    void mConnect(const std::string eventname, ClassType *this_ptr, void(ClassType::*func)(EventType*));
+
+    //void zConnect(const std::string eventname, )
+    
+    void TriggerEvent(const std::string eventname, BaseEvent& e);
 
   private:
 
     double _TotalTimePassed = 0;
     double _dt = 0;
 
-    typedef std::unordered_map<std::string, BaseEvent*> EventMap;
+    typedef std::unordered_map<std::string, EventDeployer*> EventMap;
     EventMap RegisteredEvents;
-
-
   };
 
   extern EventSystem* EVENTSYSTEM;
+
 }
+
+#include "EventSystem.tpp"
