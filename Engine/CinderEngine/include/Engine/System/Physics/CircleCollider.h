@@ -12,7 +12,7 @@ namespace Framework
 	public:
 		const static std::string Name;
 		CircleCollider(){}
-		CircleCollider(GameObject* obj) : radius(0.5f)
+		CircleCollider(GameObject* obj)
 		{
 			gameObject = obj;
 		}
@@ -21,7 +21,7 @@ namespace Framework
 
 		/*!Telegraph that the component is active*/
 		void Initialize();
-		void Serialize();
+		void Serialize(Serializer::DataNode* data);
 		void Update();
 
 		// Getters

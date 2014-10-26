@@ -27,56 +27,69 @@ namespace Framework
 	}
 
 	void CharacterController::OnKeyPressed(KeyEvent* _key)
-  {
+	{
+		glm::vec2 force, accel;
 		switch (_key->KeyValue)
 		{
-		case GLFW_KEY_W:
 
+		case GLFW_KEY_W:
+			//gameObject->RigidBody->vel += Physics::applyAccel(accel);
+			gameObject->Transform->Translate(0, 1, 0);
 			break;
 
+		case GLFW_KEY_D:
+			gameObject->Transform->Translate(1, 0, 0);
+			break;
 
+		case GLFW_KEY_A:
+			gameObject->Transform->Translate(-1, 0, 0);
+			break;
 
 		default:
 			break;
 		}
 
 
-    if (_key->KeyDown)
-    {
-      if (glfwGetKey (WINDOWSYSTEM->Get_Window (), GLFW_KEY_A))
-      {
-        glm::vec2 force, accel;
-        force = { -5.0f, 0 }; //WASD control    
-        //float mass = 2;
-        //force should be multiplied by friction to get smaller every update
-        accel = Physics::getAccel (force, 0.01);
-		
-        gameObject->RigidBody->vel = Physics::applyAccel (accel, .064f);
-		gameObject->Transform->Translate(gameObject->RigidBody->vel.x, 0, 0);
-      }
+		//if (_key->KeyDown)
+		//{
+		//  if (glfwGetKey (WINDOWSYSTEM->Get_Window (), GLFW_KEY_A))
+		//  {
+		//    glm::vec2 force, accel;
+		//    force = { -5.0f, 0 }; //WASD control    
+		//    //float mass = 2;
+		//    //force should be multiplied by friction to get smaller every update
+		//    accel = Physics::getAccel (force, 0.01);
 
-      else if (glfwGetKey (WINDOWSYSTEM->Get_Window (), GLFW_KEY_D))
-        gameObject->Transform->Translate (0.01f, 0, 0);
 
-      if (glfwGetKey (WINDOWSYSTEM->Get_Window (), GLFW_KEY_S))
-		  gameObject->Transform->Translate(0, -0.01f, 0);
-      else if (glfwGetKey (WINDOWSYSTEM->Get_Window (), GLFW_KEY_W))
-		  gameObject->Transform->Translate(0, 0.01f, 0);
-      //if (glfwGetKey (WINDOWSYSTEM->Get_Window (), GLFW_KEY_C))
-      //  useDebug = !useDebug;
-    }
-    ////////////////////////////////////////////////////////////////////////
-  }
+		//  }
 
-  void CharacterController::OnCollisionEnter(CollisionEvent* collision)
-  {
-    collision->OtherObject->Transform->Translate (-collision->normal.x * 0.05f, -collision->normal.y * 0.05f, 0.0f);
-  }
+		//  else if (glfwGetKey (WINDOWSYSTEM->Get_Window (), GLFW_KEY_D))
+		//    gameObject->Transform->Translate (0.01f, 0, 0);
 
-  void CharacterController::Update(UpdateEvent* e)
-  {
-	 
-  }
+		//  if (glfwGetKey (WINDOWSYSTEM->Get_Window (), GLFW_KEY_S))
+		//
+		//  else if (glfwGetKey (WINDOWSYSTEM->Get_Window (), GLFW_KEY_W))
+		//
+		//  //if (glfwGetKey (WINDOWSYSTEM->Get_Window (), GLFW_KEY_C))
+		//  //  useDebug = !useDebug;
+		//}
+		////////////////////////////////////////////////////////////////////////
+	}
+
+	void CharacterController::OnCollisionEnter(CollisionEvent* collision)
+	{
+		//collision->OtherObject->Transform->Translate(-collision->normal.x * 0.05f, -collision->normal.y * 0.05f, 0.0f);
+	}
+
+	void CharacterController::Update(UpdateEvent* e)
+	{
+		//gameObject->Transform->Translate(gameObject->RigidBody->vel.x * e->Dt, gameObject->RigidBody->vel.y * e->Dt, 0);
+	}
+
+	//void CharacterController::UpdateVelocity()
+	//{
+
+	//}
 
 
 	/*!Telegraph that the component is active*/

@@ -16,9 +16,11 @@
 namespace Framework
 {
 	//serialize, initialize, update
-	void CircleCollider::Serialize()
+	void CircleCollider::Serialize(Serializer::DataNode* data)
 	{
-		return;
+		Serializer::DataNode* temp;
+		temp = data->FindElement(data, "Radius");
+		temp->GetValue(&radius);
 	}
 
 	void CircleCollider::Initialize()

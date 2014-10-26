@@ -14,11 +14,10 @@ namespace Framework
 {
 	void GravityEffect::Serialize(Serializer::DataNode* data)
 	{
-		Serializer::DataNode* temp;
 		//Active
 		bool Active;
+		Serializer::DataNode* temp = data->FindElement(data, "Active");	
 		temp->GetValue(&Active);
-		temp = data->FindElement(data, "Active");
 		if (Active)
 			active = true;
 		else
@@ -26,15 +25,16 @@ namespace Framework
 
 		//Strength
 		float Strength;
-		temp->GetValue(&Strength);
 		temp = data->FindElement(data, "Strength");
+		temp->GetValue(&Strength);
 		strength = Strength;
 
 		//Direction
 		glm::vec3 Direction;
-		temp->GetValue(&Active);
 		temp = data->FindElement(data, "Direction");
+		temp->GetValue(&Active);
 		direction.x = Direction.x;
 		direction.y = Direction.y;
 	}
+
 }

@@ -11,6 +11,7 @@
 
 #include "BaseSystem.h"
 #include "Common.h"
+#include "glm.hpp"
 
 namespace Framework
 {
@@ -22,6 +23,7 @@ namespace Framework
 		class PhysicsSystem : public BaseSystem
 		{
 		public:
+			glm::vec2 gravityDirection;
 			// Returns name of System
 			const std::string GetName(){ return "PhysicsSystem"; }
 

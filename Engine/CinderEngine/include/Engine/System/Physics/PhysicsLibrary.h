@@ -20,7 +20,7 @@ namespace Framework
     namespace Constant
     {
       //Add physics constants here
-      const float g       = 9.80665f;     //m.s-1
+      const float g       = 1.80665f;     //m.s-1
       const long double G = 6.67259e-11;  //m3.Kg-1.s-2
 
     } //namespace Constant

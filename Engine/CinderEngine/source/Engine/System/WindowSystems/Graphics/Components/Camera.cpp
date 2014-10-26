@@ -74,9 +74,10 @@ namespace Framework
     //farPlane = data->value_.Float_;
     //data = data->next;
     // Aspect Ratio
-    value = data->FindElement(data, "Size");
-    value->GetValue(&aspect);
+    //value = data->FindElement(data, "Size");
+    //value->GetValue(&aspect);
     //aspect = data->value_.Float_;
+	aspect = 16 / 9;
   }
 
 

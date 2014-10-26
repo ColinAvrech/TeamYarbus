@@ -27,7 +27,7 @@ namespace Framework
 		~LineCollider(){};
 
 		void Initialize();
-		void Serialize();
+		void Serialize(Serializer::DataNode* data);
 		void Update();
 
 		// Getters
