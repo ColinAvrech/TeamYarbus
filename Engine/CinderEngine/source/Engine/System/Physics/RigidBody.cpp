@@ -75,7 +75,15 @@ namespace Framework
 	// Connect w/ eventsystem
 	void RigidBody::Update()
 	{
+		RigidBody::getMass();
+		float Mass = mass;
+		
+	}
 
+	float RigidBody::calculateMass(float mass)
+	{
+		//density * volume
+		return 10.0f;
 	}
 
 	void RigidBody::Integrate(float dt_, GameObject * obj)

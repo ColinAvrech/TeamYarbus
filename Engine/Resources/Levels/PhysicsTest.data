@@ -152,7 +152,7 @@ Level =
 		},
 		Sprite = 
 		{
-			string SpriteSource = "Circle.png",
+			string SpriteSource = "Default.png",
 			bool FlipX = false,
 			bool FlipY = false,
 			Vec4 Color = [1, 1, 1, 1],

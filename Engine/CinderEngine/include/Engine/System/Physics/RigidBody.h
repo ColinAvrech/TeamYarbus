@@ -61,6 +61,7 @@ namespace Framework
 			return invMass;
 		}
 
+		float calculateMass(float mass);
 		void Integrate(float _dt, GameObject * obj);
 
 	private:

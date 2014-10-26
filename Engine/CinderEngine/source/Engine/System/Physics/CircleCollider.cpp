@@ -23,7 +23,7 @@ namespace Framework
 
 	void CircleCollider::Initialize()
 	{
-    gameObject->CircleCollider = this;
+		gameObject->CircleCollider = this;
 	}
 
 	void CircleCollider::Update()
@@ -45,11 +45,9 @@ namespace Framework
 		float dist = Physics::Distance(pos, cpos);
 		if (rad >= dist)
 		{
-      CollisionEvent collision;
-			//if (collision)
-			//{
-      //  //Trigger Event
-			//}
+			CollisionEvent collision;
+			//collision.
+			EVENTSYSTEM->TriggerEvent(CollisionEventName(gameObject->GameObjectID), collision);
 		}
 	}
 

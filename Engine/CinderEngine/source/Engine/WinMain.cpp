@@ -34,6 +34,8 @@ starts the game loop.
 #include "ShapeCollider.h"
 #include "ObjectSystem.h"
 
+#include "UpdateEvent.h"
+
 
 #define _DEGUB
 using namespace Framework;
@@ -59,6 +61,18 @@ const int ClientHeight = 768;
 //}
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
+
+// Connect example Class
+/*
+class MyClass
+{
+public:
+	void Print(UpdateEvent* e)
+	{
+		std::cout << "My Update: " << e->Dt << std::endl;
+	}
+};*/
+
 
 int main (void)
 {
@@ -123,6 +137,11 @@ int main (void)
 
   //! activate the window.
   OBJECTSYSTEM->LoadLevel ("PhysicsTest.data");
+
+  // Connect example
+  //MyClass _myclass;
+  //EVENTSYSTEM->mConnect<UpdateEvent, MyClass>(Events::UPDATEEVENT, &_myclass, &MyClass::Print);
+
   //! Run the game! NOW!
   engine->GameLoop ();
 
