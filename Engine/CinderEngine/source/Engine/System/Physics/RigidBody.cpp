@@ -9,6 +9,8 @@
 /******************************************************************************/
 #include "RigidBody.h"
 #include "ComponentInclude.h"
+#include "GameObject.h"
+#include "IncludeForAllCollision.h"
 
 namespace Framework
 {
@@ -20,7 +22,13 @@ namespace Framework
 
 	void RigidBody::Initialize()
 	{
-
+		for (auto i = OBJECTSYSTEM->GameObjects.begin(); i != OBJECTSYSTEM->GameObjects.end(); ++i)
+		{
+			if (i->second->RigidBody)
+			{
+				mass = i->second->RigidBody->calculateMass();
+			}
+		}
 	}
 
 	void RigidBody::Serialize(Serializer::DataNode* data)
@@ -75,15 +83,23 @@ namespace Framework
 	// Connect w/ eventsystem
 	void RigidBody::Update()
 	{
-		RigidBody::getMass();
-		float Mass = mass;
+		//RigidBody::getMass();
+		//float Mass = mass;
 		
 	}
 
-	float RigidBody::calculateMass(float mass)
+	float RigidBody::calculateMass()
 	{
 		//density * volume
-		return 10.0f;
+		if (gameObject->CircleCollider)
+		{
+			mass = (4 / 3) * 3.14 * gameObject->CircleCollider->radius;
+		}
+		else// if (gameObject->LineCollider)
+		{
+			mass = 10;
+		}
+		return mass;
 	}
 
 	void RigidBody::Integrate(float dt_, GameObject * obj)

@@ -15,7 +15,7 @@ namespace Framework
 {
 	namespace Physics
 	{
-		bool CirclevsLine(const float rad, glm::vec2& pos, LineCollider& l);
+		float CirclevsLine(const float rad, glm::vec2& pos, LineCollider& l);
 		bool CirclevsPoint(const float rad, glm::vec2& cpos, glm::vec2& ppos);
 		bool PointvsLine(glm::vec2& pos, LineCollider& l);
 	}

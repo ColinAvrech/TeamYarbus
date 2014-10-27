@@ -141,7 +141,7 @@ namespace Framework
 		  else if (ct->objectName == "SphereCollider")
 			  newobj->CircleCollider = (CircleCollider*)(newcomp);
 		  else if (ct->objectName == "RigidBody")
-			  newobj->RigidBody = (RigidBody*)newcomp;
+			  newobj->RigidBody = (RigidBody*)(newcomp);
 
 		  //test
 		  else if (ct->objectName == "CharacterController")

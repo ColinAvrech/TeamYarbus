@@ -178,9 +178,9 @@ Level =
 		},
 		RigidBody = 
 		{
-			bool Static = false,
+			bool Static = true,
 			bool Asleep = false,
-			bool Kinematic = true,
+			bool Kinematic = false,
 			bool RotationLocked = false,
 			bool Mode2D = true,
 			bool AllowSleep = true,

@@ -27,13 +27,6 @@ namespace Framework
 		{
 			for (auto i = OBJECTSYSTEM->GameObjects.begin(); i != OBJECTSYSTEM->GameObjects.end(); ++i)
 			{
-				for (auto j = i; j != OBJECTSYSTEM->GameObjects.end(); ++j)
-				{
-					if (i != j)
-					{
-
-					}
-				}
 				if (i->second->RigidBody)
 				{
 					if (i->second->RigidBody->state == RigidBody::Dynamic)
@@ -42,13 +35,24 @@ namespace Framework
 					}
 					i->second->Transform->Translate(i->second->RigidBody->vel.x * .016, i->second->RigidBody->vel.y * .016, 0);
 				}
+
+				for (auto j = i; j != OBJECTSYSTEM->GameObjects.end(); ++j)
+				{
+					if (i != j)
+					{
+						if (i->second->CircleCollider && j->second->LineCollider)
+							i->second->CircleCollider->DetectLine(j->second->LineCollider);
+						//else if (i->second->LineCollider && j->second->CircleCollider)
+						//	i->second->LineCollider->DetectCircle(j->second->CircleCollider);
+					}
+				}
 			}
 			//  go1->CircleCollider->DetectLine (go3line->LineCollider);
 			//  go1->CircleCollider->DetectCircle (go2->CircleCollider);
 			//const float currentTime = GetCurrentTime();
 			//accumulator += currentTime - frameStart;
 			//frameStart = currentTime;
-		
+
 		}
 		//{
 		//	UpdateCollision();

@@ -11,6 +11,7 @@ namespace Framework
 	{
 	public:
 		const static std::string Name;
+		float radius;
 		CircleCollider(){}
 		CircleCollider(GameObject* obj)
 		{
@@ -35,6 +36,6 @@ namespace Framework
 
 	private:
 		// Private data
-		float radius;
+		
 	};
 }

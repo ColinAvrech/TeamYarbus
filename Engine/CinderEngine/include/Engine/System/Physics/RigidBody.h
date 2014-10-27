@@ -19,7 +19,7 @@ namespace Framework
 	{
 	public:
 		// The non-base component uses DefineComponentName macro to name component
-
+		float mass;
 		enum DynamicState
 		{
 			Static,    //unmoving
@@ -35,11 +35,11 @@ namespace Framework
 		glm::vec2 angVel;
 
 
-		RigidBody(GameObject * obj)
+		RigidBody(GameObject * obj) : mass(.5)
 		{
 			gameObject = obj;
-			vel = { 1, -1 };
-			angVel = { 0, 0 };
+			//vel = { 1, -1 };
+			//angVel = { 0, 0 };
 		};
 
 		RigidBody(){}
@@ -61,11 +61,12 @@ namespace Framework
 			return invMass;
 		}
 
-		float calculateMass(float mass);
+		void setMass(float Mass) { mass = Mass; }
+		float calculateMass(void);
 		void Integrate(float _dt, GameObject * obj);
 
 	private:
-		float mass;
+		
 		float invMass;
 
 	};

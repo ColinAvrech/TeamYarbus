@@ -41,7 +41,7 @@ namespace Framework
 		glm::vec2 getNormal(glm::vec2 p1, glm::vec2 p2)
 		{
 			glm::vec2 norm;
-			glm::vec2 line = p1 - p2;
+			glm::vec2 line = p2 - p1;
 			norm.x = -line.y;
 			norm.y = line.x;
 			norm = glm::normalize(norm);

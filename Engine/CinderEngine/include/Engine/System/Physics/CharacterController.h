@@ -11,6 +11,11 @@ namespace Framework
 	{
 	public:
 		const static std::string Name;
+		float accel;
+		float drag;
+		float maxXVel;
+		float jumpVel;
+
 		CharacterController(GameObject * obj)
 		{
 			gameObject = obj;

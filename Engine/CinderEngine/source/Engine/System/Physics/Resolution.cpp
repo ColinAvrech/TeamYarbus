@@ -31,6 +31,7 @@ namespace Framework
 			{
 				ResolveDynamic(pre, &post);
 			}
+
 		}
 
 		void ResolveStatic(CollisionEvent* pre, CollisionEvent* post,
@@ -49,10 +50,12 @@ namespace Framework
 			if (stateA == RigidBody::Static)
 			{
 				velB = getReflection(pre->normal, velB);
+				//post->OtherObject->Transform->Translate(pre->normal.x * pre->penetration, pre->normal.y * pre->penetration, 0);
 				post->OtherObject->RigidBody->vel = velB;
 			}
 			else
 			{
+				//post->thisObject->Transform->Translate(pre->normal.x * pre->penetration, pre->normal.y * pre->penetration, 0);
 				velA = getReflection(pre->normal, velA);
 				post->thisObject->RigidBody->vel = velA;
 			}

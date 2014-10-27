@@ -28,21 +28,25 @@ namespace Framework
 
 	void CharacterController::OnKeyPressed(KeyEvent* _key)
 	{
-		glm::vec2 force, accel;
+		glm::vec2 force, accelH = { 1, 0 }, accelV = { 0, 1 };
 		switch (_key->KeyValue)
 		{
-
 		case GLFW_KEY_W:
-			//gameObject->RigidBody->vel += Physics::applyAccel(accel);
-			gameObject->Transform->Translate(0, 1, 0);
+			gameObject->RigidBody->vel.y = jumpVel;
+			//Physics::applyAccel(accelV, 0.016);
+			//gameObject->Transform->Translate(0, 1, 0);
 			break;
 
 		case GLFW_KEY_D:
-			gameObject->Transform->Translate(1, 0, 0);
+			if (gameObject->RigidBody->vel.x <= maxXVel)
+				gameObject->RigidBody->vel.x += accel*0.016;
+			//gameObject->Transform->Translate(1, 0, 0);
 			break;
 
 		case GLFW_KEY_A:
-			gameObject->Transform->Translate(-1, 0, 0);
+			if (gameObject->RigidBody->vel.x >= -maxXVel)
+				gameObject->RigidBody->vel.x -= accel*0.016;
+			//gameObject->Transform->Translate(-1, 0, 0);
 			break;
 
 		default:
@@ -78,23 +82,34 @@ namespace Framework
 
 	void CharacterController::OnCollisionEnter(CollisionEvent* collision)
 	{
-		//collision->OtherObject->Transform->Translate(-collision->normal.x * 0.05f, -collision->normal.y * 0.05f, 0.0f);
+		if (collision->OtherObject->LineCollider)
+			collision->OtherObject->Transform->Translate(-collision->normal.x * 0.05f, -collision->normal.y * 0.05f, 0.0f);
 	}
 
 	void CharacterController::Update(UpdateEvent* e)
 	{
-		//gameObject->Transform->Translate(gameObject->RigidBody->vel.x * e->Dt, gameObject->RigidBody->vel.y * e->Dt, 0);
+		//how to get line collider
+		//gameObject->CircleCollider->DetectLine(gameObject->LineCollider);
+		//go1->CircleCollider->DetectCircle(go2->CircleCollider);
+		glm::vec2 dragDirection = -gameObject->RigidBody->vel;
+		if (gameObject->RigidBody->vel.x != 0 && gameObject->RigidBody->vel.y != 0)
+			dragDirection = glm::normalize(dragDirection);
+		gameObject->RigidBody->vel += Physics::applyAccel(dragDirection * drag, .016);
+		gameObject->Transform->Translate(gameObject->RigidBody->vel.x * e->Dt, gameObject->RigidBody->vel.y * e->Dt, 0);
 	}
 
 	//void CharacterController::UpdateVelocity()
 	//{
-
 	//}
 
 
 	/*!Telegraph that the component is active*/
 	void CharacterController::Initialize()
 	{
+		jumpVel = 5.0f;
+		accel = 10;
+		maxXVel = 2.0f;
+		drag = 5;
 		EVENTSYSTEM->mConnect<KeyEvent, CharacterController>(Events::KEY_ANY, this, &CharacterController::OnKeyPressed);
 		EVENTSYSTEM->mConnect<CollisionEvent, CharacterController>(Events::COLLISION, this, &CharacterController::OnCollisionEnter);
 		EVENTSYSTEM->mConnect<UpdateEvent, CharacterController>(Events::UPDATEEVENT, this, &CharacterController::Update);

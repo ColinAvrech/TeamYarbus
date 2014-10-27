@@ -26,13 +26,15 @@ namespace Framework
 		
 		glm::vec3 objPosition = gameObject->Transform->GetPosition();
 		glm::vec3 boxSize;
+		glm::vec3 objScale = gameObject->Transform->GetScale();
 		temp = data->FindElement(data, "Size");
 		temp->GetValue(&boxSize);
 
-		p1.x = objPosition.x - boxSize.x / 2;
-		p1.y = objPosition.y + boxSize.y / 2;
-		p2.x = objPosition.x + boxSize.x / 2;
-		p2.y = objPosition.y + boxSize.y / 2;
+		p1.x = objPosition.x - (boxSize.x * objScale.x) / 2;
+		p1.y = objPosition.y + (boxSize.y * objScale.y) / 2;
+		p2.x = objPosition.x + (boxSize.x * objScale.x) / 2;
+		p2.y = objPosition.y + (boxSize.y * objScale.y) / 2;
+
 	}
 	void LineCollider::Update()
 	{

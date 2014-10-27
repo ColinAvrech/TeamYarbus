@@ -61,7 +61,7 @@ namespace Framework
 		float rad = GetRadius();
 		if (Physics::CirclevsPoint(rad, pos, ppos))
 		{
-      CollisionEvent collision;
+			CollisionEvent collision;
 			collision.OtherObject = p->gameObject;
 			collision.normal = pos - ppos;
 			glm::normalize(collision.normal);
@@ -70,13 +70,16 @@ namespace Framework
 
 	void CircleCollider::DetectLine(LineCollider* l)
 	{
-		float rad = GetRadius();
+		//float rad = GetRadius();
+		float rad = radius;
+		float penetration;
 		glm::vec2 pos;
 		pos.x = static_cast<Transform*>(gameObject->Transform)->GetPosition().x;
 		pos.y = static_cast<Transform*>(gameObject->Transform)->GetPosition().y;
-		if (Physics::CirclevsLine(rad, pos, *l))
+		if (penetration = Physics::CirclevsLine(rad, pos, *l) >= 0)
 		{
 			CollisionEvent collision;
+			collision.penetration = penetration;
 			collision.OtherObject = l->gameObject;
 			collision.thisObject = this->gameObject;
 			collision.normal = l->normalVec;
