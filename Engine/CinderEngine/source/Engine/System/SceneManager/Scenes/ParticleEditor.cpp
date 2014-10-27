@@ -327,7 +327,7 @@ namespace Framework
     
     // camera
     
-    camera_.modelviewMatrix = glm::lookAt (Camera::main->viewDirection * camera_.camDistance, glm::vec3 (0.0f, 0.0f, 0.0f), glm::vec3 (0.0f, 1.0f, 0.0f));
+    camera_.modelviewMatrix = glm::lookAt (camera_.cameraDir * camera_.camDistance, glm::vec3 (0.0f, 0.0f, 0.0f), glm::vec3 (0.0f, 1.0f, 0.0f));
 
     glEnable (GL_POINT_SPRITE);
     glEnable (GL_PROGRAM_POINT_SIZE);

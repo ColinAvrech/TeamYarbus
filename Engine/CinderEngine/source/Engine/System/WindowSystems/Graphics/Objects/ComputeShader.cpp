@@ -33,6 +33,10 @@ namespace Framework
     glAttachShader (program, computeShader);
     glLinkProgram (program);
 
+    char log [1000];
+    glGetProgramInfoLog (program, 1000, 0, log);
+    std::cout << Console::yellow << "\n" << name << "\nLink Status...\n" << Console::red << log << Console::gray << "\n--------------" << std::endl;
+
     shaderProgram = program;
     computeShader = _computeShader;
 
