@@ -117,13 +117,14 @@ int main (void)
 
   //GameObject* testDynamicCircle = new GameObject(2);
 
+  engine->AddSystem (phys);
+  engine->AddSystem (sceneManager);
   engine->AddSystem (windows);
   engine->AddSystem (audio);
   engine->AddSystem (events);
   engine->AddSystem (zilch);
   engine->AddSystem (thermo);
   engine->AddSystem (objsys);
-  engine->AddSystem (phys);
 
   Resources resourceManager;
   resourceManager.Load_Resources ();
@@ -131,12 +132,12 @@ int main (void)
   //! Initialize all added Systems. DON'T INIT YOUR OWN
   engine->Initialize ();
 
-  resourceManager.Get_Sound ("music.mp3")->Play ();
+  //resourceManager.Get_Sound ("music.mp3")->Play ();
 
-  audio->LoadMicData ();
+  //audio->LoadMicData ();
 
   //! activate the window.
-  OBJECTSYSTEM->LoadLevel ("PhysicsTest.data");
+  //OBJECTSYSTEM->LoadLevel ("PhysicsTest.data");
 
   // Connect example
   //MyClass _myclass;

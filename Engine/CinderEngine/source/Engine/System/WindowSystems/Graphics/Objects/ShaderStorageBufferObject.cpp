@@ -40,8 +40,14 @@ namespace Framework
 
 
   void ShaderStorageBufferObject::BufferData(GLuint size, const void* data /*= NULL*/, GLenum mode /*= GL_STATIC_DRAW*/)
-{
+  {
     glBufferData (GL_SHADER_STORAGE_BUFFER, size, data, mode);
+  }
+
+
+  void ShaderStorageBufferObject::BufferSubData (GLuint size, GLuint offset, const void* data)
+  {
+    glBufferSubData (GL_SHADER_STORAGE_BUFFER, offset, size, data);
   }
 
 

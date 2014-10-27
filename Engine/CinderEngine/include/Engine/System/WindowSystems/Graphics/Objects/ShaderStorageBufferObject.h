@@ -28,7 +28,8 @@ namespace Framework
     void BindBuffer (GLenum mode = GL_SHADER_STORAGE_BUFFER);
     void BindBufferBase (GLuint index = 0);
     void BufferData (GLuint size, const void* data = NULL, GLenum mode = GL_STATIC_DRAW);
-
+    void BufferSubData (GLuint size, GLuint offset, const void* data);
+    
     template <typename T>
     T* MapBufferRange (int offset, int size)
     {

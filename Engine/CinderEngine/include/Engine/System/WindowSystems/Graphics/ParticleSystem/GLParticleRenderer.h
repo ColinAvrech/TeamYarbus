@@ -26,7 +26,7 @@ namespace Framework
   {
     VAO* vao;
     VBO* vbo;
-    SSBO* SSBOCol;
+    SSBO* SSBOParticles, *SSBOCol;
     ComputeShader* cs;
     Shader* shader;
   protected:
@@ -44,6 +44,7 @@ namespace Framework
     void update () override;
     void render () override;
     void ResetColor (int particleCount);
+    void ResetParticles (int count);
   };
 }
 

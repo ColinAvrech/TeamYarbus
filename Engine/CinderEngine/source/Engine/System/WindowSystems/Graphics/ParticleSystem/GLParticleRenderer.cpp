@@ -16,7 +16,7 @@
 
 namespace Framework
 {
-
+  GLuint countBuffer;
   // GENERATE BUFFERS FOR THE ENTIRE PARTICLE SYSTEM
   // RIGHT NOW PARTICLES ARE JUST POINTS
   // ONCE WE GET A GEOMETRY SHADER, WE WILL HAVE DYNAMICALLY CREATED QUADS!
@@ -54,9 +54,40 @@ namespace Framework
     glBindBuffer (GL_ARRAY_BUFFER, 0);
 #pragma endregion
 
-    SSBOCol = new SSBO (count * sizeof (glm::vec4));
-    ResetColor (count);
-    SSBOCol->BindBufferBase (0);
+    glGenBuffers (1, &countBuffer);
+    glBindBufferBase (GL_ATOMIC_COUNTER_BUFFER, 2, countBuffer);
+    glBufferData (GL_ATOMIC_COUNTER_BUFFER, sizeof(GLuint), NULL, GL_DYNAMIC_DRAW);
+    GLuint zero = 0;
+    glBufferSubData (GL_ATOMIC_COUNTER_BUFFER, 0, sizeof(GLuint), &zero);
+
+
+    SSBOParticles = new SSBO ((3 * count * sizeof (glm::vec4)) + (count * sizeof(int)));
+    ResetParticles (count);
+    SSBOParticles->BindBufferBase (0);
+
+    //SSBOCol = new SSBO (count * sizeof (glm::vec4));
+    //ResetColor (count);
+    //SSBOCol->BindBufferBase (0);
+  }
+
+  void GLParticleRenderer::ResetParticles (int count)
+  {
+    glm::vec4* verticesPos = SSBOParticles->MapBufferRange<glm::vec4> (0, count);
+    for (int i = 0; i < count; ++i)
+    {
+      verticesPos [i] = glm::vec4 (0);
+    }
+    SSBOParticles->UnMapBuffer ();
+    glm::vec4* verticesCol = SSBOParticles->MapBufferRange<glm::vec4> (count, count);
+    for (int i = 0; i < count; ++i)
+    {
+      verticesCol [i] = glm::vec4 (1);
+    }
+    SSBOParticles->UnMapBuffer ();
+    glm::vec4* verticesVel = SSBOParticles->MapBufferRange<glm::vec4> (2 * count, count);
+    SSBOParticles->UnMapBuffer ();
+    int* verticesAlive = SSBOParticles->MapBufferRange<int> (12 * count, count);
+    SSBOParticles->UnMapBuffer ();
   }
 
 
@@ -115,24 +146,35 @@ namespace Framework
 
     const size_t count = m_system->numAliveParticles ();
 
-    SSBOCol->BindBufferBase (0);
+    SSBOParticles->BindBufferBase (0);
+
+    // WRITE
     cs->Use ();
-    cs->uni1i ("particleCount", count);
+    //cs->uni1i ("particleCount", count);
     int workingGroups = count / 16;
     cs->Dispatch_Compute (workingGroups + 1, 1, 1);
     cs->Disable ();
     // Set memory barrier on per vertex base to make sure we get what was written by the compute shaders
     glMemoryBarrier (GL_VERTEX_ATTRIB_ARRAY_BARRIER_BIT);
+
+    // READ
     shader->Use ();
     shader->uni1f ("size", 30.0f);
     GLuint colAttrib = shader->attribLocation ("vColor");
-    glBindBuffer (GL_ARRAY_BUFFER, SSBOCol->Get_POS ());
+    glBindBuffer (GL_ARRAY_BUFFER, SSBOParticles->Get_POS ());
     shader->vertexAttribPtr (colAttrib, 4, GL_FLOAT, GL_FALSE, 0, 0);
     shader->enableVertexAttribArray (colAttrib);
+
+    glBindBuffer (GL_SHADER_STORAGE_BUFFER, countBuffer);
+    GLuint *ptr = (GLuint *) glMapBuffer (GL_SHADER_STORAGE_BUFFER, GL_READ_ONLY);
+    GLuint bounceCount = ptr [0];
+    glUnmapBuffer (GL_SHADER_STORAGE_BUFFER);
+    std::cout << bounceCount;
 
     if (count > 0)
       glDrawArrays (GL_POINTS, 0, count);
 
     vao->unbindVAO ();
   }
+
 }

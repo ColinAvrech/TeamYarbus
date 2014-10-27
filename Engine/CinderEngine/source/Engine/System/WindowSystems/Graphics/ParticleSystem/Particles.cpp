@@ -35,7 +35,7 @@ namespace Framework
     {
       m_alive [id] = false;
       swapData (id, m_countAlive - 1);
-      m_countAlive--;
+      --m_countAlive;
     }
   }
 
@@ -125,12 +125,6 @@ namespace Framework
   ////////////////////////////////////////////////////////////////////////////////
   ParticleSystem::ParticleSystem (size_t maxCount)
   {
-    m_count = maxCount;
-    m_particles.generate (maxCount);
-    m_aliveParticles.generate (maxCount);
-
-    for (size_t i = 0; i < maxCount; ++i)
-      m_particles.m_alive [i] = false;
   }
 
 
@@ -138,6 +132,12 @@ namespace Framework
   {
     //SSBOParticles = new SSBO (maxCount * (7 * sizeof (glm::vec4) + sizeof(bool) +2 * sizeof(size_t)));
     //std::cout << maxCount * (7 * sizeof (glm::vec4) + sizeof(bool) +2 * sizeof(size_t)) << "\n";
+    m_count = maxCount;
+    m_particles.generate (maxCount);
+    m_aliveParticles.generate (maxCount);
+
+    for (int i = 0; i < maxCount; ++i)
+      m_particles.m_alive [i] = false;
   }
 
 
@@ -146,11 +146,6 @@ namespace Framework
     for (auto & em : m_emitters)
     {
       em->emit (dt, &m_particles);
-    }
-
-    for (size_t i = 0; i < m_count; ++i)
-    {
-      m_particles.m_acc [i] = glm::vec4 (0.0f);
     }
 
     for (auto & up : m_updaters)
