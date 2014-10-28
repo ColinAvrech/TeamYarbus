@@ -112,7 +112,7 @@ namespace Framework
   {
     vao->bindVAO ();
     shader->Use ();
-    shader->uni1f ("size", 30.0f);
+
     const size_t count = m_system->numAliveParticles ();
     if (count > 0)
       glDrawArrays (GL_POINTS, 0, count);
