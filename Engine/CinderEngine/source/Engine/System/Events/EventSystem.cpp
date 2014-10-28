@@ -18,10 +18,19 @@
 #include "GameEvent.h"
 #include "CollisionEvent.h"
 
+#include "ZilchCompiledLib.h"
+#include "Zilch.hpp"
+
 #include "Delegates.h"
+
+//ZilchDefineType(EventSystem, CinderZilch)
+//{
+//  ZilchBindMethod(zConnect);
+//}
 
 namespace Framework
 {
+
   //! Global pointer to  the Event System
   EventSystem* EVENTSYSTEM = NULL;
 
@@ -41,6 +50,12 @@ namespace Framework
   {
     std::cout << Console::yellow << "Initializing EventSystem" << std::endl;
     return true;
+  }
+
+
+  void zConnect(const std::string eventname)
+  {
+
   }
 
   void EventSystem::TriggerEvent(const std::string eventname, BaseEvent& e)
