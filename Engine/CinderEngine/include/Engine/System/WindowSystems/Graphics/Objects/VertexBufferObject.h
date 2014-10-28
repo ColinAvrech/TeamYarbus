@@ -40,7 +40,7 @@ namespace Framework
 
     void* getDataPointer ();
     GLuint getBuffer ();
-
+    void createMultiple (int _size, GLuint* ptr);
   private:
     GLuint vbo;
     GLuint bufferSize;

@@ -22,6 +22,7 @@ namespace Framework
     void Bind (int num = 0);
     void Unbind (int num = 0);
     void Release_Texture ();
+    void Image2D (GLenum format, int w, int h, int border, GLenum type, const void* pixels);
 
   protected:
     GLuint textureID;

@@ -17,7 +17,7 @@ namespace Framework
 	void SplineCollider::Initialize()
 	{
 	};
-	void SplineCollider::Serialize()
+	void SplineCollider::Serialize(Serializer::DataNode* data)
 	{
 	};
 	void SplineCollider::Update()

@@ -76,8 +76,8 @@ namespace Framework
     glm::vec2 pos;
     //pos.x = static_cast<Transform*>(gameObject->Transform)->GetPosition().x;
     //pos.y = static_cast<Transform*>(gameObject->Transform)->GetPosition().y;
-    pos.x = gameObject->Transform->GetPosition().x + gameObject->RigidBody->vel.x * 0.016;
-    pos.y = gameObject->Transform->GetPosition().y + gameObject->RigidBody->vel.y * 0.016;
+    pos.x = gameObject->Transform->GetPosition().x + gameObject->RigidBody->vel.x * 0.016f;
+    pos.y = gameObject->Transform->GetPosition().y + gameObject->RigidBody->vel.y * 0.016f;
     if (penetration = Physics::CirclevsLine(rad, pos, *l) >= 0)
     {
       CollisionEvent collision;

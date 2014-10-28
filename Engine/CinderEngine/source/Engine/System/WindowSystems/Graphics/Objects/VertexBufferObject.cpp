@@ -19,6 +19,12 @@ namespace Framework
     bufferSize = _size;
   }
 
+
+  void VertexBufferObject::createMultiple (int _size, GLuint* ptr)
+  {
+    glGenBuffers (_size, ptr);
+  }
+
   void VertexBufferObject::releaseVBO ()
   {
     glDeleteBuffers (1, &vbo);

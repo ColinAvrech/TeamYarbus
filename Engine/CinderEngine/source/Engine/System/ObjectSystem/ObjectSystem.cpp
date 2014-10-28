@@ -133,10 +133,19 @@ namespace Framework
         while (ct)
         {
           Component* newcomp = newobj->AddComponent(ct->objectName);
-          newcomp->gameObject = newobj;          
-      
-          newcomp->Serialize(ct->branch);
-          newcomp->Initialize (); //Set pointer to GameObject, Setup Component
+          if (newcomp)
+          {
+            newcomp->gameObject = newobj;
+
+            newcomp->Serialize(ct->branch);
+            newcomp->Initialize(); //Set pointer to GameObject, Setup Component
+          }
+          else
+          {
+            //newcomp = newobj->AddZilchComponent(ct->objectName);
+            //newcomp->Serialize(ct->branch);
+            //newcomp->Initialize();
+          }
           ct = ct->next;
         }
         GameObjects[newobj->GameObjectID] = newobj;

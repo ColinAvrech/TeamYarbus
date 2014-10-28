@@ -94,7 +94,7 @@ namespace Framework
     //density * volume
     if (gameObject->CircleCollider)
     {
-      mass = (4 / 3) * 3.14 * gameObject->CircleCollider->radius;
+      mass = (4 / 3) * 3.14f * gameObject->CircleCollider->radius;
     }
     else// if (gameObject->LineCollider)
     {

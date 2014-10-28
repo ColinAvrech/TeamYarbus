@@ -39,7 +39,7 @@ namespace Framework
   {
 	//required for deterministic physics
 	float accumulator = 0;
-	float frameStart = GetCurrentTime();
+	float frameStart = float (GetCurrentTime());
 
     //!Gameloop
     while (GameActive)

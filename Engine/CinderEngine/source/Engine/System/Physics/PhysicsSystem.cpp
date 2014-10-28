@@ -33,7 +33,7 @@ namespace Framework
 					{
 						i->second->RigidBody->vel += gravityDirection * Constant::g;
 					}
-					i->second->Transform->Translate(i->second->RigidBody->vel.x * .016, i->second->RigidBody->vel.y * .016, 0);
+					i->second->Transform->Translate(i->second->RigidBody->vel.x * .016f, i->second->RigidBody->vel.y * .016f, 0);
 				}
 
 				for (auto j = i; j != OBJECTSYSTEM->GameObjects.end(); ++j)

@@ -64,10 +64,11 @@ namespace Framework
     bool ThermodynamicsSystem::Initialize()
     {
       std::cout << "Thermodynamics Initialized." << std::endl;
-      std::cout << "Grid 1000 x 1000" << std::endl;
 
       //Scan level
-      
+      MapSize = { 100, 100 };
+      std::cout << "Grid " << MapSize.x << "x " << MapSize.y << std::endl;
+      MapOffset = { 50, 50 };
       //Allocate heatmap
       HeatMap = new float*[100];
       for (int i = 0; i < 100; ++i)
@@ -76,10 +77,10 @@ namespace Framework
       {
         for (int i = 0; i < 100; ++i)
         {
-          HeatMap[i][j] = (rand() % 10) +300.f;
+          HeatMap[i][j] = rand () % 700 + 300.0f;
         }
       }
-      HeatMap[1][1] = 410.f;
+      HeatMap[0][0] = 1000.0f;
 
       //Allocate Oxygen/Density map
       OxygenMap = new float*[100];
@@ -163,9 +164,9 @@ namespace Framework
     //Get cell temperature
     float ThermodynamicsSystem::GetCellTemperature(float x, float y)
     {
-      int sub_x = static_cast<int>((x) + MapOffset.x);
-      int sub_y = static_cast<int>((y) + MapOffset.y);
-      if (sub_x < 0 || sub_x > MapSize.x || sub_y < 0 || sub_y > MapSize.y)
+      int sub_x = int (std::abs (((x) * 49 + MapOffset.x - 1)));
+      int sub_y = int (std::abs (((y) * 50 + MapOffset.y - 1)));
+      if (sub_x < 0 || sub_x >= MapSize.x || sub_y < 0 || sub_y >= MapSize.y)
         return 0.f;
       return HeatMap[sub_x][sub_y];
     }
@@ -236,7 +237,7 @@ namespace Framework
             {
               if (x != i || y != j)
               {
-                float dQ = ConductiveHeatTransfer(Const::K_Air, HeatMap[i][j], HeatMap[x][y], dt, 1.f);
+                float dQ = ConductiveHeatTransfer(Const::K_Air, HeatMap[i][j], HeatMap[x][y], dt, 0.1f);
                 netdQ += dQ;
                 float oTemp = HeatMap[x][y];
                 HeatMap[x][y] -= dTemp(dQ, OxygenMap[x][y], Const::c_Air);
@@ -251,11 +252,11 @@ namespace Framework
             float dQConv = ConvectiveHeatTransfer(Const::Hc_Air, HeatMap[i][j], HeatMap[i][j + 1], dt);
             float oTempConv = HeatMap[i][j + 1];
             netdQ += dQConv;
-            HeatMap[i][j + 1] -= dTemp(dQConv, OxygenMap[i][j + 1], Const::c_Air);
+            HeatMap [i][j + 1] -= dTemp (dQConv, OxygenMap [i][j + 1] * 0.001f, Const::c_Air);
             float factor2 = HeatMap[i][j + 1] / oTempConv;
             OxygenMap[i][j + 1] /= factor2;
           }
-          HeatMap[i][j] += dTemp(netdQ, OxygenMap[i][j], Const::c_Air);
+          HeatMap[i][j] += dTemp(netdQ, OxygenMap[i][j] * 0.001f, Const::c_Air);
           float factor1 = HeatMap[i][j] / oTemp;
           OxygenMap[i][j] /= factor1;
         }//for

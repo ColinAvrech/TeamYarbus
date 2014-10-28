@@ -39,13 +39,13 @@ namespace Framework
 
     case GLFW_KEY_D:
       if (gameObject->RigidBody->vel.x <= maxXVel)
-        gameObject->RigidBody->vel.x += accel*0.016;
+        gameObject->RigidBody->vel.x += accel*0.016f;
       //gameObject->Transform->Translate(1, 0, 0);
       break;
 
     case GLFW_KEY_A:
       if (gameObject->RigidBody->vel.x >= -maxXVel)
-        gameObject->RigidBody->vel.x -= accel*0.016;
+        gameObject->RigidBody->vel.x -= accel*0.016f;
       //gameObject->Transform->Translate(-1, 0, 0);
       break;
 

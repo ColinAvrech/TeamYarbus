@@ -31,7 +31,7 @@ namespace Framework
   public:
 
     //Constructor. Initialize with owner and component name.
-    ZilchComponent(std::string* name);
+    ZilchComponent(std::string& name);
 
     //!Updated every frame.
     void Update(const double dt);
@@ -40,7 +40,7 @@ namespace Framework
     virtual void Initialize();
 
     /*!TODO IMPLIMENT SERIALIZATION!*/
-    virtual void Serialize(Serializer::DataNode* componentData){};
+    virtual void Serialize(Serializer::DataNode* componentData);
 
     //Destructor
     ~ZilchComponent();
