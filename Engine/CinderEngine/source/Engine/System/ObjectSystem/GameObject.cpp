@@ -46,6 +46,7 @@ the level runs.
 #pragma once
 
 #include "GameObject.h"
+#include "ScriptComponent.h"
 
 namespace Framework
 {
@@ -69,6 +70,13 @@ namespace Framework
       std::cout << Console::red << "ERROR, Object System requested to create unregistered component" << std::endl;
       return NULL;
     }
+  }
+
+  Component* GameObject::AddZilchComponent(std::string name)
+  {
+    //not sure about error handling
+    Component* zc = new ZilchComponent(name);
+    return zc;
   }
 
   Component* GameObject::GetComponent(std::string component)

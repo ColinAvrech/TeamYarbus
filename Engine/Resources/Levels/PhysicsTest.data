@@ -121,6 +121,9 @@ Level =
 		CharacterController = 
 		{
 		},
+    Player = 
+		{
+		},
 		RigidBody = 
 		{
 			bool Static = false,

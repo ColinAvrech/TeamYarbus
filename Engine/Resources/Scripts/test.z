@@ -4,8 +4,8 @@ class Player
   {
   }
   
-  function SayHello()
+  function Initialize()
   {
-    Console.WriteLine("HelloWorld in Zilch Function");
+    Console.WriteLine("Initialized component Player");
   }
 }

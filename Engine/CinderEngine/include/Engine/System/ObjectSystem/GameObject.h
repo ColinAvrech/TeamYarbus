@@ -50,6 +50,7 @@ namespace Framework
     GameObject(unsigned gameObjectID);
 
     Component* AddComponent(std::string name);
+    Component* AddZilchComponent(std::string name);
 
     Component* GetComponent(std::string component);
 
@@ -67,11 +68,11 @@ namespace Framework
     ComponentPointer(Transform);
     ComponentPointer(Sprite);
     ComponentPointer(CircleCollider);
-	ComponentPointer(LineCollider);
-	ComponentPointer(Camera);
-	ComponentPointer(RigidBody);
+  ComponentPointer(LineCollider);
+  ComponentPointer(Camera);
+  ComponentPointer(RigidBody);
     ComponentPointer(PointCollider);
-	ComponentPointer(CharacterController);
+  ComponentPointer(CharacterController);
 
 
     // when framework is removed

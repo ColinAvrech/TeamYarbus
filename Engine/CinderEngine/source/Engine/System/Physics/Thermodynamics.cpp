@@ -1,4 +1,5 @@
 #include "Physics/Thermodynamics.h"
+#include "AudioSystem.h"
 #include "TDLib.h"
 
 #define SIZE 10
@@ -76,10 +77,10 @@ namespace Framework
       {
         for (int i = 0; i < 100; ++i)
         {
-          HeatMap[i][j] = (rand() % 10) +300.f;
+          HeatMap[i][j] = 300.f;
         }
       }
-      HeatMap[1][1] = 410.f;
+      //HeatMap[50][50] = 500.f;
 
       //Allocate Oxygen/Density map
       OxygenMap = new float*[100];
@@ -152,11 +153,14 @@ namespace Framework
     // Called every frame
     void ThermodynamicsSystem::Update(const double dt)
     {
+      HeatMap[50][50] += 10 * AUDIOSYSTEM->input.peaklevel[0];
       UpdateTemp(0.016);
       ComputeVelocity(0.016);
       UpdateFire(0.016);
       //std::cout << "{ " << Physics::THERMODYNAMICS->GetCellVelocity(20, 20).x << ", " << Physics::THERMODYNAMICS->GetCellVelocity(20, 20).y << " }\n";
-      //std::cout << HeatMap[1][1] << ", " << HeatMap[1][2] << "\n";
+      //std::cout << HeatMap[50][50] << " , ";
+      //std::cout << HeatMap[51][50] << " \n";
+      //std::cout << "{" << VelocityMap[50][50].x << " , " << VelocityMap[50][50].y << "}\n";
     }
 
     // Getters
@@ -236,10 +240,10 @@ namespace Framework
             {
               if (x != i || y != j)
               {
-                float dQ = ConductiveHeatTransfer(Const::K_Air, HeatMap[i][j], HeatMap[x][y], dt, 1.f);
+                float dQ = ConductiveHeatTransfer(Const::K_Air, HeatMap[i][j], HeatMap[x][y], dt, 0.1f);
                 netdQ += dQ;
                 float oTemp = HeatMap[x][y];
-                HeatMap[x][y] -= dTemp(dQ, OxygenMap[x][y], Const::c_Air);
+                HeatMap[x][y] -= dTemp(dQ, OxygenMap[x][y]*0.001f, Const::c_Air);
                 
                 float factor = HeatMap[x][y] / oTemp;
                 OxygenMap[x][y] /= factor;
@@ -251,11 +255,11 @@ namespace Framework
             float dQConv = ConvectiveHeatTransfer(Const::Hc_Air, HeatMap[i][j], HeatMap[i][j + 1], dt);
             float oTempConv = HeatMap[i][j + 1];
             netdQ += dQConv;
-            HeatMap[i][j + 1] -= dTemp(dQConv, OxygenMap[i][j + 1], Const::c_Air);
+            HeatMap[i][j + 1] -= dTemp(dQConv, OxygenMap[i][j + 1]*0.001f, Const::c_Air);
             float factor2 = HeatMap[i][j + 1] / oTempConv;
             OxygenMap[i][j + 1] /= factor2;
           }
-          HeatMap[i][j] += dTemp(netdQ, OxygenMap[i][j], Const::c_Air);
+          HeatMap[i][j] += dTemp(netdQ, OxygenMap[i][j]*0.001f, Const::c_Air);
           float factor1 = HeatMap[i][j] / oTemp;
           OxygenMap[i][j] /= factor1;
         }//for
@@ -288,11 +292,11 @@ namespace Framework
             }
           }
           float meanDensity = dSum / 8;
-          float buoyancy = Buoyancy(meanDensity, OxygenMap[i][j], 1.f);
+          float buoyancy = Buoyancy(meanDensity, OxygenMap[i][j], 0.1f);
           
           int vectorindex = 0;
           float dDenseSum = 0.f;
-          VelocityMap[i][j] = { 0, 0 };
+          //VelocityMap[i][j] = { 0, 0 };
           for (int y = j - 1; y <= j + 1; ++y)
           {
             for (int x = i - 1; x <= i + 1; ++x)
