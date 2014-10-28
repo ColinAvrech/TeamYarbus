@@ -6,8 +6,8 @@
 namespace Framework
 {
   //CONSTRUCTOR
-  ZilchComponent::ZilchComponent(std::string* name)
-    : ZilchClass(Zero::String(name->c_str()))
+  ZilchComponent::ZilchComponent(std::string& name)
+    : ZilchClass(Zilch::String(name.c_str()))
   {
     //Do Stuff
   }
@@ -35,6 +35,11 @@ namespace Framework
 
     // We can also setup the console so that any 'Read' functions will attempt to read from stdin
     Zilch::Console::SetReadTextCallback(Zilch::DefaultReadText, nullptr);
+  }
+
+  void ZilchComponent::Serialize(Serializer::DataNode* componentData)
+  {
+
   }
    
 }

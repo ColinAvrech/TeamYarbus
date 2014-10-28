@@ -60,6 +60,8 @@ namespace Framework
 
     //LoadAllZilchFiles into the static Library
     void LoadZilchFiles(Zilch::Project & project);
+    //Compile all the scripts
+    void CompileScripts(Zilch::Project& project, Zilch::Module& dependencies);
 
     //Unordered map of compiled Zilch libraries
     std::unordered_map<const char*, Zilch::LibraryRef>* LibList;
