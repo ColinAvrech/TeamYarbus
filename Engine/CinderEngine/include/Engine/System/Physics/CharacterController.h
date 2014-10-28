@@ -3,35 +3,36 @@
 
 namespace Framework
 {
-	class KeyEvent;
-	class CollisionEvent;
-	class UpdateEvent;
+  class KeyEvent;
+  class CollisionEvent;
+  class UpdateEvent;
 
-	class CharacterController : public Component
-	{
-	public:
-		const static std::string Name;
-		float accel;
-		float drag;
-		float maxXVel;
-		float jumpVel;
+  class CharacterController : public Component
+  {
+  public:
+    const static std::string Name;
+    float accel;
+    float drag;
+    float maxXVel;
+    float jumpVel;
+    float currentforce;
 
-		CharacterController(GameObject * obj)
-		{
-			gameObject = obj;
-		}
+    CharacterController(GameObject * obj)
+    {
+      gameObject = obj;
+    }
 
-		CharacterController(){}
+    CharacterController(){}
 
-		~CharacterController();
+    ~CharacterController();
 
-		/*!Telegraph that the component is active*/
-		virtual void Initialize();
-		virtual void Serialize(Serializer::DataNode* data);
+    /*!Telegraph that the component is active*/
+    virtual void Initialize();
+    virtual void Serialize(Serializer::DataNode* data);
 
-		//Registered to events
-		void Update(UpdateEvent* e);
-		void OnKeyPressed(KeyEvent* key);
-		void OnCollisionEnter(CollisionEvent* collision);
-	};
+    //Registered to events
+    void Update(UpdateEvent* e);
+    void OnKeyPressed(KeyEvent* key);
+    void OnCollisionEnter(CollisionEvent* collision);
+  };
 }

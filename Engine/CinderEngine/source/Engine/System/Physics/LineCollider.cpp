@@ -30,10 +30,10 @@ namespace Framework
 		temp = data->FindElement(data, "Size");
 		temp->GetValue(&boxSize);
 
-		p1.x = objPosition.x - (boxSize.x * objScale.x) / 2;
-		p1.y = objPosition.y + (boxSize.y * objScale.y) / 2;
-		p2.x = objPosition.x + (boxSize.x * objScale.x) / 2;
-		p2.y = objPosition.y + (boxSize.y * objScale.y) / 2;
+		p1.x = objPosition.x - (boxSize.x * objScale.x);
+		p1.y = objPosition.y + (boxSize.y * objScale.y);
+		p2.x = objPosition.x + (boxSize.x * objScale.x);
+		p2.y = objPosition.y + (boxSize.y * objScale.y);
 
 	}
 	void LineCollider::Update()
