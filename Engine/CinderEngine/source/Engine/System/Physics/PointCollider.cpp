@@ -14,46 +14,46 @@
 
 namespace Framework
 {
-  //serialize, initialize, update
-  void PointCollider::Serialize()
-  {
-    return;
-  }
+	//serialize, initialize, update
+	void PointCollider::Serialize(Serializer::DataNode* data)
+	{
+		return;
+	}
 
-  void PointCollider::Initialize()
-  {
+	void PointCollider::Initialize()
+	{
     gameObject->PointCollider = this;
-  }
-  void PointCollider::Update()
-  {
-    
-  }
+	}
+	void PointCollider::Update()
+	{
+		
+	}
 
-  //collision
-  void PointCollider::DetectCircle(CircleCollider* c)
-  {
-    glm::vec2 ppos = getPosition();
-    glm::vec2 cpos = c->getPosition();
-    float rad = c->GetRadius();
-    if (Physics::CirclevsPoint(rad, cpos, ppos))
-    {
+	//collision
+	void PointCollider::DetectCircle(CircleCollider* c)
+	{
+		glm::vec2 ppos = getPosition();
+		glm::vec2 cpos = c->getPosition();
+		float rad = c->GetRadius();
+		if (Physics::CirclevsPoint(rad, cpos, ppos))
+		{
       CollisionEvent collision;
-      collision.OtherObject = c->gameObject;
-      collision.normal = cpos - ppos;
-      glm::normalize(collision.normal);
-    }
-  }
+			collision.OtherObject = c->gameObject;
+			collision.normal = cpos - ppos;
+			glm::normalize(collision.normal);
+		}
+	}
 
-  void PointCollider::DetectLine(LineCollider* l)
-  {
-    glm::vec2 pos = getPosition();
-    if (Physics::PointvsLine(pos, *l))
-    {
+	void PointCollider::DetectLine(LineCollider* l)
+	{
+		glm::vec2 pos = getPosition();
+		if (Physics::PointvsLine(pos, *l))
+		{
       CollisionEvent collision;
-      collision.OtherObject = l->gameObject;
-      collision.normal = l->normalVec;
-      glm::normalize(collision.normal);
-    }
-  }
-  DefineComponentName(PointCollider);
+			collision.OtherObject = l->gameObject;
+			collision.normal = l->normalVec;
+			glm::normalize(collision.normal);
+		}
+	}
+	DefineComponentName(PointCollider);
 }

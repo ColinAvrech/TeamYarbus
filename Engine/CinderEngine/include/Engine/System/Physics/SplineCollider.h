@@ -31,7 +31,7 @@ namespace Framework
 		~SplineCollider(){};
 
 		void Initialize();
-		void Serialize();
+		void Serialize(Serializer::DataNode*);
 		void Update();
 
 		// Getters
