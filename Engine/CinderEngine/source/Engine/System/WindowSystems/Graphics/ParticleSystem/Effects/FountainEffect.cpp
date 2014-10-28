@@ -36,6 +36,13 @@ namespace Framework
     m_posGenerator->m_maxStartPosOffset = glm::vec4{ 0.0, 0.0, 0.0, 0.0 };
     particleEmitter->addGenerator (m_posGenerator);
 
+    m_colGenerator = std::make_shared<BasicColorGen> ();
+    m_colGenerator->m_minStartCol = glm::vec4{ 255.0 / 255, 64.0 / 255, 00.0 / 255, 0.0 };
+    m_colGenerator->m_maxStartCol = glm::vec4{ 255.0 / 255, 64.0 / 255, 0.0 / 255, 0.4 };
+    m_colGenerator->m_minEndCol = glm::vec4{ 0, 0, 0, 0.0 };
+    m_colGenerator->m_maxEndCol = glm::vec4{ 0, 0, 0, 0.0 };
+    particleEmitter->addGenerator (m_colGenerator);
+
     auto velGen = std::make_shared<BasicVelGen> ();
     velGen->m_minStartVel = glm::vec4 (-0.05f, 0.1f, -0.05f, 0);
     velGen->m_maxStartVel = glm::vec4 (0.05f, 0.25f, 0.05f, 0);
