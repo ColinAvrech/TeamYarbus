@@ -15,53 +15,56 @@
 
 namespace Framework
 {
-	namespace Physics
-	{
-		/*---------------------------------------------------------------------------
-		// Class
-		---------------------------------------------------------------------------*/
-		class PhysicsSystem : public BaseSystem
-		{
-		public:
-			glm::vec2 gravityDirection;
-			// Returns name of System
-			const std::string GetName(){ return "PhysicsSystem"; }
+  namespace Physics
+  {
+    /*---------------------------------------------------------------------------
+    // Class
+    ---------------------------------------------------------------------------*/
+    class PhysicsSystem : public BaseSystem
+    {
+    public:
+      glm::vec2 gravityDirection;
+      // Returns name of System
+      const std::string GetName(){ return "PhysicsSystem"; }
 
-			/*-----------------------------------------------------------------------
-			// Constructor / Destructor
-			-----------------------------------------------------------------------*/
-			PhysicsSystem(){};
-			~PhysicsSystem(){};
+      /*-----------------------------------------------------------------------
+      // Constructor / Destructor
+      -----------------------------------------------------------------------*/
+      PhysicsSystem(){};
+      ~PhysicsSystem(){};
 
-			/*-----------------------------------------------------------------------
-			// Public Variables
-			-----------------------------------------------------------------------*/
+      /*-----------------------------------------------------------------------
+      // Public Variables
+      -----------------------------------------------------------------------*/
 
-			/*---------------------------------------------------------------------*/
-			// Public Structs
-			/*---------------------------------------------------------------------*/
+      /*---------------------------------------------------------------------*/
+      // Public Structs
+      /*---------------------------------------------------------------------*/
 
-			/*-----------------------------------------------------------------------
-			// Public Functions
-			-----------------------------------------------------------------------*/
-			//!Initialize the system
-			//this is where I will be setting up physics components
-			bool Initialize(void);
+      /*-----------------------------------------------------------------------
+      // Public Functions
+      -----------------------------------------------------------------------*/
+      //!Initialize the system
+      //this is where I will be setting up physics components
+      bool Initialize(void);
 
-			// Called every frame
-			void Update(const double dt);
-			//void UpdateCollision(void);
-			//void UpdateResolution(void);
-			//void UpdateForces(void);
+      // Called every frame
+      void Update(const double dt);
+      //void UpdateCollision(void);
+      //void UpdateResolution(void);
+      //void UpdateForces(void);
 
 
-		private:
-			float accumlator;
-			float frameStart;
-			float CurrentTime;
-			
+    private:
+      float accumlator;
+      float frameStart;
+      float CurrentTime;
+      
+      //std::vector<unsigned, PointCollider*> PointColliders;
+      //std::vector<unsigned, LineCollider*> LineColliders;
+      //std::vector<unsigned, CircleCollider*> CircleColliders;
 
-		};
-		extern PhysicsSystem *PHYSICSSYSTEM;
-	}
+    };
+    extern PhysicsSystem *PHYSICSSYSTEM;
+  }
 }

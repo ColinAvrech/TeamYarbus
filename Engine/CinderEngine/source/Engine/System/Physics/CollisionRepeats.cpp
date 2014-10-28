@@ -16,7 +16,6 @@ namespace Framework
 		float CirclevsLine(const float rad, glm::vec2& pos, LineCollider& l)
 		{
 			//Make sure buildlinesegment (private memb fuct) composes the right normals
-			float penetration;
 			float ldotProduct = l.p1dotNormal;
 			glm::vec2 normVec = l.normalVec;
 			normVec = glm::normalize(normVec);

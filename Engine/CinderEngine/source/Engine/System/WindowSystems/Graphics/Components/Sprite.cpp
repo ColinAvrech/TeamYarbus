@@ -41,6 +41,8 @@ namespace Framework
   {
     WINDOWSYSTEM->spriteList.push_back (this);
     Specify_Attributes ();
+
+    gameObject->Sprite = this;
   }
 
 
