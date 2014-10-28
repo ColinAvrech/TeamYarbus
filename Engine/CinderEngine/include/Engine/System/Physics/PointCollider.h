@@ -23,7 +23,7 @@ namespace Framework
 
 		/*!Telegraph that the component is active*/
 		void Initialize();
-		void Serialize();
+		void Serialize(Serializer::DataNode*);
 		void Update();
 
 		//collision

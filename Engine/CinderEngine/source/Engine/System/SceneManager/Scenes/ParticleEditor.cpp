@@ -117,7 +117,7 @@ namespace Framework
 
   void ParticleEditor::Load_Scene (const char* filename)
   {
-    EVENTSYSTEM->gConnect<KeyEvent>(Events::KEY_ANY, &OnKeyPressed);
+    //EVENTSYSTEM->gConnect<KeyEvent>(Events::KEY_ANY, &OnKeyPressed);
 
     //TwInit (TW_OPENGL, NULL);
     // or

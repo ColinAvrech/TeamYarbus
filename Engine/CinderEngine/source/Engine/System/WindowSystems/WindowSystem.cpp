@@ -21,6 +21,7 @@ function to handle windows Messages.
 #include "EventSystem.h"
 #include "DebugRenderer.h"
 #include "CLParticleRenderer.h"
+#include "HeatMap.h"
 
 namespace Framework
 {
@@ -35,6 +36,7 @@ namespace Framework
   static DebugRenderer dr;
   static CLParticleRenderer clRenderer;
   static float shininess = 200;
+  static HeatMap heatMap (101, 101);
 
   namespace WindowNameSpace
   {
@@ -274,22 +276,24 @@ namespace Framework
   {
     std::cout << GetName () << " initialized\n";
 
-    clRenderer.GenerateTextures ();
-    clRenderer.GenerateBuffers ();
-    clRenderer.GenerateShaders ();
+    //clRenderer.GenerateTextures ();
+    //clRenderer.GenerateBuffers ();
+    //clRenderer.GenerateShaders ();
 
-    dr.Initialize ();
-    ShapeData data = ShapeGenerator::Generate_Quad ();
-    vao = new VAO ();
-    vbo = new VBO (data.vbo_size (), data.vertices);
-    ebo = new EBO (data.ebo_size (), data.indices);
-    data.Clean ();
+    //dr.Initialize ();
+    //ShapeData data = ShapeGenerator::Generate_Quad ();
+    //vao = new VAO ();
+    //vbo = new VBO (data.vbo_size (), data.vertices);
+    //ebo = new EBO (data.ebo_size (), data.indices);
+    //data.Clean ();
+
+    heatMap.Initialize ();
     return true;
   }
 
   WindowSystem::~WindowSystem()
   {
-    delete vao, vbo, ebo;
+    //delete vao, vbo, ebo;
     glfwTerminate();
   }
   
@@ -303,6 +307,8 @@ namespace Framework
   {
     glfwSwapBuffers(window);
     glfwPollEvents ();
+
+    heatMap.Update (dt);
   }
 
   void WindowSystem::GraphicsUpdate (const double dt)
@@ -310,15 +316,18 @@ namespace Framework
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable (GL_BLEND);
     glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    ///*clRenderer.Render ();
-    vao->bindVAO ();
 
-    for (auto i : spriteList)
-    {
-      i->gameObject->Transform->UpdateMatrices ();
-      i->Draw ();
-    }
-    vao->unbindVAO ();
+    heatMap.Draw ();
+    //glfwSwapBuffers (window);
+    /////*clRenderer.Render ();
+    //vao->bindVAO ();
+
+    //for (auto i : spriteList)
+    //{
+    //  i->gameObject->Transform->UpdateMatrices ();
+    //  i->Draw ();
+    //}
+    //vao->unbindVAO ();
 
     //////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////

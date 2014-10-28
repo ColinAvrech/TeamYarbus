@@ -15,7 +15,7 @@
 namespace Framework
 {
 	//serialize, initialize, update
-	void PointCollider::Serialize()
+	void PointCollider::Serialize(Serializer::DataNode* data)
 	{
 		return;
 	}

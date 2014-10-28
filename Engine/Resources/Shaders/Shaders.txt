@@ -48,3 +48,8 @@ DebugDraw.vs.glsl
 DebugDraw.frag.glsl
 0
 DebugPoint
+>
+ColorCodeCell.vs.glsl
+ColorCodeCell.frag.glsl
+0
+ColorCodeCell
