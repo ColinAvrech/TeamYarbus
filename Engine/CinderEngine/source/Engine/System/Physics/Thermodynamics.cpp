@@ -164,8 +164,8 @@ namespace Framework
     //Get cell temperature
     float ThermodynamicsSystem::GetCellTemperature(float x, float y)
     {
-      int sub_x = std::abs (((x) * 49 + MapOffset.x - 1));
-      int sub_y = std::abs (((y) * 50 + MapOffset.y - 1));
+      int sub_x = int (std::abs (((x) * 49 + MapOffset.x - 1)));
+      int sub_y = int (std::abs (((y) * 50 + MapOffset.y - 1)));
       if (sub_x < 0 || sub_x >= MapSize.x || sub_y < 0 || sub_y >= MapSize.y)
         return 0.f;
       return HeatMap[sub_x][sub_y];

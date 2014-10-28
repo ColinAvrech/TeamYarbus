@@ -280,20 +280,20 @@ namespace Framework
     //clRenderer.GenerateBuffers ();
     //clRenderer.GenerateShaders ();
 
-    //dr.Initialize ();
-    //ShapeData data = ShapeGenerator::Generate_Quad ();
-    //vao = new VAO ();
-    //vbo = new VBO (data.vbo_size (), data.vertices);
-    //ebo = new EBO (data.ebo_size (), data.indices);
-    //data.Clean ();
-
     heatMap.Initialize ();
+    //dr.Initialize ();
+    ShapeData data = ShapeGenerator::Generate_Quad ();
+    vao = new VAO ();
+    vbo = new VBO (data.vbo_size (), data.vertices);
+    ebo = new EBO (data.ebo_size (), data.indices);
+    data.Clean ();
+
     return true;
   }
 
   WindowSystem::~WindowSystem()
   {
-    //delete vao, vbo, ebo;
+    delete vao, vbo, ebo;
     glfwTerminate();
   }
   
@@ -307,8 +307,6 @@ namespace Framework
   {
     glfwSwapBuffers(window);
     glfwPollEvents ();
-
-    heatMap.Update (dt);
   }
 
   void WindowSystem::GraphicsUpdate (const double dt)
@@ -317,18 +315,20 @@ namespace Framework
     glEnable (GL_BLEND);
     glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    heatMap.Draw ();
     //glfwSwapBuffers (window);
     /////*clRenderer.Render ();
-    //vao->bindVAO ();
 
-    //for (auto i : spriteList)
-    //{
-    //  i->gameObject->Transform->UpdateMatrices ();
-    //  i->Draw ();
-    //}
-    //vao->unbindVAO ();
+    heatMap.Update (dt);
+    heatMap.Draw ();
 
+    vao->bindVAO ();
+
+    for (auto i : spriteList)
+    {
+      i->gameObject->Transform->UpdateMatrices ();
+      i->Draw ();
+    }
+    vao->unbindVAO ();
     //////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////
     // To use Debug Draw:

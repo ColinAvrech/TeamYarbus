@@ -56,14 +56,12 @@ namespace Framework
   void HeatMap::Update (double dt)
   {
     shader->Use ();
+    vao->bindVAO ();
     glm::mat4 model;
     float offset_x = 0.0;
     float offset_y = 0.0;
     float scale = 1.0;
-    //if (rotate)
-    //  model = glm::rotate (glm::mat4 (1.0f), glm::radians (glutGet (GLUT_ELAPSED_TIME) / 100.0f), glm::vec3 (0.0f, 0.0f, 1.0f));
 
-    //else
     model = glm::scale (glm::mat4 (1.0f), glm::vec3 (1.6f, 0.9f, 1));
 
     glm::mat4 view = glm::lookAt (glm::vec3 (0.0, 0.0, 5.0), glm::vec3 (0.0, 0.0, -1.0), glm::vec3 (0.0, 1.0, 0.0));
@@ -74,10 +72,6 @@ namespace Framework
 
     glUniformMatrix4fv (uniform_vertex_transform, 1, GL_FALSE, glm::value_ptr (vertex_transform));
     glUniformMatrix4fv (uniform_texture_transform, 1, GL_FALSE, glm::value_ptr (texture_transform));
-
-
-    glClearColor (0.0, 0.0, 0.0, 0.0);
-    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     /* Set texture wrapping mode */
     glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -91,33 +85,23 @@ namespace Framework
     GLfloat grey [4] = { 1.0, 1.0, 1.0, 1 };
     glUniform4fv (uniform_color, 1, grey);
 
-    glEnable (GL_DEPTH_TEST);
-
-    //if (polygonoffset) {
-    //  glPolygonOffset (1, 0);
-    //  glEnable (GL_POLYGON_OFFSET_FILL);
-    //}
-
     glEnableVertexAttribArray (attrib_temperature);
     glEnableVertexAttribArray (attribute_coord2d);
-    //t += 0.016f;
-    ////if (t > 5.0f)
-    //{
-    //  t = 0.0f;
+
     float x = -1.0f;
     float y = 1.0f;
-      for (int i = 0; i < 101; ++i)
+    for (int i = 0; i < 101; ++i)
+    {
+      for (int j = 0; j < 101; ++j)
       {
-        for (int j = 0; j < 101; ++j)
-        {
-          //std::cout << x << ", " << y << "\n";
-          temperatures [i][j] = Physics::THERMODYNAMICS->GetCellTemperature (x, y);
-          x += 1.f / 50;
-        }
-        y -= 1.f / 50;
-        x = -1.0f;
+        //std::cout << x << ", " << y << "\n";
+        temperatures [i][j] = Physics::THERMODYNAMICS->GetCellTemperature (x, y);
+        x += 1.f / 50;
       }
-    //}
+
+      y -= 1.f / 50;
+      x = -1.0f;
+    }
 
     glBindBuffer (GL_ARRAY_BUFFER, vbo [1]);
     glBufferData (GL_ARRAY_BUFFER, sizeof temperatures, temperatures, GL_STREAM_DRAW);
@@ -130,6 +114,13 @@ namespace Framework
   {
     glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, vbo [3]);
     glDrawElements (GL_TRIANGLES, 100 * 100 * 6, GL_UNSIGNED_SHORT, 0);
+
+    /* Stop using the vertex buffer object */
+    glDisableVertexAttribArray (attribute_coord2d);
+    glDisableVertexAttribArray (attrib_temperature);
+    glBindBuffer (GL_ARRAY_BUFFER, 0);
+    glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, 0);
+    vao->unbindVAO ();
   }
 
   void HeatMap::Generate_Graph (const int N)
