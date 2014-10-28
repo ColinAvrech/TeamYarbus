@@ -39,6 +39,8 @@ namespace Framework
     matricesReady = false;
     currentMatrix = 0;
     //UpdateMatrices ();
+
+    gameObject->Transform = this;
   }
 
 

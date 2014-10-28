@@ -77,7 +77,7 @@ namespace Framework
     //value = data->FindElement(data, "Size");
     //value->GetValue(&aspect);
     //aspect = data->value_.Float_;
-	aspect = 16 / 9;
+	aspect = 16.f / 9;
   }
 
 

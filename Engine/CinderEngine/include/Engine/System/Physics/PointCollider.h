@@ -11,23 +11,23 @@
 #pragma once
 namespace Framework
 {
-	class LineCollider;
-	class CircleCollider;
+  class LineCollider;
+  class CircleCollider;
 
-	class PointCollider : public ShapeCollider
-	{
-	public:
-		const static std::string Name;
+  class PointCollider : public ShapeCollider
+  {
+  public:
+    const static std::string Name;
     PointCollider () {}
-		~PointCollider(){}
+    ~PointCollider(){}
 
-		/*!Telegraph that the component is active*/
-		void Initialize();
-		void Serialize();
-		void Update();
+    /*!Telegraph that the component is active*/
+    void Initialize();
+    void Serialize();
+    void Update();
 
-		//collision
-		void DetectCircle(CircleCollider* c);
-		void DetectLine(LineCollider* l);
-	};
+    //collision
+    void DetectCircle(CircleCollider* c);
+    void DetectLine(LineCollider* l);
+  };
 }
