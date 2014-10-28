@@ -17,54 +17,51 @@
 
 namespace Framework
 {
-  namespace ScriptSystem
+  //NOTES-------------------------------------------------------------
+  //To later check if a GameComponent is a ZilchComponent:
+  //GameComponent *c = ....
+  //ZilchComponent *zc = dynamic_cast<ZilchComponent*>(c);
+  //if(zc != 0) // is ZilchComponent
+
+  //pass std::string str.c_str() to convert to const char*
+  //------------------------------------------------------------------
+
+  class ZilchComponent : public Component
   {
-    //NOTES-------------------------------------------------------------
-    //To later check if a GameComponent is a ZilchComponent:
-    //GameComponent *c = ....
-    //ZilchComponent *zc = dynamic_cast<ZilchComponent*>(c);
-    //if(zc != 0) // is ZilchComponent
+  public:
 
-    //pass std::string str.c_str() to convert to const char*
-    //------------------------------------------------------------------
+    //Constructor. Initialize with owner and component name.
+    ZilchComponent(std::string* name);
 
-    class ZilchComponent : public Component
-    {
-    public:
+    //!Updated every frame.
+    void Update(const double dt);
 
-      //Constructor. Initialize with owner and component name.
-      ZilchComponent(std::string* name);
+    //!Initialize the system.
+    virtual void Initialize();
 
-      //!Updated every frame.
-      void Update(const double dt);
+    /*!TODO IMPLIMENT SERIALIZATION!*/
+    virtual void Serialize(Serializer::DataNode* componentData){};
 
-      //!Initialize the system.
-      virtual void Initialize();
-
-      /*!TODO IMPLIMENT SERIALIZATION!*/
-      virtual void Serialize(Serializer::DataNode* componentData){};
-
-      //Destructor
-      ~ZilchComponent();
+    //Destructor
+    ~ZilchComponent();
 
 #ifdef _DEBUG
-    private:
-      //Private data ----------------------------------
-      //Zilch class name
-      Zilch::StringParam ZilchClass;
-      //Zilch class (Zilch::BoundType*)
-      Zilch::BoundType* Script;
-      //Zilch library for this component
-      Zilch::LibraryRef* library;
-      //Zilch functions (Zilch::Function*)
-      //Initialize
-      Zilch::Function* ZilchInitialize;
-      //Update
-      Zilch::Function* Run;
-      //Zilch exception handler (Zilch::ExceptionReport)
-      Zilch::ExceptionReport report;
+  private:
+    //Private data ----------------------------------
+    //Zilch class name
+    Zilch::StringParam ZilchClass;
+    //Zilch class (Zilch::BoundType*)
+    Zilch::BoundType* Script;
+    //Zilch library for this component
+    Zilch::LibraryRef* library;
+    //Zilch functions (Zilch::Function*)
+    //Initialize
+    Zilch::Function* ZilchInitialize;
+    //Update
+    Zilch::Function* Run;
+    //Zilch exception handler (Zilch::ExceptionReport)
+    Zilch::ExceptionReport report;
 
 #endif
-    }; //class scriptcomponent
-  }  //namespace ScriptSystem
+  }; //class scriptcomponent
 }  //namespace framework

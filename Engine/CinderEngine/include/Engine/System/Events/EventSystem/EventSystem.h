@@ -12,6 +12,7 @@
 
 #include "Common.h"
 #include "BaseSystem.h"
+#include "Zilch.hpp"
 
 
 namespace Framework
@@ -22,6 +23,8 @@ namespace Framework
   class EventSystem : public BaseSystem
   {
   public:
+    //ZilchDeclareBaseType(EventSystem, TypeCopyMode::ReferenceType);
+
     EventSystem ();
     ~EventSystem ();
 
@@ -42,7 +45,7 @@ namespace Framework
     template<typename EventType, typename ClassType>
     void mConnect (const std::string eventname, ClassType *this_ptr, void(ClassType::*func)(EventType*));
 
-    //void zConnect(const std::string eventname, )
+    void zConnect(const std::string eventname);
 
     void TriggerEvent (const std::string eventname, BaseEvent& e);
 
