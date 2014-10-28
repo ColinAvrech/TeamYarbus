@@ -5,8 +5,8 @@
 
 ZilchStaticLibrary(CinderZilch);
 
-#define ScriptFileList "../../Resources/Scripts/ScriptFiles.txt"
-#define ScriptFilePath "../../Resources/Scripts/"
+#define ScriptFileList "..\\..\\Resources\\Scripts\\ScriptFiles.txt"
+#define ScriptFilePath "..\\..\\Resources\\Scripts\\"
 
 using namespace Zilch;
 
@@ -20,11 +20,12 @@ namespace Framework
 
   bool ScriptSystem::Initialize()
   {
-    // Don't want this code to run at this moment - Micah
+    //Don't use for now..
     return true;
 
 
-    // Any one time startup and static initialization Zilch needs to do
+
+        // Any one time startup and static initialization Zilch needs to do
     // This also registers a custom assertion handler (Zilch code has many user friendly asserts!)
     Zilch::ZilchStartup(Zilch::Debugging::UseZilchErrorHandler);
     // Here, we can register our own callback for when compilation errors occu
@@ -39,7 +40,10 @@ namespace Framework
     // A project contains all of the code we combine together to make a single Zilch library
     Zilch::Project project(Errors);
     //declared in init function. Loops through till all scripts are compiled
-      
+
+    //project.AddCodeFromFile("..\\..\\Resources\\Scripts\\test.z");
+
+
     //Test Code----------------------------------------------------------------------------
     LoadZilchFiles(project);
 
@@ -110,6 +114,10 @@ namespace Framework
 
   ScriptSystem::~ScriptSystem()
   {
+    // !@#!@#!@#!@#!@# TEMPORARY REMOVE AFTER SYSTEM is working! !@#!@#!@#!@#!@#!@#!@#!@#!@#!@#!@#!@#!@#!@#!@#!@#@!#
+    // !@#!@#!@#!@#!@# TEMPORARY REMOVE AFTER SYSTEM is working! !@#!@#!@#!@#!@#!@#!@#!@#!@#!@#!@#!@#!@#!@#!@#!@#@!#
+    return;
+
     delete LinkedLibs;
     delete LibList;
     Zilch::ZilchShutdown();
@@ -133,7 +141,7 @@ namespace Framework
       std::cout << zilchfile << std::endl;
 
       //Load file ISN't WORKING?!?
-      //project.AddCodeFromFile(zilchfile.c_str());
+      project.AddCodeFromFile(zilchfile.c_str());
       zilchfile.clear();
     }
   }
