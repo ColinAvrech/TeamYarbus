@@ -137,7 +137,7 @@ int main (void)
   //audio->LoadMicData ();
 
   //! activate the window.
-  //OBJECTSYSTEM->LoadLevel ("PhysicsTest.data");
+  OBJECTSYSTEM->LoadLevel ("PhysicsTest.data");
 
   // Connect example
   //MyClass _myclass;
