@@ -65,13 +65,13 @@ namespace Framework
     RegisterComponent(Sprite);
     RegisterComponent (Camera);
     RegisterComponent (ShapeCollider);
-	RegisterComponent(CharacterController);
+  RegisterComponent(CharacterController);
     //RegisterComponent(CircleCollider);	
-	AddComponentCreator("SphereCollider", new ComponentCreatorType<CircleCollider>("SphereCollider"));
-	AddComponentCreator("BoxCollider", new ComponentCreatorType<LineCollider>("BoxCollider"));
-	//RegisterComponent(PointCollider);
-	//RegisterComponent(LineCollider);
-	RegisterComponent(RigidBody);
+  AddComponentCreator("SphereCollider", new ComponentCreatorType<CircleCollider>("SphereCollider"));
+  AddComponentCreator("BoxCollider", new ComponentCreatorType<LineCollider>("BoxCollider"));
+  //RegisterComponent(PointCollider);
+  //RegisterComponent(LineCollider);
+  RegisterComponent(RigidBody);
   }
 
   void ObjectSystem::AddComponentCreator(std::string name, ComponentCreator* creator)
@@ -133,21 +133,10 @@ namespace Framework
         while (ct)
         {
           Component* newcomp = newobj->AddComponent(ct->objectName);
-          newcomp->gameObject = newobj;
-          if (ct->objectName == "Transform")
-            newobj->Transform = (Transform*) (newcomp);
-          else if (ct->objectName == "Sprite")
-            newobj->Sprite = (Sprite*) (newcomp);
-		  else if (ct->objectName == "SphereCollider")
-			  newobj->CircleCollider = (CircleCollider*)(newcomp);
-		  else if (ct->objectName == "RigidBody")
-			  newobj->RigidBody = (RigidBody*)(newcomp);
-
-		  //test
-		  else if (ct->objectName == "CharacterController")
-			  newobj->CharacterController = (CharacterController*)(newcomp);
+          newcomp->gameObject = newobj;          
+      
           newcomp->Serialize(ct->branch);
-          newcomp->Initialize ();
+          newcomp->Initialize (); //Set pointer to GameObject, Setup Component
           ct = ct->next;
         }
         GameObjects[newobj->GameObjectID] = newobj;

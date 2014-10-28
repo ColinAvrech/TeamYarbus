@@ -155,7 +155,7 @@ namespace Framework
       UpdateTemp(0.016);
       ComputeVelocity(0.016);
       UpdateFire(0.016);
-      std::cout << "{ " << Physics::THERMODYNAMICS->GetCellVelocity(20, 20).x << ", " << Physics::THERMODYNAMICS->GetCellVelocity(20, 20).y << " }\n";
+      //std::cout << "{ " << Physics::THERMODYNAMICS->GetCellVelocity(20, 20).x << ", " << Physics::THERMODYNAMICS->GetCellVelocity(20, 20).y << " }\n";
       //std::cout << HeatMap[1][1] << ", " << HeatMap[1][2] << "\n";
     }
 
