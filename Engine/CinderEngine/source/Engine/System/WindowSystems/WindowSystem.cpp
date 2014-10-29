@@ -264,6 +264,9 @@ namespace Framework
     }
   } //namespace WindowNameSpace
 
+  static Shader* shader;
+  static float lighting = 150.0f;
+
   WindowSystem::WindowSystem(const char* WindowTitle, int ClientWidth, int ClientHeight)
   {
     WINDOWSYSTEM = this;
@@ -288,6 +291,8 @@ namespace Framework
     ebo = new EBO (data.ebo_size (), data.indices);
     data.Clean ();
 
+	shader = Resources::RS->Get_Shader("Lighting");
+
     return true;
   }
 
@@ -309,6 +314,8 @@ namespace Framework
     glfwPollEvents ();
   }
 
+  static float micdata() { return AUDIOSYSTEM->input.peaklevel[0]; }
+ 
   void WindowSystem::GraphicsUpdate (const double dt)
   {
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -319,13 +326,28 @@ namespace Framework
     /////*clRenderer.Render ();
 
     heatMap.Update (dt);
-    heatMap.Draw ();
+    //heatMap.Draw ();
 
     vao->bindVAO ();
-
+	  shader->Use();
     for (auto i : spriteList)
     {
       i->gameObject->Transform->UpdateMatrices ();
+	  //if (micdata() > 0.01f)
+	  //{
+		 // if (lighting > 5)
+		 // {
+			//  lighting -= micdata() * 0.5f;
+		 // }
+	  //}
+	  //else
+	  //{
+		 // if (lighting < 250)
+		 // {
+			//  lighting += 0.16f;
+		 // }
+	  //}
+	  //shader->uni1f("shininess", lighting);
       i->Draw ();
     }
     vao->unbindVAO ();

@@ -79,12 +79,35 @@ Level =
 		Transform = 
 		{
 			Vec3 Translation = [0, 0, -1],
-			Vec3 Scale = [3, 3, 3],
+			Vec3 Scale = [2.5, 2.5, 2.5],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Sprite = 
 		{
 			string SpriteSource = "EnvHighRes.png",
+			string Shader = "Lighting",
+			bool AnimationActive = false,
+		},
+  },
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 9,
+		},
+		Named = 
+		{
+			string Name = "ember",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0.15, -1.6, -2],
+			Vec3 Scale = [0.15, 0.15, 0.15],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Sprite = 
+		{
+			string SpriteSource = "Ember.png",
 			string Shader = "Lighting",
 			bool AnimationActive = false,
 		},

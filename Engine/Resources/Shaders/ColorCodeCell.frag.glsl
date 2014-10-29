@@ -15,5 +15,5 @@ void main (void)
 	else
 		factor = 0.5;
 
-	outColor = (Graph_Coord / 2.0 + 0.5) * Temperature;
+	outColor = vec4 (Temperature, Temperature, Temperature, Temperature);
 }
