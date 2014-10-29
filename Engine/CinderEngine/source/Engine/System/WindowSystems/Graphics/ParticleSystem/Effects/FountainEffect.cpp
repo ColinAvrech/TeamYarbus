@@ -199,7 +199,7 @@ namespace Framework
     static double time = 0.0;
     time += dt;
 	std::cout << particleEmitter->m_emitRate << "\n";
-	if (getmic() > 0.01f)
+	if (getmic() > 0.1f)
 	{
 		if (velGenerator->m_maxStartVel.y < 0.5f)
 		velGenerator->m_maxStartVel.y += getmic() * 0.016f;
@@ -220,7 +220,7 @@ namespace Framework
 
 
 		if (size > 5)
-			size -= 0.05f;
+			size -= 0.016f;
 	}
 	//velGenerator->m_maxStartVel.x = sin(getmic()) * 0.0001f;
     //m_posGenerator->m_pos.x = 0.1f*sin ((float) time*2.5f);
