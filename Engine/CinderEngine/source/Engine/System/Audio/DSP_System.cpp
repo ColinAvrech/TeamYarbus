@@ -653,5 +653,19 @@ namespace Framework
       }
     }
   }
+
+  void Sound::EQConsoleOut(float currentCenter, float currentBandwidth, float currentGain)
+  {
+    std::cout << Console::cyan
+      << currentCenter
+      << std::endl
+      << "             "
+      << Console::yellow
+      << currentBandwidth
+      << "             "
+      << Console::green
+      << currentGain
+      << std::endl;
+  }
 }
 //-----------------------------------------------------------------------------
