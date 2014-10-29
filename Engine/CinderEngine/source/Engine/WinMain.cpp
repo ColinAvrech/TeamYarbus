@@ -75,7 +75,7 @@ int main (void)
   ObjectSystem* objsys = new ObjectSystem ();
 
   engine->AddSystem (phys);
-  engine->AddSystem (sceneManager);
+  //engine->AddSystem (sceneManager);
   engine->AddSystem (windows);
   engine->AddSystem (audio);
   engine->AddSystem (events);
@@ -94,7 +94,7 @@ int main (void)
   audio->LoadMicData ();
 
   //! activate the window.
-  OBJECTSYSTEM->LoadLevel ("Level.data");
+  //OBJECTSYSTEM->LoadLevel ("Level.data");
 
   // Connect example
   //MyClass _myclass;

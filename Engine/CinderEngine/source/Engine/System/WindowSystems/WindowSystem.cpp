@@ -326,7 +326,7 @@ namespace Framework
     /////*clRenderer.Render ();
 
     heatMap.Update (dt);
-    //heatMap.Draw ();
+    heatMap.Draw ();
 
     vao->bindVAO ();
 	  shader->Use();
