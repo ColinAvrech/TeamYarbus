@@ -81,9 +81,11 @@ namespace Framework
     result = pFMODAudioSystem->getRecordPosition(0, &_recordpos);
     ErrCheck(result);
 
-    _recorddelta = (_recordpos >= _lastrecordpos) ? 
-                    (_recordpos - _lastrecordpos) : 
-                    (_recordpos + _soundlength - _lastrecordpos);
+    if (_recordpos >= _lastrecordpos)
+      _recorddelta = _recordpos - _lastrecordpos;
+    else
+      _recorddelta = _recordpos + _soundlength - _lastrecordpos;
+
     _lastrecordpos = _recordpos;
 
     _samplesrecorded += _recorddelta;
@@ -113,9 +115,12 @@ namespace Framework
         static float total = 0;
 
         total *= dampratio;
-        total += (_recordpos >= _playpos) ? 
-                  (_recordpos - _playpos) : 
-                  (_recordpos + _soundlength - _playpos);
+
+        if (_recordpos >= _playpos)
+          total += _recordpos - _playpos;
+        else
+          total += _recordpos + _soundlength - _playpos;
+
         _smootheddelta = total * (1.0f - dampratio);
       }
 
