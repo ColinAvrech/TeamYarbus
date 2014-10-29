@@ -91,10 +91,10 @@ int main (void)
 
   //resourceManager.Get_Sound ("music.mp3")->Play ();
 
-  //audio->LoadMicData ();
+  audio->LoadMicData ();
 
   //! activate the window.
-  //OBJECTSYSTEM->LoadLevel ("PhysicsTest.data");
+  OBJECTSYSTEM->LoadLevel ("PhysicsTest.data");
 
   // Connect example
   //MyClass _myclass;

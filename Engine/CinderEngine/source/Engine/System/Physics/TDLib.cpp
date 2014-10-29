@@ -33,7 +33,9 @@ namespace Framework
     {
       float dTemp = T2 - T1;
       float dQ = Hc * dTemp * (float)dt;
-      return dQ;
+      if (dQ > 0)
+        return dQ;
+      else return 0;
     }
     //Change of temperature caused by heat transfer
     float dTemp(float dQ, float m, float c)

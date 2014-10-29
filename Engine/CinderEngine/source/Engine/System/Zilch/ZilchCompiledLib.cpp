@@ -12,9 +12,11 @@ using namespace Zilch;
 
 namespace Framework
 {
+  ScriptSystem* ZILCH = NULL;
+
   ScriptSystem::ScriptSystem() : ScriptCount(0)
   {
-    //SCRIPTSYSTEM = this;
+    ZILCH = this;
     LibList = new std::unordered_map < const char*, Zilch::LibraryRef > ;
   }
 
@@ -24,7 +26,8 @@ namespace Framework
     /////////////////////////////////////////////////////////////////
     ZilchStartup(Debugging::UseZilchErrorHandler);
 
-    //Debugger debugger;
+    //Zilch::Debugger debugger;
+    //debugger.Host(8000);
 
 
     // This class encompasses all compilation errors that can occur when compiling Zilch code
@@ -50,6 +53,7 @@ namespace Framework
     LinkedLibs = dependencies.Link();
     ErrorIf(LinkedLibs == nullptr, "Failed to link libraries together");
     
+    //debugger.AddState(LinkedLibs);
     /////////////////////////////////////////////////////////////////
     std::cout << "Zilch Initialized" << std::endl;
     return true;
@@ -106,11 +110,11 @@ namespace Framework
     // The 'Compile' function actually returns a Zilch Library
     // Be careful! If the code fails to compile, this function will return null
     //not sure what "Test" is?!?
-    LibraryRef library = project.Compile("Test", dependencies, EvaluationMode::Project);
-    ErrorIf(library == nullptr, "Failed to compiler library");
+    lib = project.Compile("Test", dependencies, EvaluationMode::Project);
+    ErrorIf(lib == nullptr, "Failed to compiler library");
 
     // We want to link together all the libraries that we depended upon, along with our own library
-    dependencies.AddLibrary(library);
+    dependencies.AddLibrary(lib);
   }
 
   Zilch::LibraryRef *ScriptSystem::GetZilchLib(const char *ScriptName)

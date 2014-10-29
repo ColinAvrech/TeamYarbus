@@ -142,9 +142,10 @@ namespace Framework
           }
           else
           {
-            //newcomp = newobj->AddZilchComponent(ct->objectName);
-            //newcomp->Serialize(ct->branch);
-            //newcomp->Initialize();
+            newcomp = newobj->AddZilchComponent(ct->objectName);
+            newcomp->gameObject = newobj;
+            newcomp->Serialize(ct->branch);
+            newcomp->Initialize();
           }
           ct = ct->next;
         }

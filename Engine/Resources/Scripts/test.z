@@ -6,6 +6,7 @@ class Player
   
   function Initialize()
   {
-    Console.WriteLine("Initialized component Player");
+    Console.WriteLine("Sagnik is a player");
+    Console.WriteLine("Cinder");
   }
 }

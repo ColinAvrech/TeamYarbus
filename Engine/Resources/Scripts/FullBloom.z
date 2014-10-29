@@ -1,0 +1,14 @@
+class Josh
+{
+  [Property]
+  var OHai : String = "Mark";
+  
+  constructor()
+  {
+  }
+  
+  function Initialize()
+  {
+    Console.WriteLine("O hai" , this.OHai);
+  }
+}

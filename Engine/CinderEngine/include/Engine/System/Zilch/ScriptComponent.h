@@ -49,9 +49,9 @@ namespace Framework
   private:
     //Private data ----------------------------------
     //Zilch class name
-    Zilch::StringParam ZilchClass;
+    Zilch::String* ZilchClassName;
     //Zilch class (Zilch::BoundType*)
-    Zilch::BoundType* Script;
+    Zilch::BoundType* ZilchClass;
     //Zilch library for this component
     Zilch::LibraryRef* library;
     //Zilch functions (Zilch::Function*)
@@ -61,6 +61,9 @@ namespace Framework
     Zilch::Function* Run;
     //Zilch exception handler (Zilch::ExceptionReport)
     Zilch::ExceptionReport report;
+
+    //Hack!!!!!!!!!!
+    std::string ohai;
 
 #endif
   }; //class scriptcomponent

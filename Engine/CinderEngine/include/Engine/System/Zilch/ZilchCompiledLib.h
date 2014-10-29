@@ -44,7 +44,8 @@ namespace Framework
     //Returns pointer to the dependency library
     Zilch::ExecutableState *GetDependencies(){ return LinkedLibs; }
 
-
+    //Hack!!!!!!!
+    Zilch::LibraryRef lib;
   private:
     int ScriptCount;
 
@@ -67,6 +68,8 @@ namespace Framework
     std::unordered_map<const char*, Zilch::LibraryRef>* LibList;
 
   };  //class ScriptSystem
+
+  extern ScriptSystem * ZILCH;
 
 } //Framework
 

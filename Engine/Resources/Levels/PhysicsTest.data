@@ -121,8 +121,9 @@ Level =
 		CharacterController = 
 		{
 		},
-    Player = 
+    Josh = 
 		{
+      string OHai = "Sagnik",
 		},
 		RigidBody = 
 		{
