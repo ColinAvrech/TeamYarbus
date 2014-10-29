@@ -39,6 +39,23 @@ namespace Framework
     pFMODAudioSystem(NULL)
 
   {
+    _volume        = 0;
+    _paused        = 0;
+    _pitch         = 0;
+    _volValue      = 0;
+    _fadeValue     = 0;
+    _fadeValA1     = 0;
+    _fadeValA2     = 0;
+    _fadeValA3     = 0;
+    _fadeValB1     = 0;
+    _fadeValB2     = 0;
+    _fadeValB3     = 0;
+    _centerValA    = 0;
+    _centerValB    = 0;
+    _bandwidthValA = 0;
+    _bandwidthValB = 0;
+    _gainValA      = 0;
+    _gainValB      = 0;
   }
 
   #pragma endregion
@@ -632,21 +649,21 @@ namespace Framework
     {
       test = false;
       //std::cout << Console::cyan << "FIVE SECONDS" << std::endl;
-      //this->SweepEQ1(40000.0f, 1.5f, -2.0f, 10.0f);
-      //this->SweepEQ2(14000.0f, 5.0f, -2.0f, 10.0f);
+      //this->SweepEQ1(100.0f, 5.5f, 10.0f, 4.0f);
+      //this->SweepEQ2(5000.0f, 5.0f, 10.0f, 4.0f);
     }
     if (this->GetTime() > 10000 && this->GetTime() < 10500 && test2 == true)
     {
       test2 = false;
-      //std::cout << Console::red<< "TEN SECONDS" << std::endl;
-      //this->SweepEQ1(0.0f, 0.0f, 1.0f, 4.0f);
-      //this->SweepEQ2(0.0f, 0.0f, 1.0f, 4.0f);
+      //std::cout << Console::green<< "TEN SECONDS" << std::endl;
+      //this->SweepEQ1(20.0f, 0.2f, -30.0f, 5.0f);
+      //this->SweepEQ2(20.0f, 0.2f, -30.0f, 5.0f);
     }
   }
 
   void Sound::UpdateVolumeFade(const double dt)
   {
-    float currentVolume;
+    float currentVolume = 0;    
 
     if (pChannel != NULL)
     {
@@ -670,7 +687,7 @@ namespace Framework
         SetVolume(newVolume);
       }
     }  
-  }
+  }  
  
   /*---------------------------------------------------------------------------
   // Destructor
