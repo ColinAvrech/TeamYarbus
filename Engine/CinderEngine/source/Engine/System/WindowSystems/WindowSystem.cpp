@@ -329,25 +329,25 @@ namespace Framework
     heatMap.Draw ();
 
     vao->bindVAO ();
-	shader->Use();
+	  shader->Use();
     for (auto i : spriteList)
     {
       i->gameObject->Transform->UpdateMatrices ();
-	  if (micdata() > 0.01f)
-	  {
-		  if (lighting > 5)
-		  {
-			  lighting -= micdata() * 0.5f;
-		  }
-	  }
-	  else
-	  {
-		  if (lighting < 250)
-		  {
-			  lighting += 0.16f;
-		  }
-	  }
-	  shader->uni1f("shininess", lighting);
+	  //if (micdata() > 0.01f)
+	  //{
+		 // if (lighting > 5)
+		 // {
+			//  lighting -= micdata() * 0.5f;
+		 // }
+	  //}
+	  //else
+	  //{
+		 // if (lighting < 250)
+		 // {
+			//  lighting += 0.16f;
+		 // }
+	  //}
+	  //shader->uni1f("shininess", lighting);
       i->Draw ();
     }
     vao->unbindVAO ();
