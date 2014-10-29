@@ -402,6 +402,9 @@ namespace Framework
     {
       result = pChannel->addDSP(0, objects_DSP.dsp_sweepA, 0);
       ErrCheck(result);
+
+      std::cout << Console::green << "EQ A ADDED" << std::endl;
+
       _EQStateA = true;
     }
 
@@ -452,6 +455,8 @@ namespace Framework
       {
         result = pChannel->removeDSP(objects_DSP.dsp_sweepA);
         ErrCheck(result);
+
+        std::cout << Console::yellow << "EQ A REMOVED" << std::endl;
 
         _EQStateA = false;
       }
@@ -525,7 +530,7 @@ namespace Framework
     result = objects_DSP.dsp_sweepB->setParameterFloat(FMOD_DSP_PARAMEQ_BANDWIDTH, 0.2f);
     ErrCheck(result);
 
-    result = objects_DSP.dsp_sweepB->setParameterFloat(FMOD_DSP_PARAMEQ_GAIN, -30.0f);
+    result = objects_DSP.dsp_sweepB->setParameterFloat(FMOD_DSP_PARAMEQ_GAIN, -29.0f);
     ErrCheck(result);
   }
 
@@ -550,6 +555,9 @@ namespace Framework
     {
       result = pChannel->addDSP(0, objects_DSP.dsp_sweepB, 0);
       ErrCheck(result);
+
+      std::cout << Console::green << "EQ B ADDED" << std::endl;
+
       _EQStateB = true;
     }
 
@@ -601,8 +609,12 @@ namespace Framework
         result = pChannel->removeDSP(objects_DSP.dsp_sweepB);
         ErrCheck(result);
 
+        std::cout << Console::yellow << "EQ B REMOVED" << std::endl;
+
         _EQStateB = false;
       }
+
+      //EQConsoleOut(currentCenter, currentBandwidth, currentGain);
 
       if (_centerValB != currentCenter)
       {
