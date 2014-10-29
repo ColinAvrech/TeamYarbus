@@ -472,8 +472,6 @@ namespace Framework
     // Play new sound
     PlayNew();
     VolumeFade(1, 0);
-    SetFrequency1();
-    //SweepEQ1(20, 0.2, -30, 0);
   }
 
   /***************************************************************************/
@@ -503,8 +501,8 @@ namespace Framework
     
     _paused = false; // Set paused state to false
 
-    //SetFrequency1();
-    //SetFrequency2();
+    SetFrequency1();
+    SetFrequency2();
   }
 
   void Sound::VolumeFade(float volume, float fadeTime)
@@ -689,6 +687,20 @@ namespace Framework
         SetVolume(newVolume);
       }
     }  
+  }
+
+  void Sound::EQConsoleOut(float currentCenter, float currentBandwidth, float currentGain)
+  {
+    std::cout << Console::cyan 
+              << currentCenter 
+              << std::endl 
+              << "             " 
+              << Console::yellow 
+              << currentBandwidth 
+              << "             " 
+              << Console::green 
+              << currentGain 
+              << std::endl;
   }
  
   /*---------------------------------------------------------------------------

@@ -135,6 +135,7 @@ namespace Framework
       void            SetFrequency2();
       void            SweepEQ2(float center, float bandwidth, float gain, float sweepTime);
       void            UpdateFrequency2(const double dt);
+      void            EQConsoleOut(float currentCenter, float currentBandwidth, float currentGain);
 
       // Setters
       ReverbPreset    SetReverbPreset(ReverbPresetName preset);

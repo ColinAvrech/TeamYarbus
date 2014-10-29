@@ -450,10 +450,9 @@ namespace Framework
       ErrCheck(result);
 
       result = objects_DSP.dsp_sweepA->getParameterFloat(FMOD_DSP_PARAMEQ_GAIN, &currentGain, buffer, 16);
-      ErrCheck(result);
+      ErrCheck(result);      
 
-
-      std::cout << Console::cyan << currentCenter << std::endl << "             " << Console::yellow << currentBandwidth << "             " << Console::green << currentGain << std::endl;
+      //EQConsoleOut(currentCenter, currentBandwidth, currentGain);
 
       if (_centerValA != currentCenter)
       {
