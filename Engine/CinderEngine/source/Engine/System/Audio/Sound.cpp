@@ -649,13 +649,13 @@ namespace Framework
     {
       test = false;
       //std::cout << Console::cyan << "FIVE SECONDS" << std::endl;
-      //this->SweepEQ1(100.0f, 0.5f, 10.0f, 5.0f);
+      //this->SweepEQ1(100.0f, 5.5f, 10.0f, 4.0f);
       //this->SweepEQ2(14000.0f, 5.0f, -2.0f, 10.0f);
     }
     if (this->GetTime() > 10000 && this->GetTime() < 10500 && test2 == true)
     {
       test2 = false;
-      //std::cout << Console::red<< "TEN SECONDS" << std::endl;
+      //std::cout << Console::green<< "TEN SECONDS" << std::endl;
       //this->SweepEQ1(20.0f, 0.2f, -30.0f, 5.0f);
       //this->SweepEQ2(0.0f, 0.0f, 1.0f, 4.0f);
     }

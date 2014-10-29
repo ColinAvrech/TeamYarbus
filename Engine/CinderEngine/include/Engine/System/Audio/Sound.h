@@ -237,6 +237,8 @@ namespace Framework
       float                         _gainValB;
       bool                          test = true;
       bool                          test2 = true;
+      bool                          _EQStateA = false;
+      bool                          _EQStateB = false;
       std::vector<FMOD::Sound*>     sound_queue_;
       FMOD::Channel                 *pChannel;
       FMOD::ChannelGroup            *pChannelGroup;

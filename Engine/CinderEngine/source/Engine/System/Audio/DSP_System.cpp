@@ -367,7 +367,6 @@ namespace Framework
   void Sound::SetFrequency1()
   {
     FMOD_RESULT result;
-    bool active;
 
     result = pFMODAudioSystem->createDSPByType(FMOD_DSP_TYPE_PARAMEQ, &objects_DSP.dsp_sweepA);
     ErrCheck(result);
@@ -378,22 +377,8 @@ namespace Framework
     result = objects_DSP.dsp_sweepA->setParameterFloat(FMOD_DSP_PARAMEQ_BANDWIDTH, 0.2f);
     ErrCheck(result);
 
-    result = objects_DSP.dsp_sweepA->setParameterFloat(FMOD_DSP_PARAMEQ_GAIN, -30.0f);
+    result = objects_DSP.dsp_sweepA->setParameterFloat(FMOD_DSP_PARAMEQ_GAIN, -29.0f);
     ErrCheck(result);
-
-    result = objects_DSP.dsp_sweepA->getActive(&active);
-    ErrCheck(result);
-
-    if (active)
-    {
-      result = pChannel->removeDSP(objects_DSP.dsp_sweepA);
-      ErrCheck(result);
-    }
-    else
-    {
-      result = pChannel->addDSP(0, objects_DSP.dsp_sweepA, 0);
-      ErrCheck(result);
-    }
   }
 
   void Sound::SweepEQ1(float center, float bandwidth, float gain, float sweepTime)
@@ -404,10 +389,21 @@ namespace Framework
     float currentBandwidth;
     float currentGain;
     float fadeSpeedA, fadeSpeedB, fadeSpeedC;
+    bool active;
     char buffer[16];
 
     if (pChannel == NULL)
       return;
+
+    result = objects_DSP.dsp_sweepA->getActive(&active);
+    ErrCheck(result);
+
+    if (!active && _EQStateA == false)
+    {
+      result = pChannel->addDSP(0, objects_DSP.dsp_sweepA, 0);
+      ErrCheck(result);
+      _EQStateA = true;
+    }
 
     _centerValA = center;
     _bandwidthValA = bandwidth;
@@ -452,7 +448,13 @@ namespace Framework
       result = objects_DSP.dsp_sweepA->getParameterFloat(FMOD_DSP_PARAMEQ_GAIN, &currentGain, buffer, 16);
       ErrCheck(result);      
 
-      //EQConsoleOut(currentCenter, currentBandwidth, currentGain);
+      if (currentGain == -30.0f && _EQStateA == true)
+      {
+        result = pChannel->removeDSP(objects_DSP.dsp_sweepA);
+        ErrCheck(result);
+
+        _EQStateA = false;
+      }
 
       if (_centerValA != currentCenter)
       {
@@ -513,7 +515,6 @@ namespace Framework
   void Sound::SetFrequency2()
   {
     FMOD_RESULT result;
-    bool active;
 
     result = pFMODAudioSystem->createDSPByType(FMOD_DSP_TYPE_PARAMEQ, &objects_DSP.dsp_sweepB);
     ErrCheck(result);
@@ -526,20 +527,6 @@ namespace Framework
 
     result = objects_DSP.dsp_sweepB->setParameterFloat(FMOD_DSP_PARAMEQ_GAIN, -30.0f);
     ErrCheck(result);
-
-    result = objects_DSP.dsp_sweepB->getActive(&active);
-    ErrCheck(result);
-
-    if (active)
-    {
-      result = pChannel->removeDSP(objects_DSP.dsp_sweepB);
-      ErrCheck(result);
-    }
-    else
-    {
-      result = pChannel->addDSP(0, objects_DSP.dsp_sweepB, 0);
-      ErrCheck(result);
-    }
   }
 
   void Sound::SweepEQ2(float center, float bandwidth, float gain, float sweepTime)
@@ -550,10 +537,21 @@ namespace Framework
     float currentBandwidth;
     float currentGain;
     float fadeSpeedA, fadeSpeedB, fadeSpeedC;
+    bool active;
     char buffer[16];
 
     if (pChannel == NULL)
       return;
+
+    result = objects_DSP.dsp_sweepB->getActive(&active);
+    ErrCheck(result);
+
+    if (!active && _EQStateB == false)
+    {
+      result = pChannel->addDSP(0, objects_DSP.dsp_sweepB, 0);
+      ErrCheck(result);
+      _EQStateB = true;
+    }
 
     _centerValB = center;
     _bandwidthValB = bandwidth;
@@ -597,6 +595,14 @@ namespace Framework
 
       result = objects_DSP.dsp_sweepB->getParameterFloat(FMOD_DSP_PARAMEQ_GAIN, &currentGain, buffer, 16);
       ErrCheck(result);
+
+      if (currentGain == -30.0f && _EQStateB == true)
+      {
+        result = pChannel->removeDSP(objects_DSP.dsp_sweepB);
+        ErrCheck(result);
+
+        _EQStateB = false;
+      }
 
       if (_centerValB != currentCenter)
       {
