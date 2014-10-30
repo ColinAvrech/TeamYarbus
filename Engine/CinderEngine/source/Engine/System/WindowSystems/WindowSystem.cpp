@@ -28,7 +28,7 @@ namespace Framework
   //! Global pointer to  the windows system.
   WindowSystem* WINDOWSYSTEM = NULL;
 
-  std::vector <Sprite*> WindowSystem::spriteList;
+  std::list <Sprite*> WindowSystem::spriteList;
 
   static VAO* vao;
   static VBO* vbo;
@@ -284,9 +284,9 @@ namespace Framework
     fire->Play();
     fire->LowPassFilter();
 
-    //clRenderer.GenerateTextures ();
-    //clRenderer.GenerateBuffers ();
-    //clRenderer.GenerateShaders ();
+    clRenderer.GenerateTextures ();
+    clRenderer.GenerateBuffers ();
+    clRenderer.GenerateShaders ();
 
     heatMap.Initialize ();
     //dr.Initialize ();
@@ -333,8 +333,6 @@ namespace Framework
   {
     glfwSwapBuffers(window);
     glfwPollEvents ();
-
-    
   }
 
 
@@ -345,11 +343,10 @@ namespace Framework
     glEnable (GL_BLEND);
     glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    //glfwSwapBuffers (window);
-    /////*clRenderer.Render ();
+    clRenderer.Render ();
 
     heatMap.Update (dt);
-    //heatMap.Draw ();
+    heatMap.Draw ();
 
     vao->bindVAO ();
     shader->Use();
