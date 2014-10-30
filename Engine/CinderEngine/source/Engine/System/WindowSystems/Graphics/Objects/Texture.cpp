@@ -8,7 +8,8 @@ namespace Framework
   // WILL BE USE TO DYNAMICALLY GENERATE TEXTURE (FRAME BUFFER)
   Texture::Texture ()
   {
-    glDeleteTextures (1, &textureID);
+    glGenTextures (1, &textureID);
+    glBindTexture (GL_TEXTURE_2D, textureID);
   }
 
 
@@ -102,6 +103,11 @@ namespace Framework
   float Texture::Get_Aspect_Ratio ()
   {
     return aspect;
+  }
+
+  void Texture::Image2D(GLenum format, int w, int h, int border, GLenum type, const void* pixels)
+  {
+    glTexImage2D (GL_TEXTURE_2D, 0, format, w, h, border, format, type, pixels);
   }
 
 }

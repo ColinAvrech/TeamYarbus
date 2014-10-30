@@ -121,6 +121,10 @@ Level =
 		CharacterController = 
 		{
 		},
+    Josh = 
+		{
+      string OHai = "Sagnik",
+		},
 		RigidBody = 
 		{
 			bool Static = false,

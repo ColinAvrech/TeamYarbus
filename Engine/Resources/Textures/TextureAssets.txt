@@ -20,3 +20,5 @@ Env.png
 Capture.png
 EnvHighRes.jpg
 EnvHighRes.png
+Ember.png
+FinalLogoCropped.png

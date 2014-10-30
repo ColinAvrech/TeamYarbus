@@ -10,6 +10,7 @@
 
 #include "ParticleUpdaters.h"
 #include "ResourceManager.h"
+#include "AudioSystem.h"
 
 namespace Framework
 {
@@ -112,8 +113,11 @@ namespace Framework
     glm::vec4 * __restrict t = p->m_time.get ();
 
     const size_t endId = p->m_countAlive;
-    for (size_t i = 0; i < endId; ++i)
-      col [i] = glm::mix (startCol [i], endCol [i], t [i].z);
+
+	for (size_t i = 0; i < endId; ++i)
+	{
+		col[i] = glm::mix(startCol[i], endCol[i], t[i].z);
+	}
   }
 
   void PosColorUpdater::update (double dt, ParticleData *p)
@@ -138,7 +142,7 @@ namespace Framework
       col [i].r = scaler;// glm::mix(p->m_startCol[i].r, p->m_endCol[i].r, scaler);
       col [i].g = scaleg;// glm::mix(p->m_startCol[i].g, p->m_endCol[i].g, scaleg);
       col [i].b = scaleb;// glm::mix(p->m_startCol[i].b, p->m_endCol[i].b, scaleb);
-      col [i].a = glm::mix (startCol [i].a, endCol [i].a, t [i].z);
+      col [i].a = glm::mix (startCol [i].a, endCol [i].a, t [i].z * AUDIOSYSTEM->input.peaklevel[0]);
     }
   }
 

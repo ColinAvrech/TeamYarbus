@@ -32,12 +32,8 @@ namespace Framework
 					if (i->second->RigidBody->state == RigidBody::Dynamic)
 					{
 						i->second->RigidBody->vel += gravityDirection * Constant::g;
-						if (i->second->RigidBody->vel.y > 0)
-						printf("circleVel: %f\n", i->second->RigidBody->vel.y);
-						if (i->second->RigidBody->vel.y <= 1 && i->second->RigidBody->vel.y >= -1)
-							i->second->RigidBody->vel.y = 0;
 					}
-					
+					i->second->Transform->Translate(i->second->RigidBody->vel.x * .016f, i->second->RigidBody->vel.y * .016f, 0);
 				}
 
 				for (auto j = i; j != OBJECTSYSTEM->GameObjects.end(); ++j)
@@ -50,12 +46,7 @@ namespace Framework
 						//	i->second->LineCollider->DetectCircle(j->second->CircleCollider);
 					}
 				}
-				if (i->second->RigidBody)
-				{
-					i->second->Transform->Translate(i->second->RigidBody->vel.x * .016, i->second->RigidBody->vel.y * .016, 0);
-				}
 			}
-
 			//  go1->CircleCollider->DetectLine (go3line->LineCollider);
 			//  go1->CircleCollider->DetectCircle (go2->CircleCollider);
 			//const float currentTime = GetCurrentTime();

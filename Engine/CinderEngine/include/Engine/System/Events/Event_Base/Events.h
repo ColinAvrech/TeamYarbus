@@ -69,7 +69,7 @@ namespace Framework
   DeclareEvent(KEY_7, K7)
   DeclareEvent(KEY_8, K8)
   DeclareEvent(KEY_9, K9)
-
+  
   // Letters: LowerCase || Upper Case
 
   DeclareEvent(KEY_A, KA)

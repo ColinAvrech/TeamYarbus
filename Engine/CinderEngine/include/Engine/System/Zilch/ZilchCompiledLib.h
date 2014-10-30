@@ -17,128 +17,60 @@
 #include "Common.h"
 #include "Zilch.hpp"
 #include "BaseSystem.h"
-#include <unordered_map>
 
 namespace Framework
 {
-  namespace ScriptSystem
+  /*------------------------------------------------------------------------------
+  // Class
+  ------------------------------------------------------------------------------*/
+  class ScriptSystem : public BaseSystem
   {
-    /*------------------------------------------------------------------------------
-    // Class
-    ------------------------------------------------------------------------------*/
-    class ScriptSystem : public BaseSystem
-    {
-    public:
-      /*------------------------------------------------------------------------------
-      // Constructors
-      ------------------------------------------------------------------------------*/
-#pragma region Constructors
-      ScriptSystem();
-#pragma endregion
+  public:
+    ScriptSystem();
+    ~ScriptSystem();
+      
+    // Called after System is Initialized
+    virtual bool Initialize(void) override;
 
-      /*------------------------------------------------------------------------------
-      // Public Variables
-      ------------------------------------------------------------------------------*/
-#pragma region Public Variables
+    // Called every frame
+    virtual void Update(const double dt) override;
 
-#pragma endregion
+    // Returns name of System
+    virtual const std::string GetName();
 
-      /*----------------------------------------------------------------------------*/
-      // Public Structs
-      /*----------------------------------------------------------------------------*/
-#pragma region Public Structs
+    //Returns pointer to the required LibraryRef
+    Zilch::LibraryRef *GetZilchLib(const char *ScriptName);
 
-#pragma endregion
+    //Returns pointer to the dependency library
+    Zilch::ExecutableState *GetDependencies(){ return LinkedLibs; }
 
-      /*------------------------------------------------------------------------------
-      // Public Functions
-      ------------------------------------------------------------------------------*/
-#pragma region Public Functions
+    //Hack!!!!!!!
+    Zilch::LibraryRef lib;
+  private:
+    int ScriptCount;
 
-      // Called after System is Initialized
-      bool Initialize();
+    /* This class encompasses all compilation errors that can occur when compiling 
+        Zilch code. Its responsibility is to provide friendly error messages, 
+        error codes, and callbacks to the user*/
+    Zilch::CompilationErrors Errors;
 
-      // Called every frame
-      void Update(const double dt);
+    Zilch::Debugger * Debugger;
 
-      // Returns name of System
-      const std::string GetName();
-      //Returns pointer to the required LibraryRef
-      Zilch::LibraryRef *GetZilchLib(const char *ScriptName);
+    /* Link all the libraries together into one ExecutableState*/
+    Zilch::ExecutableState* LinkedLibs;
 
-      //Returns pointer to the dependency library
-      Zilch::ExecutableState *GetDependencies(){ return LinkedLibs; }
+    //LoadAllZilchFiles into the static Library
+    void LoadZilchFiles(Zilch::Project & project);
+    //Compile all the scripts
+    void CompileScripts(Zilch::Project& project, Zilch::Module& dependencies);
 
-#pragma endregion
+    //Unordered map of compiled Zilch libraries
+    std::unordered_map<const char*, Zilch::LibraryRef>* LibList;
 
+  };  //class ScriptSystem
 
-      /*------------------------------------------------------------------------------
-      // Static Public Variables
-      ------------------------------------------------------------------------------*/
-#pragma region Static Public Variables
+  extern ScriptSystem * ZILCH;
 
-#pragma endregion
-
-
-      /*------------------------------------------------------------------------------
-      // Static Public Functions
-      ------------------------------------------------------------------------------*/
-#pragma region Static Public Functions
-
-#pragma endregion
-
-
-      /*------------------------------------------------------------------------------
-      // Destructor
-      ------------------------------------------------------------------------------*/
-#pragma region Destructors
-      ~ScriptSystem();
-
-#pragma endregion
-    private:
-      /*------------------------------------------------------------------------------
-      // Private Variables
-      ------------------------------------------------------------------------------*/
-#pragma region Private Variables
-      //Total number of scripts added
-      int ScriptCount;
-#pragma endregion
-
-
-      /*------------------------------------------------------------------------------
-      // Private Structs
-      ------------------------------------------------------------------------------*/
-#pragma region Private Structs
-      /* This class encompasses all compilation errors that can occur when compiling 
-         Zilch code. Its responsibility is to provide friendly error messages, 
-         error codes, and callbacks to the user*/
-      Zilch::CompilationErrors Errors;
-
-      /*// Link all the libraries together into one ExecutableState*/
-      Zilch::ExecutableState* LinkedLibs;
-
-      //Unordered map of compiled Zilch libraries
-      std::unordered_map<const char*, Zilch::LibraryRef>* LibList;
-
-#pragma endregion
-
-      /*------------------------------------------------------------------------------
-      // Private Functions
-      ------------------------------------------------------------------------------*/
-#pragma region Private Functions
-
-#pragma endregion
-
-
-      /*------------------------------------------------------------------------------
-      // Static Functions
-      ------------------------------------------------------------------------------*/
-#pragma region Static Functions
-
-#pragma endregion
-
-    };  //class ScriptSystem
-  } //ScriptSystem
 } //Framework
 
 

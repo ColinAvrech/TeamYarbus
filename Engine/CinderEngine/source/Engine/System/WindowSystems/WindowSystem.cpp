@@ -21,6 +21,7 @@ function to handle windows Messages.
 #include "EventSystem.h"
 #include "DebugRenderer.h"
 #include "CLParticleRenderer.h"
+#include "HeatMap.h"
 
 namespace Framework
 {
@@ -35,6 +36,7 @@ namespace Framework
   static DebugRenderer dr;
   static CLParticleRenderer clRenderer;
   static float shininess = 200;
+  static HeatMap heatMap (101, 101);
 
   namespace WindowNameSpace
   {
@@ -262,6 +264,9 @@ namespace Framework
     }
   } //namespace WindowNameSpace
 
+  static Shader* shader;
+  static float lighting = 150.0f;
+
   WindowSystem::WindowSystem(const char* WindowTitle, int ClientWidth, int ClientHeight)
   {
     WINDOWSYSTEM = this;
@@ -274,16 +279,20 @@ namespace Framework
   {
     std::cout << GetName () << " initialized\n";
 
-    clRenderer.GenerateTextures ();
-    clRenderer.GenerateBuffers ();
-    clRenderer.GenerateShaders ();
+    //clRenderer.GenerateTextures ();
+    //clRenderer.GenerateBuffers ();
+    //clRenderer.GenerateShaders ();
 
-    dr.Initialize ();
+    heatMap.Initialize ();
+    //dr.Initialize ();
     ShapeData data = ShapeGenerator::Generate_Quad ();
     vao = new VAO ();
     vbo = new VBO (data.vbo_size (), data.vertices);
     ebo = new EBO (data.ebo_size (), data.indices);
     data.Clean ();
+
+	shader = Resources::RS->Get_Shader("Lighting");
+
     return true;
   }
 
@@ -305,21 +314,43 @@ namespace Framework
     glfwPollEvents ();
   }
 
+  static float micdata() { return AUDIOSYSTEM->input.peaklevel[0]; }
+ 
   void WindowSystem::GraphicsUpdate (const double dt)
   {
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable (GL_BLEND);
     glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    ///*clRenderer.Render ();
-    vao->bindVAO ();
 
+    //glfwSwapBuffers (window);
+    /////*clRenderer.Render ();
+
+    heatMap.Update (dt);
+    heatMap.Draw ();
+
+    vao->bindVAO ();
+	  shader->Use();
     for (auto i : spriteList)
     {
       i->gameObject->Transform->UpdateMatrices ();
+	  if (micdata() > 0.01f)
+	  {
+		 if (lighting > 5)
+		 {
+		  lighting -= micdata() * 0.5f;
+		 }
+	  }
+	  else
+	  {
+		 if (lighting < 250)
+		 {
+		  lighting += 0.16f;
+		 }
+	  }
+	  shader->uni1f("shininess", lighting);
       i->Draw ();
     }
     vao->unbindVAO ();
-
     //////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////
     // To use Debug Draw:

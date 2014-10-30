@@ -15,6 +15,10 @@
 
 namespace Framework
 {
+  std::shared_ptr<ParticleEmitter> particleEmitter;
+  std::shared_ptr<BasicVelGen> velGenerator;
+  static float size = 5.0f;
+
   bool FountainEffect::initialize (size_t numParticles)
   {
     texture = Resources::RS->Get_Texture ("Capture.png");
@@ -26,32 +30,11 @@ namespace Framework
     m_system = std::make_shared<ParticleSystem> (NUM_PARTICLES);
     m_system->init (NUM_PARTICLES);
 
-    auto particleEmitter = std::make_shared<ParticleEmitter> ();
-    particleEmitter->m_emitRate = 100;
-    particleEmitter->active = true;
-    particleEmitter->position = glm::vec3 (0);
-
-    m_posGenerator = std::make_shared<BoxPosGen> ();
-    m_posGenerator->m_pos = glm::vec4{ particleEmitter->position, 0.0 };
-    m_posGenerator->m_maxStartPosOffset = glm::vec4{ 0.0, 0.0, 0.0, 0.0 };
-    particleEmitter->addGenerator (m_posGenerator);
-
-    auto velGen = std::make_shared<BasicVelGen> ();
-    velGen->m_minStartVel = glm::vec4 (-0.05f, 0.1f, -0.05f, 0);
-    velGen->m_maxStartVel = glm::vec4 (0.05f, 0.25f, 0.05f, 0);
-    particleEmitter->addGenerator (velGen);
-
-    auto timeGenerator = std::make_shared<BasicTimeGen> ();
-    timeGenerator->m_minTime = 0.0f;
-    timeGenerator->m_maxTime = 1.0f;
-    particleEmitter->addGenerator (timeGenerator);
-
-    m_system->addEmitter (particleEmitter);
-
 #pragma region TEST
-    //// Emitters
-    //float x = -0.3f, y = 0.2f;
-    //AddFireEmitter (true, { x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
+    // Emitters
+    float x = 0.01f, y = -0.12f;
+    AddFireEmitter (true, { x, y, 0 }, { -0.05f, 0.01f, -0.05f }, { 0.05f, 0.1f, 0.05f }, 10);
+	//AddFireEmitter(true, { -x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
     //AddFireEmitter (true, { -x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
     //AddFireEmitter (true, { x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
     //AddFireEmitter (true, { -x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
@@ -209,11 +192,37 @@ namespace Framework
     //Editor::RemoveVar (tw, "bounce");
   }
 
+  static float getmic() { return AUDIOSYSTEM->input.peaklevel[0]; }
+
   void FountainEffect::update (double dt)
   {
     static double time = 0.0;
     time += dt;
+	//std::cout << particleEmitter->m_emitRate << "\n";
+	if (getmic() > 0.1f)
+	{
+		if (velGenerator->m_maxStartVel.y < 0.5f)
+		velGenerator->m_maxStartVel.y += getmic() * 0.016f;
 
+		if (particleEmitter->m_emitRate < 100)
+			particleEmitter->m_emitRate += getmic();
+
+		if (size < 30)
+			size += getmic() * 0.16f;
+	}
+	else
+	{
+		if (velGenerator->m_maxStartVel.y > 0.01f)
+			velGenerator->m_maxStartVel.y -= 0.016f;
+
+		if (particleEmitter->m_emitRate > 10)
+			particleEmitter->m_emitRate -= 0.2f;
+
+
+		if (size > 5)
+			size -= 0.016f;
+	}
+	//velGenerator->m_maxStartVel.x = sin(getmic()) * 0.0001f;
     //m_posGenerator->m_pos.x = 0.1f*sin ((float) time*2.5f);
     //m_posGenerator->m_pos.z = 0.1f*cos ((float) time*2.5f);
   }
@@ -233,7 +242,7 @@ namespace Framework
     glEnable (GL_TEXTURE_2D);
     texture->Bind();
     shader->Use ();
-    shader->uni1f ("size", 1.0f);
+    shader->uni1f ("size", size);
 
     m_renderer->render ();
     shader->Disable ();
@@ -242,7 +251,7 @@ namespace Framework
 
   void FountainEffect::AddFireEmitter(bool active, glm::vec3 position, glm::vec3 minVelocity, glm::vec3 maxVelocity, float emitRate)
 {
-    auto particleEmitter = std::make_shared<ParticleEmitter> ();
+    particleEmitter = std::make_shared<ParticleEmitter> ();
     {
       particleEmitter->m_emitRate = emitRate;
       particleEmitter->position = position;
@@ -256,12 +265,12 @@ namespace Framework
 
       m_colGenerator = std::make_shared<BasicColorGen> ();
       m_colGenerator->m_minStartCol = glm::vec4{ 255.0 / 255, 64.0 / 255, 00.0 / 255, 0.0 };
-      m_colGenerator->m_maxStartCol = glm::vec4{ 255.0 / 255, 64.0 / 255, 0.0 / 255, 1.0 };
+      m_colGenerator->m_maxStartCol = glm::vec4{ 255.0 / 255, 64.0 / 255, 0.0 / 255, 0.4 };
       m_colGenerator->m_minEndCol = glm::vec4{ 0, 0, 0, 0.0 };
       m_colGenerator->m_maxEndCol = glm::vec4{ 0, 0, 0, 0.0 };
       particleEmitter->addGenerator (m_colGenerator);
 
-      auto velGenerator = std::make_shared<BasicVelGen> ();
+      velGenerator = std::make_shared<BasicVelGen> ();
       velGenerator->m_minStartVel = glm::vec4{ minVelocity, 0.0f };
       velGenerator->m_maxStartVel = glm::vec4{ maxVelocity, 0.0f };
       particleEmitter->addGenerator (velGenerator);

@@ -41,6 +41,8 @@ namespace Framework
   {
     WINDOWSYSTEM->spriteList.push_back (this);
     Specify_Attributes ();
+
+    gameObject->Sprite = this;
   }
 
 
@@ -168,9 +170,9 @@ namespace Framework
   void Sprite::Draw ()
   {
     shader->Use ();
-    shader->enableVertexAttribArray (posAttrib);
-    shader->enableVertexAttribArray (colorAttrib);
-    shader->enableVertexAttribArray (normalAttrib);
+    //shader->enableVertexAttribArray (posAttrib);
+    //shader->enableVertexAttribArray (colorAttrib);
+    //shader->enableVertexAttribArray (normalAttrib);
     shader->uniMat4 ("modelViewProjectionMatrix", glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix ()));
 
     (this->*DrawFunction)();
@@ -181,7 +183,7 @@ namespace Framework
   // Draw Sprite Using Texture
   void Sprite::Draw_Texture ()
   {
-    shader->enableVertexAttribArray (texAttrib);
+    //shader->enableVertexAttribArray (texAttrib);
     texture->Bind ();
     glDrawElements (GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     texture->Unbind ();
