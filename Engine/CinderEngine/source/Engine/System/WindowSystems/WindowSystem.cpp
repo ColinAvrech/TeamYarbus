@@ -25,10 +25,11 @@ function to handle windows Messages.
 
 namespace Framework
 {
+  static bool active = true;
   //! Global pointer to  the windows system.
   WindowSystem* WINDOWSYSTEM = NULL;
 
-  std::vector <Sprite*> WindowSystem::spriteList;
+  std::list <Sprite*> WindowSystem::spriteList;
 
   static VAO* vao;
   static VBO* vbo;
@@ -192,11 +193,14 @@ namespace Framework
           TriggerKeyEvent(Events::KEY_LEFT, key, scanCode, state, mod);
         case GLFW_KEY_RIGHT:
           TriggerKeyEvent(Events::KEY_RIGHT, key, scanCode, state, mod);
-
+          break;
 
         // Misc
         case GLFW_KEY_SPACE:
+          if (state == GLFW_PRESS)
+          active = !active;
           TriggerKeyEvent(Events::KEY_SPACE, key, scanCode, state, mod);
+          break;
         case GLFW_KEY_BACKSPACE:
           TriggerKeyEvent(Events::KEY_BACKSPACE, key, scanCode, state, mod);
         case GLFW_KEY_ESCAPE:
@@ -279,9 +283,9 @@ namespace Framework
   {
     std::cout << GetName () << " initialized\n";
 
-    //clRenderer.GenerateTextures ();
-    //clRenderer.GenerateBuffers ();
-    //clRenderer.GenerateShaders ();
+    clRenderer.GenerateTextures ();
+    clRenderer.GenerateBuffers ();
+    clRenderer.GenerateShaders ();
 
     heatMap.Initialize ();
     //dr.Initialize ();
@@ -291,7 +295,7 @@ namespace Framework
     ebo = new EBO (data.ebo_size (), data.indices);
     data.Clean ();
 
-	shader = Resources::RS->Get_Shader("Lighting");
+	  shader = Resources::RS->Get_Shader("Lighting");
 
     return true;
   }
@@ -323,10 +327,13 @@ namespace Framework
     glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     //glfwSwapBuffers (window);
-    /////*clRenderer.Render ();
+    clRenderer.Render ();
 
-    heatMap.Update (dt);
-    heatMap.Draw ();
+    if (active)
+    {
+      heatMap.Update (dt);
+      heatMap.Draw ();
+    }
 
     vao->bindVAO ();
 	  shader->Use();

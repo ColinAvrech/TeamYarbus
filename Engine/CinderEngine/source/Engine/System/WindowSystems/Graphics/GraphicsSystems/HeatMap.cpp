@@ -11,10 +11,17 @@
 #include "HeatMap.h"
 #include "ResourceManager.h"
 #include "Thermodynamics.h"
+#include "glm/gtc/random.hpp"
+#include "glm/gtc/noise.hpp"
+#include <fstream>
 
 namespace Framework
 {
-
+  float x8 [256 * 256];
+  float x4 [256 * 256];
+  float x2 [256 * 256];
+  float x1 [256 * 256];
+  std::ofstream file ("file.txt");
   // Constructor
   HeatMap::HeatMap (float w, float h)
   {
@@ -33,7 +40,6 @@ namespace Framework
   {
     const int N = 256;
     Generate_Graph (N);
-
     vao = new VAO ();
     Generate_Texture (N, N);
     glGenBuffers (4, vbo);
@@ -88,23 +94,7 @@ namespace Framework
     glEnableVertexAttribArray (attrib_temperature);
     glEnableVertexAttribArray (attribute_coord2d);
 
-    float x = -1.0f;
-    float y = 1.0f;
-    for (int i = 0; i < 101; ++i)
-    {
-      for (int j = 0; j < 101; ++j)
-      {
-        //std::cout << x << ", " << y << "\n";
-        temperatures [i][j] = Physics::THERMODYNAMICS->GetCellTemperature (x, y);
-        x += 1.f / 50;
-      }
-
-      y -= 1.f / 50;
-      x = -1.0f;
-    }
-
-    glBindBuffer (GL_ARRAY_BUFFER, vbo [1]);
-    glBufferData (GL_ARRAY_BUFFER, sizeof temperatures, temperatures, GL_STREAM_DRAW);
+    Update_Temperature_Buffer ();
     glVertexAttribPointer (attrib_temperature, 1, GL_FLOAT, GL_FALSE, 0, 0);
     glBindBuffer (GL_ARRAY_BUFFER, vbo [0]);
     glVertexAttribPointer (attribute_coord2d, 2, GL_FLOAT, GL_FALSE, 0, 0);
@@ -112,6 +102,7 @@ namespace Framework
 
   void HeatMap::Draw ()
   {
+    glBindTexture (GL_TEXTURE_2D, texture_id);
     glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, vbo [3]);
     glDrawElements (GL_TRIANGLES, 100 * 100 * 6, GL_UNSIGNED_SHORT, 0);
 
@@ -131,11 +122,12 @@ namespace Framework
       {
         float x = float ((i - N / 1) / (N / 1));
         float y = float ((j - N / 1) / (N / 1));
-        float d = 1;
-        float z = 1;
-
+        float d = hypotf (x, y) * 4.0f;
+        float z = (1 - d * d) * expf (d * d / -2.0f);
         graph [i][j] = GLbyte (roundf (z * 127 + 128));
+        file << std::to_string (graph [i][j]) << " ";
       }
+      file << "\n";
     }
   }
 
@@ -166,14 +158,60 @@ namespace Framework
 
   void HeatMap::Generate_Temperature_Buffer ()
   {
+    /*
+#pragma region CRAP
+    const int N = 256;
+    for (int i = 0; i < N * N; i += N / 8)
+    {
+      float r = glm::linearRand(glm::float32 (0), glm::float32 (2));
+      for (int j = 0; j < N / 8; ++j)
+      {
+        for (int k = 0; k < N; ++k)
+        x8 [i + k + j * N] = r;
+      }
+    }
+
+    for (int i = 0; i < N * N; i += N / 16)
+    {
+      int r = rand () % 2;
+      for (int j = 0; j < N / 16; ++j)
+      {
+        x4 [i + j] = r;
+      }
+    }
+
+    for (int i = 0; i < N * N; i += N / 32)
+    {
+      int r = rand () % 2;
+      for (int j = 0; j < N / 32; ++j)
+      {
+        x2 [i + j] = r;
+      }
+    }
+
+    for (int i = 0; i < N * N; ++i)
+    {
+      int r = rand () % 2;
+      x1 [i] = r;
+    }
+    int counter = 0;
+#pragma endregion
     for (int i = 0; i < Size.y; i++)
     {
       for (int j = 0; j < Size.x; j++)
       {
-        temperatures [i][j] = float (rand () % 300);
+        int r = rand () % 256;
+        temperatures [i][j] = /*(1 - (std::sin(j / 256.f * (3.14/180))))*//*(1 - (i * 2) / Size.x) * (std::abs (glm::simplex (glm::vec2 (x1 [counter], r / 255.f))));*/
+        //++counter;
+      //}
+    //}
+    for (int i = 0; i < Size.y; ++i)
+    {
+      for (int j = 0; j < Size.x; ++j)
+      {
+        temperatures [i][j] = float(rand () % 300);
       }
     }
-
     // Copy Temperature Data to Temperature Buffer With Stream Draw
     glBindBuffer (GL_ARRAY_BUFFER, vbo [1]);
     glBufferData (GL_ARRAY_BUFFER, sizeof temperatures, temperatures, GL_STREAM_DRAW);
@@ -226,6 +264,27 @@ namespace Framework
 
     glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, vbo [3]);
     glBufferData (GL_ELEMENT_ARRAY_BUFFER, sizeof indices, indices, GL_STATIC_DRAW);
+  }
+
+  void HeatMap::Update_Temperature_Buffer ()
+  {
+    float x = -1.0f;
+    float y = 1.0f;
+    for (int i = 0; i < 101; ++i)
+    {
+      for (int j = 0; j < 101; ++j)
+      {
+        //std::cout << x << ", " << y << "\n";
+        temperatures [i][j] = Physics::THERMODYNAMICS->GetCellTemperature (x, y);
+        x += 1.f / 50;
+      }
+
+      y -= 1.f / 50;
+      x = -1.0f;
+    }
+
+    glBindBuffer (GL_ARRAY_BUFFER, vbo [1]);
+    glBufferData (GL_ARRAY_BUFFER, sizeof temperatures, temperatures, GL_STREAM_DRAW);
   }
 
 }

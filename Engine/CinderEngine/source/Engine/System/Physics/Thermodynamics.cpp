@@ -78,7 +78,7 @@ namespace Framework
       {
         for (int i = 0; i < 100; ++i)
         {
-          HeatMap[i][j] = 100.0f;
+          HeatMap[i][j] = 200.0f;
         }
       }
       HeatMap[47][49] = 1000.0f;
@@ -158,8 +158,8 @@ namespace Framework
     // Called every frame
     void ThermodynamicsSystem::Update(const double dt)
     {
-      for (int i = 40; i < 50; ++i)
-        HeatMap[i][49] += 10 * AUDIOSYSTEM->input.peaklevel[0];
+      //for (int i = 40; i < 50; ++i)
+      //  HeatMap[i][49] += 10 * AUDIOSYSTEM->input.peaklevel[0];
       UpdateTemp(0.016);
       ComputeVelocity(0.016);
       UpdateFire(0.016);
@@ -210,18 +210,21 @@ namespace Framework
 
     float ThermodynamicsSystem::SetCellTemperature(const float x, const float y, const float temp, const double dt)
     {
-      int sub_x = static_cast<int>((x / CellSize) + MapOffset.x);
-      int sub_y = static_cast<int>((y / CellSize) + MapOffset.y);
+      int sub_x = int (std::abs (((x) * 49 + MapOffset.x - 1)));
+      int sub_y = int (std::abs (((y) * 50 + MapOffset.y - 1)));
       float dQ;
       if (sub_x < 0 || sub_x > MapSize.x || sub_y < 0 || sub_y > MapSize.y)
-        dQ = ConductiveHeatTransfer(Const::K_Wood, 0, temp, dt, 1);
+        dQ = ConductiveHeatTransfer(1, 0, temp, dt, 1);
       else
       {
-        dQ = ConductiveHeatTransfer(Const::K_Wood, HeatMap[sub_x][sub_y], temp, dt, 1);
-        float deltaTemp = dTemp(dQ, OxygenMap[sub_x][sub_y] * CellSize*CellSize*CellSize, Const::c_Air);
-        HeatMap[sub_x][sub_y] += deltaTemp;
+        HeatMap [sub_x][sub_y] += 1000 * dt;
+        if (HeatMap [sub_x][sub_y] > 1000)
+          HeatMap [sub_x][sub_y] = 1000;
+        //dQ = ConductiveHeatTransfer(Const::K_Wood, HeatMap[sub_x][sub_y], temp, dt, 1);
+        //float deltaTemp = dTemp(dQ, OxygenMap[sub_x][sub_y] * CellSize*CellSize*CellSize, Const::c_Air);
+        //HeatMap[sub_x][sub_y] += deltaTemp;
       }
-      return dQ;
+      return 0;
     }
 
     /*-----------------------------------------------------------------------
@@ -244,7 +247,7 @@ namespace Framework
             {
               if (x != i || y != j)
               {
-                float dQ = ConductiveHeatTransfer(Const::K_Air, HeatMap[i][j], HeatMap[x][y], dt, 0.1f);
+                float dQ = ConductiveHeatTransfer(1, HeatMap[i][j], HeatMap[x][y], dt, 0.1f);
                 netdQ += dQ;
                 float oTemp = HeatMap[x][y];
                 HeatMap[x][y] -= dTemp(dQ, OxygenMap[x][y], Const::c_Air);

@@ -93,6 +93,8 @@ namespace Framework
   // This Destructor Does Nothing Right Now
   Sprite::~Sprite ()
   {
+    gameObject->Sprite = nullptr;
+    WINDOWSYSTEM->spriteList.remove (this);
   }
 
 

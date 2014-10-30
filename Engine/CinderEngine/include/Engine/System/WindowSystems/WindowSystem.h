@@ -52,7 +52,7 @@ namespace Framework
     }
     void Set_W_H (unsigned, unsigned);
 
-    static std::vector <Sprite*> spriteList;
+    static std::list <Sprite*> spriteList;
 
   private:
     GLFWwindow* window;
