@@ -75,12 +75,12 @@ int main (void)
   ObjectSystem* objsys = new ObjectSystem ();
 
   engine->AddSystem (phys);
+  engine->AddSystem (thermo);
   engine->AddSystem (sceneManager);
   engine->AddSystem (windows);
   engine->AddSystem (audio);
   engine->AddSystem (events);
   engine->AddSystem (zilch);
-  engine->AddSystem (thermo);
   engine->AddSystem (objsys);
 
   Resources resourceManager;

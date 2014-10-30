@@ -70,7 +70,7 @@ namespace Framework
       MapSize = { 100, 100 };
       std::cout << "Grid " << MapSize.x << "x " << MapSize.y << std::endl;
       MapOffset = { 50, 50 };
-      AtmosphericTemperature = 300.f;
+      AtmosphericTemperature = 0.0f;
       //Allocate heatmap
       HeatMap = new float*[100];
       for (int i = 0; i < 100; ++i)
@@ -79,7 +79,7 @@ namespace Framework
       {
         for (int i = 0; i < 100; ++i)
         {
-          HeatMap[i][j] = 300;
+          HeatMap[i][j] = 300.0f;
         }
       }
 
@@ -210,10 +210,10 @@ namespace Framework
       int sub_y = static_cast<int>((y / CellSize) + MapOffset.y);
       float dQ;
       if (sub_x < 0 || sub_x > MapSize.x || sub_y < 0 || sub_y > MapSize.y)
-        dQ = ConductiveHeatTransfer(Const::K_Wood, 0, temp, dt, 1);
+        dQ = ConductiveHeatTransfer(Const::K_Wood * 10, 0, temp, dt, 1);
       else
       {
-        dQ = ConductiveHeatTransfer(Const::K_Air, HeatMap[sub_x][sub_y], temp, dt, 1);
+        dQ = ConductiveHeatTransfer(Const::K_Air * 10, HeatMap[sub_x][sub_y], temp, dt, 1);
         float deltaTemp = dTemp(dQ, OxygenMap[sub_x][sub_y] * CellSize*CellSize*CellSize, Const::c_Air);
         HeatMap[sub_x][sub_y] += deltaTemp;
       }

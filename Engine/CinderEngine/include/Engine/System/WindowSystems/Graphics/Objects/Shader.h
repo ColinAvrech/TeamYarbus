@@ -34,7 +34,7 @@ namespace Framework
     inline bool uni4f (const char* varName, float x, float y, float z, float w);
     inline bool uni1fv (const char* varName, GLuint count, float *values);
     inline bool uni2fv (const char* varName, const float* value);
-    inline bool uni3fv (const char* varName, const float* values);
+    inline bool uni3fv (const char* varName, const float* values, const int count = 0);
     inline bool uni4fv (const char* varName, const float* values);
 
     //
@@ -178,12 +178,12 @@ namespace Framework
     return true;
   }
 
-  inline bool Shader::uni3fv(const char *varName, const float*values)
-  {
+  inline bool Shader::uni3fv(const char* varName, const float* values, const int count /*= 0*/)
+{
     GLint i = uniLocation (varName);
     if (i == -1) return false;
 
-    glUniform3fv (i, 1, values);
+    glUniform3fv (i, count, values);
     return true;
   }
 

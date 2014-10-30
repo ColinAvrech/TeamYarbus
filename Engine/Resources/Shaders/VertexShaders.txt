@@ -1,3 +1,4 @@
+Passthrough.vs.glsl
 Basic.vs.glsl
 Animation.vs.glsl
 Particle.vs.glsl

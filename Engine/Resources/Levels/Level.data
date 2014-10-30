@@ -85,7 +85,7 @@ Level =
 		Sprite = 
 		{
 			string SpriteSource = "EnvHighRes.png",
-			string Shader = "Lighting",
+			string Shader = "Default",
 			bool AnimationActive = false,
 		},
   },
@@ -108,7 +108,7 @@ Level =
 		Sprite = 
 		{
 			string SpriteSource = "Ember.png",
-			string Shader = "Lighting",
+			string Shader = "Default",
 			bool AnimationActive = false,
 		},
   },

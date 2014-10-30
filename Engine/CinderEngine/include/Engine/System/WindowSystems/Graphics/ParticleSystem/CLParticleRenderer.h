@@ -58,7 +58,8 @@ namespace Framework
     void Interpolate_Colors ();
     void OnKeyPressed (KeyEvent* key);
     //////////////////////////////////////////////////////////////////////////
-
+    float destPosX;
+    float destPosY;
 
   private:
     SSBO* SSBOPos, *SSBOVel;
