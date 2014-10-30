@@ -324,7 +324,7 @@ namespace Framework
       }
     }
     fire->SetLPF(lpf, 1);
-    std::cout << lpf << std::endl;
+    //std::cout << lpf << std::endl;
     WindowsUpdate(dt);
     GraphicsUpdate(dt);
   }
