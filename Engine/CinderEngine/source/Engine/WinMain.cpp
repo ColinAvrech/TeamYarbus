@@ -75,7 +75,7 @@ int main (void)
   ObjectSystem* objsys = new ObjectSystem ();
 
   engine->AddSystem (phys);
-  engine->AddSystem (sceneManager);
+  //engine->AddSystem (sceneManager);
   engine->AddSystem (windows);
   engine->AddSystem (audio);
   engine->AddSystem (events);
@@ -89,12 +89,12 @@ int main (void)
   //! Initialize all added Systems. DON'T INIT YOUR OWN
   engine->Initialize ();
 
-  //resourceManager.Get_Sound ("music.mp3")->Play ();
+  //resourceManager.Get_Sound ("music2.mp3")->Play ();
 
   audio->LoadMicData ();
 
   //! activate the window.
-  OBJECTSYSTEM->LoadLevel ("Level.data");
+  //OBJECTSYSTEM->LoadLevel ("Level.data");
 
   // Connect example
   //MyClass _myclass;

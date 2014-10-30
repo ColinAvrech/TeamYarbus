@@ -78,14 +78,14 @@ namespace Framework
       {
         for (int i = 0; i < 100; ++i)
         {
-          HeatMap[i][j] = 300.0f;
+          HeatMap[i][j] = 100.0f;
         }
       }
-      //HeatMap[47][49] = 1000.0f;
-      //HeatMap[48][49] = 1000.0f;
-      //HeatMap[49][49] = 1000.0f;
-      //HeatMap[50][49] = 1000.0f;
-      //HeatMap[51][49] = 1000.0f;
+      HeatMap[47][49] = 1000.0f;
+      HeatMap[48][49] = 1000.0f;
+      HeatMap[49][49] = 1000.0f;
+      HeatMap[50][49] = 1000.0f;
+      HeatMap[51][49] = 1000.0f;
 
       //Allocate Oxygen/Density map
       OxygenMap = new float*[100];

@@ -135,6 +135,7 @@ namespace Framework
       void            SetFrequency2();
       void            SweepEQ2(float center, float bandwidth, float gain, float sweepTime);
       void            UpdateFrequency2(const double dt);
+      void            EQConsoleOut(float currentCenter, float currentBandwidth, float currentGain);
 
       // Setters
       ReverbPreset    SetReverbPreset(ReverbPresetName preset);
@@ -222,22 +223,22 @@ namespace Framework
       float                         _pitch;
       float                         _volValue;
       float                         _fadeValue;
-      float                         _sweepValA;
-      float                         _sweepValB;
+      float                         _fadeValA1;
+      float                         _fadeValA2;
+      float                         _fadeValA3;
+      float                         _fadeValB1;
+      float                         _fadeValB2;
+      float                         _fadeValB3;
       float                         _centerValA;
       float                         _centerValB;
       float                         _bandwidthValA;
       float                         _bandwidthValB;
       float                         _gainValA;
       float                         _gainValB;
-      float                         _sweepSpeedA1;
-      float                         _sweepSpeedA2;
-      float                         _sweepSpeedA3;
-      float                         _sweepSpeedB1;
-      float                         _sweepSpeedB2;
-      float                         _sweepSpeedB3;
       bool                          test = true;
       bool                          test2 = true;
+      bool                          _EQStateA = false;
+      bool                          _EQStateB = false;
       std::vector<FMOD::Sound*>     sound_queue_;
       FMOD::Channel                 *pChannel;
       FMOD::ChannelGroup            *pChannelGroup;

@@ -367,33 +367,18 @@ namespace Framework
   void Sound::SetFrequency1()
   {
     FMOD_RESULT result;
-    bool active;
 
     result = pFMODAudioSystem->createDSPByType(FMOD_DSP_TYPE_PARAMEQ, &objects_DSP.dsp_sweepA);
     ErrCheck(result);
 
-    result = objects_DSP.dsp_sweepA->setParameterFloat(FMOD_DSP_PARAMEQ_CENTER, 0.0f);
+    result = objects_DSP.dsp_sweepA->setParameterFloat(FMOD_DSP_PARAMEQ_CENTER, 20.0f);
     ErrCheck(result);
 
-    result = objects_DSP.dsp_sweepA->setParameterFloat(FMOD_DSP_PARAMEQ_BANDWIDTH, 0.0f);
+    result = objects_DSP.dsp_sweepA->setParameterFloat(FMOD_DSP_PARAMEQ_BANDWIDTH, 0.2f);
     ErrCheck(result);
 
-    result = objects_DSP.dsp_sweepA->setParameterFloat(FMOD_DSP_PARAMEQ_GAIN, 1.0f);
+    result = objects_DSP.dsp_sweepA->setParameterFloat(FMOD_DSP_PARAMEQ_GAIN, -29.0f);
     ErrCheck(result);
-
-    result = objects_DSP.dsp_sweepA->getActive(&active);
-    ErrCheck(result);
-
-    if (active)
-    {
-      result = pChannel->removeDSP(objects_DSP.dsp_sweepA);
-      ErrCheck(result);
-    }
-    else
-    {
-      result = pChannel->addDSP(0, objects_DSP.dsp_sweepA, 0);
-      ErrCheck(result);
-    }
   }
 
   void Sound::SweepEQ1(float center, float bandwidth, float gain, float sweepTime)
@@ -403,10 +388,25 @@ namespace Framework
     float currentCenter;
     float currentBandwidth;
     float currentGain;
+    float fadeSpeedA, fadeSpeedB, fadeSpeedC;
+    bool active;
     char buffer[16];
 
     if (pChannel == NULL)
       return;
+
+    result = objects_DSP.dsp_sweepA->getActive(&active);
+    ErrCheck(result);
+
+    if (!active && _EQStateA == false)
+    {
+      result = pChannel->addDSP(0, objects_DSP.dsp_sweepA, 0);
+      ErrCheck(result);
+
+      std::cout << Console::green << "EQ A ADDED" << std::endl;
+
+      _EQStateA = true;
+    }
 
     _centerValA = center;
     _bandwidthValA = bandwidth;
@@ -421,14 +421,14 @@ namespace Framework
     result = objects_DSP.dsp_sweepA->getParameterFloat(FMOD_DSP_PARAMEQ_GAIN, &currentGain, buffer, 16);
     ErrCheck(result);
 
-    _sweepSpeedA1 = (center - currentCenter) / sweepTime;
-    _centerValA = _sweepSpeedA1;
+    fadeSpeedA = (center - currentCenter) / sweepTime;
+    _fadeValA1 = fadeSpeedA;
 
-    _sweepSpeedA2 = (bandwidth - currentBandwidth) / sweepTime;
-    _bandwidthValA = _sweepSpeedA2;
+    fadeSpeedB = (bandwidth - currentBandwidth) / sweepTime;
+    _fadeValA2 = fadeSpeedB;
 
-    _sweepSpeedA3 = (gain - currentGain) / sweepTime;
-    _gainValA = _sweepSpeedA3;
+    fadeSpeedC = (gain - currentGain) / sweepTime;
+    _fadeValA3 = fadeSpeedC;
   }
 
   void Sound::UpdateFrequency1(const double dt)
@@ -449,18 +449,28 @@ namespace Framework
       ErrCheck(result);
 
       result = objects_DSP.dsp_sweepA->getParameterFloat(FMOD_DSP_PARAMEQ_GAIN, &currentGain, buffer, 16);
-      ErrCheck(result);
+      ErrCheck(result);      
+
+      if (currentGain == -30.0f && _EQStateA == true)
+      {
+        result = pChannel->removeDSP(objects_DSP.dsp_sweepA);
+        ErrCheck(result);
+
+        std::cout << Console::yellow << "EQ A REMOVED" << std::endl;
+
+        _EQStateA = false;
+      }
 
       if (_centerValA != currentCenter)
       {
         float newParameter;
 
-        newParameter = (float)(currentCenter + ((double)_sweepSpeedA1 * dt));
-        if (newParameter > _centerValA && _sweepSpeedA1 > 0.0f)
+        newParameter = (float)(currentCenter + ((double)_fadeValA1 * dt));
+        if (newParameter > _centerValA && _fadeValA1 > 0.0f)
         {
           newParameter = _centerValA;
         }
-        else if (newParameter < _centerValA && _sweepSpeedA1 < 0.0f)
+        else if (newParameter < _centerValA && _fadeValA1 < 0.0f)
         {
           newParameter = _centerValA;
         }
@@ -473,12 +483,12 @@ namespace Framework
       {
         float newParameter;
 
-        newParameter = (float)(currentBandwidth + ((double)_sweepSpeedA2 * dt));
-        if (newParameter > _bandwidthValA && _sweepSpeedA2 > 0.0f)
+        newParameter = (float)(currentBandwidth + ((double)_fadeValA2 * dt));
+        if (newParameter > _bandwidthValA && _fadeValA2 > 0.0f)
         {
           newParameter = _bandwidthValA;
         }
-        else if (newParameter < _bandwidthValA && _sweepSpeedA2 < 0.0f)
+        else if (newParameter < _bandwidthValA && _fadeValA2 < 0.0f)
         {
           newParameter = _bandwidthValA;
         }
@@ -491,12 +501,12 @@ namespace Framework
       {
         float newParameter;
 
-        newParameter = (float)(currentGain + ((double)_sweepSpeedA3 * dt));
-        if (newParameter > _gainValA && _sweepSpeedA3 > 0.0f)
+        newParameter = (float)(currentGain + ((double)_fadeValA3 * dt));
+        if (newParameter > _gainValA && _fadeValA3 > 0.0f)
         {
           newParameter = _gainValA;
         }
-        else if (newParameter < _gainValA && _sweepSpeedA3 < 0.0f)
+        else if (newParameter < _gainValA && _fadeValA3 < 0.0f)
         {
           newParameter = _gainValA;
         }
@@ -510,33 +520,18 @@ namespace Framework
   void Sound::SetFrequency2()
   {
     FMOD_RESULT result;
-    bool active;
 
     result = pFMODAudioSystem->createDSPByType(FMOD_DSP_TYPE_PARAMEQ, &objects_DSP.dsp_sweepB);
     ErrCheck(result);
 
-    result = objects_DSP.dsp_sweepB->setParameterFloat(FMOD_DSP_PARAMEQ_CENTER, 0.0f);
+    result = objects_DSP.dsp_sweepB->setParameterFloat(FMOD_DSP_PARAMEQ_CENTER, 20.0f);
     ErrCheck(result);
 
-    result = objects_DSP.dsp_sweepB->setParameterFloat(FMOD_DSP_PARAMEQ_BANDWIDTH, 0.0f);
+    result = objects_DSP.dsp_sweepB->setParameterFloat(FMOD_DSP_PARAMEQ_BANDWIDTH, 0.2f);
     ErrCheck(result);
 
-    result = objects_DSP.dsp_sweepB->setParameterFloat(FMOD_DSP_PARAMEQ_GAIN, 1.0f);
+    result = objects_DSP.dsp_sweepB->setParameterFloat(FMOD_DSP_PARAMEQ_GAIN, -29.0f);
     ErrCheck(result);
-
-    result = objects_DSP.dsp_sweepB->getActive(&active);
-    ErrCheck(result);
-
-    if (active)
-    {
-      result = pChannel->removeDSP(objects_DSP.dsp_sweepB);
-      ErrCheck(result);
-    }
-    else
-    {
-      result = pChannel->addDSP(0, objects_DSP.dsp_sweepB, 0);
-      ErrCheck(result);
-    }
   }
 
   void Sound::SweepEQ2(float center, float bandwidth, float gain, float sweepTime)
@@ -546,10 +541,25 @@ namespace Framework
     float currentCenter;
     float currentBandwidth;
     float currentGain;
+    float fadeSpeedA, fadeSpeedB, fadeSpeedC;
+    bool active;
     char buffer[16];
 
     if (pChannel == NULL)
       return;
+
+    result = objects_DSP.dsp_sweepB->getActive(&active);
+    ErrCheck(result);
+
+    if (!active && _EQStateB == false)
+    {
+      result = pChannel->addDSP(0, objects_DSP.dsp_sweepB, 0);
+      ErrCheck(result);
+
+      std::cout << Console::green << "EQ B ADDED" << std::endl;
+
+      _EQStateB = true;
+    }
 
     _centerValB = center;
     _bandwidthValB = bandwidth;
@@ -564,14 +574,14 @@ namespace Framework
     result = objects_DSP.dsp_sweepB->getParameterFloat(FMOD_DSP_PARAMEQ_GAIN, &currentGain, buffer, 16);
     ErrCheck(result);
 
-    _sweepSpeedB1 = (center - currentCenter) / sweepTime;
-    _centerValB = _sweepSpeedB1;
+    fadeSpeedA = (center - currentCenter) / sweepTime;
+    _fadeValB1 = fadeSpeedA;
 
-    _sweepSpeedB2 = (bandwidth - currentBandwidth) / sweepTime;
-    _bandwidthValB = _sweepSpeedB2;
+    fadeSpeedB = (bandwidth - currentBandwidth) / sweepTime;
+    _fadeValB2 = fadeSpeedB;
 
-    _sweepSpeedB3 = (gain - currentGain) / sweepTime;
-    _gainValB = _sweepSpeedB3;
+    fadeSpeedC = (gain - currentGain) / sweepTime;
+    _fadeValB3 = fadeSpeedC;
   }  
 
   void Sound::UpdateFrequency2(const double dt)
@@ -594,16 +604,28 @@ namespace Framework
       result = objects_DSP.dsp_sweepB->getParameterFloat(FMOD_DSP_PARAMEQ_GAIN, &currentGain, buffer, 16);
       ErrCheck(result);
 
+      if (currentGain == -30.0f && _EQStateB == true)
+      {
+        result = pChannel->removeDSP(objects_DSP.dsp_sweepB);
+        ErrCheck(result);
+
+        std::cout << Console::yellow << "EQ B REMOVED" << std::endl;
+
+        _EQStateB = false;
+      }
+
+      //EQConsoleOut(currentCenter, currentBandwidth, currentGain);
+
       if (_centerValB != currentCenter)
       {
         float newParameter;
 
-        newParameter = (float)(currentCenter + ((double)_sweepSpeedB1 * dt));
-        if (newParameter > _centerValB && _sweepSpeedB1 > 0.0f)
+        newParameter = (float)(currentCenter + ((double)_fadeValB1 * dt));
+        if (newParameter > _centerValB && _fadeValB1 > 0.0f)
         {
           newParameter = _centerValB;
         }
-        else if (newParameter < _centerValB && _sweepSpeedB1 < 0.0f)
+        else if (newParameter < _centerValB && _fadeValB1 < 0.0f)
         {
           newParameter = _centerValB;
         }
@@ -616,12 +638,12 @@ namespace Framework
       {
         float newParameter;
 
-        newParameter = (float)(currentBandwidth + ((double)_sweepSpeedB2 * dt));
-        if (newParameter > _bandwidthValB && _sweepSpeedB2 > 0.0f)
+        newParameter = (float)(currentBandwidth + ((double)_fadeValB2 * dt));
+        if (newParameter > _bandwidthValB && _fadeValB2 > 0.0f)
         {
           newParameter = _bandwidthValB;
         }
-        else if (newParameter < _bandwidthValB && _sweepSpeedB2 < 0.0f)
+        else if (newParameter < _bandwidthValB && _fadeValB2 < 0.0f)
         {
           newParameter = _bandwidthValB;
         }
@@ -634,12 +656,12 @@ namespace Framework
       {
         float newParameter;
 
-        newParameter = (float)(currentGain + ((double)_sweepSpeedB3 * dt));
-        if (newParameter > _gainValB && _sweepSpeedB3 > 0.0f)
+        newParameter = (float)(currentGain + ((double)_fadeValB3 * dt));
+        if (newParameter > _gainValB && _fadeValB3 > 0.0f)
         {
           newParameter = _gainValB;
         }
-        else if (newParameter < _gainValB && _sweepSpeedB3 < 0.0f)
+        else if (newParameter < _gainValB && _fadeValB3 < 0.0f)
         {
           newParameter = _gainValB;
         }
@@ -648,6 +670,20 @@ namespace Framework
         ErrCheck(result);
       }
     }
+  }
+
+  void Sound::EQConsoleOut(float currentCenter, float currentBandwidth, float currentGain)
+  {
+    std::cout << Console::cyan
+      << currentCenter
+      << std::endl
+      << "             "
+      << Console::yellow
+      << currentBandwidth
+      << "             "
+      << Console::green
+      << currentGain
+      << std::endl;
   }
 }
 //-----------------------------------------------------------------------------
