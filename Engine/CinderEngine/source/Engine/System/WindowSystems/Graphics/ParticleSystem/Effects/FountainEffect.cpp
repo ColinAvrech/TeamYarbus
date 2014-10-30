@@ -198,7 +198,7 @@ namespace Framework
   {
     static double time = 0.0;
     time += dt;
-	std::cout << particleEmitter->m_emitRate << "\n";
+	//std::cout << particleEmitter->m_emitRate << "\n";
 	if (getmic() > 0.1f)
 	{
 		if (velGenerator->m_maxStartVel.y < 0.5f)

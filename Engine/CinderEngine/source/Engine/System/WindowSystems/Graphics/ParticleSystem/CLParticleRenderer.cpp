@@ -22,6 +22,7 @@ namespace Framework
   static float decayRate = 2.0f;
   static float breathRate = 0.01f;
   static float offset = 0.75f;
+
   static float random (float fMin, float fMax)
   {
     float fRandNum = (float) rand () / RAND_MAX;
@@ -31,8 +32,8 @@ namespace Framework
 
   CLParticleRenderer::CLParticleRenderer ()
   {
-    particleCount = 400;
-    particleSize = 100;
+    particleCount = 10000;
+    particleSize = 5;
     srand ((unsigned) time (NULL));
     color [0] = 255;
     color [1] = 80;
@@ -81,20 +82,24 @@ namespace Framework
   }
 
 
-  static void OnKeyPressed (GameObject* go, KeyEvent* key)
+  void CLParticleRenderer::OnKeyPressed (KeyEvent* key)
   {
     std::cout << cursorX << std::endl;
     if (key->KeyDown)
     {
+      if (key->KeyValue == GLFW_KEY_R)
+        ResetBuffers ();
       if (key->KeyValue == GLFW_KEY_A)
-        cursorX -= 5.f;
+        speedMultiplier -= 0.1f;
       else if (key->KeyValue == GLFW_KEY_D)
-        cursorX += 5.f;
+        speedMultiplier += 0.1f;
+      //else if (key->KeyValue == GLFW_KEY_D)
+      //  cursorX += 5.f;
 
-      if (key->KeyValue == GLFW_KEY_D)
-        cursorY -= 5.f;
-      else if (key->KeyValue == GLFW_KEY_W)
-        cursorY += 5.f;
+      //if (key->KeyValue == GLFW_KEY_D)
+      //  cursorY -= 5.f;
+      //else if (key->KeyValue == GLFW_KEY_W)
+      //  cursorY += 5.f;
     }
   }
 
@@ -104,6 +109,8 @@ namespace Framework
     texture = Resources::RS->Get_Texture ("Particle.bmp");
     cursorX = WINDOWSYSTEM->Get_Width () / 2;
     cursorY = WINDOWSYSTEM->Get_Height () / 2;
+
+    EVENTSYSTEM->mConnect<KeyEvent, CLParticleRenderer> (Events::KEY_ANY, this, &CLParticleRenderer::OnKeyPressed);
   }
 
   void CLParticleRenderer::ResetPosition ()
@@ -112,7 +119,7 @@ namespace Framework
     //double cursorX, cursorY;
     int windowWidth, windowHeight;
     glfwPollEvents ();
-    //glfwGetCursorPos (WINDOWSYSTEM->Get_Window(), &cursorX, &cursorY);
+    glfwGetCursorPos (WINDOWSYSTEM->Get_Window(), &cursorX, &cursorY);
     glfwGetWindowSize (WINDOWSYSTEM->Get_Window(), &windowWidth, &windowHeight);
 
     float destPosX = (float) (cursorX / (windowWidth) -0.5f) * 2.0f;
@@ -124,6 +131,7 @@ namespace Framework
       float rnd = (float) rand () / (float) (RAND_MAX);
       float rndVal = (float) rand () / (float) (RAND_MAX / (360.0f * 3.14f * 2.0f));
       float rndRad = (float) rand () / (float) (RAND_MAX) * 0.2f;
+      radius = rndRad;
       verticesPos [i].x = destPosX + cos (rndVal) * rndRad;
       verticesPos [i].y = destPosY + sin (rndVal) * rndRad;
       verticesPos [i].z = 0.0f;
@@ -172,7 +180,7 @@ namespace Framework
 
     //double cursorX, cursorY;
     int windowWidth, windowHeight;
-    //glfwGetCursorPos (WINDOWSYSTEM->Get_Window(), &cursorX, &cursorY);
+    glfwGetCursorPos (WINDOWSYSTEM->Get_Window(), &cursorX, &cursorY);
     glfwGetWindowSize (WINDOWSYSTEM->Get_Window(), &windowWidth, &windowHeight);
 
     float destPosX = (float) (cursorX / (windowWidth) -0.5f) * 2.0f;
@@ -183,10 +191,18 @@ namespace Framework
     computeshader->uni3f ("destPos", destPosX, destPosY, 0);
     computeshader->uni2f ("vpDim", 1, 1);
     computeshader->uni1i("borderClamp", (int) borderEnabled);
-    std::cout << "{ " << Physics::THERMODYNAMICS->GetCellVelocity(20, 20).x << ", " << Physics::THERMODYNAMICS->GetCellVelocity(20, 20).y << " }\n";
+    //std::cout << "{ " << Physics::THERMODYNAMICS->GetCellVelocity(20, 20).x << ", " << Physics::THERMODYNAMICS->GetCellVelocity(20, 20).y << " }\n";
     computeshader->uni2fv ("cellVelocity", glm::value_ptr (Physics::THERMODYNAMICS->GetCellVelocity (20, 20)));
-    
+    radius = 0.1f;
+    destPosY = -destPosY;
     //std::cout << Physics::THERMODYNAMICS->GetCellTemperature (20, 20) << "\n";
+    Physics::THERMODYNAMICS->SetCellTemperature (destPosX, destPosY, 1000.0f, 0.016);
+    Physics::THERMODYNAMICS->SetCellTemperature (destPosX + radius, destPosY, 1000.0f, 0.016);
+    Physics::THERMODYNAMICS->SetCellTemperature (destPosX - radius, destPosY, 1000.0f, 0.016);
+    Physics::THERMODYNAMICS->SetCellTemperature (destPosX, destPosY + radius, 1000.0f, 0.016);
+    Physics::THERMODYNAMICS->SetCellTemperature (destPosX, destPosY - radius, 1000.0f, 0.016);
+    Physics::THERMODYNAMICS->SetCellTemperature (destPosX + radius, destPosY + radius, 1000.0f, 0.016);
+    Physics::THERMODYNAMICS->SetCellTemperature (destPosX - radius, destPosY - radius, 1000.0f, 0.016);
 
     int workingGroups = particleCount / 16;
 
@@ -201,7 +217,7 @@ namespace Framework
 
     shader->Use ();
 
-    shader->uni4f ("Color", color [0] / 255.0f, color [1] / 255.0f, color [2] / 255.0f, color [3]);
+    shader->uni4f ("Color", color [0] / 255.0f, color [1] / 255.0f, color [2] / 255.0f, 1.0f);
 
     glGetError ();
 

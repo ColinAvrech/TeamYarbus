@@ -29,7 +29,7 @@ namespace Framework
   {
   public:
     Transform () {}
-    ~Transform ();
+    virtual ~Transform ();
 
     virtual void Initialize ();
     virtual void Serialize (Serializer::DataNode* data);

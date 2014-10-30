@@ -14,6 +14,16 @@ void main (void)
 		factor = 1.0;
 	else
 		factor = 0.5;
-
-	outColor = vec4 (Temperature, Temperature, Temperature, Temperature);
+  if (Temperature < 0.5)
+  {
+    outColor = vec4 (0, Temperature * 0.4, Temperature, Temperature); 
+  }
+  else if (Temperature < 0.7)
+  {
+	  outColor = vec4 (0, Temperature * 0.4, Temperature, Temperature);
+  }
+  else
+  {
+    outColor = vec4 (1, Temperature * 0.4, 0, Temperature);
+  }
 }

@@ -16,7 +16,7 @@ namespace Framework
   public:
     Sprite () {}
     Sprite (GameObject* go);
-    ~Sprite ();
+    virtual ~Sprite ();
 
     virtual void Initialize ();
     virtual void Serialize (Serializer::DataNode* data);
