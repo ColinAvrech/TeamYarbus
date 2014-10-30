@@ -74,9 +74,11 @@ namespace Framework
 		float rad = radius;
 		float penetration;
 		glm::vec2 pos;
-		pos.x = static_cast<Transform*>(gameObject->Transform)->GetPosition().x;
-		pos.y = static_cast<Transform*>(gameObject->Transform)->GetPosition().y;
-		if (penetration = Physics::CirclevsLine(rad, pos, *l) >= 0)
+		//taking pos one frame later
+		pos.x = (gameObject->Transform)->GetPosition().x - gameObject->CircleCollider->radius + gameObject->RigidBody->vel.x * .016;
+		pos.y = (gameObject->Transform)->GetPosition().y - gameObject->CircleCollider->radius + gameObject->RigidBody->vel.y * .016;
+
+		if (penetration = Physics::CirclevsLine(rad, pos, l) >= 0)
 		{
 			CollisionEvent collision;
 			collision.penetration = penetration;

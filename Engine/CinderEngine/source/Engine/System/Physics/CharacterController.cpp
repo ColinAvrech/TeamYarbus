@@ -88,14 +88,11 @@ namespace Framework
 
 	void CharacterController::Update(UpdateEvent* e)
 	{
-		//how to get line collider
-		//gameObject->CircleCollider->DetectLine(gameObject->LineCollider);
-		//go1->CircleCollider->DetectCircle(go2->CircleCollider);
 		glm::vec2 dragDirection = -gameObject->RigidBody->vel;
 		if (gameObject->RigidBody->vel.x != 0 && gameObject->RigidBody->vel.y != 0)
 			dragDirection = glm::normalize(dragDirection);
-		gameObject->RigidBody->vel += Physics::applyAccel(dragDirection * drag, .016);
-		gameObject->Transform->Translate(gameObject->RigidBody->vel.x * e->Dt, gameObject->RigidBody->vel.y * e->Dt, 0);
+		//gameObject->RigidBody->vel += Physics::applyAccel(dragDirection * drag, .016);
+		//gameObject->Transform->Translate(gameObject->RigidBody->vel.x * .016, gameObject->RigidBody->vel.y * .016, 0);
 	}
 
 	//void CharacterController::UpdateVelocity()
@@ -109,7 +106,7 @@ namespace Framework
 		jumpVel = 5.0f;
 		accel = 10;
 		maxXVel = 2.0f;
-		drag = 5;
+		drag = 5.0f;
 		EVENTSYSTEM->mConnect<KeyEvent, CharacterController>(Events::KEY_ANY, this, &CharacterController::OnKeyPressed);
 		EVENTSYSTEM->mConnect<CollisionEvent, CharacterController>(Events::COLLISION, this, &CharacterController::OnCollisionEnter);
 		EVENTSYSTEM->mConnect<UpdateEvent, CharacterController>(Events::UPDATEEVENT, this, &CharacterController::Update);
