@@ -89,7 +89,14 @@ int main (void)
   //! Initialize all added Systems. DON'T INIT YOUR OWN
   engine->Initialize ();
 
-  //resourceManager.Get_Sound ("music.mp3")->Play ();
+  Sound *pads;
+  pads = resourceManager.Get_Sound("Pads.ogg");
+  pads->Play();
+  pads->VolumeFade(0.8f, 3);
+  pads->HighPassFilter();
+  pads->SetHPF(600, 1);
+  pads->Reverb();
+  pads->SetReverbPreset(Sound::ARENA);
 
   audio->LoadMicData ();
 
