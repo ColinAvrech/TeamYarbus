@@ -20,10 +20,10 @@ void main (void)
   }
   else if (Temperature < 0.7)
   {
-	  outColor = vec4 (0, Temperature * 0.4, Temperature, Temperature);
+	  outColor = vec4 ((Temperature - 0.5) / 0.2, Temperature * 0.4, 1-Temperature, Temperature);
   }
   else
   {
-    outColor = vec4 (1, Temperature * 0.4, 0, Temperature);
+    outColor = vec4 (1, 1 - Temperature, 0, Temperature);
   }
 }

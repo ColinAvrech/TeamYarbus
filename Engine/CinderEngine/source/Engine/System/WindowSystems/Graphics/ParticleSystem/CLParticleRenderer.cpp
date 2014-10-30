@@ -195,14 +195,17 @@ namespace Framework
     computeshader->uni2fv("cellVelocity", glm::value_ptr(Physics::THERMODYNAMICS->GetCellVelocity(20, 20)));
     radius = 0.1f;
     destPosY = -destPosY;
+    float peak = AUDIOSYSTEM->input.peaklevel[0];
     //std::cout << Physics::THERMODYNAMICS->GetCellTemperature (20, 20) << "\n";
-    Physics::THERMODYNAMICS->SetCellTemperature(destPosX, destPosY, 1000.0f, 0.016);
+    Physics::THERMODYNAMICS->SetCellTemperature(destPosX, destPosY, 2250.0f, 0.016);
     Physics::THERMODYNAMICS->SetCellTemperature(destPosX + radius, destPosY, 2250.0f, 0.016);
     Physics::THERMODYNAMICS->SetCellTemperature(destPosX - radius, destPosY, 2250.0f, 0.016);
     Physics::THERMODYNAMICS->SetCellTemperature(destPosX, destPosY + radius, 2250.0f, 0.016);
     Physics::THERMODYNAMICS->SetCellTemperature(destPosX, destPosY - radius, 2250.0f, 0.016);
     Physics::THERMODYNAMICS->SetCellTemperature(destPosX + radius, destPosY + radius, 2250.0f, 0.016);
     Physics::THERMODYNAMICS->SetCellTemperature(destPosX - radius, destPosY - radius, 2250.0f, 0.016);
+    Physics::THERMODYNAMICS->SetCellTemperature(destPosX + radius, destPosY - radius, 2250.0f, 0.016);
+    Physics::THERMODYNAMICS->SetCellTemperature(destPosX - radius, destPosY + radius, 2250.0f, 0.016);
 
     int workingGroups = particleCount / 16;
 

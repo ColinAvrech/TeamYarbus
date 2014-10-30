@@ -210,11 +210,11 @@ namespace Framework
       int sub_y = static_cast<int>((y / CellSize) + MapOffset.y);
       float dQ;
       if (sub_x < 0 || sub_x > MapSize.x || sub_y < 0 || sub_y > MapSize.y)
-        dQ = ConductiveHeatTransfer(Const::K_Wood, 0, temp, dt, 1);
+        dQ = ConductiveHeatTransfer(Const::K_Wood, AtmosphericTemperature, temp, dt, 1);
       else
       {
         dQ = ConductiveHeatTransfer(Const::K_Air, HeatMap[sub_x][sub_y], temp, dt, 1);
-        float deltaTemp = dTemp(dQ, OxygenMap[sub_x][sub_y] * CellSize*CellSize*CellSize, Const::c_Air);
+        float deltaTemp = dTemp(dQ, OxygenMap[sub_x][sub_y] * 0.001, /*Const::c_Air*/100);
         HeatMap[sub_x][sub_y] += deltaTemp;
       }
       return dQ;
@@ -242,7 +242,7 @@ namespace Framework
               {
                 if (x < MapSize.x && x >= 0 && y < MapSize.y && y >= 0)
                 {
-                  float dQ = ConductiveHeatTransfer(Const::K_Air, HeatMap[i][j], AtmosphericTemperature, dt, 0.1f);
+                  float dQ = ConductiveHeatTransfer(Const::K_Air, HeatMap[i][j], HeatMap[x][y], dt, 0.1f);
                   netdQ += dQ;
                   float oTemp = HeatMap[x][y];
                   HeatMap[x][y] -= dTemp(dQ, OxygenMap[x][y] * 0.001f, Const::c_Air);
@@ -370,7 +370,7 @@ namespace Framework
           {
             if (HeatMap[i][j] <= Const::BT_Organics)
             {
-              HeatMap[i][j] += tempRange * (float)dt;
+              //HeatMap[i][j] += tempRange * (float)dt;
             }
             //float oxyfactor = 
           }//if
