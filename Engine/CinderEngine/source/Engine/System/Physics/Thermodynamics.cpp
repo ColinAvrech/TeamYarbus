@@ -79,7 +79,7 @@ namespace Framework
       {
         for (int i = 0; i < 100; ++i)
         {
-          HeatMap[i][j] = 300.0f;
+          HeatMap[i][j] = 300;
         }
       }
 
@@ -150,12 +150,12 @@ namespace Framework
 
       return true;
     }
-   
+
     // Called every frame
     void ThermodynamicsSystem::Update(const double dt)
     {
-      for (int i = 45; i < 55; ++i)
-        HeatMap[i][49] += 10 * AUDIOSYSTEM->input.peaklevel[0];
+      //for (int i = 45; i < 55; ++i)
+      //  HeatMap[i][49] += 10 * AUDIOSYSTEM->input.peaklevel[0];
       UpdateTemp(0.016);
       ComputeVelocity(0.016);
       UpdateFire(0.016);
@@ -167,8 +167,8 @@ namespace Framework
     //Get cell temperature
     float ThermodynamicsSystem::GetCellTemperature(float x, float y)
     {
-      int sub_x = int (std::abs (((x) * 49 + MapOffset.x - 1)));
-      int sub_y = int (std::abs (((y) * 50 + MapOffset.y - 1)));
+      int sub_x = int(std::abs(((x)* 49 + MapOffset.x - 1)));
+      int sub_y = int(std::abs(((y)* 50 + MapOffset.y - 1)));
       if (sub_x < 0 || sub_x >= MapSize.x || sub_y < 0 || sub_y >= MapSize.y)
         return 0.f;
       return HeatMap[sub_x][sub_y];
@@ -186,11 +186,11 @@ namespace Framework
     //Get cell velocity
     glm::vec2 ThermodynamicsSystem::GetCellVelocity(float x, float y)
     {
-      int sub_x = static_cast<int>((x) + MapOffset.x);
-      int sub_y = static_cast<int>((y) + MapOffset.y);
+      int sub_x = static_cast<int>((x)+MapOffset.x);
+      int sub_y = static_cast<int>((y)+MapOffset.y);
       if (sub_x < 0 || sub_x > MapSize.x || sub_y < 0 || sub_y > MapSize.y)
       {
-        return glm::vec2 (0, 0);
+        return glm::vec2(0, 0);
       }
       return VelocityMap[sub_x][sub_y];
     }
@@ -213,7 +213,7 @@ namespace Framework
         dQ = ConductiveHeatTransfer(Const::K_Wood, 0, temp, dt, 1);
       else
       {
-        dQ = ConductiveHeatTransfer(1, HeatMap[sub_x][sub_y], temp, dt, 1);
+        dQ = ConductiveHeatTransfer(Const::K_Air, HeatMap[sub_x][sub_y], temp, dt, 1);
         float deltaTemp = dTemp(dQ, OxygenMap[sub_x][sub_y] * CellSize*CellSize*CellSize, Const::c_Air);
         HeatMap[sub_x][sub_y] += deltaTemp;
       }
@@ -245,7 +245,7 @@ namespace Framework
                   float dQ = ConductiveHeatTransfer(Const::K_Air, HeatMap[i][j], AtmosphericTemperature, dt, 0.1f);
                   netdQ += dQ;
                   float oTemp = HeatMap[x][y];
-                  HeatMap[x][y] -= dTemp(dQ, OxygenMap[x][y], Const::c_Air);
+                  HeatMap[x][y] -= dTemp(dQ, OxygenMap[x][y] * 0.001f, Const::c_Air);
 
                   float factor = HeatMap[x][y] / oTemp;
                   OxygenMap[x][y] /= factor;
@@ -284,7 +284,7 @@ namespace Framework
         }//for
       }//for
     }//function
-    
+
     //Update velocity vectors
     void ThermodynamicsSystem::ComputeVelocity(const double dt)
     {
@@ -312,7 +312,7 @@ namespace Framework
           }
           float meanDensity = dSum / 8;
           float buoyancy = Buoyancy(meanDensity, OxygenMap[i][j], 1.f);
-          
+
           int vectorindex = 0;
           float dDenseSum = 0.f;
           VelocityMap[i][j] = { 0, 0 };
@@ -323,15 +323,15 @@ namespace Framework
               if (x != i || y != j)
               {
                 float dDense = OxygenMap[x][y] - OxygenMap[i][j];
-                VelocityMap[i][j] -= (dirvec[vectorindex] * (dDense/8));
+                VelocityMap[i][j] -= (dirvec[vectorindex] * (dDense / 8));
                 //if (EqualizePressure)
                 //{
-                  //OxygenMap[x][y] += (dDense / 8) * (float)dt;
-                  dDenseSum += (dDense / 8);
+                //OxygenMap[x][y] += (dDense / 8) * (float)dt;
+                dDenseSum += (dDense / 8);
                 //}
                 ++vectorindex;
               }
-              
+
             } //for x
           } //for y
           //OxygenMap[i][j] -= dDenseSum * (float)dt;
@@ -339,7 +339,7 @@ namespace Framework
         }//for i
       } //for j
     }
-    
+
     //Update fire
     void ThermodynamicsSystem::UpdateFire(const double dt)
     {
@@ -366,11 +366,11 @@ namespace Framework
           float tempFactor = tempDiff / tempRange;
           tempFactor *= 10;
           if (FuelMap[i][j] >= 0.f &&
-              OxyCount > 0)
+            OxyCount > 0 && HeatMap[i][j] > Const::IT_Wood)
           {
             if (HeatMap[i][j] <= Const::BT_Organics)
             {
-             // HeatMap[i][j] += tempRange * (float)dt;
+              HeatMap[i][j] += tempRange * (float)dt;
             }
             //float oxyfactor = 
           }//if
@@ -378,7 +378,7 @@ namespace Framework
           {
             if (HeatMap[i][j] >= Const::IT_Wood)
             {
-              //HeatMap[i][j] -= tempRange * (float)dt;
+              HeatMap[i][j] -= tempRange * (float)dt;
             }
           }
           FireMap[i][j] = tempFactor;
