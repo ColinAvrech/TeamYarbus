@@ -43,17 +43,92 @@ const char WindowTitle [] = "CinderEngine";
 const int ClientWidth = 1024;
 const int ClientHeight = 768;
 
+
 // Connect example Class
+/*
+class TinkerBell
+{
+public:
+	TinkerBell();
+	~TinkerBell();
 
-//class MyClass
-//{
-//public:
-//	void Print(UpdateEvent* e)
-//	{
-//		std::cout << "My Update: " << e->Dt << std::endl;
-//	}
-//};
+private:
 
+};
+
+TinkerBell::TinkerBell()
+{
+
+}
+
+TinkerBell::~TinkerBell()
+{
+
+}
+*/
+
+class MyClass
+{
+public:
+	MyClass();
+
+	void WhenRightIsPressed(KeyEvent* e)
+	{
+		if (e->KeyDown && !e->KeyRepeat)
+		{
+			int MaxSlides = LevelStates.size();
+			if (Slide < MaxSlides - 1)
+			{
+				++Slide;
+				std::string mystring = LevelStates[Slide]->c_str();
+				OBJECTSYSTEM->LoadLevel(mystring);
+			}
+		}
+	}
+
+	void WhenLeftIsPressed(KeyEvent* e)
+	{
+		if (e->KeyDown && !e->KeyRepeat)
+		{
+			if (Slide > 0)
+			{
+				--Slide;
+				std::string mystring = LevelStates[Slide]->c_str();
+				OBJECTSYSTEM->LoadLevel(mystring);
+			}
+		}
+	}
+	int Slide = 0;
+	
+	std::vector<std::string*> LevelStates;
+	
+
+private:
+	
+};
+
+MyClass::MyClass()
+{
+	LevelStates.push_back(new std::string("Slide1.data"));
+	LevelStates.push_back(new std::string("Slide2.data"));
+	LevelStates.push_back(new std::string("Level.data"));
+	LevelStates.push_back(new std::string("Slide3.data"));
+	LevelStates.push_back(new std::string("Slide4.data"));
+	LevelStates.push_back(new std::string("Slide5.data"));
+	LevelStates.push_back(new std::string("Slide6.data"));
+	LevelStates.push_back(new std::string("Slide7.data"));
+	//LevelStates.push_back(new std::string("Slide3.data"));
+}
+
+
+
+/*void WhenRightIsPressed(KeyEvent* e)
+{
+
+	std::vector<std::string*> LevelStates;
+	LevelStates.
+
+}*/
 
 int main (void)
 {
@@ -94,11 +169,15 @@ int main (void)
   audio->LoadMicData ();
 
   //! activate the window.
-  //OBJECTSYSTEM->LoadLevel ("Level.data");
+  OBJECTSYSTEM->LoadLevel("Slide1.data");
+
+  //EVENTSYSTEM->gConnect<KeyEvent>(Events::KEY_RIGHT, &WhenRightIsPressed);
 
   // Connect example
-  //MyClass _myclass;
-  //EVENTSYSTEM->mConnect<UpdateEvent, MyClass>(Events::UPDATEEVENT, &_myclass, &MyClass::Print);
+  MyClass _myclass;
+  EVENTSYSTEM->mConnect<KeyEvent, MyClass>(Events::KEY_RIGHT, &_myclass, &MyClass::WhenRightIsPressed);
+  EVENTSYSTEM->mConnect<KeyEvent, MyClass>(Events::KEY_LEFT, &_myclass, &MyClass::WhenLeftIsPressed);
+  //EVENTSYSTEM->mConnect<UpdateEvent, MyClass>(Events::KEY_LEFT, &_myclass, &MyClass::Print);
 
 
   //! Run the game! NOW!
@@ -115,6 +194,5 @@ int main (void)
 
   return 0;
 }
-
 
 #endif

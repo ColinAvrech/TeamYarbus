@@ -135,7 +135,7 @@ namespace Framework
       shader->enableVertexAttribArray (texAttrib);
       shader->vertexAttribPtr (texAttrib, 2, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), 10 * sizeof(GLfloat));
 
-      shader->uni1i ("image", 0);
+
 
       if (animated)
       {
@@ -148,6 +148,9 @@ namespace Framework
       }
       else
       {
+		  texture->Bind();
+		  shader->uni1i("image", 0);
+		  texture->Unbind();
         // If Texture Is To Be Used, Use Draw Texture Method To Draw Sprite
         DrawFunction = &Sprite::Draw_Texture;
       }
