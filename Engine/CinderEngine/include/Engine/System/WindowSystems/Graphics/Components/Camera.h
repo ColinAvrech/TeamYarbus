@@ -37,7 +37,7 @@ namespace Framework
 
     inline static glm::mat4 GetWorldToViewMatrix ();
     inline static glm::mat4 GetViewToProjectionMatrix ();
-    static std::vector <Camera*> allCameras;
+    static std::list <Camera*> allCameras;
     static Camera* current;
     static Camera* main;
 

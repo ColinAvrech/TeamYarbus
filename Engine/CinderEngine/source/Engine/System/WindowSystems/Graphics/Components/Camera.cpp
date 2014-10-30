@@ -16,12 +16,13 @@ namespace Framework
 {
   DefineComponentName(Camera);
 
-  std::vector<Camera*> Camera::allCameras;
+  std::list<Camera*> Camera::allCameras;
   Camera* Camera::current = NULL;
   Camera* Camera::main = NULL;
 
   Camera::~Camera ()
   {
+    allCameras.remove (this);
     gameObject->Camera = nullptr;
   }
 
