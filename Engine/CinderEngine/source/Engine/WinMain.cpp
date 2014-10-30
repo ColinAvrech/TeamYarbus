@@ -74,7 +74,7 @@ public:
 
 	void WhenRightIsPressed(KeyEvent* e)
 	{
-		if (e->KeyDown && !e->KeyRepeat)
+		if (e->KeyDown && !e->KeyRepeat && e->KeyValue == GLFW_KEY_RIGHT)
 		{
 			int MaxSlides = LevelStates.size();
 			if (Slide < MaxSlides - 1)
@@ -88,7 +88,7 @@ public:
 
 	void WhenLeftIsPressed(KeyEvent* e)
 	{
-		if (e->KeyDown && !e->KeyRepeat)
+    if (e->KeyDown && !e->KeyRepeat && e->KeyValue == GLFW_KEY_LEFT)
 		{
 			if (Slide > 0)
 			{
@@ -169,7 +169,7 @@ int main (void)
   audio->LoadMicData ();
 
   //! activate the window.
-  OBJECTSYSTEM->LoadLevel("Slide1.data");
+  //OBJECTSYSTEM->LoadLevel("Slide1.data");
 
   //EVENTSYSTEM->gConnect<KeyEvent>(Events::KEY_RIGHT, &WhenRightIsPressed);
 

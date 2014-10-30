@@ -20,6 +20,12 @@ namespace Framework
   Camera* Camera::current = NULL;
   Camera* Camera::main = NULL;
 
+  Camera::~Camera ()
+  {
+    gameObject->Camera = nullptr;
+  }
+
+
   void Camera::Initialize ()
   {
     gameObject->Camera = this;

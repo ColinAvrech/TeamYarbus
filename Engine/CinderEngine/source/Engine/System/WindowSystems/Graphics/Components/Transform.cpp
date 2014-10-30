@@ -16,6 +16,10 @@ namespace Framework
   DefineComponentName (Transform);
   // Constructor
 
+  Transform::~Transform ()
+  {
+    gameObject->Transform = nullptr;
+  }
 
   void Transform::Load_Identity ()
   {

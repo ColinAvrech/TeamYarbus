@@ -31,7 +31,7 @@ namespace Framework
 
   CLParticleRenderer::CLParticleRenderer ()
   {
-    particleCount = 100000;
+    particleCount = 10000;
     particleSize = 5;
     srand ((unsigned) time (NULL));
     color [0] = 255;
@@ -88,6 +88,10 @@ namespace Framework
     {
       if (key->KeyValue == GLFW_KEY_R)
         ResetBuffers ();
+      if (key->KeyValue == GLFW_KEY_A)
+        speedMultiplier -= 0.1f;
+      else if (key->KeyValue == GLFW_KEY_D)
+        speedMultiplier += 0.1f;
       //else if (key->KeyValue == GLFW_KEY_D)
       //  cursorX += 5.f;
 

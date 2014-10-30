@@ -22,6 +22,7 @@ namespace Framework
   public:
     Camera () : up (0, 1, 0) {}
     Camera (GameObject* go);
+    virtual ~Camera ();
 
     virtual void Initialize ();
     virtual void Serialize (Serializer::DataNode* data);
