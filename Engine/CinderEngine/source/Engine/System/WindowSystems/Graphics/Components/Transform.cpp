@@ -156,8 +156,6 @@ namespace Framework
     --currentMatrix;
   }
 
-  Transform::~Transform ()
-  {}
 
   void Transform::Print (glm::vec3 position)
   {

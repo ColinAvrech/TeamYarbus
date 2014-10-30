@@ -41,7 +41,6 @@ namespace Framework
     static Camera* current;
     static Camera* main;
 
-    ~Camera ();
     glm::vec3 position;
     glm::vec3 viewDirection;
     glm::mat4 worldToView;

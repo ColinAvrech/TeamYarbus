@@ -88,9 +88,6 @@ namespace Framework
   }
 
 
-  Camera::~Camera()
-  {}
-
   void Camera::MouseUpdate(const glm::vec2& newPosition)
   {
     glm::vec2 mouseDelta = newPosition - oldPosition;

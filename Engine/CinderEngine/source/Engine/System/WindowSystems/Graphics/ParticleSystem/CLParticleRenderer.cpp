@@ -22,6 +22,7 @@ namespace Framework
   static float decayRate = 2.0f;
   static float breathRate = 0.01f;
   static float offset = 0.75f;
+
   static float random (float fMin, float fMax)
   {
     float fRandNum = (float) rand () / RAND_MAX;
