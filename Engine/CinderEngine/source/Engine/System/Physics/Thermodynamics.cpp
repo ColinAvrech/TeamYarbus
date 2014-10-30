@@ -70,6 +70,7 @@ namespace Framework
       MapSize = { 100, 100 };
       std::cout << "Grid " << MapSize.x << "x " << MapSize.y << std::endl;
       MapOffset = { 50, 50 };
+      AtmosphericTemperature = 300.f;
       //Allocate heatmap
       HeatMap = new float*[100];
       for (int i = 0; i < 100; ++i)
@@ -78,14 +79,9 @@ namespace Framework
       {
         for (int i = 0; i < 100; ++i)
         {
-          HeatMap[i][j] = 100.0f;
+          HeatMap[i][j] = 300.0f;
         }
       }
-      HeatMap[47][49] = 1000.0f;
-      HeatMap[48][49] = 1000.0f;
-      HeatMap[49][49] = 1000.0f;
-      HeatMap[50][49] = 1000.0f;
-      HeatMap[51][49] = 1000.0f;
 
       //Allocate Oxygen/Density map
       OxygenMap = new float*[100];
@@ -158,7 +154,7 @@ namespace Framework
     // Called every frame
     void ThermodynamicsSystem::Update(const double dt)
     {
-      for (int i = 40; i < 50; ++i)
+      for (int i = 45; i < 55; ++i)
         HeatMap[i][49] += 10 * AUDIOSYSTEM->input.peaklevel[0];
       UpdateTemp(0.016);
       ComputeVelocity(0.016);
@@ -217,7 +213,7 @@ namespace Framework
         dQ = ConductiveHeatTransfer(Const::K_Wood, 0, temp, dt, 1);
       else
       {
-        dQ = ConductiveHeatTransfer(Const::K_Wood, HeatMap[sub_x][sub_y], temp, dt, 1);
+        dQ = ConductiveHeatTransfer(1, HeatMap[sub_x][sub_y], temp, dt, 1);
         float deltaTemp = dTemp(dQ, OxygenMap[sub_x][sub_y] * CellSize*CellSize*CellSize, Const::c_Air);
         HeatMap[sub_x][sub_y] += deltaTemp;
       }
@@ -232,9 +228,9 @@ namespace Framework
     void ThermodynamicsSystem::UpdateTemp(const double dt)
     {
       //std::cout << "Updated Temperature/Density/Pressure" << std::endl;
-      for (int j = 1; j < 99; ++j)
+      for (int j = 0; j < 100; ++j)
       {
-        for (int i = 1; i < 99; ++i)
+        for (int i = 0; i < 100; ++i)
         {
           float netdQ = 0.f;
           float oTemp = HeatMap[i][j];
@@ -244,24 +240,43 @@ namespace Framework
             {
               if (x != i || y != j)
               {
-                float dQ = ConductiveHeatTransfer(Const::K_Air, HeatMap[i][j], HeatMap[x][y], dt, 0.1f);
-                netdQ += dQ;
-                float oTemp = HeatMap[x][y];
-                HeatMap[x][y] -= dTemp(dQ, OxygenMap[x][y], Const::c_Air);
-                
-                float factor = HeatMap[x][y] / oTemp;
-                OxygenMap[x][y] /= factor;
+                if (x < MapSize.x && x >= 0 && y < MapSize.y && y >= 0)
+                {
+                  float dQ = ConductiveHeatTransfer(Const::K_Air, HeatMap[i][j], AtmosphericTemperature, dt, 0.1f);
+                  netdQ += dQ;
+                  float oTemp = HeatMap[x][y];
+                  HeatMap[x][y] -= dTemp(dQ, OxygenMap[x][y], Const::c_Air);
+
+                  float factor = HeatMap[x][y] / oTemp;
+                  OxygenMap[x][y] /= factor;
+                }
+                else
+                {
+                  float dQ = ConductiveHeatTransfer(Const::K_Air, HeatMap[i][j], AtmosphericTemperature, dt, 0.1f);
+                  netdQ += dQ;
+                }
               }
             }
           }
-          if (Terrain[i][j] == 0 && Terrain[i][j + 1] == 0)
+          if (j + 1 <= MapSize.y)
           {
-            float dQConv = ConvectiveHeatTransfer(Const::Hc_Air, HeatMap[i][j], HeatMap[i][j + 1], dt);
-            float oTempConv = HeatMap[i][j + 1];
-            netdQ += dQConv;
-            HeatMap [i][j + 1] -= dTemp (dQConv, OxygenMap [i][j + 1] * 0.001f, Const::c_Air);
-            float factor2 = HeatMap[i][j + 1] / oTempConv;
-            OxygenMap[i][j + 1] /= factor2;
+            if (Terrain[i][j] == 0 && Terrain[i][j + 1] == 0)
+            {
+              float dQConv = ConvectiveHeatTransfer(Const::Hc_Air, HeatMap[i][j], HeatMap[i][j + 1], dt);
+              float oTempConv = HeatMap[i][j + 1];
+              netdQ += dQConv;
+              HeatMap[i][j + 1] -= dTemp(dQConv, OxygenMap[i][j + 1] * 0.001f, Const::c_Air);
+              float factor2 = HeatMap[i][j + 1] / oTempConv;
+              OxygenMap[i][j + 1] /= factor2;
+            }
+          }
+          else
+          {
+            if (Terrain[i][j] == 0 && Terrain[i][j + 1] == 0)
+            {
+              float dQConv = ConvectiveHeatTransfer(Const::Hc_Air, HeatMap[i][j], AtmosphericTemperature, dt);
+              netdQ += dQConv;
+            }
           }
           HeatMap[i][j] += dTemp(netdQ, OxygenMap[i][j] * 0.001f, Const::c_Air);
           float factor1 = HeatMap[i][j] / oTemp;

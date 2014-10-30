@@ -16,9 +16,16 @@ namespace Framework
 {
   DefineComponentName(Camera);
 
-  std::vector<Camera*> Camera::allCameras;
+  std::list<Camera*> Camera::allCameras;
   Camera* Camera::current = NULL;
   Camera* Camera::main = NULL;
+
+  Camera::~Camera ()
+  {
+    allCameras.remove (this);
+    gameObject->Camera = nullptr;
+  }
+
 
   void Camera::Initialize ()
   {
@@ -80,9 +87,6 @@ namespace Framework
 	aspect = 16.f / 9;
   }
 
-
-  Camera::~Camera()
-  {}
 
   void Camera::MouseUpdate(const glm::vec2& newPosition)
   {

@@ -20,6 +20,7 @@
 
 namespace Framework
 {
+  class KeyEvent;
   class CLParticleEmitter
   {
     glm::vec4 position;
@@ -55,6 +56,7 @@ namespace Framework
     void ResetPosition ();
     void ResetVelocity ();
     void Interpolate_Colors ();
+    void OnKeyPressed (KeyEvent* key);
     //////////////////////////////////////////////////////////////////////////
 
 
@@ -65,6 +67,7 @@ namespace Framework
     ComputeShader* computeshader;
     Texture* texture;
     CLParticleEmitter emitters [3];
+    float radius;
   };
 }
 

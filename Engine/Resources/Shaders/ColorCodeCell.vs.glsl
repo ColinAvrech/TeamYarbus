@@ -16,6 +16,6 @@ void main(void)
 	gc = texture_transform * vec4(coord2d, 0, 1);
 	gc.z = (texture2D(mytexture, gc.xy / 2.0 + 0.5).r);
   Graph_Coord = gc;
-  Temperature = temperature / 1000.0;
+  Temperature = temperature / 1000;
 	gl_Position = vertex_transform * vec4(coord2d, gc.z, 1);
 }

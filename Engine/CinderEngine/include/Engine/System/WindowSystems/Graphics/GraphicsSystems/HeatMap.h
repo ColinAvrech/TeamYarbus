@@ -31,7 +31,7 @@ namespace Framework
   void Generate_Temperature_Buffer ();
   void Generate_Line_Buffer ();
   void Generate_Triangle_Buffer ();
-
+  void Update_Temperature_Buffer ();
   private:
     glm::vec2 Size;
     GLbyte graph [256][256];

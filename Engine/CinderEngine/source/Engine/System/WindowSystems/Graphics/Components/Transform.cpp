@@ -16,6 +16,10 @@ namespace Framework
   DefineComponentName (Transform);
   // Constructor
 
+  Transform::~Transform ()
+  {
+    gameObject->Transform = nullptr;
+  }
 
   void Transform::Load_Identity ()
   {
@@ -152,8 +156,6 @@ namespace Framework
     --currentMatrix;
   }
 
-  Transform::~Transform ()
-  {}
 
   void Transform::Print (glm::vec3 position)
   {

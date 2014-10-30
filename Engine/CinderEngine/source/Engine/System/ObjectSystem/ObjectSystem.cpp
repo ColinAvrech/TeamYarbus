@@ -100,7 +100,7 @@ namespace Framework
 
   void ObjectSystem::LoadLevel(std::string level)
   {
-    DestroyAllObjects();
+    //DestroyAllObjects();
 
     Serializer::ZeroSerializer data;
 
