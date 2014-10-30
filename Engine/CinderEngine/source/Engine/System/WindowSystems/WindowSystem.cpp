@@ -110,103 +110,149 @@ namespace Framework
         //Numbers
         case GLFW_KEY_0:
           TriggerKeyEvent(Events::KEY_0, key, scanCode, state, mod);
+		  break;
         case GLFW_KEY_1:
           TriggerKeyEvent(Events::KEY_1, key, scanCode, state, mod);
+		  break;
         case GLFW_KEY_2:
           TriggerKeyEvent(Events::KEY_2, key, scanCode, state, mod);
+		  break;
         case GLFW_KEY_3:
           TriggerKeyEvent(Events::KEY_3, key, scanCode, state, mod);
+		  break;
         case GLFW_KEY_4:
           TriggerKeyEvent(Events::KEY_4, key, scanCode, state, mod);
+		  break;
         case GLFW_KEY_5:
           TriggerKeyEvent(Events::KEY_5, key, scanCode, state, mod);
+		  break;
         case GLFW_KEY_6:
           TriggerKeyEvent(Events::KEY_6, key, scanCode, state, mod);
+		  break;
         case GLFW_KEY_7:
           TriggerKeyEvent(Events::KEY_7, key, scanCode, state, mod);
+		  break;
         case GLFW_KEY_8:
           TriggerKeyEvent(Events::KEY_8, key, scanCode, state, mod);
+		  break;
         case GLFW_KEY_9:
           TriggerKeyEvent(Events::KEY_9, key, scanCode, state, mod);
+		  break;
           
         //Letters
         case GLFW_KEY_A:
           TriggerKeyEvent(Events::KEY_A, key, scanCode, state, mod);
+		  break;
         case GLFW_KEY_B:
           TriggerKeyEvent(Events::KEY_B, key, scanCode, state, mod);
+		  break;
         case GLFW_KEY_C:
           TriggerKeyEvent(Events::KEY_C, key, scanCode, state, mod);
+		  break;
         case GLFW_KEY_D:
           TriggerKeyEvent(Events::KEY_D, key, scanCode, state, mod);
+		  break;
         case GLFW_KEY_E:
           TriggerKeyEvent(Events::KEY_E, key, scanCode, state, mod);
+		  break;
         case GLFW_KEY_F:
           TriggerKeyEvent(Events::KEY_F, key, scanCode, state, mod);
+		  break;
         case GLFW_KEY_G:
           TriggerKeyEvent(Events::KEY_G, key, scanCode, state, mod);
+		  break;
         case GLFW_KEY_H:
           TriggerKeyEvent(Events::KEY_H, key, scanCode, state, mod);
+		  break;
         case GLFW_KEY_I:
           TriggerKeyEvent(Events::KEY_I, key, scanCode, state, mod);
+		  break;
         case GLFW_KEY_J:
           TriggerKeyEvent(Events::KEY_J, key, scanCode, state, mod);
+		  break;
         case GLFW_KEY_K:
           TriggerKeyEvent(Events::KEY_K, key, scanCode, state, mod);
+		  break;
         case GLFW_KEY_L:
           TriggerKeyEvent(Events::KEY_L, key, scanCode, state, mod);
+		  break;
         case GLFW_KEY_M:
           TriggerKeyEvent(Events::KEY_M, key, scanCode, state, mod);
+		  break;
         case GLFW_KEY_N:
           TriggerKeyEvent(Events::KEY_N, key, scanCode, state, mod);
+		  break;
         case GLFW_KEY_O:
           TriggerKeyEvent(Events::KEY_O, key, scanCode, state, mod);
+		  break;
         case GLFW_KEY_P:
           TriggerKeyEvent(Events::KEY_P, key, scanCode, state, mod);
+		  break;
         case GLFW_KEY_Q:
           TriggerKeyEvent(Events::KEY_Q, key, scanCode, state, mod);
+		  break;
         case GLFW_KEY_R:
           TriggerKeyEvent(Events::KEY_R, key, scanCode, state, mod);
+		  break;
         case GLFW_KEY_S:
           TriggerKeyEvent(Events::KEY_S, key, scanCode, state, mod);
+		  break;
         case GLFW_KEY_T:
           TriggerKeyEvent(Events::KEY_T, key, scanCode, state, mod);
+		  break;
         case GLFW_KEY_U:
           TriggerKeyEvent(Events::KEY_U, key, scanCode, state, mod);
+		  break;
         case GLFW_KEY_V:
           TriggerKeyEvent(Events::KEY_V, key, scanCode, state, mod);
+		  break;
         case GLFW_KEY_W:
           TriggerKeyEvent(Events::KEY_W, key, scanCode, state, mod);
+		  break;
         case GLFW_KEY_X:
           TriggerKeyEvent(Events::KEY_X, key, scanCode, state, mod);
+		  break;
         case GLFW_KEY_Y:
           TriggerKeyEvent(Events::KEY_Y, key, scanCode, state, mod);
+		  break;
         case GLFW_KEY_Z:
           TriggerKeyEvent(Events::KEY_Z, key, scanCode, state, mod);
+		  break;
 
         // Arrows
         case GLFW_KEY_UP:
           TriggerKeyEvent(Events::KEY_UP, key, scanCode, state, mod);
+		  break;
         case GLFW_KEY_DOWN:
           TriggerKeyEvent(Events::KEY_DOWN, key, scanCode, state, mod);
+		  break;
         case GLFW_KEY_LEFT:
           TriggerKeyEvent(Events::KEY_LEFT, key, scanCode, state, mod);
+		  break;
         case GLFW_KEY_RIGHT:
           TriggerKeyEvent(Events::KEY_RIGHT, key, scanCode, state, mod);
+		  break;
 
 
         // Misc
         case GLFW_KEY_SPACE:
           TriggerKeyEvent(Events::KEY_SPACE, key, scanCode, state, mod);
+		  break;
         case GLFW_KEY_BACKSPACE:
           TriggerKeyEvent(Events::KEY_BACKSPACE, key, scanCode, state, mod);
+		  break;
         case GLFW_KEY_ESCAPE:
           TriggerKeyEvent(Events::KEY_ESCAPE, key, scanCode, state, mod);
+		  break;
         case GLFW_KEY_TAB:
           TriggerKeyEvent(Events::KEY_TAB, key, scanCode, state, mod);
+		  break;
         case GLFW_KEY_GRAVE_ACCENT:
           TriggerKeyEvent(Events::KEY_GRAVEACCENT, key, scanCode, state, mod);
+		  break;
         case GLFW_KEY_ENTER:
           TriggerKeyEvent(Events::KEY_ENTER , key, scanCode, state, mod);
+		  break;
 
         default:
           break;
