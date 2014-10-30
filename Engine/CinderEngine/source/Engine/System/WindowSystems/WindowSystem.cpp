@@ -37,6 +37,7 @@ namespace Framework
   static CLParticleRenderer clRenderer;
   static float shininess = 200;
   static HeatMap heatMap (101, 101);
+  static Sound *fire;
 
   namespace WindowNameSpace
   {
@@ -277,7 +278,11 @@ namespace Framework
 
   bool WindowSystem::Initialize ()
   {
-    std::cout << GetName () << " initialized\n";
+    std::cout << GetName () << " initialized\n";  
+
+    fire = Resources::RS->Get_Sound("FireA.ogg");    
+    fire->Play();
+    fire->LowPassFilter();
 
     //clRenderer.GenerateTextures ();
     //clRenderer.GenerateBuffers ();
@@ -295,15 +300,31 @@ namespace Framework
 
     return true;
   }
-
+  static float micdata() { return AUDIOSYSTEM->input.peaklevel[0]; }
   WindowSystem::~WindowSystem()
   {
     delete vao, vbo, ebo;
     glfwTerminate();
   }
-  
+  float lpf = 6000.0f;
   void WindowSystem::Update(const double dt)
   {
+    if (AUDIOSYSTEM->input.peaklevel[0] > 0.05f)
+    {
+      if (lpf < 22000)
+      {
+        lpf += micdata() * 200.0f;
+      }
+    }
+    else
+    {
+      if (lpf > 6000)
+      {
+        lpf -= 150.0f;
+      }
+    }
+    fire->SetLPF(lpf, 1);
+    std::cout << lpf << std::endl;
     WindowsUpdate(dt);
     GraphicsUpdate(dt);
   }
@@ -312,9 +333,11 @@ namespace Framework
   {
     glfwSwapBuffers(window);
     glfwPollEvents ();
+
+    
   }
 
-  static float micdata() { return AUDIOSYSTEM->input.peaklevel[0]; }
+
  
   void WindowSystem::GraphicsUpdate (const double dt)
   {
@@ -326,7 +349,7 @@ namespace Framework
     /////*clRenderer.Render ();
 
     heatMap.Update (dt);
-    heatMap.Draw ();
+    //heatMap.Draw ();
 
     vao->bindVAO ();
 	  shader->Use();

@@ -217,6 +217,7 @@ namespace Framework
 
   void Resources::Load_Sounds()
   {
+    Framework::Sound::SoundID type;
     std::cout << Console::cyan << "--------------------------------\nLoading Sounds...\n" << Console::gray;
     std::ifstream audioFile (AudioResourcePath + "SoundAssets.txt");
 
@@ -230,9 +231,19 @@ namespace Framework
       std::string str;
       while (!audioFile.eof())
       {
+        std::string t;
         audioFile >> str;
+        audioFile >> t;
+        if (t == "BG")
+        {
+          type = Sound::MUSIC;
+        }
+        else if (t == "SFX")
+        {
+          type = Sound::SOUND_2D;
+        }
         char* c = strstr ((char*)str.c_str(), str.c_str ());
-        Sound* sound = AUDIOSYSTEM->LoadSound ((AudioResourcePath + str).c_str (), c, Sound::SOUND_2D, 1.0f);
+        Sound* sound = AUDIOSYSTEM->LoadSound ((AudioResourcePath + str).c_str (), c, type, 0.0f);
         sounds[str] = sound;
         std::cout << Console::green << str << std::endl << Console::gray;
       }

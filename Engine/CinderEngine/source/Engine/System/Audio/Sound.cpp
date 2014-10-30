@@ -375,7 +375,7 @@ namespace Framework
     FMOD::Sound* pSound;
 
     // FMOD error check to check if sounds are being created in the system
-    ErrCheck(pFMODAudioSystem->createSound(filename, FMOD_SOFTWARE, 0, &pSound));
+    ErrCheck(pFMODAudioSystem->createStream(filename, FMOD_SOFTWARE, 0, &pSound));
 
     // Piles up the sound on the stack
     sound_queue_.push_back(pSound);
@@ -471,7 +471,7 @@ namespace Framework
 
     // Play new sound
     PlayNew();
-    VolumeFade(1, 0);
+    //VolumeFade(1, 0);
   }
 
   /***************************************************************************/
