@@ -33,7 +33,7 @@ namespace Framework
     Shader* shader;
   public:
     FountainEffect () { }
-    ~FountainEffect () { }
+    virtual ~FountainEffect ();
 
     bool initialize (size_t numParticles) override;
     bool initializeRenderer () override;
@@ -50,6 +50,11 @@ namespace Framework
     int numAllParticles () override { return m_system->numAllParticles (); }
     int numAliveParticles () override { return m_system->numAliveParticles (); }
     void AddFireEmitter (bool active, glm::vec3 position, glm::vec3 minVelocity, glm::vec3 maxVelocity, float emitRate);
+
+    virtual void Initialize ();
+
+    virtual void Serialize (Serializer::DataNode* data);
+    const static std::string Name;
   };
 }
 

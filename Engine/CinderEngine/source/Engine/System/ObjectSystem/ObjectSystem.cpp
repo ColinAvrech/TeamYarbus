@@ -13,6 +13,7 @@ deleted.
 #include "ObjectSystem.h"
 #include "IncludeForAllCollision.h"
 #include "CharacterController.h"
+#include "FountainEffect.h"
 
 namespace Framework
 {
@@ -67,6 +68,7 @@ namespace Framework
     RegisterComponent (ShapeCollider);
     RegisterComponent(CharacterController);
     RegisterComponent(RigidBody);
+    RegisterComponent (FountainEffect);
     AddComponentCreator("SphereCollider", new ComponentCreatorType<CircleCollider>("SphereCollider"));
     AddComponentCreator("BoxCollider", new ComponentCreatorType<LineCollider>("BoxCollider"));
   }

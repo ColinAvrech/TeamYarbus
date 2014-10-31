@@ -128,7 +128,7 @@ int main (void)
 
   engine->AddSystem (phys);
   engine->AddSystem (thermo);
-  engine->AddSystem (sceneManager);
+  //engine->AddSystem (sceneManager);
   engine->AddSystem (windows);
   engine->AddSystem (audio);
   engine->AddSystem (events);

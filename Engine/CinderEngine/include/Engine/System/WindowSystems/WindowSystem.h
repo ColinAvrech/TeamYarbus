@@ -12,6 +12,7 @@
 #include "GraphicsCommon.h"
 #include "glfw3.h"
 #include "KeyEvent.h"
+#include "Effect.h"
 
 
 namespace Framework
@@ -54,6 +55,7 @@ namespace Framework
     void Set_W_H (unsigned, unsigned);
 
     static std::list <Sprite*> spriteList;
+    static std::list <IEffect*> effectList;
 
   private:
     GLFWwindow* window;

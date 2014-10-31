@@ -112,4 +112,26 @@ Level =
 			bool AnimationActive = false,
 		},
   },
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 10,
+		},
+		Named = 
+		{
+			string Name = "fireeffect",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0.0, 0.0, 0.0],
+			Vec3 Scale = [1, 1, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		FountainEffect = 
+		{
+      int ParticleCount = 20000,
+      float ParticleSize = 5.0,
+		},
+  },
 },

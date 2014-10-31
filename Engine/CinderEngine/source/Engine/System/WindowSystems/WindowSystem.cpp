@@ -35,6 +35,7 @@ namespace Framework
   WindowSystem* WINDOWSYSTEM = NULL;
 
   std::list <Sprite*> WindowSystem::spriteList;
+  std::list <IEffect*> WindowSystem::effectList;
 
   static VAO* vao, *vao1;
   static VBO* vbo, *vbo1;
@@ -477,21 +478,6 @@ namespace Framework
     for (auto i : spriteList)
     {
       i->gameObject->Transform->UpdateMatrices ();
-      if (micdata () > 0.01f)
-      {
-        if (lighting > 5)
-        {
-          lighting -= micdata () * 0.5f;
-        }
-      }
-      else
-      {
-        if (lighting < 250)
-        {
-          lighting += 0.16f;
-        }
-      }
-      //shader->uni1f("shininess", lighting);
       i->Draw ();
     }
     vao->unbindVAO ();
@@ -514,6 +500,15 @@ namespace Framework
     sceneShader->uni1i ("image", 0);
 
     glDrawArrays (GL_TRIANGLES, 0, 6);
+
+    double deltaTime = 0.016;
+    for (auto i : effectList)
+    {
+      i->update (deltaTime);
+      i->cpuUpdate (deltaTime);
+      i->gpuUpdate (deltaTime);
+      i->render ();
+    }
 
     if (active)
     {

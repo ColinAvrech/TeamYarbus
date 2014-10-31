@@ -339,9 +339,9 @@ namespace Framework
     //glEnable (GL_DEPTH_TEST);
     glBlendFunc (GL_SRC_ALPHA, GL_ONE);
 
-    gpuRender.begin ();
+    //gpuRender.begin ();
     gCurrentEffect->render ();
-    gpuRender.end ();
+    //gpuRender.end ();
 
     glDisable (GL_BLEND);
     glDisable (GL_DEPTH_TEST);

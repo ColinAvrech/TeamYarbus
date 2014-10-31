@@ -202,4 +202,15 @@ namespace Framework
     shader->uni1f ("size", 2.0f);
     m_renderer->render ();
   }
+
+  void AttractorEffect::Initialize ()
+  {
+    throw std::logic_error ("The method or operation is not implemented.");
+  }
+
+  void AttractorEffect::Serialize (Serializer::DataNode* data)
+  {
+    throw std::logic_error ("The method or operation is not implemented.");
+  }
+
 }
