@@ -31,6 +31,7 @@ namespace Framework
   static glm::vec3 lightPos;
   static bool lightOn = false;
   static bool active = false;
+  static bool clActive = false;
   //! Global pointer to  the windows system.
   WindowSystem* WINDOWSYSTEM = NULL;
 
@@ -351,6 +352,14 @@ namespace Framework
       {
         active = !active;
       }
+      if (key->KeyValue == GLFW_KEY_T)
+      {
+        Physics::THERMODYNAMICS->Reset ();
+      }
+      if (key->KeyValue == GLFW_KEY_H)
+      {
+        clActive = !clActive;
+      }
     }
   }
 
@@ -490,17 +499,13 @@ namespace Framework
     glBindTexture (GL_TEXTURE_2D, renderTexture);
     sceneShader->enableVertexAttribArray (sceneShader->attribLocation ("position"));
     sceneShader->enableVertexAttribArray (sceneShader->attribLocation ("texcoord"));
-    //for (int i = 0; i < 5; ++i)
-    //{
-    //  lights [i] = glm::linearRand (glm::vec3 (-2, -2, 0), glm::vec3 (2, 2, 0));
-    //}
     sceneShader->uni3f ("lightPos", clRenderer.destPosX * 2, clRenderer.destPosY * 2, 0.0);
     sceneShader->uni3fv ("lights", glm::value_ptr (lights [0]), 5);
     sceneShader->uni1i ("enabled", lightOn ? 1 : 0);
     sceneShader->uni1i ("image", 0);
 
     glDrawArrays (GL_TRIANGLES, 0, 6);
-
+    sceneShader->Disable ();
     double deltaTime = 0.016;
     for (auto i : effectList)
     {
@@ -515,25 +520,11 @@ namespace Framework
       heatMap.Update (dt);
       heatMap.Draw ();
     }
-    clRenderer.Render ();
-    //////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////
-    // To use Debug Draw:
-    // Create a DebugRenderer
-    // Initialize
-    // Use Draw Function
-    // Can draw points
-    // Can draw lines
-    // Can draw polygon with n number of shapes. max is 140
-    //////////////////////////////////////////////////////////////////////////
-    //CircleCollider c (NULL);
-    //dr.Draw (&c);
-    //dr.Draw ((LineCollider*)nullptr);
-    //dr.Draw (nullptr, 3);
-    //dr.Draw (nullptr, 5);
-    //dr.Draw ((PointCollider*)nullptr);
 
-    //////////////////////////////////////////////////////////////////////////
+    //if (clActive)
+    //{
+      clRenderer.Render ();
+    //}
   }
 
   unsigned WindowSystem::Get_Width ()

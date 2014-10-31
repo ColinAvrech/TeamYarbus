@@ -67,7 +67,7 @@ namespace Framework
 
       // Called every frame
       void Update(const double dt);
-
+      void Reset ();
       // Returns name of System
       const std::string GetName(){ return "ThermodynamicsSystem"; }
 

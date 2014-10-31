@@ -385,5 +385,64 @@ namespace Framework
         }//for i
       }//for j
     }//function
+
+    void ThermodynamicsSystem::Reset ()
+    {
+      AtmosphericTemperature = 300.f;
+      for (int i = 0; i < 100; ++i)
+      for (int j = 0; j < 100; ++j)
+      {
+        for (int i = 0; i < 100; ++i)
+        {
+          HeatMap [i][j] = 300;
+        }
+      }
+
+      for (int i = 0; i < 100; ++i)
+      for (int j = 0; j < 100; ++j)
+      {
+        for (int i = 0; i < 100; ++i)
+        {
+          OxygenMap [i][j] = 1.225f;
+        }
+      }
+
+      for (int i = 0; i < 100; ++i)
+      for (int j = 0; j < 100; ++j)
+      {
+        for (int i = 0; i < 100; ++i)
+        {
+          VelocityMap [i][j] = { 0, 0 };
+        }
+      }
+
+      for (int i = 0; i < 100; ++i)
+      for (int j = 0; j < 100; ++j)
+      {
+        for (int i = 0; i < 100; ++i)
+        {
+          Terrain [i][j] = 0;
+        }
+      }
+
+      for (int i = 0; i < 100; ++i)
+      for (int j = 0; j < 100; ++j)
+      {
+        for (int i = 0; i < 100; ++i)
+          FireMap [i][j] = 0;
+      }
+
+      for (int i = 0; i < 100; ++i)
+      for (int j = 0; j < 100; ++j)
+      {
+        for (int i = 0; i < 100; ++i)
+        {
+          FuelMap [i][j] = 0;
+        }
+      }
+      for (int i = 0; i < 100; ++i)
+        FuelMap [i][0] = 10.f;
+    }
+
   }//namespace Physics
 }//namespace Framework

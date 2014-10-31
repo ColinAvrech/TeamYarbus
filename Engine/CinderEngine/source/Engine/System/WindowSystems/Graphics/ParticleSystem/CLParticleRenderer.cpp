@@ -17,6 +17,7 @@
 
 namespace Framework
 {
+  static bool draw = false;
   static double cursorX = 0, cursorY = 0;
   static GLuint fbo, rbo;
   static float decayRate = 2.0f;
@@ -32,8 +33,8 @@ namespace Framework
 
   CLParticleRenderer::CLParticleRenderer ()
   {
-    particleCount = 10000;
-    particleSize = 5;
+    particleCount = 1000000;
+    particleSize = 1;
     srand ((unsigned) time (NULL));
     color [0] = 255;
     color [1] = 80;
@@ -96,8 +97,8 @@ namespace Framework
       //else if (key->KeyValue == GLFW_KEY_D)
       //  cursorX += 5.f;
 
-      //if (key->KeyValue == GLFW_KEY_D)
-      //  cursorY -= 5.f;
+      if (key->KeyValue == GLFW_KEY_C)
+        draw = !draw;
       //else if (key->KeyValue == GLFW_KEY_W)
       //  cursorY += 5.f;
     }
@@ -229,12 +230,14 @@ namespace Framework
     shader->vertexAttribPtr (posAttrib, 4, GL_FLOAT, GL_FALSE, 0, 0);
     shader->enableVertexAttribArray (posAttrib);
     glPointSize (particleSize);
+    if (draw)
     glDrawArrays (GL_POINTS, 0, particleCount);
 
     texture->Unbind ();
     shader->Disable ();
 
     frameDelta = (float) (glfwGetTime () - frameTimeStart) * 1000.0f;
+    vao->unbindVAO ();
   }
 
   void CLParticleRenderer::Interpolate_Colors ()

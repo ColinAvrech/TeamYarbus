@@ -84,7 +84,7 @@ Level =
 		},
 		Sprite = 
 		{
-			string SpriteSource = "Slide7.png",
+			string SpriteSource = "Ember-Slide7.png",
 			string Shader = "Default",
 			bool AnimationActive = false,
 		},
