@@ -31,7 +31,7 @@ namespace Framework
   static bool active = true;
   //! Global pointer to  the windows system.
   WindowSystem* WINDOWSYSTEM = NULL;
-
+  static char c;
   std::list <Sprite*> WindowSystem::spriteList;
 
   static VAO* vao, *vao1;
