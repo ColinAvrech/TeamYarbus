@@ -408,20 +408,14 @@ namespace Framework
 
   void WindowSystem::GraphicsUpdate (const double dt)
   {
-    fbo->unBind ();
+    fbo->bind ();
     //glViewport (0, 0, WindowWidth, WindowHeight);
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable (GL_BLEND);
     glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     //glfwSwapBuffers (window);
-    clRenderer.Render ();
 
-    if (active)
-    {
-      heatMap.Update (dt);
-      heatMap.Draw ();
-    }
 
     vao->bindVAO ();
     //shader->Use();
@@ -450,24 +444,30 @@ namespace Framework
     }
     vao->unbindVAO ();
 
-    //fbo->unBind ();
-    ////glViewport (0, 0, WindowWidth, WindowHeight);
-    //glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    //vao1->bindVAO ();
-    //sceneShader->Use ();
-    //glBindTexture (GL_TEXTURE_2D, renderTexture);
-    //sceneShader->enableVertexAttribArray (sceneShader->attribLocation ("position"));
-    //sceneShader->enableVertexAttribArray (sceneShader->attribLocation ("texcoord"));
-    ////for (int i = 0; i < 5; ++i)
-    ////{
-    ////  lights [i] = glm::linearRand (glm::vec3 (-2, -2, 0), glm::vec3 (2, 2, 0));
-    ////}
-    //sceneShader->uni3f ("lightPos", clRenderer.destPosX * 2, clRenderer.destPosY * 2, 0.0);
-    //sceneShader->uni3fv ("lights", glm::value_ptr (lights [0]), 5);
-    //sceneShader->uni1i ("image", 0);
+    fbo->unBind ();
+    //glViewport (0, 0, WindowWidth, WindowHeight);
+    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    vao1->bindVAO ();
+    sceneShader->Use ();
+    glBindTexture (GL_TEXTURE_2D, renderTexture);
+    sceneShader->enableVertexAttribArray (sceneShader->attribLocation ("position"));
+    sceneShader->enableVertexAttribArray (sceneShader->attribLocation ("texcoord"));
+    //for (int i = 0; i < 5; ++i)
+    //{
+    //  lights [i] = glm::linearRand (glm::vec3 (-2, -2, 0), glm::vec3 (2, 2, 0));
+    //}
+    sceneShader->uni3f ("lightPos", clRenderer.destPosX * 2, clRenderer.destPosY * 2, 0.0);
+    sceneShader->uni3fv ("lights", glm::value_ptr (lights [0]), 5);
+    sceneShader->uni1i ("image", 0);
 
-    //glDrawArrays (GL_TRIANGLES, 0, 6);
-    //clRenderer.Render ();
+    glDrawArrays (GL_TRIANGLES, 0, 6);
+
+    if (active)
+    {
+      heatMap.Update (dt);
+      heatMap.Draw ();
+    }
+    clRenderer.Render ();
     //////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////
     // To use Debug Draw:

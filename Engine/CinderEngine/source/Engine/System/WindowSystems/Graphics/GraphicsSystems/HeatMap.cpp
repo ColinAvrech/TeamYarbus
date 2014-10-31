@@ -102,6 +102,8 @@ namespace Framework
 
   void HeatMap::Draw ()
   {
+    glEnable (GL_BLEND);
+    glBlendFunc (GL_SRC_ALPHA, GL_ONE);
     glBindTexture (GL_TEXTURE_2D, texture_id);
     glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, vbo [3]);
     glDrawElements (GL_TRIANGLES, 100 * 100 * 6, GL_UNSIGNED_SHORT, 0);

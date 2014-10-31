@@ -20,9 +20,9 @@ uniform vec3 lights [5];
 ////////////////////////////////////////////
 
 // MATERIAL PROPERTIES OF SELF
-uniform vec3 mambient = vec3 (0.0, 0.0, 0.0);
+uniform vec3 mambient = vec3 (0.1, 0.1, 0.1);
 uniform vec3 mdiffuse = vec3 (0.6, 0.6, 0.6);
-uniform vec3 mspecular = vec3 (1, 1, 1);
+uniform vec3 mspecular = vec3 (0.4, 0.7, 1);
 
 ////////////////////////////////////////////
 ////////////////////////////////////////////
@@ -32,7 +32,7 @@ uniform float shininess = 10;
 ////////////////////////////////////////////
 
 // MATERIAL PROPERTIES OF LIGHT
-uniform vec3 lambient = vec3 (0.0, 0.0, 0.0);
+uniform vec3 lambient = vec3 (0.1, 0.1, 0.1);
 uniform vec3 ldiffuse = vec3 (0.6, 0.6, 0.6);
 uniform vec3 lspecular = vec3 (1, 1, 1);
 
