@@ -48,6 +48,7 @@ namespace Framework
   public:
     //! Called by Factory
     GameObject(unsigned gameObjectID);
+    ~GameObject();
 
     Component* AddComponent(std::string name);
     Component* AddZilchComponent(std::string name);
@@ -58,33 +59,20 @@ namespace Framework
     //Public Variables
     std::string Name;
     GameObject* Parent;
-    unsigned GameObjectID;
+    const unsigned GameObjectID;
 
-    /*
-    std::list<GameObject*> ChildObjects;
-    */
 
     //Components
     ComponentPointer(Transform);
     ComponentPointer(Sprite);
     ComponentPointer(CircleCollider);
-  ComponentPointer(LineCollider);
-  ComponentPointer(Camera);
-  ComponentPointer(RigidBody);
+    ComponentPointer(LineCollider);
+    ComponentPointer(Camera);
+    ComponentPointer(RigidBody);
     ComponentPointer(PointCollider);
-  ComponentPointer(CharacterController);
-
-
-    // when framework is removed
-    //ComponentPointer(Circle);
-    //ComponentPointer(Point);
-
-
+    ComponentPointer(CharacterController);
 
   private:
-    /*
-    GameObject(unsigned gameObjectID, GameObject* parent)
-      :GameObjectID(gameObjectID), Parent(parent){}*/
 
     typedef std::map<std::string, Component *> ComponentMap;
     ComponentMap Components;

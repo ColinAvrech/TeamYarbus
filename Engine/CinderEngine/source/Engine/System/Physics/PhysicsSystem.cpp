@@ -27,14 +27,6 @@ namespace Framework
 		{
 			for (auto i = OBJECTSYSTEM->GameObjects.begin(); i != OBJECTSYSTEM->GameObjects.end(); ++i)
 			{
-				if (i->second->RigidBody)
-				{
-					if (i->second->RigidBody->state == RigidBody::Dynamic)
-					{
-						i->second->RigidBody->vel += gravityDirection * Constant::g;
-					}
-					i->second->Transform->Translate(i->second->RigidBody->vel.x * .016f, i->second->RigidBody->vel.y * .016f, 0);
-				}
 
 				for (auto j = i; j != OBJECTSYSTEM->GameObjects.end(); ++j)
 				{
@@ -46,6 +38,14 @@ namespace Framework
 						//	i->second->LineCollider->DetectCircle(j->second->CircleCollider);
 					}
 				}
+        if (i->second->RigidBody)
+        {
+          if (i->second->RigidBody->state == RigidBody::Dynamic)
+          {
+            i->second->RigidBody->vel += gravityDirection * Constant::g;
+          }
+          i->second->Transform->Translate(i->second->RigidBody->vel.x * .016f, i->second->RigidBody->vel.y * .016f, 0);
+        }
 			}
 			//  go1->CircleCollider->DetectLine (go3line->LineCollider);
 			//  go1->CircleCollider->DetectCircle (go2->CircleCollider);

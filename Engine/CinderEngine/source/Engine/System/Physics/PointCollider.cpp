@@ -11,6 +11,7 @@
 #include "EventSystem.h"
 #include "CollisionRepeats.h"
 #include "Resolution.h"
+#include "CollisionEvent.h"
 
 namespace Framework
 {

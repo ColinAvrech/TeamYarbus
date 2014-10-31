@@ -65,13 +65,10 @@ namespace Framework
     RegisterComponent(Sprite);
     RegisterComponent (Camera);
     RegisterComponent (ShapeCollider);
-  RegisterComponent(CharacterController);
-    //RegisterComponent(CircleCollider);	
-  AddComponentCreator("SphereCollider", new ComponentCreatorType<CircleCollider>("SphereCollider"));
-  AddComponentCreator("BoxCollider", new ComponentCreatorType<LineCollider>("BoxCollider"));
-  //RegisterComponent(PointCollider);
-  //RegisterComponent(LineCollider);
-  RegisterComponent(RigidBody);
+    RegisterComponent(CharacterController);
+    RegisterComponent(RigidBody);
+    AddComponentCreator("SphereCollider", new ComponentCreatorType<CircleCollider>("SphereCollider"));
+    AddComponentCreator("BoxCollider", new ComponentCreatorType<LineCollider>("BoxCollider"));
   }
 
   void ObjectSystem::AddComponentCreator(std::string name, ComponentCreator* creator)
@@ -86,6 +83,7 @@ namespace Framework
       delete obj.second;
       obj.second = NULL;
     }
+    GameObjects.clear();
   }
 
   void ObjectSystem::DestroyGameObjectsToBeDestroyed()
@@ -100,7 +98,7 @@ namespace Framework
 
   void ObjectSystem::LoadLevel(std::string level)
   {
-    //DestroyAllObjects();
+    DestroyAllObjects();
 
     Serializer::ZeroSerializer data;
 
