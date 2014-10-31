@@ -44,6 +44,7 @@ namespace Framework
   static CLParticleRenderer clRenderer;
   static float shininess = 200;
   static HeatMap heatMap (101, 101);
+  static Sound *fire;
 
   namespace WindowNameSpace
   {
@@ -301,6 +302,12 @@ namespace Framework
   {
     std::cout << GetName () << " initialized\n";
 
+    fire = Resources::RS->Get_Sound("FireA.ogg");
+    fire->Play();
+    fire->LowPassFilter();
+    fire->HighPassFilter();
+    fire->SetHPF(200, 1);
+
     GLfloat vertices [] =
     {
       -1.0f, 1.0f, 0.0f, 1.0f,
@@ -374,14 +381,30 @@ namespace Framework
     WindowsUpdate (dt);
     GraphicsUpdate (dt);
   }
+  
+  float lpf = 6000.0f;
+  static float micdata() { return AUDIOSYSTEM->input.peaklevel[0]; }
 
   void WindowSystem::WindowsUpdate (const double dt)
   {
+    if (AUDIOSYSTEM->input.peaklevel[0] > 0.05f)
+    {
+      if (lpf < 22000)
+      {
+        lpf += micdata() * 200.0f;
+      }
+    }
+    else
+    {
+      if (lpf > 6000)
+      {
+        lpf -= 150.0f;
+      }
+    }
+    fire->SetLPF(lpf, 1);
     glfwSwapBuffers (window);
     glfwPollEvents ();
-  }
-
-  static float micdata () { return AUDIOSYSTEM->input.peaklevel [0]; }
+  }  
 
   void WindowSystem::GraphicsUpdate (const double dt)
   {
