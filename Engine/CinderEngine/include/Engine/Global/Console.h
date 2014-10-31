@@ -17,7 +17,7 @@ This ensures that they are never the same color*/
 #define PROTECTCOLORS true
 
 
-namespace Console
+namespace CinderConsole
 {
   /*!numbered 0-15: The console colors can be put into:
   ->SetColor: Set text and background color

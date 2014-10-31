@@ -11,7 +11,7 @@ Also has functions to create the console.
 
 #include "Common.h"
 
-namespace Console
+namespace CinderConsole
 {
   /*!
   _textcolor           = current color of the printed text
@@ -117,13 +117,13 @@ namespace Console
     SetConsoleTextAttribute(_hstdconsole, wAttributes);
   }
 
-  std::ostream& Console::operator<<(std::ostream& os, ConsoleColors color)
+  std::ostream& CinderConsole::operator<<(std::ostream& os, ConsoleColors color)
   {
     SetTextColor(color);
     return os;
   }
 
-  std::istream& Console::operator>>(std::istream& is, ConsoleColors color)
+  std::istream& CinderConsole::operator>>(std::istream& is, ConsoleColors color)
   {
     SetTextColor(color);
     return is;

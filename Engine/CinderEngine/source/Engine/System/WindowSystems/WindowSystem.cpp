@@ -323,7 +323,7 @@ namespace Framework
     {
       glewExperimental = GL_TRUE;
       glewInit ();
-      std::cout << "OpenGl Version: " << Console::green << glGetString (GL_VERSION) << Console::gray << std::endl;
+      std::cout << "OpenGl Version: " << CinderConsole::green << glGetString (GL_VERSION) << CinderConsole::gray << std::endl;
       //glEnable (GL_DEPTH_TEST);
       //glEnable (GL_BLEND);
       //glBlendFunc (GL_ONE, GL_ONE_MINUS_SRC_ALPHA);

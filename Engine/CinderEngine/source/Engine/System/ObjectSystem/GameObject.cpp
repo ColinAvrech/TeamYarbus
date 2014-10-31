@@ -43,7 +43,7 @@ namespace Framework
     }
     else
     {
-      std::cout << Console::red << "ERROR, Object System requested to create unregistered component" << std::endl;
+      std::cout << CinderConsole::red << "ERROR, Object System requested to create unregistered component" << std::endl;
       return NULL;
     }
   }

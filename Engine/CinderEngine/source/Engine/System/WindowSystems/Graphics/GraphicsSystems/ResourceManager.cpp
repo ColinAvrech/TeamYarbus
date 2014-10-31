@@ -42,14 +42,14 @@ namespace Framework
 
   void Resources::Load_Textures ()
   {
-    std::cout << Console::cyan << "--------------------------------\nLoading Textures...\n" << Console::gray;
+    std::cout << CinderConsole::cyan << "--------------------------------\nLoading Textures...\n" << CinderConsole::gray;
 
     textures ["Default"] = new Texture ((TextureResourcePath + "Default.jpg").c_str ());
     std::ifstream texFile (TextureResourcePath + "TextureAssets.txt");
 
     if (!texFile.good ())
     {
-      std::cout << Console::red << "Failed to Load Textures...\n" << Console::gray;
+      std::cout << CinderConsole::red << "Failed to Load Textures...\n" << CinderConsole::gray;
       return;
     }
     else
@@ -59,22 +59,22 @@ namespace Framework
       {
         texFile >> str;
         textures [str] = new Texture ((TextureResourcePath + str).c_str ());
-        std::cout << Console::green << str << std::endl << Console::gray;
+        std::cout << CinderConsole::green << str << std::endl << CinderConsole::gray;
       }
     }
-    std::cout << Console::cyan << "--------------------------------\n" << Console::gray;
+    std::cout << CinderConsole::cyan << "--------------------------------\n" << CinderConsole::gray;
   }
 
 
   void Resources::Load_SpriteSheets ()
   {
-    std::cout << Console::cyan << "--------------------------------\nLoading SpriteSheets...\n" << Console::gray;
+    std::cout << CinderConsole::cyan << "--------------------------------\nLoading SpriteSheets...\n" << CinderConsole::gray;
 
     std::ifstream ssFile (SpriteSheetResourcePath + "SpriteSheetAssets.txt");
 
     if (!ssFile.good ())
     {
-      std::cout << Console::red << "Failed to Load Sprite Sheets...\n" << Console::gray;
+      std::cout << CinderConsole::red << "Failed to Load Sprite Sheets...\n" << CinderConsole::gray;
       return;
     }
     else
@@ -88,7 +88,7 @@ namespace Framework
         ssFile >> data;
         ssFile >> data;
         f = data;
-        std::cout << Console::green << data << std::endl << Console::gray;
+        std::cout << CinderConsole::green << data << std::endl << CinderConsole::gray;
         filename = (SpriteSheetResourcePath + data);
         data = "";
         ssFile >> data;
@@ -103,7 +103,7 @@ namespace Framework
       }
     }
 
-    std::cout << Console::cyan << "--------------------------------\n" << Console::gray;
+    std::cout << CinderConsole::cyan << "--------------------------------\n" << CinderConsole::gray;
   }
 
   void Resources::Load_Shaders ()
@@ -118,19 +118,19 @@ namespace Framework
     {
       if (!vsList.good ())
       {
-        std::cout << Console::red << "Failed to load Shader File..." << "VertexShaders.txt\n" << Console::gray;
+        std::cout << CinderConsole::red << "Failed to load Shader File..." << "VertexShaders.txt\n" << CinderConsole::gray;
       }
       if (!fsList.good ())
       {
-        std::cout << Console::red << "Failed to load Shader File..." << "FragmentShaders.txt\n" << Console::gray;
+        std::cout << CinderConsole::red << "Failed to load Shader File..." << "FragmentShaders.txt\n" << CinderConsole::gray;
       }
       if (!gsList.good ())
       {
-        std::cout << Console::red << "Failed to load Shader File..." << "GeometryShaders.txt\n" << Console::gray;
+        std::cout << CinderConsole::red << "Failed to load Shader File..." << "GeometryShaders.txt\n" << CinderConsole::gray;
       }
       if (!shaderComposition.good ())
       {
-        std::cout << Console::red << "Failed to load Shader File..." << "Shaders.txt\n" << Console::gray;
+        std::cout << CinderConsole::red << "Failed to load Shader File..." << "Shaders.txt\n" << CinderConsole::gray;
       }
       return;
     }
@@ -142,7 +142,7 @@ namespace Framework
       std::unordered_map <std::string, GLuint> fSource;
       std::unordered_map <std::string, GLuint> gSource;
 
-      std::cout << Console::cyan << "--------------------------------\nCompiling Shaders...\n" << Console::gray;
+      std::cout << CinderConsole::cyan << "--------------------------------\nCompiling Shaders...\n" << CinderConsole::gray;
 
       while (!vsList.eof())
       {
@@ -199,7 +199,7 @@ namespace Framework
 
     if (!compute.good ())
     {
-      std::cout << Console::red << "Failed To Load Compute Shaders\n" << Console::gray;
+      std::cout << CinderConsole::red << "Failed To Load Compute Shaders\n" << CinderConsole::gray;
     }
     else
     {
@@ -211,14 +211,14 @@ namespace Framework
       }
     }
 
-    std::cout << Console::cyan << "--------------------------------\n" << Console::gray;
+    std::cout << CinderConsole::cyan << "--------------------------------\n" << CinderConsole::gray;
   }
 
 
   void Resources::Load_Sounds()
   {
     Framework::Sound::SoundID type;
-    std::cout << Console::cyan << "--------------------------------\nLoading Sounds...\n" << Console::gray;
+    std::cout << CinderConsole::cyan << "--------------------------------\nLoading Sounds...\n" << CinderConsole::gray;
     std::ifstream audioFile (AudioResourcePath + "SoundAssets.txt");
 
     if (!audioFile.good())
@@ -245,11 +245,11 @@ namespace Framework
         char* c = strstr ((char*)str.c_str(), str.c_str ());
         Sound* sound = AUDIOSYSTEM->LoadSound ((AudioResourcePath + str).c_str (), c, type, 0.0f);
         sounds[str] = sound;
-        std::cout << Console::green << str << std::endl << Console::gray;
+        std::cout << CinderConsole::green << str << std::endl << CinderConsole::gray;
       }
     }
 
-    std::cout << Console::cyan << "--------------------------------\n" << Console::gray;
+    std::cout << CinderConsole::cyan << "--------------------------------\n" << CinderConsole::gray;
   }
 
   Texture* Resources::Get_Texture (std::string textureName)
@@ -262,7 +262,7 @@ namespace Framework
       }
     }
 
-    std::cout << Console::red << textureName << " Invalid Name...Using Default Texture\n" << Console::gray;
+    std::cout << CinderConsole::red << textureName << " Invalid Name...Using Default Texture\n" << CinderConsole::gray;
     return textures ["Default"];
   }
 
@@ -276,7 +276,7 @@ namespace Framework
       }
     }
 
-    std::cout << Console::red << spriteSheetName << " Invalid Name...\n" << Console::gray;
+    std::cout << CinderConsole::red << spriteSheetName << " Invalid Name...\n" << CinderConsole::gray;
     throw ("Invalid Name...");
   }
 
@@ -290,7 +290,7 @@ namespace Framework
       }
     }
 
-    std::cout << Console::red << shaderName << " Invalid Name...Using Default Shader\n" << Console::gray;
+    std::cout << CinderConsole::red << shaderName << " Invalid Name...Using Default Shader\n" << CinderConsole::gray;
     return shaders ["Default"];
   }
 
@@ -304,7 +304,7 @@ namespace Framework
       }
     }
 
-    std::cout << Console::red << soundName << " Invalid Name...\n" << Console::gray;
+    std::cout << CinderConsole::red << soundName << " Invalid Name...\n" << CinderConsole::gray;
     throw ("Invalid Name...");
   }
 
@@ -319,7 +319,7 @@ namespace Framework
       }
     }
 
-    std::cout << Console::red << shaderName << " Invalid Name...\n" << Console::gray;
+    std::cout << CinderConsole::red << shaderName << " Invalid Name...\n" << CinderConsole::gray;
     throw ("Invalid Name...");
   }
 

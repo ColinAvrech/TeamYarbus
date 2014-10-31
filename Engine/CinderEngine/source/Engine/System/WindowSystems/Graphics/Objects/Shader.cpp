@@ -73,7 +73,7 @@ namespace Framework
     char log [1000];
     glGetShaderInfoLog (shader, 1000, NULL, log);
 
-    std::cout << Console::green << filename << Console::yellow << "\nCompile Status...\n" << Console::red << log << Console::gray << "\n--------------" << std::endl;
+    std::cout << CinderConsole::green << filename << CinderConsole::yellow << "\nCompile Status...\n" << CinderConsole::red << log << CinderConsole::gray << "\n--------------" << std::endl;
 
     return shader;
   }
@@ -88,7 +88,7 @@ namespace Framework
     char log [1000];
     glGetShaderInfoLog (shader, 1000, NULL, log);
 
-    std::cout << Console::green << filename << Console::yellow << "\nCompile Status...\n" << Console::red << log << Console::gray << "\n--------------" << std::endl;
+    std::cout << CinderConsole::green << filename << CinderConsole::yellow << "\nCompile Status...\n" << CinderConsole::red << log << CinderConsole::gray << "\n--------------" << std::endl;
 
     return shader;
   }
@@ -105,7 +105,7 @@ namespace Framework
     glLinkProgram (program);
     char log [1000];
     glGetProgramInfoLog (program, 1000, NULL, log);
-    std::cout << Console::yellow << "\n" << name << "\nLink Status...\n" << Console::red << log << Console::gray << "\n--------------" << std::endl;
+    std::cout << CinderConsole::yellow << "\n" << name << "\nLink Status...\n" << CinderConsole::red << log << CinderConsole::gray << "\n--------------" << std::endl;
 
     return program;
   }

@@ -132,7 +132,7 @@ int main (void)
   EnableMemoryLeakChecking ();
 
   // TODO (EXTRA): make a window to show while the game is loading
-  Console::Create_Cinder_Console ("CinderEngineConsole");
+  CinderConsole::Create_Cinder_Console ("CinderEngineConsole");
   // TODO Make console accept input by pressing '`', if '`' is pressed again return to game
   
   //! Create the core engine which manages all systems.
@@ -197,7 +197,7 @@ int main (void)
   delete engine;
 
   //! Free console
-  Console::Free_Cinder_Console ();
+  CinderConsole::Free_Cinder_Console ();
 
   return 0;
 }

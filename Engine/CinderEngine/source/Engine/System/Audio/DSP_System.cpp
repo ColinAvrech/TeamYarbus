@@ -403,7 +403,7 @@ namespace Framework
       result = pChannel->addDSP(0, objects_DSP.dsp_sweepA, 0);
       ErrCheck(result);
 
-      std::cout << Console::green << "EQ A ADDED" << std::endl;
+      std::cout << CinderConsole::green << "EQ A ADDED" << std::endl;
 
       _EQStateA = true;
     }
@@ -456,7 +456,7 @@ namespace Framework
         result = pChannel->removeDSP(objects_DSP.dsp_sweepA);
         ErrCheck(result);
 
-        std::cout << Console::yellow << "EQ A REMOVED" << std::endl;
+        std::cout << CinderConsole::yellow << "EQ A REMOVED" << std::endl;
 
         _EQStateA = false;
       }
@@ -556,7 +556,7 @@ namespace Framework
       result = pChannel->addDSP(0, objects_DSP.dsp_sweepB, 0);
       ErrCheck(result);
 
-      std::cout << Console::green << "EQ B ADDED" << std::endl;
+      std::cout << CinderConsole::green << "EQ B ADDED" << std::endl;
 
       _EQStateB = true;
     }
@@ -609,7 +609,7 @@ namespace Framework
         result = pChannel->removeDSP(objects_DSP.dsp_sweepB);
         ErrCheck(result);
 
-        std::cout << Console::yellow << "EQ B REMOVED" << std::endl;
+        std::cout << CinderConsole::yellow << "EQ B REMOVED" << std::endl;
 
         _EQStateB = false;
       }
@@ -674,14 +674,14 @@ namespace Framework
 
   void Sound::EQConsoleOut(float currentCenter, float currentBandwidth, float currentGain)
   {
-    std::cout << Console::cyan
+    std::cout << CinderConsole::cyan
       << currentCenter
       << std::endl
       << "             "
-      << Console::yellow
+      << CinderConsole::yellow
       << currentBandwidth
       << "             "
-      << Console::green
+      << CinderConsole::green
       << currentGain
       << std::endl;
   }

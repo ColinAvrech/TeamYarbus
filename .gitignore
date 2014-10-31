@@ -6,6 +6,7 @@
 *.vcxproj
 *.filters
 *.vcxproj
+*.obj
 Engine/CinderEngine/premake/CinderEngine.vcxproj.filters
 /Engine/CinderEngine/CinderEngine.opensdf
 /Engine/CinderEngine/CinderEngine.v12.suo
