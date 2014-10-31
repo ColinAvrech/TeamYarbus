@@ -98,15 +98,17 @@ MyClass::MyClass()
 {
 	LevelStates.push_back(new std::string("Slide1.data"));
 	LevelStates.push_back(new std::string("Slide2.data"));
-	LevelStates.push_back(new std::string("Level.data"));
 	LevelStates.push_back(new std::string("Slide3.data"));
+	LevelStates.push_back(new std::string("Level.data"));
 	LevelStates.push_back(new std::string("Slide4.data"));
 	LevelStates.push_back(new std::string("Slide5.data"));
 	LevelStates.push_back(new std::string("Slide6.data"));
 	LevelStates.push_back(new std::string("Slide7.data"));
   LevelStates.push_back (new std::string("Slide8.data"));
   LevelStates.push_back (new std::string ("Slide9.data"));
+  LevelStates.push_back(new std::string("Blank.data"));
   LevelStates.push_back (new std::string ("Slide10.data"));
+  LevelStates.push_back(new std::string("Level.data"));
   LevelStates.push_back (new std::string ("Slide11.data"));
   LevelStates.push_back (new std::string ("Slide12.data"));
   LevelStates.push_back (new std::string ("Slide13.data"));
@@ -122,8 +124,6 @@ MyClass::MyClass()
   LevelStates.push_back (new std::string ("Slide23.data"));
   LevelStates.push_back (new std::string ("Slide24.data"));
   LevelStates.push_back (new std::string ("Slide25.data"));
-  LevelStates.push_back (new std::string ("Slide26.data"));
-  LevelStates.push_back (new std::string ("Slide27.data"));
 	//LevelStates.push_back(new std::string("Slide3.data"));
 }
 

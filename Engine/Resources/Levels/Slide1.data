@@ -79,12 +79,12 @@ Level =
 		Transform = 
 		{
 			Vec3 Translation = [0, 0, -1],
-			Vec3 Scale = [1, 1, 1],
+			Vec3 Scale = [2.5, 2.5, 2.5],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Sprite = 
 		{
-			string SpriteSource = "Slide1.jpg",
+			string SpriteSource = "Slide1.png",
 			string Shader = "Default",
 			bool AnimationActive = false,
 		},
