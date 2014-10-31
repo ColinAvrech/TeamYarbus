@@ -1,10 +1,12 @@
 
 
 #pragma once
-#include "RigidBody.h"
-#include "CollisionEvent.h"
 namespace Framework
 {
+  //Forward Declarations
+  class RigidBody;
+  class CollisionEvent;
+
 	namespace Physics
 	{
 		void Resolve(CollisionEvent* pre);

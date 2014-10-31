@@ -17,11 +17,12 @@ namespace Framework
   //Destructor
   RigidBody::~RigidBody()
   {
-
+    gameObject->RigidBody = nullptr;
   }
 
   void RigidBody::Initialize()
   {
+    gameObject->RigidBody = this;
     for (auto i = OBJECTSYSTEM->GameObjects.begin(); i != OBJECTSYSTEM->GameObjects.end(); ++i)
     {
       if (i->second->RigidBody)
@@ -29,7 +30,6 @@ namespace Framework
         mass = i->second->RigidBody->calculateMass();
       }
     }
-    gameObject->RigidBody = this;
   }
 
   void RigidBody::Serialize(Serializer::DataNode* data)

@@ -11,6 +11,12 @@ namespace Framework
     ZilchClassName = new Zilch::String(name.c_str());
   }
 
+
+  ZilchComponent::~ZilchComponent()
+  {
+
+  }
+
   //INITIALIZE
   void ZilchComponent::Initialize()
   {

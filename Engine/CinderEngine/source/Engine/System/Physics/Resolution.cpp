@@ -1,7 +1,10 @@
+
+#include "Common.h"
 #include "ShapeCollider.h"
 #include "PhysicsLibrary.h"
 #include "Resolution.h"
 #include "RigidBody.h"
+#include "CollisionEvent.h"
 
 namespace Framework
 {

@@ -9,10 +9,6 @@ namespace Framework
 {
   DefineComponentName (Sprite);
 
-  Sprite::Sprite (GameObject* go)
-  {
-    gameObject = go;
-  }
 
 
   //// NON-DEFAULT CONSTRUCTOR
