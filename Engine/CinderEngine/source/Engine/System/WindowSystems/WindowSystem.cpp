@@ -29,6 +29,7 @@ function to handle windows Messages.
 namespace Framework
 {
   static glm::vec3 lightPos;
+  static bool lightOn = false;
   static bool active = false;
   //! Global pointer to  the windows system.
   WindowSystem* WINDOWSYSTEM = NULL;
@@ -128,106 +129,147 @@ namespace Framework
         //Numbers
       case GLFW_KEY_0:
         TriggerKeyEvent (Events::KEY_0, key, scanCode, state, mod);
+        break;
       case GLFW_KEY_1:
         TriggerKeyEvent (Events::KEY_1, key, scanCode, state, mod);
+        break;
       case GLFW_KEY_2:
         TriggerKeyEvent (Events::KEY_2, key, scanCode, state, mod);
+        break;
       case GLFW_KEY_3:
         TriggerKeyEvent (Events::KEY_3, key, scanCode, state, mod);
+        break;
       case GLFW_KEY_4:
         TriggerKeyEvent (Events::KEY_4, key, scanCode, state, mod);
+        break;
       case GLFW_KEY_5:
         TriggerKeyEvent (Events::KEY_5, key, scanCode, state, mod);
+        break;
       case GLFW_KEY_6:
         TriggerKeyEvent (Events::KEY_6, key, scanCode, state, mod);
+        break;
       case GLFW_KEY_7:
         TriggerKeyEvent (Events::KEY_7, key, scanCode, state, mod);
+        break;
       case GLFW_KEY_8:
         TriggerKeyEvent (Events::KEY_8, key, scanCode, state, mod);
+        break;
       case GLFW_KEY_9:
         TriggerKeyEvent (Events::KEY_9, key, scanCode, state, mod);
-
+        break;
         //Letters
       case GLFW_KEY_A:
         TriggerKeyEvent (Events::KEY_A, key, scanCode, state, mod);
+        break;
       case GLFW_KEY_B:
         TriggerKeyEvent (Events::KEY_B, key, scanCode, state, mod);
+        break;
       case GLFW_KEY_C:
         TriggerKeyEvent (Events::KEY_C, key, scanCode, state, mod);
+        break;
       case GLFW_KEY_D:
         TriggerKeyEvent (Events::KEY_D, key, scanCode, state, mod);
+        break;
       case GLFW_KEY_E:
         TriggerKeyEvent (Events::KEY_E, key, scanCode, state, mod);
+        break;
       case GLFW_KEY_F:
         TriggerKeyEvent (Events::KEY_F, key, scanCode, state, mod);
+        break;
       case GLFW_KEY_G:
         TriggerKeyEvent (Events::KEY_G, key, scanCode, state, mod);
+        break;
       case GLFW_KEY_H:
         TriggerKeyEvent (Events::KEY_H, key, scanCode, state, mod);
+        break;
       case GLFW_KEY_I:
         TriggerKeyEvent (Events::KEY_I, key, scanCode, state, mod);
+        break;
       case GLFW_KEY_J:
         TriggerKeyEvent (Events::KEY_J, key, scanCode, state, mod);
+        break;
       case GLFW_KEY_K:
         TriggerKeyEvent (Events::KEY_K, key, scanCode, state, mod);
+        break;
       case GLFW_KEY_L:
         TriggerKeyEvent (Events::KEY_L, key, scanCode, state, mod);
+        break;
       case GLFW_KEY_M:
         TriggerKeyEvent (Events::KEY_M, key, scanCode, state, mod);
+        break;
       case GLFW_KEY_N:
         TriggerKeyEvent (Events::KEY_N, key, scanCode, state, mod);
+        break;
       case GLFW_KEY_O:
         TriggerKeyEvent (Events::KEY_O, key, scanCode, state, mod);
+        break;
       case GLFW_KEY_P:
         TriggerKeyEvent (Events::KEY_P, key, scanCode, state, mod);
+        break;
       case GLFW_KEY_Q:
         TriggerKeyEvent (Events::KEY_Q, key, scanCode, state, mod);
+        break;
       case GLFW_KEY_R:
         TriggerKeyEvent (Events::KEY_R, key, scanCode, state, mod);
+        break;
       case GLFW_KEY_S:
         TriggerKeyEvent (Events::KEY_S, key, scanCode, state, mod);
+        break;
       case GLFW_KEY_T:
         TriggerKeyEvent (Events::KEY_T, key, scanCode, state, mod);
+        break;
       case GLFW_KEY_U:
         TriggerKeyEvent (Events::KEY_U, key, scanCode, state, mod);
+        break;
       case GLFW_KEY_V:
         TriggerKeyEvent (Events::KEY_V, key, scanCode, state, mod);
+        break;
       case GLFW_KEY_W:
         TriggerKeyEvent (Events::KEY_W, key, scanCode, state, mod);
+        break;
       case GLFW_KEY_X:
         TriggerKeyEvent (Events::KEY_X, key, scanCode, state, mod);
+        break;
       case GLFW_KEY_Y:
         TriggerKeyEvent (Events::KEY_Y, key, scanCode, state, mod);
+        break;
       case GLFW_KEY_Z:
         TriggerKeyEvent (Events::KEY_Z, key, scanCode, state, mod);
+        break;
 
         // Arrows
       case GLFW_KEY_UP:
         TriggerKeyEvent (Events::KEY_UP, key, scanCode, state, mod);
+        break;
       case GLFW_KEY_DOWN:
         TriggerKeyEvent (Events::KEY_DOWN, key, scanCode, state, mod);
+        break;
       case GLFW_KEY_LEFT:
         TriggerKeyEvent (Events::KEY_LEFT, key, scanCode, state, mod);
+        break;
       case GLFW_KEY_RIGHT:
         TriggerKeyEvent (Events::KEY_RIGHT, key, scanCode, state, mod);
         break;
 
         // Misc
       case GLFW_KEY_SPACE:
-        if (state == GLFW_PRESS)
-          active = !active;
         TriggerKeyEvent (Events::KEY_SPACE, key, scanCode, state, mod);
         break;
       case GLFW_KEY_BACKSPACE:
         TriggerKeyEvent (Events::KEY_BACKSPACE, key, scanCode, state, mod);
+        break;
       case GLFW_KEY_ESCAPE:
         TriggerKeyEvent (Events::KEY_ESCAPE, key, scanCode, state, mod);
+        break;
       case GLFW_KEY_TAB:
         TriggerKeyEvent (Events::KEY_TAB, key, scanCode, state, mod);
+        break;
       case GLFW_KEY_GRAVE_ACCENT:
         TriggerKeyEvent (Events::KEY_GRAVEACCENT, key, scanCode, state, mod);
+        break;
       case GLFW_KEY_ENTER:
         TriggerKeyEvent (Events::KEY_ENTER, key, scanCode, state, mod);
+        break;
 
       default:
         break;
@@ -296,12 +338,27 @@ namespace Framework
     WindowNameSpace::Init_Glew ();
   }
 
+  static void OnKeyPressed (KeyEvent* key)
+  {
+    if (key->KeyDown)
+    {
+      if (key->KeyValue == GLFW_KEY_L)
+      {
+        lightOn = !lightOn;
+      }
+      if (key->KeyValue == GLFW_KEY_SPACE)
+      {
+        active = !active;
+      }
+    }
+  }
+
   static Shader* sceneShader;
   glm::vec3 lights [5];
   bool WindowSystem::Initialize ()
   {
     std::cout << GetName () << " initialized\n";
-
+    EVENTSYSTEM->gConnect (Events::KEY_ANY, &OnKeyPressed);
     fire = Resources::RS->Get_Sound("FireA.ogg");
     fire->Play();
     fire->LowPassFilter();
@@ -328,6 +385,7 @@ namespace Framework
     glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glFramebufferTexture2D (GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderTexture, 0);
+    fbo->unBind ();
     //void specifyScreenVertexAttributes (GLuint shaderProgram)
     //{
     //  GLint posAttrib = glGetAttribLocation (shaderProgram, "position");
@@ -361,11 +419,7 @@ namespace Framework
 
     shader = Resources::RS->Get_Shader ("Lighting");
 
-    lights [0] = { -0.7f, 0.7f, 0 };
-    lights [1] = { 0.7f, 0.7f, 0 };
-    lights [2] = { -0.7f, -0.7f, 0 };
-    lights [3] = { 0.7f, -0.7f, 0 };
-    lights [4] = { 0, 0, 0 };
+    lights [0] = lights [1] = lights [2] = lights [3] = lights [4] = { 0, 0, 0 };
 
     return true;
   }
@@ -387,6 +441,8 @@ namespace Framework
 
   void WindowSystem::WindowsUpdate (const double dt)
   {
+    glfwSwapBuffers (window);
+    glfwPollEvents ();
     if (AUDIOSYSTEM->input.peaklevel[0] > 0.05f)
     {
       if (lpf < 22000)
@@ -402,8 +458,6 @@ namespace Framework
       }
     }
     fire->SetLPF(lpf, 1);
-    glfwSwapBuffers (window);
-    glfwPollEvents ();
   }  
 
   void WindowSystem::GraphicsUpdate (const double dt)
@@ -415,8 +469,6 @@ namespace Framework
     glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     //glfwSwapBuffers (window);
-
-
     vao->bindVAO ();
     //shader->Use();
     Physics::THERMODYNAMICS->SetCellTemperature (0.0f, 0.4f,
@@ -458,6 +510,7 @@ namespace Framework
     //}
     sceneShader->uni3f ("lightPos", clRenderer.destPosX * 2, clRenderer.destPosY * 2, 0.0);
     sceneShader->uni3fv ("lights", glm::value_ptr (lights [0]), 5);
+    sceneShader->uni1i ("enabled", lightOn ? 1 : 0);
     sceneShader->uni1i ("image", 0);
 
     glDrawArrays (GL_TRIANGLES, 0, 6);
