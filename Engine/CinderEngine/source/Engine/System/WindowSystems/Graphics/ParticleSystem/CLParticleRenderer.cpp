@@ -136,7 +136,7 @@ namespace Framework
       verticesPos[i].y = destPosY + sin(rndVal) * rndRad;
       verticesPos[i].z = 0.0f;
       verticesPos[i].w = 1.0f;
-      Physics::THERMODYNAMICS->SetCellTemperature (verticesPos [i].x, verticesPos [i].y, 2250.0f, 0.016);
+      //Physics::THERMODYNAMICS->SetCellTemperature (verticesPos [i].x * 2, verticesPos [i].y * 2, 2250.0f, 0.016);
     }
     SSBOPos->UnMapBuffer();
   }
@@ -197,13 +197,13 @@ namespace Framework
     radius = 0.1f;
     float dy = -destPosY;
     //std::cout << Physics::THERMODYNAMICS->GetCellTemperature (20, 20) << "\n";
-    Physics::THERMODYNAMICS->SetCellTemperature(destPosX, dy, 1000.0f, 0.016);
-    Physics::THERMODYNAMICS->SetCellTemperature(destPosX + radius, dy, 2250.0f, 0.016);
-    Physics::THERMODYNAMICS->SetCellTemperature(destPosX - radius, dy, 2250.0f, 0.016);
-    Physics::THERMODYNAMICS->SetCellTemperature(destPosX, dy + radius, 2250.0f, 0.016);
-    Physics::THERMODYNAMICS->SetCellTemperature(destPosX, dy - radius, 2250.0f, 0.016);
-    Physics::THERMODYNAMICS->SetCellTemperature(destPosX + radius, dy + radius, 2250.0f, 0.016);
-    Physics::THERMODYNAMICS->SetCellTemperature(destPosX - radius, dy - radius, 2250.0f, 0.016);
+    //Physics::THERMODYNAMICS->SetCellTemperature(destPosX, dy, 1000.0f, 0.016);
+    //Physics::THERMODYNAMICS->SetCellTemperature(destPosX + radius, dy, 2250.0f, 0.016);
+    //Physics::THERMODYNAMICS->SetCellTemperature(destPosX - radius, dy, 2250.0f, 0.016);
+    //Physics::THERMODYNAMICS->SetCellTemperature(destPosX, dy + radius, 2250.0f, 0.016);
+    //Physics::THERMODYNAMICS->SetCellTemperature(destPosX, dy - radius, 2250.0f, 0.016);
+    //Physics::THERMODYNAMICS->SetCellTemperature(destPosX + radius, dy + radius, 2250.0f, 0.016);
+    //Physics::THERMODYNAMICS->SetCellTemperature(destPosX - radius, dy - radius, 2250.0f, 0.016);
 
     int workingGroups = particleCount / 16;
 

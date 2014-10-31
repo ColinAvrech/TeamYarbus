@@ -23,12 +23,13 @@ function to handle windows Messages.
 #include "CLParticleRenderer.h"
 #include "HeatMap.h"
 #include "FrameBufferObject.h"
+#include "Thermodynamics.h"
 #include "glm/gtc/random.hpp"
 
 namespace Framework
 {
   static glm::vec3 lightPos;
-  static bool active = true;
+  static bool active = false;
   //! Global pointer to  the windows system.
   WindowSystem* WINDOWSYSTEM = NULL;
 
@@ -384,7 +385,7 @@ namespace Framework
 
   void WindowSystem::GraphicsUpdate(const double dt)
   {
-    fbo->bind ();
+    fbo->unBind ();
     //glViewport (0, 0, WindowWidth, WindowHeight);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_BLEND);
@@ -401,6 +402,9 @@ namespace Framework
 
     vao->bindVAO();
     //shader->Use();
+    Physics::THERMODYNAMICS->SetCellTemperature (0.0f, 0.4f,
+      Physics::THERMODYNAMICS->GetCellTemperature(0.0f, 0.4f) + 100000.f * micdata(),
+      0.016);
     for (auto i : spriteList)
     {
       i->gameObject->Transform->UpdateMatrices();
@@ -423,23 +427,23 @@ namespace Framework
     }
     vao->unbindVAO();
 
-    fbo->unBind ();
-    //glViewport (0, 0, WindowWidth, WindowHeight);
-    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    vao1->bindVAO ();
-    sceneShader->Use ();
-    glBindTexture (GL_TEXTURE_2D, renderTexture);
-    sceneShader->enableVertexAttribArray (sceneShader->attribLocation ("position"));
-    sceneShader->enableVertexAttribArray (sceneShader->attribLocation ("texcoord"));
-    //for (int i = 0; i < 5; ++i)
-    //{
-    //  lights [i] = glm::linearRand (glm::vec3 (-2, -2, 0), glm::vec3 (2, 2, 0));
-    //}
-    sceneShader->uni3f ("lightPos", clRenderer.destPosX * 2, clRenderer.destPosY * 2, 0.0);
-    sceneShader->uni3fv ("lights", glm::value_ptr (lights [0]), 5);
-    sceneShader->uni1i ("image", 0);
+    //fbo->unBind ();
+    ////glViewport (0, 0, WindowWidth, WindowHeight);
+    //glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    //vao1->bindVAO ();
+    //sceneShader->Use ();
+    //glBindTexture (GL_TEXTURE_2D, renderTexture);
+    //sceneShader->enableVertexAttribArray (sceneShader->attribLocation ("position"));
+    //sceneShader->enableVertexAttribArray (sceneShader->attribLocation ("texcoord"));
+    ////for (int i = 0; i < 5; ++i)
+    ////{
+    ////  lights [i] = glm::linearRand (glm::vec3 (-2, -2, 0), glm::vec3 (2, 2, 0));
+    ////}
+    //sceneShader->uni3f ("lightPos", clRenderer.destPosX * 2, clRenderer.destPosY * 2, 0.0);
+    //sceneShader->uni3fv ("lights", glm::value_ptr (lights [0]), 5);
+    //sceneShader->uni1i ("image", 0);
 
-    glDrawArrays (GL_TRIANGLES, 0, 6);
+    //glDrawArrays (GL_TRIANGLES, 0, 6);
     //clRenderer.Render ();
     //////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////

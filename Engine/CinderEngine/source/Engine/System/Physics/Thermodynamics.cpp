@@ -121,8 +121,8 @@ namespace Framework
           Terrain[i][j] = 0;
         }
       }
-      for (int i = 0; i < 100; ++i)
-        Terrain[i][0] = 1;
+      //for (int i = 0; i < 100; ++i)
+      //  Terrain[i][0] = 1;
 
       FireMap = new float*[100];
       for (int i = 0; i < 100; ++i)
@@ -186,8 +186,8 @@ namespace Framework
     //Get cell velocity
     glm::vec2 ThermodynamicsSystem::GetCellVelocity(float x, float y)
     {
-      int sub_x = static_cast<int>((x)+MapOffset.x);
-      int sub_y = static_cast<int>((y)+MapOffset.y);
+      int sub_x = int (std::abs (((x) * 49 + MapOffset.x - 1)));
+      int sub_y = int (std::abs (((y) * 50 + MapOffset.y - 1)));
       if (sub_x < 0 || sub_x > MapSize.x || sub_y < 0 || sub_y > MapSize.y)
       {
         return glm::vec2(0, 0);
@@ -206,8 +206,8 @@ namespace Framework
 
     float ThermodynamicsSystem::SetCellTemperature(const float x, const float y, const float temp, const double dt)
     {
-      int sub_x = static_cast<int>((x / CellSize) + MapOffset.x);
-      int sub_y = static_cast<int>((y / CellSize) + MapOffset.y);
+      int sub_x = int (std::abs (((x) * 49 + MapOffset.x - 1)));
+      int sub_y = int (std::abs (((y) * 50 + MapOffset.y - 1)));
       float dQ;
       if (sub_x < 0 || sub_x > MapSize.x || sub_y < 0 || sub_y > MapSize.y)
         dQ = ConductiveHeatTransfer(Const::K_Wood, AtmosphericTemperature, temp, dt, 1);
