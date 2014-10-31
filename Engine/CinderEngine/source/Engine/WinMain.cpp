@@ -92,7 +92,7 @@ int main (void)
   Sound *pads;
   pads = resourceManager.Get_Sound("Pads.ogg");
   pads->Play();
-  pads->VolumeFade(0.8f, 3);
+  pads->VolumeFade(0.6f, 3);
   pads->HighPassFilter();
   pads->SetHPF(600, 1);
   pads->Reverb();
@@ -105,7 +105,7 @@ int main (void)
   OBJECTSYSTEM->LoadLevel("Level.data");
 
 
-  OBJECTSYSTEM->LoadLevel("PhysicsTest.data");
+  //OBJECTSYSTEM->LoadLevel("PhysicsTest.data");
 
   // Connect example
   //MyClass _myclass;
