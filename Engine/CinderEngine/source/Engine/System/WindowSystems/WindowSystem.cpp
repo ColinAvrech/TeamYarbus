@@ -22,21 +22,27 @@ function to handle windows Messages.
 #include "DebugRenderer.h"
 #include "CLParticleRenderer.h"
 #include "HeatMap.h"
+#include "FrameBufferObject.h"
+#include "glm/gtc/random.hpp"
 
 namespace Framework
 {
+  static glm::vec3 lightPos;
   static bool active = true;
   //! Global pointer to  the windows system.
   WindowSystem* WINDOWSYSTEM = NULL;
-
+  static char c;
   std::list <Sprite*> WindowSystem::spriteList;
 
-  static VAO* vao;
-  static VBO* vbo;
+  static VAO* vao, *vao1;
+  static VBO* vbo, *vbo1;
   static EBO* ebo;
+  static FBO* fbo;
+  GLuint renderTexture;
   static DebugRenderer dr;
   static CLParticleRenderer clRenderer;
   static float shininess = 200;
+  static Sound *fire;
   static HeatMap heatMap (101, 101);
 
   namespace WindowNameSpace
@@ -44,7 +50,14 @@ namespace Framework
     void Resize (GLFWwindow* window, int w, int h)
     {
       WINDOWSYSTEM->Set_W_H (w, h);
+      glBindTexture (GL_TEXTURE_2D, renderTexture);
+      glTexImage2D (GL_TEXTURE_2D, 0, GL_RGB, WINDOWSYSTEM->Get_Width (), WINDOWSYSTEM->Get_Height (), 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
       SCENEMANAGER->Change_Size (w, h);
+    }
+
+    void FrameBufferResize (GLFWwindow* _window, int w, int h)
+    {
+      glViewport (0, 0, w, h);
     }
 
     /*Triggers a Key event if there are any listeners*/
@@ -104,7 +117,7 @@ namespace Framework
       }
     }
 
-    void GLFWMessageHandler (GLFWwindow* window, int key, int scanCode, int state, int mod)
+    void  GLFWMessageHandler (GLFWwindow* window, int key, int scanCode, int state, int mod)
     {
       //A Key has been pressed
       TriggerKeyEvent (Events::KEY_ANY, key, scanCode, state, mod);
@@ -220,6 +233,7 @@ namespace Framework
       }
     }
 
+
     void GLFWMouseButtonFunction (GLFWwindow *, int button, int action, int mod)
     {
     }
@@ -256,6 +270,7 @@ namespace Framework
       glfwSetMouseButtonCallback (*GLFWwindowptr, GLFWMouseButtonFunction);
       glfwSetCursorPosCallback (*GLFWwindowptr, GLFWMouseCursorMoved);
       glfwSetWindowSizeCallback (*GLFWwindowptr, Resize);
+      glfwSetFramebufferSizeCallback (*GLFWwindowptr, FrameBufferResize);
       glfwSetWindowCloseCallback (*GLFWwindowptr, GLFWWindowClosed);
     }
 
@@ -280,10 +295,56 @@ namespace Framework
     WindowNameSpace::Init_Glew ();
   }
 
-
+  static Shader* sceneShader;
+  glm::vec3 lights [5];
   bool WindowSystem::Initialize ()
   {
     std::cout << GetName () << " initialized\n";
+
+    fire = Resources::RS->Get_Sound ("FireA.ogg");
+    fire->Play ();
+    fire->LowPassFilter ();
+    fire->HighPassFilter ();
+    fire->SetHPF (200, 1);
+
+    GLfloat vertices [] =
+    {
+      -1.0f, 1.0f, 0.0f, 1.0f,
+      1.0f, 1.0f, 1.0f, 1.0f,
+      1.0f, -1.0f, 1.0f, 0.0f,
+
+      1.0f, -1.0f, 1.0f, 0.0f,
+      -1.0f, -1.0f, 0.0f, 0.0f,
+      -1.0f, 1.0f, 0.0f, 1.0f
+    };
+
+    vao1 = new VAO ();
+    vbo1 = new VBO (sizeof(vertices), vertices);
+    fbo = new FBO ();
+    glGenTextures (1, &renderTexture);
+    glBindTexture (GL_TEXTURE_2D, renderTexture);
+    glTexImage2D (GL_TEXTURE_2D, 0, GL_RGB, WindowWidth, WindowHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
+    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glFramebufferTexture2D (GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderTexture, 0);
+    //void specifyScreenVertexAttributes (GLuint shaderProgram)
+    //{
+    //  GLint posAttrib = glGetAttribLocation (shaderProgram, "position");
+    //  glEnableVertexAttribArray (posAttrib);
+    //  glVertexAttribPointer (posAttrib, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), 0);
+    //
+    //  GLint texAttrib = glGetAttribLocation (shaderProgram, "texcoord");
+    //  glEnableVertexAttribArray (texAttrib);
+    //  glVertexAttribPointer (texAttrib, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (void*) (2 * sizeof(GLfloat)));
+    //}
+    sceneShader = Resources::RS->Get_Shader ("Passthrough");
+    sceneShader->Use ();
+    GLint posAttrib = sceneShader->attribLocation ("position");
+    sceneShader->enableVertexAttribArray (posAttrib);
+    sceneShader->vertexAttribPtr (posAttrib, 2, GL_FLOAT, GL_FALSE, 4 * sizeof GLfloat, 0);
+    GLint texAttrib = sceneShader->attribLocation ("texcoord");
+    sceneShader->enableVertexAttribArray (texAttrib);
+    sceneShader->vertexAttribPtr (texAttrib, 2, GL_FLOAT, GL_FALSE, 4 * sizeof GLfloat, 2 * sizeof GLfloat);
 
     clRenderer.GenerateTextures ();
     clRenderer.GenerateBuffers ();
@@ -298,6 +359,12 @@ namespace Framework
     data.Clean ();
 
     shader = Resources::RS->Get_Shader ("Lighting");
+
+    lights [0] = { -0.7f, 0.7f, 0 };
+    lights [1] = { 0.7f, 0.7f, 0 };
+    lights [2] = { -0.7f, -0.7f, 0 };
+    lights [3] = { 0.7f, -0.7f, 0 };
+    lights [4] = { 0, 0, 0 };
 
     return true;
   }
@@ -314,16 +381,36 @@ namespace Framework
     GraphicsUpdate (dt);
   }
 
+  float lpf = 6000.0f;
+
+  static float micdata () { return AUDIOSYSTEM->input.peaklevel [0]; }
+
   void WindowSystem::WindowsUpdate (const double dt)
   {
+    if (AUDIOSYSTEM->input.peaklevel [0] > 0.05f)
+    {
+      if (lpf < 22000)
+      {
+        lpf += micdata () * 200.0f;
+      }
+    }
+    else
+    {
+      if (lpf > 6000)
+      {
+        lpf -= 150.0f;
+      }
+    }
+    fire->SetLPF (lpf, 1);
+
     glfwSwapBuffers (window);
     glfwPollEvents ();
   }
 
-  static float micdata () { return AUDIOSYSTEM->input.peaklevel [0]; }
-
   void WindowSystem::GraphicsUpdate (const double dt)
   {
+    fbo->bind ();
+    //glViewport (0, 0, WindowWidth, WindowHeight);
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable (GL_BLEND);
     glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -338,7 +425,7 @@ namespace Framework
     }
 
     vao->bindVAO ();
-    shader->Use ();
+    //shader->Use();
     for (auto i : spriteList)
     {
       i->gameObject->Transform->UpdateMatrices ();
@@ -356,10 +443,29 @@ namespace Framework
           lighting += 0.16f;
         }
       }
-      shader->uni1f ("shininess", lighting);
+      //shader->uni1f("shininess", lighting);
       i->Draw ();
     }
     vao->unbindVAO ();
+
+    fbo->unBind ();
+    //glViewport (0, 0, WindowWidth, WindowHeight);
+    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    vao1->bindVAO ();
+    sceneShader->Use ();
+    glBindTexture (GL_TEXTURE_2D, renderTexture);
+    sceneShader->enableVertexAttribArray (sceneShader->attribLocation ("position"));
+    sceneShader->enableVertexAttribArray (sceneShader->attribLocation ("texcoord"));
+    //for (int i = 0; i < 5; ++i)
+    //{
+    //  lights [i] = glm::linearRand (glm::vec3 (-2, -2, 0), glm::vec3 (2, 2, 0));
+    //}
+    sceneShader->uni3f ("lightPos", clRenderer.destPosX * 2, clRenderer.destPosY * 2, 0.0);
+    sceneShader->uni3fv ("lights", glm::value_ptr (lights [0]), 5);
+    sceneShader->uni1i ("image", 0);
+
+    glDrawArrays (GL_TRIANGLES, 0, 6);
+    //clRenderer.Render ();
     //////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////
     // To use Debug Draw:
@@ -392,6 +498,7 @@ namespace Framework
 
   void WindowSystem::Set_W_H (unsigned w, unsigned h)
   {
+    glViewport (0, 0, w, h);
     WindowWidth = w;
     WindowHeight = h;
   }
