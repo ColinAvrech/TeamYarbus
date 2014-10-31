@@ -53,7 +53,59 @@ const int ClientHeight = 768;
 //		std::cout << "My Update: " << e->Dt << std::endl;
 //	}
 //};
+//SCENE CHANGER
+class MyClass
+{
+public:
+	MyClass();
 
+	void WhenRightIsPressed(KeyEvent* e)
+	{
+		if (e->KeyDown && !e->KeyRepeat)
+		{
+			int MaxSlides = LevelStates.size();
+			if (Slide < MaxSlides - 1)
+			{
+				++Slide;
+				std::string mystring = LevelStates[Slide]->c_str();
+				OBJECTSYSTEM->LoadLevel(mystring);
+			}
+		}
+	}
+
+	void WhenLeftIsPressed(KeyEvent* e)
+	{
+		if (e->KeyDown && !e->KeyRepeat)
+		{
+			if (Slide > 0)
+			{
+				--Slide;
+				std::string mystring = LevelStates[Slide]->c_str();
+				OBJECTSYSTEM->LoadLevel(mystring);
+			}
+		}
+	}
+	int Slide = 0;
+
+	std::vector<std::string*> LevelStates;
+
+
+private:
+
+};
+
+MyClass::MyClass()
+{
+	LevelStates.push_back(new std::string("Slide1.data"));
+	LevelStates.push_back(new std::string("Slide2.data"));
+	LevelStates.push_back(new std::string("Level.data"));
+	LevelStates.push_back(new std::string("Slide3.data"));
+	LevelStates.push_back(new std::string("Slide4.data"));
+	LevelStates.push_back(new std::string("Slide5.data"));
+	LevelStates.push_back(new std::string("Slide6.data"));
+	LevelStates.push_back(new std::string("Slide7.data"));
+	//LevelStates.push_back(new std::string("Slide3.data"));
+}
 
 int main (void)
 {
@@ -102,9 +154,12 @@ int main (void)
 
 
   //! activate the window.
-  OBJECTSYSTEM->LoadLevel("Level.data");
+  OBJECTSYSTEM->LoadLevel("Slide1.data");
 
-
+  // Connect example
+  MyClass _myclass;
+  EVENTSYSTEM->mConnect<KeyEvent, MyClass>(Events::KEY_RIGHT, &_myclass, &MyClass::WhenRightIsPressed);
+  EVENTSYSTEM->mConnect<KeyEvent, MyClass>(Events::KEY_LEFT, &_myclass, &MyClass::WhenLeftIsPressed);
   //OBJECTSYSTEM->LoadLevel("PhysicsTest.data");
 
   // Connect example
