@@ -43,6 +43,7 @@ namespace Framework
     void GLFWWindowClosed(GLFWwindow* window);
 
     void Resize (GLFWwindow* window, int w, int h);
+    void FrameBufferResize (GLFWwindow* _window, int w, int h);
 
     unsigned Get_Width ();
     unsigned Get_Height ();

@@ -1,4 +1,9 @@
 <
+Passthrough.vs.glsl
+Lighting.frag.glsl
+0
+Passthrough
+>
 Basic.vs.glsl
 Basic.frag.glsl
 0

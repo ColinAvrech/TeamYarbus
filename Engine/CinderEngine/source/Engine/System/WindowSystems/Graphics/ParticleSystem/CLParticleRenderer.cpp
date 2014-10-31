@@ -122,20 +122,21 @@ namespace Framework
     glfwGetCursorPos(WINDOWSYSTEM->Get_Window(), &cursorX, &cursorY);
     glfwGetWindowSize(WINDOWSYSTEM->Get_Window(), &windowWidth, &windowHeight);
 
-    float destPosX = (float)(cursorX / (windowWidth)-0.5f) * 2.0f;
-    float destPosY = (float)((windowHeight - cursorY) / windowHeight - 0.5f) * 2.0f;
+    destPosX = (float)(cursorX / (windowWidth)-0.5f) * 2.0f;
+    destPosY = (float)((windowHeight - cursorY) / windowHeight - 0.5f) * 2.0f;
 
     glm::vec4* verticesPos = (glm::vec4*) SSBOPos->MapBufferRange<glm::vec4>(0, particleCount);
     for (int i = 0; i < particleCount; i++)
     {
       float rnd = (float)rand() / (float)(RAND_MAX);
       float rndVal = (float)rand() / (float)(RAND_MAX / (360.0f * 3.14f * 2.0f));
-      float rndRad = (float)rand() / (float)(RAND_MAX)* 0.2f;
+      float rndRad = (float)rand() / (float)(RAND_MAX)* 0.05f;
       radius = rndRad;
       verticesPos[i].x = destPosX + cos(rndVal) * rndRad;
       verticesPos[i].y = destPosY + sin(rndVal) * rndRad;
       verticesPos[i].z = 0.0f;
       verticesPos[i].w = 1.0f;
+      Physics::THERMODYNAMICS->SetCellTemperature (verticesPos [i].x, verticesPos [i].y, 2250.0f, 0.016);
     }
     SSBOPos->UnMapBuffer();
   }
@@ -183,8 +184,8 @@ namespace Framework
     glfwGetCursorPos(WINDOWSYSTEM->Get_Window(), &cursorX, &cursorY);
     glfwGetWindowSize(WINDOWSYSTEM->Get_Window(), &windowWidth, &windowHeight);
 
-    float destPosX = (float)(cursorX / (windowWidth)-0.5f) * 2.0f;
-    float destPosY = (float)((windowHeight - cursorY) / windowHeight - 0.5f) * 2.0f;
+    destPosX = (float)(cursorX / (windowWidth)-0.5f) * 2.0f;
+    destPosY = (float)((windowHeight - cursorY) / windowHeight - 0.5f) * 2.0f;
 
     computeshader->Use();
     computeshader->uni1f("deltaT", 2 * speedMultiplier * (pause ? 0 : 1));
@@ -194,18 +195,15 @@ namespace Framework
     //std::cout << "{ " << Physics::THERMODYNAMICS->GetCellVelocity(20, 20).x << ", " << Physics::THERMODYNAMICS->GetCellVelocity(20, 20).y << " }\n";
     computeshader->uni2fv("cellVelocity", glm::value_ptr(Physics::THERMODYNAMICS->GetCellVelocity(20, 20)));
     radius = 0.1f;
-    destPosY = -destPosY;
-    float peak = AUDIOSYSTEM->input.peaklevel[0];
+    float dy = -destPosY;
     //std::cout << Physics::THERMODYNAMICS->GetCellTemperature (20, 20) << "\n";
-    Physics::THERMODYNAMICS->SetCellTemperature(destPosX, destPosY, 2250.0f, 0.016);
-    Physics::THERMODYNAMICS->SetCellTemperature(destPosX + radius, destPosY, 2250.0f, 0.016);
-    Physics::THERMODYNAMICS->SetCellTemperature(destPosX - radius, destPosY, 2250.0f, 0.016);
-    Physics::THERMODYNAMICS->SetCellTemperature(destPosX, destPosY + radius, 2250.0f, 0.016);
-    Physics::THERMODYNAMICS->SetCellTemperature(destPosX, destPosY - radius, 2250.0f, 0.016);
-    Physics::THERMODYNAMICS->SetCellTemperature(destPosX + radius, destPosY + radius, 2250.0f, 0.016);
-    Physics::THERMODYNAMICS->SetCellTemperature(destPosX - radius, destPosY - radius, 2250.0f, 0.016);
-    Physics::THERMODYNAMICS->SetCellTemperature(destPosX + radius, destPosY - radius, 2250.0f, 0.016);
-    Physics::THERMODYNAMICS->SetCellTemperature(destPosX - radius, destPosY + radius, 2250.0f, 0.016);
+    Physics::THERMODYNAMICS->SetCellTemperature(destPosX, dy, 1000.0f, 0.016);
+    Physics::THERMODYNAMICS->SetCellTemperature(destPosX + radius, dy, 2250.0f, 0.016);
+    Physics::THERMODYNAMICS->SetCellTemperature(destPosX - radius, dy, 2250.0f, 0.016);
+    Physics::THERMODYNAMICS->SetCellTemperature(destPosX, dy + radius, 2250.0f, 0.016);
+    Physics::THERMODYNAMICS->SetCellTemperature(destPosX, dy - radius, 2250.0f, 0.016);
+    Physics::THERMODYNAMICS->SetCellTemperature(destPosX + radius, dy + radius, 2250.0f, 0.016);
+    Physics::THERMODYNAMICS->SetCellTemperature(destPosX - radius, dy - radius, 2250.0f, 0.016);
 
     int workingGroups = particleCount / 16;
 
