@@ -35,6 +35,7 @@ namespace Framework
   //! Global pointer to  the windows system.
   WindowSystem* WINDOWSYSTEM = NULL;
 
+  std::list <Transform*> WindowSystem::transformList;
   std::list <Sprite*> WindowSystem::spriteList;
   std::list <IEffect*> WindowSystem::effectList;
 
@@ -396,16 +397,7 @@ namespace Framework
     glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glFramebufferTexture2D (GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderTexture, 0);
     fbo->unBind ();
-    //void specifyScreenVertexAttributes (GLuint shaderProgram)
-    //{
-    //  GLint posAttrib = glGetAttribLocation (shaderProgram, "position");
-    //  glEnableVertexAttribArray (posAttrib);
-    //  glVertexAttribPointer (posAttrib, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), 0);
-    //
-    //  GLint texAttrib = glGetAttribLocation (shaderProgram, "texcoord");
-    //  glEnableVertexAttribArray (texAttrib);
-    //  glVertexAttribPointer (texAttrib, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (void*) (2 * sizeof(GLfloat)));
-    //}
+
     sceneShader = Resources::RS->Get_Shader ("Passthrough");
     sceneShader->Use ();
     GLint posAttrib = sceneShader->attribLocation ("position");
@@ -480,13 +472,24 @@ namespace Framework
 
     //glfwSwapBuffers (window);
     vao->bindVAO ();
+
+    for (auto i : transformList)
+    {
+      if (i->gameObject->Name == "ember")
+      {
+        float x = i->GetScreenPosition().x;
+        float y = -i->GetScreenPosition().y;
+
+        Physics::THERMODYNAMICS->SetCellTemperature (x, y,
+        Physics::THERMODYNAMICS->GetCellTemperature (x, y) + 100000.f * micdata (),
+          0.016);
+      }
+      i->UpdateMatrices ();
+    }
+
     //shader->Use();
-    Physics::THERMODYNAMICS->SetCellTemperature (0.0f, 0.4f,
-      Physics::THERMODYNAMICS->GetCellTemperature (0.0f, 0.4f) + 100000.f * micdata (),
-      0.016);
     for (auto i : spriteList)
     {
-      i->gameObject->Transform->UpdateMatrices ();
       i->Draw ();
     }
     vao->unbindVAO ();

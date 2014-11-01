@@ -72,9 +72,9 @@ namespace Framework
     {
       Camera::main->worldToView = glm::lookAt
         (
-        Camera::current->position,
-        Camera::current->position + Camera::current->viewDirection,
-        Camera::current->up
+        Camera::main->size * Camera::main->viewDirection,
+        Camera::main->position,
+        Camera::main->up
         );
     }
 

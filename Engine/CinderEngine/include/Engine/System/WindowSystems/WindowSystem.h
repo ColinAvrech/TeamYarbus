@@ -54,6 +54,7 @@ namespace Framework
     }
     void Set_W_H (unsigned, unsigned);
 
+    static std::list <Transform*> transformList;
     static std::list <Sprite*> spriteList;
     static std::list <IEffect*> effectList;
 

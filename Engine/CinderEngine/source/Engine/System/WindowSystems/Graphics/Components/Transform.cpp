@@ -10,6 +10,7 @@
 
 #include "Transform.h"
 #include "GameObject.h"
+#include "WindowSystem.h"
 
 namespace Framework
 {
@@ -18,6 +19,7 @@ namespace Framework
 
   Transform::~Transform ()
   {
+    WINDOWSYSTEM->transformList.remove (this);
     gameObject->Transform = nullptr;
   }
 
@@ -34,20 +36,6 @@ namespace Framework
   }
 
 
-  void Transform::Initialize ()
-  {
-    gameObject->Transform = this;
-    modelMatrix.push_back (glm::mat4 (1));
-    modelViewProjectionmatrix.push_back (glm::mat4 (1));
-    normalMatrix = glm::mat3 (1);
-    matricesReady = false;
-    currentMatrix = 0;
-    //UpdateMatrices ();
-
-    gameObject->Transform = this;
-  }
-
-
   void Transform::Serialize (Serializer::DataNode* data)
   {
     //////////////////////////////////////////////////////////////////////////
@@ -56,18 +44,34 @@ namespace Framework
     // scale    : glm::vec3 (Serialized Data)
     // rotation : float (Serialized Data)
     //////////////////////////////////////////////////////////////////////////
-    for (unsigned i = 0; i < data->value_.VecN_->size (); ++i)
-    {
-      position [i] = data->value_.VecN_->at (i);
-    }
-    data = data->next;
-    for (unsigned i = 0; i < data->value_.VecN_->size (); ++i)
-    {
-      scale [i] = data->value_.VecN_->at (i);
-    }
-    data = data->next;
-    rotation = data->value_.VecN_->at (2);
+    Serializer::DataNode* value = data->FindElement (data, "Translation");
+    value->GetValue (&position);
+
+    value = data->FindElement (data, "Scale");
+    value->GetValue (&scale);
+
+    value = data->FindElement (data, "Rotation");
+    value->GetValue (&rotation);
   }
+
+
+  void Transform::Initialize ()
+  {
+    gameObject->Transform = this;
+    modelMatrix.push_back (glm::translate (position) *
+      glm::rotate (rotation, glm::vec3 (0, 0, 1)) *
+      glm::scale (scale));
+    modelViewProjectionmatrix.push_back (glm::mat4 (1));
+    normalMatrix = glm::mat3 (1);
+    matricesReady = false;
+    currentMatrix = 0;
+    //UpdateMatrices ();
+
+    gameObject->Transform = this;
+
+    WINDOWSYSTEM->transformList.push_back (this);
+  }
+
 
   bool Transform::MatrixMode (int m)
   {
@@ -121,6 +125,13 @@ namespace Framework
       return Camera::GetViewToProjectionMatrix () * Camera::GetWorldToViewMatrix () * modelMatrix [currentMatrix];
 
     return modelViewProjectionmatrix [currentMatrix];
+  }
+
+
+  glm::vec2 Transform::GetScreenPosition ()
+  {
+    return glm::vec2 (GetModelViewProjectionMatrix () [3][0] / GetModelViewProjectionMatrix () [3][3],
+      GetModelViewProjectionMatrix () [3][1] / GetModelViewProjectionMatrix () [3][3]);
   }
 
   //GLSL

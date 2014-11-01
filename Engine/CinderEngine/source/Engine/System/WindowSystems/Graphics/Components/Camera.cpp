@@ -34,7 +34,7 @@ namespace Framework
     if (mainCamera)
     {
       Camera::main = this;
-      worldToView = glm::lookAt(gameObject->Transform->GetPosition(), gameObject->Transform->GetPosition() + viewDirection, up);
+      worldToView = glm::lookAt(size * viewDirection, gameObject->Transform->GetPosition(), up);
       viewToProjection = glm::perspective(fov * M_PI / 180, aspect, nearPlane, farPlane);
     }
     Camera::current = this;
@@ -55,36 +55,22 @@ namespace Framework
 
     // Main?
     mainCamera = data->value_.Bool_;
-    //data = data->next;
-    //test
-    // View Direction
-    //for (unsigned i = 0; i < data->value_.VecN_->size (); ++i)
-    //{
-    //  viewDirection [i] = data->value_.VecN_->at (i);
-    //}
+
     Serializer::DataNode* value = data->FindElement(data, "Facing");
     value->GetValue(&viewDirection);
 
-    //data = data->next;
-    // FOV
     value = data->FindElement(data, "FieldOfView");
     value->GetValue(&fov);
-    //data = data->next;
-    // Near Plane
+
     value = data->FindElement(data, "NearPlane");
     value->GetValue(&nearPlane);
-    //nearPlane = data->value_.Float_;
-    //data = data->next;
-    // Far Plane
+
     value = data->FindElement(data, "FarPlane");
     value->GetValue(&farPlane);
-    //farPlane = data->value_.Float_;
-    //data = data->next;
-    // Aspect Ratio
-    //value = data->FindElement(data, "Size");
-    //value->GetValue(&aspect);
-    //aspect = data->value_.Float_;
-	aspect = 16.f / 9;
+
+    value = data->FindElement (data, "Size");
+    value->GetValue (&size);
+	  aspect = 16.f / 9;
   }
 
 
@@ -114,7 +100,7 @@ namespace Framework
 
   void Camera::Zoom(float zoom)
   {
-    fov += zoom;
+    size += zoom;
     matricesReady = false;
   }
 

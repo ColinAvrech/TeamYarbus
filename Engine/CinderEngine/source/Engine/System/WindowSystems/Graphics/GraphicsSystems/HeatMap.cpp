@@ -21,7 +21,7 @@ namespace Framework
   float x4 [256 * 256];
   float x2 [256 * 256];
   float x1 [256 * 256];
-  std::ofstream file ("file.txt");
+  //std::ofstream file ("file.txt");
   // Constructor
   HeatMap::HeatMap (float w, float h)
   {
@@ -127,9 +127,9 @@ namespace Framework
         float d = hypotf (x, y) * 4.0f;
         float z = (1 - d * d) * expf (d * d / -2.0f);
         graph [i][j] = GLbyte (roundf (z * 127 + 128));
-        file << std::to_string (graph [i][j]) << " ";
+        //file << std::to_string (graph [i][j]) << " ";
       }
-      file << "\n";
+      //file << "\n";
     }
   }
 

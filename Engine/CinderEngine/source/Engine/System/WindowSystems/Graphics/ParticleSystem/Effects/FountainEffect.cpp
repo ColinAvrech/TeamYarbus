@@ -19,12 +19,36 @@ namespace Framework
   DefineComponentName (FountainEffect);
   std::shared_ptr<ParticleEmitter> particleEmitter;
   std::shared_ptr<BasicVelGen> velGenerator;
-  static float size = 5.0f;
+  static float size;
+  static float maxSize;
+  static float minSize;
 
   FountainEffect::~FountainEffect ()
   {
     WINDOWSYSTEM->effectList.remove (this);
   }
+
+
+  void FountainEffect::Serialize (Serializer::DataNode* data)
+  {
+    Serializer::DataNode* value = data->FindElement (data, "ParticleSize");
+    value->GetValue (&size);
+
+    value = data->FindElement (data, "MaxSize");
+    value->GetValue (&maxSize);
+
+    value = data->FindElement (data, "MinSize");
+    value->GetValue (&minSize);
+  }
+
+
+  void FountainEffect::Initialize ()
+  {
+    WINDOWSYSTEM->effectList.push_back (this);
+    initialize (0);
+    initializeRenderer ();
+  }
+
 
   bool FountainEffect::initialize (size_t numParticles)
   {
@@ -38,8 +62,9 @@ namespace Framework
     m_system->init (NUM_PARTICLES);
 
     // Emitters
+    glm::vec3 position = (glm::mat3)Camera::GetViewToProjectionMatrix () * (glm::mat3)Camera::GetWorldToViewMatrix () * gameObject->Transform->GetPosition ();
     float x = 0.01f, y = -0.12f;
-    AddFireEmitter (true, { x, y, 0 }, { -0.05f, 0.01f, -0.05f }, { 0.05f, 0.1f, 0.05f }, 10);
+    AddFireEmitter (true, position, { -0.05f, 0.01f, -0.05f }, { 0.05f, 0.1f, 0.05f }, 10);
 
     auto timeUpdater = std::make_shared<BasicTimeUpdater> ();
     m_system->addUpdater (timeUpdater);
@@ -100,13 +125,13 @@ namespace Framework
 	//std::cout << particleEmitter->m_emitRate << "\n";
 	if (getmic() > 0.1f)
 	{
-		if (velGenerator->m_maxStartVel.y < 0.5f)
+		if (velGenerator->m_maxStartVel.y < 0.9f)
 		velGenerator->m_maxStartVel.y += getmic() * 0.016f;
 
 		if (particleEmitter->m_emitRate < 100)
 			particleEmitter->m_emitRate += getmic();
 
-		if (size < 30)
+		if (size < maxSize)
 			size += getmic() * 0.16f;
 	}
 	else
@@ -118,7 +143,7 @@ namespace Framework
 			particleEmitter->m_emitRate -= 0.2f;
 
 
-		if (size > 5)
+		if (size > minSize)
 			size -= 0.016f;
 	}
 	//velGenerator->m_maxStartVel.x = sin(getmic()) * 0.0001f;
@@ -147,8 +172,9 @@ namespace Framework
     shader->Use ();
     shader->uni1i ("tex", 0);
     shader->uni1f ("size", size);
-    shader->uniMat4 ("matProjection", glm::value_ptr (glm::perspective (45.0f, 16.f / 9, 0.1f, 1000.0f)));
-    shader->uniMat4 ("matModelview", glm::value_ptr (glm::lookAt (glm::vec3 (0,0,1) * 0.5f, glm::vec3 (0.0f, 0.0f, 0.0f), glm::vec3 (0.0f, 1.0f, 0.0f))));
+    shader->uniMat4 ("matModel", glm::value_ptr (gameObject->Transform->GetModelMatrix ()));
+    shader->uniMat4 ("matProjection", glm::value_ptr (Camera::GetViewToProjectionMatrix()));
+    shader->uniMat4 ("matModelview", glm::value_ptr (Camera::GetWorldToViewMatrix()));
     m_renderer->render ();
     shader->Disable ();
     texture->Unbind ();
@@ -190,19 +216,6 @@ namespace Framework
       particleEmitter->addGenerator (timeGenerator);
     }
     m_system->addEmitter (particleEmitter);
-  }
-
-  void FountainEffect::Initialize ()
-  {
-    WINDOWSYSTEM->effectList.push_back (this);
-    initialize (0);
-    initializeRenderer ();
-  }
-
-  void FountainEffect::Serialize (Serializer::DataNode* data)
-  {
-    Serializer::DataNode* value = data->FindElement (data, "ParticleSize");
-    value->GetValue (&size);
   }
 
 }
