@@ -149,6 +149,8 @@ namespace Framework
           }
           ct = ct->next;
         }
+
+        ErrorIf (newobj->Transform == nullptr, (std::string ("Transform component missing on GameObject ") + newobj->Name).c_str());
         GameObjects[newobj->GameObjectID] = newobj;
       }
       it = it->next;
