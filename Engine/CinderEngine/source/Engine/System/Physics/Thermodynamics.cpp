@@ -1,6 +1,7 @@
 #include "Physics/Thermodynamics.h"
 #include "TDLib.h"
 #include "AudioSystem.h"
+#include "Terrain.h"
 
 #define SIZE 10
 
@@ -65,6 +66,9 @@ namespace Framework
     bool ThermodynamicsSystem::Initialize ()
     {
       std::cout << "Thermodynamics Initialized." << std::endl;
+
+      Procedural::TerrainCreator t(100, 50, 25);
+
 
       //Scan level
       MapSize = { 100, 100 };
