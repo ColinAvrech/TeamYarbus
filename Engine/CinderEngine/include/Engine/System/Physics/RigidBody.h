@@ -48,7 +48,9 @@ namespace Framework
 		RigidBody(GameObject * obj)
 		{
 			gameObject = obj;
-		};
+		}
+
+    RigidBody(){}
 
 		virtual ~RigidBody();
 
