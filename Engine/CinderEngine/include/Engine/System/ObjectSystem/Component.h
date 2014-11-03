@@ -36,6 +36,8 @@ namespace Framework
   {
   public:
 
+    virtual ~Component() {}
+
     /*!Telegraph that the component is active*/
     virtual void Initialize ()
     {

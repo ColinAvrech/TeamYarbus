@@ -123,4 +123,16 @@ namespace Framework
     m_renderer->render ();
   }
 
+
+  void ExplosionEffect::Initialize ()
+  {
+    throw std::logic_error ("The method or operation is not implemented.");
+  }
+
+
+  void ExplosionEffect::Serialize (Serializer::DataNode* data)
+  {
+    throw std::logic_error ("The method or operation is not implemented.");
+  }
+
 }

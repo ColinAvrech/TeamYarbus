@@ -48,6 +48,11 @@ namespace Framework
 
     int numAllParticles () override { return m_system->numAllParticles (); }
     int numAliveParticles () override { return m_system->numAliveParticles (); }
+
+    virtual void Initialize ();
+
+    virtual void Serialize (Serializer::DataNode* data);
+
   };
 }
 

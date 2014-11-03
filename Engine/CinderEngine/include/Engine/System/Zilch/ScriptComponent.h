@@ -43,7 +43,7 @@ namespace Framework
     virtual void Serialize(Serializer::DataNode* componentData);
 
     //Destructor
-    ~ZilchComponent();
+    virtual ~ZilchComponent();
 
 #ifdef _DEBUG
   private:

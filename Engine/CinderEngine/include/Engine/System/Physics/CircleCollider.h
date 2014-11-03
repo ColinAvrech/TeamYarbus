@@ -22,12 +22,8 @@ namespace Framework
 		const static std::string Name;
 		float radius;
 		CircleCollider(){}
-		CircleCollider(GameObject* obj)
-		{
-			gameObject = obj;
-		}
 
-		~CircleCollider(){};
+		virtual ~CircleCollider(){};
 
 		/*!Telegraph that the component is active*/
 		void Initialize();

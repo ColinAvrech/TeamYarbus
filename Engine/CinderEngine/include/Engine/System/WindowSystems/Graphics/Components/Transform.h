@@ -29,7 +29,7 @@ namespace Framework
   {
   public:
     Transform () {}
-    ~Transform ();
+    virtual ~Transform();
 
     virtual void Initialize ();
     virtual void Serialize (Serializer::DataNode* data);
@@ -51,7 +51,7 @@ namespace Framework
     inline glm::vec3 GetPosition ();
     inline glm::vec3 GetScale ();
     inline float GetRotation ();
-
+    glm::vec2 GetScreenPosition ();
     static void Print (glm::vec3 position);
 
     // The non-base component usees DefineComponentName macro to name component

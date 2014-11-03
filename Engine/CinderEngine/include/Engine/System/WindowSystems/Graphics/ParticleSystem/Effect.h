@@ -15,10 +15,11 @@
 #include "AntTweakBar.h"
 #include "Texture.h"
 #include "Shader.h"
+#include "GameObject.h"
 
 namespace Framework
 {
-  class IEffect
+  class IEffect : public Component
   {
   public:
     static const size_t DEFAULT_PARTICLE_NUM_FLAG = 0;	// for initialize method
@@ -26,6 +27,9 @@ namespace Framework
   public:
     IEffect () { }
     virtual ~IEffect () { }
+    Shader* shader;
+    virtual void Initialize () {}
+    virtual void Serialize (Serializer::DataNode* data) {}
 
     // creates the effect with desired num of particles, (0 means default for the effect)
     virtual bool initialize (size_t numParticles) = 0;
@@ -42,6 +46,8 @@ namespace Framework
 
     virtual int numAllParticles () = 0;
     virtual int numAliveParticles () = 0;
+
+    const static std::string Name;
   };
 
   class EffectFactory

@@ -48,7 +48,7 @@ namespace Framework
 
   bool EventSystem::Initialize()
   {
-    std::cout << Console::yellow << "Initializing EventSystem" << std::endl;
+    std::cout << CinderConsole::yellow << "Initializing EventSystem" << std::endl;
     return true;
   }
 

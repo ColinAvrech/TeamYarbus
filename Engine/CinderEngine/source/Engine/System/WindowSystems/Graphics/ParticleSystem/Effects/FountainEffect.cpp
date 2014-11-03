@@ -12,12 +12,43 @@
 #include "EditorUI.h"
 #include "FountainEffect.h"
 #include "ResourceManager.h"
+#include "WindowSystem.h"
 
 namespace Framework
 {
+  DefineComponentName (FountainEffect);
   std::shared_ptr<ParticleEmitter> particleEmitter;
   std::shared_ptr<BasicVelGen> velGenerator;
-  static float size = 5.0f;
+  static float size;
+  static float maxSize;
+  static float minSize;
+
+  FountainEffect::~FountainEffect ()
+  {
+    WINDOWSYSTEM->effectList.remove (this);
+  }
+
+
+  void FountainEffect::Serialize (Serializer::DataNode* data)
+  {
+    Serializer::DataNode* value = data->FindElement (data, "ParticleSize");
+    value->GetValue (&size);
+
+    value = data->FindElement (data, "MaxSize");
+    value->GetValue (&maxSize);
+
+    value = data->FindElement (data, "MinSize");
+    value->GetValue (&minSize);
+  }
+
+
+  void FountainEffect::Initialize ()
+  {
+    WINDOWSYSTEM->effectList.push_back (this);
+    initialize (0);
+    initializeRenderer ();
+  }
+
 
   bool FountainEffect::initialize (size_t numParticles)
   {
@@ -30,117 +61,10 @@ namespace Framework
     m_system = std::make_shared<ParticleSystem> (NUM_PARTICLES);
     m_system->init (NUM_PARTICLES);
 
-#pragma region TEST
     // Emitters
+    glm::vec3 position = (glm::mat3)Camera::GetViewToProjectionMatrix () * (glm::mat3)Camera::GetWorldToViewMatrix () * gameObject->Transform->GetPosition ();
     float x = 0.01f, y = -0.12f;
-    AddFireEmitter (true, { x, y, 0 }, { -0.05f, 0.01f, -0.05f }, { 0.05f, 0.1f, 0.05f }, 10);
-	//AddFireEmitter(true, { -x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //AddFireEmitter (true, { -x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //AddFireEmitter (true, { x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //AddFireEmitter (true, { -x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //x = -0.29f, y = 0.19f;
-    //AddFireEmitter (true, { x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //AddFireEmitter (true, { -x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //AddFireEmitter (true, { x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //AddFireEmitter (true, { -x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //x = -0.28f, y = 0.18f;
-    //AddFireEmitter (true, { x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //AddFireEmitter (true, { -x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //AddFireEmitter (true, { x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //AddFireEmitter (true, { -x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //x = -0.27f, y = 0.17f;
-    //AddFireEmitter (true, { x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //AddFireEmitter (true, { -x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //AddFireEmitter (true, { x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //AddFireEmitter (true, { -x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //x = -0.26f, y = 0.16f;
-    //AddFireEmitter (true, { x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //AddFireEmitter (true, { -x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //AddFireEmitter (true, { x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //AddFireEmitter (true, { -x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //x = -0.25f, y = 0.15f;
-    //AddFireEmitter (true, { x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //AddFireEmitter (true, { -x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //AddFireEmitter (true, { x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //AddFireEmitter (true, { -x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //x = -0.24f, y = 0.14f;
-    //AddFireEmitter (true, { x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //AddFireEmitter (true, { -x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //AddFireEmitter (true, { x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //AddFireEmitter (true, { -x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //x = -0.23f, y = 0.13f;
-    //AddFireEmitter (true, { x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //AddFireEmitter (true, { -x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //AddFireEmitter (true, { x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //AddFireEmitter (true, { -x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //x = -0.22f, y = 0.12f;
-    //AddFireEmitter (true, { x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //AddFireEmitter (true, { -x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //AddFireEmitter (true, { x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //AddFireEmitter (true, { -x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //x = -0.21f, y = 0.11f;
-    //AddFireEmitter (true, { x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //AddFireEmitter (true, { -x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //AddFireEmitter (true, { x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //AddFireEmitter (true, { -x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //x = -0.2f, y = 0.1f;
-    //AddFireEmitter (true, { x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //AddFireEmitter (true, { -x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //AddFireEmitter (true, { x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //AddFireEmitter (true, { -x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //x = -0.19f, y = 0.09f;
-    //AddFireEmitter (true, { x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //AddFireEmitter (true, { -x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //AddFireEmitter (true, { x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //AddFireEmitter (true, { -x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //x = -0.18f, y = 0.08f;
-    //AddFireEmitter (true, { x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //AddFireEmitter (true, { -x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //AddFireEmitter (true, { x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //AddFireEmitter (true, { -x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //x = -0.17f, y = 0.07f;
-    //AddFireEmitter (true, { x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //AddFireEmitter (true, { -x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //AddFireEmitter (true, { x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //AddFireEmitter (true, { -x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //x = -0.16f, y = 0.06f;
-    //AddFireEmitter (true, { x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //AddFireEmitter (true, { -x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //AddFireEmitter (true, { x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    //AddFireEmitter (true, { -x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    /*
-    x = -0.15f, y = 0.05f;
-    AddFireEmitter (true, { x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    AddFireEmitter (true, { -x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    AddFireEmitter (true, { x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    AddFireEmitter (true, { -x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    x = -0.14f, y = 0.04f;
-    AddFireEmitter (true, { x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    AddFireEmitter (true, { -x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    AddFireEmitter (true, { x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    AddFireEmitter (true, { -x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    x = -0.13f, y = 0.03f;
-    AddFireEmitter (true, { x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    AddFireEmitter (true, { -x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    AddFireEmitter (true, { x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    AddFireEmitter (true, { -x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    x = -0.12f, y = 0.02f;
-    AddFireEmitter (true, { x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    AddFireEmitter (true, { -x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    AddFireEmitter (true, { x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    AddFireEmitter (true, { -x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    x = -0.11f, y = 0.01f;
-    AddFireEmitter (true, { x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    AddFireEmitter (true, { -x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    AddFireEmitter (true, { x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    AddFireEmitter (true, { -x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    x = -0.1f, y = 0.0f;
-    AddFireEmitter (true, { x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    AddFireEmitter (true, { -x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    AddFireEmitter (true, { x, -y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);
-    AddFireEmitter (true, { -x, y, 0 }, { -0.05f, 0.1f, -0.05f }, { 0.05f, 0.25f, 0.05f }, 10);*/
-#pragma endregion
-
+    AddFireEmitter (true, position, { -0.05f, 0.01f, -0.05f }, { 0.05f, 0.1f, 0.05f }, 10);
 
     auto timeUpdater = std::make_shared<BasicTimeUpdater> ();
     m_system->addUpdater (timeUpdater);
@@ -201,13 +125,13 @@ namespace Framework
 	//std::cout << particleEmitter->m_emitRate << "\n";
 	if (getmic() > 0.1f)
 	{
-		if (velGenerator->m_maxStartVel.y < 0.5f)
+		if (velGenerator->m_maxStartVel.y < 0.9f)
 		velGenerator->m_maxStartVel.y += getmic() * 0.016f;
 
 		if (particleEmitter->m_emitRate < 100)
 			particleEmitter->m_emitRate += getmic();
 
-		if (size < 30)
+		if (size < maxSize)
 			size += getmic() * 0.16f;
 	}
 	else
@@ -219,7 +143,7 @@ namespace Framework
 			particleEmitter->m_emitRate -= 0.2f;
 
 
-		if (size > 5)
+		if (size > minSize)
 			size -= 0.016f;
 	}
 	//velGenerator->m_maxStartVel.x = sin(getmic()) * 0.0001f;
@@ -239,14 +163,25 @@ namespace Framework
 
   void FountainEffect::render ()
   {
+    glEnable (GL_POINT_SPRITE);
+    glEnable (GL_PROGRAM_POINT_SIZE);
+    glEnable (GL_BLEND);
+    glBlendFunc (GL_SRC_ALPHA, GL_ONE);
     glEnable (GL_TEXTURE_2D);
     texture->Bind();
     shader->Use ();
+    shader->uni1i ("tex", 0);
     shader->uni1f ("size", size);
-
+    shader->uniMat4 ("matModel", glm::value_ptr (gameObject->Transform->GetModelMatrix ()));
+    shader->uniMat4 ("matProjection", glm::value_ptr (Camera::GetViewToProjectionMatrix()));
+    shader->uniMat4 ("matModelview", glm::value_ptr (Camera::GetWorldToViewMatrix()));
     m_renderer->render ();
     shader->Disable ();
     texture->Unbind ();
+
+    glDisable (GL_POINT_SPRITE);
+    glDisable (GL_PROGRAM_POINT_SIZE);
+    glDisable (GL_BLEND);
   }
 
   void FountainEffect::AddFireEmitter(bool active, glm::vec3 position, glm::vec3 minVelocity, glm::vec3 maxVelocity, float emitRate)

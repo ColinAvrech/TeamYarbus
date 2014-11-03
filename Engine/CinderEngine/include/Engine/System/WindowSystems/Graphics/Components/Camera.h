@@ -22,6 +22,7 @@ namespace Framework
   public:
     Camera () : up (0, 1, 0) {}
     Camera (GameObject* go);
+    virtual ~Camera ();
 
     virtual void Initialize ();
     virtual void Serialize (Serializer::DataNode* data);
@@ -36,11 +37,10 @@ namespace Framework
 
     inline static glm::mat4 GetWorldToViewMatrix ();
     inline static glm::mat4 GetViewToProjectionMatrix ();
-    static std::vector <Camera*> allCameras;
+    static std::list <Camera*> allCameras;
     static Camera* current;
     static Camera* main;
 
-    ~Camera ();
     glm::vec3 position;
     glm::vec3 viewDirection;
     glm::mat4 worldToView;
@@ -72,9 +72,9 @@ namespace Framework
     {
       Camera::main->worldToView = glm::lookAt
         (
-        Camera::current->position,
-        Camera::current->position + Camera::current->viewDirection,
-        Camera::current->up
+        Camera::main->size * Camera::main->viewDirection,
+        Camera::main->position,
+        Camera::main->up
         );
     }
 

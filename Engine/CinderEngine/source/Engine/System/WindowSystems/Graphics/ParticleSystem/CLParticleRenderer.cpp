@@ -4,7 +4,7 @@
 \author Manas Sudhir Kulkarni
 \par    Course: GAM200
 \par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
-\brief  
+\brief
 */
 /******************************************************************************/
 
@@ -17,11 +17,13 @@
 
 namespace Framework
 {
+  static bool draw = false;
   static double cursorX = 0, cursorY = 0;
   static GLuint fbo, rbo;
   static float decayRate = 2.0f;
   static float breathRate = 0.01f;
   static float offset = 0.75f;
+
   static float random (float fMin, float fMax)
   {
     float fRandNum = (float) rand () / RAND_MAX;
@@ -31,8 +33,8 @@ namespace Framework
 
   CLParticleRenderer::CLParticleRenderer ()
   {
-    particleCount = 400;
-    particleSize = 100;
+    particleCount = 1000000;
+    particleSize = 1;
     srand ((unsigned) time (NULL));
     color [0] = 255;
     color [1] = 80;
@@ -58,7 +60,7 @@ namespace Framework
     // OpenGL 3.3+
     // Create a VAO and never use it again!!!
     vao = new VAO ();
-    SSBOPos = new SSBO (particleCount * sizeof (glm::vec4));
+    SSBOPos = new SSBO (particleCount * sizeof(glm::vec4));
 
     // Fill
     ResetPosition ();
@@ -81,20 +83,24 @@ namespace Framework
   }
 
 
-  static void OnKeyPressed (GameObject* go, KeyEvent* key)
+  void CLParticleRenderer::OnKeyPressed (KeyEvent* key)
   {
     std::cout << cursorX << std::endl;
     if (key->KeyDown)
     {
+      if (key->KeyValue == GLFW_KEY_R)
+        ResetBuffers ();
       if (key->KeyValue == GLFW_KEY_A)
-        cursorX -= 5.f;
+        speedMultiplier -= 0.1f;
       else if (key->KeyValue == GLFW_KEY_D)
-        cursorX += 5.f;
+        speedMultiplier += 0.1f;
+      //else if (key->KeyValue == GLFW_KEY_D)
+      //  cursorX += 5.f;
 
-      if (key->KeyValue == GLFW_KEY_D)
-        cursorY -= 5.f;
-      else if (key->KeyValue == GLFW_KEY_W)
-        cursorY += 5.f;
+      if (key->KeyValue == GLFW_KEY_C)
+        draw = !draw;
+      //else if (key->KeyValue == GLFW_KEY_W)
+      //  cursorY += 5.f;
     }
   }
 
@@ -104,6 +110,8 @@ namespace Framework
     texture = Resources::RS->Get_Texture ("Particle.bmp");
     cursorX = WINDOWSYSTEM->Get_Width () / 2;
     cursorY = WINDOWSYSTEM->Get_Height () / 2;
+
+    EVENTSYSTEM->mConnect<KeyEvent, CLParticleRenderer> (Events::KEY_ANY, this, &CLParticleRenderer::OnKeyPressed);
   }
 
   void CLParticleRenderer::ResetPosition ()
@@ -112,22 +120,24 @@ namespace Framework
     //double cursorX, cursorY;
     int windowWidth, windowHeight;
     glfwPollEvents ();
-    //glfwGetCursorPos (WINDOWSYSTEM->Get_Window(), &cursorX, &cursorY);
-    glfwGetWindowSize (WINDOWSYSTEM->Get_Window(), &windowWidth, &windowHeight);
+    glfwGetCursorPos (WINDOWSYSTEM->Get_Window (), &cursorX, &cursorY);
+    glfwGetWindowSize (WINDOWSYSTEM->Get_Window (), &windowWidth, &windowHeight);
 
-    float destPosX = (float) (cursorX / (windowWidth) -0.5f) * 2.0f;
-    float destPosY = (float) ((windowHeight - cursorY) / windowHeight - 0.5f) * 2.0f;
+    destPosX = (float) (cursorX / (windowWidth) -0.5f) * 2.0f;
+    destPosY = (float) ((windowHeight - cursorY) / windowHeight - 0.5f) * 2.0f;
 
     glm::vec4* verticesPos = (glm::vec4*) SSBOPos->MapBufferRange<glm::vec4> (0, particleCount);
     for (int i = 0; i < particleCount; i++)
     {
       float rnd = (float) rand () / (float) (RAND_MAX);
       float rndVal = (float) rand () / (float) (RAND_MAX / (360.0f * 3.14f * 2.0f));
-      float rndRad = (float) rand () / (float) (RAND_MAX) * 0.2f;
+      float rndRad = (float) rand () / (float) (RAND_MAX) * 0.05f;
+      radius = rndRad;
       verticesPos [i].x = destPosX + cos (rndVal) * rndRad;
       verticesPos [i].y = destPosY + sin (rndVal) * rndRad;
       verticesPos [i].z = 0.0f;
       verticesPos [i].w = 1.0f;
+      //Physics::THERMODYNAMICS->SetCellTemperature (verticesPos [i].x * 2, verticesPos [i].y * 2, 2250.0f, 0.016);
     }
     SSBOPos->UnMapBuffer ();
   }
@@ -154,14 +164,14 @@ namespace Framework
     SSBOPos->BindBufferBase (0);
     SSBOVel->BindBufferBase (1);
 
-    if (AUDIOSYSTEM->input.peaklevel[0] > 0.05f)
+    if (AUDIOSYSTEM->input.peaklevel [0] > 0.05f)
     {
-      if (color [3] < 1) color[3] += AUDIOSYSTEM->input.peaklevel[0] * 0.1f;
+      if (color [3] < 1) color [3] += AUDIOSYSTEM->input.peaklevel [0] * 0.1f;
       //printf("%f\n", color[3]);
     }
     else
     {
-      if (color[3] > 0.1f) color[3] -= 0.016f;
+      if (color [3] > 0.1f) color [3] -= 0.016f;
     }
     double frameTimeStart = glfwGetTime () * 1000;
 
@@ -172,21 +182,29 @@ namespace Framework
 
     //double cursorX, cursorY;
     int windowWidth, windowHeight;
-    //glfwGetCursorPos (WINDOWSYSTEM->Get_Window(), &cursorX, &cursorY);
-    glfwGetWindowSize (WINDOWSYSTEM->Get_Window(), &windowWidth, &windowHeight);
+    glfwGetCursorPos (WINDOWSYSTEM->Get_Window (), &cursorX, &cursorY);
+    glfwGetWindowSize (WINDOWSYSTEM->Get_Window (), &windowWidth, &windowHeight);
 
-    float destPosX = (float) (cursorX / (windowWidth) -0.5f) * 2.0f;
-    float destPosY = (float) ((windowHeight - cursorY) / windowHeight - 0.5f) * 2.0f;
+    destPosX = (float) (cursorX / (windowWidth) -0.5f) * 2.0f;
+    destPosY = (float) ((windowHeight - cursorY) / windowHeight - 0.5f) * 2.0f;
 
     computeshader->Use ();
     computeshader->uni1f ("deltaT", 2 * speedMultiplier * (pause ? 0 : 1));
     computeshader->uni3f ("destPos", destPosX, destPosY, 0);
     computeshader->uni2f ("vpDim", 1, 1);
-    computeshader->uni1i("borderClamp", (int) borderEnabled);
-    std::cout << "{ " << Physics::THERMODYNAMICS->GetCellVelocity(20, 20).x << ", " << Physics::THERMODYNAMICS->GetCellVelocity(20, 20).y << " }\n";
+    computeshader->uni1i ("borderClamp", (int) borderEnabled);
+    //std::cout << "{ " << Physics::THERMODYNAMICS->GetCellVelocity(20, 20).x << ", " << Physics::THERMODYNAMICS->GetCellVelocity(20, 20).y << " }\n";
     computeshader->uni2fv ("cellVelocity", glm::value_ptr (Physics::THERMODYNAMICS->GetCellVelocity (20, 20)));
-    
+    radius = 0.1f;
+    float dy = -destPosY;
     //std::cout << Physics::THERMODYNAMICS->GetCellTemperature (20, 20) << "\n";
+    //Physics::THERMODYNAMICS->SetCellTemperature(destPosX, dy, 1000.0f, 0.016);
+    //Physics::THERMODYNAMICS->SetCellTemperature(destPosX + radius, dy, 2250.0f, 0.016);
+    //Physics::THERMODYNAMICS->SetCellTemperature(destPosX - radius, dy, 2250.0f, 0.016);
+    //Physics::THERMODYNAMICS->SetCellTemperature(destPosX, dy + radius, 2250.0f, 0.016);
+    //Physics::THERMODYNAMICS->SetCellTemperature(destPosX, dy - radius, 2250.0f, 0.016);
+    //Physics::THERMODYNAMICS->SetCellTemperature(destPosX + radius, dy + radius, 2250.0f, 0.016);
+    //Physics::THERMODYNAMICS->SetCellTemperature(destPosX - radius, dy - radius, 2250.0f, 0.016);
 
     int workingGroups = particleCount / 16;
 
@@ -201,23 +219,25 @@ namespace Framework
 
     shader->Use ();
 
-    shader->uni4f ("Color", color [0] / 255.0f, color [1] / 255.0f, color [2] / 255.0f, color [3]);
+    shader->uni4f ("Color", color [0] / 255.0f, color [1] / 255.0f, color [2] / 255.0f, 1.0f);
 
     glGetError ();
 
     texture->Bind ();
     GLuint posAttrib = shader->attribLocation ("position");
 
-    glBindBuffer (GL_ARRAY_BUFFER, SSBOPos->Get_POS());
+    glBindBuffer (GL_ARRAY_BUFFER, SSBOPos->Get_POS ());
     shader->vertexAttribPtr (posAttrib, 4, GL_FLOAT, GL_FALSE, 0, 0);
     shader->enableVertexAttribArray (posAttrib);
     glPointSize (particleSize);
+    if (draw)
     glDrawArrays (GL_POINTS, 0, particleCount);
 
     texture->Unbind ();
     shader->Disable ();
 
     frameDelta = (float) (glfwGetTime () - frameTimeStart) * 1000.0f;
+    vao->unbindVAO ();
   }
 
   void CLParticleRenderer::Interpolate_Colors ()

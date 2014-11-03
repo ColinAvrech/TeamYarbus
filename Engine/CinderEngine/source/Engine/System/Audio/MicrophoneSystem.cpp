@@ -43,7 +43,7 @@ namespace Framework
 
     if (_recordnumdrivers <= 0)
     {
-      std::cout << Console::red << "No recording devices found/plugged in!";
+      std::cout << CinderConsole::red << "No recording devices found/plugged in!";
     }
 
     result = pFMODAudioSystem->getRecordDriverInfo(0, NULL, NULL, 0, 0, 
@@ -222,36 +222,36 @@ namespace Framework
   void AudioSystem::meterConsoleOut()
   {
     if (input.peaklevel[0] < 0.2)
-      std::cout << Console::cyan 
+      std::cout << CinderConsole::cyan 
                 << "RMS Peak : " 
-                << Console::darkgreen 
+                << CinderConsole::darkgreen 
                 << input.peaklevel[0] 
                 << std::endl;
 
     else if (input.peaklevel[0] < 0.4)
-      std::cout << Console::cyan 
+      std::cout << CinderConsole::cyan 
                 << "RMS Peak : " 
-                << Console::green 
+                << CinderConsole::green 
                 << input.peaklevel[0] 
                 << std::endl;
 
     else if (input.peaklevel[0] < 0.6)
-      std::cout << Console::cyan 
+      std::cout << CinderConsole::cyan 
                 << "RMS Peak : " 
-                << Console::yellow 
+                << CinderConsole::yellow 
                 << input.peaklevel[0] 
                 << std::endl;
 
     else if (input.peaklevel[0] < 0.9)
-      std::cout << Console::cyan 
+      std::cout << CinderConsole::cyan 
                 << "RMS Peak : " 
-                << Console::red 
+                << CinderConsole::red 
                 << input.peaklevel[0] 
                 << std::endl;
     else
-      std::cout << Console::cyan 
+      std::cout << CinderConsole::cyan 
                 << "RMS Peak : " 
-                << Console::darkred 
+                << CinderConsole::darkred 
                 << input.peaklevel[0] 
                 << std::endl;    
   } 
@@ -266,55 +266,55 @@ namespace Framework
     fft->getParameterFloat(FMOD_DSP_FFT_DOMINANT_FREQ, &val, specLeft, 20000);
     
     if (val < 80)
-      std::cout << Console::red 
+      std::cout << CinderConsole::red 
                 << "Dominant Frequency = " 
-                << Console::white
+                << CinderConsole::white
                 << val
                 << " (SUPER LOW)"
                 << std::endl; 
 
     else if (val < 1500)
-      std::cout << Console::red
+      std::cout << CinderConsole::red
                 << "Dominant Frequency : "
-                << Console::gray
+                << CinderConsole::gray
                 << val
                 << " (LOW)"
                 << std::endl;
 
     else if (val < 3000)
-      std::cout << Console::red
+      std::cout << CinderConsole::red
                 << "Dominant Frequency : "
-                << Console::yellow
+                << CinderConsole::yellow
                 << val
                 << " (LOW MIDS)"
                 << std::endl;
 
     else if (val < 4500)
-      std::cout << Console::red
+      std::cout << CinderConsole::red
                 << "Dominant Frequency : "
-                << Console::darkyellow
+                << CinderConsole::darkyellow
                 << val
                 << " (UPPER MIDS)"
                 << std::endl;
 
     else if (val < 6000)
-      std::cout << Console::red
+      std::cout << CinderConsole::red
                 << "Dominant Frequency : "
-                << Console::cyan
+                << CinderConsole::cyan
                 << val
                 << " (HIGH)"
                 << std::endl;
     else if (val < 15000)
-      std::cout << Console::red
+      std::cout << CinderConsole::red
                 << "Dominant Frequency : "
-                << Console::darkcyan
+                << CinderConsole::darkcyan
                 << val
                 << " (UPPER HIGH)"
                 << std::endl;
     else
-      std::cout << Console::red
+      std::cout << CinderConsole::red
                 << "Dominant Frequency : "
-                << Console::blue
+                << CinderConsole::blue
                 << val
                 << " (UPPER HIGH)"
                 << std::endl;
@@ -324,13 +324,13 @@ namespace Framework
 
   void AudioSystem::latencyConsoleOut()
   {
-    std::cout << Console::red 
+    std::cout << CinderConsole::red 
               << "Samples: " 
-              << Console::yellow
+              << CinderConsole::yellow
               << (int)_smootheddelta 
-              << Console::green
+              << CinderConsole::green
               << " Playback Latency: "
-              << Console::cyan
+              << CinderConsole::cyan
               << (int)_smootheddelta * 1000 / _recordrate 
               << " milliseconds" 
               << std::endl;

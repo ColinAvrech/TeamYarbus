@@ -52,18 +52,18 @@ Level =
 	  },
     Transform = 
 	  {
-		  Vec3 Translation = [0, 0, 0],
+		  Vec3 Translation = [0, 0, -10],
 		  Vec3 Scale = [1, 1, 1],
 		  Quat Rotation = [0, 0, 0, 1],
 	  },
     Camera = 
 		{
       bool main = true,
-      Vec3 Facing = [0, 0, -1],
+      Vec3 Facing = [0, 0, 1],
 			float FieldOfView = 120,
 			float NearPlane = 0.1,
-			float FarPlane = 10,
-			float Size = 1.5,
+			float FarPlane = 20,
+			float Size = 1,
 		},
   },
   Cog = 
@@ -78,14 +78,14 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, 0, -1],
+			Vec3 Translation = [0, 0, 0],
 			Vec3 Scale = [2.5, 2.5, 2.5],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Sprite = 
 		{
 			string SpriteSource = "EnvHighRes.png",
-			string Shader = "Lighting",
+			string Shader = "Default",
 			bool AnimationActive = false,
 		},
   },
@@ -101,15 +101,39 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0.15, -1.6, -2],
+			Vec3 Translation = [0.0, -1.5, -1],
 			Vec3 Scale = [0.15, 0.15, 0.15],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Sprite = 
 		{
 			string SpriteSource = "Ember.png",
-			string Shader = "Lighting",
+			string Shader = "Default",
 			bool AnimationActive = false,
+		},
+  },
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 10,
+		},
+		Named = 
+		{
+			string Name = "fireeffect",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0.15, -1.25, 0.0],
+			Vec3 Scale = [1, 1, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		FountainEffect = 
+		{
+      int ParticleCount = 20000,
+      float ParticleSize = 20.0,
+      float MaxSize = 50.0,
+      float MinSize = 5.0,
 		},
   },
 },

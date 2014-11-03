@@ -183,7 +183,7 @@ namespace Framework
     Editor::AddTweak (myBar, "effect id", &gSelectedEffect, "min=0 max=3");
     gCurrentEffect->addUI (myBar);
 
-    bg = Resources::RS->Get_Sound("music2.mp3");
+    
     Editor::AddTweakText(audioBar, "O HAI ENGINE PROOF", &s, "");
     Editor::AddTweak(audioBar, "Play Song", &song, "group=Play");
     Editor::AddTweak(audioBar, "Generate Noise", &noise, "group=Play");
@@ -339,9 +339,9 @@ namespace Framework
     //glEnable (GL_DEPTH_TEST);
     glBlendFunc (GL_SRC_ALPHA, GL_ONE);
 
-    gpuRender.begin ();
+    //gpuRender.begin ();
     gCurrentEffect->render ();
-    gpuRender.end ();
+    //gpuRender.end ();
 
     glDisable (GL_BLEND);
     glDisable (GL_DEPTH_TEST);

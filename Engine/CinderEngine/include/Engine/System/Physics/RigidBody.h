@@ -50,12 +50,11 @@ namespace Framework
 			gameObject = obj;
 		};
 
-		RigidBody(){}
-		~RigidBody();
+		virtual ~RigidBody();
 
 		/*!Telegraph that the component is active*/
-		void Initialize();
-		void Serialize(Serializer::DataNode* data);
+		void Initialize() override;
+		void Serialize(Serializer::DataNode* data) override;
 		void Update();
 		void AddForce(glm::vec2 force);
 		void Integrate(const float dt, GameObject * obj);

@@ -15,7 +15,7 @@ namespace Framework
 	{
 		float CirclevsLine(const float rad, glm::vec2& pos, LineCollider* l)
 		{
-			float penetration;
+			//float penetration;
 			float ldotProduct = l->p1dotNormal;
 			glm::vec2 normVec = l->normalVec;
 			normVec = glm::normalize(normVec);

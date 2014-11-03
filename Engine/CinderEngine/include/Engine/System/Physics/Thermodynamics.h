@@ -67,7 +67,7 @@ namespace Framework
 
       // Called every frame
       void Update(const double dt);
-
+      void Reset ();
       // Returns name of System
       const std::string GetName(){ return "ThermodynamicsSystem"; }
 
@@ -125,6 +125,7 @@ namespace Framework
       glm::vec2 MapSize;
       float CellSize;
       glm::vec2 MapOffset;
+      float AtmosphericTemperature;
 
       //Temperature Map. Temperature is stored in Kelvin.
       float     **HeatMap;

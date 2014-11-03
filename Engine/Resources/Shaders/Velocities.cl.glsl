@@ -45,7 +45,7 @@ void main()
   vec3 vVel = Velocities[index].xyz;
 
   // Calculate new velocity depending on attraction point
-  vVel += normalize(destPos - vPos) * 0.001 * sin (destPos);
+  vVel += normalize(destPos - vPos) * 0.0001 * sin (destPos);
 
   // Move by velocity
   vPos += vVel * deltaT;

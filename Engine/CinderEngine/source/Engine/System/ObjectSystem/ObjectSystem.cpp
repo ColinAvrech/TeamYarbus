@@ -13,6 +13,7 @@ deleted.
 #include "ObjectSystem.h"
 #include "IncludeForAllCollision.h"
 #include "CharacterController.h"
+#include "FountainEffect.h"
 
 namespace Framework
 {
@@ -65,13 +66,11 @@ namespace Framework
     RegisterComponent(Sprite);
     RegisterComponent (Camera);
     RegisterComponent (ShapeCollider);
-  RegisterComponent(CharacterController);
-    //RegisterComponent(CircleCollider);	
-  AddComponentCreator("SphereCollider", new ComponentCreatorType<CircleCollider>("SphereCollider"));
-  AddComponentCreator("BoxCollider", new ComponentCreatorType<LineCollider>("BoxCollider"));
-  //RegisterComponent(PointCollider);
-  //RegisterComponent(LineCollider);
-  RegisterComponent(RigidBody);
+    RegisterComponent(CharacterController);
+    RegisterComponent(RigidBody);
+    RegisterComponent (FountainEffect);
+    AddComponentCreator("SphereCollider", new ComponentCreatorType<CircleCollider>("SphereCollider"));
+    AddComponentCreator("BoxCollider", new ComponentCreatorType<LineCollider>("BoxCollider"));
   }
 
   void ObjectSystem::AddComponentCreator(std::string name, ComponentCreator* creator)
@@ -86,6 +85,7 @@ namespace Framework
       delete obj.second;
       obj.second = NULL;
     }
+    GameObjects.clear();
   }
 
   void ObjectSystem::DestroyGameObjectsToBeDestroyed()
@@ -149,6 +149,8 @@ namespace Framework
           }
           ct = ct->next;
         }
+
+        ErrorIf (newobj->Transform == nullptr, (std::string ("Transform component missing on GameObject ") + newobj->Name).c_str());
         GameObjects[newobj->GameObjectID] = newobj;
       }
       it = it->next;

@@ -53,14 +53,14 @@ const int ClientHeight = 768;
 //		std::cout << "My Update: " << e->Dt << std::endl;
 //	}
 //};
-
+//SCENE CHANGER
 
 int main (void)
 {
   EnableMemoryLeakChecking ();
 
   // TODO (EXTRA): make a window to show while the game is loading
-  Console::Create_Cinder_Console ("CinderEngineConsole");
+  CinderConsole::Create_Cinder_Console ("CinderEngineConsole");
   // TODO Make console accept input by pressing '`', if '`' is pressed again return to game
   
   //! Create the core engine which manages all systems.
@@ -75,12 +75,12 @@ int main (void)
   ObjectSystem* objsys = new ObjectSystem ();
 
   engine->AddSystem (phys);
+  engine->AddSystem (thermo);
   //engine->AddSystem (sceneManager);
   engine->AddSystem (windows);
   engine->AddSystem (audio);
   engine->AddSystem (events);
   engine->AddSystem (zilch);
-  engine->AddSystem (thermo);
   engine->AddSystem (objsys);
 
   Resources resourceManager;
@@ -89,12 +89,26 @@ int main (void)
   //! Initialize all added Systems. DON'T INIT YOUR OWN
   engine->Initialize ();
 
-  //resourceManager.Get_Sound ("music2.mp3")->Play ();
+  Sound *pads;
+  pads = resourceManager.Get_Sound("Pads.ogg");
+  pads->Play();
+  pads->VolumeFade(0.6f, 3);
+  pads->HighPassFilter();
+  pads->SetHPF(600, 1);
+  pads->Reverb();
+  pads->SetReverbPreset(Sound::ARENA);
 
   audio->LoadMicData ();
 
+
   //! activate the window.
-  OBJECTSYSTEM->LoadLevel ("PhysicsTest.data");
+  OBJECTSYSTEM->LoadLevel("Level.data");
+
+  // Connect example
+  //MyClass _myclass;
+  //EVENTSYSTEM->mConnect<KeyEvent, MyClass>(Events::KEY_RIGHT, &_myclass, &MyClass::WhenRightIsPressed);
+  //EVENTSYSTEM->mConnect<KeyEvent, MyClass>(Events::KEY_LEFT, &_myclass, &MyClass::WhenLeftIsPressed);
+  //OBJECTSYSTEM->LoadLevel("PhysicsTest.data");
 
   // Connect example
   //MyClass _myclass;
@@ -111,7 +125,7 @@ int main (void)
   delete engine;
 
   //! Free console
-  Console::Free_Cinder_Console ();
+  CinderConsole::Free_Cinder_Console ();
 
   return 0;
 }

@@ -36,14 +36,14 @@ bool SignalError(const char* exp, const char * filename, int line_number, const 
   //! Add newline to the end
   strcat_s(Message, BufferSize, "\n");
 
-  std::cerr << Console::red;
+  std::cerr << CinderConsole::red;
   std::cerr << "************************************************************" << std::endl;
   std::cerr << "********************AN ERROR HAS OCCURRED*******************" << std::endl;
   std::cerr << "************************************************************" << std::endl;
 
-  std::cerr << Console::darkyellow << "File: " << Console::yellow << filename << std::endl;
-  std::cerr << Console::darkgray << "Line Number: " << Console::gray << line_number << std::endl;
-  std::cerr << Console::darkred << "Error Message: " << Console::red << Message << std::endl;
+  std::cerr << CinderConsole::darkyellow << "File: " << CinderConsole::yellow << filename << std::endl;
+  std::cerr << CinderConsole::darkgray << "Line Number: " << CinderConsole::gray << line_number << std::endl;
+  std::cerr << CinderConsole::darkred << "Error Message: " << CinderConsole::red << Message << std::endl;
 
   //!Display a message box for the user
   MessageBox(NULL, Message, "ERROR: Oh noes!", MB_OK);
@@ -64,7 +64,7 @@ void TracePrint(const char * msg, ...)
   vsnprintf_s(Message, BufferSize, _TRUNCATE, msg, args);
   va_end(args);
 
-  std::cout << Console::green << Message << Console::white << std::endl;
+  std::cout << CinderConsole::green << Message << CinderConsole::white << std::endl;
 }
 
 /*! Enables memory checking.

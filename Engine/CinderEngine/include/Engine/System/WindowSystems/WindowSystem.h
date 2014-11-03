@@ -12,6 +12,7 @@
 #include "GraphicsCommon.h"
 #include "glfw3.h"
 #include "KeyEvent.h"
+#include "Effect.h"
 
 
 namespace Framework
@@ -43,6 +44,7 @@ namespace Framework
     void GLFWWindowClosed(GLFWwindow* window);
 
     void Resize (GLFWwindow* window, int w, int h);
+    void FrameBufferResize (GLFWwindow* _window, int w, int h);
 
     unsigned Get_Width ();
     unsigned Get_Height ();
@@ -52,7 +54,9 @@ namespace Framework
     }
     void Set_W_H (unsigned, unsigned);
 
-    static std::vector <Sprite*> spriteList;
+    static std::list <Transform*> transformList;
+    static std::list <Sprite*> spriteList;
+    static std::list <IEffect*> effectList;
 
   private:
     GLFWwindow* window;

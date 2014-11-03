@@ -130,4 +130,15 @@ namespace Framework
     shader->uni1f ("size", 2.0f);
     m_renderer->render ();
   }
+
+  void TunnelEffect::Initialize ()
+  {
+    throw std::logic_error ("The method or operation is not implemented.");
+  }
+
+  void TunnelEffect::Serialize (Serializer::DataNode* data)
+  {
+    throw std::logic_error ("The method or operation is not implemented.");
+  }
+
 }

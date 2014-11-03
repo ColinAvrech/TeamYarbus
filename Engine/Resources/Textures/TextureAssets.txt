@@ -5,7 +5,6 @@ Logo.png
 Logo.jpg
 Particle.png
 Particle1.png
-Particle2.png
 DigiPenLogo.png
 Smoke.png
 Smoke1.png

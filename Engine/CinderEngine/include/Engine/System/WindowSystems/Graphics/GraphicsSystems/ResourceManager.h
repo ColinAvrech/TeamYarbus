@@ -27,7 +27,7 @@ namespace Framework
     Texture* Get_Texture (std::string textureName);
     SpriteSheet* Get_SpriteSheet (std::string spriteSheetName);
     Shader* Get_Shader (std::string shaderName);
-    Sound* Get_Sound (std::string soundName);
+    Sound* Get_Sound(std::string soundName);
     ComputeShader* Get_ComputeShader (std::string shaderName);
 
     static Resources* RS;
