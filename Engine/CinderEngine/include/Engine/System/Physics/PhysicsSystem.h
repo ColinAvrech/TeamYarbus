@@ -12,57 +12,47 @@
 #include "BaseSystem.h"
 #include "Common.h"
 #include "glm.hpp"
+#include "Resolution.h"
 
 namespace Framework
 {
   namespace Physics
   {
-    /*---------------------------------------------------------------------------
-    // Class
-    ---------------------------------------------------------------------------*/
     class PhysicsSystem : public BaseSystem
     {
     public:
-      glm::vec2 gravityDirection;
-      // Returns name of System
-      const std::string GetName(){ return "PhysicsSystem"; }
+	const std::string GetName(){ return "PhysicsSystem"; }
+	  //Step f(x)
+	  bool AdvanceStep;
+	  bool StepModeActive;
 
-      /*-----------------------------------------------------------------------
-      // Constructor / Destructor
-      -----------------------------------------------------------------------*/
+	  //max cap
+	  float maxVel;
+	  float maxVelSq;
+
+	  //resolution
+	  float penetrationEpsilon;
+	  float penetrationResolvePercent;
+    
       PhysicsSystem(){};
       ~PhysicsSystem(){};
 
-      /*-----------------------------------------------------------------------
-      // Public Variables
-      -----------------------------------------------------------------------*/
-
-      /*---------------------------------------------------------------------*/
-      // Public Structs
-      /*---------------------------------------------------------------------*/
-
-      /*-----------------------------------------------------------------------
-      // Public Functions
-      -----------------------------------------------------------------------*/
-      //!Initialize the system
-      //this is where I will be setting up physics components
       bool Initialize(void);
+	  virtual void Update(const double dt);
 
-      // Called every frame
-      void Update(const double dt);
-      //void UpdateCollision(void);
-      //void UpdateResolution(void);
-      //void UpdateForces(void);
+	  //Containers
+	  std::vector<GameObject*> Bodies;
+	  std::vector<GameObject*> CircleColliders;
+	  std::vector<GameObject*> LineColliders;
 
+	private:
+      // Called every frame    
+	  void IntegrateBodies(const float dt);
+	  void DetectContacts(const float dt);
+	  void Step(const float dt);
+	  float accumulator;
 
-    private:
-      float accumlator;
-      float frameStart;
-      float CurrentTime;
-      
-      //std::vector<unsigned, PointCollider*> PointColliders;
-      //std::vector<unsigned, LineCollider*> LineColliders;
-      //std::vector<unsigned, CircleCollider*> CircleColliders;
+	  ContactSet Contacts;
 
     };
     extern PhysicsSystem *PHYSICSSYSTEM;

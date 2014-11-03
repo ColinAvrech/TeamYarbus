@@ -6,9 +6,9 @@
 \par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
 */
 /******************************************************************************/
+#pragma once
 #include "ShapeCollider.h"
 
-#pragma once
 namespace Framework
 {
 	class PointCollider;

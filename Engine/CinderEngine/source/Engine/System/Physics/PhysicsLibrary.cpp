@@ -6,21 +6,21 @@ namespace Framework
 {
 	namespace Physics
 	{
-		
-		//glm::vec2 computeStaticFriction(Manifold* m)
-		//{
-		//  //compute static friction
-		//}
-
-		//glm::vec2 computeDynamicFriction(Manifold* m)
-		//{
-		//	//compute dynamic friction
-		//}
-
-		
-		glm::vec2 applyNetForce(glm::vec2 sumForce, double mass)
+		float DetermineRestitution(GameObject* a, GameObject* b)
 		{
-			glm::vec2 accel = sumForce / (float)mass;
+			//return std::min(a->RigidBody->Restitution, b->Restitution);
+			return 0;
+		}
+
+		float DetermineFriction(GameObject* a, GameObject* b)
+		{
+			//return sqrt(a->Friction * b->Friction);
+			return 0;
+		}
+
+		glm::vec2 applyNetForce(glm::vec2 sumForce, double InvMass)
+		{
+			glm::vec2 accel = sumForce * InvMass;
 			return accel;
 		}
 
@@ -66,10 +66,5 @@ namespace Framework
 			glm::vec2 accel = force / (float)mass;
 			return accel;
 		}
-
-		//glm::vec2 applyConstVelocity(GameObject * go, glm::vec2 initial)
-		//{
-
-		//}
 	}
 }

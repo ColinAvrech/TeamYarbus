@@ -22,11 +22,11 @@ namespace Framework
 
 	void PointCollider::Initialize()
 	{
-    gameObject->PointCollider = this;
+		gameObject->PointCollider = this;
 	}
 	void PointCollider::Update()
 	{
-		
+
 	}
 
 	//collision
@@ -37,7 +37,7 @@ namespace Framework
 		float rad = c->GetRadius();
 		if (Physics::CirclevsPoint(rad, cpos, ppos))
 		{
-      CollisionEvent collision;
+			CollisionEvent collision;
 			collision.OtherObject = c->gameObject;
 			collision.normal = cpos - ppos;
 			glm::normalize(collision.normal);
@@ -49,7 +49,7 @@ namespace Framework
 		glm::vec2 pos = getPosition();
 		if (Physics::PointvsLine(pos, *l))
 		{
-      CollisionEvent collision;
+			CollisionEvent collision;
 			collision.OtherObject = l->gameObject;
 			collision.normal = l->normalVec;
 			glm::normalize(collision.normal);

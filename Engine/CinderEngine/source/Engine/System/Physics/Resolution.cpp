@@ -1,4 +1,4 @@
-#include "ShapeCollider.h"
+#include "IncludeForAllCollision.h"
 #include "PhysicsLibrary.h"
 #include "Resolution.h"
 #include "RigidBody.h"
@@ -25,11 +25,11 @@ namespace Framework
 
 			if (stateA == RigidBody::Static || stateB == RigidBody::Static)
 			{
-				ResolveStatic(pre, &post, stateA, stateB);
+				//ResolveStatic(pre, &post, stateA, stateB);
 			}
 			else
 			{
-				ResolveDynamic(pre, &post);
+				//ResolveDynamic(pre, &post);
 			}
 
 		}
@@ -64,8 +64,8 @@ namespace Framework
 		void ResolveDynamic(CollisionEvent* pre, CollisionEvent* post)
 		{
 			*post = *pre;
-			float massA = pre->thisObject->RigidBody->getMass();
-			float massB = pre->OtherObject->RigidBody->getMass();
+			float massA = pre->thisObject->RigidBody->mass;
+			float massB = pre->OtherObject->RigidBody->mass;
 
 			glm::vec2 velA = pre->thisObject->RigidBody->vel;
 			glm::vec2 velB = pre->OtherObject->RigidBody->vel;

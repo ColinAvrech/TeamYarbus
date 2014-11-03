@@ -21,6 +21,7 @@ namespace Framework
 	{
 	public:
     const static std::string Name;
+	int numOfShapes;
 		// Getters
 		glm::vec2 getPosition(void){
 			return position;

@@ -8,7 +8,7 @@
 */
 /******************************************************************************/
 #include "ComponentInclude.h"
-#include "ShapeCollider.h"
+#include "IncludeForAllCollision.h"
 #include "EventSystem.h"
 
 #pragma once

@@ -15,49 +15,81 @@ namespace Framework
 {
 	namespace Physics
 	{
+		extern PhysicsSystem *PHYSICSSYSTEM = NULL;
 		bool PhysicsSystem::Initialize()
 		{
-			gravityDirection = { 0, -1 };
+			PHYSICSSYSTEM = this;
+			//gravityDirection = { 0, -1 };
 			std::cout << "PhysicsSystem Initialized." << std::endl;
 			return true;
 		}
 
-		// Called every frame
-		void PhysicsSystem::Update(const double dt)
+		void PhysicsSystem::IntegrateBodies(const float dt)
 		{
-			for (auto i = OBJECTSYSTEM->GameObjects.begin(); i != OBJECTSYSTEM->GameObjects.end(); ++i)
+			//MAKE ITERATE THRU RIGIDBODS
+			for (auto it = Bodies.begin(); it != Bodies.end(); ++it)
 			{
-				if (i->second->RigidBody)
-				{
-					if (i->second->RigidBody->state == RigidBody::Dynamic)
-					{
-						i->second->RigidBody->vel += gravityDirection * Constant::g;
-					}
-					i->second->Transform->Translate(i->second->RigidBody->vel.x * .016f, i->second->RigidBody->vel.y * .016f, 0);
-				}
-
-				for (auto j = i; j != OBJECTSYSTEM->GameObjects.end(); ++j)
-				{
-					if (i != j)
-					{
-						if (i->second->CircleCollider && j->second->LineCollider)
-							i->second->CircleCollider->DetectLine(j->second->LineCollider);
-						//else if (i->second->LineCollider && j->second->CircleCollider)
-						//	i->second->LineCollider->DetectCircle(j->second->CircleCollider);
-					}
-				}
+				//it->Integrate(dt);
 			}
-			//  go1->CircleCollider->DetectLine (go3line->LineCollider);
-			//  go1->CircleCollider->DetectCircle (go2->CircleCollider);
-			//const float currentTime = GetCurrentTime();
-			//accumulator += currentTime - frameStart;
-			//frameStart = currentTime;
 
 		}
+
+		//void Physics::DetectContacts(float dt)
 		//{
-		//	UpdateCollision();
-		//	UpdateResolution();
-		//	UpdateForces();
+		//	BodyIterator bodyA = Bodies.begin();
+		//	BodyIterator lastBody = Bodies.last(); //end - 1
+
+		//	//Broad phase should be added this is N^2
+		//	for (; bodyA != lastBody; ++bodyA)
+		//	{
+		//		BodyIterator bodyB = bodyA;
+		//		++bodyB;
+		//		for (; bodyB != Bodies.end(); ++bodyB)
+		//		{
+		//			//Do not collide static bodies with other static bodies
+		//			if (!bodyA->IsStatic || !bodyB->IsStatic)
+		//			{
+		//				Collsion.GenerateContacts((bodyA)->BodyShape, (bodyA)->Position, (bodyB)->BodyShape, (bodyB)->Position, &Contacts);
+		//			}
+		//		}
+		//	}
 		//}
+
+		void PhysicsSystem::Step(const float dt)
+		{
+
+
+		}
+
+		// DETERMINISTIC - Physics will run the same on every system
+		void PhysicsSystem::Update(const double dt)
+		{
+			const float TimeStep = 1.0f / 60.0f;
+
+			if (!StepModeActive)
+			{
+				accumulator += dt;
+				accumulator = std::min(accumulator, TimeStep * 5);
+				if (accumulator > TimeStep)
+				{
+					accumulator -= TimeStep;
+					Step(TimeStep);
+				}
+			}
+			else
+			{
+				accumulator = 0.0f;
+				if (AdvanceStep)
+				{
+					Step(TimeStep);
+					AdvanceStep = false;
+				}
+			}
+
+			/*
+			if (DebugDrawingActive)
+				DebugDraw();
+				*/
+		}
 	}
 }

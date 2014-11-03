@@ -1,6 +1,15 @@
+/******************************************************************************/
+/*!
+\file   CircleCollider.h
+\author Anna Pearson
+\par    Course: GAM200
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+*/
+/******************************************************************************/
+#pragma once
 #include "ShapeCollider.h"
 
-#pragma once
+
 namespace Framework
 {
 	//Forward Declaration

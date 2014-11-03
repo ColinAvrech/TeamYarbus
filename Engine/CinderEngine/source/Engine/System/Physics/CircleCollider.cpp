@@ -86,8 +86,6 @@ namespace Framework
       collision.thisObject = this->gameObject;
       collision.normal = l->normalVec;
       collision.normal = glm::normalize(collision.normal);
-
-      Physics::Resolve(&collision);
     }
   }
 

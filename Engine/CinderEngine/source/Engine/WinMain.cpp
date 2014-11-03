@@ -29,7 +29,7 @@ starts the game loop.
 //testing includes
 #include "ComponentInclude.h"
 #include "RigidBody.h"
-#include "ShapeCollider.h"
+#include "IncludeForAllCollision.h"
 #include "ObjectSystem.h"
 
 #include "UpdateEvent.h"
@@ -94,7 +94,7 @@ int main (void)
   audio->LoadMicData ();
 
   //! activate the window.
-  //OBJECTSYSTEM->LoadLevel ("Level.data");
+  OBJECTSYSTEM->LoadLevel ("PhysicsTest.data");
 
   // Connect example
   //MyClass _myclass;

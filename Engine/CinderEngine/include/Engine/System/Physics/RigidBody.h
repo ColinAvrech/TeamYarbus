@@ -19,7 +19,6 @@ namespace Framework
 	{
 	public:
 		// The non-base component uses DefineComponentName macro to name component
-		float mass;
 		enum DynamicState
 		{
 			Static,    //unmoving
@@ -28,46 +27,44 @@ namespace Framework
 		};
 
 		const static std::string Name;
-		bool allowSleep;
-		bool rotationLocked;
-		DynamicState state;
+		glm::vec2 pos;
+		glm::vec2 prevPos;
 		glm::vec2 vel;
 		glm::vec2 angVel;
+		glm::vec2 accumulatedForce;
+		bool allowSleep;
+		bool rotationLocked;
+		float mass;
+		float invMass;
+		DynamicState state;
+		float restitution;
+		float friction;
+		//wat
+		float damping;
 
+		RigidBody* next;
+		RigidBody* prev;
 
-		RigidBody(GameObject * obj) : mass(.5)
+		RigidBody(GameObject * obj)
 		{
 			gameObject = obj;
-			//vel = { 1, -1 };
-			//angVel = { 0, 0 };
 		};
 
 		RigidBody(){}
-
 		~RigidBody();
 
 		/*!Telegraph that the component is active*/
 		void Initialize();
 		void Serialize(Serializer::DataNode* data);
 		void Update();
-
-		float getMass(void)
-		{
-			return mass;
-		}
-
-		float getInvMass(void)
-		{
-			return invMass;
-		}
+		void AddForce(glm::vec2 force);
+		void Integrate(const float dt, GameObject * obj);
+		void SetPosition(glm::vec2);
+		void SetVelocity(glm::vec2);
 
 		void setMass(float Mass) { mass = Mass; }
 		float calculateMass(void);
-		void Integrate(float _dt, GameObject * obj);
 
 	private:
-		
-		float invMass;
-
 	};
 } //Framework

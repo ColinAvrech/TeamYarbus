@@ -11,109 +11,128 @@
 #include "ComponentInclude.h"
 #include "GameObject.h"
 #include "IncludeForAllCollision.h"
+#include "PhysicsLibrary.h"
+#include "PhysicsSystem.h"
 
 namespace Framework
 {
-  //Destructor
-  RigidBody::~RigidBody()
-  {
+	//Destructor
+	RigidBody::~RigidBody()
+	{
 
-  }
+	}
 
-  void RigidBody::Initialize()
-  {
-    for (auto i = OBJECTSYSTEM->GameObjects.begin(); i != OBJECTSYSTEM->GameObjects.end(); ++i)
-    {
-      if (i->second->RigidBody)
-      {
-        mass = i->second->RigidBody->calculateMass();
-      }
-    }
-    gameObject->RigidBody = this;
-  }
+	void RigidBody::Initialize()
+	{
+		//get transform to write results to
 
-  void RigidBody::Serialize(Serializer::DataNode* data)
-  {
-    //DynamicState
-    bool Static, Kinematic;
-    Serializer::DataNode* temp = data->FindElement(data, "Static");
-    temp->GetValue(&Static);
-    temp = data->FindElement(data, "Kinematic");
-    temp->GetValue(&Kinematic);
-    if (Static && !Kinematic)
-      state = DynamicState::Static;
-    else if (Kinematic && !Static)
-      state = DynamicState::Kinematic;
-    else if (!Kinematic && !Static)
-      state = DynamicState::Dynamic;
+		//get starting position
 
-    //Asleep
-    bool AllowSleep;
-    temp->FindElement(data, "AllowSleep");
-    temp->GetValue(&AllowSleep);
-    if (AllowSleep)
-      allowSleep = true;
-    else
-      allowSleep = false;
+		//add this body to body list
+		Physics::PHYSICSSYSTEM->Bodies.push_back(this->gameObject);
 
-    //Velocity
-    glm::vec3 Velocity;
-    temp = data->FindElement(data, "Velocity");
-    temp->GetValue(&Velocity);
-    vel.x = Velocity.x;
-    vel.y = Velocity.y;
+		gameObject->RigidBody = this;
+	}
 
-    //Angular Velocity
-    glm::vec3 AngVel;
-    temp = data->FindElement(data, "AngularVelocity");
-    temp->GetValue(&AngVel);
-    angVel.x = AngVel.x;
-    angVel.y = AngVel.y;
+	void RigidBody::Serialize(Serializer::DataNode* data)
+	{
+		//DynamicState
+		bool Static, Kinematic;
+		Serializer::DataNode* temp = data->FindElement(data, "Static");
+		temp->GetValue(&Static);
+		temp = data->FindElement(data, "Kinematic");
+		temp->GetValue(&Kinematic);
+		if (Static && !Kinematic)
+			state = DynamicState::Static;
+		else if (Kinematic && !Static)
+			state = DynamicState::Kinematic;
+		else if (!Kinematic && !Static)
+			state = DynamicState::Dynamic;
 
-    //Rotation
-    bool RotationLocked;
-    temp = data->FindElement(data, "RotationLocked");
-    temp->GetValue(&RotationLocked);
-    if (RotationLocked)
-      rotationLocked = true;
-    else
-      rotationLocked = false;
-  }
-  
-  //TODO: MASS CHANGING EVENT
-  // Connect w/ eventsystem
-  void RigidBody::Update()
-  {
-    //RigidBody::getMass();
-    //float Mass = mass;
-    
-  }
+		//Asleep
+		bool AllowSleep;
+		temp->FindElement(data, "AllowSleep");
+		temp->GetValue(&AllowSleep);
+		if (AllowSleep)
+			allowSleep = true;
+		else
+			allowSleep = false;
 
-  float RigidBody::calculateMass()
-  {
-    //density * volume
-    if (gameObject->CircleCollider)
-    {
-      mass = (4 / 3) * 3.14f * gameObject->CircleCollider->radius;
-    }
-    else// if (gameObject->LineCollider)
-    {
-      mass = 10;
-    }
-    return mass;
-  }
+		//Velocity
+		glm::vec3 Velocity;
+		temp = data->FindElement(data, "Velocity");
+		temp->GetValue(&Velocity);
+		vel.x = Velocity.x;
+		vel.y = Velocity.y;
 
-  void RigidBody::Integrate(float dt_, GameObject * obj)
-  {
-    gameObject = obj;
-    
-    //update position
-    
-    //determine acceleration
+		//Angular Velocity
+		glm::vec3 AngVel;
+		temp = data->FindElement(data, "AngularVelocity");
+		temp->GetValue(&AngVel);
+		angVel.x = AngVel.x;
+		angVel.y = AngVel.y;
 
-    //integrate velocity
+		//Rotation
+		bool RotationLocked;
+		temp = data->FindElement(data, "RotationLocked");
+		temp->GetValue(&RotationLocked);
+		if (RotationLocked)
+			rotationLocked = true;
+		else
+			rotationLocked = false;
+	}
 
-  }
+	//TODO: MASS CHANGING EVENT
+	// Connect w/ eventsystem
+	void RigidBody::Update()
+	{
+		//RigidBody::getMass();
+		//float Mass = mass;
 
-  DefineComponentName(RigidBody);
+	}
+
+	float RigidBody::calculateMass()
+	{
+		//density * volume
+		if (gameObject->CircleCollider)
+		{
+			mass = (4 / 3) * 3.14f * gameObject->CircleCollider->radius;
+		}
+		else// if (gameObject->LineCollider)
+		{
+			mass = 10;
+		}
+		return mass;
+	}
+
+	void RigidBody::Integrate(float dt_, GameObject * obj)
+	{
+		gameObject = obj;
+
+		if (obj->RigidBody->state == RigidBody::Static)
+			return;
+		//update position
+		prevPos = pos;
+		pos = pos + vel * dt_;
+
+		//determine acceleration
+		glm::vec2 acceleration = Physics::applyNetForce(accumulatedForce, invMass) + Physics::Constant::g;
+
+		//integrate velocity
+		vel = vel + acceleration * dt_;
+
+		//dampen -- might not need this
+
+		//Clamp velMax
+		if (glm::dot(vel, vel) > Physics::PHYSICSSYSTEM->maxVelSq)
+		{
+			glm::normalize(vel);
+			vel = vel * Physics::PHYSICSSYSTEM->maxVel;
+		}
+
+		//clear force
+		accumulatedForce = glm::vec2(0, 0);
+	}
+
+	DefineComponentName(RigidBody);
 }

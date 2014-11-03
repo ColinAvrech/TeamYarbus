@@ -6,9 +6,10 @@
 \par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
 */
 /******************************************************************************/
+#pragma once
 #include "ShapeCollider.h"
 
-#pragma once
+
 namespace Framework
 {
 	class PointCollider;
@@ -23,7 +24,13 @@ namespace Framework
 		glm::vec2 p1; //points
 		glm::vec2 p2;
 
-    LineCollider (){}
+		LineCollider (GameObject * obj)
+		{
+			gameObject = obj;
+		}
+
+		LineCollider(){};
+
 		~LineCollider(){};
 
 		void Initialize();
