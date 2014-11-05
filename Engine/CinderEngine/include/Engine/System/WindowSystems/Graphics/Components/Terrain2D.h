@@ -22,7 +22,7 @@ namespace Framework
   {
   public:
   Terrain2D ();
-  ~Terrain2D ();
+  virtual ~Terrain2D ();
   
   virtual void Serialize (Serializer::DataNode*);
   virtual void Initialize ();
