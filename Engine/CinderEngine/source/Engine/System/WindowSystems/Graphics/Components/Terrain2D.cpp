@@ -11,7 +11,6 @@
 #include "Terrain2D.h"
 #include "ResourceManager.h"
 #include "WindowSystem.h"
-#include <vector>
 
 namespace Framework
 {
@@ -42,13 +41,21 @@ namespace Framework
 
     height_points.push_back ({ -1.0f, -0.9f });
     height_points.push_back ({ -0.8f, -0.7f });
+    edges.push_back (std::make_pair (height_points [0], height_points [1]));
     height_points.push_back ({ -0.6f, -0.8f });
+    edges.push_back (std::make_pair (height_points [1], height_points [2]));
     height_points.push_back ({ -0.5f, -0.9f });
+    edges.push_back (std::make_pair (height_points [2], height_points [3]));
     height_points.push_back ({ -0.2f, -0.8f });
+    edges.push_back (std::make_pair (height_points [3], height_points [4]));
     height_points.push_back ({ +0.0f, -0.8f });
+    edges.push_back (std::make_pair (height_points [4], height_points [5]));
     height_points.push_back ({ +0.6f, -0.3f });
+    edges.push_back (std::make_pair (height_points [5], height_points [6]));
     height_points.push_back ({ +0.8f, -0.6f });
+    edges.push_back (std::make_pair (height_points [6], height_points [7]));
     height_points.push_back ({ +1.0f, -0.9f });
+    edges.push_back (std::make_pair (height_points [7], height_points [8]));
 
     for (unsigned i = 0; i < height_points.size () - 1; ++i)
     {
@@ -94,6 +101,11 @@ namespace Framework
     glDrawArrays (GL_TRIANGLES, 0, vertices.size () / 2);
 
     vao->unbindVAO ();
+  }
+
+  std::vector <std::pair <glm::vec2, glm::vec2>>* Terrain2D::Get_Edges ()
+  {
+    return &edges;
   }
 
 }

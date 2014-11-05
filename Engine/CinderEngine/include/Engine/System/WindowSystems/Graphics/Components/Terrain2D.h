@@ -28,6 +28,7 @@ namespace Framework
   virtual void Initialize ();
 
   void Render ();
+  std::vector <std::pair <glm::vec2, glm::vec2>>* Get_Edges ();
 
   const static std::string Name;
 
@@ -36,6 +37,7 @@ namespace Framework
     VBO* vbo;
     Shader* shader;
 
+    std::vector <std::pair <glm::vec2, glm::vec2>> edges;
     std::vector <glm::vec2> height_points;
     std::vector <float> vertices;
   };  
