@@ -13,6 +13,7 @@
 #include "glfw3.h"
 #include "KeyEvent.h"
 #include "Effect.h"
+#include "Terrain2D.h"
 
 
 namespace Framework
@@ -57,6 +58,7 @@ namespace Framework
     static std::list <Transform*> transformList;
     static std::list <Sprite*> spriteList;
     static std::list <IEffect*> effectList;
+    static Terrain2D* terrain;
 
   private:
     GLFWwindow* window;

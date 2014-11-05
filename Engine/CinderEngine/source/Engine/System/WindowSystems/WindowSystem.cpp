@@ -24,39 +24,23 @@ function to handle windows Messages.
 #include "HeatMap.h"
 #include "FrameBufferObject.h"
 #include "Thermodynamics.h"
-#include "glm/gtc/random.hpp"
 
 namespace Framework
 {
-  static glm::vec3 lightPos;
-  static bool lightOn = false;
-  static bool active = false;
-  static bool clActive = false;
   //! Global pointer to  the windows system.
   WindowSystem* WINDOWSYSTEM = NULL;
 
   std::list <Transform*> WindowSystem::transformList;
   std::list <Sprite*> WindowSystem::spriteList;
   std::list <IEffect*> WindowSystem::effectList;
-
-  static VAO* vao, *vao1;
-  static VBO* vbo, *vbo1;
-  static EBO* ebo;
-  static FBO* fbo;
-  GLuint renderTexture;
-  static DebugRenderer dr;
-  static CLParticleRenderer clRenderer;
-  static float shininess = 200;
-  static HeatMap heatMap (101, 101);
-  static Sound *fire;
+  Terrain2D* WindowSystem::terrain;
+  
 
   namespace WindowNameSpace
   {
     void Resize (GLFWwindow* window, int w, int h)
     {
       WINDOWSYSTEM->Set_W_H (w, h);
-      glBindTexture (GL_TEXTURE_2D, renderTexture);
-      glTexImage2D (GL_TEXTURE_2D, 0, GL_RGB, WINDOWSYSTEM->Get_Width (), WINDOWSYSTEM->Get_Height (), 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
       SCENEMANAGER->Change_Size (w, h);
     }
 
@@ -64,6 +48,7 @@ namespace Framework
     {
       glViewport (0, 0, w, h);
     }
+
 
     /*Triggers a Key event if there are any listeners*/
     void TriggerKeyEvent (const std::string eventname, int key, int scanCode, int state, int mod)
@@ -325,14 +310,9 @@ namespace Framework
       glewExperimental = GL_TRUE;
       glewInit ();
       std::cout << "OpenGl Version: " << CinderConsole::green << glGetString (GL_VERSION) << CinderConsole::gray << std::endl;
-      //glEnable (GL_DEPTH_TEST);
-      //glEnable (GL_BLEND);
-      //glBlendFunc (GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
     }
   } //namespace WindowNameSpace
 
-  static Shader* shader;
-  static float lighting = 150.0f;
 
   WindowSystem::WindowSystem (const char* WindowTitle, int ClientWidth, int ClientHeight)
   {
@@ -341,94 +321,17 @@ namespace Framework
     WindowNameSpace::Init_Glew ();
   }
 
-  static void OnKeyPressed (KeyEvent* key)
-  {
-    if (key->KeyDown)
-    {
-      if (key->KeyValue == GLFW_KEY_L)
-      {
-        lightOn = !lightOn;
-      }
-      if (key->KeyValue == GLFW_KEY_SPACE)
-      {
-        active = !active;
-      }
-      if (key->KeyValue == GLFW_KEY_T)
-      {
-        Physics::THERMODYNAMICS->Reset ();
-      }
-      if (key->KeyValue == GLFW_KEY_H)
-      {
-        clActive = !clActive;
-      }
-    }
-  }
 
-  static Shader* sceneShader;
-  glm::vec3 lights [5];
   bool WindowSystem::Initialize ()
   {
     std::cout << GetName () << " initialized\n";
-    EVENTSYSTEM->gConnect (Events::KEY_ANY, &OnKeyPressed);
-    fire = Resources::RS->Get_Sound("FireA.ogg");
-    fire->Play();
-    fire->LowPassFilter();
-    fire->HighPassFilter();
-    fire->SetHPF(200, 1);
-
-    GLfloat vertices [] =
-    {
-      -1.0f, 1.0f, 0.0f, 1.0f,
-      1.0f, 1.0f, 1.0f, 1.0f,
-      1.0f, -1.0f, 1.0f, 0.0f,
-
-      1.0f, -1.0f, 1.0f, 0.0f,
-      -1.0f, -1.0f, 0.0f, 0.0f,
-      -1.0f, 1.0f, 0.0f, 1.0f
-    };
-
-    vao1 = new VAO ();
-    vbo1 = new VBO (sizeof(vertices), vertices);
-    fbo = new FBO ();
-    glGenTextures (1, &renderTexture);
-    glBindTexture (GL_TEXTURE_2D, renderTexture);
-    glTexImage2D (GL_TEXTURE_2D, 0, GL_RGB, WindowWidth, WindowHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
-    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glFramebufferTexture2D (GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderTexture, 0);
-    fbo->unBind ();
-
-    sceneShader = Resources::RS->Get_Shader ("Passthrough");
-    sceneShader->Use ();
-    GLint posAttrib = sceneShader->attribLocation ("position");
-    sceneShader->enableVertexAttribArray (posAttrib);
-    sceneShader->vertexAttribPtr (posAttrib, 2, GL_FLOAT, GL_FALSE, 4 * sizeof GLfloat, 0);
-    GLint texAttrib = sceneShader->attribLocation ("texcoord");
-    sceneShader->enableVertexAttribArray (texAttrib);
-    sceneShader->vertexAttribPtr (texAttrib, 2, GL_FLOAT, GL_FALSE, 4 * sizeof GLfloat, 2 * sizeof GLfloat);
-
-    clRenderer.GenerateTextures ();
-    clRenderer.GenerateBuffers ();
-    clRenderer.GenerateShaders ();
-
-    heatMap.Initialize ();
-    //dr.Initialize ();
-    ShapeData data = ShapeGenerator::Generate_Quad ();
-    vao = new VAO ();
-    vbo = new VBO (data.vbo_size (), data.vertices);
-    ebo = new EBO (data.ebo_size (), data.indices);
-    data.Clean ();
-
-    shader = Resources::RS->Get_Shader ("Lighting");
-
-    lights [0] = lights [1] = lights [2] = lights [3] = lights [4] = { 0, 0, 0 };
 
     return true;
   }
 
+
   WindowSystem::~WindowSystem ()
   {
-    delete vao, vbo, ebo;
     glfwTerminate ();
   }
 
@@ -437,97 +340,22 @@ namespace Framework
     WindowsUpdate (dt);
     GraphicsUpdate (dt);
   }
-  
-  float lpf = 6000.0f;
-  static float micdata() { return AUDIOSYSTEM->input.peaklevel[0]; }
+
 
   void WindowSystem::WindowsUpdate (const double dt)
   {
-    glfwSwapBuffers (window);
     glfwPollEvents ();
-    if (AUDIOSYSTEM->input.peaklevel[0] > 0.05f)
-    {
-      if (lpf < 22000)
-      {
-        lpf += micdata() * 200.0f;
-      }
-    }
-    else
-    {
-      if (lpf > 6000)
-      {
-        lpf -= 150.0f;
-      }
-    }
-    fire->SetLPF(lpf, 1);
-  }  
+  }
 
   void WindowSystem::GraphicsUpdate (const double dt)
   {
-    fbo->bind ();
-    //glViewport (0, 0, WindowWidth, WindowHeight);
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable (GL_BLEND);
     glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    //glfwSwapBuffers (window);
-    vao->bindVAO ();
+    terrain->Render ();
 
-    for (auto i : transformList)
-    {
-      if (i->gameObject->Name == "ember")
-      {
-        float x = i->GetScreenPosition().x;
-        float y = -i->GetScreenPosition().y;
-
-        Physics::THERMODYNAMICS->SetCellTemperature (x, y,
-        Physics::THERMODYNAMICS->GetCellTemperature (x, y) + 100000.f * micdata (),
-          0.016);
-      }
-      i->UpdateMatrices ();
-    }
-
-    //shader->Use();
-    for (auto i : spriteList)
-    {
-      i->Draw ();
-    }
-    vao->unbindVAO ();
-
-    fbo->unBind ();
-    //glViewport (0, 0, WindowWidth, WindowHeight);
-    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    vao1->bindVAO ();
-    sceneShader->Use ();
-    glBindTexture (GL_TEXTURE_2D, renderTexture);
-    sceneShader->enableVertexAttribArray (sceneShader->attribLocation ("position"));
-    sceneShader->enableVertexAttribArray (sceneShader->attribLocation ("texcoord"));
-    sceneShader->uni3f ("lightPos", clRenderer.destPosX * 2, clRenderer.destPosY * 2, 0.0);
-    sceneShader->uni3fv ("lights", glm::value_ptr (lights [0]), 5);
-    sceneShader->uni1i ("enabled", lightOn ? 1 : 0);
-    sceneShader->uni1i ("image", 0);
-
-    glDrawArrays (GL_TRIANGLES, 0, 6);
-    sceneShader->Disable ();
-    double deltaTime = 0.016;
-    for (auto i : effectList)
-    {
-      i->update (deltaTime);
-      i->cpuUpdate (deltaTime);
-      i->gpuUpdate (deltaTime);
-      i->render ();
-    }
-
-    if (active)
-    {
-      heatMap.Update (dt);
-      heatMap.Draw ();
-    }
-
-    //if (clActive)
-    //{
-      clRenderer.Render ();
-    //}
+    glfwSwapBuffers (window);
   }
 
   unsigned WindowSystem::Get_Width ()

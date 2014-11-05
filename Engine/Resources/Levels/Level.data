@@ -82,58 +82,8 @@ Level =
 			Vec3 Scale = [2.5, 2.5, 2.5],
 			Quat Rotation = [0, 0, 0, 1],
 		},
-		Sprite = 
+		Terrain2D = 
 		{
-			string SpriteSource = "EnvHighRes.png",
-			string Shader = "Default",
-			bool AnimationActive = false,
-		},
-  },
-  Cog = 
-	{
-		LinkId = 
-		{
-			uint Id = 9,
-		},
-		Named = 
-		{
-			string Name = "ember",
-		},
-		Transform = 
-		{
-			Vec3 Translation = [0.0, -1.5, -1],
-			Vec3 Scale = [0.15, 0.15, 0.15],
-			Quat Rotation = [0, 0, 0, 1],
-		},
-		Sprite = 
-		{
-			string SpriteSource = "Ember.png",
-			string Shader = "Default",
-			bool AnimationActive = false,
-		},
-  },
-  Cog = 
-	{
-		LinkId = 
-		{
-			uint Id = 10,
-		},
-		Named = 
-		{
-			string Name = "fireeffect",
-		},
-		Transform = 
-		{
-			Vec3 Translation = [0.15, -1.25, 0.0],
-			Vec3 Scale = [1, 1, 1],
-			Quat Rotation = [0, 0, 0, 1],
-		},
-		FountainEffect = 
-		{
-      int ParticleCount = 20000,
-      float ParticleSize = 20.0,
-      float MaxSize = 50.0,
-      float MinSize = 5.0,
 		},
   },
 },

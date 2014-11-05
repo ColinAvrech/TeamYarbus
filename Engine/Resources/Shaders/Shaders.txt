@@ -58,3 +58,8 @@ ColorCodeCell.vs.glsl
 ColorCodeCell.frag.glsl
 0
 ColorCodeCell
+>
+Terrain.vs.glsl
+Terrain.frag.glsl
+0
+Terrain
