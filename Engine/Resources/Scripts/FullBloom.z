@@ -1,7 +1,10 @@
 class Josh
 {
-  [Property]
-  var OHai : String = "Mark";
+  //var Cinder:ScriptSystem = null;
+  
+  var OHai : String = "";
+  
+  sends UpdateEvent:UpdateEvent;
   
   constructor()
   {
@@ -9,6 +12,14 @@ class Josh
   
   function Initialize()
   {
-    Console.WriteLine("O hai" , this.OHai);
+	EventSystem.Connect(Events.UpdateEvent, this.LogicUpdate);
+	
   }
+ 
+  function LogicUpdate(e : UpdateEvent)
+  {
+	Console.WriteLine(e.TimePassed);
+  }
+ 
 }
+

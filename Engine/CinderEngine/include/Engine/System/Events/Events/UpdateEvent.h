@@ -12,6 +12,7 @@
 
 #include "Common.h"
 #include "BaseEvent.h"
+#include "ZilchCompiledLib.h"
 
 namespace Framework
 {
@@ -19,6 +20,8 @@ namespace Framework
   class UpdateEvent : public BaseEvent
   {
   public:
+    ZilchDeclareBaseType(UpdateEvent, Zilch::TypeCopyMode::ReferenceType);
+
     float Dt;
     float TimePassed;
   };

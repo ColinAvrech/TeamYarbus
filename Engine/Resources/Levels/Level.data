@@ -88,6 +88,10 @@ Level =
 			string Shader = "Default",
 			bool AnimationActive = false,
 		},
+		Josh = 
+		{
+			string OHai = "Sagnik",
+		},
   },
   Cog = 
 	{

@@ -81,7 +81,7 @@ namespace Framework
     if (penetration = Physics::CirclevsLine(rad, pos, l) >= 0)
     {
       CollisionEvent collision;
-      collision.penetration = penetration;
+      collision.Penetration = penetration;
       collision.OtherObject = l->gameObject;
       collision.thisObject = this->gameObject;
       collision.normal = l->normalVec;
