@@ -4,7 +4,7 @@ class Josh
   
   var OHai : String = "";
   
-  sends UpdateEvent:UpdateEvent;
+  
   
   constructor()
   {
@@ -12,14 +12,25 @@ class Josh
   
   function Initialize()
   {
-	EventSystem.Connect(Events.UpdateEvent, this.LogicUpdate);
+	Cinder.Connect(this, Events.UpdateEvent, this.LogicUpdate);
 	
   }
  
-  function LogicUpdate(e : UpdateEvent)
+  function LogicUpdate(e: UpdateEvent)
   {
 	Console.WriteLine(e.TimePassed);
   }
  
 }
 
+class Cinder
+{
+	//NEEDS FIXED ANY TYPE?
+	[Static]
+	function Connect(eventListener:Josh, eventName:String, functionDelegate:delegate(e:UpdateEvent))
+	{
+		EventSystem.Connect(eventName, functionDelegate);
+	}
+
+	sends UpdateEvent:UpdateEvent;
+}
