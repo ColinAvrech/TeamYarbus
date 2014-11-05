@@ -18,8 +18,10 @@ namespace Framework
     public:
       FractalNoise2D(int size, int passes);
       ~FractalNoise2D();
+      float* GetArray(){ return Array; }
     private:
-      int *Array;
+      float *Array;
+      int size;
     };
 
     //3D perlin noise generator (2D array)
@@ -28,6 +30,7 @@ namespace Framework
     public:
       FractalNoise3D(int width, int height, int passes);
       ~FractalNoise3D();
+      float** GetArray() { return Array; }
     private:
       float **Array;
       int sizeX;

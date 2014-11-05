@@ -36,6 +36,7 @@ namespace Framework
     {
     public:
       //Constructor
+      //Takes map width, map height, base height, smoothing passes, number of waves
       TerrainCreator(int, int, int, int = 4, int = 2);
       //Destructor
       ~TerrainCreator();
@@ -48,10 +49,6 @@ namespace Framework
       int BaseHeight; //Must be a number between 0 and height.
       float *HeightMap;
       int ** Map;
-
-      //private member functions
-      void GenerateHeightMap();
-      void ApplyHeightMap();
     }; //class terrain
   } //Procedural
 } //Framework
