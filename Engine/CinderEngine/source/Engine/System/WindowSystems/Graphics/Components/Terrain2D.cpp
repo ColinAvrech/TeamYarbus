@@ -104,9 +104,9 @@ namespace Framework
     vao->unbindVAO ();
   }
 
-  std::vector <std::pair <glm::vec2, glm::vec2>>* Terrain2D::Get_Edges ()
-  {
-    return &edges;
+  std::vector <std::pair <glm::vec2, glm::vec2>>& Terrain2D::Get_Edges()
+{
+    return edges;
   }
 
 }
