@@ -59,7 +59,7 @@ namespace Framework
 		void Serialize(Serializer::DataNode* data) override;
 		void Update();
 		void AddForce(glm::vec2 force);
-		void Integrate(const float dt, GameObject * obj);
+		void Integrate(const float dt);
 		void SetPosition(glm::vec2);
 		void SetVelocity(glm::vec2);
 

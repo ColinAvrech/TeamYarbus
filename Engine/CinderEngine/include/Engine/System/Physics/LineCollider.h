@@ -46,8 +46,9 @@ namespace Framework
 		void setP2(glm::vec2 passer) { p2 = passer; }
 
 		// Private member functions
-		void DetectCircle(CircleCollider* c);  //if player is a circle
-		void DetectPoint(PointCollider* p);	  //if player is a point
+		void DetectCollision(CircleCollider* c);  //if player is a circle
+		void DetectCollision(PointCollider* p);	  //if player is a point
+		void DetectCollision(LineCollider* p);
 
 	private:
 		// Private data

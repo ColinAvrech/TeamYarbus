@@ -23,7 +23,7 @@ namespace Framework
 
 	void PointCollider::Initialize()
 	{
-		gameObject->PointCollider = this;
+		gameObject->ShapeCollider = this;
 	}
 	void PointCollider::Update()
 	{
@@ -31,7 +31,7 @@ namespace Framework
 	}
 
 	//collision
-	void PointCollider::DetectCircle(CircleCollider* c)
+	void PointCollider::DetectCollision(CircleCollider* c)
 	{
 		glm::vec2 ppos = getPosition();
 		glm::vec2 cpos = c->getPosition();
@@ -45,7 +45,7 @@ namespace Framework
 		}
 	}
 
-	void PointCollider::DetectLine(LineCollider* l)
+	void PointCollider::DetectCollision(LineCollider* l)
 	{
 		glm::vec2 pos = getPosition();
 		if (Physics::PointvsLine(pos, *l))

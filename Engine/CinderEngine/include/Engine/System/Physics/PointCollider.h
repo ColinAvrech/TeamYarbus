@@ -28,7 +28,7 @@ namespace Framework
 		void Update();
 
 		//collision
-		void DetectCircle(CircleCollider* c);
-		void DetectLine(LineCollider* l);
+		void DetectCollision(CircleCollider* c);
+		void DetectCollision(LineCollider* l);
 	};
 }

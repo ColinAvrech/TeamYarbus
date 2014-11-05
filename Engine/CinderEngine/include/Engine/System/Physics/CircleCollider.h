@@ -35,9 +35,9 @@ namespace Framework
 			return radius;
 		};
 
-		void DetectCircle(CircleCollider* c);
-		void DetectPoint(PointCollider* p);
-		void DetectLine(LineCollider* l);
+		void DetectCollision(CircleCollider* c);
+		void DetectCollision(PointCollider* p);
+		void DetectCollision(LineCollider* l);
 
 	private:
 		// Private data

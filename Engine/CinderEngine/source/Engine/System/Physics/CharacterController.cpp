@@ -82,8 +82,8 @@ namespace Framework
 
   void CharacterController::OnCollisionEnter(CollisionEvent* collision)
   {
-    if (collision->OtherObject->LineCollider)
-      collision->OtherObject->Transform->Translate(-collision->normal.x * 0.05f, -collision->normal.y * 0.05f, 0.0f);
+    //if (collision->OtherObject->LineCollider)
+    //  collision->OtherObject->Transform->Translate(-collision->normal.x * 0.05f, -collision->normal.y * 0.05f, 0.0f);
   }
 
   void CharacterController::Update(UpdateEvent* e)

@@ -16,7 +16,7 @@ namespace Framework
 {
 	void LineCollider::Initialize()
 	{
-		gameObject->LineCollider = this;
+		gameObject->ShapeCollider = this;
 		normalVec = Physics::getNormal(p1, p2);
 		p1dotNormal = Physics::DotProduct(p1, normalVec);
 	}
@@ -45,13 +45,16 @@ namespace Framework
 	//float GetP1DotNormal(void) { return p1dotNormal; }
 
 	// Private member functions
-	void LineCollider::DetectCircle(CircleCollider* c)
+	void LineCollider::DetectCollision(CircleCollider* c)
 	{
 
 	}  //if player is a circle
-	void LineCollider::DetectPoint(PointCollider* p)
+	void LineCollider::DetectCollision(PointCollider* p)
 	{
 	}	  //if player is a point
+	void LineCollider::DetectCollision(LineCollider *l)
+	{
+	}
 
 	DefineComponentName(LineCollider);
 }
