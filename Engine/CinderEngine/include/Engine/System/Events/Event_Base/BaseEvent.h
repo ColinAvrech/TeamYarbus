@@ -24,6 +24,7 @@ namespace Framework
     /*!The EventSystem will need to see all elements of the BaseEvent*/
     friend class EventSystem;
 
+    ZilchDeclareBaseType(BaseEvent, Zilch::TypeCopyMode::ReferenceType);
     //static unsigned int totalevents;
 
     BaseEvent::BaseEvent()

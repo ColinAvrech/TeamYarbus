@@ -9,6 +9,9 @@ namespace Framework
 {
   DefineComponentName (Sprite);
 
+  ZilchDefineType(Sprite, CinderZilch)
+  {
+  }
 
 
   //// NON-DEFAULT CONSTRUCTOR

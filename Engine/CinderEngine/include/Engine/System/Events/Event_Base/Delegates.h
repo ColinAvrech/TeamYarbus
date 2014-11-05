@@ -15,6 +15,7 @@ and interface for every type of event.
 
 #include "Common.h"
 #include "BaseEvent.h"
+#include "ZilchCompiledLib.h"
 
 namespace Framework
 {
@@ -89,5 +90,26 @@ namespace Framework
         (This_ptr->*Function)(castedEvent);
       }
     };
+
+  template<typename EventType>
+  struct ZilchDelegate : public Delegate
+  {
+    Zilch::Delegate Function;
+    
+    virtual void Invoke(BaseEvent* e) override
+    {
+      EventType* castedEvent = static_cast<EventType*>(e);
+      if (castedEvent == nullptr)
+      {
+        ErrorIf(true, "ERROR Tried to invoke the wrong event type");
+      }
+
+      ExceptionReport report;
+      Zilch::Call call(Function, ZILCH->GetDependencies());
+      call.Set<EventType*>(0, castedEvent);
+      call.Invoke(report);
+    }
+
+  };
 
 }

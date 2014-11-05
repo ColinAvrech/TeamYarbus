@@ -5,6 +5,7 @@
 #include "ComponentInclude.h"
 #include "SpriteSheet.h"
 #include "JSONSerializer.h"
+#include "ZilchCompiledlib.h"
 
 #define TEXTURE_NONE -100
 
@@ -14,6 +15,8 @@ namespace Framework
   class Sprite : public Component
   {
   public:
+    ZilchDeclareBaseType(Sprite, Zilch::TypeCopyMode::ReferenceType);
+
     Sprite () {}
     virtual ~Sprite() override;
 

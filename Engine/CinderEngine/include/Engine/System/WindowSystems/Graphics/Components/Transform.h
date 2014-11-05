@@ -16,6 +16,11 @@
 #include "ComponentInclude.h"
 #include "JSONSerializer.h"
 
+#include "ZilchCompiledLib.h"
+
+
+
+
 namespace Framework
 {
   enum MatrixModes
@@ -25,15 +30,16 @@ namespace Framework
     PROJECTION_MATRIX
   };
 
+
   class Transform : public Component
   {
   public:
+    ZilchDeclareBaseType(Transform, Zilch::TypeCopyMode::ReferenceType);
+    
     Transform () {}
     virtual ~Transform();
-
     virtual void Initialize ();
     virtual void Serialize (Serializer::DataNode* data);
-
     //////////////////////////////////////////////////////////////////////////
     // Transformations
     void Load_Identity ();
@@ -56,6 +62,11 @@ namespace Framework
 
     // The non-base component usees DefineComponentName macro to name component
     const static std::string Name;
+
+
+
+    
+
   private:
     int currentMatrix;
     //Matrix Stack

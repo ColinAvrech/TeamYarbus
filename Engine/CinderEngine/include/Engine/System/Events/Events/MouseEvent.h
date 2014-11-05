@@ -10,18 +10,21 @@
 
 #pragma once
 
-#include "Common.h"
-#include "Vec2.h"
-#include "BaseEvent.h"
 
-namespace Framework
-{
-
-  class MouseEvent : public BaseEvent
-  {
-  public:
-
-    bool ButtonDown;
-    glm::vec2 MousePosition;
-  };
-}
+// Old, use WindowSystem.GetMousePosition();
+//#include "Common.h"
+//#include "Vec2.h"
+//#include "BaseEvent.h"
+//#include "ZilchCompiledLib.h"
+//
+//namespace Framework
+//{
+//  class MouseEvent : public BaseEvent
+//  {
+//  public:
+//    ZilchDeclareBaseType(MouseEvent, Zilch::TypeCopyMode::ReferenceType);
+//
+//    bool ButtonDown;
+//    glm::vec2 MousePosition;
+//  };
+//}

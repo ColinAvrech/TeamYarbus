@@ -12,18 +12,19 @@
 
 #include "Common.h"
 #include "BaseSystem.h"
-#include "Zilch.hpp"
+#include "ZilchCompiledLib.h"
 
 
 namespace Framework
 {
   class EventDeployer;
   class BaseEvent;
+  class UpdateEvent;
 
   class EventSystem : public BaseSystem
   {
   public:
-    //ZilchDeclareBaseType(EventSystem, TypeCopyMode::ReferenceType);
+    ZilchDeclareBaseType(EventSystem, Zilch::TypeCopyMode::ReferenceType);
 
     EventSystem ();
     ~EventSystem ();
@@ -45,12 +46,10 @@ namespace Framework
     template<typename EventType, typename ClassType>
     void mConnect (const std::string eventname, ClassType *this_ptr, void(ClassType::*func)(EventType*));
 
-    void zConnect(const std::string eventname);
+    void EventSystem::zConnect(Call& call, ExceptionReport& report);
 
     void TriggerEvent (const std::string eventname, BaseEvent& e);
-
-  private:
-
+    
     double _TotalTimePassed = 0;
     double _dt = 0;
 

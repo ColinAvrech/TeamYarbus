@@ -12,10 +12,22 @@
 #include "GameObject.h"
 #include "WindowSystem.h"
 
+
+using namespace Zilch;
+
 namespace Framework
 {
   DefineComponentName (Transform);
   // Constructor
+
+  ZilchDefineType(Transform, CinderZilch)
+  {
+    ZilchBindConstructor(Transform);
+    ZilchBindMethodOverload(Scale, void, float, float, float);
+    ZilchBindMethodOverload(Scale, void, float);
+    ZilchBindMethod(Translate);
+    ZilchBindMethod(Rotate);
+  }
 
   Transform::~Transform ()
   {
