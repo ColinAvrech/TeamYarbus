@@ -17,6 +17,8 @@
 
 namespace Framework
 {
+	class CircleCollider;
+	class LineCollider;
 	class ShapeCollider : public Component
 	{
 	public:
@@ -29,6 +31,13 @@ namespace Framework
 		glm::vec2 getOffset(void){
 			return offset;
 		}
+		float getDensity(void)
+		{
+			return material.density;
+		}
+
+		virtual void DetectCollision(CircleCollider * circle) = 0;
+		virtual void DetectCollision(LineCollider * line) = 0;
 
 	private:
 		// Private data
@@ -39,6 +48,7 @@ namespace Framework
 			float restitution;
 			float friction;
 		};
+		MaterialProperties material;
 		glm::vec2 position;
 		glm::vec2 offset;
 		bool ghost;

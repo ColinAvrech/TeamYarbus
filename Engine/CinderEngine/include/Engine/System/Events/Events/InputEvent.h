@@ -10,17 +10,19 @@
 
 #pragma once
 
-#include "Common.h"
-#include "BaseEvent.h"
 
-namespace Framework
-{
-
-  class MouseEvent : public BaseEvent
-  {
-  public:
-    
-    Vec2 MouseScreenPosition;
-    Vec2 MouseScenePosition;
-  };
-}
+// Old, use WindowSystem.GetMousePosition();
+//#include "Common.h"
+//#include "BaseEvent.h"
+//
+//namespace Framework
+//{
+//
+//  class MouseEvent : public BaseEvent
+//  {
+//  public:
+//    
+//    Vec2 MouseScreenPosition;
+//    Vec2 MouseScenePosition;
+//  };
+//}

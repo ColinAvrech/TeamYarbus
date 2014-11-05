@@ -3,12 +3,10 @@
 #include "ZilchCompiledLib.h"
 #include <iostream>
 
-ZilchStaticLibrary(CinderZilch);
 
 #define ScriptFileList "../../Resources/Scripts/ScriptFiles.txt"
 #define ScriptFilePath "../../Resources/Scripts/"
 
-using namespace Zilch;
 
 namespace Framework
 {
@@ -47,7 +45,7 @@ namespace Framework
     // A side note: the Core library in Zilch is always added as a dependency, because Core includes
     // things like Integer, Boolean, Real, the basic vector types, String, etc
     Module dependencies(Errors);
-    //dependencies.AddLibrary(Cinder::GetInstance().GetLibrary());
+    dependencies.AddLibrary(CinderZilch::GetInstance().GetLibrary());
     CompileScripts(project, dependencies);
 
     LinkedLibs = dependencies.Link();

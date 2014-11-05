@@ -12,6 +12,7 @@
 
 #include "Common.h"
 #include "BaseEvent.h"
+#include "ZilchCompiledLib.h"
 
 namespace Framework
 {
@@ -19,6 +20,7 @@ namespace Framework
   class KeyEvent : public BaseEvent
   {
   public:
+    ZilchDeclareBaseType(KeyEvent, Zilch::TypeCopyMode::ReferenceType);
     //Key value as dictated by GLFW
     int KeyValue;
 

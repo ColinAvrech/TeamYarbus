@@ -13,12 +13,15 @@
 #include "Common.h"
 #include "BaseEvent.h"
 
-namespace Framework
-{
 
-  class GameEvent : public BaseEvent
-  {
-  public:
-
-  };
-}
+// Old Use BaseEvent to make customEvents
+//namespace Framework
+//{
+//
+//  // Basic GameEvent for callbacks
+//  class GameEvent : public BaseEvent
+//  {
+//  public:
+//
+//  };
+//}

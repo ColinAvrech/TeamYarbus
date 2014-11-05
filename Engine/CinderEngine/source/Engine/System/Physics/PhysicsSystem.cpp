@@ -29,34 +29,37 @@ namespace Framework
 			//MAKE ITERATE THRU RIGIDBODS
 			for (auto it = Bodies.begin(); it != Bodies.end(); ++it)
 			{
-				//it->Integrate(dt);
+				(*it)->RigidBody->Integrate(dt);
 			}
-
 		}
 
-		//void Physics::DetectContacts(float dt)
-		//{
-		//	BodyIterator bodyA = Bodies.begin();
-		//	BodyIterator lastBody = Bodies.last(); //end - 1
+		void PhysicsSystem::DetectContacts(float dt)
+		{
+			//BodyIterator bodyA = Bodies.begin();
+			//BodyIterator lastBody = Bodies.last(); //end - 1
 
-		//	//Broad phase should be added this is N^2
-		//	for (; bodyA != lastBody; ++bodyA)
-		//	{
-		//		BodyIterator bodyB = bodyA;
-		//		++bodyB;
-		//		for (; bodyB != Bodies.end(); ++bodyB)
-		//		{
-		//			//Do not collide static bodies with other static bodies
-		//			if (!bodyA->IsStatic || !bodyB->IsStatic)
-		//			{
-		//				Collsion.GenerateContacts((bodyA)->BodyShape, (bodyA)->Position, (bodyB)->BodyShape, (bodyB)->Position, &Contacts);
-		//			}
-		//		}
-		//	}
-		//}
+			//Broad phase should be added this is N^2
+			for (auto bodyA = Bodies.begin(); bodyA != Bodies.end(); ++bodyA)
+			{
+				auto bodyB = bodyA;
+				++bodyB;
+				for (; bodyB != Bodies.end(); ++bodyB)
+				{
+					//Do not collide static bodies with other static bodies
+					if ((*bodyA)->RigidBody->state != RigidBody::DynamicState::Static
+						|| (*bodyB)->RigidBody->state != RigidBody::DynamicState::Static)
+					{
+						//Collsion.GenerateContacts((bodyA)->BodyShape, (bodyA)->Position, (bodyB)->BodyShape, (bodyB)->Position, &Contacts);
+					}
+				}
+			}
+		}
 
 		void PhysicsSystem::Step(const float dt)
 		{
+			IntegrateBodies(dt);
+
+			Contacts.Reset();
 
 
 		}

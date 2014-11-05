@@ -12,6 +12,7 @@
 
 #include "Common.h"
 #include "BaseEvent.h"
+#include "ZilchCompiledLib.h"
 
 namespace Framework
 {
@@ -19,10 +20,11 @@ namespace Framework
   class CollisionEvent : public BaseEvent
   {
   public:
+    ZilchDeclareBaseType(CollisionEvent, Zilch::TypeCopyMode::ReferenceType);
 
   GameObject * OtherObject;
 	GameObject * thisObject;
-	float penetration;
+	float Penetration;
 	glm::vec2 normal;
 
   };

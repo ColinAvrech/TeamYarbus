@@ -10,7 +10,7 @@ namespace Framework
 	class ContactSet
 	{
 	private:
-		static const int maxContacts = 1024;
+		static const int maxContacts = 256;
 		unsigned numOfContacts;
 
 	public:

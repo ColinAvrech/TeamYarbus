@@ -25,7 +25,7 @@ namespace Framework
 
   void CircleCollider::Initialize()
   {
-    gameObject->CircleCollider = this;
+    gameObject->ShapeCollider = this;
   }
 
   void CircleCollider::Update()
@@ -34,7 +34,7 @@ namespace Framework
   }
 
   //collision detection
-  void CircleCollider::DetectCircle(CircleCollider* c)
+  void CircleCollider::DetectCollision(CircleCollider* c)
   {
     // not counting offset
     glm::vec2 pos;
@@ -54,7 +54,7 @@ namespace Framework
   }
 
   //repeat
-  void CircleCollider::DetectPoint(PointCollider* p)
+  void CircleCollider::DetectCollision(PointCollider* p)
   {
     glm::vec2 ppos = p->getPosition();
     glm::vec2 pos = getPosition();
@@ -68,7 +68,7 @@ namespace Framework
     }
   }
 
-  void CircleCollider::DetectLine(LineCollider* l)
+  void CircleCollider::DetectCollision(LineCollider* l)
   {
     //float rad = GetRadius();
     float rad = radius;
@@ -81,7 +81,7 @@ namespace Framework
     if (penetration = Physics::CirclevsLine(rad, pos, l) >= 0)
     {
       CollisionEvent collision;
-      collision.penetration = penetration;
+      collision.Penetration = penetration;
       collision.OtherObject = l->gameObject;
       collision.thisObject = this->gameObject;
       collision.normal = l->normalVec;

@@ -56,8 +56,6 @@ namespace Framework
       //call.SetHandle(1, engineHandle);
       call.Invoke(report);
     }
-
-    bob.Delete();
   }
 
   void ZilchComponent::Serialize(Serializer::DataNode* componentData)

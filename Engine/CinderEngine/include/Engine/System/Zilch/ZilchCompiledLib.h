@@ -8,15 +8,16 @@
 */
 /******************************************************************************/
 
-#ifndef _SCRIPT_H
-#define _SCRIPT_H
-
+#pragma once
 /*------------------------------------------------------------------------------
 // Includes
 ------------------------------------------------------------------------------*/
 #include "Common.h"
 #include "Zilch.hpp"
 #include "BaseSystem.h"
+
+using namespace Zilch;
+ZilchStaticLibrary(CinderZilch);
 
 namespace Framework
 {
@@ -74,5 +75,3 @@ namespace Framework
 } //Framework
 
 
-
-#endif				// _SCRIPT_H

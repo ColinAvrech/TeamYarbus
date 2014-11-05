@@ -66,7 +66,6 @@ namespace Framework
     RegisterComponent(Transform);
     RegisterComponent(Sprite);
     RegisterComponent (Camera);
-    RegisterComponent (ShapeCollider);
     RegisterComponent(CharacterController);
     RegisterComponent(RigidBody);
     RegisterComponent (FountainEffect);

@@ -93,23 +93,20 @@ namespace Framework
 
   float RigidBody::calculateMass()
   {
-    //density * volume
-    if (gameObject->CircleCollider)
-    {
-      mass = (4 / 3) * 3.14f * gameObject->CircleCollider->radius;
-    }
-    else// if (gameObject->LineCollider)
-    {
-      mass = 10;
-    }
-    return mass;
+	  if (this->gameObject->ShapeCollider)
+	  {
+		  glm::vec3 scale = gameObject->Transform->GetScale();
+		  float density = gameObject->ShapeCollider->getDensity();
+		  mass = (scale.x * scale.y * scale.z) * density;
+		  return mass;
+	  }
+	  else
+		  return 0;
   }
 
-  void RigidBody::Integrate(float dt_, GameObject * obj)
+  void RigidBody::Integrate(float dt_)
   {
-    gameObject = obj;
-    
-		if (obj->RigidBody->state == RigidBody::Static)
+		if (this->state == RigidBody::Static)
 			return;
     //update position
 		prevPos = pos;
