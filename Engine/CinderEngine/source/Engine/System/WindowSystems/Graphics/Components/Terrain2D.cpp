@@ -11,6 +11,7 @@
 #include "Terrain2D.h"
 #include "ResourceManager.h"
 #include "WindowSystem.h"
+#include "random.hpp"
 
 namespace Framework
 {

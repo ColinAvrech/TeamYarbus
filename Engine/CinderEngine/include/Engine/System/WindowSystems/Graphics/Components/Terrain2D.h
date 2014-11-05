@@ -28,7 +28,7 @@ namespace Framework
   virtual void Initialize ();
 
   void Render ();
-  std::vector <std::pair <glm::vec2, glm::vec2>>* Get_Edges ();
+  std::vector <std::pair <glm::vec2, glm::vec2>>& Get_Edges ();
 
   const static std::string Name;
 
