@@ -12,12 +12,13 @@
 #define _TERRAIN_2D_H
 
 #include "GraphicsCommon.h"
+#include "TerrainCreator.h"
 #include "JSONSerializer.h"
 #include "GameObject.h"
 
 namespace Framework
 {
-  class UpdateEvent;
+
   class Terrain2D : public Component
   {
   public:
@@ -36,6 +37,8 @@ namespace Framework
   const static std::string Name;
 
   private:
+    Procedural::TerrainCreator* tc;
+
     VAO* vao;
     VBO* vbo;
     Shader* shader;

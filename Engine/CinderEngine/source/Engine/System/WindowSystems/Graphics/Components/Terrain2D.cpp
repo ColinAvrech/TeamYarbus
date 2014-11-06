@@ -12,13 +12,12 @@
 #include "ResourceManager.h"
 #include "WindowSystem.h"
 #include "Thermodynamics.h"
-#include "TerrainCreator.h"
 #include "random.hpp"
 
 namespace Framework
 {
   DefineComponentName (Terrain2D);
-  Procedural::TerrainCreator* tc;
+
   // Constructor
   Terrain2D::Terrain2D ()
   {}
@@ -26,7 +25,7 @@ namespace Framework
   // Destructor
   Terrain2D::~Terrain2D ()
   {
-    delete vao, vbo, tc;
+    delete tc;
   }
 
 
@@ -64,7 +63,7 @@ namespace Framework
 
   void Terrain2D::Generate_Height_Points ()
   {
-    tc = new Procedural::TerrainCreator (25, 25, 5);
+    tc = new Procedural::TerrainCreator (100, 100, 10, 4);
     Procedural::TerrainCreator& t = *tc;
     int** Map = t.GetMap ();
 
