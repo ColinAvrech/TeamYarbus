@@ -25,12 +25,24 @@ namespace Framework
   // Destructor
   Terrain2D::~Terrain2D ()
   {
+    WindowSystem::terrain = nullptr;
     delete vao, vbo, tc;
   }
 
 
   void Terrain2D::Serialize (Serializer::DataNode* data)
   {
+    Serializer::DataNode* value = data->FindElement(data, "MapSize");
+    value->GetValue (&MapSize);
+
+    value = data->FindElement (data, "BaseHeight");
+    value->GetValue (&BaseHeight);
+
+    value = data->FindElement (data, "Passes");
+    value->GetValue (&Passes);
+
+    value = data->FindElement (data, "Waves");
+    value->GetValue (&Waves);
   }
 
   void Terrain2D::Initialize ()
@@ -63,7 +75,7 @@ namespace Framework
 
   void Terrain2D::Generate_Height_Points ()
   {
-    tc = new Procedural::TerrainCreator (100, 100, 10, 4);
+    tc = new Procedural::TerrainCreator (MapSize, MapSize, BaseHeight, Passes, Waves);
     Procedural::TerrainCreator& t = *tc;
     int** Map = t.GetMap ();
 

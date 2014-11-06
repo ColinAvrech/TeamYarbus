@@ -37,6 +37,10 @@ namespace Framework
   const static std::string Name;
 
   private:
+    int MapSize;
+    int BaseHeight;
+    int Passes;
+    int Waves;
     Procedural::TerrainCreator* tc;
 
     VAO* vao;
@@ -46,7 +50,7 @@ namespace Framework
     std::vector <std::pair <glm::vec2, glm::vec2>> edges;
     std::vector <glm::vec2> height_points;
     std::vector <float> vertices;
-  };  
+  };
 }
 
 #endif

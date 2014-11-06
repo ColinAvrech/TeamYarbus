@@ -84,6 +84,10 @@ Level =
 		},
 		Terrain2D = 
 		{
+      int MapSize = 100,
+      int BaseHeight = 5,
+      int Passes = 5,
+      int Waves = 2,
 		},
   },
 },
