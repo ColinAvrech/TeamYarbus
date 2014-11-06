@@ -68,7 +68,7 @@ namespace Framework
     {
       std::cout << "Thermodynamics Initialized." << std::endl;
 
-      Procedural::TerrainCreator t(100, 50, 5);
+      //Procedural::TerrainCreator t(100, 50, 5);
 
 
       //Scan level

@@ -35,12 +35,17 @@ namespace Framework
     class TerrainCreator
     {
     public:
+      TerrainCreator (){}
       //Constructor
       //Takes map width, map height, base height, smoothing passes, number of waves
-      TerrainCreator(int, int, int, int = 4, int = 2);
+      TerrainCreator(int width, int height, int baseHeight, int passes = 4, int waves = 2);
       //Destructor
       ~TerrainCreator();
       int ** const GetMap(){ return Map; };
+
+      inline int Get_Width ();
+      inline int Get_Height ();
+
     private:
       int passes;
       int waves;
@@ -50,6 +55,18 @@ namespace Framework
       float *HeightMap;
       int ** Map;
     }; //class terrain
+
+    inline int TerrainCreator::Get_Width ()
+    {
+      return MapWidth;
+    }
+
+    inline int TerrainCreator::Get_Height ()
+    {
+      return MapHeight;
+    }
+
+
   } //Procedural
 } //Framework
 

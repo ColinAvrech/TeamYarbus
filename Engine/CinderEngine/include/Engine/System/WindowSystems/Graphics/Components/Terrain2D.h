@@ -29,7 +29,10 @@ namespace Framework
 
   void Render ();
   std::vector <std::pair <glm::vec2, glm::vec2>>& Get_Edges ();
-
+  void Generate_Height_Points ();
+  void Generate_Edges ();
+  void Generate_Vertices ();
+  void Generate_Buffers ();
   const static std::string Name;
 
   private:
