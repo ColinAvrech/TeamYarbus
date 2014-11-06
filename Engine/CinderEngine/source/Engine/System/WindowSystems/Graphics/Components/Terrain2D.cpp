@@ -25,7 +25,7 @@ namespace Framework
   // Destructor
   Terrain2D::~Terrain2D ()
   {
-    delete tc;
+    delete vao, vbo, tc;
   }
 
 
