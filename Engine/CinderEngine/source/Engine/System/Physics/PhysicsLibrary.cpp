@@ -20,7 +20,7 @@ namespace Framework
 
 		glm::vec2 applyNetForce(glm::vec2 sumForce, double InvMass)
 		{
-			glm::vec2 accel = sumForce * InvMass;
+			glm::vec2 accel = sumForce * (float)InvMass;
 			return accel;
 		}
 

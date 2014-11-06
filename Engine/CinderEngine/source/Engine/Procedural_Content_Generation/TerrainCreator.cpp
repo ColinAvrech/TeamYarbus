@@ -10,7 +10,7 @@
 
 //This is only for testing thermo
 
-#include "Terrain.h"
+#include "TerrainCreator.h"
 #include "FractalNoise.h"
 #include <stdlib.h>
 #include <iostream>

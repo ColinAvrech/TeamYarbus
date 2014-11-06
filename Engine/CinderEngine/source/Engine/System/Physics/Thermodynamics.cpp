@@ -1,7 +1,7 @@
 #include "Physics/Thermodynamics.h"
 #include "TDLib.h"
 #include "AudioSystem.h"
-#include "Terrain.h"
+#include "TerrainCreator.h"
 #include "FractalNoise.h"
 
 #define SIZE 10
@@ -68,7 +68,7 @@ namespace Framework
     {
       std::cout << "Thermodynamics Initialized." << std::endl;
 
-      Procedural::TerrainCreator t(100, 50, 25);
+      Procedural::TerrainCreator t(100, 50, 5);
 
 
       //Scan level

@@ -11,6 +11,7 @@
 #include "Terrain2D.h"
 #include "ResourceManager.h"
 #include "WindowSystem.h"
+#include "Thermodynamics.h"
 #include "random.hpp"
 
 namespace Framework
@@ -40,54 +41,46 @@ namespace Framework
     shader = Resources::RS->Get_Shader ("Terrain");
     shader->Use ();
 
+    // Hard Coded
     height_points.push_back ({ -1.0f, -0.9f });
     height_points.push_back ({ -0.8f, -0.7f });
-    edges.push_back (std::make_pair (height_points [0], height_points [1]));
     height_points.push_back ({ -0.6f, -0.8f });
-    edges.push_back (std::make_pair (height_points [1], height_points [2]));
     height_points.push_back ({ -0.5f, -0.9f });
-    edges.push_back (std::make_pair (height_points [2], height_points [3]));
     height_points.push_back ({ -0.2f, -0.8f });
-    edges.push_back (std::make_pair (height_points [3], height_points [4]));
     height_points.push_back ({ +0.0f, -0.8f });
-    edges.push_back (std::make_pair (height_points [4], height_points [5]));
     height_points.push_back ({ +0.6f, -0.3f });
-    edges.push_back (std::make_pair (height_points [5], height_points [6]));
     height_points.push_back ({ +0.8f, -0.6f });
-    edges.push_back (std::make_pair (height_points [6], height_points [7]));
     height_points.push_back ({ +1.0f, -0.9f });
-    edges.push_back (std::make_pair (height_points [7], height_points [8]));
 
+    // Edges for Line Colliders
     for (unsigned i = 0; i < height_points.size () - 1; ++i)
     {
-      //v.push_back (-0.5f);
-      vertices.push_back (height_points [i].x);
-      vertices.push_back (y);
-      //v.push_back (0.5f);
-      vertices.push_back (height_points [i + 1].x);
-      vertices.push_back (y);
-      //v.push_back (-0.5f);
-      vertices.push_back (height_points [i].x);
-      //v.push_back (-y);
-      vertices.push_back (height_points [i].y);
+      edges.push_back (std::make_pair (height_points [i], height_points [i + 1]));
+    }
 
-      //v.push_back (0.5f);
-      vertices.push_back (height_points [i + 1].x);
-      //v.push_back (0.5f);
-      vertices.push_back (height_points [i + 1].y);
-      //v.push_back (-0.5f);
+    // Vertices
+    for (unsigned i = 0; i < height_points.size () - 1; ++i)
+    {
+      // Triangle 1
       vertices.push_back (height_points [i].x);
-      //v.push_back (-y);
+      vertices.push_back (y);
+      vertices.push_back (height_points [i + 1].x);
+      vertices.push_back (y);
+      vertices.push_back (height_points [i].x);
       vertices.push_back (height_points [i].y);
-      //v.push_back (0.5f);
+      // Triangle 2
+      vertices.push_back (height_points [i + 1].x);
+      vertices.push_back (height_points [i + 1].y);
+      vertices.push_back (height_points [i].x);
+      vertices.push_back (height_points [i].y);
       vertices.push_back (height_points [i + 1].x);
       vertices.push_back (y);
     }
 
     vbo = new VBO (vertices.size () * sizeof (float), vertices.data ());
-    GLuint posAttrib = glGetAttribLocation (shader->Get_ID(), "position");
-    glEnableVertexAttribArray (posAttrib);
-    glVertexAttribPointer (posAttrib, 2, GL_FLOAT, GL_FALSE, 2 * sizeof (float), 0);
+    GLuint posAttrib = shader->attribLocation ("position");
+    shader->enableVertexAttribArray (posAttrib);
+    shader->vertexAttribPtr (posAttrib, 2, GL_FLOAT, GL_FALSE, 2 * sizeof (float), 0);
 
     vao->unbindVAO ();
   }
@@ -102,6 +95,7 @@ namespace Framework
     glDrawArrays (GL_TRIANGLES, 0, vertices.size () / 2);
 
     vao->unbindVAO ();
+    shader->Disable ();
   }
 
   std::vector <std::pair <glm::vec2, glm::vec2>>& Terrain2D::Get_Edges()

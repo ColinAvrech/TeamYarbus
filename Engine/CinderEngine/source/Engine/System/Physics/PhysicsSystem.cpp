@@ -71,7 +71,7 @@ namespace Framework
 
 			if (!StepModeActive)
 			{
-				accumulator += dt;
+				accumulator += (float)dt;
 				accumulator = std::min(accumulator, TimeStep * 5);
 				if (accumulator > TimeStep)
 				{
