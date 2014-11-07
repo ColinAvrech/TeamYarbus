@@ -103,6 +103,11 @@ namespace Framework
           HeightMap[j + 1] += dH / 3;
         }
       }
+      delete[] x1;
+      delete[] x2;
+      delete[] x4;
+      delete[] x8;
+      delete[] WaveBuffer;
     } //function
 
   } //Procedural
