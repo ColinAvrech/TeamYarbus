@@ -18,24 +18,6 @@ namespace Framework
   VBO* Sprite::vbo;
   EBO* Sprite::ebo;
 
-
-  void Sprite::Initialize ()
-  {
-    IGraphicsObject::Register ();
-    gameObject->Sprite = this;
-
-    if (vao == nullptr || vbo == nullptr || ebo == nullptr)
-    {
-      ShapeData data = ShapeGenerator::Generate_Quad ();
-      vao = new VAO ();
-      vbo = new VBO (data.vbo_size (), data.vertices);
-      ebo = new EBO (data.ebo_size (), data.indices);
-      Specify_Attributes ();
-      vao->unbindVAO ();
-    }
-  }
-
-
   void Sprite::Serialize(Serializer::DataNode* data)
 {
     //////////////////////////////////////////////////////////////////////////
@@ -55,6 +37,24 @@ namespace Framework
 	  shader = Resources::RS->Get_Shader(shadername);
 
 	  animated = false;
+  }
+
+
+  void Sprite::Initialize ()
+  {
+    IGraphicsObject::Register ();
+    gameObject->Sprite = this;
+
+    if (vao == nullptr || vbo == nullptr || ebo == nullptr)
+    {
+      ShapeData data = ShapeGenerator::Generate_Quad ();
+      vao = new VAO ();
+      vbo = new VBO (data.vbo_size (), data.vertices);
+      ebo = new EBO (data.ebo_size (), data.indices);
+      Specify_Attributes ();
+      vao->unbindVAO ();
+      data.Clean ();
+    }
   }
 
 
