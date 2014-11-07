@@ -12,8 +12,7 @@
 #include "GraphicsCommon.h"
 #include "glfw3.h"
 #include "KeyEvent.h"
-#include "Effect.h"
-#include "Terrain2D.h"
+#include "IGraphicsObject.h"
 
 
 namespace Framework
@@ -56,9 +55,7 @@ namespace Framework
     void Set_W_H (unsigned, unsigned);
 
     static std::list <Transform*> transformList;
-    static std::list <Sprite*> spriteList;
-    static std::list <IEffect*> effectList;
-    static Terrain2D* terrain;
+    static std::list <IGraphicsObject*> graphicsObjects;
 
   private:
     GLFWwindow* window;

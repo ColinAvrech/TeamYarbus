@@ -14,12 +14,12 @@
 #include "GraphicsCommon.h"
 #include "TerrainCreator.h"
 #include "JSONSerializer.h"
-#include "GameObject.h"
+#include "IGraphicsObject.h"
 
 namespace Framework
 {
 
-  class Terrain2D : public Component
+  class Terrain2D : public IGraphicsObject
   {
   public:
   Terrain2D ();
@@ -27,8 +27,8 @@ namespace Framework
   
   virtual void Serialize (Serializer::DataNode*);
   virtual void Initialize ();
+  virtual void Draw ();
 
-  void Render ();
   std::vector <std::pair <glm::vec2, glm::vec2>>& Get_Edges ();
   void Generate_Height_Points ();
   void Generate_Edges ();

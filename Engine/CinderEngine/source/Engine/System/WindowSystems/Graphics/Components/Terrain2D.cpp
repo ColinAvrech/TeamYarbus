@@ -25,7 +25,7 @@ namespace Framework
   // Destructor
   Terrain2D::~Terrain2D ()
   {
-    WindowSystem::terrain = nullptr;
+    WindowSystem::graphicsObjects.remove (this);
     delete vao, vbo, tc;
   }
 
@@ -47,7 +47,7 @@ namespace Framework
 
   void Terrain2D::Initialize ()
   {
-    WindowSystem::terrain = this;
+    IGraphicsObject::Register ();
 
     Generate_Height_Points ();
     Generate_Edges ();
@@ -56,7 +56,7 @@ namespace Framework
   }
 
 
-  void Terrain2D::Render ()
+  void Terrain2D::Draw ()
   {
     shader->Use ();
     vao->bindVAO ();

@@ -1,0 +1,35 @@
+/******************************************************************************/
+/*!
+\file   IGraphicsObject.cpp
+\author Manas Sudhir Kulkarni
+\par    Course: GAM200
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+\brief  
+*/
+/******************************************************************************/
+
+#include "IGraphicsObject.h"
+#include "WindowSystem.h"
+
+namespace Framework
+{
+
+  // Constructor
+  IGraphicsObject::IGraphicsObject ()
+  {}
+  
+  // Destructor
+  IGraphicsObject::~IGraphicsObject ()
+  {}
+
+
+  void IGraphicsObject::Register ()
+  {
+    WindowSystem::graphicsObjects.push_back (this);
+  }
+
+  void IGraphicsObject::Draw ()
+  {
+  }
+
+}

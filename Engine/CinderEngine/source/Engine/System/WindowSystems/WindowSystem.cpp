@@ -13,16 +13,11 @@ function to handle windows Messages.
 #include "GraphicsCommon.h"
 #include "Resources.h"
 #include "ResourceManager.h"
-#include "ShapeGenerator.h"
 #include "Core.h"
 #include "AudioSystem.h"
 #include "SceneManager.h"
 #include "ComponentInclude.h"
 #include "EventSystem.h"
-#include "DebugRenderer.h"
-#include "CLParticleRenderer.h"
-#include "HeatMap.h"
-#include "FrameBufferObject.h"
 #include "Thermodynamics.h"
 
 namespace Framework
@@ -31,9 +26,7 @@ namespace Framework
   WindowSystem* WINDOWSYSTEM = NULL;
 
   std::list <Transform*> WindowSystem::transformList;
-  std::list <Sprite*> WindowSystem::spriteList;
-  std::list <IEffect*> WindowSystem::effectList;
-  Terrain2D* WindowSystem::terrain;
+  std::list <IGraphicsObject*> WindowSystem::graphicsObjects;
   
 
   namespace WindowNameSpace
@@ -353,7 +346,10 @@ namespace Framework
     glEnable (GL_BLEND);
     glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    terrain->Render ();
+    for (auto& i : graphicsObjects)
+    {
+      i->Draw ();
+    }
 
     glfwSwapBuffers (window);
   }

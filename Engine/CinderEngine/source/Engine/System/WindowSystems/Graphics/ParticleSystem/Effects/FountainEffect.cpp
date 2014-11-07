@@ -25,7 +25,7 @@ namespace Framework
 
   FountainEffect::~FountainEffect ()
   {
-    WINDOWSYSTEM->effectList.remove (this);
+    //WINDOWSYSTEM->effectList.remove (this);
   }
 
 
@@ -44,7 +44,7 @@ namespace Framework
 
   void FountainEffect::Initialize ()
   {
-    WINDOWSYSTEM->effectList.push_back (this);
+    //WINDOWSYSTEM->effectList.push_back (this);
     initialize (0);
     initializeRenderer ();
   }

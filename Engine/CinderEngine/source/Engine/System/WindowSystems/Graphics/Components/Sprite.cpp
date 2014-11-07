@@ -3,6 +3,7 @@
 #include "Transform.h"
 #include "GameObject.h"
 #include "ResourceManager.h"
+#include "ShapeGenerator.h"
 #include "WindowSystem.h"
 
 namespace Framework
@@ -13,35 +14,25 @@ namespace Framework
   {
   }
 
+  VAO* Sprite::vao;
+  VBO* Sprite::vbo;
+  EBO* Sprite::ebo;
 
-  //// NON-DEFAULT CONSTRUCTOR
-  //// MUST SPECIFY SHADER AND TEXTURE
-  //// MESH AND TRI DATA WILL BE PASSED TO CREATE CUSTOM MESH
-  //// ELSE THE DEFAULT QUAD WILL BE USED
-  //Sprite::Sprite (Shader* _shader, Texture* _texture /*=NULL*/) : transform (*(new Transform ()))
-  //{
-  //  //Create_Mesh (_meshData, _triData);
-  //  shader = _shader;
-  //  texture = _texture;
-  //  animated = false;
-  //}
-
-
-  //Sprite::Sprite (Shader* _shader, SpriteSheet* _atlas) : transform (*(new Transform ()))
-  //{
-  //  shader = _shader;
-  //  texture = _atlas;
-  //  atlas = _atlas;
-  //  animated = false;
-  //  Specify_Attributes ();
-  //}
 
   void Sprite::Initialize ()
   {
-    WINDOWSYSTEM->spriteList.push_back (this);
-    Specify_Attributes ();
-
+    IGraphicsObject::Register ();
     gameObject->Sprite = this;
+
+    if (vao == nullptr || vbo == nullptr || ebo == nullptr)
+    {
+      ShapeData data = ShapeGenerator::Generate_Quad ();
+      vao = new VAO ();
+      vbo = new VBO (data.vbo_size (), data.vertices);
+      ebo = new EBO (data.ebo_size (), data.indices);
+      vao->unbindVAO ();
+      Specify_Attributes ();
+    }
   }
 
 
@@ -93,7 +84,22 @@ namespace Framework
   Sprite::~Sprite ()
   {
     gameObject->Sprite = nullptr;
-    WINDOWSYSTEM->spriteList.remove (this);
+    WindowSystem::graphicsObjects.remove (this);
+    if (vao != nullptr)
+    {
+      delete vao;
+      vao = nullptr;
+    }
+    if (vbo != nullptr)
+    {
+      delete vbo;
+      vbo = nullptr;
+    }
+    if (ebo != nullptr)
+    {
+      delete ebo;
+      ebo = nullptr;
+    }
   }
 
 
@@ -173,6 +179,7 @@ namespace Framework
   // Called By Renderer Component
   void Sprite::Draw ()
   {
+    vao->bindVAO ();
     shader->Use ();
     //shader->enableVertexAttribArray (posAttrib);
     //shader->enableVertexAttribArray (colorAttrib);
@@ -181,6 +188,7 @@ namespace Framework
 
     (this->*DrawFunction)();
     shader->Disable ();
+    vao->unbindVAO ();
   }
 
 
