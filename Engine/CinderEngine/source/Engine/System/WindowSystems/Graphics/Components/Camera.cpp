@@ -9,6 +9,10 @@
 /******************************************************************************/
 
 #include "Camera.h"
+#include "EventSystem.h"
+#include "KeyEvent.h"
+#include "BaseEvent.h"
+#include "WindowSystem.h"
 #include "GameObject.h"
 
 
@@ -26,15 +30,42 @@ namespace Framework
     gameObject->Camera = nullptr;
   }
 
+  void Camera::OnKeyPressed (KeyEvent* key)
+  {
+    if (key->KeyDown)
+    switch (key->KeyValue)
+    {
+    case GLFW_KEY_A:
+      Camera::main->gameObject->Transform->Translate (0.01f, 0, 0);
+      Camera::main->matricesReady = false;
+      break;
+    case GLFW_KEY_D:
+      Camera::main->gameObject->Transform->Translate (-0.01f, 0, 0);
+      Camera::main->matricesReady = false;
+      break;
+    //case GLFW_KEY_S:
+    //  Camera::main->gameObject->Transform->Translate (0, 0.01f, 0);
+    //  Camera::main->matricesReady = false;
+    //  break;
+    //case GLFW_KEY_W:
+    //  Camera::main->gameObject->Transform->Translate (0, -0.01f, 0);
+    //  Camera::main->matricesReady = false;
+    //  break;
+    default:
+      break;
+    }
+  }
+
 
   void Camera::Initialize ()
   {
+    EVENTSYSTEM->mConnect <KeyEvent, Camera> (Events::KEY_ANY, this, &Camera::OnKeyPressed);
     gameObject->Camera = this;
     allCameras.push_back(this);
     if (mainCamera)
     {
       Camera::main = this;
-      worldToView = glm::lookAt(size * viewDirection, gameObject->Transform->GetPosition(), up);
+      worldToView = glm::lookAt(size * viewDirection + glm::vec3 (gameObject->Transform->GetPosition().x, gameObject->Transform->GetPosition().y, 0.0), gameObject->Transform->GetPosition(), up);
       viewToProjection = glm::perspective(fov * M_PI / 180, aspect, nearPlane, farPlane);
     }
     Camera::current = this;
@@ -102,6 +133,38 @@ namespace Framework
   {
     size += zoom;
     matricesReady = false;
+  }
+
+  glm::mat4 Camera::GetWorldToViewMatrix ()
+  {
+    //if (!Camera::main->matricesReady)
+    {
+      Camera::main->worldToView = glm::lookAt
+        (
+        Camera::main->size * Camera::main->viewDirection + glm::vec3 (Camera::main->gameObject->Transform->GetPosition ().x, Camera::main->gameObject->Transform->GetPosition ().y, 0.0),
+        Camera::main->gameObject->Transform->GetPosition(),
+        Camera::main->up
+        );
+    }
+
+    return Camera::main->worldToView;
+  }
+
+  glm::mat4 Camera::GetViewToProjectionMatrix ()
+  {
+    //if (!Camera::main->matricesReady)
+    {
+      Camera::main->viewToProjection =
+      glm::perspective
+      (
+      Camera::main->fov * M_PI / 180,
+      Camera::main->aspect,
+      Camera::main->nearPlane,
+      Camera::main->farPlane
+      );
+    }
+
+    return Camera::main->viewToProjection;
   }
 
 }

@@ -41,10 +41,10 @@ namespace Framework
       for (int i = MapWidth - 1; i >= 0; --i)
       {
         for (int j = 0; j < MapHeight; ++j){
-          if (Map[i][j] != 0)
-            std::cout << Map[i][j];
+          if (Map [i][j] != 0);
+            //std::cout << Map[i][j];
         }
-        std::cout << std::endl;
+        //std::cout << std::endl;
       }
       delete[] HeightMap;
     }

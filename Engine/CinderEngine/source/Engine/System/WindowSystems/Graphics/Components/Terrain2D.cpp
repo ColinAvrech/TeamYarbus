@@ -60,6 +60,7 @@ namespace Framework
   {
     shader->Use ();
     vao->bindVAO ();
+    shader->uniMat4 ("mvp", glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix()));
     //shader->enableVertexAttribArray (shader->attribLocation ("position"));
 
     glDrawArrays (GL_TRIANGLES, 0, vertices.size () / 2);

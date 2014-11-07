@@ -16,7 +16,7 @@
 
 namespace Framework
 {
-
+  class KeyEvent;
   class Camera : public Component
   {
   public:
@@ -35,8 +35,9 @@ namespace Framework
     glm::mat4 WorldToViewMatrix ();
     glm::mat4 ViewToProjectionMatrix ();
 
-    inline static glm::mat4 GetWorldToViewMatrix ();
-    inline static glm::mat4 GetViewToProjectionMatrix ();
+    static glm::mat4 GetWorldToViewMatrix ();
+    static glm::mat4 GetViewToProjectionMatrix ();
+    void OnKeyPressed (KeyEvent* key);
     static std::list <Camera*> allCameras;
     static Camera* current;
     static Camera* main;
@@ -65,38 +66,6 @@ namespace Framework
   //////////////////////////////////////////////////////////////////////////
   // Inline Methods
   //////////////////////////////////////////////////////////////////////////
-
-  inline glm::mat4 Camera::GetWorldToViewMatrix ()
-  {
-    if (!Camera::main->matricesReady)
-    {
-      Camera::main->worldToView = glm::lookAt
-        (
-        Camera::main->size * Camera::main->viewDirection,
-        Camera::main->position,
-        Camera::main->up
-        );
-    }
-
-    return Camera::main->worldToView;
-  }
-
-  inline glm::mat4 Camera::GetViewToProjectionMatrix ()
-  {
-    if (!Camera::main->matricesReady)
-    {
-      Camera::main->viewToProjection =
-        glm::perspective
-        (
-        Camera::main->fov,
-        Camera::main->aspect,
-        Camera::main->nearPlane,
-        Camera::main->farPlane
-        );
-    }
-
-    return Camera::main->viewToProjection;
-  }
 }
 
 #endif

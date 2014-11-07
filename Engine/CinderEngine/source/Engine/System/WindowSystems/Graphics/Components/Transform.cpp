@@ -133,7 +133,7 @@ namespace Framework
 
   glm::mat4 Transform::GetModelViewProjectionMatrix ()
   {
-    if (!matricesReady)
+    //if (!matricesReady)
       return Camera::GetViewToProjectionMatrix () * Camera::GetWorldToViewMatrix () * modelMatrix [currentMatrix];
 
     return modelViewProjectionmatrix [currentMatrix];
@@ -148,8 +148,8 @@ namespace Framework
 
   //GLSL
   void Transform::UpdateMatrices()
-{
-    if (!matricesReady)
+  {
+    //if (!matricesReady)
     {
       modelMatrix [currentMatrix] =
         glm::translate (position) *

@@ -78,14 +78,14 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, 0, 0],
-			Vec3 Scale = [2.5, 2.5, 2.5],
+			Vec3 Translation = [0, -0.7, 0],
+			Vec3 Scale = [10, 1, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Terrain2D = 
 		{
       int MapSize = 500,
-      int BaseHeight = 5,
+      int BaseHeight = 50,
       int Passes = 5,
       int Waves = 2,
 		},
@@ -114,7 +114,7 @@ Level =
 			Vec4 Color = [1, 1, 1, 1],
 			bool Visible = true,
 			bool OnTop = false,
-			bool AnimationActive = false,
+			bool AnimationActive = true,
 			float AnimationSpeed = 1,
 			uint StartFrame = 0,
 			BlendMode BlendMode = Alpha,
