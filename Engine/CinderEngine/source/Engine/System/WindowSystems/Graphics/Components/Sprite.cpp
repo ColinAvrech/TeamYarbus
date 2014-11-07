@@ -30,8 +30,8 @@ namespace Framework
       vao = new VAO ();
       vbo = new VBO (data.vbo_size (), data.vertices);
       ebo = new EBO (data.ebo_size (), data.indices);
-      vao->unbindVAO ();
       Specify_Attributes ();
+      vao->unbindVAO ();
     }
   }
 
@@ -78,9 +78,6 @@ namespace Framework
 
 
   // Destructor
-  // Destroy All Buffers Used By Sprite
-  // This Might Be Used For Derived Classes Which Will Need Special Buffer Objects
-  // This Destructor Does Nothing Right Now
   Sprite::~Sprite ()
   {
     gameObject->Sprite = nullptr;
@@ -140,8 +137,6 @@ namespace Framework
       shader->enableVertexAttribArray (texAttrib);
       shader->vertexAttribPtr (texAttrib, 2, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), 10 * sizeof(GLfloat));
 
-
-
       if (animated)
       {
         DrawFunction = &Sprite::Draw_Animated;
@@ -181,9 +176,6 @@ namespace Framework
   {
     vao->bindVAO ();
     shader->Use ();
-    //shader->enableVertexAttribArray (posAttrib);
-    //shader->enableVertexAttribArray (colorAttrib);
-    //shader->enableVertexAttribArray (normalAttrib);
     shader->uniMat4 ("modelViewProjectionMatrix", glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix ()));
 
     (this->*DrawFunction)();
@@ -195,7 +187,6 @@ namespace Framework
   // Draw Sprite Using Texture
   void Sprite::Draw_Texture ()
   {
-    //shader->enableVertexAttribArray (texAttrib);
     texture->Bind ();
     glDrawElements (GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     texture->Unbind ();

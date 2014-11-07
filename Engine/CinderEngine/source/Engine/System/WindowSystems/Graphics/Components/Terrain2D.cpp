@@ -60,7 +60,7 @@ namespace Framework
   {
     shader->Use ();
     vao->bindVAO ();
-    shader->enableVertexAttribArray (shader->attribLocation ("position"));
+    //shader->enableVertexAttribArray (shader->attribLocation ("position"));
 
     glDrawArrays (GL_TRIANGLES, 0, vertices.size () / 2);
 
