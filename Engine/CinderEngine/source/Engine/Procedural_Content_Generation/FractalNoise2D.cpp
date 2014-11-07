@@ -32,13 +32,13 @@ namespace Framework
       }
 
       int div = 1;
-      for (int i = 0; i < passes; ++i)
+      for (int i = 0; i < passes - 1; ++i)
         div *= 2;
-      float weight = 0.5f / div;
-      int denom = 1;
-      for (int k = 1; k < passes; ++k, weight *= 2, denom *= 2)
+      for (int i = 0; i < size; ++i)
       {
-        for (int i = 0; i < size; ++i)
+        float weight = 0.5f / div;
+        int denom = 1;
+        for (int k = 1; k < passes; ++k, weight *= 2, denom *= 2)
         {
           Array[i] += weight * Buffer[i / denom];
         }

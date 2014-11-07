@@ -72,6 +72,7 @@ namespace Framework
     float offsetY = -1.0f;
     float nX = 2.f / (t.Get_Width () - 1);
     float nY = 2.f / (t.Get_Height () - 1);
+    float previousHeight = -1.f;
 
     for (int i = 0; i < t.Get_Height (); ++i)
     {
@@ -79,7 +80,14 @@ namespace Framework
       {
         if (Map [i][j] == 0)
         {
-          height_points.push_back ({ offsetX, offsetY });
+          /*height_points.push_back ({ offsetX, offsetY });
+          offsetY = -1.0f;
+          break;*/
+          if (previousHeight != offsetY || j == t.Get_Width() - 1)
+          {
+            height_points.push_back({ offsetX, offsetY });
+            previousHeight = offsetY;
+          }
           offsetY = -1.0f;
           break;
         }
