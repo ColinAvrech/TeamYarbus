@@ -78,16 +78,105 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, -0.7, 0],
-			Vec3 Scale = [10, 1, 1],
+			Vec3 Translation = [0, 2.2, 0],
+			Vec3 Scale = [10, 4, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Terrain2D = 
 		{
-      int MapSize = 500,
-      int BaseHeight = 50,
-      int Passes = 5,
-      int Waves = 2,
+      int MapSize = 100,
+      int BaseHeight = 20,
+      int PeakHeight = 30,
+      int Passes = 4,
+      int Waves = 5,
+		},
+  },
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 8,
+		},
+		Named = 
+		{
+			string Name = "tree0",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [2, -1.0, 0],
+			Vec3 Scale = [1, 1, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Tree2D = 
+		{
+      int Tree_Type = 1,
+      Vec4 Color = [1.0, 0.2, 0.1, 1.0],
+		},
+  },
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 8,
+		},
+		Named = 
+		{
+			string Name = "tree0",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [1, -1.0, 0],
+			Vec3 Scale = [1, 1, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Tree2D = 
+		{
+      int Tree_Type = 1,
+      Vec4 Color = [1.0, 0.2, 0.1, 1.0],
+		},
+  },
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 8,
+		},
+		Named = 
+		{
+			string Name = "tree0",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0, -1.0, 0],
+			Vec3 Scale = [1, 1, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Tree2D = 
+		{
+      int Tree_Type = 1,
+      Vec4 Color = [1.0, 0.2, 0.1, 1.0],
+		},
+  },
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 8,
+		},
+		Named = 
+		{
+			string Name = "tree1",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [-2, -1.0, 0],
+			Vec3 Scale = [0.2, 0.2, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Tree2D = 
+		{
+      int Tree_Type = 0,
+      Vec4 Color = [0.4, 0.2, 0.1, 1.0],
 		},
   },
   Cog = 
@@ -102,8 +191,8 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, 0, 0],
-			Vec3 Scale = [1, 1, 1],
+			Vec3 Translation = [4, 4, 0],
+			Vec3 Scale = [0.2, 0.2, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Sprite = 

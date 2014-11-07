@@ -15,6 +15,7 @@ deleted.
 #include "CharacterController.h"
 #include "FountainEffect.h"
 #include "Terrain2D.h"
+#include "Tree2D.h"
 
 namespace Framework
 {
@@ -74,6 +75,7 @@ namespace Framework
     RegisterComponent(RigidBody);
     RegisterComponent (FountainEffect);
     RegisterComponent (Terrain2D);
+    RegisterComponent (Tree2D);
     AddComponentCreator("SphereCollider", new ComponentCreatorType<CircleCollider>("SphereCollider"));
     AddComponentCreator("BoxCollider", new ComponentCreatorType<LineCollider>("BoxCollider"));
   }

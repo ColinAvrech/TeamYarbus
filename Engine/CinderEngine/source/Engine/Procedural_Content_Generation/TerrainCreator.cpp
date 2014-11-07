@@ -18,8 +18,8 @@ namespace Framework
 {
   namespace Procedural
   {
-    TerrainCreator::TerrainCreator(int w, int h, int bh, int detail, int wl) :
-      MapWidth(w), MapHeight(h), BaseHeight(bh), passes(detail), waves(wl)
+    TerrainCreator::TerrainCreator(int w, int h, int bh, int detail, int wl, int peak) :
+      MapWidth (w), MapHeight (h), BaseHeight (bh), passes (detail), waves (wl), PeakHeight (peak)
     {
       HeightMap = new float[MapWidth];
       Map = new int*[MapWidth];
@@ -92,7 +92,7 @@ namespace Framework
         x8[i] = rand() % 2;
 
       for (int i = 0; i < MapWidth; ++i)
-        HeightMap[i] = BaseHeight + (MapHeight / 4.f) * (0.0625 * x1[i] + 0.125 * x2[i / 2] + 0.25 * x4[i / 4] + 0.5 * x8[i / 8] + 0.5 * WaveBuffer[(i * 2 * waves) / MapWidth] - 0.5);
+        HeightMap[i] = BaseHeight + (PeakHeight) * (0.0625 * x1[i] + 0.125 * x2[i / 2] + 0.25 * x4[i / 4] + 0.5 * x8[i / 8] + 0.5 * WaveBuffer[(i * 2 * waves) / MapWidth] - 0.5);
 
       for (int i = 0; i < passes; ++i)
       {

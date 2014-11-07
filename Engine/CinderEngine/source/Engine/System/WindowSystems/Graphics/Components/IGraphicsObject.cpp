@@ -28,6 +28,11 @@ namespace Framework
     WindowSystem::graphicsObjects.push_back (this);
   }
 
+  void IGraphicsObject::Deregister ()
+  {
+    WindowSystem::graphicsObjects.remove (this);
+  }
+
   void IGraphicsObject::Draw ()
   {
   }

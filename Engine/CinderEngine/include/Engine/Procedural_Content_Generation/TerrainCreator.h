@@ -38,7 +38,7 @@ namespace Framework
       TerrainCreator (){}
       //Constructor
       //Takes map width, map height, base height, smoothing passes, number of waves
-      TerrainCreator(int width, int height, int baseHeight, int passes = 3, int waves = 2);
+      TerrainCreator(int width, int height, int baseHeight, int passes = 3, int waves = 2, int peak = 100);
       //Destructor
       ~TerrainCreator();
       int ** const GetMap(){ return Map; };
@@ -54,7 +54,7 @@ namespace Framework
       int BaseHeight; //Must be a number between 0 and height.
       float *HeightMap;
       int ** Map;
-
+      int PeakHeight;
       void GenerateHeightMap();
     }; //class terrain
 

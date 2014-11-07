@@ -28,7 +28,7 @@ namespace Framework
   virtual void Draw ();
 
   void Register ();
-
+  void Deregister ();
   private:
 
   };  

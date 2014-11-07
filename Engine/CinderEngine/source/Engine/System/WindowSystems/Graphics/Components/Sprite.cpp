@@ -81,7 +81,7 @@ namespace Framework
   Sprite::~Sprite ()
   {
     gameObject->Sprite = nullptr;
-    WindowSystem::graphicsObjects.remove (this);
+    IGraphicsObject::Deregister ();
     if (vao != nullptr)
     {
       delete vao;

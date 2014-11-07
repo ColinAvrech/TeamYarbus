@@ -16,6 +16,7 @@
 
 namespace Framework
 {
+  std::vector <GameObject*> lineColliders;
   DefineComponentName (Terrain2D);
 
   // Constructor
@@ -25,7 +26,7 @@ namespace Framework
   // Destructor
   Terrain2D::~Terrain2D ()
   {
-    WindowSystem::graphicsObjects.remove (this);
+    IGraphicsObject::Deregister ();
     delete vao, vbo, tc;
   }
 
@@ -37,6 +38,9 @@ namespace Framework
 
     value = data->FindElement (data, "BaseHeight");
     value->GetValue (&BaseHeight);
+
+    value = data->FindElement (data, "PeakHeight");
+    value->GetValue (&PeakHeight);
 
     value = data->FindElement (data, "Passes");
     value->GetValue (&Passes);
@@ -53,6 +57,15 @@ namespace Framework
     Generate_Edges ();
     Generate_Vertices ();
     Generate_Buffers ();
+
+    //int counter = 100;
+    //for (auto& i : height_points)
+    //{
+    //  GameObject* go = new GameObject (counter);
+    //  go->AddComponent (LineCollider::Name);
+    //  lineColliders.push_back (go);
+    //  ++counter;
+    //}
   }
 
 
@@ -61,6 +74,7 @@ namespace Framework
     shader->Use ();
     vao->bindVAO ();
     shader->uniMat4 ("mvp", glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix()));
+    shader->uni4f ("color", 0.25f, 0.25f, 0.25f, 1.0f);
     //shader->enableVertexAttribArray (shader->attribLocation ("position"));
 
     glDrawArrays (GL_TRIANGLES, 0, vertices.size () / 2);
@@ -76,7 +90,7 @@ namespace Framework
 
   void Terrain2D::Generate_Height_Points ()
   {
-    tc = new Procedural::TerrainCreator (MapSize, MapSize, BaseHeight, Passes, Waves);
+    tc = new Procedural::TerrainCreator (MapSize, MapSize, BaseHeight, Passes, Waves, PeakHeight);
     Procedural::TerrainCreator& t = *tc;
     int** Map = t.GetMap ();
 
@@ -88,7 +102,7 @@ namespace Framework
 
     for (int i = 0; i < t.Get_Height (); ++i)
     {
-      for (int j = 0; j < t.Get_Width (); ++j)
+      for (int j = 0; j < t.Get_Width (); j += 4)
       {
         if (Map [i][j] == 0)
         {
@@ -105,7 +119,7 @@ namespace Framework
         }
         offsetY += nY;
       }
-      offsetX += nX;
+      offsetX += 4 * nX;
     }
   }
 

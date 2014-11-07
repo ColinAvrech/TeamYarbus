@@ -27,7 +27,6 @@ namespace Framework
 
   std::list <Transform*> WindowSystem::transformList;
   std::list <IGraphicsObject*> WindowSystem::graphicsObjects;
-  
 
   namespace WindowNameSpace
   {
