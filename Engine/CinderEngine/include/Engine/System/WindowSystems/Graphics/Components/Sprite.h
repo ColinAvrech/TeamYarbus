@@ -1,8 +1,18 @@
+/******************************************************************************/
+/*!
+\file   Sprite.h
+\author Manas Sudhir Kulkarni
+\par    Course: GAM200
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+\brief
+*/
+/******************************************************************************/
+
 #ifndef _SPRITE_H
 #define _SPRITE_H
 
 #include "GraphicsCommon.h"
-#include "ComponentInclude.h"
+#include "IGraphicsObject.h"
 #include "SpriteSheet.h"
 #include "JSONSerializer.h"
 #include "ZilchCompiledlib.h"
@@ -11,17 +21,17 @@
 
 namespace Framework
 {
-  class Transform;
-  class Sprite : public Component
+  class Sprite : public IGraphicsObject
   {
   public:
     ZilchDeclareBaseType(Sprite, Zilch::TypeCopyMode::ReferenceType);
 
     Sprite () {}
-    virtual ~Sprite() override;
+    virtual ~Sprite();
 
     virtual void Initialize ();
     virtual void Serialize (Serializer::DataNode* data);
+    virtual void Draw ();
 
     void Create_Sprite (Shader* _shader, Texture* _texture = NULL);
     void Create_Sprite (Shader* _shader, SpriteSheet* _atlas);
@@ -33,29 +43,38 @@ namespace Framework
     Texture* Get_Texture ();
     void Specify_Attributes ();
 
-
-    void Draw ();
-    glm::mat4 modelMatrix;
-
     const static std::string Name;
 
   private:
-    GLint posAttrib, colorAttrib, normalAttrib, texAttrib;
+
+    // Resources
+    Shader* shader;
+    Texture* texture;
+    SpriteSheet* atlas;
+
+    // Animated Sprites
+    bool animated;
     GLuint uniTexOffset;
     GLuint uniFrameRatio;
     glm::vec2 texOffset;
     glm::vec2 frameRatio;
     unsigned frameNumber;
-    Shader* shader;
-    Texture* texture;
-    SpriteSheet* atlas;
-    bool animated;
+
+    // Helper Functions
     void Create_Mesh (GLfloat* vertices, GLuint* indices, GLuint arraySize);
-    (void) (Sprite::*DrawFunction)(void);
+    void Use_Shader (GLuint shaderID);
     void Draw_Texture ();
     void Draw_No_Texture ();
     void Draw_Animated ();
-    void Use_Shader (GLuint shaderID);
+
+    // Function Pointer - Draw Texture - Draw Solid Color - Draw Animated
+    (void) (Sprite::*DrawFunction)(void);
+
+    // Buffer Objects
+    // One Buffer for all Quads
+    static VAO* vao;
+    static VBO* vbo;
+    static EBO* ebo;
   };
 
 }

@@ -33,6 +33,10 @@ namespace Framework
 
   ObjectSystem::~ObjectSystem()
   {
+    if (GameObjects.size() > 0)
+    {
+      DestroyAllObjects ();
+    }
   }
 
 

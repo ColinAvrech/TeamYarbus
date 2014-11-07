@@ -15,11 +15,11 @@
 #include "AntTweakBar.h"
 #include "Texture.h"
 #include "Shader.h"
-#include "GameObject.h"
+#include "IGraphicsObject.h"
 
 namespace Framework
 {
-  class IEffect : public Component
+  class IEffect : public IGraphicsObject
   {
   public:
     static const size_t DEFAULT_PARTICLE_NUM_FLAG = 0;	// for initialize method

@@ -3,6 +3,7 @@
 #include "Transform.h"
 #include "GameObject.h"
 #include "ResourceManager.h"
+#include "ShapeGenerator.h"
 #include "WindowSystem.h"
 
 namespace Framework
@@ -13,37 +14,9 @@ namespace Framework
   {
   }
 
-
-  //// NON-DEFAULT CONSTRUCTOR
-  //// MUST SPECIFY SHADER AND TEXTURE
-  //// MESH AND TRI DATA WILL BE PASSED TO CREATE CUSTOM MESH
-  //// ELSE THE DEFAULT QUAD WILL BE USED
-  //Sprite::Sprite (Shader* _shader, Texture* _texture /*=NULL*/) : transform (*(new Transform ()))
-  //{
-  //  //Create_Mesh (_meshData, _triData);
-  //  shader = _shader;
-  //  texture = _texture;
-  //  animated = false;
-  //}
-
-
-  //Sprite::Sprite (Shader* _shader, SpriteSheet* _atlas) : transform (*(new Transform ()))
-  //{
-  //  shader = _shader;
-  //  texture = _atlas;
-  //  atlas = _atlas;
-  //  animated = false;
-  //  Specify_Attributes ();
-  //}
-
-  void Sprite::Initialize ()
-  {
-    WINDOWSYSTEM->spriteList.push_back (this);
-    Specify_Attributes ();
-
-    gameObject->Sprite = this;
-  }
-
+  VAO* Sprite::vao;
+  VBO* Sprite::vbo;
+  EBO* Sprite::ebo;
 
   void Sprite::Serialize(Serializer::DataNode* data)
 {
@@ -67,6 +40,24 @@ namespace Framework
   }
 
 
+  void Sprite::Initialize ()
+  {
+    IGraphicsObject::Register ();
+    gameObject->Sprite = this;
+
+    if (vao == nullptr || vbo == nullptr || ebo == nullptr)
+    {
+      ShapeData data = ShapeGenerator::Generate_Quad ();
+      vao = new VAO ();
+      vbo = new VBO (data.vbo_size (), data.vertices);
+      ebo = new EBO (data.ebo_size (), data.indices);
+      Specify_Attributes ();
+      vao->unbindVAO ();
+      data.Clean ();
+    }
+  }
+
+
   void Sprite::Create_Sprite (Shader* _shader, Texture* _texture /*= TEXTURE_NONE*/)
   {
     shader = _shader;
@@ -87,13 +78,25 @@ namespace Framework
 
 
   // Destructor
-  // Destroy All Buffers Used By Sprite
-  // This Might Be Used For Derived Classes Which Will Need Special Buffer Objects
-  // This Destructor Does Nothing Right Now
   Sprite::~Sprite ()
   {
     gameObject->Sprite = nullptr;
-    WINDOWSYSTEM->spriteList.remove (this);
+    WindowSystem::graphicsObjects.remove (this);
+    if (vao != nullptr)
+    {
+      delete vao;
+      vao = nullptr;
+    }
+    if (vbo != nullptr)
+    {
+      delete vbo;
+      vbo = nullptr;
+    }
+    if (ebo != nullptr)
+    {
+      delete ebo;
+      ebo = nullptr;
+    }
   }
 
 
@@ -116,25 +119,23 @@ namespace Framework
   void Sprite::Specify_Attributes ()
   {
     // Specify the layout of the vertex data
-    posAttrib = shader->attribLocation ("position");
+    GLint posAttrib = shader->attribLocation ("position");
     shader->enableVertexAttribArray (posAttrib);
     shader->vertexAttribPtr (posAttrib, 3, GL_FLOAT, GL_FALSE, 12 * sizeof (GLfloat), 0);
 
-    colorAttrib = shader->attribLocation ("color");
+    GLint colorAttrib = shader->attribLocation ("color");
     shader->enableVertexAttribArray (colorAttrib);
     shader->vertexAttribPtr (colorAttrib, 4, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), 3 * sizeof(GLfloat));
 
-    normalAttrib = shader->attribLocation ("normal");
+    GLint normalAttrib = shader->attribLocation ("normal");
     shader->enableVertexAttribArray (normalAttrib);
     shader->vertexAttribPtr (normalAttrib, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), 7 * sizeof(GLfloat));
 
     if (animated || texture->Get_ID () != TEXTURE_NONE)
     {
-      texAttrib = shader->attribLocation ("texcoord");
+      GLint texAttrib = shader->attribLocation ("texcoord");
       shader->enableVertexAttribArray (texAttrib);
       shader->vertexAttribPtr (texAttrib, 2, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), 10 * sizeof(GLfloat));
-
-
 
       if (animated)
       {
@@ -173,21 +174,19 @@ namespace Framework
   // Called By Renderer Component
   void Sprite::Draw ()
   {
+    vao->bindVAO ();
     shader->Use ();
-    //shader->enableVertexAttribArray (posAttrib);
-    //shader->enableVertexAttribArray (colorAttrib);
-    //shader->enableVertexAttribArray (normalAttrib);
     shader->uniMat4 ("modelViewProjectionMatrix", glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix ()));
 
     (this->*DrawFunction)();
     shader->Disable ();
+    vao->unbindVAO ();
   }
 
 
   // Draw Sprite Using Texture
   void Sprite::Draw_Texture ()
   {
-    //shader->enableVertexAttribArray (texAttrib);
     texture->Bind ();
     glDrawElements (GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     texture->Unbind ();

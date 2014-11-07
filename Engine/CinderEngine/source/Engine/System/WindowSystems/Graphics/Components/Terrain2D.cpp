@@ -12,13 +12,12 @@
 #include "ResourceManager.h"
 #include "WindowSystem.h"
 #include "Thermodynamics.h"
-#include "TerrainCreator.h"
 #include "random.hpp"
 
 namespace Framework
 {
   DefineComponentName (Terrain2D);
-  Procedural::TerrainCreator* tc;
+
   // Constructor
   Terrain2D::Terrain2D ()
   {}
@@ -26,17 +25,29 @@ namespace Framework
   // Destructor
   Terrain2D::~Terrain2D ()
   {
+    WindowSystem::graphicsObjects.remove (this);
     delete vao, vbo, tc;
   }
 
 
   void Terrain2D::Serialize (Serializer::DataNode* data)
   {
+    Serializer::DataNode* value = data->FindElement(data, "MapSize");
+    value->GetValue (&MapSize);
+
+    value = data->FindElement (data, "BaseHeight");
+    value->GetValue (&BaseHeight);
+
+    value = data->FindElement (data, "Passes");
+    value->GetValue (&Passes);
+
+    value = data->FindElement (data, "Waves");
+    value->GetValue (&Waves);
   }
 
   void Terrain2D::Initialize ()
   {
-    WindowSystem::terrain = this;
+    IGraphicsObject::Register ();
 
     Generate_Height_Points ();
     Generate_Edges ();
@@ -45,11 +56,11 @@ namespace Framework
   }
 
 
-  void Terrain2D::Render ()
+  void Terrain2D::Draw ()
   {
     shader->Use ();
     vao->bindVAO ();
-    shader->enableVertexAttribArray (shader->attribLocation ("position"));
+    //shader->enableVertexAttribArray (shader->attribLocation ("position"));
 
     glDrawArrays (GL_TRIANGLES, 0, vertices.size () / 2);
 
@@ -64,7 +75,7 @@ namespace Framework
 
   void Terrain2D::Generate_Height_Points ()
   {
-    tc = new Procedural::TerrainCreator (25, 25, 5);
+    tc = new Procedural::TerrainCreator (MapSize, MapSize, BaseHeight, Passes, Waves);
     Procedural::TerrainCreator& t = *tc;
     int** Map = t.GetMap ();
 
