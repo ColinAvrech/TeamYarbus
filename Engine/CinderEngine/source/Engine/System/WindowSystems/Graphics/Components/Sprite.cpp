@@ -119,21 +119,21 @@ namespace Framework
   void Sprite::Specify_Attributes ()
   {
     // Specify the layout of the vertex data
-    posAttrib = shader->attribLocation ("position");
+    GLint posAttrib = shader->attribLocation ("position");
     shader->enableVertexAttribArray (posAttrib);
     shader->vertexAttribPtr (posAttrib, 3, GL_FLOAT, GL_FALSE, 12 * sizeof (GLfloat), 0);
 
-    colorAttrib = shader->attribLocation ("color");
+    GLint colorAttrib = shader->attribLocation ("color");
     shader->enableVertexAttribArray (colorAttrib);
     shader->vertexAttribPtr (colorAttrib, 4, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), 3 * sizeof(GLfloat));
 
-    normalAttrib = shader->attribLocation ("normal");
+    GLint normalAttrib = shader->attribLocation ("normal");
     shader->enableVertexAttribArray (normalAttrib);
     shader->vertexAttribPtr (normalAttrib, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), 7 * sizeof(GLfloat));
 
     if (animated || texture->Get_ID () != TEXTURE_NONE)
     {
-      texAttrib = shader->attribLocation ("texcoord");
+      GLint texAttrib = shader->attribLocation ("texcoord");
       shader->enableVertexAttribArray (texAttrib);
       shader->vertexAttribPtr (texAttrib, 2, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), 10 * sizeof(GLfloat));
 

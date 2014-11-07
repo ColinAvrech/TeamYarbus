@@ -43,29 +43,38 @@ namespace Framework
     Texture* Get_Texture ();
     void Specify_Attributes ();
 
-    static VAO* vao;
-    static VBO* vbo;
-    static EBO* ebo;
-
     const static std::string Name;
 
   private:
-    GLint posAttrib, colorAttrib, normalAttrib, texAttrib;
+
+    // Resources
+    Shader* shader;
+    Texture* texture;
+    SpriteSheet* atlas;
+
+    // Animated Sprites
+    bool animated;
     GLuint uniTexOffset;
     GLuint uniFrameRatio;
     glm::vec2 texOffset;
     glm::vec2 frameRatio;
     unsigned frameNumber;
-    Shader* shader;
-    Texture* texture;
-    SpriteSheet* atlas;
-    bool animated;
+
+    // Helper Functions
     void Create_Mesh (GLfloat* vertices, GLuint* indices, GLuint arraySize);
-    (void) (Sprite::*DrawFunction)(void);
+    void Use_Shader (GLuint shaderID);
     void Draw_Texture ();
     void Draw_No_Texture ();
     void Draw_Animated ();
-    void Use_Shader (GLuint shaderID);
+
+    // Function Pointer - Draw Texture - Draw Solid Color - Draw Animated
+    (void) (Sprite::*DrawFunction)(void);
+
+    // Buffer Objects
+    // One Buffer for all Quads
+    static VAO* vao;
+    static VBO* vbo;
+    static EBO* ebo;
   };
 
 }
