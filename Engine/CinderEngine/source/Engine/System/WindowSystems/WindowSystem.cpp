@@ -33,7 +33,6 @@ namespace Framework
     void Resize (GLFWwindow* window, int w, int h)
     {
       WINDOWSYSTEM->Set_W_H (w, h);
-      SCENEMANAGER->Change_Size (w, h);
     }
 
     void FrameBufferResize (GLFWwindow* _window, int w, int h)
