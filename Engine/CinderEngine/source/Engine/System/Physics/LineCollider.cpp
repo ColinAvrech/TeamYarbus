@@ -14,13 +14,27 @@
 
 namespace Framework
 {
+  LineCollider::LineCollider (glm::vec2 _p1, glm::vec2 _p2)
+  {
+    Initialize (_p1, _p2);
+  }
+
 	void LineCollider::Initialize()
 	{
 		gameObject->ShapeCollider = this;
 		normalVec = Physics::getNormal(p1, p2);
 		p1dotNormal = Physics::DotProduct(p1, normalVec);
 	}
-	void LineCollider::Serialize(Serializer::DataNode* data)
+
+  void LineCollider::Initialize (glm::vec2 _p1, glm::vec2 _p2)
+  {
+    p1 = _p1;
+    p2 = _p2;
+    normalVec = Physics::getNormal (p1, p2);
+    p1dotNormal = Physics::DotProduct (p1, normalVec);
+  }
+
+  void LineCollider::Serialize (Serializer::DataNode* data)
 	{
 		Serializer::DataNode* temp;
 		

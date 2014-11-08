@@ -74,7 +74,7 @@ namespace Framework
     shader->uniMat4 ("mvp", glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix()));
     shader->uni4fv ("color", glm::value_ptr(color));
     vao->bindVAO ();
-    glDrawArrays (GL_LINE_STRIP, 0, treeMesh.size () / 2);
+    glDrawArrays (GL_TRIANGLES, 0, treeMesh.size () / 2);
     vao->unbindVAO ();
     shader->Disable ();
   }

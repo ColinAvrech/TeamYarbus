@@ -12,11 +12,16 @@
 #include "ResourceManager.h"
 #include "WindowSystem.h"
 #include "Thermodynamics.h"
+#include "IncludeForAllCollision.h"
+#include "PhysicsSystem.h"
 #include "random.hpp"
 
 namespace Framework
 {
-  std::vector <GameObject*> lineColliders;
+  static std::vector <float> lineVertices;
+  static VAO* vao1;
+  static VBO* vbo1;
+  static SplineCollider* spline;
   DefineComponentName (Terrain2D);
 
   // Constructor
@@ -58,14 +63,24 @@ namespace Framework
     Generate_Vertices ();
     Generate_Buffers ();
 
-    //int counter = 100;
-    //for (auto& i : height_points)
-    //{
-    //  GameObject* go = new GameObject (counter);
-    //  go->AddComponent (LineCollider::Name);
-    //  lineColliders.push_back (go);
-    //  ++counter;
-    //}
+    spline = new SplineCollider ();
+    Physics::PHYSICSSYSTEM->SplineColliders.push_back (spline);
+
+    spline->AddLineCollider (edges);
+
+    vao1 = new VAO ();
+    for (int i = 0; i < height_points.size () - 1; ++i)
+    {
+      lineVertices.push_back (height_points [i].x);
+      lineVertices.push_back (height_points [i].y);
+      lineVertices.push_back (height_points [i + 1].x);
+      lineVertices.push_back (height_points [i + 1].y);
+    }
+    vbo1 = new VBO (lineVertices.size () * sizeof (float), lineVertices.data ());
+    GLint posAttrib = shader->attribLocation ("position");
+    shader->enableVertexAttribArray (posAttrib);
+    shader->vertexAttribPtr (posAttrib, 2, GL_FLOAT, GL_FALSE, 2 * sizeof (float), 0);
+    vao1->unbindVAO ();
   }
 
 
@@ -80,6 +95,12 @@ namespace Framework
     glDrawArrays (GL_TRIANGLES, 0, vertices.size () / 2);
 
     vao->unbindVAO ();
+
+    vao1->bindVAO ();
+    shader->uniMat4 ("mvp", glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix ()));
+    shader->uni4f ("color", 1, 1, 1, 1.0f);
+    glDrawArrays (GL_LINES, 0, lineVertices.size () / 2);
+    vao1->unbindVAO ();
     shader->Disable ();
   }
 
@@ -128,7 +149,14 @@ namespace Framework
     // Edges for Line Colliders
     for (unsigned i = 0; i < height_points.size () - 1; ++i)
     {
-      edges.push_back (std::make_pair (height_points [i], height_points [i + 1]));
+      edges.push_back
+        (
+        std::make_pair
+        (
+        (glm::mat2)gameObject->Transform->GetModelViewProjectionMatrix () * height_points [i],
+        (glm::mat2)gameObject->Transform->GetModelViewProjectionMatrix () * height_points [i + 1]
+        )
+        );
     }
   }
 

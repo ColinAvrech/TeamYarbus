@@ -37,5 +37,28 @@ namespace Framework
 	{
 	}	  //if player is a point
 
+  void SplineCollider::DetectCollision (CircleCollider * circle)
+  {
+    throw std::logic_error ("The method or operation is not implemented.");
+  }
+
+  void SplineCollider::DetectCollision (LineCollider * line)
+  {
+    throw std::logic_error ("The method or operation is not implemented.");
+  }
+
+  void SplineCollider::AddLineCollider (glm::vec2 _p1, glm::vec2 _p2)
+  {
+    colliders.push_back (new LineCollider (_p1, _p2));
+  }
+
+  void SplineCollider::AddLineCollider (std::vector <std::pair <glm::vec2, glm::vec2>>& lines)
+  {
+    for (auto& i : lines)
+    {
+      AddLineCollider (i.first, i.second);
+    }
+  }
+
 	DefineComponentName(SplineCollider);
 }

@@ -76,6 +76,8 @@ namespace Framework
     RegisterComponent (FountainEffect);
     RegisterComponent (Terrain2D);
     RegisterComponent (Tree2D);
+    //RegisterComponent (SplineCollider);
+    AddComponentCreator ("SplineCollider", new ComponentCreatorType<SplineCollider> ("SplineCollider"));
     AddComponentCreator("SphereCollider", new ComponentCreatorType<CircleCollider>("SphereCollider"));
     AddComponentCreator("BoxCollider", new ComponentCreatorType<LineCollider>("BoxCollider"));
   }
