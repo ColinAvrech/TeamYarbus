@@ -69,7 +69,7 @@ namespace Framework
     spline->AddLineCollider (edges);
 
     vao1 = new VAO ();
-    for (int i = 0; i < height_points.size () - 1; ++i)
+    for (unsigned i = 0; i < height_points.size () - 1; ++i)
     {
       lineVertices.push_back (height_points [i].x);
       lineVertices.push_back (height_points [i].y);
