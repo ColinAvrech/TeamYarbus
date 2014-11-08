@@ -24,6 +24,8 @@ namespace Framework
 		glm::vec2 p1; //points
 		glm::vec2 p2;
 
+    LineCollider (glm::vec2 _p1, glm::vec2 _p2);
+
 		LineCollider (GameObject * obj)
 		{
 			gameObject = obj;
@@ -31,10 +33,11 @@ namespace Framework
 
 		LineCollider(){};
 
-		~LineCollider(){};
+		virtual ~LineCollider(){};
 
-		void Initialize();
-		void Serialize(Serializer::DataNode* data);
+		virtual void Initialize();
+    virtual void Initialize (glm::vec2 _p1, glm::vec2 _p2);
+		virtual void Serialize(Serializer::DataNode* data);
 		void Update();
 
 		// Getters
