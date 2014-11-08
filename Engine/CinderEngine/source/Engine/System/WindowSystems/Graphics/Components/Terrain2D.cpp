@@ -32,7 +32,7 @@ namespace Framework
   Terrain2D::~Terrain2D ()
   {
     IGraphicsObject::Deregister ();
-    delete vao, vbo, tc;
+    delete vao, vbo, tc, spline;
   }
 
 
