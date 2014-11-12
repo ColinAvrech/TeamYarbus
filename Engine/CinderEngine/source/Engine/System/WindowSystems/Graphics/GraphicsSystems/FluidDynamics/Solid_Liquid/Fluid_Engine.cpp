@@ -27,11 +27,11 @@
 
 namespace Framework
 {
-#define   LOCAL_width	1024 
-#define   LOCAL_height 1024				           					
 #define   LOCAL_number_of_pixels_width 32	
 #define   LOCAL_number_of_pixels_height 32
 
+  INT32 LOCAL_width;
+  INT32 LOCAL_height;
   BOOL attracting = BOOLEAN_false;
   BOOL repelling = BOOLEAN_false;
   BOOL Viscoelasticity = BOOLEAN_false;
@@ -219,6 +219,8 @@ namespace Framework
 
   void motion (GLFWwindow* window, double x, double y)
   {
+    LOCAL_width = WINDOWSYSTEM->Get_Width ();
+    LOCAL_height = WINDOWSYSTEM->Get_Height ();
     REAL32 relx, rely;
     MATH_VECTOR_2D mouse;
 
