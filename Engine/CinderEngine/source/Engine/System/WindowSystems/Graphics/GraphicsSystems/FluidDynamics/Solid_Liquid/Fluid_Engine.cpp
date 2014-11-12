@@ -45,6 +45,16 @@ namespace Framework
 
   void Fluid_Engine::Render ()
   {
+    glMatrixMode (GL_PROJECTION);
+    glLoadIdentity ();
+    glOrtho (
+      -LOCAL_number_of_pixels_width,
+      LOCAL_number_of_pixels_width,
+      -LOCAL_number_of_pixels_height,
+      LOCAL_number_of_pixels_height, 0, 1000);
+    glMatrixMode (GL_MODELVIEW);
+    glLoadIdentity ();
+
     INDEX temp_index_1, temp_index_2, start_position, end_position;
 
     if (GraphicalMode == LargeParticleMode)

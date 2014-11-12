@@ -29,7 +29,6 @@ namespace Framework
     InitializeParticles ();
   }
 
-  // ~~
 
   void Fluid_Physics_Engine::InitializeParticles ()
   {
@@ -103,7 +102,6 @@ namespace Framework
     }
   }
 
-  // ~~
 
   void Fluid_Physics_Engine::ResetViscoelasticity ()
   {
