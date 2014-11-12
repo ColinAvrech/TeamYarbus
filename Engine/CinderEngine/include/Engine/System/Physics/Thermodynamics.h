@@ -18,9 +18,8 @@
 
 
 #include "BaseSystem.h"
-#include "Common.h"
-#include "glm.hpp"
 #include <unordered_map>
+#include "Grid2D.h"
 
 #pragma endregion
 
@@ -28,6 +27,23 @@ namespace Framework
 {
   namespace Physics
   {
+    //Possible materials used in terrain
+    enum Material
+    {
+      AIR,
+      WATER,
+      WOOD,
+      SOIL,
+      GRASS,
+      STONE,
+      IRON,
+      LEAD,
+      STEEL,
+      COTTON,
+      CEMENT,
+      CARBON,
+      FUEL,
+    };//enum material
     /*---------------------------------------------------------------------------
     // Class
     ---------------------------------------------------------------------------*/
@@ -128,17 +144,19 @@ namespace Framework
       float AtmosphericTemperature;
 
       //Temperature Map. Temperature is stored in Kelvin.
-      float     **HeatMap;
+      Grid2D<float> *HeatMap;
       //Oxygen density. Stored in Kg/m^2.
-      float     **OxygenMap;
+      Grid2D<float> *OxygenMap;
       //Velocity Map. Stores 2d vectors.
-      glm::vec2 **VelocityMap;
+      Grid2D<glm::vec2> *VelocityMap;
       //Terrain. Simple collision table using enums.
-      int       **Terrain;
+      Grid2D<Material> *Terrain;
+      //Water and moisture content
+      Grid2D<float> *WaterMap;
       //Fire Map. Stores intensity of flame on a scale of 0 - 10.
-      float     **FireMap;
+      Grid2D<float> *FireMap;
       //Amount of fuel in the cell
-      float     **FuelMap;
+      Grid2D<float> *FuelMap;
 
 #pragma endregion
 
@@ -170,6 +188,9 @@ namespace Framework
       void ComputeVelocity(const double dt);
       //Update fire
       void UpdateFire(const double dt);
+
+      //Determine subscript from position
+      glm::vec2 GetSubscript(const float x, const float y);
 
 #pragma endregion
 

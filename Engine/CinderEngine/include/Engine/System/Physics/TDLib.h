@@ -24,6 +24,8 @@ namespace Framework
       static const float M_a = 28.97f;     //Kg.Kmol-1   | Molar mass of air
 
       //Properties of specific materials--------------------
+      //Common densities
+      static const float p_Air = 1.225f;   //Kg/m^3 | Density of air at sea level at 15C.
       //Specific heat
       static const float c_Air = 1046.f;
       static const float c_Water = 4186.f;
@@ -63,19 +65,6 @@ namespace Framework
       static const float BT_Candle = 1273.f;
       static const float BT_Spark = 1589.f;
     } //namespace Constant
-
-    enum Material
-    {
-      AIR,
-      WATER,
-      SOIL,
-      STONE,
-      LEAD,
-      IRON,
-      STEEL,
-      WOOD,
-      COTTON
-    };
 
     float Buoyancy(float density, float mass, float CellSize);
     float ConductiveHeatTransfer(float K, float T1, float T2, const double dt, float Size);
