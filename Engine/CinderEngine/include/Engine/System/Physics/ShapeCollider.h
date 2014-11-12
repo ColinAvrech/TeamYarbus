@@ -25,10 +25,10 @@ namespace Framework
     const static std::string Name;
 	int numOfShapes;
 		// Getters
-		glm::vec2 getPosition(void){
+		glm::vec3 getPosition(void){
 			return position;
 		}
-		glm::vec2 getOffset(void){
+		glm::vec3 getOffset(void){
 			return offset;
 		}
 		float getDensity(void)
@@ -49,8 +49,8 @@ namespace Framework
 			float friction;
 		};
 		MaterialProperties material;
-		glm::vec2 position;
-		glm::vec2 offset;
+		glm::vec3 position;
+		glm::vec3 offset;
 		bool ghost;
 		bool sendsEvents;
 	};

@@ -33,8 +33,8 @@ namespace Framework
 	//collision
 	void PointCollider::DetectCollision(CircleCollider* c)
 	{
-		glm::vec2 ppos = getPosition();
-		glm::vec2 cpos = c->getPosition();
+		glm::vec3 ppos = getPosition();
+		glm::vec3 cpos = c->getPosition();
 		float rad = c->GetRadius();
 		if (Physics::CirclevsPoint(rad, cpos, ppos))
 		{
@@ -47,7 +47,7 @@ namespace Framework
 
 	void PointCollider::DetectCollision(LineCollider* l)
 	{
-		glm::vec2 pos = getPosition();
+		glm::vec3 pos = getPosition();
 		if (Physics::PointvsLine(pos, *l))
 		{
 			CollisionEvent collision;

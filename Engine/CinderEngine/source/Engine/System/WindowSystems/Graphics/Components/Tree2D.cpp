@@ -96,14 +96,14 @@ namespace Framework
 
       float length2 = length1 * (SCALE + myrand (RAND));
       float angle2 = angle1 + ANGLE + myrand (RAND);
-      int factor = 80 + rand() % 20;
+      int factor = 80 + rand () % 20;
       float f = factor / 100.f;
-      int fork = rand() % 100;
+      int fork = rand () % 100;
       if (fork > 30)
         Make_Tree0 (x2, y2, length2 * f, angle2, depth - 1);
       length2 = length1 * (SCALE + myrand (RAND));
       angle2 = angle1 - ANGLE + myrand (RAND);
-      fork = rand() % 100;
+      fork = rand () % 100;
       if (fork > 30)
         Make_Tree0 (x2, y2, length2 * f, angle2, depth - 1);
     }

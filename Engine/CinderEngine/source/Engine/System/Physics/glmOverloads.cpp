@@ -3,11 +3,22 @@
 namespace Framework
 {
 
-	glm::vec2 operator*(glm::vec2 vec, float scale)
+	glm::vec3 operator*(const glm::vec3& vec, const float scale)
 	{
-		glm::vec2 temp;
-		vec.x = temp.x * scale;
-		vec.y = temp.x * scale;
+		glm::vec3 temp;
+		temp.x = vec.x * scale;
+		temp.y = vec.y * scale;
+		temp.z = vec.z * scale;
+		return temp;
+	}
+
+
+	glm::vec3 operator*(const float scale, const glm::vec3& vec)
+	{
+		glm::vec3 temp;
+		temp.x = vec.x * scale;
+		temp.y = vec.y * scale;
+		temp.z = vec.z * scale;
 		return temp;
 	}
 }

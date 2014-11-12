@@ -1,9 +1,17 @@
-
-
+/******************************************************************************/
+/*!
+\file   Resolution.h
+\author Anna Pearson
+\par    Course: GAM200
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+\brief
+*/
+/******************************************************************************/
 #pragma once
 #include "RigidBody.h"
 #include "CollisionEvent.h"
 #include "CollisionSuccess.h"
+
 namespace Framework
 {
 	//set of contacts to be resolved
@@ -14,8 +22,9 @@ namespace Framework
 		unsigned numOfContacts;
 
 	public:
-		BodyContact * getNextContact();
+		//BodyContact * getNextContact();
 		BodyContact contactArray[maxContacts];
+		void addContact(BodyContact * contact);
 		void Resolve(CollisionEvent* pre);
 		void ResolveStatic(CollisionEvent* pre, CollisionEvent* post,
 			RigidBody::DynamicState stateA, RigidBody::DynamicState stateB);
