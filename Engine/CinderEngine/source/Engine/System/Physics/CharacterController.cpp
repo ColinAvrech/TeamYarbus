@@ -28,7 +28,7 @@ namespace Framework
 
   void CharacterController::OnKeyPressed(KeyEvent* _key)
   {
-    glm::vec2 force, accelH = { 1, 0 }, accelV = { 0, 1 };
+    glm::vec3 force, accelH = { 1.0f, 0.0f, 0.0f }, accelV = { 0.0f, 1.0f, 0.0f };
     switch (_key->KeyValue)
     {
     case GLFW_KEY_W:
@@ -58,7 +58,7 @@ namespace Framework
     //{
     //  if (glfwGetKey (WINDOWSYSTEM->Get_Window (), GLFW_KEY_A))
     //  {
-    //    glm::vec2 force, accel;
+    //    glm::vec3 force, accel;
     //    force = { -5.0f, 0 }; //WASD control    
     //    //float mass = 2;
     //    //force should be multiplied by friction to get smaller every update
@@ -91,7 +91,7 @@ namespace Framework
     //how to get line collider
     //gameObject->CircleCollider->DetectLine(gameObject->LineCollider);
     //go1->CircleCollider->DetectCircle(go2->CircleCollider);
-    glm::vec2 dragDirection = -gameObject->RigidBody->vel;
+    glm::vec3 dragDirection = -gameObject->RigidBody->vel;
     if (gameObject->RigidBody->vel.x != 0 && gameObject->RigidBody->vel.y != 0)
       dragDirection = glm::normalize(dragDirection);
     gameObject->RigidBody->vel += Physics::applyAccel(dragDirection * drag, .016);

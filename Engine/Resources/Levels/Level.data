@@ -1,0 +1,237 @@
+Level = 
+{
+	LevelSettings = 
+	{
+		LinkId = 
+		{
+			uint Id = 1,
+		},
+		Named = 
+		{
+			string Name = "LevelSettings",
+		},
+		GravityEffect = 
+		{
+			bool Active = true,
+			bool WakeUpOnChange = false,
+			bool LocalSpaceDirection = true,
+			float Strength = 10,
+			Vec3 Direction = [0, -1, 0],
+		},
+		DragEffect = 
+		{
+			bool Active = true,
+			bool WakeUpOnChange = false,
+			float Drag = 0.7,
+		},
+		CameraViewport = 
+		{
+			bool Background = true,
+			Vec2 Offset = [0, 0],
+			Vec2 Size = [1, 1],
+			uint Layer = 0,
+			bool Active = true,
+			bool Blocking = true,
+			uint Renderer = 1,
+			uint Camera = 2,
+		},
+		ForwardRenderer = 
+		{
+			Vec4 ClearColor = [0.278431, 0.278431, 0.278431, 1],
+		},
+	},
+    Cog = 
+	  {
+	  LinkId = 
+	  {
+		  uint Id = 0,
+	  },
+	  Named = 
+	  {
+		  string Name = "Camera",
+	  },
+    Transform = 
+	  {
+		  Vec3 Translation = [0, 0, -10],
+		  Vec3 Scale = [1, 1, 1],
+		  Quat Rotation = [0, 0, 0, 1],
+	  },
+    Camera = 
+		{
+      bool main = true,
+      Vec3 Facing = [0, 0, 1],
+			float FieldOfView = 120,
+			float NearPlane = 0.1,
+			float FarPlane = 20,
+			float Size = 1,
+		},
+  },
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 8,
+		},
+		Named = 
+		{
+			string Name = "bg",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0, 2.2, 0],
+			Vec3 Scale = [10, 4, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Terrain2D = 
+		{
+      int MapSize = 100,
+      int BaseHeight = 20,
+      int PeakHeight = 30,
+      int Passes = 4,
+      int Waves = 5,
+		},
+  },
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 8,
+		},
+		Named = 
+		{
+			string Name = "tree0",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [2, -1.0, 0],
+			Vec3 Scale = [1, 1, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Tree2D = 
+		{
+      int Tree_Type = 1,
+      Vec4 Color = [1.0, 0.2, 0.1, 1.0],
+		},
+  },
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 8,
+		},
+		Named = 
+		{
+			string Name = "tree0",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [1, -1.0, 0],
+			Vec3 Scale = [1, 1, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Tree2D = 
+		{
+      int Tree_Type = 1,
+      Vec4 Color = [1.0, 0.2, 0.1, 1.0],
+		},
+  },
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 8,
+		},
+		Named = 
+		{
+			string Name = "tree0",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0, -1.0, 0],
+			Vec3 Scale = [1, 1, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Tree2D = 
+		{
+      int Tree_Type = 1,
+      Vec4 Color = [1.0, 0.2, 0.1, 1.0],
+		},
+  },
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 8,
+		},
+		Named = 
+		{
+			string Name = "tree1",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [-2, -1.0, 0],
+			Vec3 Scale = [0.2, 0.2, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Tree2D = 
+		{
+      int Tree_Type = 0,
+      Vec4 Color = [0.4, 0.2, 0.1, 1.0],
+		},
+  },
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 4,
+		},
+		Named = 
+		{
+			string Name = "Player",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0, 4, 0],
+			Vec3 Scale = [0.2, 0.2, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Sprite = 
+		{
+			string SpriteSource = "Circle.png",
+			bool FlipX = false,
+			bool FlipY = false,
+			Vec4 Color = [1, 1, 1, 1],
+			bool Visible = true,
+			bool OnTop = false,
+			bool AnimationActive = true,
+			float AnimationSpeed = 1,
+			uint StartFrame = 0,
+			BlendMode BlendMode = Alpha,
+			SpriteGeometryMode GeometryMode = ZPlane,
+			string SpriteLayer = "52ad5fa30d7fcd50:DefaultSpriteLayer",
+			string Shader = "Default",
+		},
+		RigidBody = 
+		{
+			bool Static = false,
+			bool Asleep = false,
+			bool Kinematic = false,
+			bool RotationLocked = false,
+			bool Mode2D = true,
+			bool AllowSleep = true,
+			bool Inherit2DMode = true,
+			Vec3 Velocity = [0, 0, 0],
+			Vec3 AngularVelocity = [0, 0, 0],
+		},
+		SphereCollider = 
+		{
+			bool Ghost = false,
+			bool SendsMessages = true,
+			bool Seamless = true,
+			string MaterialName = "4de020863e872da8:DefaultPhysicsMaterial",
+			string SerializedGroupName = "4e740859314e5515:DefaultGroup",
+			Vec3 Offset = [0, 0, 0],
+			float Radius = 1,
+		},
+	},
+},

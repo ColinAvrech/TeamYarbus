@@ -27,23 +27,23 @@ namespace Framework
 		};
 
 		const static std::string Name;
-		glm::vec2 pos;
-		glm::vec2 prevPos;
-		glm::vec2 vel;
-		glm::vec2 angVel;
-		glm::vec2 accumulatedForce;
+		glm::vec3 vel;
+		glm::vec3 angVel;
+
+		glm::vec3 accumulatedForce;
 		bool allowSleep;
 		bool rotationLocked;
-		float mass;
-		float invMass;
 		DynamicState state;
-		float restitution;
-		float friction;
-		//wat
-		float damping;
 
-		RigidBody* next;
-		RigidBody* prev;
+		float getMass()
+		{
+			return mass;
+		}
+
+		float getInvMass()
+		{
+			return invMass;
+		}
 
 		RigidBody(GameObject * obj)
 		{
@@ -58,14 +58,21 @@ namespace Framework
 		void Initialize() override;
 		void Serialize(Serializer::DataNode* data) override;
 		void Update();
-		void AddForce(glm::vec2 force);
+		void AddForce(glm::vec3 force);
 		void Integrate(const float dt);
-		void SetPosition(glm::vec2);
-		void SetVelocity(glm::vec2);
+		void SetPosition(glm::vec3);
+		void SetVelocity(glm::vec3);
 
 		void setMass(float Mass) { mass = Mass; }
 		float calculateMass(void);
 
 	private:
+		glm::vec3 pos, prevPos;
+		float mass;
+		float invMass;
+		float restitution;
+		float friction;
+		//wat
+		float damping;
 	};
 } //Framework

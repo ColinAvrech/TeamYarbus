@@ -17,9 +17,10 @@ namespace Framework
   static glm::mat4 Circle_Matrix (CircleCollider* circle)
   {
     float radius = circle->GetRadius ();
-    glm::vec2 offset = circle->getOffset ();
+    //glm::vec2 offset(circle->getOffset().x, circle->getOffset().y);
+	glm::vec3 offset = circle->getOffset();
 
-    glm::mat4 cm = glm::translate (glm::vec3 (offset, -1.0f)) * glm::scale (glm::vec3 (radius, radius, 1.0f)); //* glm::rotate (circle->gameObject->Transform->GetRotation (), glm::vec3 (0, 0, 1));
+    glm::mat4 cm = glm::translate (offset) * glm::scale (glm::vec3 (radius, radius, 1.0f)); //* glm::rotate (circle->gameObject->Transform->GetRotation (), glm::vec3 (0, 0, 1));
     return Camera::GetViewToProjectionMatrix () * Camera::GetWorldToViewMatrix () * cm;
   }
 

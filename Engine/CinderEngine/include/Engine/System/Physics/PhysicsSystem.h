@@ -44,7 +44,7 @@ namespace Framework
 	  std::vector<GameObject*> Bodies;
 	  std::vector<GameObject*> CircleColliders;
 	  std::vector<GameObject*> LineColliders;
-    std::vector <SplineCollider*> SplineColliders;
+      std::vector<SplineCollider*> SplineColliders;
 
 	private:
       // Called every frame    

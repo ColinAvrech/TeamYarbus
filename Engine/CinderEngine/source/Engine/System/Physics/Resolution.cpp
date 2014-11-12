@@ -10,6 +10,11 @@ namespace Framework
 		numOfContacts = 0;
 	}
 
+	void ContactSet::addContact(BodyContact * contact)
+	{
+		contactArray[++numOfContacts] = *contact;
+	}
+
 	void Resolve(CollisionEvent* pre)
 	{
 		CollisionEvent post;
@@ -40,8 +45,8 @@ namespace Framework
 	void ResolveStatic(CollisionEvent* pre, CollisionEvent* post,
 		RigidBody::DynamicState stateA, RigidBody::DynamicState stateB)
 	{
-		glm::vec2 velA = { 0, 0 };
-		glm::vec2 velB = { 0, 0 };
+		glm::vec3 velA = { 0, 0, 0 };
+		glm::vec3 velB = { 0, 0, 0 };
 
 		*post = *pre;
 		if (stateA != RigidBody::Static)
@@ -67,11 +72,11 @@ namespace Framework
 	void ResolveDynamic(CollisionEvent* pre, CollisionEvent* post)
 	{
 		*post = *pre;
-		float massA = pre->thisObject->RigidBody->mass;
-		float massB = pre->OtherObject->RigidBody->mass;
+		float massA = pre->thisObject->RigidBody->getMass();
+		float massB = pre->OtherObject->RigidBody->getMass();
 
-		glm::vec2 velA = pre->thisObject->RigidBody->vel;
-		glm::vec2 velB = pre->OtherObject->RigidBody->vel;
+		glm::vec3 velA = pre->thisObject->RigidBody->vel;
+		glm::vec3 velB = pre->OtherObject->RigidBody->vel;
 
 		float bunch11 = (massA - massB) / (massA + massB);
 		float bunch12 = (2 * massB) / (massA + massB);

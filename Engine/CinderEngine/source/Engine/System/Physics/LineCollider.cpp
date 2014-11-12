@@ -14,7 +14,7 @@
 
 namespace Framework
 {
-  LineCollider::LineCollider (glm::vec2 _p1, glm::vec2 _p2)
+  LineCollider::LineCollider (glm::vec3 _p1, glm::vec3 _p2)
   {
     Initialize (_p1, _p2);
   }
@@ -26,7 +26,7 @@ namespace Framework
 		p1dotNormal = Physics::DotProduct(p1, normalVec);
 	}
 
-  void LineCollider::Initialize (glm::vec2 _p1, glm::vec2 _p2)
+  void LineCollider::Initialize (glm::vec3 _p1, glm::vec3 _p2)
   {
     p1 = _p1;
     p2 = _p2;
@@ -55,7 +55,7 @@ namespace Framework
 	}
 
 	// Getters
-	//glm::vec2 GetNormal(void) { return normalVec; }
+	//glm::vec3 GetNormal(void) { return normalVec; }
 	//float GetP1DotNormal(void) { return p1dotNormal; }
 
 	// Private member functions

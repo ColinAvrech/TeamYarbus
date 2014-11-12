@@ -13,22 +13,22 @@ namespace Framework
 {
 	namespace Physics
 	{
-		float CirclevsLine(const float rad, glm::vec2& pos, LineCollider* l)
+		float CirclevsLine(const float rad, glm::vec3& pos, LineCollider* l)
 		{
 			//float penetration;
 			float ldotProduct = l->p1dotNormal;
-			glm::vec2 normVec = l->normalVec;
+			glm::vec3 normVec = l->normalVec;
 			normVec = glm::normalize(normVec);
 			float dist = ldotProduct - DotProduct(normVec, pos);
 
 			/*
 			//Direction vector
-			glm::vec2 dirVec;
+			glm::vec3 dirVec;
 			dirVec.x = l->p2.x - l->p1.x;
 			dirVec.y = l->p2.x - l->p1.y;
 
 			//Vector from center sphere to ray start
-			glm::vec2 csrt;
+			glm::vec3 csrt;
 			csrt.x = l->p1.x - pos.x;
 			csrt.y = l->p1.y - pos.y;
 
@@ -68,15 +68,15 @@ namespace Framework
 		}
 
 		//change these to return float -- penetration
-		bool CirclevsPoint(const float rad, glm::vec2& cpos, glm::vec2& ppos)
+		bool CirclevsPoint(const float rad, glm::vec3& cpos, glm::vec3& ppos)
 		{
 			return rad >= Distance(cpos, ppos);
 		}
 
-		bool PointvsLine(glm::vec2& pos, LineCollider& l)
+		bool PointvsLine(glm::vec3& pos, LineCollider& l)
 		{
 			float ldotProduct = l.p1dotNormal;
-			glm::vec2 normVec = l.normalVec;
+			glm::vec3 normVec = l.normalVec;
 			glm::normalize(normVec);
 			float dist = ldotProduct - DotProduct(normVec, pos);
 

@@ -12,6 +12,7 @@
 #include "CollisionRepeats.h"
 #include "Resolution.h"
 #include "CollisionEvent.h"
+#include "PhysicsSystem.h"
 
 namespace Framework
 {
@@ -26,6 +27,7 @@ namespace Framework
   void CircleCollider::Initialize()
   {
     gameObject->ShapeCollider = this;
+	Physics::PHYSICSSYSTEM->CircleColliders.push_back(gameObject);
   }
 
   void CircleCollider::Update()
@@ -33,16 +35,25 @@ namespace Framework
 
   }
 
+  void CircleCollider::DetectCollision(SplineCollider* s)
+  {
+	  std::vector <LineCollider*> splineArray = s->Get_Colliders();
+	  for (auto it = splineArray.begin(); it != splineArray.end(); ++it)
+	  {
+		  DetectCollision(*it);
+	  }
+  }
+
   //collision detection
   void CircleCollider::DetectCollision(CircleCollider* c)
   {
     // not counting offset
-    glm::vec2 pos;
-    pos.x = static_cast<Transform*>(gameObject->Transform)->GetPosition().x;
-    pos.y = static_cast<Transform*>(gameObject->Transform)->GetPosition().y;
-    glm::vec2 cpos;
-    cpos.x = static_cast<Transform*>(c->gameObject->Transform)->GetPosition().x;
-    cpos.y = static_cast<Transform*>(c->gameObject->Transform)->GetPosition().y;
+    glm::vec3 pos;
+    pos.x = (gameObject->Transform)->GetPosition().x;
+    pos.y = (gameObject->Transform)->GetPosition().y;
+    glm::vec3 cpos;
+    cpos.x = (c->gameObject->Transform)->GetPosition().x;
+    cpos.y = (c->gameObject->Transform)->GetPosition().y;
     float rad = GetRadius() + c->GetRadius();
     float dist = Physics::Distance(pos, cpos);
     if (rad >= dist)
@@ -56,8 +67,8 @@ namespace Framework
   //repeat
   void CircleCollider::DetectCollision(PointCollider* p)
   {
-    glm::vec2 ppos = p->getPosition();
-    glm::vec2 pos = getPosition();
+    glm::vec3 ppos = p->getPosition();
+    glm::vec3 pos = getPosition();
     float rad = GetRadius();
     if (Physics::CirclevsPoint(rad, pos, ppos))
     {
@@ -73,13 +84,19 @@ namespace Framework
     //float rad = GetRadius();
     float rad = radius;
     float penetration;
-    glm::vec2 pos;
+    glm::vec3 pos;
     //pos.x = static_cast<Transform*>(gameObject->Transform)->GetPosition().x;
     //pos.y = static_cast<Transform*>(gameObject->Transform)->GetPosition().y;
     pos.x = gameObject->Transform->GetPosition().x + gameObject->RigidBody->vel.x * 0.016f;
     pos.y = gameObject->Transform->GetPosition().y + gameObject->RigidBody->vel.y * 0.016f;
-    if (penetration = Physics::CirclevsLine(rad, pos, l) >= 0)
+	if (((pos.x > l->p1.x && pos.x > l->p2.x) || (pos.x < l->p1.x && pos.x < l->p2.x)) &&
+		((pos.y > l->p1.y && pos.y > l->p2.y) || (pos.y < l->p1.y && pos.y < l->p2.y)))
+		return;
+
+	penetration = Physics::CirclevsLine(rad, pos, l);
+    if (penetration >= 0)
     {
+		//gameObject->Transform->GetScale();
       CollisionEvent collision;
       collision.Penetration = penetration;
       collision.OtherObject = l->gameObject;
