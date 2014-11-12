@@ -291,8 +291,8 @@ namespace Framework
 
       // Set Callback Functions
       glfwSetKeyCallback (*GLFWwindowptr, GLFWMessageHandler);
-      //glfwSetMouseButtonCallback (*GLFWwindowptr, GLFWMouseButtonFunction);
-      //glfwSetCursorPosCallback (*GLFWwindowptr, GLFWMouseCursorMoved);
+      glfwSetMouseButtonCallback (*GLFWwindowptr, GLFWMouseButtonFunction);
+      glfwSetCursorPosCallback (*GLFWwindowptr, GLFWMouseCursorMoved);
       glfwSetWindowSizeCallback (*GLFWwindowptr, Resize);
       glfwSetFramebufferSizeCallback (*GLFWwindowptr, FrameBufferResize);
       glfwSetWindowCloseCallback (*GLFWwindowptr, GLFWWindowClosed);
@@ -345,10 +345,9 @@ namespace Framework
   void WindowSystem::GraphicsUpdate (const double dt)
   {
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    //glEnable (GL_BLEND);
-    //glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    w.Update ();
-    w.Render ();
+    glEnable (GL_BLEND);
+    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
     for (auto& i : transformList)
     {
       i->UpdateMatrices ();
@@ -358,6 +357,9 @@ namespace Framework
     {
       i->Draw ();
     }
+
+    w.Update ();
+    w.Render ();
 
     glfwSwapBuffers (window);
   }

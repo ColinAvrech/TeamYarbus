@@ -45,14 +45,7 @@ namespace Framework
 
   void Fluid_Engine::Render ()
   {
-    glEnable (GL_BLEND);
-    glBlendFunc (GL_SRC_ALPHA, GL_ONE);
-
-    INDEX
-      temp_index_1,
-      temp_index_2,
-      start_position,
-      end_position;
+    INDEX temp_index_1, temp_index_2, start_position, end_position;
 
     if (GraphicalMode == LargeParticleMode)
     {
@@ -79,7 +72,8 @@ namespace Framework
         )
       {
         glColor4fv (Graphics_Color::Red ().GetRGBA ());
-        glVertex2f (FluidPhysics.ParticleTable [temp_index_2].GetPosition ().X, FluidPhysics.ParticleTable [temp_index_2].GetPosition ().Y);
+        glVertex2f (FluidPhysics.ParticleTable [temp_index_2].GetPosition ().X,
+          FluidPhysics.ParticleTable [temp_index_2].GetPosition ().Y);
       }
       glEnd ();
       break;
