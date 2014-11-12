@@ -19,6 +19,9 @@ namespace Framework
 		bool PhysicsSystem::Initialize()
 		{
 			PHYSICSSYSTEM = this;
+			maxVel = 20.0f;
+			maxVelSq = maxVel * maxVel;
+			Contacts.Reset();
 			//gravityDirection = { 0, -1 };
 			std::cout << "PhysicsSystem Initialized." << std::endl;
 			return true;
@@ -35,22 +38,26 @@ namespace Framework
 
 		void PhysicsSystem::DetectContacts(float dt)
 		{
-			//BodyIterator bodyA = Bodies.begin();
-			//BodyIterator lastBody = Bodies.last(); //end - 1
-
-			//Broad phase should be added this is N^2
-			for (auto bodyA = Bodies.begin(); bodyA != Bodies.end(); ++bodyA)
+			for (auto it = CircleColliders.begin(); it != CircleColliders.end(); ++it)
 			{
-				auto bodyB = bodyA;
-				++bodyB;
-				for (; bodyB != Bodies.end(); ++bodyB)
+				//circle to circle
+				for (auto jt = it + 1; jt != CircleColliders.end(); ++jt)
 				{
-					//Do not collide static bodies with other static bodies
-					if ((*bodyA)->RigidBody->state != RigidBody::DynamicState::Static
-						|| (*bodyB)->RigidBody->state != RigidBody::DynamicState::Static)
-					{
-						//Collsion.GenerateContacts((bodyA)->BodyShape, (bodyA)->Position, (bodyB)->BodyShape, (bodyB)->Position, &Contacts);
-					}
+					static_cast<CircleCollider*>((*it)->ShapeCollider)->
+					DetectCollision(static_cast<CircleCollider*>((*jt)->ShapeCollider));
+				}
+
+				//circle to line
+				for (auto jt = LineColliders.begin(); jt != LineColliders.end(); ++jt)
+				{
+					static_cast<CircleCollider*>((*it)->ShapeCollider)->
+						DetectCollision(static_cast<LineCollider*>((*jt)->ShapeCollider));
+				}
+
+				for (auto jt = SplineColliders.begin(); jt != SplineColliders.end(); ++jt)
+				{
+					static_cast<CircleCollider*>((*it)->ShapeCollider)->
+						DetectCollision(*jt);
 				}
 			}
 		}
@@ -60,6 +67,10 @@ namespace Framework
 			IntegrateBodies(dt);
 
 			Contacts.Reset();
+
+			DetectContacts(dt);
+
+			//Contacts.ResolveContacts();
 
 
 		}
@@ -85,7 +96,7 @@ namespace Framework
 				if (AdvanceStep)
 				{
 					Step(TimeStep);
-					AdvanceStep = false;
+				//	AdvanceStep = false;
 				}
 			}
 

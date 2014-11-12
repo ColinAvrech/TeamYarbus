@@ -19,9 +19,9 @@ namespace Framework
 	public:
 		const static std::string Name;
 		float p1dotNormal;
-		glm::vec2 normalVec;
-		glm::vec2 p1; //points
-		glm::vec2 p2;
+		glm::vec3 normalVec;
+		glm::vec3 p1; //points
+		glm::vec3 p2;
 
     SplineCollider (){}
 		SplineCollider(GameObject *obj)
@@ -47,8 +47,8 @@ namespace Framework
     }
 
 		// Setters
-		void setP1(glm::vec2 passer) { p1 = passer; }
-		void setP2(glm::vec2 passer) { p2 = passer; }
+		void setP1(glm::vec3 passer) { p1 = passer; }
+		void setP2(glm::vec3 passer) { p2 = passer; }
 
 		// Private member functions
 		void DetectCircle(CircleCollider* c);  //if player is a circle

@@ -15,6 +15,7 @@ namespace Framework
 	//Forward Declaration
 	class PointCollider;
 	class LineCollider;
+	class SplineCollider;
 
 	class CircleCollider : public ShapeCollider
 	{
@@ -38,6 +39,7 @@ namespace Framework
 		void DetectCollision(CircleCollider* c);
 		void DetectCollision(PointCollider* p);
 		void DetectCollision(LineCollider* l);
+		void DetectCollision(SplineCollider* s);
 
 	private:
 		// Private data

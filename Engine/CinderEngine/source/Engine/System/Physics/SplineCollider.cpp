@@ -49,7 +49,9 @@ namespace Framework
 
   void SplineCollider::AddLineCollider (glm::vec2 _p1, glm::vec2 _p2)
   {
-    colliders.push_back (new LineCollider (_p1, _p2));
+	  glm::vec3 p1(_p1.x, _p1.y, 0.0f);
+	  glm::vec3 p2(_p2.x, _p2.y, 0.0f);
+    colliders.push_back (new LineCollider (p1, p2));
   }
 
   void SplineCollider::AddLineCollider (std::vector <std::pair <glm::vec2, glm::vec2>>& lines)
