@@ -66,7 +66,6 @@ int main (void)
   //! Create the core engine which manages all systems.
   CoreEngine * engine = new CoreEngine ();
   WindowSystem * windows = new WindowSystem (WindowTitle, ClientWidth, ClientHeight);
-  SceneManager* sceneManager = new SceneManager ();
   AudioSystem* audio = new AudioSystem ();
   EventSystem * events = new EventSystem ();
   ScriptSystem * zilch = new ScriptSystem();
@@ -76,7 +75,6 @@ int main (void)
 
   engine->AddSystem (phys);
   engine->AddSystem (thermo);
-  //engine->AddSystem (sceneManager);
   engine->AddSystem (windows);
   engine->AddSystem (audio);
   engine->AddSystem (events);

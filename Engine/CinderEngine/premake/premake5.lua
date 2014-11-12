@@ -33,6 +33,11 @@ solution "CinderEngine"
       "../../Resources/**.data",
     }
     
+    excludes
+    {
+      "../source/Engine/System/Physics/grid2d.cpp"
+    }
+    
     
     includedirs { "../dependency/opengl/include**",
                   "../dependency/zilch/include",
