@@ -15,23 +15,6 @@ namespace Framework
 {
   namespace Procedural
   {
-    enum Material
-    {
-      AIR,
-      WATER,
-      WOOD,
-      SOIL,
-      GRASS,
-      STONE,
-      IRON,
-      LEAD,
-      STEEL,
-      COTTON,
-      CEMENT,
-      CARBON,
-      FUEL,
-    };//enum material
-
     class TerrainCreator
     {
     public:
