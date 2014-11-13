@@ -30,9 +30,8 @@ namespace Framework
 
   DWORD WINAPI UpdateTemperatureFunc (LPVOID lpparam)
   {
-    static double deltaTime = 0.016;
-
-    SystemClocks startClocks = GetSystemClock ();
+    //static double deltaTime = 0.016;
+    //SystemClocks startClocks = GetSystemClock ();
     static int currentIndex = -1;
     InterlockedIncrement ((LONG*) &currentIndex);
     int threadIndex = currentIndex;
@@ -42,9 +41,9 @@ namespace Framework
 
     while (true)
     {
-      deltaTime = SystemClocksToSeconds (GetSystemClock () - startClocks);
-      startClocks = GetSystemClock ();
-      std::cout << deltaTime << "\n";
+      //deltaTime = SystemClocksToSeconds (GetSystemClock () - startClocks);
+      //startClocks = GetSystemClock ();
+      //std::cout << deltaTime << "\n";
       WaitForSingleObject (eventStartTemperature [threadIndex], INFINITE);
       THERMODYNAMICS->UpdateTemp (startIndex, endIndex, 0.016);
       SetEvent (eventEndTemperature [threadIndex]);
