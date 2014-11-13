@@ -87,6 +87,10 @@ int main (void)
   //! Initialize all added Systems. DON'T INIT YOUR OWN
   engine->Initialize ();
 
+  Sound *test = audio->LoadSound("Pads.ogg", "NOISE", Sound::SOUND_2D, 1.0f);
+  test->GenerateNoise();
+  test->LowPassFilter();
+
   audio->LoadMicData ();
 
 

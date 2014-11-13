@@ -643,6 +643,7 @@ namespace Framework
     UpdateVolumeFade(dt);
     UpdateFrequency1(dt);
     UpdateFrequency2(dt);
+    UpdateNoise();
     SetVolume(GetVolume());
 
     if (this->GetTime() > 5000 && this->GetTime() < 5500 && test == true)

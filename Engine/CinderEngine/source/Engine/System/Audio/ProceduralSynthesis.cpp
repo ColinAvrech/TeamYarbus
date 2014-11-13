@@ -52,6 +52,29 @@ namespace Framework
       ErrCheck(result);
     }
   }
+
+  void Sound::UpdateNoise()
+  {
+    std::string name = GetSoundName();
+
+    if (name == "NOISE")
+    {
+      if (_wind == true)
+      {
+        this->SetLPF(_count += 10, 1.0f);
+        
+        if (_count > 1000)
+          _wind = false;
+      }
+      else if (_wind == false)
+      {
+        this->SetLPF(_count -= 10, 1.0f);
+
+        if (_count < 150)
+          _wind = true;
+      }      
+    }
+  }
 }
 
 //-----------------------------------------------------------------------------
