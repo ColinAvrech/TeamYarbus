@@ -58,6 +58,8 @@ namespace Framework
     {
       Component* gc = OBJECTSYSTEM->SerialMap[stdname]->Create();
       Components[stdname] = gc;
+      gc->gameObject = this;
+      gc->Initialize();
       return gc;
     }
     else
@@ -74,6 +76,7 @@ namespace Framework
     {
       Component* gc = OBJECTSYSTEM->SerialMap[name]->Create();
       Components[name] = gc;
+      gc->gameObject = this;
       return gc;
     }
     else
@@ -95,6 +98,7 @@ namespace Framework
   {
     //not sure about error handling
     Component* zc = new ZilchComponent(name);
+    zc->Initialize();
     return zc;
   }
 

@@ -11,7 +11,6 @@
 #ifndef _THREAD_FUNCTIONS_H
 #define _THREAD_FUNCTIONS_H
 
-#pragma once
 
 #include "SystemClock.h"
 #include "Thermodynamics.h"
