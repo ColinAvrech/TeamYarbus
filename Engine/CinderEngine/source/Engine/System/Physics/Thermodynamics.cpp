@@ -101,9 +101,9 @@ namespace Framework
     // Called every frame
     void ThermodynamicsSystem::Update (const double dt)
     {
-      //UpdateTemp (0.016);
-      //ComputeVelocity (0.016);
-      //UpdateFire (0.016);
+      //UpdateTemp (0, 100, 0.016);
+      //ComputeVelocity (0, 100, 0.016);
+      //UpdateFire (0, 100, 0.016);
 
       UpdateMultiThreaded ();
     }

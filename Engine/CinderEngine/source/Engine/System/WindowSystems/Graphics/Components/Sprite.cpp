@@ -12,6 +12,12 @@ namespace Framework
 
   ZilchDefineType(Sprite, CinderZilch)
   {
+    ZilchBindConstructor (Sprite);
+    ZilchBindMethodOverload (Change_Shader, void, Zilch::String);
+    ZilchBindMethodOverload (Change_Texture, void, Zilch::String);
+    ZilchBindMethod (Change_Color);
+    ZilchBindMethod (GetCurrentFrame);
+    ZilchBindMethod (GetAnimationSpeed);
   }
 
   VAO* Sprite::vao;
@@ -35,6 +41,9 @@ namespace Framework
 	  std::string shadername;
 	  value->GetValue(&shadername);
 	  shader = Resources::RS->Get_Shader(shadername);
+
+    value = data->FindElement (data, "Color");
+    value->GetValue (&color);
 
 	  animated = false;
   }
@@ -100,11 +109,41 @@ namespace Framework
   }
 
 
+  void Sprite::Change_Shader (Zilch::String shaderName)
+  {
+    shader = Resources::RS->Get_Shader (shaderName.c_str ());
+  }
+
+
   // Call To Change Shader Used By Sprite
   void Sprite::Change_Shader (Shader* changeShader)
   {
     shader = changeShader;
     Specify_Attributes ();
+  }
+
+
+  void Sprite::Change_Color (float r, float g, float b, float a)
+  {
+    color.r = r;
+    color.g = g;
+    color.b = b;
+    color.a = a;
+
+    shader->Use ();
+    shader->uni4fv ("overrideColor", glm::value_ptr (color));
+    shader->Disable ();
+  }
+
+
+  void Sprite::Change_Texture (Zilch::String textureName)
+  {
+    texture = Resources::RS->Get_Texture (textureName.c_str ());
+    texture->Bind ();
+    shader->Use ();
+    shader->uni1i ("image", 0);
+    texture->Unbind ();
+    shader->Disable ();
   }
 
   // Call To Change Texture Used By Sprite
@@ -118,6 +157,7 @@ namespace Framework
   // Used To Communicate With Shader and Specify Attributes from Vertex Data
   void Sprite::Specify_Attributes ()
   {
+    shader->Use ();
     // Specify the layout of the vertex data
     GLint posAttrib = shader->attribLocation ("position");
     shader->enableVertexAttribArray (posAttrib);
@@ -130,6 +170,8 @@ namespace Framework
     GLint normalAttrib = shader->attribLocation ("normal");
     shader->enableVertexAttribArray (normalAttrib);
     shader->vertexAttribPtr (normalAttrib, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), 7 * sizeof(GLfloat));
+
+    shader->uni4fv ("overrideColor", glm::value_ptr (color));
 
     if (animated || texture->Get_ID () != TEXTURE_NONE)
     {
@@ -160,7 +202,7 @@ namespace Framework
       // If Texture Is Not Used, Use Draw No Texture Method To Draw Sprite
       DrawFunction = &Sprite::Draw_No_Texture;
     }
-
+    shader->Disable ();
   }
 
 
@@ -177,7 +219,6 @@ namespace Framework
     vao->bindVAO ();
     shader->Use ();
     shader->uniMat4 ("modelViewProjectionMatrix", glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix ()));
-
     (this->*DrawFunction)();
     shader->Disable ();
     vao->unbindVAO ();
@@ -197,6 +238,17 @@ namespace Framework
   void Sprite::Draw_No_Texture ()
   {
     glDrawElements (GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+  }
+
+
+  int Sprite::GetCurrentFrame ()
+  {
+    return frameNumber;
+  }
+
+  int Sprite::GetAnimationSpeed()
+  {
+    return atlas->Get_Samples ();
   }
 
 
