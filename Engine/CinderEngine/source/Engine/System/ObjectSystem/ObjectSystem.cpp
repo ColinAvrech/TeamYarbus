@@ -26,11 +26,11 @@ namespace Framework
 
   ZilchDefineType(ObjectSystem, CinderZilch)
   {
+    ZilchBindMethod(CreateObject);
 
     //ZilchBindConstructor(Transform);
     //ZilchBindMethodOverload(Scale, void, float, float, float);
     //ZilchBindMethodOverload(Scale, void, float);
-    //ZilchBindMethod(Translate);
     //ZilchBindMethod(Rotate);
   }
 

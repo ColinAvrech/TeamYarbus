@@ -41,12 +41,13 @@ namespace Framework
     result = objects_DSP.dsp_noise->getActive(&active);
     ErrCheck(result);
 
-    if (active)
-    {
-      result = pChannel->removeDSP(objects_DSP.dsp_noise);
-      ErrCheck(result);
-    }
-    else
+    //if (active)
+    //{
+    //  result = pChannel->removeDSP(objects_DSP.dsp_noise);
+    //  ErrCheck(result);
+    //}
+
+    if (!active)
     {
       result = pChannel->addDSP(0, objects_DSP.dsp_noise, 0);
       ErrCheck(result);
@@ -61,14 +62,14 @@ namespace Framework
     {
       if (_wind == true)
       {
-        this->SetLPF(_count += 10, 1.0f);
+        this->SetLPF(_count += 15, 1.0f);
         
         if (_count > 1000)
           _wind = false;
       }
       else if (_wind == false)
       {
-        this->SetLPF(_count -= 10, 1.0f);
+        this->SetLPF(_count -= 15, 1.0f);
 
         if (_count < 150)
           _wind = true;

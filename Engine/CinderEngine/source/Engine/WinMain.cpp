@@ -14,6 +14,7 @@ starts the game loop.
 #ifdef WINDOWSBUILD
 
 #include "Common.h"
+#include "WinMain.h"
 #include "WindowSystem.h"
 #include "EventSystem.h"
 #include "SceneManager.h"
@@ -33,6 +34,7 @@ starts the game loop.
 #include "ObjectSystem.h"
 
 #include "UpdateEvent.h"
+#include "Zilch.hpp"
 
 
 #define _DEGUB
@@ -43,17 +45,14 @@ const char WindowTitle [] = "CinderEngine";
 const int ClientWidth = 1024;
 const int ClientHeight = 768;
 
-// Connect example Class
-
-//class MyClass
-//{
-//public:
-//	void Print(UpdateEvent* e)
-//	{
-//		std::cout << "My Update: " << e->Dt << std::endl;
-//	}
-//};
-//SCENE CHANGER
+/*ZilchDefineType(Cinder, CinderZilch)
+{
+  ZilchBindCustomStaticFieldGet(builder, ZilchTypeId(Cinder), Cinder, Windows);
+  ZilchBindCustomStaticFieldGet(builder, ZilchTypeId(Cinder), Cinder, Audio);
+  ZilchBindCustomStaticFieldGet(builder, ZilchTypeId(Cinder), Cinder, Events);
+  ZilchBindCustomStaticFieldGet(builder, ZilchTypeId(Cinder), Cinder, Zilch);
+  ZilchBindCustomStaticFieldGet(builder, ZilchTypeId(Cinder), Cinder, Objsys);
+}*/
 
 int main (void)
 {
@@ -74,12 +73,19 @@ int main (void)
   ObjectSystem* objsys = new ObjectSystem ();
 
   engine->AddSystem (phys);
-  engine->AddSystem (thermo);
+  //engine->AddSystem (thermo);
   engine->AddSystem (windows);
   engine->AddSystem (audio);
   engine->AddSystem (events);
   engine->AddSystem (zilch);
-  engine->AddSystem (objsys);
+  engine->AddSystem(objsys);
+  ////Cinder.PhysicsSystem = phys;
+  ////Cinder.Thermodynamics = thero;
+  //Cinder::Windows = windows;
+  //Cinder::Audio = audio;
+  //Cinder::Events = events;
+  //Cinder::Zilch = zilch;
+  //Cinder::Objsys = objsys;
 
   Resources resourceManager;
   resourceManager.Load_Resources ();
@@ -90,12 +96,13 @@ int main (void)
   Sound *test = audio->LoadSound("Pads.ogg", "NOISE", Sound::SOUND_2D, 1.0f);
   test->GenerateNoise();
   test->LowPassFilter();
+  test->SetLPF(0, 1.0);
 
   audio->LoadMicData ();
 
 
   //! activate the window.
-  OBJECTSYSTEM->LoadLevel("Level.data");
+  OBJECTSYSTEM->LoadLevel("ZilchTests.data");
 
   // Connect example
   //MyClass _myclass;

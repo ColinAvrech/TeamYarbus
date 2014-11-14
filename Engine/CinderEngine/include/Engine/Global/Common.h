@@ -21,3 +21,7 @@ from externals, and stable elements within the engine.
 #include "Helpers.h"
 
 
+// Engine Pointers
+#include "WinMain.h"
+
+
