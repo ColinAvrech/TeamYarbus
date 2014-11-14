@@ -31,12 +31,13 @@ factory in the next loop.
 
 #define ComponentPointer(Name) Name * Name = nullptr
 
+#include "Common.h"
 #include "ObjectSystem.h"
 #include "Component.h"
-#include <map>
 #include "Vec2.h"
 #include "IncludeForAllCollision.h"
 #include "CharacterController.h"
+#include "Zilch.hpp"
 
 namespace Framework
 {
@@ -52,7 +53,11 @@ namespace Framework
     GameObject(unsigned gameObjectID);
     ~GameObject();
 
+    // Adding Components
+    Component* AddComponent(Zilch::String name);
     Component* AddComponent(std::string name);
+
+    Component* AddZilchComponent(Zilch::String name);
     Component* AddZilchComponent(std::string name);
 
     Component* GetComponent(std::string component);

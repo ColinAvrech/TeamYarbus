@@ -99,7 +99,6 @@ namespace Framework
         zd->Function = zDelegate;
         eDeployer->AddDelegate(zd);
       }
-
     }
     else
     {
