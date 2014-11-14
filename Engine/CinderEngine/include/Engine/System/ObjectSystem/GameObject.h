@@ -5,13 +5,13 @@
 \par    Course: GAM200
 \par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
 
-\brief  Game Object Compositions make up everything in the Cinder Engine.
+\brief  Game Object make up everything in the Cinder Engine.
 They are the core of every object and hold a Vector of pointers to all of
 their components. A component is a part of an object (ie. Physics, graphic,
-AI, controlers). Game Object Composition have three different states which
+AI, controlers). Game Object have three different states which
 they should be in during their lifespan.
 
--Constructed: The Composition has been created and there are components
+-Constructed: The Game Object has been created and there are components
 which are being added to it.  Data on the components is being added via
 serialization or hard code.
 
@@ -46,6 +46,8 @@ namespace Framework
   {
 
   public:
+    ZilchDeclareBaseType(GameObject, Zilch::TypeCopyMode::ReferenceType);
+
     //! Called by Factory
     GameObject(unsigned gameObjectID);
     ~GameObject();
@@ -65,7 +67,7 @@ namespace Framework
     //Components
     ComponentPointer(Transform);
     ComponentPointer(Sprite);
-	ComponentPointer(ShapeCollider);
+	  ComponentPointer(ShapeCollider);
     ComponentPointer(Camera);
     ComponentPointer(RigidBody);
     ComponentPointer(CharacterController);

@@ -4,9 +4,7 @@
 \author Micah Rust
 \par    Course: GAM200
 \par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
-\brief  The Game Object Composition (GOC) makes up all objects in the game engine.
-it holds an array of pointers to its components which will be initialized before
-the level runs.
+\brief  
 */
 /******************************************************************************/
 
@@ -18,6 +16,17 @@ the level runs.
 
 namespace Framework
 {
+  // bindComponent Points
+  ZilchDefineType(GameObject, CinderZilch)
+  {
+    ZilchBindFieldGet(Transform);
+    ZilchBindFieldGet(Sprite);
+    //ZilchBindFieldGetSet(ShapeCollider);
+    //ZilchBindFieldGetSet(Camera);
+    //ZilchBindFieldGetSet(RigidBody);
+    //ZilchBindFieldGetSet(CharacterController);
+  }
+
   GameObject::GameObject(unsigned gameObjectID)
   :GameObjectID(gameObjectID)
   {
