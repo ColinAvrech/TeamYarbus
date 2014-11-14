@@ -1,4 +1,4 @@
-class Josh
+class Josh:ZilchComponent
 {
   //var Cinder:ScriptSystem = null;
   
@@ -13,12 +13,13 @@ class Josh
   function Initialize()
   {
 	Cinder.Connect(this, Events.UpdateEvent, this.LogicUpdate);
-	
+	Console.WriteLine(new Player());
   }
  
   function LogicUpdate(e: UpdateEvent)
   {
 	Console.WriteLine(e.TimePassed);
+	
   }
  
 }

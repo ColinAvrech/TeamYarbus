@@ -74,7 +74,7 @@ int main (void)
   ObjectSystem* objsys = new ObjectSystem ();
 
   engine->AddSystem (phys);
-  engine->AddSystem (thermo);
+  //engine->AddSystem (thermo);
   engine->AddSystem (windows);
   engine->AddSystem (audio);
   engine->AddSystem (events);
@@ -95,7 +95,7 @@ int main (void)
 
 
   //! activate the window.
-  OBJECTSYSTEM->LoadLevel("Level.data");
+  OBJECTSYSTEM->LoadLevel("ZilchTests.data");
 
   // Connect example
   //MyClass _myclass;
