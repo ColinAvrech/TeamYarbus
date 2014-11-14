@@ -13,6 +13,7 @@
 #include "TerrainCreator.h"
 #include <stdlib.h>
 #include <iostream>
+#include <fstream>
 
 namespace Framework
 {
@@ -37,14 +38,15 @@ namespace Framework
       for (int i = 0; i < MapWidth; ++i)
         for (int j = 0; j < (int)HeightMap[i]; ++j)
           Map[i][j] = 1;
-
+      //save
+      std::ofstream terrainsave("Terrain.txt");
       for (int i = MapWidth - 1; i >= 0; --i)
       {
         for (int j = 0; j < MapHeight; ++j){
           if (Map [i][j] != 0);
-            //std::cout << Map[i][j];
+            terrainsave << Map[i][j] << " ";
         }
-        //std::cout << std::endl;
+        terrainsave << std::endl;
       }
       delete[] HeightMap;
     }
