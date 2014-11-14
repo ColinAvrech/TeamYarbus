@@ -66,19 +66,7 @@ namespace Framework
       int* WaveBuffer = new int[ 2 * waves];
       for (int i = 0; i < 2* waves; ++i)
         WaveBuffer[i] = rand() % 2;
-      //float factor = 0.5f;
-      //int frequency = MapWidth / (waves + 1);
-      //for (int i = 0; i < passes; ++i, frequency /= 2, factor /= 2)
-      //{
-      //  for (int j = 0; j < MapWidth; ++j)
-      //  {
-      //    int r = rand() % 2;
-      //    for (int k = 0; k < frequency && j < MapWidth; ++k, ++j)
-      //    {
-      //      HeightMap[j + k] += factor * r;
-      //    }
-      //  } //for
-      //} //for
+
       int *x1/*[100]*/, *x2/*[50]*/, *x4/*[25]*/, *x8/*[12]*/;
       x1 = new int[MapWidth];
       for (int i = 0; i < MapWidth; ++i)
@@ -111,6 +99,11 @@ namespace Framework
       delete[] x8;
       delete[] WaveBuffer;
     } //function
+
+    void TerrainCreator::Generate()
+    {
+
+    }
 
   } //Procedural
 } //Framework
