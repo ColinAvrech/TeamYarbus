@@ -24,12 +24,14 @@
 #include "Cinder_Engine_Color.h"
 #include "Cinder_Engine_Delta_Time.h"
 #include "Fluid_Engine.h"
+#include "Camera.h"
 
 namespace Framework
 {
 #define   LOCAL_number_of_pixels_width 32	
 #define   LOCAL_number_of_pixels_height 32
 
+  std::vector <float> mesh;
   INT32 LOCAL_width;
   INT32 LOCAL_height;
   BOOL attracting = BOOLEAN_false;
@@ -91,17 +93,17 @@ namespace Framework
       temp_index_2 = 0;
       start_position = 0;
       end_position = 0;
-
+      const Cinder_Index_Array& table = GraphicsMarchingSquares.GetPolygonVertexCountTable ();
+      const MATH_POINT_2D_ARRAY& pointTable = GraphicsMarchingSquares.GetPointTable ();
       CINDER_LOOP_THROUGH_TABLE (
         temp_index_2,
-        GraphicsMarchingSquares.GetPolygonVertexCountTable ()
+        table
         )
       {
         end_position
           = start_position
-          + GraphicsMarchingSquares.GetPolygonVertexCountTable () [temp_index_2] - 1;
+          + table [temp_index_2] - 1;
         glBegin (GL_POLYGON);
-
         CINDER_LOOP_THROUGH_INDEX (
           temp_index_1,
           start_position,
@@ -109,12 +111,11 @@ namespace Framework
           )
         {
           glColor4f (1, 1, 1, 1);
-          glVertex2f (GraphicsMarchingSquares.GetPointTable () [temp_index_1].X,
-            GraphicsMarchingSquares.GetPointTable () [temp_index_1].Y);
+          glVertex2f (pointTable [temp_index_1].X,
+            pointTable [temp_index_1].Y);
         }
         glEnd ();
-        start_position
-          += GraphicsMarchingSquares.GetPolygonVertexCountTable () [temp_index_2];
+        start_position += table [temp_index_2];
       }
       GraphicsMarchingSquares.Reset ();
       break;
@@ -292,11 +293,11 @@ namespace Framework
   {
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity ();
-    glOrtho (
-      -LOCAL_number_of_pixels_width,
-      LOCAL_number_of_pixels_width,
-      -LOCAL_number_of_pixels_height,
-      LOCAL_number_of_pixels_height, 0, 1000);
+    //glOrtho (
+    //  -LOCAL_number_of_pixels_width,
+    //  LOCAL_number_of_pixels_width,
+    //  -LOCAL_number_of_pixels_height,
+    //  LOCAL_number_of_pixels_height, 0, 1000);
     glMatrixMode (GL_MODELVIEW);
     glLoadIdentity ();
     glEnable (GL_POINT_SMOOTH);
