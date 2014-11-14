@@ -14,6 +14,7 @@ class Josh : Component
   function Initialize()
   {
 	Cinder.Connect(this, Events.UpdateEvent, this.LogicUpdate);
+	Console.WriteLine(new Player());
 	var obj : GameObject = Cinder.objsys.CreateObject();
 	Console.Writeline(obj);
   }

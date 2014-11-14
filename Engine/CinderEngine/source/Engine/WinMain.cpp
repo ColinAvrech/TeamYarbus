@@ -73,7 +73,7 @@ int main (void)
   ObjectSystem* objsys = new ObjectSystem ();
 
   engine->AddSystem (phys);
-  engine->AddSystem (thermo);
+  //engine->AddSystem (thermo);
   engine->AddSystem (windows);
   engine->AddSystem (audio);
   engine->AddSystem (events);
@@ -102,7 +102,17 @@ int main (void)
 
 
   //! activate the window.
-  OBJECTSYSTEM->LoadLevel("ZilchTestLevel.data");
+  OBJECTSYSTEM->LoadLevel("ZilchTests.data");
+
+  // Connect example
+  //MyClass _myclass;
+  //EVENTSYSTEM->mConnect<KeyEvent, MyClass>(Events::KEY_RIGHT, &_myclass, &MyClass::WhenRightIsPressed);
+  //EVENTSYSTEM->mConnect<KeyEvent, MyClass>(Events::KEY_LEFT, &_myclass, &MyClass::WhenLeftIsPressed);
+  //OBJECTSYSTEM->LoadLevel("PhysicsTest.data");
+
+  // Connect example
+  //MyClass _myclass;
+  //EVENTSYSTEM->mConnect<UpdateEvent, MyClass>(Events::UPDATEEVENT, &_myclass, &MyClass::Print);
 
 
   //! Run the game! NOW!
