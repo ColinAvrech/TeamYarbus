@@ -16,6 +16,7 @@
 #include "SpriteSheet.h"
 #include "JSONSerializer.h"
 #include "ZilchCompiledlib.h"
+#include "Zilch.hpp"
 
 #define TEXTURE_NONE -100
 
@@ -36,7 +37,9 @@ namespace Framework
     void Create_Sprite (Shader* _shader, Texture* _texture = NULL);
     void Create_Sprite (Shader* _shader, SpriteSheet* _atlas);
     void Change_Shader (Shader* _shaderID);
+    void Change_Shader (Zilch::String);
     void Change_Texture (Texture* _textureID);
+    void Change_Texture (Zilch::String);
     void Update_Shader ();
 
     Shader* Get_Shader ();
@@ -51,6 +54,8 @@ namespace Framework
     Shader* shader;
     Texture* texture;
     SpriteSheet* atlas;
+    glm::vec4 color;
+    GLenum BlendMode;
 
     // Animated Sprites
     bool animated;
@@ -66,7 +71,9 @@ namespace Framework
     void Draw_Texture ();
     void Draw_No_Texture ();
     void Draw_Animated ();
-
+    void Change_Color (float r, float g, float b, float a);
+    int GetCurrentFrame ();
+    int GetAnimationSpeed ();
     // Function Pointer - Draw Texture - Draw Solid Color - Draw Animated
     (void) (Sprite::*DrawFunction)(void);
 

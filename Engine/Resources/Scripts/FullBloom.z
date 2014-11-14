@@ -1,4 +1,4 @@
-class Josh:ZilchComponent
+class Josh : Component
 {
   //var Cinder:ScriptSystem = null;
   
@@ -6,20 +6,22 @@ class Josh:ZilchComponent
   
   
   
-  constructor()
+  constructor() : base(this)
   {
+	Console.WriteLine("SASA");
   }
   
   function Initialize()
   {
 	Cinder.Connect(this, Events.UpdateEvent, this.LogicUpdate);
 	Console.WriteLine(new Player());
+	var obj : GameObject = Cinder.objsys.CreateObject();
+	Console.Writeline(obj);
   }
  
   function LogicUpdate(e: UpdateEvent)
   {
-	Console.WriteLine(e.TimePassed);
-	
+	//Console.WriteLine(e.TimePassed);
   }
  
 }

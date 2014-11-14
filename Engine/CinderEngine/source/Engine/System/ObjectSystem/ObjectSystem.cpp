@@ -24,6 +24,15 @@ namespace Framework
   //!Set first object's id to zero
   unsigned ObjectSystem::LastGameObjectId = 0;
 
+  ZilchDefineType(ObjectSystem, CinderZilch)
+  {
+    ZilchBindMethod(CreateObject);
+
+    //ZilchBindConstructor(Transform);
+    //ZilchBindMethodOverload(Scale, void, float, float, float);
+    //ZilchBindMethodOverload(Scale, void, float);
+    //ZilchBindMethod(Rotate);
+  }
 
   ObjectSystem::ObjectSystem()
   {
