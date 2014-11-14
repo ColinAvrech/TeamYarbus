@@ -29,6 +29,10 @@ namespace Framework
       inline int Get_Width ();
       inline int Get_Height ();
 
+      void Generate();
+      void Save(const char *file);
+      void Load(const char *file);
+
     private:
       int passes;
       int waves;
@@ -39,6 +43,7 @@ namespace Framework
       int ** Map;
       int PeakHeight;
       void GenerateHeightMap();
+      void ApplyHeightMap();
     }; //class terrain
 
     inline int TerrainCreator::Get_Width ()
