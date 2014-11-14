@@ -31,7 +31,6 @@ starts the game loop.
 #include "ComponentInclude.h"
 #include "RigidBody.h"
 #include "IncludeForAllCollision.h"
-#include "ObjectSystem.h"
 
 #include "UpdateEvent.h"
 #include "Zilch.hpp"
@@ -45,17 +44,15 @@ const char WindowTitle [] = "CinderEngine";
 const int ClientWidth = 1024;
 const int ClientHeight = 768;
 
-EventSystem* Cinder::CinderEvents = nullptr;
-ObjectSystem* Cinder::ObjectSystem = nullptr;
+
+// Temporary Getter functions for System
+EventSystem*  Cinder::GetEventSystem() { return EVENTSYSTEM; }
+ObjectSystem* Cinder::GetObjectSystem(){ return OBJECTSYSTEM; }
 
 ZilchDefineType(Cinder, CinderZilch)
 {
-  //ZilchBindStaticFieldGet(Windows);
-  //ZilchBindStaticFieldGet(Audio);
-  ZilchBindStaticFieldGet(CinderEvents);
-  //ZilchBindStaticFieldGet(Zilch);
-  ZilchBindStaticFieldGet(ObjectSystem);
-  
+  ZilchBindMethod(GetEventSystem);
+  ZilchBindMethod(GetObjectSystem);
 }
 
 int main (void)
