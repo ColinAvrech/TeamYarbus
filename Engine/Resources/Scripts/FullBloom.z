@@ -13,10 +13,12 @@ class Josh : Component
   
   function Initialize()
   {
-	Cinder.Connect(this, Events.UpdateEvent, this.LogicUpdate);
-	Console.WriteLine(new Player());
-	var obj : GameObject = Cinder.objsys.CreateObject();
-	Console.Writeline(obj);
+	//Cinder2.Connect(this, Events.UpdateEvent, this.LogicUpdate);
+	//var obj : GameObject = Cinder.objsys.CreateObject();
+	//Console.Writeline(obj);
+	//Console.Writeline(obj);
+	//Console.WriteLine(new Player());
+	Console.WriteLine(this.Owner);
   }
  
   function LogicUpdate(e: UpdateEvent)
@@ -26,7 +28,7 @@ class Josh : Component
  
 }
 
-class Cinder
+class Cinder2
 {
 	//NEEDS FIXED ANY TYPE?
 	[Static]

@@ -10,20 +10,6 @@ Level =
 		{
 			string Name = "LevelSettings",
 		},
-		GravityEffect = 
-		{
-			bool Active = true,
-			bool WakeUpOnChange = false,
-			bool LocalSpaceDirection = true,
-			float Strength = 10,
-			Vec3 Direction = [0, -1, 0],
-		},
-		DragEffect = 
-		{
-			bool Active = true,
-			bool WakeUpOnChange = false,
-			float Drag = 0.7,
-		},
 		CameraViewport = 
 		{
 			bool Background = true,
@@ -41,21 +27,6 @@ Level =
 		ForwardRenderer = 
 		{
 			Vec4 ClearColor = [0.155, 0.155, 0.155, 1],
-		},
-		GridDraw = 
-		{
-			bool Active = true,
-			bool HalfCellOffset = false,
-			float CellSize = 1,
-			GridAxis Axis = ZAxis,
-			int Lines = 100,
-			bool DrawAxisOrigins = true,
-			bool AlwaysDrawInEditor = true,
-			bool DrawInGame = false,
-			Vec4 GridColor = [0.5, 0.5, 0.5, 0.4],
-			Vec4 GridHiLight = [0, 0, 0, 0.4],
-			int HilightInterval = 10,
-			bool FollowEditorCamera = false,
 		},
 	},
 	Cog = 
@@ -106,6 +77,7 @@ Level =
 		{
 			string SpriteSource = "Env.png",
 			string Shader = "Lighting",
+			Vec4 Color = [1, 0, 0.5, 0.5],
 		},
 		Josh = 
 		{
