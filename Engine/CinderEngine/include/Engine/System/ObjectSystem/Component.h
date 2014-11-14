@@ -39,6 +39,7 @@ namespace Framework
     ZilchDeclareBaseType(Component, Zilch::TypeCopyMode::ReferenceType);
     // Zilch Definition in GameObject.cpp
 
+    Component() {}
     virtual ~Component() {}
 
     /*!Telegraph that the component is active*/

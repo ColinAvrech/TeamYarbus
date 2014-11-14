@@ -1,4 +1,4 @@
-class Josh
+class Josh : Component
 {
   //var Cinder:ScriptSystem = null;
   
@@ -6,19 +6,21 @@ class Josh
   
   
   
-  constructor()
+  constructor() : base(this)
   {
+	Console.WriteLine("SASA");
   }
   
   function Initialize()
   {
 	Cinder.Connect(this, Events.UpdateEvent, this.LogicUpdate);
-	
+	var obj : GameObject = Cinder.objsys.CreateObject();
+	Console.Writeline(obj);
   }
  
   function LogicUpdate(e: UpdateEvent)
   {
-	Console.WriteLine(e.TimePassed);
+	//Console.WriteLine(e.TimePassed);
   }
  
 }

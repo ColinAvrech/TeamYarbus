@@ -18,7 +18,9 @@
 namespace Framework
 {
   ZilchDefineType(Component, CinderZilch)
-  {}
+  {
+    ZilchBindConstructor(Component);
+  }
 
   ZilchDefineType(GameObject, CinderZilch)
   {
