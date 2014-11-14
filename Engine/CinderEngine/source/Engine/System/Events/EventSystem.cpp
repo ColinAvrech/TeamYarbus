@@ -23,11 +23,6 @@
 
 #include "Delegates.h"
 
-//ZilchDefineType(EventSystem, CinderZilch)
-//{
-//  ZilchBindMethod(zConnect);
-//}
-
 namespace Framework
 {
 

@@ -45,14 +45,18 @@ const char WindowTitle [] = "CinderEngine";
 const int ClientWidth = 1024;
 const int ClientHeight = 768;
 
-/*ZilchDefineType(Cinder, CinderZilch)
+EventSystem* Cinder::CinderEvents = nullptr;
+ObjectSystem* Cinder::ObjectSystem = nullptr;
+
+ZilchDefineType(Cinder, CinderZilch)
 {
-  ZilchBindCustomStaticFieldGet(builder, ZilchTypeId(Cinder), Cinder, Windows);
-  ZilchBindCustomStaticFieldGet(builder, ZilchTypeId(Cinder), Cinder, Audio);
-  ZilchBindCustomStaticFieldGet(builder, ZilchTypeId(Cinder), Cinder, Events);
-  ZilchBindCustomStaticFieldGet(builder, ZilchTypeId(Cinder), Cinder, Zilch);
-  ZilchBindCustomStaticFieldGet(builder, ZilchTypeId(Cinder), Cinder, Objsys);
-}*/
+  //ZilchBindStaticFieldGet(Windows);
+  //ZilchBindStaticFieldGet(Audio);
+  ZilchBindStaticFieldGet(CinderEvents);
+  //ZilchBindStaticFieldGet(Zilch);
+  ZilchBindStaticFieldGet(ObjectSystem);
+  
+}
 
 int main (void)
 {

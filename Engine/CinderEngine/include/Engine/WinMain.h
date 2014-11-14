@@ -22,18 +22,18 @@ namespace Framework
   class ScriptSystem;
   class ObjectSystem;
 
- /*class Cinder
+ class Cinder
   {
     ZilchDeclareBaseType(Cinder, Zilch::TypeCopyMode::ReferenceType);
-    static CoreEngine * Engine;
-    static WindowSystem * Windows;
-    static AudioSystem* Audio;
-    static EventSystem * Events;
-    static ScriptSystem * Zilch;
+    //static CoreEngine * Engine;
+    //static WindowSystem * Windows;
+    //static AudioSystem* Audio;
+    static EventSystem * CinderEvents;
+    //static ScriptSystem * Zilch;
     // I hate namespaces
     //Physics::ThermodynamicsSystem * Thermo;
     //Physics::PhysicsSystem * Physics;
-    static ObjectSystem* Objsys;
-  };*/
+    static ObjectSystem* ObjectSystem;
+  };
 
 }
