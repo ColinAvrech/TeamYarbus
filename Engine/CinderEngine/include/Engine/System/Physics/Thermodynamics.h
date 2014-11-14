@@ -27,6 +27,8 @@ namespace Framework
 {
   namespace Physics
   {
+    typedef void* ThreadHandle;
+
     //Possible materials used in terrain
     enum Material
     {
@@ -83,7 +85,34 @@ namespace Framework
 
       // Called every frame
       void Update(const double dt);
+
+      //Update temperatures
+      void UpdateTemp (int start_index, int end_index, const double dt);
+      //Calculate velocity vectors
+      void ComputeVelocity (int start_index, int end_index, const double dt);
+      //Update fire
+      void UpdateFire (int start_index, int end_index, const double dt);
+
       void Reset ();
+
+      //////////////////////////////////////////////////////////////////////////
+      // MULTI THREADING
+      //////////////////////////////////////////////////////////////////////////
+      static const int kNumThreads = 5;
+
+    private:
+      // Variables
+      ThreadHandle m_TemperatureThreads [kNumThreads];
+      ThreadHandle m_VelocityThreads [kNumThreads];
+      ThreadHandle m_FireThreads [kNumThreads];
+
+      // Methods
+      void SpawnThreads ();
+      void ReleaseThreads ();
+      void UpdateMultiThreaded ();
+      //////////////////////////////////////////////////////////////////////////
+
+    public:
       // Returns name of System
       const std::string GetName(){ return "ThermodynamicsSystem"; }
 
@@ -110,6 +139,8 @@ namespace Framework
       // Static Public Variables
       -----------------------------------------------------------------------*/
 #pragma region Static Public Variables
+
+      static glm::vec2 MapSize;
 
 #pragma endregion
 
@@ -138,7 +169,6 @@ namespace Framework
 #pragma region Private Variables
       //Automatically equalize pressure over time
       bool EqualizePressure;
-      glm::vec2 MapSize;
       float CellSize;
       glm::vec2 MapOffset;
       float AtmosphericTemperature;
@@ -182,13 +212,6 @@ namespace Framework
       // Private Functions
       -----------------------------------------------------------------------*/
 #pragma region Private Functions
-      //Update temperatures
-      void UpdateTemp(const double dt);
-      //Calculate velocity vectors
-      void ComputeVelocity(const double dt);
-      //Update fire
-      void UpdateFire(const double dt);
-
       //Determine subscript from position
       glm::vec2 GetSubscript(const float x, const float y);
 

@@ -20,7 +20,6 @@ function to handle windows Messages.
 #include "EventSystem.h"
 #include "Thermodynamics.h"
 #include "Fluid_Engine.h"
-#include "Smoke_Grid.h"
 
 namespace Framework
 {
@@ -29,8 +28,7 @@ namespace Framework
 
   std::list <Transform*> WindowSystem::transformList;
   std::list <IGraphicsObject*> WindowSystem::graphicsObjects;
-  Fluid_Engine w;
-  Smoke_Grid grid;
+  Fluid_Engine water;
 
   namespace WindowNameSpace
   {
@@ -321,8 +319,7 @@ namespace Framework
   {
     std::cout << GetName () << " initialized\n";
 
-    w.Initialize ();
-    grid.Initialize ();
+    water.Initialize ();
 
     return true;
   }
@@ -351,9 +348,6 @@ namespace Framework
     glEnable (GL_BLEND);
     glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    grid.Update ();
-    grid.Draw ();
-
     for (auto& i : transformList)
     {
       i->UpdateMatrices ();
@@ -363,8 +357,8 @@ namespace Framework
     {
       i->Draw ();
     }
-    w.Update ();
-    w.Render ();
+    water.Update ();
+    water.Render ();
 
     glfwSwapBuffers (window);
   }

@@ -74,7 +74,6 @@ namespace Framework
     case 1:
     case 2:
       temp_index_2 = 0;
-
       glBegin (GL_POINTS);
       CINDER_LOOP_THROUGH_TABLE (
         temp_index_2,
@@ -129,7 +128,7 @@ namespace Framework
     INDEX particle_index;
     REAL32 delta_time;
 
-    delta_time = 0.02f;
+    delta_time = 0.016f;
 
     if (!PauseSimulation)
     {

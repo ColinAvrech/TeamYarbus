@@ -41,6 +41,7 @@ namespace Framework
   class ObjectSystem : public BaseSystem
   {
   public:
+    ZilchDeclareBaseType(ObjectSystem, Zilch::TypeCopyMode::ReferenceType);
 
     friend class GameObject;
     friend class Component;

@@ -155,7 +155,7 @@ namespace Framework
 
     h = 1.0f / Grid_Size;
 
-    glBegin (GL_QUADS);
+    glBegin (GL_POINTS);
 
     for (i = 0; i <= Grid_Size; i++)
     {

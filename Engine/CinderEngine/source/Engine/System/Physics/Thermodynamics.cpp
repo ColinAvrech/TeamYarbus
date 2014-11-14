@@ -3,6 +3,7 @@
 #include "AudioSystem.h"
 #include "TerrainCreator.h"
 #include "FractalNoise.h"
+#include "ThreadFunctions.h"
 
 #define SIZE 10
 
@@ -10,6 +11,8 @@ namespace Framework
 {
   namespace Physics
   {
+    glm::vec2 ThermodynamicsSystem::MapSize;
+
     //!Null untill the ObjectSystem has been created
     ThermodynamicsSystem * THERMODYNAMICS = NULL;
     namespace Const = Constant;
@@ -31,18 +34,20 @@ namespace Framework
       //Delete all the shit-load of allocated memory
       if (HeatMap)
         delete HeatMap;
-      if (OxygenMap)
-        delete OxygenMap;
-      if (VelocityMap)
-        delete VelocityMap;
-      if (Terrain)
-        delete Terrain;
-      if (FireMap)
-        delete FireMap;
-      if (WaterMap)
-        delete WaterMap;
-      if (FuelMap)
-        delete FuelMap;
+      //if (OxygenMap)
+      //  delete OxygenMap;
+      //if (VelocityMap)
+      //  delete VelocityMap;
+      //if (Terrain)
+      //  delete Terrain;
+      //if (FireMap)
+      //  delete FireMap;
+      //if (WaterMap)
+      //  delete WaterMap;
+      //if (FuelMap)
+      //  delete FuelMap;
+
+      ReleaseThreads ();
     }
 
     /*-----------------------------------------------------------------------
@@ -87,15 +92,20 @@ namespace Framework
       //Allocate Fuel map
       FuelMap = new Grid2D<float>((int)MapSize.x, (int)MapSize.y);
       FuelMap->fill(0.0f);
+
+      SpawnThreads ();
+
       return true;
     }
 
     // Called every frame
     void ThermodynamicsSystem::Update (const double dt)
     {
-      UpdateTemp (0.016);
-      ComputeVelocity (0.016);
-      UpdateFire (0.016);
+      //UpdateTemp (0.016);
+      //ComputeVelocity (0.016);
+      //UpdateFire (0.016);
+
+      UpdateMultiThreaded ();
     }
 
     // Getters
@@ -161,10 +171,11 @@ namespace Framework
     -----------------------------------------------------------------------*/
 
     //Update temperatures
-    void ThermodynamicsSystem::UpdateTemp (const double dt)
+    void ThermodynamicsSystem::UpdateTemp(int start_index, int end_index, const double dt)
     {
+      //std::cout << start_index << "\n";
       //std::cout << "Updated Temperature/Density/Pressure" << std::endl;
-      for (int j = 0; j < 100; ++j)
+      for (int j = start_index; j < end_index; ++j)
       {
         for (int i = 0; i < 100; ++i)
         {
@@ -222,7 +233,7 @@ namespace Framework
     }//function
 
     //Update velocity vectors
-    void ThermodynamicsSystem::ComputeVelocity (const double dt)
+    void ThermodynamicsSystem::ComputeVelocity(int start_index, int end_index, const double dt)
     {
       glm::vec2 dirvec [8] = {
         { -1, -1 },
@@ -234,9 +245,9 @@ namespace Framework
         { 0, 1 },
         { 1, 1 }
       };
-      for (int j = 1; j < 99; ++j)
+      for (int j = start_index; j < end_index; ++j)
       {
-        for (int i = 1; i < 99; ++i)
+        for (int i = 1; i < 100; ++i)
         {
           float dSum = 0.f;
           for (int y = j - 1; y <= j + 1; ++y)
@@ -277,12 +288,12 @@ namespace Framework
     }
 
     //Update fire
-    void ThermodynamicsSystem::UpdateFire (const double dt)
+    void ThermodynamicsSystem::UpdateFire(int start_index, int end_index, const double dt)
     {
       //std::cout << "Updated Fire" << std::endl;
-      for (int j = 1; j < 99; ++j)
+      for (int j = start_index; j < end_index; ++j)
       {
-        for (int i = 1; i < 99; ++i)
+        for (int i = 1; i < 100; ++i)
         {
           int OxyCount = 0;
           float OxyAmount = 0.f;
@@ -342,6 +353,95 @@ namespace Framework
       int sub_y = int(std::abs(((y)* (MapSize.y / 2 - 1) + MapOffset.y - 1)));
       glm::vec2 res(sub_x, sub_y);
       return res;
+    }
+
+    void ThermodynamicsSystem::SpawnThreads ()
+    {
+      // Temperature Threads
+      for (int i = 0; i < kNumThreads; ++i)
+      {
+        eventStartTemperature [i] = CreateEvent (NULL, false, NULL, NULL);
+        eventEndTemperature [i] = CreateEvent (NULL, true, NULL, NULL);
+        m_TemperatureThreads [i] = CreateThread (NULL, 0, UpdateTemperatureFunc, NULL, 0, NULL);
+      }
+
+      // Velocity Threads
+      for (int i = 0; i < kNumThreads; ++i)
+      {
+        eventStartVelocity [i] = CreateEvent (NULL, false, NULL, NULL);
+        eventEndFire [i] = CreateEvent (NULL, true, NULL, NULL);
+        m_VelocityThreads [i] = CreateThread (NULL, 0, UpdateVelocityFunc, NULL, 0, NULL);
+      }
+
+      // Fire Threads
+      for (int i = 0; i < kNumThreads; ++i)
+      {
+        eventStartFire [i] = CreateEvent (NULL, false, NULL, NULL);
+        eventEndFire [i] = CreateEvent (NULL, true, NULL, NULL);
+        m_FireThreads [i] = CreateThread (NULL, 0, UpdateFireFunc, NULL, 0, NULL);
+      }
+    }
+
+    void ThermodynamicsSystem::ReleaseThreads ()
+    {
+      for (int i = 0; i < kNumThreads; ++i)
+      {
+        CloseHandle (eventStartTemperature [i]);
+        CloseHandle (eventEndTemperature [i]);
+        CloseHandle (m_TemperatureThreads [i]);
+      }
+
+      for (int i = 0; i < kNumThreads; ++i)
+      {
+        CloseHandle (eventStartVelocity [i]);
+        CloseHandle (eventEndVelocity [i]);
+        CloseHandle (m_VelocityThreads [i]);
+      }
+
+      for (int i = 0; i < kNumThreads; ++i)
+      {
+        CloseHandle (eventStartFire [i]);
+        CloseHandle (eventEndFire [i]);
+        CloseHandle (m_FireThreads [i]);
+      }
+    }
+
+    void ThermodynamicsSystem::UpdateMultiThreaded ()
+    {
+      // Start Temperature Threads
+      for (int i = 0; i < kNumThreads; ++i)
+      {
+        SetEvent (eventStartTemperature [i]);
+      }
+
+      // Start Temperature Threads
+      for (int i = 0; i < kNumThreads; ++i)
+      {
+        SetEvent (eventStartVelocity [i]);
+      }
+
+      // Start Temperature Threads
+      for (int i = 0; i < kNumThreads; ++i)
+      {
+        SetEvent (eventStartFire [i]);
+      }
+
+      WaitForMultipleObjects (kNumThreads, eventEndTemperature, true, INFINITE);
+      WaitForMultipleObjects (kNumThreads, eventEndVelocity, true, INFINITE);
+      WaitForMultipleObjects (kNumThreads, eventEndFire, true, INFINITE);
+
+      for (int i = 0; i < kNumThreads; ++i)
+      {
+        ResetEvent (eventEndTemperature [i]);
+      }
+      for (int i = 0; i < kNumThreads; ++i)
+      {
+        ResetEvent (eventEndVelocity [i]);
+      }
+      for (int i = 0; i < kNumThreads; ++i)
+      {
+        ResetEvent (eventEndFire [i]);
+      }
     }
 
   }//namespace Physics

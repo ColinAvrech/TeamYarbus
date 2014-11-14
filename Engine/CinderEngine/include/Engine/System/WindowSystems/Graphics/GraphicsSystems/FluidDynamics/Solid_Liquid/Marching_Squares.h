@@ -99,7 +99,7 @@ namespace Framework
     }
 
 
-    const MATH_POINT_2D_ARRAY & GetPointTable () const
+    const MATH_POINT_2D_ARRAY& GetPointTable () const
     {
       return PointTable2;
     }
@@ -109,7 +109,7 @@ namespace Framework
       PointTable2 = point_table;
     }
 
-    const Cinder_Index_Array & GetPolygonVertexCountTable () const
+    const Cinder_Index_Array& GetPolygonVertexCountTable () const
     {
       return PolygonVertexCountTable;
     }

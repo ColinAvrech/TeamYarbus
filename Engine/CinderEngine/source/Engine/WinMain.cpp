@@ -74,7 +74,7 @@ int main (void)
   ObjectSystem* objsys = new ObjectSystem ();
 
   engine->AddSystem (phys);
-  //engine->AddSystem (thermo);
+  engine->AddSystem (thermo);
   engine->AddSystem (windows);
   engine->AddSystem (audio);
   engine->AddSystem (events);
@@ -87,11 +87,15 @@ int main (void)
   //! Initialize all added Systems. DON'T INIT YOUR OWN
   engine->Initialize ();
 
+  Sound *test = audio->LoadSound("Pads.ogg", "NOISE", Sound::SOUND_2D, 1.0f);
+  test->GenerateNoise();
+  test->LowPassFilter();
+
   audio->LoadMicData ();
 
 
   //! activate the window.
-  //OBJECTSYSTEM->LoadLevel("Level.data");
+  OBJECTSYSTEM->LoadLevel("Level.data");
 
   // Connect example
   //MyClass _myclass;
