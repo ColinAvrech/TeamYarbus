@@ -19,6 +19,8 @@ function to handle windows Messages.
 #include "ComponentInclude.h"
 #include "EventSystem.h"
 #include "Thermodynamics.h"
+#include "Fluid_Engine.h"
+#include "Smoke_Grid.h"
 
 namespace Framework
 {
@@ -27,6 +29,8 @@ namespace Framework
 
   std::list <Transform*> WindowSystem::transformList;
   std::list <IGraphicsObject*> WindowSystem::graphicsObjects;
+  Fluid_Engine water;
+  Smoke_Grid grid;
 
   namespace WindowNameSpace
   {
@@ -98,7 +102,7 @@ namespace Framework
       }
     }
 
-    void  GLFWMessageHandler (GLFWwindow* window, int key, int scanCode, int state, int mod)
+    void GLFWMessageHandler (GLFWwindow* window, int key, int scanCode, int state, int mod)
     {
       //A Key has been pressed
       TriggerKeyEvent (Events::KEY_ANY, key, scanCode, state, mod);
@@ -274,13 +278,13 @@ namespace Framework
       glfwInit ();
       // Properties
       //Request an OpenGL 4.3 core context
-      glfwWindowHint (GLFW_CONTEXT_VERSION_MAJOR, 4);
-      glfwWindowHint (GLFW_CONTEXT_VERSION_MINOR, 3);
-      glfwWindowHint (GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-      glfwWindowHint (GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
-      glfwWindowHint (GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+      //glfwWindowHint (GLFW_CONTEXT_VERSION_MAJOR, 4);
+      //glfwWindowHint (GLFW_CONTEXT_VERSION_MINOR, 3);
+      //glfwWindowHint (GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+      //glfwWindowHint (GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
+      //glfwWindowHint (GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-      WINDOWSYSTEM->Set_W_H (1280, 720);
+      WINDOWSYSTEM->Set_W_H (1024, 1024);
       // Window Creation
       *GLFWwindowptr = glfwCreateWindow (WINDOWSYSTEM->Get_Width (), WINDOWSYSTEM->Get_Height (), "OpenGL", nullptr, nullptr); // Windowed
 
@@ -316,6 +320,9 @@ namespace Framework
   bool WindowSystem::Initialize ()
   {
     std::cout << GetName () << " initialized\n";
+
+    water.Initialize ();
+    grid.Initialize ();
 
     return true;
   }
@@ -353,6 +360,10 @@ namespace Framework
     {
       i->Draw ();
     }
+    grid.Update ();
+    grid.Draw ();
+    water.Update ();
+    water.Render ();
 
     glfwSwapBuffers (window);
   }

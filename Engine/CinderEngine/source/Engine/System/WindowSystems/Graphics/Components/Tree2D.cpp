@@ -82,7 +82,7 @@ namespace Framework
   void Tree2D::Make_Tree0 (float x1, float y1, float length1, float angle1, int depth)
   {
     float SCALE = 1.0f;
-    float ANGLE = 0.4f;
+    float ANGLE = 0.3f;
     float RAND = 0.1f;
     if (depth > 0)
     {
@@ -96,10 +96,16 @@ namespace Framework
 
       float length2 = length1 * (SCALE + myrand (RAND));
       float angle2 = angle1 + ANGLE + myrand (RAND);
-      Make_Tree0 (x2, y2, length2, angle2, depth - 1);
+      int factor = 80 + rand () % 20;
+      float f = factor / 100.f;
+      int fork = rand () % 100;
+      if (fork > 30)
+        Make_Tree0 (x2, y2, length2 * f, angle2, depth - 1);
       length2 = length1 * (SCALE + myrand (RAND));
       angle2 = angle1 - ANGLE + myrand (RAND);
-      Make_Tree0 (x2, y2, length2, angle2, depth - 1);
+      fork = rand () % 100;
+      if (fork > 30)
+        Make_Tree0 (x2, y2, length2 * f, angle2, depth - 1);
     }
   }
 

@@ -125,8 +125,7 @@ namespace Framework
       void            LowPassFilter();
       void            SetLPF(float cutoff = 5000.0f, float resonance = 1.0f);
       void            HighPassFilter();
-      void            SetHPF(float cutoff = 5000.0f, float resonance = 1.0f);
-      void            GenerateNoise();
+      void            SetHPF(float cutoff = 5000.0f, float resonance = 1.0f);      
       void            Reverb();
       void            AddReverbPreset(Sound::ReverbPresetName preset);
       void            SetFrequency1();
@@ -136,6 +135,10 @@ namespace Framework
       void            SweepEQ2(float center, float bandwidth, float gain, float sweepTime);
       void            UpdateFrequency2(const double dt);
       void            EQConsoleOut(float currentCenter, float currentBandwidth, float currentGain);
+
+      // Procedural Noise
+      void            UpdateNoise();
+      void            GenerateNoise();
 
       // Setters
       ReverbPreset    SetReverbPreset(ReverbPresetName preset);
@@ -157,6 +160,7 @@ namespace Framework
       float           GetVolume();   
       unsigned        GetTime();
       unsigned        GetID(){return ID;}
+      std::string     GetSoundName(){ return _soundName;}
       float*          GetVolumePtr();
 
       inline FMOD::Channel* Get_Channel()
@@ -245,6 +249,8 @@ namespace Framework
       FMOD::System                  *pFMODAudioSystem;
       std::string                   _soundName;      
       FMOD_VECTOR                   _position;
+      float                         _count = 0;
+      bool                          _wind = true;
 
       #pragma endregion
 

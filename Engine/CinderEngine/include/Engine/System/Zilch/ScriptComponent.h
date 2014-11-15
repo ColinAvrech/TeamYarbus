@@ -29,6 +29,7 @@ namespace Framework
   class ZilchComponent : public Component
   {
   public:
+    ZilchDeclareBaseType(ZilchComponent, Zilch::TypeCopyMode::ReferenceType);
 
     //Constructor. Initialize with owner and component name.
     ZilchComponent(std::string& name);

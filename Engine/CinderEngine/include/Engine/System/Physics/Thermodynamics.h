@@ -18,9 +18,9 @@
 
 
 #include "BaseSystem.h"
-#include "Common.h"
-#include "glm.hpp"
 #include <unordered_map>
+#include "Grid2D.h"
+#include "FluidSolver.h"
 
 #pragma endregion
 
@@ -28,6 +28,25 @@ namespace Framework
 {
   namespace Physics
   {
+    typedef void* ThreadHandle;
+
+    //Possible materials used in terrain
+    enum Material
+    {
+      AIR,
+      WATER,
+      WOOD,
+      SOIL,
+      GRASS,
+      STONE,
+      IRON,
+      LEAD,
+      STEEL,
+      COTTON,
+      CEMENT,
+      CARBON,
+      FUEL,
+    };//enum material
     /*---------------------------------------------------------------------------
     // Class
     ---------------------------------------------------------------------------*/
@@ -67,9 +86,36 @@ namespace Framework
 
       // Called every frame
       void Update(const double dt);
+
+      //Update temperatures
+      void UpdateTemp (int start_index, int end_index, const double dt);
+      //Calculate velocity vectors
+      void ComputeVelocity (int start_index, int end_index, const double dt);
+      //Update fire
+      void UpdateFire (int start_index, int end_index, const double dt);
+
       void Reset ();
+
+      //////////////////////////////////////////////////////////////////////////
+      // MULTI THREADING
+      //////////////////////////////////////////////////////////////////////////
+      static const int kNumThreads = 8;
+
+    private:
+      // Variables
+      ThreadHandle m_TemperatureThreads [kNumThreads];
+      ThreadHandle m_VelocityThreads [kNumThreads];
+      ThreadHandle m_FireThreads [kNumThreads];
+
+      // Methods
+      void SpawnThreads ();
+      void ReleaseThreads ();
+      void UpdateMultiThreaded ();
+      //////////////////////////////////////////////////////////////////////////
+
+    public:
       // Returns name of System
-      const std::string GetName(){ return "ThermodynamicsSystem"; }
+      const std::string GetName() { return "ThermodynamicsSystem"; }
 
       // Getters
       //Get Cell Pixel size
@@ -86,6 +132,7 @@ namespace Framework
       // Setters
       void ToggleAutoDissipation();
       float SetCellTemperature(const float x, const float y, const float temp, const double dt);
+      void SetCellVelocity (const int x, const int y, glm::vec2 v);
 
 #pragma endregion
 
@@ -94,6 +141,8 @@ namespace Framework
       // Static Public Variables
       -----------------------------------------------------------------------*/
 #pragma region Static Public Variables
+
+      static glm::ivec2 MapSize;
 
 #pragma endregion
 
@@ -114,6 +163,8 @@ namespace Framework
 
 #pragma endregion
 
+      friend class Smoke_Grid;
+
     private:
 
       /*-----------------------------------------------------------------------
@@ -122,31 +173,38 @@ namespace Framework
 #pragma region Private Variables
       //Automatically equalize pressure over time
       bool EqualizePressure;
-      glm::vec2 MapSize;
       float CellSize;
       glm::vec2 MapOffset;
       float AtmosphericTemperature;
 
       //Temperature Map. Temperature is stored in Kelvin.
-      float     **HeatMap;
+      Grid2D<float> TemperatureMap;
       //Oxygen density. Stored in Kg/m^2.
-      float     **OxygenMap;
+      Grid2D<float> DensityMap;
+      Grid2D<float> DensityMap_Prev;
       //Velocity Map. Stores 2d vectors.
-      glm::vec2 **VelocityMap;
+      Grid2D<float> VelocityMapX;
+      Grid2D<float> VelocityMap_PrevX;
+      Grid2D<float> VelocityMapY;
+      Grid2D<float> VelocityMap_PrevY;
       //Terrain. Simple collision table using enums.
-      int       **Terrain;
+      Grid2D<Material> Terrain;
+      //Water and moisture content
+      Grid2D<float> WaterMap;
       //Fire Map. Stores intensity of flame on a scale of 0 - 10.
-      float     **FireMap;
+      Grid2D<float> FireMap;
       //Amount of fuel in the cell
-      float     **FuelMap;
+      Grid2D<float> FuelMap;
 
+      FluidSolver solver;
 #pragma endregion
 
 
       /*-----------------------------------------------------------------------
       // Private Structs
       -----------------------------------------------------------------------*/
-#pragma region Private Structs    
+#pragma region Private Structs
+
       struct conductionProperties
       {
         //std::string name will be used to map these;
@@ -164,13 +222,8 @@ namespace Framework
       // Private Functions
       -----------------------------------------------------------------------*/
 #pragma region Private Functions
-      //Update temperatures
-      void UpdateTemp(const double dt);
-      //Calculate velocity vectors
-      void ComputeVelocity(const double dt);
-      //Update fire
-      void UpdateFire(const double dt);
-
+      //Determine subscript from position
+      glm::vec2 GetSubscript(const float x, const float y);
 #pragma endregion
 
 

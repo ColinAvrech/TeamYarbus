@@ -13,6 +13,7 @@
 #include "TerrainCreator.h"
 #include <stdlib.h>
 #include <iostream>
+#include <fstream>
 
 namespace Framework
 {
@@ -37,14 +38,15 @@ namespace Framework
       for (int i = 0; i < MapWidth; ++i)
         for (int j = 0; j < (int)HeightMap[i]; ++j)
           Map[i][j] = 1;
-
+      //save
+      std::ofstream terrainsave("Terrain.txt");
       for (int i = MapWidth - 1; i >= 0; --i)
       {
         for (int j = 0; j < MapHeight; ++j){
           if (Map [i][j] != 0);
-            //std::cout << Map[i][j];
+            terrainsave << Map[i][j] << " ";
         }
-        //std::cout << std::endl;
+        terrainsave << std::endl;
       }
       delete[] HeightMap;
     }
@@ -64,19 +66,7 @@ namespace Framework
       int* WaveBuffer = new int[ 2 * waves];
       for (int i = 0; i < 2* waves; ++i)
         WaveBuffer[i] = rand() % 2;
-      //float factor = 0.5f;
-      //int frequency = MapWidth / (waves + 1);
-      //for (int i = 0; i < passes; ++i, frequency /= 2, factor /= 2)
-      //{
-      //  for (int j = 0; j < MapWidth; ++j)
-      //  {
-      //    int r = rand() % 2;
-      //    for (int k = 0; k < frequency && j < MapWidth; ++k, ++j)
-      //    {
-      //      HeightMap[j + k] += factor * r;
-      //    }
-      //  } //for
-      //} //for
+
       int *x1/*[100]*/, *x2/*[50]*/, *x4/*[25]*/, *x8/*[12]*/;
       x1 = new int[MapWidth];
       for (int i = 0; i < MapWidth; ++i)
@@ -92,7 +82,7 @@ namespace Framework
         x8[i] = rand() % 2;
 
       for (int i = 0; i < MapWidth; ++i)
-        HeightMap[i] = BaseHeight + (PeakHeight) * (0.0625 * x1[i] + 0.125 * x2[i / 2] + 0.25 * x4[i / 4] + 0.5 * x8[i / 8] + 0.5 * WaveBuffer[(i * 2 * waves) / MapWidth] - 0.5);
+        HeightMap[i] = BaseHeight + (PeakHeight) * (0.0625f * x1[i] + 0.125f * x2[i / 2] + 0.25f * x4[i / 4] + 0.5f * x8[i / 8] + 0.5f * WaveBuffer[(i * 2 * waves) / MapWidth] - 0.5f);
 
       for (int i = 0; i < passes; ++i)
       {
@@ -109,6 +99,11 @@ namespace Framework
       delete[] x8;
       delete[] WaveBuffer;
     } //function
+
+    void TerrainCreator::Generate()
+    {
+
+    }
 
   } //Procedural
 } //Framework

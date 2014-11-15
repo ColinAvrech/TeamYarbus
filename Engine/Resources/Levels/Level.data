@@ -109,7 +109,7 @@ Level =
 		},
 		Tree2D = 
 		{
-      int Tree_Type = 1,
+      int Tree_Type = 0,
       Vec4 Color = [1.0, 0.2, 0.1, 1.0],
 		},
   },
@@ -131,7 +131,7 @@ Level =
 		},
 		Tree2D = 
 		{
-      int Tree_Type = 1,
+      int Tree_Type = 0,
       Vec4 Color = [1.0, 0.2, 0.1, 1.0],
 		},
   },
@@ -153,7 +153,51 @@ Level =
 		},
 		Tree2D = 
 		{
-      int Tree_Type = 1,
+      int Tree_Type = 0,
+      Vec4 Color = [1.0, 0.2, 0.1, 1.0],
+		},
+  },
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 8,
+		},
+		Named = 
+		{
+			string Name = "tree0",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [4, -1.0, 0],
+			Vec3 Scale = [1, 1, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Tree2D = 
+		{
+      int Tree_Type = 0,
+      Vec4 Color = [1.0, 0.2, 0.1, 1.0],
+		},
+  },
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 8,
+		},
+		Named = 
+		{
+			string Name = "tree0",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [-1, -1.0, 0],
+			Vec3 Scale = [1, 1, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Tree2D = 
+		{
+      int Tree_Type = 0,
       Vec4 Color = [1.0, 0.2, 0.1, 1.0],
 		},
   },

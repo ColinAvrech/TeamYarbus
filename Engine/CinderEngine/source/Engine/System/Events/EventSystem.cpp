@@ -23,11 +23,6 @@
 
 #include "Delegates.h"
 
-//ZilchDefineType(EventSystem, CinderZilch)
-//{
-//  ZilchBindMethod(zConnect);
-//}
-
 namespace Framework
 {
 
@@ -54,11 +49,7 @@ namespace Framework
     EVENTSYSTEM = this;
   }
 
-  /// CLEAN CLEAN CLEAN NEEDS TO BE ADDEDD !#!@#!@#!@#!@# TODO
-  EventSystem::~EventSystem()
-  {
-    // Clean UP STUFF
-  }
+  EventSystem::~EventSystem(){}
 
   bool EventSystem::Initialize()
   {
@@ -66,16 +57,16 @@ namespace Framework
     return true;
   }
 
-  
+  // Function called from Zilch Script to register to events.
   void ZilchConnect(Call& call, ExceptionReport& report)
   {
     std::string eventname = call.Get<String>(0).c_str();
     Zilch::Delegate zDelegate = call.GetDelegate(1);
 
-    auto eDeployer = EVENTSYSTEM->RegisteredEvents.find(eventname);
+    auto event = EVENTSYSTEM->RegisteredEvents.find(eventname);
 
     //If deployer does not exist
-    if (eDeployer == EVENTSYSTEM->RegisteredEvents.end())
+    if (event == EVENTSYSTEM->RegisteredEvents.end())
     {
       //Add Deployer
       auto eDeployer = new EventDeployer();
@@ -103,12 +94,34 @@ namespace Framework
         zd->Function = zDelegate;
         eDeployer->AddDelegate(zd);
       }
-
     }
     else
     {
+      // Get Deployer
+      auto eDeployer = event->second;
+
       //Add Delegate
-     
+      if (eventname[0] == UpdateEventPrefix)
+      {
+        //Add UpdateDelegate
+        ZilchDelegate<UpdateEvent>* zd = new ZilchDelegate<UpdateEvent>();
+        zd->Function = zDelegate;
+        eDeployer->AddDelegate(zd);
+      }
+      else if (eventname[0] == KeyEventPrefix)
+      {
+        //Add UpdateDelegate
+        ZilchDelegate<KeyEvent>* zd = new ZilchDelegate<KeyEvent>();
+        zd->Function = zDelegate;
+        eDeployer->AddDelegate(zd);
+      }
+      else if (eventname[0] == CollisionEventPrefix)
+      {
+        //Add UpdateDelegate
+        ZilchDelegate<CollisionEvent>* zd = new ZilchDelegate<CollisionEvent>();
+        zd->Function = zDelegate;
+        eDeployer->AddDelegate(zd);
+      }
     }
   }
 

@@ -22,6 +22,7 @@ relaying information)
 #pragma once
 #include "Common.h"
 #include "Serializer/DataNode.h"
+#include "Zilch.hpp"
 
 #define DefineComponentName(Component) const std::string Component::Name("Component")
 
@@ -35,7 +36,10 @@ namespace Framework
   class Component
   {
   public:
+    ZilchDeclareBaseType(Component, Zilch::TypeCopyMode::ReferenceType);
+    // Zilch Definition in GameObject.cpp
 
+    Component() {}
     virtual ~Component() {}
 
     /*!Telegraph that the component is active*/
@@ -49,6 +53,9 @@ namespace Framework
     {
       ErrorIf (true, "Serialize Component Not Overriden");
     }
+
+    GameObject* GetOwner();
+    // Definition in GameObject.cpp
 
     //Variables that all components have
     GameObject* gameObject;

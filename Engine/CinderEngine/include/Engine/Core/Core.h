@@ -13,15 +13,14 @@
 //! The highest FPS the game can run at.
 #define FPS 60.0f
 
-#include "BaseSystem.h"
 #include "Common.h"
+#include "BaseSystem.h"
 
 using namespace std::chrono;
 
 
 namespace Framework
 {
-
   class CoreEngine
   {
   public:

@@ -33,25 +33,25 @@ namespace Framework
   ZilchDefineType(UpdateEvent, CinderZilch)
   {
     type->HandleManager = ZilchManagerId(PointerManager);
-    ZilchBindFieldGetSet(Dt);
-    ZilchBindFieldGetSet(TimePassed);
+    ZilchBindFieldGet(Dt);
+    ZilchBindFieldGet(TimePassed);
   }
 
   ZilchDefineType(KeyEvent, CinderZilch)
   {
     type->HandleManager = ZilchManagerId(PointerManager);
-    ZilchBindFieldGetSet(KeyValue);
-    ZilchBindFieldGetSet(KeyDown);
-    ZilchBindFieldGetSet(KeyRepeat);
-    ZilchBindFieldGetSet(CTRLPressed);
-    ZilchBindFieldGetSet(ALTPressed);
-    ZilchBindFieldGetSet(SHIFTPressed);
+    ZilchBindFieldGet(KeyValue);
+    ZilchBindFieldGet(KeyDown);
+    ZilchBindFieldGet(KeyRepeat);
+    ZilchBindFieldGet(CTRLPressed);
+    ZilchBindFieldGet(ALTPressed);
+    ZilchBindFieldGet(SHIFTPressed);
   }
 
   ZilchDefineType(CollisionEvent, CinderZilch)
   {
     type->HandleManager = ZilchManagerId(PointerManager);
-    ZilchBindFieldGetSet(Penetration);
+    ZilchBindFieldGet(Penetration);
 
     //Need to add Game Object to zilch Library Before using these
     //ZilchBindFieldGetSet(thisObject);

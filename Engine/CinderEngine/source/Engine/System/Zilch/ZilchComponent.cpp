@@ -5,6 +5,11 @@
 
 namespace Framework
 {
+
+  ZilchDefineType(ZilchComponent, CinderZilch)
+  {
+  }
+
   //CONSTRUCTOR
   ZilchComponent::ZilchComponent(std::string& name)
   {

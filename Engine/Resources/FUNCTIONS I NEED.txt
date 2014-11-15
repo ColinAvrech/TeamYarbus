@@ -1,0 +1,48 @@
+Particle Emitters
+-Create a new emitter
+-Add emitter as a component to a gameobject
+-Emit Rate
+-Particle Texture
+-Particle fading
+-Particle Color
+-Particle Initial Velocity
+-Particle Acceleration
+-Particle Lifetime
+
+GameObjects
+-Create a new Gameobject
+-Change Transform Properties
+-Add component
+-Change name
+-Find object by name
+-Access components on the gameobject (Find component by name?)
+-Add Zilch Component
+-Destroy Gameobject
+-Remove Component
+
+Serialization
+-Find File
+-Load File
+-Write File
+-Read File
+
+I want to be able to save out gameobjects and scenes to whatever data file I want.
+
+Thermodynamics
+-Set temperature of a spot on the grid
+-Set density of a spot on the grid
+-Apply forces within the grid
+
+Physics
+-Apply force or set linear velocity
+-Apply torque
+-Change object to be static, dynamic, or kinematic
+
+Game Engine
+-Change scene
+-Start Game
+-Quit Game
+
+Sound
+-Play Sound
+-Get Microphone input value that I can use to edit things with.
