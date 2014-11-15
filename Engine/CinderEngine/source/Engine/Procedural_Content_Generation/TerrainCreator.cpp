@@ -11,6 +11,7 @@
 //This is only for testing thermo
 
 #include "TerrainCreator.h"
+#include "ThermoDynamics.h"
 #include <stdlib.h>
 #include <iostream>
 #include <fstream>
@@ -31,24 +32,7 @@ namespace Framework
         for (int i = 0; i < MapHeight; ++i)
           Map[j][i] = 0;
 
-      GenerateHeightMap();
-      //for (int i = 0; i < MapWidth; ++i)
-      //  std::cout << (int)HeightMap[i] << " ";
-
-      for (int i = 0; i < MapWidth; ++i)
-        for (int j = 0; j < (int)HeightMap[i]; ++j)
-          Map[i][j] = 1;
-      //save
-      std::ofstream terrainsave("Terrain.txt");
-      for (int i = MapWidth - 1; i >= 0; --i)
-      {
-        for (int j = 0; j < MapHeight; ++j){
-          if (Map [i][j] != 0);
-            terrainsave << Map[i][j] << " ";
-        }
-        terrainsave << std::endl;
-      }
-      delete[] HeightMap;
+      Generate();
     }
 
     TerrainCreator::~TerrainCreator()
@@ -56,6 +40,20 @@ namespace Framework
       for (int i = 0; i < MapWidth; ++i)
         delete[] Map[i];
       delete[] Map;
+      delete[] HeightMap;
+    }
+
+    void TerrainCreator::Save(const char* file)
+    {
+      //save
+      std::ofstream terrainsave(file);
+      for (int i = 0; i < MapWidth; ++i)
+      {
+        for (int j = 0; j < MapHeight; ++j){
+          terrainsave << Map[i][j] << " ";
+        }
+        terrainsave << std::endl;
+      }
     }
 
     void TerrainCreator::GenerateHeightMap()
@@ -102,7 +100,18 @@ namespace Framework
 
     void TerrainCreator::Generate()
     {
+      GenerateHeightMap();
+      ApplyHeightMap();
+      //AddSoil(passes * 10);
+      //AddWater();
+      //AddLife();
+    }
 
+    void TerrainCreator::ApplyHeightMap()
+    {
+      for (int i = 0; i < MapWidth; ++i)
+        for (int j = 0; j < (int)HeightMap[i]; ++j)
+          Map[i][j] = 1;
     }
 
   } //Procedural

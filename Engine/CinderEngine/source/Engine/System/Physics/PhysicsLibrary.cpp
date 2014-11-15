@@ -39,6 +39,12 @@ namespace Framework
 				+ (pos2.y - pos1.y) * (pos2.y - pos1.y)));
 		}
 
+		float DistanceSquared(glm::vec3& pos1, glm::vec3& pos2)
+		{
+			return float((pos2.x - pos1.x) * (pos2.x - pos1.x)
+				+ (pos2.y - pos1.y) * (pos2.y - pos1.y));
+		}
+
 		glm::vec3 getNormal(glm::vec3 p1, glm::vec3 p2)
 		{
 			glm::vec3 norm;
