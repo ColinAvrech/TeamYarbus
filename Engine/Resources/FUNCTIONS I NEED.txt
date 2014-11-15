@@ -21,22 +21,22 @@ GameObjects
 -Remove Component
 
 Serialization
--Find File
+-Find File   //not necessary, load can create a new file if it doesn't exist.
 -Load File
 -Write File
--Read File
+-Read File   //not necessary
 
 I want to be able to save out gameobjects and scenes to whatever data file I want.
 
 Thermodynamics
--Set temperature of a spot on the grid
--Set density of a spot on the grid
--Apply forces within the grid
+-Set temperature of a spot on the grid //
+-Set density of a spot on the grid     // All interactions should be through an object (e.g Heat emitter component)
+-Apply forces within the grid          // Direct access to the grid would likely break things.
 
 Physics
 -Apply force or set linear velocity
--Apply torque
--Change object to be static, dynamic, or kinematic
+-Apply torque                                      //Our engine doesn't support torque yet
+-Change object to be static, dynamic, or kinematic //Done
 
 Game Engine
 -Change scene

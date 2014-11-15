@@ -142,7 +142,8 @@ namespace Framework
     //Create and Serilize Objects
     while (it)
     {
-      if (it->objectName.compare("Cog") == 0)
+      if (it->objectName.compare("Cog") == 0 && 
+        it->branch->next->branch->value_.String_->compare("EditorCamera") != 0)
       {
         GameObject* newobj = new GameObject(it->branch->branch->value_.UInt_);
         newobj->Name = *it->branch->next->branch->value_.String_;
