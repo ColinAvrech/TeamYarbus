@@ -17,8 +17,13 @@
 
 namespace Framework
 {
+  GameObject* Component::GetOwner() { return gameObject; }
+
   ZilchDefineType(Component, CinderZilch)
-  {}
+  {
+    ZilchBindConstructor(Component);
+    ZilchBindMethod(GetOwner);
+  }
 
   ZilchDefineType(GameObject, CinderZilch)
   {

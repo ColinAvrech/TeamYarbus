@@ -1,29 +1,37 @@
-class Josh
+class Josh : Component
 {
   //var Cinder:ScriptSystem = null;
   
   var OHai : String = "";
+  var Obj:GameObject = null;
   
   
-  
-  constructor()
+  constructor() : base(this)
   {
+	Console.WriteLine("SASA");
   }
   
   function Initialize()
   {
-	Cinder.Connect(this, Events.UpdateEvent, this.LogicUpdate);
+	//Cinder2.Connect(this, Events.UpdateEvent, this.LogicUpdate);
+	//var obj : GameObject = Cinder.objsys.CreateObject();
+	//Console.Writeline(obj);
+	//Console.Writeline(obj);
+	//Console.WriteLine(new Player());
+	//Console.WriteLine(this.Owner);
 	
+	//this.Obj = ObjectSystem.CreateObject();
+	Console.WriteLine(this.Obj);
   }
  
   function LogicUpdate(e: UpdateEvent)
   {
-	Console.WriteLine(e.TimePassed);
+	//Console.WriteLine(e.TimePassed);
   }
  
 }
 
-class Cinder
+class Cinder2
 {
 	//NEEDS FIXED ANY TYPE?
 	[Static]
