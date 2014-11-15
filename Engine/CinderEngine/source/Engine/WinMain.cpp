@@ -103,7 +103,7 @@ int main (void)
 
 
   //! activate the window.
-  OBJECTSYSTEM->LoadLevel("ZilchTests.data");
+  OBJECTSYSTEM->LoadLevel("Level");
 
   // Connect example
   //MyClass _myclass;
