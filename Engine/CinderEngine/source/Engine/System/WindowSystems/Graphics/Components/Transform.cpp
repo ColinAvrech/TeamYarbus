@@ -25,7 +25,7 @@ namespace Framework
     ZilchBindConstructor(Transform);
     ZilchBindMethodOverload(Scale, void, float, float, float);
     ZilchBindMethodOverload(Scale, void, float);
-    ZilchBindMethod(Translate);
+	ZilchBindMethodOverload(Translate, void, float, float, float);
     ZilchBindMethod(Rotate);
   }
 
@@ -102,6 +102,12 @@ namespace Framework
   {
     position += glm::vec3 (x, y, z);
     matricesReady = false;
+  }
+
+  void Transform::Translate(glm::vec3 &v)
+  {
+	  position += v;
+	  matricesReady = false;
   }
 
   // Non-Uniform Scale

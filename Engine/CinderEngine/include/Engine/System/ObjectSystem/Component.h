@@ -54,6 +54,9 @@ namespace Framework
       ErrorIf (true, "Serialize Component Not Overriden");
     }
 
+    GameObject* GetOwner();
+    // Definition in GameObject.cpp
+
     //Variables that all components have
     GameObject* gameObject;
   };

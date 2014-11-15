@@ -91,5 +91,13 @@ namespace Framework
       }
       return it;
     }
+
+	const char* SkipHash(const char* str)
+	{
+		const char* temp = str;
+		while (*temp != ':' && *temp != '\0')
+			++temp;
+		return temp + 1;
+	}
   } //Serializer
 } //Framework

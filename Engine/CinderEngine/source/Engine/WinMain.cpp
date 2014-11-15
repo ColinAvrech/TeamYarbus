@@ -31,7 +31,6 @@ starts the game loop.
 #include "ComponentInclude.h"
 #include "RigidBody.h"
 #include "IncludeForAllCollision.h"
-#include "ObjectSystem.h"
 
 #include "UpdateEvent.h"
 #include "Zilch.hpp"
@@ -45,14 +44,16 @@ const char WindowTitle [] = "CinderEngine";
 const int ClientWidth = 1024;
 const int ClientHeight = 768;
 
-/*ZilchDefineType(Cinder, CinderZilch)
+
+// Temporary Getter functions for System
+EventSystem*  Cinder::GetEventSystem() { return EVENTSYSTEM; }
+ObjectSystem* Cinder::GetObjectSystem(){ return OBJECTSYSTEM; }
+
+ZilchDefineType(Cinder, CinderZilch)
 {
-  ZilchBindCustomStaticFieldGet(builder, ZilchTypeId(Cinder), Cinder, Windows);
-  ZilchBindCustomStaticFieldGet(builder, ZilchTypeId(Cinder), Cinder, Audio);
-  ZilchBindCustomStaticFieldGet(builder, ZilchTypeId(Cinder), Cinder, Events);
-  ZilchBindCustomStaticFieldGet(builder, ZilchTypeId(Cinder), Cinder, Zilch);
-  ZilchBindCustomStaticFieldGet(builder, ZilchTypeId(Cinder), Cinder, Objsys);
-}*/
+  ZilchBindMethod(GetEventSystem);
+  ZilchBindMethod(GetObjectSystem);
+}
 
 int main (void)
 {
@@ -64,20 +65,20 @@ int main (void)
   
   //! Create the core engine which manages all systems.
   CoreEngine * engine = new CoreEngine ();
+  Physics::ThermodynamicsSystem * thermo = new Physics::ThermodynamicsSystem ();
   WindowSystem * windows = new WindowSystem (WindowTitle, ClientWidth, ClientHeight);
   AudioSystem* audio = new AudioSystem ();
   EventSystem * events = new EventSystem ();
   ScriptSystem * zilch = new ScriptSystem();
-  Physics::ThermodynamicsSystem * thermo = new Physics::ThermodynamicsSystem ();
   Physics::PhysicsSystem * phys = new Physics::PhysicsSystem ();
   ObjectSystem* objsys = new ObjectSystem ();
 
   engine->AddSystem (phys);
-  //engine->AddSystem (thermo);
   engine->AddSystem (windows);
   engine->AddSystem (audio);
   engine->AddSystem (events);
   engine->AddSystem (zilch);
+  engine->AddSystem (thermo);
   engine->AddSystem(objsys);
   ////Cinder.PhysicsSystem = phys;
   ////Cinder.Thermodynamics = thero;

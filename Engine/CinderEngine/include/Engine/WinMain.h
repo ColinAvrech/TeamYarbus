@@ -13,6 +13,11 @@ starts the game loop.
 
 #include "Zilch.hpp"
 
+
+//#include "EventSystem.h"
+//#include "ObjectSystem.h"
+//#include "WindowSystem.h"
+
 namespace Framework
 {
   class CoreEngine;
@@ -22,18 +27,12 @@ namespace Framework
   class ScriptSystem;
   class ObjectSystem;
 
- /*class Cinder
+ class Cinder
   {
     ZilchDeclareBaseType(Cinder, Zilch::TypeCopyMode::ReferenceType);
-    static CoreEngine * Engine;
-    static WindowSystem * Windows;
-    static AudioSystem* Audio;
-    static EventSystem * Events;
-    static ScriptSystem * Zilch;
-    // I hate namespaces
-    //Physics::ThermodynamicsSystem * Thermo;
-    //Physics::PhysicsSystem * Physics;
-    static ObjectSystem* Objsys;
-  };*/
+
+    EventSystem* GetEventSystem();
+    ObjectSystem* GetObjectSystem();
+  };
 
 }

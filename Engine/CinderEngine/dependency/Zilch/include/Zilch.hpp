@@ -27254,7 +27254,7 @@ static Function* FromConstructor(LibraryBuilder& builder, BoundType* classBoundT
     template <typename FieldPtr, FieldPtr field, typename Field>
     static Property* FromStaticField(LibraryBuilder& builder, BoundType* owner, StringParam name, Field* dummy, PropertyBinding::Enum mode)
     {
-      ErrorIf(dummy != member, "The dummy should always match our template member");
+      ErrorIf(dummy != field, "The dummy should always match our template member");
       BoundFn set = BoundStaticSet<Field, field>;
       BoundFn get = BoundStaticGet<Field, field>;
       
