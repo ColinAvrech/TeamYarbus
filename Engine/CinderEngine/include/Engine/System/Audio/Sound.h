@@ -59,7 +59,6 @@ namespace Framework
       enum SoundID
       {
         SOUND_2D = 0,
-        SOUND_3D,
         SFX_ALL,
         MUSIC
       };
@@ -249,8 +248,10 @@ namespace Framework
       FMOD::System                  *pFMODAudioSystem;
       std::string                   _soundName;      
       FMOD_VECTOR                   _position;
-      float                         _count = 0;
-      bool                          _wind = true;
+      float                         _CutOffCounter = 0;
+      float                         _BandwidthCounter = 1.0;
+      bool                          _windCutOff = true;
+      bool                          _windBandwidth = true;
 
       #pragma endregion
 

@@ -13,8 +13,6 @@
 -----------------------------------------------------------------------------*/
 #pragma region Includes
 
-#include "EditorUI.h"
-#include "WindowSystem.h"
 #include "AudioSystem.h"
 
 #pragma endregion
@@ -190,13 +188,6 @@ namespace Framework
     {
       Group2DSFX->stop();
     }
-
-    // Stops all 3D sound effects
-    if (id == Sound::SOUND_3D
-      || id == Sound::SFX_ALL || id == -1)
-    {
-      Group3DSFX->stop();
-    }
   }
 
   /***************************************************************************/
@@ -289,10 +280,6 @@ namespace Framework
     {
       return sfx2DMuted;
     }
-    if (id == Sound::SOUND_3D)
-    {
-      return sfx3DMuted;
-    }
     else
     {
       return sfx2DMuted && sfx3DMuted;
@@ -331,13 +318,6 @@ namespace Framework
       || id == Sound::SFX_ALL || id == -1)
     {
       Group2DSFX->setPaused(paused);
-    }
-
-    // Pauses all 3D sound effects
-    if (id == Sound::SOUND_3D
-      || id == Sound::SFX_ALL || id == -1)
-    {
-      Group3DSFX->setPaused(paused);
     }
   }
 

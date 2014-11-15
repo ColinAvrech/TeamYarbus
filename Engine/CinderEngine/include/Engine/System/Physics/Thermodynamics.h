@@ -20,7 +20,7 @@
 #include "BaseSystem.h"
 #include <unordered_map>
 #include "Grid2D.h"
-#include "FluidSolver.h"
+//include "FluidSolver.h"
 
 #pragma endregion
 
@@ -196,7 +196,7 @@ namespace Framework
       //Amount of fuel in the cell
       Grid2D<float> FuelMap;
 
-      FluidSolver solver;
+      //FluidSolver solver;
 #pragma endregion
 
 

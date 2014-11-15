@@ -13,10 +13,7 @@
 -----------------------------------------------------------------------------*/
 #pragma region Includes
 
-#include "EditorUI.h"
 #include "Sound.h"
-#include <Windows.h>
-#include <vector>
 
 #pragma endregion
 
@@ -341,10 +338,6 @@ namespace Framework
     {
     case SOUND_2D:
       pSound->setMode(FMOD_2D);
-      SetLoop(false, index);
-      break;
-    case SOUND_3D:
-      pSound->setMode(FMOD_3D);
       SetLoop(false, index);
       break;
     case MUSIC:
