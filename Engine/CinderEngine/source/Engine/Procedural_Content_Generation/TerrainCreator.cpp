@@ -82,7 +82,7 @@ namespace Framework
         x8[i] = rand() % 2;
 
       for (int i = 0; i < MapWidth; ++i)
-        HeightMap[i] = BaseHeight + (PeakHeight) * (0.0625f * x1[i] + 0.125 * x2[i / 2] + 0.25 * x4[i / 4] + 0.5 * x8[i / 8] + 0.5 * WaveBuffer[(i * 2 * waves) / MapWidth] - 0.5);
+        HeightMap[i] = BaseHeight + (PeakHeight) * (0.0625f * x1[i] + 0.125f * x2[i / 2] + 0.25f * x4[i / 4] + 0.5f * x8[i / 8] + 0.5f * WaveBuffer[(i * 2 * waves) / MapWidth] - 0.5f);
 
       for (int i = 0; i < passes; ++i)
       {

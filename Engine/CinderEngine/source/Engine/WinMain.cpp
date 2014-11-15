@@ -65,20 +65,20 @@ int main (void)
   
   //! Create the core engine which manages all systems.
   CoreEngine * engine = new CoreEngine ();
+  Physics::ThermodynamicsSystem * thermo = new Physics::ThermodynamicsSystem ();
   WindowSystem * windows = new WindowSystem (WindowTitle, ClientWidth, ClientHeight);
   AudioSystem* audio = new AudioSystem ();
   EventSystem * events = new EventSystem ();
   ScriptSystem * zilch = new ScriptSystem();
-  Physics::ThermodynamicsSystem * thermo = new Physics::ThermodynamicsSystem ();
   Physics::PhysicsSystem * phys = new Physics::PhysicsSystem ();
   ObjectSystem* objsys = new ObjectSystem ();
 
   engine->AddSystem (phys);
-  //engine->AddSystem (thermo);
   engine->AddSystem (windows);
   engine->AddSystem (audio);
   engine->AddSystem (events);
   engine->AddSystem (zilch);
+  engine->AddSystem (thermo);
   engine->AddSystem(objsys);
   ////Cinder.PhysicsSystem = phys;
   ////Cinder.Thermodynamics = thero;

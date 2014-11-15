@@ -40,6 +40,7 @@ namespace Framework
     void clear_data (void);
     int allocate_data (void);
     void OnKeyPressed (KeyEvent* key);
+    void get_from_UI ();
   };
 }
 
