@@ -39,6 +39,7 @@ namespace Framework
 
       bool Initialize(void);
 	  virtual void Update(const double dt);
+	  void addContact(BodyContact* contact);
 
 	  //Containers
 	  std::vector<GameObject*> Bodies;

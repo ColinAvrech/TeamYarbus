@@ -111,11 +111,12 @@ namespace Framework
 
 	void RigidBody::Integrate(float dt_)
 	{
+		pos = gameObject->Transform->GetPosition();
 		if (this->state == RigidBody::Static)
 			return;
 
 		//determine acceleration
-		glm::vec3 acceleration = Physics::applyNetForce(accumulatedForce, invMass) + glm::vec3(0, -0.1f, 0);
+		glm::vec3 acceleration = Physics::applyNetForce(accumulatedForce, invMass) + glm::vec3(0, -9.8f, 0);
 
 		//integrate velocity
 		vel = vel + acceleration * dt_;
@@ -133,7 +134,7 @@ namespace Framework
 
 		prevPos = pos;
 
-		gameObject->Transform->Translate(pos.x, pos.y, pos.z);
+		gameObject->Transform->Translate(vel.x * dt_, vel.y * dt_, vel.z * dt_);
 		//clear force
 		accumulatedForce = glm::vec3(0.0f, 0.0f, 0.0f);
 	}

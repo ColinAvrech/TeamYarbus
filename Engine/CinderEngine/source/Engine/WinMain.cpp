@@ -93,7 +93,7 @@ int main (void)
 
 
   //! activate the window.
-  OBJECTSYSTEM->LoadLevel("Level.data");
+  OBJECTSYSTEM->LoadLevel("Level");
 
   // Connect example
   //MyClass _myclass;

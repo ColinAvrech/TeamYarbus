@@ -47,17 +47,21 @@ namespace Framework
         dataFile.close();
       }
       std::string path("..//..//Resources//Levels//");
+	  std::string extension(".data");
       path.append(filepath);
+	  path.append(extension);
       dataFile.open(path);
 
       ErrorIf(dataFile.is_open() == false, "Could not open Level File");
 
       //Skip first 2 lines
       std::string dummy;
-      std::getline(dataFile, dummy);
-      std::getline(dataFile, dummy);
+	  std::string dummy2;
+	  dataFile >> dummy;
+	  std::getline(dataFile, dummy2);
+	  std::getline(dataFile, dummy2);
       ++inObject;
-      trunk = AddNode(trunk, TYPE_OBJECT, "Level", 0);
+      trunk = AddNode(trunk, TYPE_OBJECT, dummy.c_str(), 0);
       CurrentNode = CurrentStem = trunk;
       return true;
       
