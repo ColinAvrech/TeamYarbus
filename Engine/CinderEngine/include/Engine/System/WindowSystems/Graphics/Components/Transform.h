@@ -44,6 +44,7 @@ namespace Framework
     // Transformations
     void Load_Identity ();
     void Translate (float x, float y, float z);
+	void Translate(glm::vec3 &v);
     void Scale (float x, float y, float z);
     void Scale (float v);
     void Rotate (float angle);

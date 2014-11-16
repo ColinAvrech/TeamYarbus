@@ -34,6 +34,7 @@ namespace Framework
       void Load(const char *file);
 
     private:
+      //Terrain settings
       int passes;
       int waves;
       int MapWidth;
@@ -42,7 +43,12 @@ namespace Framework
       float *HeightMap;
       int ** Map;
       int PeakHeight;
+
+      //Private Member Functions
       void GenerateHeightMap();
+      void AddSoil(int passes);
+      void AddWater();
+      void AddLife();
       void ApplyHeightMap();
     }; //class terrain
 

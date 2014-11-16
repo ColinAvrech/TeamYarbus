@@ -157,6 +157,7 @@ namespace Framework
       return at;
     }
 
+	const char* SkipHash(const char* str);
 
   }  //namespace Serializer
 }  //namespace Framework

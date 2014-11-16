@@ -23,6 +23,7 @@ namespace Framework
 	{
 	public:
     const static std::string Name;
+	void SerializeMaterial(const char* name);
 	int numOfShapes;
 		// Getters
 		glm::vec3 getPosition(void){
@@ -46,7 +47,8 @@ namespace Framework
 			std::string name;
 			float density;
 			float restitution;
-			float friction;
+			float staticfriction;
+			float dynamicfriction;
 		};
 		MaterialProperties material;
 		glm::vec3 position;

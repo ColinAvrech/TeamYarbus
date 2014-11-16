@@ -13,10 +13,7 @@
 -----------------------------------------------------------------------------*/
 #pragma region Includes
 
-#include "EditorUI.h"
 #include "Sound.h"
-#include <Windows.h>
-#include <vector>
 
 #pragma endregion
 
