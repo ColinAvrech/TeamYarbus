@@ -23,6 +23,8 @@ namespace Framework
   {
     ZilchBindConstructor(Component);
     ZilchBindMethod(GetOwner);
+	ZilchBind
+	
   }
 
   ZilchDefineType(GameObject, CinderZilch)
