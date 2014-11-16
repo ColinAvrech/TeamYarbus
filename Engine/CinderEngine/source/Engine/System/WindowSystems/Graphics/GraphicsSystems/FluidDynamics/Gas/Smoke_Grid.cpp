@@ -14,7 +14,7 @@
 #include "KeyEvent.h"
 #include <stdlib.h>
 #include <stdio.h>
-#include "solver.c"
+#include "Thermodynamics.h"
 
 namespace Framework
 {
@@ -24,11 +24,13 @@ namespace Framework
   static int Grid_Size;
   static float dt, diff, visc;
   static float force, source;
-  static int dvel;
+  static int dvel = 1;
 
   static int win_id;
   static int mouse_down [3];
   static int omx, omy, mx, my;
+
+  using namespace Physics;
 
   Smoke_Grid::Smoke_Grid ()
   {}
@@ -41,18 +43,6 @@ namespace Framework
 
   void Smoke_Grid::free_data ()
   {
-    if (u)
-      delete [] (u);
-    if (v)
-      delete [] (v);
-    if (u_prev)
-      delete [] (u_prev);
-    if (v_prev)
-      delete [] (v_prev);
-    if (dens)
-      delete [] (dens);
-    if (dens_prev)
-      delete [] (dens_prev);
   }
 
 
@@ -77,40 +67,22 @@ namespace Framework
     force = 1.0f;
     source = 100.0f;
 
-    if (!allocate_data ())
-      throw("Failed to make grids");
-
-    clear_data ();
-
     EVENTSYSTEM->mConnect<KeyEvent, Smoke_Grid> (Events::KEY_ANY, this, &Smoke_Grid::OnKeyPressed);
   }
 
   void Smoke_Grid::clear_data ()
   {
-    int i, size = (Grid_Size + 2)*(Grid_Size + 2);
-
-    for (i = 0; i < size; ++i)
-    {
-      u [i] = v [i] = u_prev [i] = v_prev [i] = dens [i] = dens_prev [i] = 0.0f;
-    }
+    THERMODYNAMICS->VelocityMapX.fill (0);
+    THERMODYNAMICS->VelocityMapY.fill (0);
+    THERMODYNAMICS->VelocityMap_PrevX.fill (0);
+    THERMODYNAMICS->VelocityMap_PrevY.fill (0);
+    THERMODYNAMICS->DensityMap.fill (0);
+    THERMODYNAMICS->DensityMap_Prev.fill (0);
   }
 
   INT32 Smoke_Grid::allocate_data ()
   {
     int size = (Grid_Size + 2)*(Grid_Size + 2);
-
-    u =         new float [size];
-    v =         new float [size];
-    u_prev =    new float [size];
-    v_prev =    new float [size];
-    dens =      new float [size];
-    dens_prev = new float [size];
-
-    if (!u || !v || !u_prev || !v_prev || !dens || !dens_prev)
-    {
-      fprintf (stderr, "cannot allocate data\n");
-      return (0);
-    }
 
     return (1);
   }
@@ -135,13 +107,16 @@ namespace Framework
 
     glBegin (GL_LINES);
 
-    for (i = 1; i <= Grid_Size; i++) {
+    for (i = 1; i <= Grid_Size; ++i)
+    {
       x = (i - 0.5f)*h;
-      for (j = 1; j <= Grid_Size; j++) {
+      for (j = 1; j <= Grid_Size; ++j)
+      {
         y = (j - 0.5f)*h;
 
         glVertex2f (x, y);
-        glVertex2f (x + u [IX (i, j)], y + v [IX (i, j)]);
+        glVertex2f (x + THERMODYNAMICS->VelocityMapX.GetArray () [IX (i, j)],
+          y + THERMODYNAMICS->VelocityMapY.GetArray () [IX (i, j)]);
       }
     }
 
@@ -155,19 +130,19 @@ namespace Framework
 
     h = 1.0f / Grid_Size;
 
-    glBegin (GL_POINTS);
+    glBegin (GL_QUADS);
 
     for (i = 0; i <= Grid_Size; i++)
     {
-      x = (i - 0.5f)*h;
+      x = (i - 0.5f) * h;
       for (j = 0; j <= Grid_Size; j++)
       {
-        y = (j - 0.5f)*h;
+        y = (j - 0.5f) * h;
 
-        d00 = dens [IX (i, j)];
-        d01 = dens [IX (i, j + 1)];
-        d10 = dens [IX (i + 1, j)];
-        d11 = dens [IX (i + 1, j + 1)];
+        d00 = THERMODYNAMICS->DensityMap.GetArray () [IX (i, j)];
+        d01 = THERMODYNAMICS->DensityMap.GetArray () [IX (i, j + 1)];
+        d10 = THERMODYNAMICS->DensityMap.GetArray () [IX (i + 1, j)];
+        d11 = THERMODYNAMICS->DensityMap.GetArray () [IX (i + 1, j + 1)];
 
         glColor3f (d00, d00, d00);
         glVertex2f (x, y);
@@ -184,8 +159,8 @@ namespace Framework
   }
 
 
-  static void get_from_UI (float * d, float * u, float * v)
-  {
+  void Smoke_Grid::get_from_UI()
+{
     double x, y;
     if (glfwGetMouseButton (WINDOWSYSTEM->Get_Window (), GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
     {
@@ -211,10 +186,9 @@ namespace Framework
       mouse_down [1] = 0;
     }
     int i, j, size = (Grid_Size + 2)*(Grid_Size + 2);
-
-    for (i = 0; i < size; i++) {
-      u [i] = v [i] = d [i] = 0.0f;
-    }
+    THERMODYNAMICS->VelocityMap_PrevX.fill (0);
+    THERMODYNAMICS->VelocityMap_PrevY.fill (0);
+    THERMODYNAMICS->DensityMap_Prev.fill (0);
 
     if (!mouse_down [0] && !mouse_down [1]) return;
 
@@ -225,13 +199,13 @@ namespace Framework
 
     if (mouse_down [0])
     {
-      u [IX (i, j)] = force * (mx - omx);
-      v [IX (i, j)] = force * (omy - my);
+      THERMODYNAMICS->VelocityMapX.GetArray () [IX (i, j)] = force * (mx - omx);
+      THERMODYNAMICS->VelocityMapY.GetArray () [IX (i, j)] = force * (omy - my);
     }
 
     if (mouse_down [1])
     {
-      d [IX (i, j)] = source;
+      THERMODYNAMICS->DensityMap.GetArray () [IX (i, j)] = source;
     }
 
     omx = mx;
@@ -258,9 +232,7 @@ namespace Framework
 
   void Smoke_Grid::Update (void)
   {
-    get_from_UI (dens_prev, u_prev, v_prev);
-    vel_step (Grid_Size, u, v, u_prev, v_prev, visc, dt);
-    dens_step (Grid_Size, dens, dens_prev, u, v, diff, dt);
+    get_from_UI ();
   }
 
   void Smoke_Grid::Draw (void)

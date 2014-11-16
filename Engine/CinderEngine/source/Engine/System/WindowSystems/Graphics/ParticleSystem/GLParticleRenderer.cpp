@@ -18,8 +18,6 @@ namespace Framework
 {
 
   // GENERATE BUFFERS FOR THE ENTIRE PARTICLE SYSTEM
-  // RIGHT NOW PARTICLES ARE JUST POINTS
-  // ONCE WE GET A GEOMETRY SHADER, WE WILL HAVE DYNAMICALLY CREATED QUADS!
   void GLParticleRenderer::generate (ParticleSystem *sys, bool)
   {
     assert (sys != nullptr);

@@ -20,6 +20,7 @@
 #include "BaseSystem.h"
 #include <unordered_map>
 #include "Grid2D.h"
+#include "FluidSolver.h"
 
 #pragma endregion
 
@@ -98,7 +99,7 @@ namespace Framework
       //////////////////////////////////////////////////////////////////////////
       // MULTI THREADING
       //////////////////////////////////////////////////////////////////////////
-      static const int kNumThreads = 5;
+      static const int kNumThreads = 8;
 
     private:
       // Variables
@@ -114,7 +115,7 @@ namespace Framework
 
     public:
       // Returns name of System
-      const std::string GetName(){ return "ThermodynamicsSystem"; }
+      const std::string GetName() { return "ThermodynamicsSystem"; }
 
       // Getters
       //Get Cell Pixel size
@@ -131,6 +132,7 @@ namespace Framework
       // Setters
       void ToggleAutoDissipation();
       float SetCellTemperature(const float x, const float y, const float temp, const double dt);
+      void SetCellVelocity (const int x, const int y, glm::vec2 v);
 
 #pragma endregion
 
@@ -140,7 +142,7 @@ namespace Framework
       -----------------------------------------------------------------------*/
 #pragma region Static Public Variables
 
-      static glm::vec2 MapSize;
+      static glm::ivec2 MapSize;
 
 #pragma endregion
 
@@ -161,6 +163,8 @@ namespace Framework
 
 #pragma endregion
 
+      friend class Smoke_Grid;
+
     private:
 
       /*-----------------------------------------------------------------------
@@ -174,27 +178,33 @@ namespace Framework
       float AtmosphericTemperature;
 
       //Temperature Map. Temperature is stored in Kelvin.
-      Grid2D<float> *HeatMap;
+      Grid2D<float> TemperatureMap;
       //Oxygen density. Stored in Kg/m^2.
-      Grid2D<float> *OxygenMap;
+      Grid2D<float> DensityMap;
+      Grid2D<float> DensityMap_Prev;
       //Velocity Map. Stores 2d vectors.
-      Grid2D<glm::vec2> *VelocityMap;
+      Grid2D<float> VelocityMapX;
+      Grid2D<float> VelocityMap_PrevX;
+      Grid2D<float> VelocityMapY;
+      Grid2D<float> VelocityMap_PrevY;
       //Terrain. Simple collision table using enums.
-      Grid2D<Material> *Terrain;
+      Grid2D<Material> Terrain;
       //Water and moisture content
-      Grid2D<float> *WaterMap;
+      Grid2D<float> WaterMap;
       //Fire Map. Stores intensity of flame on a scale of 0 - 10.
-      Grid2D<float> *FireMap;
+      Grid2D<float> FireMap;
       //Amount of fuel in the cell
-      Grid2D<float> *FuelMap;
+      Grid2D<float> FuelMap;
 
+      FluidSolver solver;
 #pragma endregion
 
 
       /*-----------------------------------------------------------------------
       // Private Structs
       -----------------------------------------------------------------------*/
-#pragma region Private Structs    
+#pragma region Private Structs
+
       struct conductionProperties
       {
         //std::string name will be used to map these;
@@ -214,7 +224,6 @@ namespace Framework
 #pragma region Private Functions
       //Determine subscript from position
       glm::vec2 GetSubscript(const float x, const float y);
-
 #pragma endregion
 
 

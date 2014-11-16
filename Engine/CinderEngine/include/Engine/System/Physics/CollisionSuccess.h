@@ -1,3 +1,13 @@
+/******************************************************************************/
+/*!
+\file   CollisionSuccess.h
+\author Anna Pearson
+\par    Course: GAM200
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+
+\brief  Contains info for when a collision occurs
+*/
+/******************************************************************************/
 #pragma once
 #include "PhysicsLibrary.h"
 
@@ -9,6 +19,7 @@ namespace Framework
 	///Used to resolve world collisions.
 	class BodyContact
 	{
+	public:
 		RigidBody* Bodies[2];
 		glm::vec3 Movement[2];
 		glm::vec3 ContactNormal;
@@ -19,7 +30,16 @@ namespace Framework
 		float SeperatingVelocity;
 		float ContactImpulse;
 		float CalculateSeparatingVelocity();
+		BodyContact(RigidBody* Body1, RigidBody* Body2, 
+			glm::vec3& contactNormal, float penetration)
+			: ContactNormal(contactNormal),
+			Penetration(penetration){
+			Bodies[0] = Body1; Bodies[1] = Body2;
+		};
+
+		BodyContact(){};
 	};
+
 
 	class ContactSet;
 	class ShapeCollider;

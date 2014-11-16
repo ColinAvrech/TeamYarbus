@@ -13,6 +13,7 @@
 #include "Resolution.h"
 #include "CollisionEvent.h"
 #include "PhysicsSystem.h"
+#include "JSONSerializer.h"
 
 namespace Framework
 {
@@ -22,6 +23,13 @@ namespace Framework
     Serializer::DataNode* temp;
     temp = data->FindElement(data, "Radius");
     temp->GetValue(&radius);
+
+	//Material Properties
+	temp = data->FindElement(data, "MaterialName");
+	std::string name;
+	temp->GetValue(&name);
+
+	SerializeMaterial(name.c_str());
   }
 
   void CircleCollider::Initialize()
@@ -58,9 +66,16 @@ namespace Framework
     float dist = Physics::Distance(pos, cpos);
     if (rad >= dist)
     {
-      CollisionEvent collision;
-      //collision.
-      EVENTSYSTEM->TriggerEvent(CollisionEventName(gameObject->GameObjectID), collision);
+		glm::vec3 normalVec = gameObject->Transform->GetPosition() -
+			c->gameObject->Transform->GetPosition();
+		float penetration = rad - dist;
+		glm::normalize(normalVec);
+		BodyContact contact(gameObject->RigidBody, c->gameObject->RigidBody,
+			normalVec, penetration);
+		Physics::PHYSICSSYSTEM->addContact(&contact);
+
+      //CollisionEvent collision;
+     // EVENTSYSTEM->TriggerEvent(CollisionEventName(gameObject->GameObjectID), collision);
     }
   }
 
@@ -70,12 +85,21 @@ namespace Framework
     glm::vec3 ppos = p->getPosition();
     glm::vec3 pos = getPosition();
     float rad = GetRadius();
+
     if (Physics::CirclevsPoint(rad, pos, ppos))
     {
-      CollisionEvent collision;
-      collision.OtherObject = p->gameObject;
-      collision.normal = pos - ppos;
-      glm::normalize(collision.normal);
+		glm::vec3 normalVec = gameObject->Transform->GetPosition() -
+			p->gameObject->Transform->GetPosition();
+		float penetration = rad - Physics::Distance(gameObject->Transform->GetPosition(),
+							p->gameObject->Transform->GetPosition());
+		glm::normalize(normalVec);
+		
+		BodyContact contact(gameObject->RigidBody, p->gameObject->RigidBody,
+		normalVec, penetration);
+      //CollisionEvent collision;
+      //collision.OtherObject = p->gameObject;
+      //collision.normal = pos - ppos;
+      //glm::normalize(collision.normal);
     }
   }
 
@@ -85,8 +109,6 @@ namespace Framework
     float rad = radius;
     float penetration;
     glm::vec3 pos;
-    //pos.x = static_cast<Transform*>(gameObject->Transform)->GetPosition().x;
-    //pos.y = static_cast<Transform*>(gameObject->Transform)->GetPosition().y;
     pos.x = gameObject->Transform->GetPosition().x + gameObject->RigidBody->vel.x * 0.016f;
     pos.y = gameObject->Transform->GetPosition().y + gameObject->RigidBody->vel.y * 0.016f;
 	if (((pos.x > l->p1.x && pos.x > l->p2.x) || (pos.x < l->p1.x && pos.x < l->p2.x)) &&
@@ -96,13 +118,15 @@ namespace Framework
 	penetration = Physics::CirclevsLine(rad, pos, l);
     if (penetration >= 0)
     {
-		//gameObject->Transform->GetScale();
-      CollisionEvent collision;
-      collision.Penetration = penetration;
-      collision.OtherObject = l->gameObject;
-      collision.thisObject = this->gameObject;
-      collision.normal = l->normalVec;
-      collision.normal = glm::normalize(collision.normal);
+		BodyContact contact(gameObject->RigidBody, nullptr,
+							l->normalVec, penetration);
+		Physics::PHYSICSSYSTEM->addContact(&contact);
+      //CollisionEvent collision;
+      //collision.Penetration = penetration;
+      //collision.OtherObject = l->gameObject;
+      //collision.thisObject = this->gameObject;
+      //collision.normal = l->normalVec;
+      //collision.normal = glm::normalize(collision.normal);
     }
   }
 

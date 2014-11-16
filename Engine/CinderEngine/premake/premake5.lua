@@ -27,10 +27,11 @@ solution "CinderEngine"
       "../include/**.h",
       "../source/**.cpp",
       "../source/**.c",
-	  "../source/**.tpp",
+      "../source/**.tpp",
       "../../Resources/Shaders/**.glsl",
       "../../Resources/**.txt",
       "../../Resources/**.data",
+      "../../Resources/**.z",
     }
     
     excludes

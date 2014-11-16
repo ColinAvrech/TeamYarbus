@@ -27,6 +27,7 @@ namespace Framework
 	//float DetermineRestitution(GameObject* a, GameObject* b);
 	//float DetermineFriction(GameObject* a, GameObject* b);
     float Distance(glm::vec3& pos1, glm::vec3& pos2);
+	float DistanceSquared(glm::vec3& pos1, glm::vec3& pos2);
     float DotProduct(glm::vec3& u, glm::vec3& v);
 	glm::vec3 applyNetForce(glm::vec3 sumForce, double InvMass);
     glm::vec3 applyAccel(glm::vec3 accel, double dt);

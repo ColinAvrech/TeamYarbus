@@ -21,10 +21,18 @@ namespace Framework
 			PHYSICSSYSTEM = this;
 			maxVel = 20.0f;
 			maxVelSq = maxVel * maxVel;
+			penetrationEpsilon = .2f;
+			penetrationResolvePercent = .8f;
+			accumulator = .0f;
 			Contacts.Reset();
 			//gravityDirection = { 0, -1 };
 			std::cout << "PhysicsSystem Initialized." << std::endl;
 			return true;
+		}
+
+		void PhysicsSystem::addContact(BodyContact* contact)
+		{
+			Contacts.addContact(contact);
 		}
 
 		void PhysicsSystem::IntegrateBodies(const float dt)
@@ -70,7 +78,7 @@ namespace Framework
 
 			DetectContacts(dt);
 
-			//Contacts.ResolveContacts();
+			Contacts.ResolveContacts(dt);
 
 
 		}
