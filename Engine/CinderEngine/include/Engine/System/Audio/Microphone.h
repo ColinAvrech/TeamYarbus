@@ -1,10 +1,10 @@
 /******************************************************************************/
 /*!
-\file   GameLogic.h
+\file   Microphone.h
 \author Anna Pearson
 \par    Course: GAM200
 \par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
-\brief  The logic for burning gameObjects
+\brief  Microphone active
 */
 /******************************************************************************/
 #include "Component.h"
@@ -12,16 +12,15 @@
 
 namespace Framework
 {
-	class FireStarter : public Component
+	class Microphone : public Component
 	{
 	public:
-		FireStarter(){}
-		~FireStarter(){}
-		void lightOnFire();
+		Microphone(){}
+		~Microphone(){}
 		void Serialize(Serializer::DataNode* data);
 		void Initialize();
 
 		const static std::string Name;
-		bool onFire;		
+		bool Active;
 	};
 }

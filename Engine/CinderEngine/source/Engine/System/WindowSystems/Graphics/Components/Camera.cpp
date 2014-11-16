@@ -95,8 +95,10 @@ namespace Framework
     // Main?
     mainCamera = data->value_.Bool_;
 
-    Serializer::DataNode* value = data->FindElement(data, "Facing");
-    value->GetValue(&viewDirection);
+	Serializer::DataNode* value;// = data->FindElement(data, "Facing");
+	//value->GetValue(&viewDirection);
+
+	viewDirection = { 0, 0, 1 };
 
     value = data->FindElement(data, "FieldOfView");
     value->GetValue(&fov);
