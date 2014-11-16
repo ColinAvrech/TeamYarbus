@@ -275,14 +275,11 @@ namespace Framework
     void Create_Context (GLFWwindow** GLFWwindowptr)
     {
       // Init GLFW Before Using Any Functionality
-      glfwInit ();
-      // Properties
-      //Request an OpenGL 4.3 core context
-      //glfwWindowHint (GLFW_CONTEXT_VERSION_MAJOR, 4);
-      //glfwWindowHint (GLFW_CONTEXT_VERSION_MINOR, 3);
-      //glfwWindowHint (GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-      //glfwWindowHint (GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
-      //glfwWindowHint (GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+      if (!glfwInit ())
+      {
+        throw("Could Not Create GLFW Context");
+        CORE->QuitGame ();
+      }
 
       WINDOWSYSTEM->Set_W_H (1024, 1024);
       // Window Creation
@@ -362,8 +359,8 @@ namespace Framework
     }
     grid.Update ();
     grid.Draw ();
-    //water.Update ();
-    //water.Render ();
+    water.Update ();
+    water.Render ();
 
     glfwSwapBuffers (window);
   }
