@@ -88,7 +88,7 @@ namespace Framework
     // Called every frame
     void ThermodynamicsSystem::Update (const double dt)
     {
-      //UpdateMultiThreaded ();
+      UpdateMultiThreaded ();
       solver.vel_step
         (
         MapSize.x,
