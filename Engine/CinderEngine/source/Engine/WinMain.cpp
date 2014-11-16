@@ -105,6 +105,7 @@ int main (void)
   //! activate the window.
   OBJECTSYSTEM->LoadLevel("Level");
 
+
   // Connect example
   //MyClass _myclass;
   //EVENTSYSTEM->mConnect<KeyEvent, MyClass>(Events::KEY_RIGHT, &_myclass, &MyClass::WhenRightIsPressed);

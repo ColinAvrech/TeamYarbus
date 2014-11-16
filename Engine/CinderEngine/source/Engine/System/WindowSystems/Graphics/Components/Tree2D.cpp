@@ -32,6 +32,7 @@ namespace Framework
   Tree2D::~Tree2D ()
   {
     IGraphicsObject::Deregister ();
+    delete vao, vbo;
   }
 
   void Tree2D::Serialize (Serializer::DataNode* data)

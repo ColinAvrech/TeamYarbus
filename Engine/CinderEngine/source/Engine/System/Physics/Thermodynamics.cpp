@@ -88,8 +88,8 @@ namespace Framework
     // Called every frame
     void ThermodynamicsSystem::Update (const double dt)
     {
-      //UpdateMultiThreaded ();
-      /*solver.vel_step
+      UpdateMultiThreaded ();
+      solver.vel_step
         (
         MapSize.x,
         VelocityMapX.GetArray(), VelocityMapY.GetArray(),
@@ -105,11 +105,7 @@ namespace Framework
         VelocityMapX.GetArray(), VelocityMapY.GetArray(),
         0.0f,
         0.1f
-        );*/
-
-      //VelocityMapX.fill (0);
-      //VelocityMapY.fill (0);
-      //DensityMap.fill (0);
+        );
     }
 
     // Getters
