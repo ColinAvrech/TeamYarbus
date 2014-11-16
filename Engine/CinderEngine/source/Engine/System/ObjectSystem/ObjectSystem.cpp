@@ -164,7 +164,7 @@ namespace Framework
             newcomp = newobj->AddZilchComponent(ct->objectName);
             newcomp->gameObject = newobj;
             newcomp->Serialize(ct->branch);
-            newcomp->Initialize();
+            //newcomp->Initialize();
           }
           ct = ct->next;
         }
