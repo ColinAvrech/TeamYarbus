@@ -59,6 +59,7 @@ namespace Framework
       enum SoundID
       {
         SOUND_2D = 0,
+        SOUND_3D,
         SFX_ALL,
         MUSIC
       };

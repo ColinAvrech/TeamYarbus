@@ -188,6 +188,13 @@ namespace Framework
     {
       Group2DSFX->stop();
     }
+
+    // Stops all 3D sound effects
+    if (id == Sound::SOUND_3D
+      || id == Sound::SFX_ALL || id == -1)
+    {
+      Group3DSFX->stop();
+    }
   }
 
   /***************************************************************************/
@@ -276,6 +283,10 @@ namespace Framework
     {
       return musicMuted;
     }
+    if (id == Sound::SOUND_3D)
+    {
+      return sfx3DMuted;
+    }
     if (id == Sound::SOUND_2D)
     {
       return sfx2DMuted;
@@ -318,6 +329,13 @@ namespace Framework
       || id == Sound::SFX_ALL || id == -1)
     {
       Group2DSFX->setPaused(paused);
+    }
+
+    // Pauses all 3D sound effects
+    if (id == Sound::SOUND_3D
+      || id == Sound::SFX_ALL || id == -1)
+    {
+      Group3DSFX->setPaused(paused);
     }
   }
 

@@ -340,6 +340,10 @@ namespace Framework
       pSound->setMode(FMOD_2D);
       SetLoop(false, index);
       break;
+    case SOUND_3D:
+      pSound->setMode(FMOD_3D);
+      SetLoop(false, index);
+      break;
     case MUSIC:
       pSound->setMode(FMOD_2D);
       SetLoop(true, index);
