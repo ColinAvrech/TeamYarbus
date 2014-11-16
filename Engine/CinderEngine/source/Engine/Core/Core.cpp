@@ -37,9 +37,9 @@ namespace Framework
   //!Update all the systems
   void CoreEngine::GameLoop()
   {
-	//required for deterministic physics
-	float accumulator = 0;
-	float frameStart = (float)GetCurrentTime();
+  //required for deterministic physics
+  float accumulator = 0;
+  float frameStart = (float)GetCurrentTime();
 
     //!Gameloop
     while (GameActive)
@@ -47,10 +47,10 @@ namespace Framework
       //! Marks the begining of a frame
       StartGameLoop_dt();
       
-	  for (unsigned i = 0; i < Systems.size(); ++i)
-	  {
-		  Systems[i]->Update(_dt);
-	  }
+    for (unsigned i = 0; i < Systems.size(); ++i)
+    {
+      Systems[i]->Update(_dt);
+    }
 
       //!FPS limiter, FPS define can be found in Core.h
       FrameLimiter();

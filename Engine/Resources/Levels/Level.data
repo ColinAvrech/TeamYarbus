@@ -40,8 +40,8 @@ Level =
 			Vec4 ClearColor = [0.278431, 0.278431, 0.278431, 1],
 		},
 	},
-    Cog = 
-	  {
+  Cog = 
+	{
 	  LinkId = 
 	  {
 		  uint Id = 0,
@@ -89,6 +89,8 @@ Level =
       int PeakHeight = 30,
       int Passes = 4,
       int Waves = 5,
+      int Water = 20,
+      bool AddCollider = true,
 		},
   },
   Cog = 
