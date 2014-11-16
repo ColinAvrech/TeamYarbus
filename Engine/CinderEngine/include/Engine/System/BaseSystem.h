@@ -1,10 +1,13 @@
+/******************************************************************************/
 /*!
-
-/auther Micah
-/file BaseSystem.h
-
-/brief contains the interface class for all systems.
+\file   BaseSystem.h
+\author Micah
+\par    Course: GAM200
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+\brief  Contains the interface class for all systems.
 */
+/******************************************************************************/
+
 
 //!makes sure this is only included once
 #pragma once
@@ -24,10 +27,10 @@ namespace Framework
   public:
 
     //!All systems are updated every frame.
-    virtual void Update(const double dt) = 0;
+    virtual void Update(const double& dt) = 0;
 
     //!All systems need a name.
-    virtual const std::string GetName() = 0;
+    virtual const string GetName() = 0;
 
     //!Initialize the system.
     virtual bool Initialize(){ return false; };

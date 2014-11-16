@@ -17,7 +17,7 @@ namespace Framework
 	class SplineCollider : public ShapeCollider
 	{
 	public:
-		const static std::string Name;
+		const static string Name;
 		float p1dotNormal;
 		glm::vec3 normalVec;
 		glm::vec3 p1; //points

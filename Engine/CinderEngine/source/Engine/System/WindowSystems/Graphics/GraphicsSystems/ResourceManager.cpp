@@ -54,7 +54,7 @@ namespace Framework
     }
     else
     {
-      std::string str;
+      string str;
       while (!texFile.eof ())
       {
         texFile >> str;
@@ -79,9 +79,9 @@ namespace Framework
     }
     else
     {
-      std::string data;
-      std::string filename;
-      std::string f;
+      string data;
+      string filename;
+      string f;
       int rows, columns, samples;
       while (!ssFile.eof())
       {
@@ -136,11 +136,11 @@ namespace Framework
     }
     else
     {
-      std::string data;
+      string data;
       Shader* s = new Shader ();
-      std::unordered_map <std::string, GLuint> vSource;
-      std::unordered_map <std::string, GLuint> fSource;
-      std::unordered_map <std::string, GLuint> gSource;
+      std::unordered_map <string, GLuint> vSource;
+      std::unordered_map <string, GLuint> fSource;
+      std::unordered_map <string, GLuint> gSource;
 
       std::cout << CinderConsole::cyan << "--------------------------------\nCompiling Shaders...\n" << CinderConsole::gray;
 
@@ -167,7 +167,7 @@ namespace Framework
 
       while (!shaderComposition.eof())
       {
-        std::string vs, fs, gs, name;
+        string vs, fs, gs, name;
         shaderComposition >> name; name = "";
         shaderComposition >> vs;
         shaderComposition >> fs;
@@ -203,7 +203,7 @@ namespace Framework
     }
     else
     {
-      std::string cs;
+      string cs;
       while (!compute.eof())
       {
         compute >> cs;
@@ -228,10 +228,10 @@ namespace Framework
     }
     else
     {
-      std::string str;
+      string str;
       while (!audioFile.eof())
       {
-        std::string t;
+        string t;
         audioFile >> str;
         audioFile >> t;
         if (t == "BG")
@@ -252,7 +252,7 @@ namespace Framework
     std::cout << CinderConsole::cyan << "--------------------------------\n" << CinderConsole::gray;
   }
 
-  Texture* Resources::Get_Texture (std::string textureName)
+  Texture* Resources::Get_Texture (string textureName)
   {
     for (auto i : textures)
     {
@@ -266,7 +266,7 @@ namespace Framework
     return textures ["Default"];
   }
 
-  SpriteSheet* Resources::Get_SpriteSheet (std::string spriteSheetName)
+  SpriteSheet* Resources::Get_SpriteSheet (string spriteSheetName)
   {
     for (auto i : spriteSheets)
     {
@@ -280,7 +280,7 @@ namespace Framework
     throw ("Invalid Name...");
   }
 
-  Shader* Resources::Get_Shader (std::string shaderName)
+  Shader* Resources::Get_Shader (string shaderName)
   {
     for (auto i : shaders)
     {
@@ -294,7 +294,7 @@ namespace Framework
     return shaders ["Default"];
   }
 
-  Sound* Resources::Get_Sound (std::string soundName)
+  Sound* Resources::Get_Sound (string soundName)
   {
     for (auto i : sounds)
     {
@@ -308,7 +308,7 @@ namespace Framework
     throw ("Invalid Name...");
   }
 
-  ComputeShader* Resources::Get_ComputeShader (std::string shaderName)
+  ComputeShader* Resources::Get_ComputeShader (string shaderName)
   {
     //return textures [textureName];
     for (auto i : computeShaders)

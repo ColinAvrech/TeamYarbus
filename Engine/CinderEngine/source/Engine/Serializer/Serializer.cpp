@@ -46,14 +46,14 @@ namespace Framework
       {
         dataFile.close();
       }
-      std::string path("..//..//Resources//Levels//");
+      string path("..//..//Resources//Levels//");
       path.append(filepath);
       dataFile.open(path);
 
       ErrorIf(dataFile.is_open() == false, "Could not open Level File");
 
       //Skip first 2 lines
-      std::string dummy;
+      string dummy;
       std::getline(dataFile, dummy);
       std::getline(dataFile, dummy);
       ++inObject;
@@ -95,8 +95,8 @@ namespace Framework
 
     void ZeroSerializer::ParseLine()
     {
-      std::string currentname;
-      std::vector<std::string> tokens = Tokenize();
+      string currentname;
+      std::vector<string> tokens = Tokenize();
       if (CurrentLine.back() == ' ')
       {
         //Encountered new object
@@ -119,7 +119,7 @@ namespace Framework
           exitted = false;
         }
         //Skip the next line
-        std::string dummy;
+        string dummy;
         std::getline(dataFile, dummy);
       }
       //if the line ends in a ','
@@ -163,7 +163,7 @@ namespace Framework
       prev = CurrentLine.back();
     }
 
-    void ZeroSerializer::InterpretData(TYPE currentdatatype, std::vector<std::string>* tokens, DataNode** node)
+    void ZeroSerializer::InterpretData(TYPE currentdatatype, std::vector<string>* tokens, DataNode** node)
     {
       switch (currentdatatype)
       {
@@ -216,7 +216,7 @@ namespace Framework
       case TYPE_STRING:
       {
         const char* currentname = (*tokens)[1].c_str();
-        std::string str;
+        string str;
         unsigned int spos = CurrentLine.find_first_of("\"");
         unsigned int epos = CurrentLine.find_first_of("\"", spos + 1);
         for (unsigned int i = spos+1; i != epos; ++i)
@@ -231,7 +231,7 @@ namespace Framework
         unsigned int epos;
         for (int i = 0; i < 2; ++i)
         {
-          std::string number;
+          string number;
           epos = CurrentLine.find_first_of(",]", spos);
           for (unsigned int j = spos+1; j != epos; ++j)
             number.push_back(CurrentLine[j]);
@@ -249,7 +249,7 @@ namespace Framework
         unsigned int epos;
         for (int i = 0; i < 3; ++i)
         {
-          std::string number;
+          string number;
           epos = CurrentLine.find_first_of(",]", spos);
           for (unsigned int j = spos+1; j != epos; ++j)
             number.push_back(CurrentLine[j]);
@@ -267,7 +267,7 @@ namespace Framework
         unsigned int epos;
         for (int i = 0; i < 4; ++i)
         {
-          std::string number;
+          string number;
           epos = CurrentLine.find_first_of(",]", spos);
           for (unsigned int j = spos+1; j != epos; ++j)
             number.push_back(CurrentLine[j]);
@@ -285,7 +285,7 @@ namespace Framework
         unsigned int epos;
         for (int i = 0; i < 4; ++i)
         {
-          std::string number;
+          string number;
           epos = CurrentLine.find_first_of(",]", spos);
           for (unsigned int j = spos + 1; j != epos; ++j)
             number.push_back(CurrentLine[j]);
@@ -316,7 +316,7 @@ namespace Framework
 
     }
 
-    TYPE ZeroSerializer::DetermineType(std::string* typestring)
+    TYPE ZeroSerializer::DetermineType(string* typestring)
     {
       for (auto it = TypeList.begin(); it != TypeList.end(); ++it)
       {
@@ -330,9 +330,9 @@ namespace Framework
     //Other helpers
     /**************************************************************************/
     //Split the line into seperate tokens
-    std::vector<std::string> ZeroSerializer::Tokenize()
+    std::vector<string> ZeroSerializer::Tokenize()
     {
-      std::vector<std::string> tokens;
+      std::vector<string> tokens;
       std::size_t found = CurrentLine.find_first_not_of(" \t\n\"");
       std::size_t previous = found;
 
@@ -341,7 +341,7 @@ namespace Framework
       while (found != CurrentLine.npos)
       {
         found = CurrentLine.find_first_of(" \t\n\"", previous);
-        std::string str;
+        string str;
         if (found >= wordlength)
           found = wordlength;
         for (unsigned int i = previous; i < found; ++i)

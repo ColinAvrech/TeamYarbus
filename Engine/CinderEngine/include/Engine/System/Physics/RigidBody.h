@@ -26,7 +26,7 @@ namespace Framework
 			Dynamic    //moving with kinematic & all forces considered
 		};
 
-		const static std::string Name;
+		const static string Name;
 		glm::vec3 vel;
 		glm::vec3 angVel;
 

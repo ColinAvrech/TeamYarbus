@@ -56,7 +56,7 @@ namespace Framework
 
   void Sound::UpdateNoise()
   {
-    std::string name = GetSoundName();
+    string name = GetSoundName();
 
     if (name == "NOISE")
     {

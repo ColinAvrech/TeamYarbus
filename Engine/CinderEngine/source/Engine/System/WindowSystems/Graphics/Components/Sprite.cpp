@@ -33,12 +33,12 @@ namespace Framework
     // atlas    : SpriteSheet*  Resources::RS->Get_SpriteSheet (Serialized String Name);
     //////////////////////////////////////////////////////////////////////////
 	  Serializer::DataNode* value = data->FindElement(data, "SpriteSource");
-	  std::string texname;
+	  string texname;
 	  value->GetValue(&texname);
 	  texture = Resources::RS->Get_Texture(texname);
 
 	  value = data->FindElement(data, "Shader");
-	  std::string shadername;
+	  string shadername;
 	  value->GetValue(&shadername);
 	  shader = Resources::RS->Get_Shader(shadername);
 

@@ -21,12 +21,12 @@ namespace Framework
   class ComponentCreator
   {
   public:
-    ComponentCreator(std::string componentName)
+    ComponentCreator(string componentName)
       :m_ComponentCreatorName(componentName)
     {
     }
 
-    std::string m_ComponentCreatorName;
+    string m_ComponentCreatorName;
     ///Create the component
 
     virtual Component * Create() = 0;
@@ -37,7 +37,7 @@ namespace Framework
   class ComponentCreatorType : public ComponentCreator
   {
   public:
-    ComponentCreatorType(std::string componentName)
+    ComponentCreatorType(string componentName)
       :ComponentCreator(componentName)
     {
     }

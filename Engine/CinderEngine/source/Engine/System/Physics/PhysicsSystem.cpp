@@ -76,7 +76,7 @@ namespace Framework
 		}
 
 		// DETERMINISTIC - Physics will run the same on every system
-		void PhysicsSystem::Update(const double dt)
+		void PhysicsSystem::Update(const double &dt)
 		{
 			const float TimeStep = 1.0f / 60.0f;
 

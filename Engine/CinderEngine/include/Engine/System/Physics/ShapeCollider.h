@@ -22,7 +22,7 @@ namespace Framework
 	class ShapeCollider : public Component
 	{
 	public:
-    const static std::string Name;
+    const static string Name;
 	int numOfShapes;
 		// Getters
 		glm::vec3 getPosition(void){
@@ -43,7 +43,7 @@ namespace Framework
 		// Private data
 		struct MaterialProperties
 		{
-			std::string name;
+			string name;
 			float density;
 			float restitution;
 			float friction;

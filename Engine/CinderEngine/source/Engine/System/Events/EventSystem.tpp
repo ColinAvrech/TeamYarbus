@@ -15,7 +15,7 @@ namespace Framework
 
   // C/C++ Global functions use this connect function to conntect to events.
   template<typename EventType>
-  void EventSystem::gConnect(const std::string eventname, void(*func)(EventType*))
+  void EventSystem::gConnect(const string eventname, void(*func)(EventType*))
   {
     auto eDeployer = RegisteredEvents.find(eventname);
 
@@ -41,7 +41,7 @@ namespace Framework
 
   // C++ Member functions use this connect function to connect to events.
   template<typename EventType, typename ClassType>
-  void EventSystem::mConnect(const std::string eventname, ClassType *this_ptr, void(ClassType::*func)(EventType*))
+  void EventSystem::mConnect(const string eventname, ClassType *this_ptr, void(ClassType::*func)(EventType*))
   {
     auto eDeployer = RegisteredEvents.find(eventname);
 

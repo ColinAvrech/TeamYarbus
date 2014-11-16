@@ -1,6 +1,16 @@
+/******************************************************************************/
+/*!
+\file   GraphicsCommon.h
+\author Manas
+\par    Course: GAM200
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+\brief  
+*/
+/******************************************************************************/
+
 #ifndef _GRAPHICS_COMMON_H
 #define _GRAPHICS_COMMON_H
-
+#include "Common.h"
 #include "glew.h"
 #include "CinderMath.h"
 #include "VertexArrayObject.h"
@@ -9,8 +19,6 @@
 #include "Resources.h"
 #include "ShapeGenerator.h"
 #include "Color.h"
-#include <fstream>
-#include <iostream>
 #endif
 
 #pragma region BACKUP

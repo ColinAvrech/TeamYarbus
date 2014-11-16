@@ -86,11 +86,11 @@ namespace Framework
       void          latencyConsoleOut();
 
       // Called every frame
-      virtual void  Update(const double dt);
+      virtual void  Update(const double &dt);
       
 
       // Returns name of System
-      virtual const std::string GetName(){ return "AudioSystem";}
+      virtual const string GetName(){ return "AudioSystem";}
 
       // Getters
       Sound*        GetSound(char* soundName);
@@ -133,7 +133,7 @@ namespace Framework
       -----------------------------------------------------------------------*/
       #pragma region Private Variables
 
-      std::map<std::string, Sound*>     soundMap;
+      std::map<string, Sound*>     soundMap;
       FMOD::System                      *pFMODAudioSystem = NULL;
       FMOD::ChannelGroup                *GroupMusic;
       FMOD::ChannelGroup                *Group2DSFX;

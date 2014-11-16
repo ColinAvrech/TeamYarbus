@@ -61,7 +61,7 @@ namespace Framework
     static void Print (glm::vec3 position);
 
     // The non-base component usees DefineComponentName macro to name component
-    const static std::string Name;
+    const static string Name;
 
 
 

@@ -60,7 +60,7 @@ namespace Framework
   // Function called from Zilch Script to register to events.
   void ZilchConnect(Call& call, ExceptionReport& report)
   {
-    std::string eventname = call.Get<String>(0).c_str();
+    string eventname = call.Get<String>(0).c_str();
     Zilch::Delegate zDelegate = call.GetDelegate(1);
 
     auto event = EVENTSYSTEM->RegisteredEvents.find(eventname);
@@ -125,7 +125,7 @@ namespace Framework
     }
   }
 
-  void EventSystem::TriggerEvent(const std::string eventname, BaseEvent& e)
+  void EventSystem::TriggerEvent(const string eventname, BaseEvent& e)
   {
     auto eDeployer = RegisteredEvents.find(eventname);
 
@@ -151,7 +151,7 @@ namespace Framework
   /******************************************/
 
   /* The Update Function which is called in the main loop*/
-  void EventSystem::Update(const double dt)
+  void EventSystem::Update(const double &dt)
   {
     UpdateEvent updateEvent;
     updateEvent.Dt = static_cast<float>(dt);

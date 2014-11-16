@@ -46,7 +46,7 @@ namespace Framework
       DataNode* found = GetValue(keys);
       *store = found->value_.Bool_;
     }
-    void ZeroSerializer::GetData(std::string* store, std::initializer_list<const char*> keys)
+    void ZeroSerializer::GetData(string* store, std::initializer_list<const char*> keys)
     {
       DataNode* found = GetValue(keys);
       switch (found->dataType)
@@ -84,7 +84,7 @@ namespace Framework
     DataNode* DataNode::FindElement(DataNode* branch, const char* key)
     {
       auto it = branch;
-      std::string name(key);
+      string name(key);
       while (it && it->objectName.compare(name) != 0)
       {
         it = it->next;

@@ -1,11 +1,13 @@
+/******************************************************************************/
 /*!
-
-/auther Micah
-/file windowSystem.h
-
-/brief Contains all of the framework for creating and maintaining a window.
-
+\file   WindowSystem.h
+\author Micah
+\par    Course: GAM200
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+\brief  Contains all of the framework for creating and maintaining a window.
 */
+/******************************************************************************/
+
 #pragma once
 
 #include "BaseSystem.h"
@@ -20,39 +22,38 @@ namespace Framework
 
   namespace WindowNameSpace
   {
-    void SetupKeyEvent(KeyEvent* triggered_key_event, int key, int scanCode, int state, int mod);
-    void TriggerKeyEvent(const std::string eventname, int key, int scanCode, int state, int mod);
+    void SetupKeyEvent(KeyEvent* triggered_key_event, const int& key, const int& scanCode, const int& state, const int& mod);
+    void TriggerKeyEvent(const string eventname, const int& key, const int& scanCode, const int& state, const int& mod);
   }
 
   class WindowSystem : public BaseSystem
   {
   public:
-    WindowSystem(const char* WindowTitle, int ClientWidth, int ClientHeight);
+    WindowSystem(const char* WindowTitle, const int& ClientWidth = 1920, const int& ClientHeight = 1080, const bool& fullscreen = true);
     ~WindowSystem();
 
     virtual bool Initialize ();
-    virtual void Update(const double dt);
-    virtual const std::string GetName() { return "WindowSystem"; }
+    virtual void Update(const double& dt);
+    virtual const string GetName() { return "WindowSystem"; }
 
-    void WindowsUpdate(const double dt);
-    void GraphicsUpdate(const double dt);
+    void WindowsUpdate(const double& dt);
+    void GraphicsUpdate(const double& dt);
 
     // GLFW callbacks
-    void GLFWMessageHandler(GLFWwindow* window, int key, int scanCode, int state, int mod);
-    void GLFWMouseButtonFunction(GLFWwindow *, int button, int action, int mod);
-    void GLFWMouseCursorMoved (GLFWwindow* window, double xPos, double yPos);
+    void GLFWMessageHandler(GLFWwindow* window, const int key, const int scanCode, const int state, const int mod);
+    void GLFWMouseButtonFunction(GLFWwindow *, const int button, const int action, const int mod);
+    void GLFWMouseCursorMoved (GLFWwindow* window, const double xPos, const double yPos);
     void GLFWWindowClosed(GLFWwindow* window);
+    void GLFWResize (GLFWwindow* window, const int w, const int h);
+    void GLFWFrameBufferResize (GLFWwindow* _window, const int w, const int h);
 
-    void Resize (GLFWwindow* window, int w, int h);
-    void FrameBufferResize (GLFWwindow* _window, int w, int h);
-
-    unsigned Get_Width ();
-    unsigned Get_Height ();
+    int Get_Width ();
+    int Get_Height ();
     inline GLFWwindow* Get_Window ()
     {
       return window;
     }
-    void Set_W_H (unsigned, unsigned);
+    void Set_W_H (const int& w, const int& h);
 
     static std::list <Transform*> transformList;
     static std::list <IGraphicsObject*> graphicsObjects;
@@ -61,8 +62,8 @@ namespace Framework
     GLFWwindow* window;
 
 
-    unsigned WindowHeight;
-    unsigned WindowWidth;
+    int WindowHeight;
+    int WindowWidth;
   };
 
   extern WindowSystem* WINDOWSYSTEM;

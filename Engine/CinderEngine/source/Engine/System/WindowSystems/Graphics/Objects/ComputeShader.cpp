@@ -27,7 +27,7 @@ namespace Framework
     glDeleteProgram (shaderProgram);
   }
 
-  GLuint ComputeShader::Create_Program(std::string name, GLuint _computeShader /*= 0*/)
+  GLuint ComputeShader::Create_Program(string name, GLuint _computeShader /*= 0*/)
 {
     GLuint program = glCreateProgram ();
     glAttachShader (program, computeShader);

@@ -1,12 +1,44 @@
-/*****************************************************************************/
+/******************************************************************************/
 /*!
 \file   ScriptComponent.h
 \author Sagnik Chowdhury
 \par    Course: GAM200
 \par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
 \brief  Scriptcomponents bind components from Zilch to the engine.
+
+As a condition of your accessing this area, you agree to be bound by the
+following terms and conditions :
+
+The games software was created by students of DigiPen Institute of
+Technology(DigiPen), and all copyright and other rights in such is owned by
+DigiPen.While DigiPen allows you to access, download and use the software
+for non - commercial, home use you hereby expressly agree that you will not
+otherwise copy, distribute, modify, or(to the extent not otherwise
+permitted by law) decompile, disassemble or reverse engineer the games
+software.
+
+THE GAMES SOFTWARE IS MADE AVAILABLE BY DIGIPEN AS - IS AND WITHOUT
+WARRANTY OF ANY KIND BY DIGIPEN.DIGIPEN HEREBY EXPRESSLY DISCLAIMS ANY SUCH
+WARRANTY, INCLUDING, WITHOUT LIMITATION, ANY IMPLIED WARRANTY OF
+MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. WITHOUT LIMITING THE
+GENERALITY OF THE FOREGOING, DIGIPEN SHALL NOT BE LIABLE IN DAMAGES OR
+OTHERWISE FOR ANY DAMAGE OR INJURY FROM DOWNLOADING, DECOMPRESSING, RUNNING
+OR ATTEMPTING TO RUN, USING OR OTHERWISE DEALING WITH, IN ANY WAY, THE
+GAMES SOFTWARE CONTAINED IN THIS AREA, NOR SHALL DIGIPEN BE LIABLE FOR ANY
+INCIDENTAL, CONSEQUENTIAL, EXEMPLARY OR OTHER TYPES OF DAMAGES ARISING FROM
+ACCESS TO OR USE OF THE GAMES SOFTWARE.
+
+YOU HEREBY AGREE TO INDEMNIFY, DEFEND AND HOLD HARMLESS DIGIPEN AND ITS
+DIRECTORS, OFFICERS, EMPLOYEES, AGENTS, CONSULTANTS AND CONTRACTORS AGAINST
+ALL LIABILITY OF ANY KIND ARISING OUT OF YOUR DOWNLOADING, DECOMPRESSING,
+RUNNING OR ATTEMPTING TO RUN, USING OR OTHERWISE DEALING WITH, IN ANY WAY,
+THE GAMES SOFTWARE. DIGIPEN MAKES NO WARRANTIES OR REPRESENTATIONS THAT THE
+GAMES SOFTWARE IS FREE OF MALICIOUS PROGRAMMING, INCLUDING, WITHOUT
+LIMITATION, VIRUSES, TROJAN HORSE PROGRAMS, WORMS, MACROS AND THE LIKE.AS
+THE PARTY ACCESSING THE GAMES SOFTWARE IT IS YOUR RESPONSIBILITY TO GUARD
+AGAINST AND DEAL WITH THE EFFECTS OF ANY SUCH MALICIOUS PROGRAMMING.
 */
-/*****************************************************************************/
+/******************************************************************************/
 
 //!makes sure this is only included once
 #pragma once
@@ -23,7 +55,7 @@ namespace Framework
   //ZilchComponent *zc = dynamic_cast<ZilchComponent*>(c);
   //if(zc != 0) // is ZilchComponent
 
-  //pass std::string str.c_str() to convert to const char*
+  //pass string str.c_str() to convert to const char*
   //------------------------------------------------------------------
 
   class ZilchComponent : public Component
@@ -32,10 +64,10 @@ namespace Framework
     ZilchDeclareBaseType(ZilchComponent, Zilch::TypeCopyMode::ReferenceType);
 
     //Constructor. Initialize with owner and component name.
-    ZilchComponent(std::string& name);
+    ZilchComponent(string& name);
 
     //!Updated every frame.
-    void Update(const double dt);
+    void Update(const double &dt);
 
     //!Initialize the system.
     virtual void Initialize();
@@ -64,7 +96,7 @@ namespace Framework
     Zilch::ExceptionReport report;
 
     //Hack!!!!!!!!!!
-    std::string ohai;
+    string ohai;
 
 #endif
   }; //class scriptcomponent

@@ -47,7 +47,7 @@ namespace Framework
       /*---------------------------------------------------------------------*/
 #pragma region Public Structs
 
-      std::unordered_map<std::string, TYPE> TypeList;
+      std::unordered_map<string, TYPE> TypeList;
 #pragma endregion
 
       /*-----------------------------------------------------------------------
@@ -70,7 +70,7 @@ namespace Framework
       void GetData(float* store, std::initializer_list<const char*> keys);
       void GetData(double* store, std::initializer_list<const char*> keys);
       void GetData(bool* store, std::initializer_list<const char*> keys);
-      void GetData(std::string* store, std::initializer_list<const char*> keys);
+      void GetData(string* store, std::initializer_list<const char*> keys);
       void GetData(std::vector<float>* store, std::initializer_list<const char*> keys);
       //===============================================================================
 
@@ -99,7 +99,7 @@ namespace Framework
       //Data file
       std::ifstream dataFile;
       //Name of current object
-      std::string CurrentLine;
+      string CurrentLine;
       //Type of current object
       char prev;
       //Is it an object or subobject ...
@@ -122,8 +122,8 @@ namespace Framework
       void ReadLine();
       void ParseLine();
 
-      void InterpretData(TYPE currentdatatype, std::vector<std::string>* tokens, DataNode** node);
-      TYPE DetermineType(std::string* typestring);
+      void InterpretData(TYPE currentdatatype, std::vector<string>* tokens, DataNode** node);
+      TYPE DetermineType(string* typestring);
 
       //Tree navigation
       //implemented at the end of this header
@@ -141,7 +141,7 @@ namespace Framework
       DataNode* GetValue(std::initializer_list<const char*> keys);
       //--------------------------------------------------------
       //Helper function
-      std::vector<std::string> Tokenize();
+      std::vector<string> Tokenize();
       void indent(int indentation);
 
 

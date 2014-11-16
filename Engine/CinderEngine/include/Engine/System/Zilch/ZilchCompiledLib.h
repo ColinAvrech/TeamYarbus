@@ -34,10 +34,10 @@ namespace Framework
     virtual bool Initialize(void) override;
 
     // Called every frame
-    virtual void Update(const double dt) override;
+    virtual void Update(const double& dt) override;
 
     // Returns name of System
-    virtual const std::string GetName();
+    virtual const string GetName();
 
     //Returns pointer to the required LibraryRef
     Zilch::LibraryRef *GetZilchLib(const char *ScriptName);

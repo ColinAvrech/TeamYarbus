@@ -84,14 +84,14 @@ namespace Framework
       bool Initialize();
 
       // Called every frame
-      void Update(const double dt);
+      void Update(const double& dt);
 
       //Update temperatures
-      void UpdateTemp (int start_index, int end_index, const double dt);
+      void UpdateTemp(const int& start_index, const int& end_index, const double& dt);
       //Calculate velocity vectors
-      void ComputeVelocity (int start_index, int end_index, const double dt);
+      void ComputeVelocity(const int& start_index, const int& end_index, const double& dt);
       //Update fire
-      void UpdateFire (int start_index, int end_index, const double dt);
+      void UpdateFire(const int& start_index, const int& end_index, const double& dt);
 
       void Reset ();
 
@@ -114,7 +114,7 @@ namespace Framework
 
     public:
       // Returns name of System
-      const std::string GetName() { return "ThermodynamicsSystem"; }
+      const string GetName() { return "ThermodynamicsSystem"; }
 
       // Getters
       //Get Cell Pixel size
@@ -122,15 +122,15 @@ namespace Framework
       //Get Map size
       glm::vec2 GetMapSize(){ return MapSize; }
       //Get cell temperature
-      float GetCellTemperature(float x, float y);
+      float GetCellTemperature(const float& x, const float& y);
       //Get cell oxygen content
-      float GetCellOxygen(float x, float y);
+      float GetCellOxygen(const float& x, const float& y);
       //Get cell velocity
-      glm::vec2 GetCellVelocity(float x, float y);
+      glm::vec2 GetCellVelocity(const float& x, const float& y);
 
       // Setters
       void ToggleAutoDissipation();
-      float SetCellTemperature(const float x, const float y, const float temp, const double dt);
+      float SetCellTemperature(const float& x, const float& y, const float& temp, const double& dt);
 
 #pragma endregion
 
@@ -201,7 +201,7 @@ namespace Framework
 #pragma region Private Structs    
       struct conductionProperties
       {
-        //std::string name will be used to map these;
+        //string name will be used to map these;
         bool  isFluid;  //Is the material a fluid
         bool  Volatile; //Can this material catch fire
         float Hc;       //Heat transfer coefficient
@@ -209,7 +209,7 @@ namespace Framework
         float c;        //Specific heat
       };
 
-      std::unordered_map<std::string, conductionProperties*> materialList;
+      std::unordered_map<string, conductionProperties*> materialList;
 #pragma endregion
 
       /*-----------------------------------------------------------------------
@@ -217,7 +217,7 @@ namespace Framework
       -----------------------------------------------------------------------*/
 #pragma region Private Functions
       //Determine subscript from position
-      glm::vec2 GetSubscript(const float x, const float y);
+      glm::vec2 GetSubscript(const float& x, const float& y);
 
 #pragma endregion
 

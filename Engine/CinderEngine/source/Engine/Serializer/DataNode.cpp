@@ -53,9 +53,9 @@ namespace Framework
       value_.Bool_ = value;
     }
     
-    void DataNode::SetValue(std::string& value)
+    void DataNode::SetValue(string& value)
     {
-      value_.String_ = new std::string(value);
+      value_.String_ = new string(value);
     }
 
     void DataNode::SetValue(std::vector<float>& value)
@@ -96,7 +96,7 @@ namespace Framework
       ErrorIf(!store, "Pointer Uninitialized");
       *store = value_.Bool_;
     }
-    void DataNode::GetValue(std::string* store)
+    void DataNode::GetValue(string* store)
     {
       ErrorIf(!store, "Pointer Uninitialized");
       *store = *value_.String_;
