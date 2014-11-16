@@ -11,11 +11,11 @@ namespace Framework
   {
   public:
     template <typename T>
-    VertexBufferObject (GLuint bufferSize, T* bufferData)
+    VertexBufferObject (GLuint bufferSize, T* bufferData, GLenum mode = GL_STATIC_DRAW)
     {
       glGenBuffers (1, &vbo);
       glBindBuffer (GL_ARRAY_BUFFER, vbo);
-      glBufferData (GL_ARRAY_BUFFER, bufferSize, bufferData, GL_STATIC_DRAW);
+      glBufferData (GL_ARRAY_BUFFER, bufferSize, bufferData, mode);
     }
 
     VertexBufferObject () {}
@@ -23,6 +23,13 @@ namespace Framework
     ~VertexBufferObject ()
     {
       glDeleteBuffers (1, &vbo);
+    }
+
+    template <typename T>
+    void bufferData (GLuint bufferSize, T* bufferData, GLenum mode = GL_STATIC_DRAW)
+    {
+      glBindBuffer (GL_ARRAY_BUFFER, vbo);
+      glBufferData (GL_ARRAY_BUFFER, bufferSize, bufferData, mode);
     }
 
     void createVBO (int size_ = 0);
