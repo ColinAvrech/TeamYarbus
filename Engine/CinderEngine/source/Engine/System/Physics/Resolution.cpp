@@ -24,7 +24,7 @@ namespace Framework
 		contactArray[numOfContacts++] = *contact;
 	}
 
-	void ContactSet::ResolveContacts(const double dt)
+	void ContactSet::ResolveContacts(const float dt)
 	{
 		//ResolvePositions(dt);
 		ResolveVelocities(dt);
@@ -49,7 +49,7 @@ namespace Framework
 		c.Bodies[1]->gameObject->Transform->Translate(moveValue1->GetPosition() + c.Bodies[1]->vel);
 	}
 
-	void ContactSet::ResolvePositions(const double dt)
+	void ContactSet::ResolvePositions(const float dt)
 	{
 		unsigned int iterations = 0;
 		unsigned int maxIterations = numOfContacts * 5;
@@ -60,9 +60,9 @@ namespace Framework
 			//find biggest penetration greater than 
 			//correction epsilon
 			float maxPenetration = positionEpsilon;
-			unsigned int contactIndex = numOfContacts;
+			int contactIndex = numOfContacts;
 
-			for (unsigned int i = 0; i < numOfContacts; ++i)
+			for (int i = 0; i < numOfContacts; ++i)
 			{
 				if (contactArray[i].Penetration > maxPenetration)
 				{
@@ -78,7 +78,7 @@ namespace Framework
 
 			//Update penetrations for related contacts
 			glm::vec3* movement = contactArray[contactIndex].Movement;
-			for (unsigned int i = 0; i < numOfContacts; ++i)
+			for (int i = 0; i < numOfContacts; ++i)
 			{
 				if (contactArray[i].Bodies[0] == contactArray[contactIndex].Bodies[0])
 				{
@@ -101,7 +101,7 @@ namespace Framework
 		}
 	}
 
-	void ContactSet::ResolveVelocities(const double dt)
+	void ContactSet::ResolveVelocities(const float dt)
 	{
 		for (int i = 0; i < numOfContacts; ++i)
 		{

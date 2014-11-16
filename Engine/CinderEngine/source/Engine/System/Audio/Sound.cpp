@@ -13,10 +13,7 @@
 -----------------------------------------------------------------------------*/
 #pragma region Includes
 
-#include "EditorUI.h"
 #include "Sound.h"
-#include <Windows.h>
-#include <vector>
 
 #pragma endregion
 
@@ -56,6 +53,8 @@ namespace Framework
     _bandwidthValB = 0;
     _gainValA      = 0;
     _gainValB      = 0;
+    _CutOffCounter = 0;
+    _BandwidthCounter = 1.0f;
   }
 
   #pragma endregion
@@ -150,6 +149,16 @@ namespace Framework
       pChannel->setVolume(volume);
   }
 
+  /***************************************************************************/
+  /*!
+  \brief  Pans the sound source in a stereo field
+
+  \param  pan
+  Pan position
+
+  \return Returns nothing
+  */
+  /***************************************************************************/
   void Sound::SetPan(char pan)
   {
     FMOD_RESULT result;
@@ -175,13 +184,25 @@ namespace Framework
     }
   }
 
+  /***************************************************************************/
+  /*!
+  \brief  Sets the pause state of the sound object
+
+  \param  pauseState
+  If needs to be paused or unpaused
+
+  \return Returns nothing
+  */
+  /***************************************************************************/
   void Sound::SetPause(bool pauseState)
   {
+    // Checks if system is not on
     if (Sound::system_on_ == false)
     { 
       return; 
     }
 
+    // If the channel exists
     if (pChannel)
     {
       if (pauseState == true)
@@ -198,13 +219,22 @@ namespace Framework
     }
   }
 
+  /***************************************************************************/
+  /*!
+  \brief  Stops the sound
+
+  \return Returns nothing
+  */
+  /***************************************************************************/
   void Sound::Stop()
   {
+    // Checks if system is not on
     if (Sound::system_on_ == false)
     { 
       return; 
     }
 
+    // If the channel exists
     if (pChannel)
     {
       bool playing = false;
@@ -217,6 +247,16 @@ namespace Framework
     }
   }
 
+  /***************************************************************************/
+  /*!
+  \brief  Mutes the sound
+
+  \param  muteState
+  If needs to be muted or unmuted
+
+  \return Returns nothing
+  */
+  /***************************************************************************/
   void Sound::SetMute(bool muteState)
   {
     // Checks if system is not on
@@ -225,6 +265,7 @@ namespace Framework
       return;
     }
 
+    // If the channel exists
     if (pChannel)
     {
       if (muteState == true)
@@ -501,10 +542,24 @@ namespace Framework
     
     _paused = false; // Set paused state to false
 
+    // Sets the default frequencies
     SetFrequency1();
     SetFrequency2();
   }
 
+  /***************************************************************************/
+  /*!
+  \brief  Fades the volume in or out
+
+  \param  volume
+  The volume that needs to be faded into 
+
+  \param fadeTime
+  The amount of time need to reach the required volume
+
+  \return Returns nothing
+  */
+  /***************************************************************************/
   void Sound::VolumeFade(float volume, float fadeTime)
   {
     float currentVolume;
@@ -514,6 +569,7 @@ namespace Framework
 
     currentVolume = GetVolume();
 
+    // Speed = distance/time
     fadeSpeed = (volume - currentVolume) / fadeTime;
     _fadeValue = fadeSpeed;
   }
@@ -560,6 +616,13 @@ namespace Framework
     return _volume;
   }
 
+  /***************************************************************************/
+  /*!
+  \brief  A getter for the volume
+
+  \return Returns a pointer to _volume
+  */
+  /***************************************************************************/
   float* Sound::GetVolumePtr ()
   {
     // Checks if system is not on
@@ -571,6 +634,13 @@ namespace Framework
     return &_volume;
   }
 
+  /***************************************************************************/
+  /*!
+  \brief  Gets the current time position of the sound
+
+  \return Returns the time position in milliseconds
+  */
+  /***************************************************************************/
   unsigned Sound::GetTime()
   {
     if (Sound::system_on_ == false)
@@ -640,42 +710,60 @@ namespace Framework
       return;
     }    
 
+    // Update Functions
     UpdateVolumeFade(dt);
     UpdateFrequency1(dt);
     UpdateFrequency2(dt);
     UpdateNoise();
+
     SetVolume(GetVolume());
 
+
+    // FOR TESTING ONLY
     if (this->GetTime() > 5000 && this->GetTime() < 5500 && test == true)
     {
       //test = false;
-      //std::cout << Console::cyan << "FIVE SECONDS" << std::endl;
+      //std::cout << CinderConsole::cyan << "FIVE SECONDS" << std::endl;
       //this->SweepEQ1(100.0f, 5.5f, 10.0f, 4.0f);
       //this->SweepEQ2(5000.0f, 5.0f, 10.0f, 4.0f);
+      this->VolumeFade(0.0f, 5.0f);
     }
     if (this->GetTime() > 10000 && this->GetTime() < 10500 && test2 == true)
     {
       //test2 = false;
-      //std::cout << Console::green<< "TEN SECONDS" << std::endl;
+      //std::cout << CinderConsole::green<< "TEN SECONDS" << std::endl;
       //this->SweepEQ1(20.0f, 0.2f, -30.0f, 5.0f);
       //this->SweepEQ2(20.0f, 0.2f, -30.0f, 5.0f);
     }
   }
 
+  /***************************************************************************/
+  /*!
+  \brief  Updates the volume fade over time
+
+  \param  dt
+  The current time
+
+  \return Returns nothing
+  */
+  /***************************************************************************/
   void Sound::UpdateVolumeFade(const double dt)
   {
     float currentVolume = 0;    
 
+    // If the channel exists
     if (pChannel != NULL)
     {
       pChannel->getVolume(&currentVolume);
 
+      // If volume doesn't reach the required fade volume
       if (_volValue != currentVolume)
       {
         float newVolume;
 
         newVolume = (float)(currentVolume + (_fadeValue * dt));
 
+        // Check bounds
         if (newVolume > _volValue && _fadeValue > 0.0f)
         {
           newVolume = _volValue;
@@ -685,6 +773,7 @@ namespace Framework
           newVolume = _volValue;
         }
 
+        // Set the volume to the new volume
         SetVolume(newVolume);
       }
     }  
@@ -696,6 +785,7 @@ namespace Framework
   Sound::~Sound()
   {
     std::vector<FMOD::Sound*>::iterator it;
+
     for (it = sound_queue_.begin(); it != sound_queue_.end(); ++it)
     {
       ErrCheck((*it)->release());

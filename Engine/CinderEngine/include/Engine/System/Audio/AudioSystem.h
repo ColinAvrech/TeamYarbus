@@ -17,9 +17,6 @@
 #pragma region Includes
 
 #include "BaseSystem.h"
-#include "fmod.hpp"
-#include "fmod_DSP.h"
-#include "fmod_errors.h"
 #include "Sound.h"
 
 #pragma endregion
@@ -52,7 +49,7 @@ namespace Framework
       #pragma region Public Variables
 
       char* AudioAssetsPath = "../../Resources/Audio/";      
-      FMOD_DSP_METERING_INFO input;
+      FMOD_DSP_METERING_INFO input; // Microphone input values
 
       #pragma endregion
 

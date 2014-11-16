@@ -1,32 +1,30 @@
 /******************************************************************************/
 /*!
-\file   GameLogic.cpp
+\file   Microphone.cpp
 \author Anna Pearson
 \par    Course: GAM200
 \par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
-\brief  The logic for burning gameObjects
+\brief  Microphone active
 */
 /******************************************************************************/
-#include "FireStarter.h"
+#include "Microphone.h"
+#include "JSONSerializer.h"
 #include "GameObject.h"
 #include "ComponentInclude.h"
 
 namespace Framework
-{ 
-	void FireStarter::Serialize(Serializer::DataNode* data)
+{
+	void Microphone::Serialize(Serializer::DataNode* data)
 	{
-		
+		bool Active;
+		Serializer::DataNode* temp = data->FindElement(data, "Active");
+		temp->GetValue(&Active);
 	}
 
-	void FireStarter::Initialize()
+	void Microphone::Initialize()
 	{
-		gameObject->FireStarter = this;
+		gameObject->Microphone = this;
 	}
 
-	void FireStarter::lightOnFire(void)
-	{
-		onFire = true;
-	}
-
-	DefineComponentName(FireStarter);
+	DefineComponentName(Microphone);
 }

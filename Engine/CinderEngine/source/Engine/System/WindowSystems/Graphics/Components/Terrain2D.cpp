@@ -33,6 +33,7 @@ namespace Framework
   {
     IGraphicsObject::Deregister ();
     delete vao, vbo, tc, spline;
+    delete vao1, vbo1;
   }
 
 

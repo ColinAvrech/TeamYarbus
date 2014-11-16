@@ -56,6 +56,7 @@ namespace Framework
       /*---------------------------------------------------------------------*/
       #pragma region Public Structs/Enums
 
+      // Sound ID's dedicated to types of sounds
       enum SoundID
       {
         SOUND_2D = 0,
@@ -64,6 +65,7 @@ namespace Framework
         MUSIC
       };
 
+      // Custom reverb presets
       enum ReverbPresetName
       {
         OFF,              GENERIC,      PADDEDCELL,     ROOM,
@@ -74,6 +76,7 @@ namespace Framework
         PLAIN,            PARKINGLOT,   SEWERPIPE,      UNDERWATER
       };
 
+      // All the DSP objects
       struct objects_DSP
       {
         FMOD::DSP                     *dsp_lpf = 0;
@@ -84,6 +87,7 @@ namespace Framework
         FMOD::DSP                     *dsp_sweepB = 0;
       }objects_DSP;
 
+      // Reverb Preset Properties
       struct ReverbPreset
       {
         float DecayTime;
@@ -136,7 +140,7 @@ namespace Framework
       void            UpdateFrequency2(const double dt);
       void            EQConsoleOut(float currentCenter, float currentBandwidth, float currentGain);
 
-      // Procedural Noise
+      // Procedural Audio
       void            UpdateNoise();
       void            GenerateNoise();
 
@@ -159,34 +163,15 @@ namespace Framework
       bool            GetPaused();
       float           GetVolume();   
       unsigned        GetTime();
-      unsigned        GetID(){return ID;}
-      std::string     GetSoundName(){ return _soundName;}
       float*          GetVolumePtr();
+      unsigned        GetID(){return ID;}
+      std::string     GetSoundName(){return _soundName;}
 
-      inline FMOD::Channel* Get_Channel()
-      {
-        return pChannel;
-      }
-
-      inline FMOD::DSP* Get_LPF ()
-      {
-        return objects_DSP.dsp_lpf;
-      }
-
-      inline FMOD::DSP* Get_HPF()
-      {
-        return objects_DSP.dsp_hpf;
-      }
-
-      inline FMOD::DSP* Get_RVRB()
-      {
-        return objects_DSP.dsp_reverb;
-      }
-
-      inline FMOD::DSP* Get_NOISE()
-      {
-        return objects_DSP.dsp_noise;
-      }
+      inline FMOD::Channel* Get_Channel() {return pChannel;}
+      inline FMOD::DSP*     Get_LPF ()    {return objects_DSP.dsp_lpf;}
+      inline FMOD::DSP*     Get_HPF()     {return objects_DSP.dsp_hpf;}
+      inline FMOD::DSP*     Get_RVRB()    {return objects_DSP.dsp_reverb;}
+      inline FMOD::DSP*     Get_NOISE()   {return objects_DSP.dsp_noise;}
 
       #pragma endregion
 
@@ -249,8 +234,10 @@ namespace Framework
       FMOD::System                  *pFMODAudioSystem;
       std::string                   _soundName;      
       FMOD_VECTOR                   _position;
-      float                         _count = 0;
-      bool                          _wind = true;
+      float                         _CutOffCounter;
+      float                         _BandwidthCounter;
+      bool                          _windCutOff = true;
+      bool                          _windBandwidth = true;
 
       #pragma endregion
 
