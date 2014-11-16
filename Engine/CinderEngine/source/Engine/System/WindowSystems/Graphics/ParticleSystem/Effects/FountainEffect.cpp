@@ -44,7 +44,6 @@ namespace Framework
 
   void FountainEffect::Initialize ()
   {
-    //WINDOWSYSTEM->effectList.push_back (this);
     initialize (0);
     initializeRenderer ();
   }

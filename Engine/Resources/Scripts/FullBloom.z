@@ -20,8 +20,9 @@ class Josh : Component
 	//Console.WriteLine(new Player());
 	//Console.WriteLine(this.Owner);
 	
-	//this.Obj = ObjectSystem.CreateObject();
-	Console.WriteLine(this.Obj);
+	
+	
+	Console.WriteLine(this.GetOwner());
   }
  
   function LogicUpdate(e: UpdateEvent)

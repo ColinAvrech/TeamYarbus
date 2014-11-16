@@ -20,6 +20,7 @@
 #include "BaseSystem.h"
 #include <unordered_map>
 #include "Grid2D.h"
+#include "FluidSolver.h"
 
 #pragma endregion
 
@@ -98,7 +99,7 @@ namespace Framework
       //////////////////////////////////////////////////////////////////////////
       // MULTI THREADING
       //////////////////////////////////////////////////////////////////////////
-      static const int kNumThreads = 5;
+      static const int kNumThreads = 8;
 
     private:
       // Variables
@@ -131,6 +132,7 @@ namespace Framework
       // Setters
       void ToggleAutoDissipation();
       float SetCellTemperature(const float& x, const float& y, const float& temp, const double& dt);
+      void SetCellVelocity (const int x, const int y, glm::vec2 v);
 
 #pragma endregion
 
@@ -160,6 +162,8 @@ namespace Framework
       ~ThermodynamicsSystem();
 
 #pragma endregion
+
+      friend class Smoke_Grid;
 
     private:
 
@@ -192,13 +196,15 @@ namespace Framework
       //Amount of fuel in the cell
       Grid2D<float> FuelMap;
 
+      FluidSolver solver;
 #pragma endregion
 
 
       /*-----------------------------------------------------------------------
       // Private Structs
       -----------------------------------------------------------------------*/
-#pragma region Private Structs    
+#pragma region Private Structs
+
       struct conductionProperties
       {
         //string name will be used to map these;
@@ -218,7 +224,6 @@ namespace Framework
 #pragma region Private Functions
       //Determine subscript from position
       glm::vec2 GetSubscript(const float& x, const float& y);
-
 #pragma endregion
 
 

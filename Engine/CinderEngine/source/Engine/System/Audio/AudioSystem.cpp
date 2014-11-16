@@ -13,8 +13,6 @@
 -----------------------------------------------------------------------------*/
 #pragma region Includes
 
-#include "EditorUI.h"
-#include "WindowSystem.h"
 #include "AudioSystem.h"
 
 #pragma endregion
@@ -285,13 +283,13 @@ namespace Framework
     {
       return musicMuted;
     }
-    if (id == Sound::SOUND_2D)
-    {
-      return sfx2DMuted;
-    }
     if (id == Sound::SOUND_3D)
     {
       return sfx3DMuted;
+    }
+    if (id == Sound::SOUND_2D)
+    {
+      return sfx2DMuted;
     }
     else
     {

@@ -40,11 +40,8 @@ namespace Framework
     {
       std::cout << "Thermodynamics Initialized." << std::endl;
 
-      //Procedural::TerrainCreator t(100, 50, 5);
-
-
       //Scan level
-      MapSize = { 100, 100 };
+      MapSize = { 128, 128 };
       std::cout << "Grid " << MapSize.x << "x " << MapSize.y << std::endl;
       MapOffset = { 50, 50 };
       AtmosphericTemperature = 300.f;
@@ -53,16 +50,16 @@ namespace Framework
       TemperatureMap.fill(300.f);
 
       //Allocate Oxygen/Density map
-      DensityMap.allocate (MapSize.x, MapSize.y);
-      DensityMap_Prev.allocate (MapSize.x, MapSize.y);
-      DensityMap.fill (0);
-      DensityMap_Prev.fill(0);
+      DensityMap.allocate (MapSize.x + 2, MapSize.y + 2);
+      DensityMap_Prev.allocate (MapSize.x + 2, MapSize.y + 2);
+      DensityMap.fill (Constant::K_Air);
+      DensityMap_Prev.fill(Constant::K_Air);
 
       //Allocate Velocity map
-      VelocityMapX.allocate (MapSize.x, MapSize.y);
-      VelocityMapY.allocate (MapSize.x, MapSize.y);
-      VelocityMap_PrevX.allocate (MapSize.x, MapSize.y);
-      VelocityMap_PrevY.allocate (MapSize.x, MapSize.y);
+      VelocityMapX.allocate (MapSize.x + 2, MapSize.y + 2);
+      VelocityMapY.allocate (MapSize.x + 2, MapSize.y + 2);
+      VelocityMap_PrevX.allocate (MapSize.x + 2, MapSize.y + 2);
+      VelocityMap_PrevY.allocate (MapSize.x + 2, MapSize.y + 2);
       VelocityMapX.fill ({ 0 });
       VelocityMapY.fill ({ 0 });
       VelocityMap_PrevX.fill ({ 0 });
@@ -92,22 +89,22 @@ namespace Framework
     void ThermodynamicsSystem::Update (const double& dt)
     {
       UpdateMultiThreaded ();
-      vel_step
+      solver.vel_step
         (
         MapSize.x,
         VelocityMapX.GetArray(), VelocityMapY.GetArray(),
         VelocityMap_PrevX.GetArray(), VelocityMap_PrevY.GetArray(),
         0.0f,
-        float (dt)
+        0.1f
         );
 
-      dens_step
+      solver.dens_step
         (
         MapSize.x,
         DensityMap.GetArray(), DensityMap_Prev.GetArray(),
         VelocityMapX.GetArray(), VelocityMapY.GetArray(),
         0.0f,
-        float (dt)
+        0.1f
         );
     }
 
@@ -169,6 +166,14 @@ namespace Framework
       return dQ;
     }
 
+    void ThermodynamicsSystem::SetCellVelocity(const int x, const int y, glm::vec2 v)
+    {
+      if (x < 0 || x > MapSize.x || y < 0 || y > MapSize.y)
+        return;
+      VelocityMapX.Set (x, y, v.x);
+      VelocityMapY.Set (x, y, v.y);
+    }
+
     /*-----------------------------------------------------------------------
     // Private Functions
     -----------------------------------------------------------------------*/
@@ -198,7 +203,7 @@ namespace Framework
                   TemperatureMap.Set (x, y, TemperatureMap.Get (x, y) - dTemp (dQ, DensityMap.Get (x, y) * 0.001f, Const::c_Air));
 
                   float factor = TemperatureMap.Get (x, y) / oTemp;
-                  DensityMap.Set (x, y, DensityMap.Get (x, y) / factor);
+                  //DensityMap.Set (x, y, DensityMap.Get (x, y) / factor);
                 }
                 else
                 {
@@ -217,7 +222,7 @@ namespace Framework
               netdQ += dQConv;
               TemperatureMap.Set(i, j + 1, TemperatureMap.Get(i, j + 1) - dTemp (dQConv, DensityMap.Get(i, j + 1) * 0.001f, Const::c_Air));
               float factor2 = TemperatureMap.Get(i, j + 1) / oTempConv;
-              DensityMap.Set(i, j + 1, DensityMap.Get(i, j) / factor2);
+              //DensityMap.Set(i, j + 1, DensityMap.Get(i, j) / factor2);
             }
           }
           else
@@ -230,7 +235,7 @@ namespace Framework
           }
           TemperatureMap.Set(i, j, TemperatureMap.Get(i, j) + dTemp (netdQ, DensityMap.Get(i, j) * 0.001f, Const::c_Air));
           float factor1 = TemperatureMap.Get(i, j) / oTemp;
-          DensityMap.Set(i, j, DensityMap.Get(i, j) / factor1);
+          //DensityMap.Set(i, j, DensityMap.Get(i, j) / factor1);
         }//for
       }//for
     }//function

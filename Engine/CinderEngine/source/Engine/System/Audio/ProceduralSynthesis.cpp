@@ -60,20 +60,26 @@ namespace Framework
 
     if (name == "NOISE")
     {
-      if (_wind == true)
+      if (_windCutOff == true && _windBandwidth == true)
       {
-        this->SetLPF(_count += 15, 1.0f);
+        this->SetLPF(_CutOffCounter += 15.0f, _BandwidthCounter += 0.05f);
         
-        if (_count > 1000)
-          _wind = false;
+        if (_CutOffCounter > 1500 && _BandwidthCounter > 5.0)
+        {
+          _windCutOff = false;
+          _windBandwidth = false;
+        }
       }
-      else if (_wind == false)
+      else if (_windCutOff == false && _windBandwidth == false)
       {
-        this->SetLPF(_count -= 15, 1.0f);
+        this->SetLPF(_CutOffCounter -= 15.0f, _BandwidthCounter -= 0.05f);
 
-        if (_count < 150)
-          _wind = true;
-      }      
+        if (_CutOffCounter < 150 && _BandwidthCounter < 1.0)
+        {
+          _windCutOff = true;
+          _windBandwidth = true;
+        }
+      }
     }
   }
 }

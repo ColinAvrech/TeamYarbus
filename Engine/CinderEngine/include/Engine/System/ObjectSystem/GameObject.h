@@ -38,14 +38,17 @@ factory in the next loop.
 #include "IncludeForAllCollision.h"
 #include "CharacterController.h"
 #include "Zilch.hpp"
+//#include "FireStarter.h"
+//#include "Microphone.h"
 
 namespace Framework
 {
   class Component;
-  
+  class FireStarter;
+  class Microphone;
+
   class GameObject
   {
-
   public:
     ZilchDeclareBaseType(GameObject, Zilch::TypeCopyMode::ReferenceType);
 
@@ -72,10 +75,12 @@ namespace Framework
     //Components
     ComponentPointer(Transform);
     ComponentPointer(Sprite);
-	  ComponentPointer(ShapeCollider);
+	ComponentPointer(ShapeCollider);
     ComponentPointer(Camera);
     ComponentPointer(RigidBody);
     ComponentPointer(CharacterController);
+	ComponentPointer(FireStarter);
+	ComponentPointer(Microphone);
 
   private:
 

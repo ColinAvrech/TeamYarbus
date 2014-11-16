@@ -21,7 +21,7 @@ namespace Framework
       TerrainCreator (){}
       //Constructor
       //Takes map width, map height, base height, smoothing passes, number of waves
-      TerrainCreator(int width, int height, int baseHeight, int passes = 3, int waves = 2, int peak = 100);
+      TerrainCreator(int width, int height, int baseHeight, int passes = 3, int waves = 2, int peak = 100, int water = 50);
       //Destructor
       ~TerrainCreator();
       int ** const GetMap(){ return Map; };
@@ -34,6 +34,7 @@ namespace Framework
       void Load(const char *file);
 
     private:
+      //Terrain settings
       int passes;
       int waves;
       int MapWidth;
@@ -42,6 +43,16 @@ namespace Framework
       float *HeightMap;
       int ** Map;
       int PeakHeight;
+      int WaterDepth;
+
+      //Private Member Functions
+      //Layering
+      void AddLife();
+      void AddSoil();
+      void AddRock();
+      void AddWater();
+
+      //Helper functions
       void GenerateHeightMap();
       void ApplyHeightMap();
     }; //class terrain

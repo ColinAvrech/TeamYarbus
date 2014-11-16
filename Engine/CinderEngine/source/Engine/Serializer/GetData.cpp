@@ -9,6 +9,7 @@
 /*****************************************************************************/
 
 #include "Serializer/JSONSerializer.h"
+#include "GraphicsCommon.h"
 
 #include <cstdarg> //for variadic crap
 
@@ -89,7 +90,16 @@ namespace Framework
       {
         it = it->next;
       }
+      ErrorIf(it == nullptr, "The data field was not found");
       return it;
     }
+
+  const char* SkipHash(const char* str)
+  {
+    const char* temp = str;
+    while (*temp != ':' && *temp != '\0')
+      ++temp;
+    return temp + 1;
+  }
   } //Serializer
 } //Framework

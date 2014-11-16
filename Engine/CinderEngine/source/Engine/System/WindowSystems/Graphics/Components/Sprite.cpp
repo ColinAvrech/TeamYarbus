@@ -10,7 +10,7 @@ namespace Framework
 {
   DefineComponentName (Sprite);
 
-  ZilchDefineType(Sprite, CinderZilch)
+  ZilchDefineType (Sprite, CinderZilch)
   {
     ZilchBindConstructor (Sprite);
     ZilchBindMethodOverload (Change_Shader, void, Zilch::String);
@@ -24,8 +24,8 @@ namespace Framework
   VBO* Sprite::vbo;
   EBO* Sprite::ebo;
 
-  void Sprite::Serialize(Serializer::DataNode* data)
-{
+  void Sprite::Serialize (Serializer::DataNode* data)
+  {
     //////////////////////////////////////////////////////////////////////////
     // DATA TO BE SERIALIZED
     // shader   : Shader*       Resources::RS->Get_Shader (Serialized String Name);
@@ -45,7 +45,7 @@ namespace Framework
     value = data->FindElement (data, "Color");
     value->GetValue (&color);
 
-	  animated = false;
+    animated = false;
   }
 
 
@@ -60,10 +60,13 @@ namespace Framework
       vao = new VAO ();
       vbo = new VBO (data.vbo_size (), data.vertices);
       ebo = new EBO (data.ebo_size (), data.indices);
-      Specify_Attributes ();
       vao->unbindVAO ();
       data.Clean ();
     }
+
+    vao->bindVAO ();
+    Specify_Attributes ();
+    vao->unbindVAO ();
   }
 
 
@@ -190,9 +193,9 @@ namespace Framework
       }
       else
       {
-		  texture->Bind();
-		  shader->uni1i("image", 0);
-		  texture->Unbind();
+        texture->Bind ();
+        shader->uni1i ("image", 0);
+        texture->Unbind ();
         // If Texture Is To Be Used, Use Draw Texture Method To Draw Sprite
         DrawFunction = &Sprite::Draw_Texture;
       }
@@ -246,7 +249,7 @@ namespace Framework
     return frameNumber;
   }
 
-  int Sprite::GetAnimationSpeed()
+  int Sprite::GetAnimationSpeed ()
   {
     return atlas->Get_Samples ();
   }
@@ -257,7 +260,7 @@ namespace Framework
     //Specify_Attributes ();
 
     ++frameNumber;
-    if (frameNumber % atlas->Get_Samples() == 0)
+    if (frameNumber % atlas->Get_Samples () == 0)
     {
       texOffset.x += frameRatio.x;
       if (texOffset.x == 1.0f)

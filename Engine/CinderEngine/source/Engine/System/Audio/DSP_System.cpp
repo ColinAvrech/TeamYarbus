@@ -22,12 +22,6 @@ namespace Framework
   /*!
   \brief  Attaches a Low Pass Filter to the Signal Chain
 
-  \param  cutoff
-  Lowpass cutoff frequency in hz. 10.0 to 22000.0
-
-  \param  resonance
-  Lowpass resonance Q value. 1.0 to 10.0
-
   \return Returns nothing
   */
   /***************************************************************************/
@@ -60,6 +54,19 @@ namespace Framework
     }
   }
 
+  /***************************************************************************/
+  /*!
+  \brief  Sets the low pass filter parameters  
+
+  \param  cutoff
+  Lowpass cutoff frequency in hz. 10.0 to 22000.0
+
+  \param  resonance
+  Lowpass resonance Q value. 1.0 to 10.0
+
+  \return Returns nothing
+  */
+  /***************************************************************************/
   void Sound::SetLPF(float cutoff, float resonance)
   {
     FMOD_RESULT result;
@@ -76,14 +83,6 @@ namespace Framework
   /***************************************************************************/
   /*!
   \brief  Attaches a High Pass Filter to the Signal Chain
-
-  \param  cutoff
-  Highpass cutoff frequency in hz.
-  Ranges from 1.0 to 22000.0
-
-  \param  resonance
-  Highpass resonance Q value.
-  Ranges from 1.0 to 10.0
 
   \return Returns nothing
   */
@@ -117,6 +116,21 @@ namespace Framework
     }
   }
 
+  /***************************************************************************/
+  /*!
+  \brief  Sets the High pass filter parameters
+
+  \param  cutoff
+  Highpass cutoff frequency in hz.
+  Ranges from 1.0 to 22000.0
+
+  \param  resonance
+  Highpass resonance Q value.
+  Ranges from 1.0 to 10.0
+
+  \return Returns nothing
+  */
+  /***************************************************************************/
   void Sound::SetHPF(float cutoff, float resonance)
   {
     FMOD_RESULT result;
@@ -219,6 +233,16 @@ namespace Framework
     }
   }
 
+  /***************************************************************************/
+  /*!
+  \brief  Adds the custom reverb prest
+
+  \param  preset
+  The name of the preset
+
+  \return Returns nothing
+  */
+  /***************************************************************************/
   void Sound::AddReverbPreset(Sound::ReverbPresetName preset)
   {
     FMOD_RESULT result;
@@ -278,10 +302,21 @@ namespace Framework
     ErrCheck(result);
   }
 
+  /***************************************************************************/
+  /*!
+  \brief  Sets the reverb properties to the custom presets
+
+  \param  preset
+  The name of the reverb preset
+
+  \return Returns nothing
+  */
+  /***************************************************************************/
   Sound::ReverbPreset Sound::SetReverbPreset(Sound::ReverbPresetName preset)
   {
     ReverbPreset type;
 
+    // Custom presets
     switch (preset)
     {
     case Framework::Sound::OFF:
@@ -364,6 +399,13 @@ namespace Framework
     return type;
   }
 
+  /***************************************************************************/
+  /*!
+  \brief  Sets the default values for the first frequency notch
+
+  \return Returns nothing
+  */
+  /***************************************************************************/
   void Sound::SetFrequency1()
   {
     FMOD_RESULT result;
@@ -381,6 +423,25 @@ namespace Framework
     ErrCheck(result);
   }
 
+  /***************************************************************************/
+  /*!
+  \brief  Sweeps the frequency values for the first notch
+
+  \param  center
+  The center frequency
+
+  \param  bandwidth
+  Bandwidth of the frequency
+
+  \param  gain
+  Gain that needs to be boosted or cut
+
+  \param  sweepTime
+  The amount of time the interpolation needs to take 
+
+  \return Returns nothing
+  */
+  /***************************************************************************/
   void Sound::SweepEQ1(float center, float bandwidth, float gain, float sweepTime)
   {
     FMOD_RESULT result;
@@ -403,6 +464,7 @@ namespace Framework
       result = pChannel->addDSP(0, objects_DSP.dsp_sweepA, 0);
       ErrCheck(result);
 
+      //FOR TESTING
       std::cout << CinderConsole::green << "EQ A ADDED" << std::endl;
 
       _EQStateA = true;
@@ -412,6 +474,7 @@ namespace Framework
     _bandwidthValA = bandwidth;
     _gainValA = gain;
 
+    // Get the current DSP parameters
     result = objects_DSP.dsp_sweepA->getParameterFloat(FMOD_DSP_PARAMEQ_CENTER, &currentCenter, buffer, 16);
     ErrCheck(result);
 
@@ -421,6 +484,7 @@ namespace Framework
     result = objects_DSP.dsp_sweepA->getParameterFloat(FMOD_DSP_PARAMEQ_GAIN, &currentGain, buffer, 16);
     ErrCheck(result);
 
+    // Speed = distance / time
     fadeSpeedA = (center - currentCenter) / sweepTime;
     _fadeValA1 = fadeSpeedA;
 
@@ -431,6 +495,16 @@ namespace Framework
     _fadeValA3 = fadeSpeedC;
   }
 
+  /***************************************************************************/
+  /*!
+  \brief  Updates the first frequency notch
+
+  \param  dt
+  The frame time
+
+  \return Returns nothing
+  */
+  /***************************************************************************/
   void Sound::UpdateFrequency1(const double dt)
   {
     FMOD_RESULT result;
@@ -442,6 +516,7 @@ namespace Framework
     {
       char buffer[16];
 
+      // Get the current DSP parameters
       result = objects_DSP.dsp_sweepA->getParameterFloat(FMOD_DSP_PARAMEQ_CENTER, &currentCenter, buffer, 16);
       ErrCheck(result);
 
@@ -451,16 +526,20 @@ namespace Framework
       result = objects_DSP.dsp_sweepA->getParameterFloat(FMOD_DSP_PARAMEQ_GAIN, &currentGain, buffer, 16);
       ErrCheck(result);      
 
+      // When gain reaches the lowest level, remove the DSP
       if (currentGain == -30.0f && _EQStateA == true)
       {
         result = pChannel->removeDSP(objects_DSP.dsp_sweepA);
         ErrCheck(result);
 
+        // FOR TESTING
         std::cout << CinderConsole::yellow << "EQ A REMOVED" << std::endl;
 
         _EQStateA = false;
       }
 
+      // Following are checks to see if the parameters reached the values
+      // we want to interpolate to
       if (_centerValA != currentCenter)
       {
         float newParameter;
@@ -517,6 +596,13 @@ namespace Framework
     }
   }
 
+  /***************************************************************************/
+  /*!
+  \brief  Sets the default values for the second frequency notch
+
+  \return Returns nothing
+  */
+  /***************************************************************************/
   void Sound::SetFrequency2()
   {
     FMOD_RESULT result;
@@ -534,6 +620,25 @@ namespace Framework
     ErrCheck(result);
   }
 
+  /***************************************************************************/
+  /*!
+  \brief  Sweeps the frequency values for the second notch
+
+  \param  center
+  The center frequency
+
+  \param  bandwidth
+  Bandwidth of the frequency
+
+  \param  gain
+  Gain that needs to be boosted or cut
+
+  \param  sweepTime
+  The amount of time the interpolation needs to take
+
+  \return Returns nothing
+  */
+  /***************************************************************************/
   void Sound::SweepEQ2(float center, float bandwidth, float gain, float sweepTime)
   {
     FMOD_RESULT result;
@@ -556,6 +661,7 @@ namespace Framework
       result = pChannel->addDSP(0, objects_DSP.dsp_sweepB, 0);
       ErrCheck(result);
 
+      // FOR TESTING
       std::cout << CinderConsole::green << "EQ B ADDED" << std::endl;
 
       _EQStateB = true;
@@ -565,6 +671,7 @@ namespace Framework
     _bandwidthValB = bandwidth;
     _gainValB = gain;
 
+    // Get the current DSP parameters
     result = objects_DSP.dsp_sweepB->getParameterFloat(FMOD_DSP_PARAMEQ_CENTER, &currentCenter, buffer, 16);
     ErrCheck(result);
 
@@ -584,6 +691,16 @@ namespace Framework
     _fadeValB3 = fadeSpeedC;
   }  
 
+  /***************************************************************************/
+  /*!
+  \brief  Updates the second frequency notch
+
+  \param  dt
+  The frame time
+
+  \return Returns nothing
+  */
+  /***************************************************************************/
   void Sound::UpdateFrequency2(const double dt)
   {
     FMOD_RESULT result;
@@ -595,6 +712,7 @@ namespace Framework
     {
       char buffer[16];
 
+      // Get the current DSP parameters
       result = objects_DSP.dsp_sweepB->getParameterFloat(FMOD_DSP_PARAMEQ_CENTER, &currentCenter, buffer, 16);
       ErrCheck(result);
 
@@ -604,6 +722,7 @@ namespace Framework
       result = objects_DSP.dsp_sweepB->getParameterFloat(FMOD_DSP_PARAMEQ_GAIN, &currentGain, buffer, 16);
       ErrCheck(result);
 
+      // Check if gain reaches the lowest value. If it reaches then the DSP is removed
       if (currentGain == -30.0f && _EQStateB == true)
       {
         result = pChannel->removeDSP(objects_DSP.dsp_sweepB);
@@ -614,8 +733,11 @@ namespace Framework
         _EQStateB = false;
       }
 
+      // FOR TESTING
       //EQConsoleOut(currentCenter, currentBandwidth, currentGain);
 
+      // Following are checks to see if the parameters reached the values
+      // we want to interpolate to
       if (_centerValB != currentCenter)
       {
         float newParameter;
@@ -672,6 +794,23 @@ namespace Framework
     }
   }
 
+  /***************************************************************************/
+  /*!
+  \brief  Prints out the current Center, Bandwidth and Gain of a 
+          frequency notch
+
+  \param  currentCenter
+  The updated center frequency
+
+  \param  currentBandwidth
+  The updated bandwidth of the frequency
+
+  \param  currentGain
+  The updated gain of the frequency
+
+  \return Returns nothing
+  */
+  /***************************************************************************/
   void Sound::EQConsoleOut(float currentCenter, float currentBandwidth, float currentGain)
   {
     std::cout << CinderConsole::cyan

@@ -41,6 +41,8 @@ namespace Framework
     int BaseHeight;
     int Passes;
     int Waves;
+    int WaterDepth;
+    bool AddCollider;
     Procedural::TerrainCreator* tc;
 
     VAO* vao;

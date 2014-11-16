@@ -16,6 +16,8 @@ deleted.
 #include "FountainEffect.h"
 #include "Terrain2D.h"
 #include "Tree2D.h"
+#include "FireStarter.h"
+#include "Microphone.h"
 
 namespace Framework
 {
@@ -79,12 +81,14 @@ namespace Framework
   {
     RegisterComponent(Transform);
     RegisterComponent(Sprite);
-    RegisterComponent (Camera);
+    RegisterComponent(Camera);
     RegisterComponent(CharacterController);
     RegisterComponent(RigidBody);
-    RegisterComponent (FountainEffect);
-    RegisterComponent (Terrain2D);
-    RegisterComponent (Tree2D);
+    RegisterComponent(FountainEffect);
+    RegisterComponent(Terrain2D);
+    RegisterComponent(Tree2D);
+	RegisterComponent(FireStarter);
+	RegisterComponent(Microphone);
     //RegisterComponent (SplineCollider);
     AddComponentCreator ("SplineCollider", new ComponentCreatorType<SplineCollider> ("SplineCollider"));
     AddComponentCreator("SphereCollider", new ComponentCreatorType<CircleCollider>("SphereCollider"));
@@ -142,7 +146,8 @@ namespace Framework
     //Create and Serilize Objects
     while (it)
     {
-      if (it->objectName.compare("Cog") == 0)
+      if (it->objectName.compare("Cog") == 0 && 
+        it->branch->next->branch->value_.String_->compare("EditorCamera") != 0)
       {
         GameObject* newobj = new GameObject(it->branch->branch->value_.UInt_);
         newobj->Name = *it->branch->next->branch->value_.String_;
@@ -163,7 +168,7 @@ namespace Framework
             newcomp = newobj->AddZilchComponent(ct->objectName);
             newcomp->gameObject = newobj;
             newcomp->Serialize(ct->branch);
-            newcomp->Initialize();
+            //newcomp->Initialize();
           }
           ct = ct->next;
         }

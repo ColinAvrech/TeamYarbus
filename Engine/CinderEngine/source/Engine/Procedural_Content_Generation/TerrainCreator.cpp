@@ -11,6 +11,7 @@
 //This is only for testing thermo
 
 #include "TerrainCreator.h"
+#include "ThermoDynamics.h"
 #include <stdlib.h>
 #include <iostream>
 #include <fstream>
@@ -19,8 +20,9 @@ namespace Framework
 {
   namespace Procedural
   {
-    TerrainCreator::TerrainCreator(int w, int h, int bh, int detail, int wl, int peak) :
-      MapWidth (w), MapHeight (h), BaseHeight (bh), passes (detail), waves (wl), PeakHeight (peak)
+    TerrainCreator::TerrainCreator(int w, int h, int bh, int detail, int wl, int peak, int water) :
+      MapWidth (w), MapHeight (h), BaseHeight (bh), passes (detail), waves (wl), PeakHeight (peak),
+      WaterDepth(water)
     {
       HeightMap = new float[MapWidth];
       Map = new int*[MapWidth];
@@ -29,26 +31,9 @@ namespace Framework
 
       for (int j = 0; j < MapWidth; ++j)
         for (int i = 0; i < MapHeight; ++i)
-          Map[j][i] = 0;
+          Map[j][i] = Physics::AIR;
 
-      GenerateHeightMap();
-      //for (int i = 0; i < MapWidth; ++i)
-      //  std::cout << (int)HeightMap[i] << " ";
-
-      for (int i = 0; i < MapWidth; ++i)
-        for (int j = 0; j < (int)HeightMap[i]; ++j)
-          Map[i][j] = 1;
-      //save
-      std::ofstream terrainsave("Terrain.txt");
-      for (int i = MapWidth - 1; i >= 0; --i)
-      {
-        for (int j = 0; j < MapHeight; ++j){
-          if (Map [i][j] != 0);
-            terrainsave << Map[i][j] << " ";
-        }
-        terrainsave << std::endl;
-      }
-      delete[] HeightMap;
+      Generate();
     }
 
     TerrainCreator::~TerrainCreator()
@@ -56,6 +41,20 @@ namespace Framework
       for (int i = 0; i < MapWidth; ++i)
         delete[] Map[i];
       delete[] Map;
+      delete[] HeightMap;
+    }
+
+    void TerrainCreator::Save(const char* file)
+    {
+      //save
+      std::ofstream terrainsave(file);
+      for (int i = 0; i < MapWidth; ++i)
+      {
+        for (int j = 0; j < MapHeight; ++j){
+          terrainsave << Map[i][j] << " ";
+        }
+        terrainsave << std::endl;
+      }
     }
 
     void TerrainCreator::GenerateHeightMap()
@@ -82,7 +81,7 @@ namespace Framework
         x8[i] = rand() % 2;
 
       for (int i = 0; i < MapWidth; ++i)
-        HeightMap[i] = BaseHeight + (PeakHeight) * (0.0625f * x1[i] + 0.125 * x2[i / 2] + 0.25 * x4[i / 4] + 0.5 * x8[i / 8] + 0.5 * WaveBuffer[(i * 2 * waves) / MapWidth] - 0.5);
+        HeightMap[i] = BaseHeight + (PeakHeight) * (0.0625f * x1[i] + 0.125f * x2[i / 2] + 0.25f * x4[i / 4] + 0.5f * x8[i / 8] + 0.5f * WaveBuffer[(i * 2 * waves) / MapWidth] - 0.5f);
 
       for (int i = 0; i < passes; ++i)
       {
@@ -101,6 +100,41 @@ namespace Framework
     } //function
 
     void TerrainCreator::Generate()
+    {
+      AddRock();
+      AddSoil();
+      AddWater();
+      AddLife();
+    }
+
+    void TerrainCreator::ApplyHeightMap()
+    {
+      for (int i = 0; i < MapWidth; ++i){
+        int j = 0;
+        for (; j < MapHeight && Map[i][j] != Physics::AIR; ++j);
+        for (int k = 0; k < (int)HeightMap[i]; ++k)
+          Map[i][j+k] = Physics::SOIL;
+      }
+    }
+
+    void TerrainCreator::AddSoil()
+    {
+      GenerateHeightMap();
+      ApplyHeightMap();
+    }
+
+    void TerrainCreator::AddRock()
+    {
+      GenerateHeightMap();
+      ApplyHeightMap();
+    }
+
+    void TerrainCreator::AddWater()
+    {
+
+    }
+
+    void TerrainCreator::AddLife()
     {
 
     }
