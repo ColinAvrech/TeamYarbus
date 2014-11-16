@@ -106,10 +106,6 @@ namespace Framework
         0.0f,
         0.1f
         );
-
-      //VelocityMapX.fill (0);
-      //VelocityMapY.fill (0);
-      //DensityMap.fill (0);
     }
 
     // Getters
