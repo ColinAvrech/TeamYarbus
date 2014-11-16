@@ -24,7 +24,7 @@ relaying information)
 #include "Serializer/DataNode.h"
 #include "Zilch.hpp"
 
-#define DefineComponentName(Component) const std::string Component::Name("Component")
+#define DefineComponentName(Component) const string Component::Name("Component")
 
 namespace Framework
 {

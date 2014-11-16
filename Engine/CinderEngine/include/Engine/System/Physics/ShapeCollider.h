@@ -22,7 +22,7 @@ namespace Framework
 	class ShapeCollider : public Component
 	{
 	public:
-    const static std::string Name;
+    const static string Name;
 	void SerializeMaterial(const char* name);
 	int numOfShapes;
 		// Getters
@@ -44,7 +44,7 @@ namespace Framework
 		// Private data
 		struct MaterialProperties
 		{
-			std::string name;
+			string name;
 			float density;
 			float restitution;
 			float staticfriction;

@@ -20,7 +20,7 @@ namespace Framework
 	class CircleCollider : public ShapeCollider
 	{
 	public:
-		const static std::string Name;
+		const static string Name;
 		float radius;
 		CircleCollider(){}
 

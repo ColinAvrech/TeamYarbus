@@ -46,7 +46,7 @@ namespace Framework
     Texture* Get_Texture ();
     void Specify_Attributes ();
 
-    const static std::string Name;
+    const static string Name;
 
   private:
 

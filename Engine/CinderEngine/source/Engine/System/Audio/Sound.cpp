@@ -702,7 +702,7 @@ namespace Framework
   \return Returns nothing
   */
   /***************************************************************************/
-  void Sound::Update(const double dt)
+  void Sound::Update(const double &dt)
   {
     // Checks if system is not on
     if (Sound::system_on_ == false)

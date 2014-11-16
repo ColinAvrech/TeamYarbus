@@ -58,7 +58,7 @@ namespace Framework
   }
   
   // Called Every Frame
-  void SceneManager::Update (const double dt)
+  void SceneManager::Update (const double &dt)
   {
     current->Update (dt);
     current->Draw ();

@@ -28,7 +28,7 @@
 
 namespace Framework
 {
-  static std::string s = "Hello";
+  static string s = "Hello";
   static int reverbPreset, oldReverbPreset;
   static float LPFcutOff = 6000, LPFresonance = 1;
   static float HPFcutOff = 5000, HPFresonance = 1;

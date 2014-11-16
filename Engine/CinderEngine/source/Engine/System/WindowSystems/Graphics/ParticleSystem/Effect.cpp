@@ -19,7 +19,7 @@ namespace Framework
 {
   std::shared_ptr<IEffect> EffectFactory::create (const char *name)
   {
-    std::string effect{ name };
+    string effect{ name };
 
     if (effect == "tunnel")
       return std::make_shared<TunnelEffect> ();

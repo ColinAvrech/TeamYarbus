@@ -57,12 +57,12 @@ namespace Framework
     return true;
   }
     
-  const std::string ScriptSystem::GetName()
+  const string ScriptSystem::GetName()
   {
     return "ScriptSystem";
   }
 
-  void ScriptSystem::Update(const double dt)
+  void ScriptSystem::Update(const double &dt)
   {
       
   }
@@ -81,7 +81,7 @@ namespace Framework
     fs.open(ScriptFileList);
 
     ErrorIf(!fs.is_open(), "Error, Could not open ScriptFileList");
-    std::string zilchfile;
+    string zilchfile;
 
     while (!fs.eof())
     {

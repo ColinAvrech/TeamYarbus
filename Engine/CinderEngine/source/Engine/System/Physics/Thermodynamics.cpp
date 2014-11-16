@@ -86,7 +86,7 @@ namespace Framework
     }
 
     // Called every frame
-    void ThermodynamicsSystem::Update (const double dt)
+    void ThermodynamicsSystem::Update (const double& dt)
     {
       UpdateMultiThreaded ();
       solver.vel_step
@@ -110,7 +110,7 @@ namespace Framework
 
     // Getters
     //Get cell temperature
-    float ThermodynamicsSystem::GetCellTemperature (float x, float y)
+    float ThermodynamicsSystem::GetCellTemperature (const float& x, const float& y)
     {
       glm::vec2 sub = GetSubscript(x, y);
       int sub_x = int (sub.x);
@@ -121,7 +121,7 @@ namespace Framework
     }
 
     //Get cell oxygen content
-    float ThermodynamicsSystem::GetCellOxygen (float x, float y)
+    float ThermodynamicsSystem::GetCellOxygen (const float& x, const float& y)
     {
       glm::vec2 sub = GetSubscript(x, y);
       int sub_x = int(sub.x);
@@ -131,7 +131,7 @@ namespace Framework
       return DensityMap.Get(sub_x, sub_y);
     }
     //Get cell velocity
-    glm::vec2 ThermodynamicsSystem::GetCellVelocity (float x, float y)
+    glm::vec2 ThermodynamicsSystem::GetCellVelocity(const float& x, const float& y)
     {
       glm::vec2 sub = GetSubscript(x, y);
       int sub_x = int(sub.x);
@@ -149,7 +149,7 @@ namespace Framework
       EqualizePressure = !EqualizePressure;
     }
 
-    float ThermodynamicsSystem::SetCellTemperature (const float x, const float y, const float temp, const double dt)
+    float ThermodynamicsSystem::SetCellTemperature(const float& x, const float& y, const float& temp, const double& dt)
     {
       glm::vec2 sub = GetSubscript(x, y);
       int sub_x = int(sub.x);
@@ -179,7 +179,7 @@ namespace Framework
     -----------------------------------------------------------------------*/
 
     //Update temperatures
-    void ThermodynamicsSystem::UpdateTemp(int start_index, int end_index, const double dt)
+    void ThermodynamicsSystem::UpdateTemp(const int& start_index, const int& end_index, const double& dt)
     {
       //std::cout << start_index << "\n";
       //std::cout << "Updated Temperature/Density/Pressure" << std::endl;
@@ -241,7 +241,7 @@ namespace Framework
     }//function
 
     //Update velocity vectors
-    void ThermodynamicsSystem::ComputeVelocity(int start_index, int end_index, const double dt)
+    void ThermodynamicsSystem::ComputeVelocity(const int& start_index, const int& end_index, const double& dt)
     {
       //glm::vec2 dirvec [8] = {
       //  { -1, -1 },
@@ -296,7 +296,7 @@ namespace Framework
     }
 
     //Update fire
-    void ThermodynamicsSystem::UpdateFire(int start_index, int end_index, const double dt)
+    void ThermodynamicsSystem::UpdateFire(const int& start_index, const int& end_index, const double& dt)
     {
       //std::cout << "Updated Fire" << std::endl;
       for (int j = start_index; j < end_index; ++j)
@@ -358,7 +358,7 @@ namespace Framework
       FuelMap.fill (10.f);
     }
 
-    glm::vec2 ThermodynamicsSystem::GetSubscript(const float x, const float y)
+    glm::vec2 ThermodynamicsSystem::GetSubscript(const float &x, const float &y)
     {
       int sub_x = int(std::abs(((x)* (MapSize.x / 2 - 1) + MapOffset.x - 1)));
       int sub_y = int(std::abs(((y)* (MapSize.y / 2 - 1) + MapOffset.y - 1)));

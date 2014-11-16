@@ -1,6 +1,6 @@
 /******************************************************************************/
 /*!
-\file   Template.h
+\file   Core.h
 \author Micah Rust
 \par    Course: GAM200
 \par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
@@ -9,6 +9,8 @@
 /******************************************************************************/
 
 #pragma once
+
+
 
 //! The highest FPS the game can run at.
 #define FPS 60.0f

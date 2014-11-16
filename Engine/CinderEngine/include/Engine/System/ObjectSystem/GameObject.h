@@ -58,16 +58,16 @@ namespace Framework
 
     // Adding Components
     Component* AddComponent(Zilch::String name);
-    Component* AddComponent(std::string name);
+    Component* AddComponent(string name);
 
     Component* AddZilchComponent(Zilch::String name);
-    Component* AddZilchComponent(std::string name);
+    Component* AddZilchComponent(string name);
 
-    Component* GetComponent(std::string component);
+    Component* GetComponent(string component);
 
 
     //Public Variables
-    std::string Name;
+    string Name;
     GameObject* Parent;
     const unsigned GameObjectID;
 
@@ -84,7 +84,7 @@ namespace Framework
 
   private:
 
-    typedef std::map<std::string, Component *> ComponentMap;
+    typedef std::map<string, Component *> ComponentMap;
     ComponentMap Components;
 
   };
