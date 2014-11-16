@@ -58,34 +58,32 @@ Level =
 			bool FollowEditorCamera = false,
 		},
 	},
-	Cog = 
-	{
-		LinkId = 
-		{
-			uint Id = 2,
-		},
-		Named = 
-		{
-			string Name = "Camera",
-		},
-		Transform = 
-		{
-			Vec3 Translation = [0, 0, 40],
-			Vec3 Scale = [1, 1, 1],
-			Quat Rotation = [0, 0, 0, 1],
-		},
-		Camera = 
-		{
-			ProjectionMode ProjectionMode = Orthographic,
-			Vec3 Facing = [0, 0, -1],
-			SpriteSort SpriteSort = ZDepth,
-			string SpriteLayerOrder = "52b23ad3c402d436:DefaultSpriteLayerOrder",
-			float FieldOfView = 45,
-			float NearPlane = 0.5,
-			float FarPlane = 200,
-			float Size = 20,
-		},
-	},
+	  Cog = 
+	  {
+	    LinkId = 
+	    {
+		    uint Id = 0,
+	    },
+	    Named = 
+	    {
+		    string Name = "Camera",
+	    },
+      Transform = 
+	    {
+		    Vec3 Translation = [0, 0, -10],
+		    Vec3 Scale = [1, 1, 1],
+		    Quat Rotation = [0, 0, 0, 1],
+	    },
+      Camera = 
+		  {
+        bool main = true,
+        Vec3 Facing = [0, 0, 1],
+			  float FieldOfView = 120,
+			  float NearPlane = 0.1,
+			  float FarPlane = 20,
+			  float Size = 1,
+		  },
+  },
 	Cog = 
 	{
 		LinkId = 
@@ -169,7 +167,7 @@ Level =
 			string SpriteSource = "Default.png",
 			bool FlipX = false,
 			bool FlipY = false,
-			Vec4 Color = [1, 1, 1, 1],
+			Vec4 Color = [1, 0, 0, 1],
 			bool Visible = true,
 			bool OnTop = false,
 			bool AnimationActive = true,

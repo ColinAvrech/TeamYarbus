@@ -103,7 +103,7 @@ int main (void)
 
 
   //! activate the window.
-  OBJECTSYSTEM->LoadLevel("Level");
+  OBJECTSYSTEM->LoadLevel("PhysicsTest");
 
   // Connect example
   //MyClass _myclass;
