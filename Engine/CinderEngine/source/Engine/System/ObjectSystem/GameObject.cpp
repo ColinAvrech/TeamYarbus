@@ -21,6 +21,8 @@ namespace Framework
 
   ZilchDefineType(Component, CinderZilch)
   {
+	type->HandleManager = ZilchManagerId(Zilch::PointerManager);
+
     ZilchBindConstructor(Component);
     ZilchBindMethod(GetOwner);	
   }
@@ -28,6 +30,8 @@ namespace Framework
   ZilchDefineType(GameObject, CinderZilch)
   {
     //Pointerrs
+	type->HandleManager = ZilchManagerId(Zilch::PointerManager);
+
     ZilchBindFieldGet(Transform);
     ZilchBindFieldGet(Sprite);
     //ZilchBindFieldGetSet(ShapeCollider);
