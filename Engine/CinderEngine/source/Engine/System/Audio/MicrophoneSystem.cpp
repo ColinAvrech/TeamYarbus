@@ -182,7 +182,7 @@ namespace Framework
 
       if (_check == true)
       {
-        //micFilter(); // Apply microphone filter
+        micFilter(); // Apply microphone filter
         micMeter();  // Get the RMS peaks from the mic
         //micFrequencyData(); //Get dominant frequency ranges       
 
