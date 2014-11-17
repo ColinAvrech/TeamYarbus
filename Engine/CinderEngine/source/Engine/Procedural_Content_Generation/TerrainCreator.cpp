@@ -20,8 +20,9 @@ namespace Framework
 {
   namespace Procedural
   {
-    TerrainCreator::TerrainCreator(int w, int h, int bh, int detail, int wl, int peak) :
-      MapWidth (w), MapHeight (h), BaseHeight (bh), passes (detail), waves (wl), PeakHeight (peak)
+    TerrainCreator::TerrainCreator(int w, int h, int bh, int detail, int wl, int peak, int water) :
+      MapWidth (w), MapHeight (h), BaseHeight (bh), passes (detail), waves (wl), PeakHeight (peak),
+      WaterDepth(water)
     {
       HeightMap = new float[MapWidth];
       Map = new int*[MapWidth];
@@ -30,7 +31,7 @@ namespace Framework
 
       for (int j = 0; j < MapWidth; ++j)
         for (int i = 0; i < MapHeight; ++i)
-          Map[j][i] = 0;
+          Map[j][i] = Physics::AIR;
 
       Generate();
     }
@@ -100,18 +101,42 @@ namespace Framework
 
     void TerrainCreator::Generate()
     {
-      GenerateHeightMap();
-      ApplyHeightMap();
-      //AddSoil(passes * 10);
-      //AddWater();
-      //AddLife();
+      AddRock();
+      AddSoil();
+      AddWater();
+      AddLife();
     }
 
     void TerrainCreator::ApplyHeightMap()
     {
-      for (int i = 0; i < MapWidth; ++i)
-        for (int j = 0; j < (int)HeightMap[i]; ++j)
-          Map[i][j] = 1;
+      for (int i = 0; i < MapWidth; ++i){
+        int j = 0;
+        for (; j < MapHeight && Map[i][j] != Physics::AIR; ++j);
+        for (int k = 0; k < (int)HeightMap[i]; ++k)
+          Map[i][j+k] = Physics::SOIL;
+      }
+    }
+
+    void TerrainCreator::AddSoil()
+    {
+      GenerateHeightMap();
+      ApplyHeightMap();
+    }
+
+    void TerrainCreator::AddRock()
+    {
+      GenerateHeightMap();
+      ApplyHeightMap();
+    }
+
+    void TerrainCreator::AddWater()
+    {
+
+    }
+
+    void TerrainCreator::AddLife()
+    {
+
     }
 
   } //Procedural

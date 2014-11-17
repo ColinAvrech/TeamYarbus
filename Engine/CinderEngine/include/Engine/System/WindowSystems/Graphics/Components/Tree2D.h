@@ -34,7 +34,7 @@ namespace Framework
   virtual void Draw ();
 
 
-  const static std::string Name;
+  const static string Name;
   private:
 
     // Mesh Data

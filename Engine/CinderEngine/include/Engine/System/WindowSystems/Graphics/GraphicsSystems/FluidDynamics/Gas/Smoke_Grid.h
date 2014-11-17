@@ -28,11 +28,6 @@ namespace Framework
   void Draw ();
 
   private:
-    float* u, *v, *u_prev, *v_prev;
-    float* dens, *dens_prev;
-
-    int Width;
-    int Height;
 
     void draw_density ();
     void draw_velocity ();

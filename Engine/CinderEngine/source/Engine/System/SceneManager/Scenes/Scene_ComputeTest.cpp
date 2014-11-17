@@ -79,7 +79,7 @@ namespace Framework
 
   void Scene_ComputeTest::Update (const double dt)
   {
-    std::string WindowTitle = "OpenCL Particles ";
+    string WindowTitle = "OpenCL Particles ";
     double deltaTime;
     Utils::updateTimer (&deltaTime, &AppTime);
     Utils::calculateFps (&Fps);

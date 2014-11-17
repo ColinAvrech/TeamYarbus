@@ -9,7 +9,7 @@ function to handle windows Messages.
 */
 /******************************************************************************/
 
-#include "windowsystem.h"
+#include "Windowsystem.h"
 #include "GraphicsCommon.h"
 #include "Resources.h"
 #include "ResourceManager.h"
@@ -34,19 +34,19 @@ namespace Framework
 
   namespace WindowNameSpace
   {
-    void Resize (GLFWwindow* window, int w, int h)
+    void GLFWResize (GLFWwindow* window, const int w, const int h)
     {
       WINDOWSYSTEM->Set_W_H (w, h);
     }
 
-    void FrameBufferResize (GLFWwindow* _window, int w, int h)
+    void GLFWFrameBufferResize (GLFWwindow* _window, const int w, const int h)
     {
       glViewport (0, 0, w, h);
     }
 
 
     /*Triggers a Key event if there are any listeners*/
-    void TriggerKeyEvent (const std::string eventname, int key, int scanCode, int state, int mod)
+    void TriggerKeyEvent (const string eventname, const int& key, const int& scanCode, const int& state, const int& mod)
     {
       KeyEvent triggered_key_event;
       SetupKeyEvent (&triggered_key_event, key, scanCode, state, mod);
@@ -54,7 +54,7 @@ namespace Framework
     }
 
     /*Sets up the Key event before dispatching it*/
-    void SetupKeyEvent (KeyEvent* triggered_key_event, int key, int scanCode, int state, int mod)
+    void SetupKeyEvent (KeyEvent* triggered_key_event, const int& key, const int& scanCode, const int& state, const int& mod)
     {
       //Key value as dictated by GLFW
       triggered_key_event->KeyValue = key;
@@ -102,7 +102,7 @@ namespace Framework
       }
     }
 
-    void GLFWMessageHandler (GLFWwindow* window, int key, int scanCode, int state, int mod)
+    void GLFWMessageHandler (GLFWwindow* window, const int key, const int scanCode, const int state, const int mod)
     {
       //A Key has been pressed
       TriggerKeyEvent (Events::KEY_ANY, key, scanCode, state, mod);
@@ -260,10 +260,10 @@ namespace Framework
     }
 
 
-    void GLFWMouseButtonFunction (GLFWwindow *, int button, int action, int mod)
+    void GLFWMouseButtonFunction (GLFWwindow *, const int button, const int action, const int mod)
     {
     }
-    void GLFWMouseCursorMoved (GLFWwindow* window, double xPos, double yPos)
+    void GLFWMouseCursorMoved (GLFWwindow* window, const double xPos, const double yPos)
     {
     }
 
@@ -272,21 +272,24 @@ namespace Framework
       CORE->QuitGame ();
     }
 
-    void Create_Context (GLFWwindow** GLFWwindowptr)
+    void Create_Context (GLFWwindow** GLFWwindowptr, const bool& fullscreen)
     {
       // Init GLFW Before Using Any Functionality
-      glfwInit ();
-      // Properties
-      //Request an OpenGL 4.3 core context
-      //glfwWindowHint (GLFW_CONTEXT_VERSION_MAJOR, 4);
-      //glfwWindowHint (GLFW_CONTEXT_VERSION_MINOR, 3);
-      //glfwWindowHint (GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-      //glfwWindowHint (GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
-      //glfwWindowHint (GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+      if (!glfwInit ())
+      {
+        throw("Could Not Create GLFW Context");
+        CORE->QuitGame ();
+      }
 
       WINDOWSYSTEM->Set_W_H (1024, 1024);
+      //WINDOWSYSTEM->Set_W_H(1920, 1080);
+
       // Window Creation
-      *GLFWwindowptr = glfwCreateWindow (WINDOWSYSTEM->Get_Width (), WINDOWSYSTEM->Get_Height (), "OpenGL", nullptr, nullptr); // Windowed
+      GLFWmonitor* primaryMonitor = nullptr;
+      if (fullscreen)
+        primaryMonitor = glfwGetPrimaryMonitor();
+    
+      *GLFWwindowptr = glfwCreateWindow (WINDOWSYSTEM->Get_Width (), WINDOWSYSTEM->Get_Height (), "OpenGL", primaryMonitor, nullptr); // Windowed
 
       //*GLFWwindowptr = glfwCreateWindow (800, 600, "OpenGL", glfwGetPrimaryMonitor (), nullptr);
       glfwMakeContextCurrent (*GLFWwindowptr);
@@ -295,8 +298,8 @@ namespace Framework
       glfwSetKeyCallback (*GLFWwindowptr, GLFWMessageHandler);
       glfwSetMouseButtonCallback (*GLFWwindowptr, GLFWMouseButtonFunction);
       glfwSetCursorPosCallback (*GLFWwindowptr, GLFWMouseCursorMoved);
-      glfwSetWindowSizeCallback (*GLFWwindowptr, Resize);
-      glfwSetFramebufferSizeCallback (*GLFWwindowptr, FrameBufferResize);
+      glfwSetWindowSizeCallback (*GLFWwindowptr, GLFWResize);
+      glfwSetFramebufferSizeCallback (*GLFWwindowptr, GLFWFrameBufferResize);
       glfwSetWindowCloseCallback (*GLFWwindowptr, GLFWWindowClosed);
     }
 
@@ -309,10 +312,10 @@ namespace Framework
   } //namespace WindowNameSpace
 
 
-  WindowSystem::WindowSystem (const char* WindowTitle, int ClientWidth, int ClientHeight)
+  WindowSystem::WindowSystem(const char* WindowTitle, const int& ClientWidth, const int& ClientHeight, const bool& fullscreen)
   {
     WINDOWSYSTEM = this;
-    WindowNameSpace::Create_Context (&window);
+    WindowNameSpace::Create_Context (&window, fullscreen);
     WindowNameSpace::Init_Glew ();
   }
 
@@ -333,19 +336,19 @@ namespace Framework
     glfwTerminate ();
   }
 
-  void WindowSystem::Update (const double dt)
+  void WindowSystem::Update (const double& dt)
   {
     WindowsUpdate (dt);
     GraphicsUpdate (dt);
   }
 
 
-  void WindowSystem::WindowsUpdate (const double dt)
+  void WindowSystem::WindowsUpdate (const double& dt)
   {
     glfwPollEvents ();
   }
 
-  void WindowSystem::GraphicsUpdate (const double dt)
+  void WindowSystem::GraphicsUpdate (const double& dt)
   {
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable (GL_BLEND);
@@ -362,23 +365,23 @@ namespace Framework
     }
     grid.Update ();
     grid.Draw ();
-    //water.Update ();
-    //water.Render ();
+    water.Update ();
+    water.Render ();
 
     glfwSwapBuffers (window);
   }
 
-  unsigned WindowSystem::Get_Width ()
+  int WindowSystem::Get_Width ()
   {
     return WindowWidth;
   }
 
-  unsigned WindowSystem::Get_Height ()
+  int WindowSystem::Get_Height ()
   {
     return WindowHeight;
   }
 
-  void WindowSystem::Set_W_H (unsigned w, unsigned h)
+  void WindowSystem::Set_W_H (const int& w, const int& h)
   {
     glViewport (0, 0, w, h);
     WindowWidth = w;

@@ -22,9 +22,9 @@
 
 namespace Framework
 {
-  std::string CollisionEventName(unsigned GameObjectID)
+  string CollisionEventName(unsigned GameObjectID)
   {
-    std::string ColEventStr = std::string("C");
+    string ColEventStr = string("C");
     ColEventStr.append(std::to_string(GameObjectID));
     return ColEventStr;
   }

@@ -59,7 +59,7 @@ namespace Framework
 
 
   /*!Deletes all objects int eh ObjectsToBeDelted List.*/
-  void ObjectSystem::Update(const double dt)
+  void ObjectSystem::Update(const double &dt)
   {
     DestroyGameObjectsToBeDestroyed();
 
@@ -95,7 +95,7 @@ namespace Framework
     AddComponentCreator("BoxCollider", new ComponentCreatorType<LineCollider>("BoxCollider"));
   }
 
-  void ObjectSystem::AddComponentCreator(std::string name, ComponentCreator* creator)
+  void ObjectSystem::AddComponentCreator(string name, ComponentCreator* creator)
   {
     SerialMap[name] = creator;
   }
@@ -120,7 +120,7 @@ namespace Framework
 
   }
 
-  void ObjectSystem::LoadLevel(std::string level)
+  void ObjectSystem::LoadLevel(string level)
   {
     DestroyAllObjects();
 
@@ -173,7 +173,7 @@ namespace Framework
           ct = ct->next;
         }
 
-        ErrorIf (newobj->Transform == nullptr, (std::string ("Transform component missing on GameObject ") + newobj->Name).c_str());
+        ErrorIf (newobj->Transform == nullptr, (string ("Transform component missing on GameObject ") + newobj->Name).c_str());
         GameObjects[newobj->GameObjectID] = newobj;
       }
       it = it->next;
@@ -181,7 +181,7 @@ namespace Framework
   }
 
   //Private function to create and serilize a component
-  void ObjectSystem::SerializeComponent(std::string ComponentName, Serializer::DataNode* data)
+  void ObjectSystem::SerializeComponent(string ComponentName, Serializer::DataNode* data)
   {
 
 
