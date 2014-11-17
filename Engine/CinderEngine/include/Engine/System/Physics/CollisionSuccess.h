@@ -20,7 +20,7 @@ namespace Framework
 	class BodyContact
 	{
 	public:
-		RigidBody* Bodies[2];
+		GameObject* Bodies[2];
 		glm::vec3 Movement[2];
 		glm::vec3 ContactNormal;
 		float Penetration;
@@ -30,7 +30,7 @@ namespace Framework
 		float SeperatingVelocity;
 		float ContactImpulse;
 		float CalculateSeparatingVelocity();
-		BodyContact(RigidBody* Body1, RigidBody* Body2, 
+		BodyContact(GameObject* Body1, GameObject* Body2, 
 			glm::vec3& contactNormal, float penetration)
 			: ContactNormal(contactNormal),
 			Penetration(penetration){

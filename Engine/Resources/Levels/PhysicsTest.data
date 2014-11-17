@@ -119,10 +119,6 @@ Level =
 		CharacterController = 
 		{
 		},
-    Josh = 
-		{
-      string OHai = "Sagnik",
-		},
 		SphereCollider = 
 		{
 			bool Ghost = false,

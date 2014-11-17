@@ -30,6 +30,7 @@ namespace Framework
     gameObject->Camera = nullptr;
   }
 
+  /*
   void Camera::OnKeyPressed (KeyEvent* key)
   {
     float camSpeed = 0.25f;
@@ -62,12 +63,12 @@ namespace Framework
     default:
       break;
     }
-  }
+  }*/
 
 
   void Camera::Initialize ()
   {
-    EVENTSYSTEM->mConnect <KeyEvent, Camera> (Events::KEY_ANY, this, &Camera::OnKeyPressed);
+    //EVENTSYSTEM->mConnect <KeyEvent, Camera> (Events::KEY_ANY, this, &Camera::OnKeyPressed);
     gameObject->Camera = this;
     allCameras.push_back(this);
     if (mainCamera)

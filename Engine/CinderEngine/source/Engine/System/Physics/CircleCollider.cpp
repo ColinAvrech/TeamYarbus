@@ -66,11 +66,13 @@ namespace Framework
 		float dist = Physics::Distance(pos, cpos);
 		if (rad >= dist)
 		{
+			if (gameObject->FireStarter)
+				std::cout << "Sparked!" << std::endl;
 			glm::vec3 normalVec = gameObject->Transform->GetPosition() -
 				c->gameObject->Transform->GetPosition();
 			float penetration = rad - dist;
 			glm::normalize(normalVec);
-			BodyContact contact(gameObject->RigidBody, c->gameObject->RigidBody,
+			BodyContact contact(gameObject, c->gameObject,
 				normalVec, penetration);
 			Physics::PHYSICSSYSTEM->addContact(&contact);
 
@@ -94,7 +96,7 @@ namespace Framework
 				p->gameObject->Transform->GetPosition());
 			glm::normalize(normalVec);
 
-			BodyContact contact(gameObject->RigidBody, p->gameObject->RigidBody,
+			BodyContact contact(gameObject, p->gameObject,
 				normalVec, penetration);
 			//CollisionEvent collision;
 			//collision.OtherObject = p->gameObject;
@@ -124,7 +126,7 @@ namespace Framework
 		penetration = Physics::CirclevsLine(rad, pos, l);
 		if (penetration >= 0)
 		{
-			BodyContact contact(gameObject->RigidBody, nullptr,
+			BodyContact contact(gameObject, nullptr,
 				l->normalVec, penetration);
 			Physics::PHYSICSSYSTEM->addContact(&contact);
 			//CollisionEvent collision;

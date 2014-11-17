@@ -103,7 +103,7 @@ int main (void)
 
 
   //! activate the window.
-  OBJECTSYSTEM->LoadLevel("PhysicsTest");
+  OBJECTSYSTEM->LoadLevel("FireStarter");
 
 
   // Connect example
