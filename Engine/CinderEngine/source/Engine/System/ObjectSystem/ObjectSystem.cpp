@@ -16,6 +16,8 @@ deleted.
 #include "FountainEffect.h"
 #include "Terrain2D.h"
 #include "Tree2D.h"
+#include "FireStarter.h"
+#include "Microphone.h"
 
 namespace Framework
 {
@@ -57,7 +59,7 @@ namespace Framework
 
 
   /*!Deletes all objects int eh ObjectsToBeDelted List.*/
-  void ObjectSystem::Update(const double dt)
+  void ObjectSystem::Update(const double &dt)
   {
     DestroyGameObjectsToBeDestroyed();
 
@@ -79,19 +81,21 @@ namespace Framework
   {
     RegisterComponent(Transform);
     RegisterComponent(Sprite);
-    RegisterComponent (Camera);
+    RegisterComponent(Camera);
     RegisterComponent(CharacterController);
     RegisterComponent(RigidBody);
-    RegisterComponent (FountainEffect);
-    RegisterComponent (Terrain2D);
-    RegisterComponent (Tree2D);
+    RegisterComponent(FountainEffect);
+    RegisterComponent(Terrain2D);
+    RegisterComponent(Tree2D);
+	RegisterComponent(FireStarter);
+	RegisterComponent(Microphone);
     //RegisterComponent (SplineCollider);
     AddComponentCreator ("SplineCollider", new ComponentCreatorType<SplineCollider> ("SplineCollider"));
     AddComponentCreator("SphereCollider", new ComponentCreatorType<CircleCollider>("SphereCollider"));
     AddComponentCreator("BoxCollider", new ComponentCreatorType<LineCollider>("BoxCollider"));
   }
 
-  void ObjectSystem::AddComponentCreator(std::string name, ComponentCreator* creator)
+  void ObjectSystem::AddComponentCreator(string name, ComponentCreator* creator)
   {
     SerialMap[name] = creator;
   }
@@ -116,7 +120,7 @@ namespace Framework
 
   }
 
-  void ObjectSystem::LoadLevel(std::string level)
+  void ObjectSystem::LoadLevel(string level)
   {
     DestroyAllObjects();
 
@@ -169,7 +173,7 @@ namespace Framework
           ct = ct->next;
         }
 
-        ErrorIf (newobj->Transform == nullptr, (std::string ("Transform component missing on GameObject ") + newobj->Name).c_str());
+        ErrorIf (newobj->Transform == nullptr, (string ("Transform component missing on GameObject ") + newobj->Name).c_str());
         GameObjects[newobj->GameObjectID] = newobj;
       }
       it = it->next;
@@ -177,7 +181,7 @@ namespace Framework
   }
 
   //Private function to create and serilize a component
-  void ObjectSystem::SerializeComponent(std::string ComponentName, Serializer::DataNode* data)
+  void ObjectSystem::SerializeComponent(string ComponentName, Serializer::DataNode* data)
   {
 
 

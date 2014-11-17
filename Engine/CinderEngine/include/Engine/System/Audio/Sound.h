@@ -122,7 +122,7 @@ namespace Framework
       void            Stop();
       void            PlayNew();
       void            AddSound(char* filename);
-      virtual void    Update(const double dt);
+      virtual void    Update(const double &dt);
       void            UpdateVolumeFade(const double dt);
 
       // DSP
@@ -163,9 +163,9 @@ namespace Framework
       bool            GetPaused();
       float           GetVolume();   
       unsigned        GetTime();
-      float*          GetVolumePtr();
       unsigned        GetID(){return ID;}
-      std::string     GetSoundName(){return _soundName;}
+      string     GetSoundName(){ return _soundName;}
+      float*          GetVolumePtr();
 
       inline FMOD::Channel* Get_Channel() {return pChannel;}
       inline FMOD::DSP*     Get_LPF ()    {return objects_DSP.dsp_lpf;}
@@ -232,7 +232,7 @@ namespace Framework
       FMOD::Channel                 *pChannel;
       FMOD::ChannelGroup            *pChannelGroup;
       FMOD::System                  *pFMODAudioSystem;
-      std::string                   _soundName;      
+      string                   _soundName;      
       FMOD_VECTOR                   _position;
       float                         _CutOffCounter;
       float                         _BandwidthCounter;

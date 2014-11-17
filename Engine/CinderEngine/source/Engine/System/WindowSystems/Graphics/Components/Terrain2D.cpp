@@ -53,6 +53,12 @@ namespace Framework
 
     value = data->FindElement (data, "Waves");
     value->GetValue (&Waves);
+
+    value = data->FindElement(data, "Water");
+    value->GetValue(&WaterDepth);
+
+    value = data->FindElement(data, "AddCollider");
+    value->GetValue(&AddCollider);
   }
 
   void Terrain2D::Initialize ()
@@ -112,7 +118,7 @@ namespace Framework
 
   void Terrain2D::Generate_Height_Points ()
   {
-    tc = new Procedural::TerrainCreator (MapSize, MapSize, BaseHeight, Passes, Waves, PeakHeight);
+    tc = new Procedural::TerrainCreator (MapSize, MapSize, BaseHeight, Passes, Waves, PeakHeight, WaterDepth);
     Procedural::TerrainCreator& t = *tc;
     int** Map = t.GetMap ();
 

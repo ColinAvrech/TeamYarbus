@@ -48,7 +48,7 @@ namespace Framework
     glm::mat4 viewToProjection;
 
     // The non-base component usees DefineComponentName macro to name component
-    const static std::string Name;
+    const static string Name;
   private:
     const glm::vec3 up;
     glm:: vec2 oldPosition;

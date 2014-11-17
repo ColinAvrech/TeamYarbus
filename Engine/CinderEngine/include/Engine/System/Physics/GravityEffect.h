@@ -36,7 +36,7 @@ namespace Framework
     
 
     // The non-base component uses DefineComponentName macro to name component
-    const static std::string Name;
+    const static string Name;
 
   private:
     

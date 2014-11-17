@@ -61,7 +61,7 @@ namespace Framework
   // Zilch method for adding components to GameObjects
   Component* GameObject::AddComponent(Zilch::String name)
   {
-    std::string stdname = name.c_str();
+    string stdname = name.c_str();
       ErrorIf(Components.find(stdname) != Components.end(), "COMPONENT CREATED TWICE ON SAME OBJECT");
     if (OBJECTSYSTEM->SerialMap.find(stdname) != OBJECTSYSTEM->SerialMap.end())
     {
@@ -78,7 +78,7 @@ namespace Framework
     }
   }
 
-  Component* GameObject::AddComponent(std::string name)
+  Component* GameObject::AddComponent(string name)
   {
     ErrorIf(Components.find(name) != Components.end(), "COMPONENT CREATED TWICE ON SAME OBJECT");
     if (OBJECTSYSTEM->SerialMap.find(name) != OBJECTSYSTEM->SerialMap.end())
@@ -97,13 +97,13 @@ namespace Framework
 
   Component* GameObject::AddZilchComponent(Zilch::String name)
   {
-    std::string stdname = name.c_str();
+    string stdname = name.c_str();
 
     //not sure about error handling
     Component* zc = new ZilchComponent(stdname);
     return zc;
   }
-  Component* GameObject::AddZilchComponent(std::string name)
+  Component* GameObject::AddZilchComponent(string name)
   {
     //not sure about error handling
     Component* zc = new ZilchComponent(name);
@@ -111,7 +111,7 @@ namespace Framework
     return zc;
   }
 
-  Component* GameObject::GetComponent(std::string component)
+  Component* GameObject::GetComponent(string component)
   {
     ComponentMap::iterator it = Components.find(component);
     if (it == Components.end())

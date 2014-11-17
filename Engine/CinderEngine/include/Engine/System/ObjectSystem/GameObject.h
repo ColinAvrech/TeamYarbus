@@ -38,14 +38,17 @@ factory in the next loop.
 #include "IncludeForAllCollision.h"
 #include "CharacterController.h"
 #include "Zilch.hpp"
+//#include "FireStarter.h"
+//#include "Microphone.h"
 
 namespace Framework
 {
   class Component;
-  
+  class FireStarter;
+  class Microphone;
+
   class GameObject
   {
-
   public:
     ZilchDeclareBaseType(GameObject, Zilch::TypeCopyMode::ReferenceType);
 
@@ -55,16 +58,16 @@ namespace Framework
 
     // Adding Components
     Component* AddComponent(Zilch::String name);
-    Component* AddComponent(std::string name);
+    Component* AddComponent(string name);
 
     Component* AddZilchComponent(Zilch::String name);
-    Component* AddZilchComponent(std::string name);
+    Component* AddZilchComponent(string name);
 
-    Component* GetComponent(std::string component);
+    Component* GetComponent(string component);
 
 
     //Public Variables
-    std::string Name;
+    string Name;
     GameObject* Parent;
     const unsigned GameObjectID;
 
@@ -72,14 +75,16 @@ namespace Framework
     //Components
     ComponentPointer(Transform);
     ComponentPointer(Sprite);
-	  ComponentPointer(ShapeCollider);
+	ComponentPointer(ShapeCollider);
     ComponentPointer(Camera);
     ComponentPointer(RigidBody);
     ComponentPointer(CharacterController);
+	ComponentPointer(FireStarter);
+	ComponentPointer(Microphone);
 
   private:
 
-    typedef std::map<std::string, Component *> ComponentMap;
+    typedef std::map<string, Component *> ComponentMap;
     ComponentMap Components;
 
   };

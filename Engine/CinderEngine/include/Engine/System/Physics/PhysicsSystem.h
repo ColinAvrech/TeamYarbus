@@ -21,7 +21,7 @@ namespace Framework
     class PhysicsSystem : public BaseSystem
     {
     public:
-	const std::string GetName(){ return "PhysicsSystem"; }
+	const string GetName(){ return "PhysicsSystem"; }
 	  //Step f(x)
 	  bool AdvanceStep;
 	  bool StepModeActive;
@@ -38,7 +38,7 @@ namespace Framework
       ~PhysicsSystem(){};
 
       bool Initialize(void);
-	  virtual void Update(const double dt);
+	  virtual void Update(const double& dt);
 	  void addContact(BodyContact* contact);
 
 	  //Containers

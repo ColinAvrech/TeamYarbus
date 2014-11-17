@@ -54,7 +54,7 @@ namespace Framework
     virtual void Initialize ();
 
     virtual void Serialize (Serializer::DataNode* data);
-    const static std::string Name;
+    const static string Name;
   };
 }
 

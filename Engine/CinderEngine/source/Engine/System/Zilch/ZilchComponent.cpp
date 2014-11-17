@@ -11,7 +11,7 @@ namespace Framework
   }
 
   //CONSTRUCTOR
-  ZilchComponent::ZilchComponent(std::string& name)
+  ZilchComponent::ZilchComponent(string& name)
   {
     ZilchClassName = new Zilch::String(name.c_str());
   }

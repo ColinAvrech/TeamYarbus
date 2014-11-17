@@ -22,7 +22,7 @@ namespace Framework
   ~Renderer ();
   
   // The non-base component usees DefineComponentName macro to name component
-  const static std::string Name;
+  const static string Name;
   private:
 
   };  

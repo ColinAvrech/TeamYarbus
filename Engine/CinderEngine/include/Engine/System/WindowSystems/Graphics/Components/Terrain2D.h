@@ -34,13 +34,15 @@ namespace Framework
   void Generate_Edges ();
   void Generate_Vertices ();
   void Generate_Buffers ();
-  const static std::string Name;
+  const static string Name;
 
   private:
     int MapSize;
     int BaseHeight;
     int Passes;
     int Waves;
+    int WaterDepth;
+    bool AddCollider;
     Procedural::TerrainCreator* tc;
 
     VAO* vao;

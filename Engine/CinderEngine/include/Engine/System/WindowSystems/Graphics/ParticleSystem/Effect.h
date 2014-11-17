@@ -47,7 +47,7 @@ namespace Framework
     virtual int numAllParticles () = 0;
     virtual int numAliveParticles () = 0;
 
-    const static std::string Name;
+    const static string Name;
   };
 
   class EffectFactory

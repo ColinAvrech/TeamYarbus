@@ -30,6 +30,7 @@ namespace Framework
     gameObject->Camera = nullptr;
   }
 
+  /*
   void Camera::OnKeyPressed (KeyEvent* key)
   {
     float camSpeed = 0.25f;
@@ -62,12 +63,12 @@ namespace Framework
     default:
       break;
     }
-  }
+  }*/
 
 
   void Camera::Initialize ()
   {
-    EVENTSYSTEM->mConnect <KeyEvent, Camera> (Events::KEY_ANY, this, &Camera::OnKeyPressed);
+    //EVENTSYSTEM->mConnect <KeyEvent, Camera> (Events::KEY_ANY, this, &Camera::OnKeyPressed);
     gameObject->Camera = this;
     allCameras.push_back(this);
     if (mainCamera)
@@ -95,8 +96,10 @@ namespace Framework
     // Main?
     mainCamera = data->value_.Bool_;
 
-    Serializer::DataNode* value = data->FindElement(data, "Facing");
-    value->GetValue(&viewDirection);
+	Serializer::DataNode* value;// = data->FindElement(data, "Facing");
+	//value->GetValue(&viewDirection);
+
+	viewDirection = { 0, 0, 1 };
 
     value = data->FindElement(data, "FieldOfView");
     value->GetValue(&fov);

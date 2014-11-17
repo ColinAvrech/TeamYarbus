@@ -21,12 +21,12 @@
 #define KeyEventPrefix 'K'
 #define GameEventPrefix 'G'
 
-//#define DeclareEvent(Name) namespace Events { static const std::string Name(#Name); }
-#define DeclareEvent(Name, String) namespace Events { static const std::string Name(#String); }
+//#define DeclareEvent(Name) namespace Events { static const string Name(#Name); }
+#define DeclareEvent(Name, String) namespace Events { static const string Name(#String); }
 
 namespace Framework
 {
-  std::string CollisionEventName (unsigned GameObjectID);
+  string CollisionEventName (unsigned GameObjectID);
 
   /*********************************************/
   // Input
