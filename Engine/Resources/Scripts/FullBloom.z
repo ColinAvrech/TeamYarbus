@@ -4,15 +4,18 @@ class Josh : Component
   
   var OHai : String = "";
   var Obj:GameObject = null;
+  var ObjectSys:ObjectSystem = null;
   
   
-  constructor() : base(this)
+  constructor() : base()
   {
 	Console.WriteLine("SASA");
+	
   }
   
-  function Initialize()
+  function Initialize(objectSystem:ObjectSystem)
   {
+	this.ObjectSys = objectSystem;
 	//Cinder2.Connect(this, Events.UpdateEvent, this.LogicUpdate);
 	//var obj : GameObject = Cinder.objsys.CreateObject();
 	//Console.Writeline(obj);
@@ -20,9 +23,20 @@ class Josh : Component
 	//Console.WriteLine(new Player());
 	//Console.WriteLine(this.Owner);
 	
+	Console.WriteLine(this);
+	Console.WriteLine("hello");
+	var gameobject = this.ObjectSys.CreateObject();
+	
+	gameobject.AddComponent("Transform");
+	Console.WriteLine(gameobject.Transform);
+	gameobject.AddComponent("Sprite");
+	gameobject.Sprite.LoadSprite("Env.png", "Default");
+	gameobject.Sprite.Initialize();
+	Console.WriteLine(gameobject.Sprite);
 	
 	
-	Console.WriteLine(this.GetOwner());
+	
+	//Console.WriteLine();
   }
  
   function LogicUpdate(e: UpdateEvent)

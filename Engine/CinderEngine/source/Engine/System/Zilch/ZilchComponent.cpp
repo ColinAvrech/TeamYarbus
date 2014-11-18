@@ -1,5 +1,6 @@
 #include "ScriptComponent.h"
 #include "ZilchCompiledLib.h"
+#include "ObjectSystem.h"
 
 #pragma warning(disable:4413)
 
@@ -8,6 +9,7 @@ namespace Framework
 
   ZilchDefineType(ZilchComponent, CinderZilch)
   {
+	  type->HandleManager = ZilchManagerId(Zilch::PointerManager);
   }
 
   //CONSTRUCTOR
@@ -33,7 +35,7 @@ namespace Framework
 
     //Create an array of arguments
     Zilch::Array<Zilch::Type*> args;
-
+	args.push_back(ZilchTypeId(ObjectSystem*));
     //Find the Initialize function
     // We pass in an array of types to specify the arguments we want, in this case its an empty array
     // We also pass in the void type because we don't expect a return value
@@ -53,12 +55,16 @@ namespace Framework
     Zilch::ExecutableState* state = ZILCH->GetDependencies();
     bob = state->AllocateDefaultConstructedHeapObject(ZilchClass, report, Zilch::HeapFlags::NonReferenceCounted);
 
+	this->gameObject = (GameObject*)0x12345678;
+
     {
       // Invoke the SayHello function, which should print out to the console
       Zilch::Call call(ZilchInitialize, ZILCH->GetDependencies());
       call.SetHandle(Zilch::Call::This, bob);
       //call.Set<Zilch::String>(0, ohai.c_str());
       //call.SetHandle(1, engineHandle);
+	  call.SetHandle(0, OBJECTSYSTEM);
+	  auto t = this->GetOwner();
       call.Invoke(report);
     }
   }

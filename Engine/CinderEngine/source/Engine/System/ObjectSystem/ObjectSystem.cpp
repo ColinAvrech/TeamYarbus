@@ -28,8 +28,9 @@ namespace Framework
 
   ZilchDefineType(ObjectSystem, CinderZilch)
   {
+	type->HandleManager = ZilchManagerId(Zilch::PointerManager);
     ZilchBindMethod(CreateObject);
-
+	//ZilchBindMethod(LoadLevel);
     //ZilchBindConstructor(Transform);
     //ZilchBindMethodOverload(Scale, void, float, float, float);
     //ZilchBindMethodOverload(Scale, void, float);
@@ -168,6 +169,7 @@ namespace Framework
             newcomp = newobj->AddZilchComponent(ct->objectName);
             newcomp->gameObject = newobj;
             newcomp->Serialize(ct->branch);
+
             //newcomp->Initialize();
           }
           ct = ct->next;

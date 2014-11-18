@@ -12,6 +12,10 @@ namespace Framework
 
   ZilchDefineType(Sprite, CinderZilch)
   {
+	  type->HandleManager = ZilchManagerId(Zilch::PointerManager);
+	  ZilchBindConstructor();
+	  ZilchBindMethod(Initialize);
+	  ZilchBindMethod(LoadSprite);
   }
 
   VAO* Sprite::vao;
@@ -39,6 +43,17 @@ namespace Framework
 	  animated = false;
   }
 
+  //JOSH
+  void Sprite::LoadSprite(Zilch::String texturename, Zilch::String shadername)
+  {
+	  string stdname = texturename.c_str();
+	  string stdshader = shadername.c_str();
+
+	  texture = Resources::RS->Get_Texture(stdname);
+	  shader = Resources::RS->Get_Shader(stdshader);
+	  animated = false;
+
+  }
 
   void Sprite::Initialize ()
   {

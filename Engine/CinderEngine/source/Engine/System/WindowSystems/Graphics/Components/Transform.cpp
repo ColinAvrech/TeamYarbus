@@ -22,11 +22,13 @@ namespace Framework
 
   ZilchDefineType(Transform, CinderZilch)
   {
-    ZilchBindConstructor(Transform);
+	type->HandleManager = ZilchManagerId(Zilch::PointerManager);
+    ZilchBindConstructor();
     ZilchBindMethodOverload(Scale, void, float, float, float);
     ZilchBindMethodOverload(Scale, void, float);
 	ZilchBindMethodOverload(Translate, void, float, float, float);
     ZilchBindMethod(Rotate);
+	//ZilchBindMethod(GetScreenPosition);
   }
 
   Transform::~Transform ()
@@ -151,6 +153,7 @@ namespace Framework
     return glm::vec2 (GetModelViewProjectionMatrix () [3][0] / GetModelViewProjectionMatrix () [3][3],
       GetModelViewProjectionMatrix () [3][1] / GetModelViewProjectionMatrix () [3][3]);
   }
+ 
 
   //GLSL
   void Transform::UpdateMatrices()

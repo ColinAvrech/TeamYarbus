@@ -66,7 +66,7 @@ int main (void)
   //! Create the core engine which manages all systems.
   CoreEngine * engine = new CoreEngine ();
   Physics::ThermodynamicsSystem * thermo = new Physics::ThermodynamicsSystem ();
-  WindowSystem * windows = new WindowSystem (WindowTitle, ClientWidth, ClientHeight);
+  WindowSystem * windows = new WindowSystem (WindowTitle, ClientWidth, ClientHeight, false);
   AudioSystem* audio = new AudioSystem ();
   EventSystem * events = new EventSystem ();
   ScriptSystem * zilch = new ScriptSystem();
@@ -103,7 +103,7 @@ int main (void)
 
 
   //! activate the window.
-  OBJECTSYSTEM->LoadLevel("FireStarter");
+  OBJECTSYSTEM->LoadLevel("ZilchTestLevel");
 
 
   // Connect example
