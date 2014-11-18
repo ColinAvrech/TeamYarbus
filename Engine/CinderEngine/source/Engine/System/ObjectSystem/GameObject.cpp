@@ -69,7 +69,7 @@ namespace Framework
       Component* gc = OBJECTSYSTEM->SerialMap[stdname]->Create();
       Components[stdname] = gc;
       gc->gameObject = this;
-      gc->Initialize();
+      //gc->Initialize();
       return gc;
     }
     else
