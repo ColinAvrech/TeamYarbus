@@ -23,7 +23,7 @@ class Josh : Component
 	//Console.Writeline(obj);
 	//Console.WriteLine(new Player());
 	//Console.WriteLine(this.Owner);
-	EventSystem.Connect("KW", this.KeyIsPressed);
+	EventSystem.Connect("KUP", this.KeyIsPressed);
 	Console.WriteLine(this);
 	Console.WriteLine("hello");
 	var gameobject = this.ObjectSys.CreateObject();
@@ -55,8 +55,8 @@ class Josh : Component
   
   function KeyIsPressed(e: KeyEvent)
   {
-	Console.WriteLine(e);
-	this.SpawnedObject.Transform.Translate(0.1,0,0);
+	//Console.WriteLine(e);
+	this.SpawnedObject.Transform.Translate(0.0,0.1,0);
   }
  
 }

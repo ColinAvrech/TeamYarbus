@@ -30,45 +30,45 @@ namespace Framework
     gameObject->Camera = nullptr;
   }
 
-  /*
+
   void Camera::OnKeyPressed (KeyEvent* key)
   {
     float camSpeed = 0.25f;
     float zoomSpeed = 0.1f;
     if (key->KeyDown)
-    switch (key->KeyValue)
+      switch (key->KeyValue)
     {
-    case GLFW_KEY_A:
-      Camera::main->gameObject->Transform->Translate (-camSpeed, 0, 0);
-      Camera::main->matricesReady = false;
-      break;
-    case GLFW_KEY_D:
-      Camera::main->gameObject->Transform->Translate (camSpeed, 0, 0);
-      Camera::main->matricesReady = false;
-      break;
-    case GLFW_KEY_S:
-      Camera::main->gameObject->Transform->Translate (0, -camSpeed, 0);
-      Camera::main->matricesReady = false;
-      break;
-    case GLFW_KEY_W:
-      Camera::main->gameObject->Transform->Translate (0, camSpeed, 0);
-      Camera::main->matricesReady = false;
-      break;
-    case GLFW_KEY_Z:
-      Camera::main->Zoom (zoomSpeed);
-      break;
-    case GLFW_KEY_X:
-      Camera::main->Zoom (-zoomSpeed);
-      break;
-    default:
-      break;
+      case GLFW_KEY_A:
+        Camera::main->gameObject->Transform->Translate (-camSpeed, 0, 0);
+        Camera::main->matricesReady = false;
+        break;
+      case GLFW_KEY_D:
+        Camera::main->gameObject->Transform->Translate (camSpeed, 0, 0);
+        Camera::main->matricesReady = false;
+        break;
+      case GLFW_KEY_S:
+        Camera::main->gameObject->Transform->Translate (0, -camSpeed, 0);
+        Camera::main->matricesReady = false;
+        break;
+      case GLFW_KEY_W:
+        Camera::main->gameObject->Transform->Translate (0, camSpeed, 0);
+        Camera::main->matricesReady = false;
+        break;
+      case GLFW_KEY_Z:
+        Camera::main->Zoom (zoomSpeed);
+        break;
+      case GLFW_KEY_X:
+        Camera::main->Zoom (-zoomSpeed);
+        break;
+      default:
+        break;
     }
-  }*/
+  }
 
 
   void Camera::Initialize ()
   {
-    //EVENTSYSTEM->mConnect <KeyEvent, Camera> (Events::KEY_ANY, this, &Camera::OnKeyPressed);
+    EVENTSYSTEM->mConnect <KeyEvent, Camera> (Events::KEY_ANY, this, &Camera::OnKeyPressed);
     gameObject->Camera = this;
     allCameras.push_back(this);
     if (mainCamera)
