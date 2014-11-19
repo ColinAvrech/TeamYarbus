@@ -21,6 +21,7 @@ namespace Framework
 		ZilchBindMethod(GetAnimationSpeed);
 		ZilchBindMethod(Initialize);
 		ZilchBindMethod(LoadSprite);
+		ZilchBindFieldGetAs(texture, "Texture");
 	}
 
 	VAO* Sprite::vao;

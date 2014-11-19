@@ -3,6 +3,7 @@
 
 #include "GraphicsCommon.h"
 #include "SOIL2.h"
+#include "ZilchCompiledLib.h"
 
 namespace Framework
 {
@@ -11,6 +12,7 @@ namespace Framework
   class Texture
   {
   public:
+	ZilchDeclareBaseType(Texture, Zilch::TypeCopyMode::ReferenceType);
     Texture ();
     Texture (const char* filename);
     ~Texture ();
@@ -24,6 +26,8 @@ namespace Framework
     void Release_Texture ();
     void Image2D (GLenum format, int w, int h, int border, GLenum type, const void* pixels);
 
+
+	Zilch::String Name;
   protected:
     GLuint textureID;
     int width;

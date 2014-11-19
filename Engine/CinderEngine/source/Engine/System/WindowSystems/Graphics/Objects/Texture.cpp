@@ -5,7 +5,11 @@
 
 namespace Framework
 {
-
+	ZilchDefineType(Texture, CinderZilch)
+	{
+		type->HandleManager = ZilchManagerId(Zilch::PointerManager);
+		ZilchBindFieldGet(Name);
+	}
   // DEFAULT CONSTRUCTOR
   // WILL BE USE TO DYNAMICALLY GENERATE TEXTURE (FRAME BUFFER)
   Texture::Texture ()
@@ -36,6 +40,7 @@ namespace Framework
   void Texture::Load_Texture (const char* filename)
   {
     string file = filename;
+	Name = Zilch::String(file.c_str());
     bool hasAlpha = false;
     unsigned pos = file.find_last_of ('.');
     string format = file.substr (pos + 1, file.size () - 1);
