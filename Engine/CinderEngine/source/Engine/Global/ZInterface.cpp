@@ -27,7 +27,6 @@ namespace Framework
 
 		ZilchBindStaticMethod(OpenFile);
 		
-		
 	}
 
 	ZilchFile* ZInterface::OpenFile(Zilch::String filepath)
@@ -35,7 +34,8 @@ namespace Framework
 		ifstream myfile;
 
 		myfile.open(filepath.c_str(), std::ios::out);
-		//ErrorIf(dataFile.is_open() == false, "Could not open Level File");
+		
+		ErrorIf(myfile.is_open() == false, "Could not open Level File");
 		/*Zilch::Array<Zilch::String>* returnfile = new Zilch::Array<Zilch::String>;
 		if (myfile.is_open())
 		{
@@ -75,7 +75,7 @@ namespace Framework
 	{
 		if (int(line) > Data.size() - 1)
 		{
-			return Zilch::String("NULL");
+			return Zilch::String('\0');
 		}
 
 		return Zilch::String(Data.at(line).c_str());
