@@ -27,6 +27,13 @@ namespace Framework
 	VBO* Sprite::vbo;
 	EBO* Sprite::ebo;
 
+	Sprite::Sprite()
+	{
+		texture = Resources::RS->Get_Texture("Default");
+		shader = Resources::RS->Get_Shader("Default");
+		animated = false;
+	}
+
 	void Sprite::Serialize(Serializer::DataNode* data)
 	{
 		//////////////////////////////////////////////////////////////////////////
@@ -66,6 +73,7 @@ namespace Framework
 
 	void Sprite::Initialize()
 	{
+
 		IGraphicsObject::Register();
 		gameObject->Sprite = this;
 
@@ -109,6 +117,7 @@ namespace Framework
 	{
 		gameObject->Sprite = nullptr;
 		IGraphicsObject::Deregister();
+		
 		if (vao != nullptr)
 		{
 			delete vao;

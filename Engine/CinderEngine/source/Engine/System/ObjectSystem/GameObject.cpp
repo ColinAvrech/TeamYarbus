@@ -15,6 +15,7 @@
 #include "Component.h"
 #include "Zilch.hpp"
 
+#include "Sprite.h"
 namespace Framework
 {
   GameObject* Component::GetOwner() { return gameObject; }
@@ -25,6 +26,7 @@ namespace Framework
 	
 	ZilchBindConstructor();
     ZilchBindMethod(GetOwner);	
+	ZilchBindMethod(Initialize);
   }
 
   ZilchDefineType(GameObject, CinderZilch)
@@ -69,7 +71,7 @@ namespace Framework
       Component* gc = OBJECTSYSTEM->SerialMap[stdname]->Create();
       Components[stdname] = gc;
       gc->gameObject = this;
-      //gc->Initialize();
+      gc->Initialize();
       return gc;
     }
     else

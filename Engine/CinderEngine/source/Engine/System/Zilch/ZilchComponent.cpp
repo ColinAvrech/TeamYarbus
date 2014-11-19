@@ -55,6 +55,7 @@ namespace Framework
     Zilch::ExecutableState* state = ZILCH->GetDependencies();
     bob = state->AllocateDefaultConstructedHeapObject(ZilchClass, report, Zilch::HeapFlags::NonReferenceCounted);
 
+	//Trevor touched this stuff
 	this->gameObject = (GameObject*)0x12345678;
 
     {

@@ -100,15 +100,15 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [-0.0543478, -3.2337, -0.001],
-			Vec3 Scale = [28.6523, 1, 1],
+			Vec3 Translation = [0, 0, -1],
+			Vec3 Scale = [1, 1, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Sprite = 
 		{
-			string SpriteSource = "Env.png",
+			string SpriteSource = "EnvHighRes.png",
 			string Shader = "Default",
-			Vec4 Color = [1, 1, 1, 1],
+			Vec4 Color = [1, 1,	 1, 1],
 		},
 		Josh = 
 		{

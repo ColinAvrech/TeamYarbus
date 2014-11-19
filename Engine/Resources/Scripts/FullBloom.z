@@ -27,14 +27,12 @@ class Josh : Component
 	Console.WriteLine("hello");
 	var gameobject = this.ObjectSys.CreateObject();
 	Console.WriteLine("GAMEOBJECT");
-	var newtrans = gameobject.AddComponent("Transform");
+	gameobject.AddComponent("Transform");
 	Console.WriteLine("COMPONENTT");
-	newtrans.Initialize();
 	//gameobject.Transform;
 	Console.WriteLine(gameobject.Transform);
-	var newsprite = gameobject.AddComponent("Sprite") as any as Sprite;
-	newsprite.LoadSprite("Env.png", "Default");
-	newsprite.Initialize();
+	gameobject.AddComponent("Sprite");
+	//newsprite.LoadSprite("Env.png", "Default");
 	Console.WriteLine(gameobject.Sprite);
 	
 	Console.WriteLine("ASDADAD");

@@ -27,7 +27,7 @@ namespace Framework
   public:
     ZilchDeclareBaseType(Sprite, Zilch::TypeCopyMode::ReferenceType);
 
-    Sprite () {}
+	Sprite();
     virtual ~Sprite();
 
     virtual void Initialize ();
