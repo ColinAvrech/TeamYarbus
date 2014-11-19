@@ -12,6 +12,7 @@
 
 namespace Framework
 {
+	ObjectSystem* ZInterface::ObjectSys = OBJECTSYSTEM;
 	ZilchDefineType(ZilchFile, CinderZilch)
 	{
 		type->HandleManager = ZilchManagerId(Zilch::PointerManager);
@@ -26,6 +27,8 @@ namespace Framework
 		type->HandleManager = ZilchManagerId(Zilch::PointerManager);
 
 		ZilchBindStaticMethod(OpenFile);
+		ZilchBindStaticFieldGet(ObjectSys);
+		
 		
 	}
 
@@ -73,7 +76,7 @@ namespace Framework
 
 	Zilch::String ZilchFile::ReadLine(Zilch::Integer line)
 	{
-		if (int(line) > Data.size() - 1)
+		if (line > Data.size() - 1)
 		{
 			return Zilch::String('\0');
 		}

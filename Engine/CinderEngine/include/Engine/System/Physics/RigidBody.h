@@ -18,6 +18,7 @@ namespace Framework
 	class RigidBody : public Component
 	{
 	public:
+		ZilchDeclareBaseType(RigidBody, Zilch::TypeCopyMode::ReferenceType);
 		// The non-base component uses DefineComponentName macro to name component
 		enum DynamicState
 		{
@@ -59,6 +60,7 @@ namespace Framework
 		void Serialize(Serializer::DataNode* data) override;
 		void Update();
 		void AddForce(vec3 force);
+		void ApplyForce(Zilch::Real3 force);
 		void Integrate(const float dt);
 		void SetPosition(vec3);
 		void SetVelocity(vec3);

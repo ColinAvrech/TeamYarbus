@@ -35,7 +35,8 @@ namespace Framework
 
     //Create an array of arguments
     Zilch::Array<Zilch::Type*> args;
-	args.push_back(ZilchTypeId(ObjectSystem*));
+	//args.push_back(ZilchTypeId(ObjectSystem*));
+	args.push_back(ZilchTypeId(GameObject*));
     //Find the Initialize function
     // We pass in an array of types to specify the arguments we want, in this case its an empty array
     // We also pass in the void type because we don't expect a return value
@@ -54,9 +55,9 @@ namespace Framework
     Zilch::Handle bob;
     Zilch::ExecutableState* state = ZILCH->GetDependencies();
     bob = state->AllocateDefaultConstructedHeapObject(ZilchClass, report, Zilch::HeapFlags::NonReferenceCounted);
-
+	
 	//Trevor touched this stuff
-	this->gameObject = (GameObject*)0x12345678;
+	//this->gameObject = (GameObject*)0x12345678;
 
     {
       // Invoke the SayHello function, which should print out to the console
@@ -64,8 +65,10 @@ namespace Framework
       call.SetHandle(Zilch::Call::This, bob);
       //call.Set<Zilch::String>(0, ohai.c_str());
       //call.SetHandle(1, engineHandle);
-	  call.SetHandle(0, OBJECTSYSTEM);
-	  auto t = this->GetOwner();
+	  //call.SetHandle(0, OBJECTSYSTEM);
+	  call.SetHandle(0, gameObject);
+	  //auto t = this->GetOwner();
+	  
       call.Invoke(report);
     }
   }

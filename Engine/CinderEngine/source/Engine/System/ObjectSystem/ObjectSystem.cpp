@@ -30,9 +30,12 @@ namespace Framework
   {
 	type->HandleManager = ZilchManagerId(Zilch::PointerManager);
     ZilchBindMethod(CreateObject);
+	ZilchBindMethod(DestroyAllObjects);
+	ZilchBindMethod(LoadLevelAdditive);
+	ZilchBindMethod(ZilchLoadLevel);
 	//ZilchBindMethod(LoadLevel);
     //ZilchBindConstructor(Transform);
-    //ZilchBindMethodOverload(Scale, void, float, float, float);
+    //ZilchBindMethodOverload(LoadLevel, void, Zilch::String);
     //ZilchBindMethodOverload(Scale, void, float);
     //ZilchBindMethod(Rotate);
   }
@@ -134,6 +137,30 @@ namespace Framework
     //InitializeObject ();
   }
 
+  void ObjectSystem::ZilchLoadLevel(Zilch::String level)
+  {
+	  DestroyAllObjects();
+
+	  Serializer::ZeroSerializer data;
+
+	  data.open(level.c_str());
+	  data.CreateArchive();
+	  Serializer::DataNode* Trunk = data.GetTrunk();
+	  SerializeObject(Trunk);
+	  //InitializeObject ();
+  }
+
+  void ObjectSystem::LoadLevelAdditive(Zilch::String level)
+  {
+	  Serializer::ZeroSerializer data;
+
+	  data.open(level.c_str());
+	  data.CreateArchive();
+	  Serializer::DataNode* Trunk = data.GetTrunk();
+	  SerializeObject(Trunk);
+	  //InitializeObject ();
+  }
+
   //Private function to create and serilize an object
   void ObjectSystem::SerializeObject(Serializer::DataNode* data)
   {
@@ -168,9 +195,9 @@ namespace Framework
           {
             newcomp = newobj->AddZilchComponent(ct->objectName);
             newcomp->gameObject = newobj;
-            newcomp->Serialize(ct->branch);
+            //newcomp->Serialize(ct->branch);
 
-            //newcomp->Initialize();
+            newcomp->Initialize();
           }
           ct = ct->next;
         }

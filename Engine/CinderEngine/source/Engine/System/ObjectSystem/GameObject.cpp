@@ -26,6 +26,7 @@ namespace Framework
 	ZilchBindConstructor();
     ZilchBindMethod(GetOwner);	
 	ZilchBindMethod(Initialize);
+	ZilchBindFieldGetSetAs(gameObject, "Owner");
   }
 
   ZilchDefineType(GameObject, CinderZilch)
@@ -39,7 +40,7 @@ namespace Framework
 	ZilchBindMethodOverload(GetComponent, Component*, Zilch::String);
     //ZilchBindFieldGetSet(ShapeCollider);
     //ZilchBindFieldGetSet(Camera);
-    //ZilchBindFieldGetSet(RigidBody);
+    ZilchBindFieldGet(RigidBody);
     //ZilchBindFieldGetSet(CharacterController);
 
     // 
@@ -113,7 +114,7 @@ namespace Framework
 
     //not sure about error handling
     Component* zc = new ZilchComponent(name);
-    zc->Initialize();
+    //zc->Initialize();
     return zc;
   }
 

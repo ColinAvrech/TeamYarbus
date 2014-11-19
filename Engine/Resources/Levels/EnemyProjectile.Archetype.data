@@ -1,3 +1,5 @@
+
+
 Cog = 
 {
 	LinkId = 
@@ -20,45 +22,12 @@ Cog =
 	},
 	Sprite = 
 	{
-		string SpriteSource = "521dcb7d4d5aca08:EnemyProjectile",
-		bool FlipX = false,
-		bool FlipY = false,
+		string SpriteSource = "Env.png",
+		string Shader = "Default",
 		Vec4 Color = [1, 1, 1, 1],
-		bool Visible = true,
-		bool OnTop = false,
-		bool AnimationActive = true,
-		float AnimationSpeed = 1,
-		uint StartFrame = 0,
-		BlendMode BlendMode = Alpha,
-		SpriteGeometryMode GeometryMode = ZPlane,
 	},
-	BoxCollider = 
+	Josh = 
 	{
-		bool Ghost = false,
-		bool SendsMessages = true,
-		bool Seamless = false,
-		string MaterialName = "4faa6050b8692851:HardMaterial",
-		string SerializedGroupName = "4e740859314e5515:DefaultGroup",
-		Vec3 Offset = [0, 0, 0],
-		Vec3 Size = [0.15, 0.3, 0.5],
-	},
-	Projectile = 
-	{
-		float Speed = 1,
-		Vec3 Direction = [0, 0, 0],
-	},
-	SoundEmitter = 
-	{
-		bool StartPlaying = true,
-		int ExtraPriority = 0,
-		string CueName = "521dd09ccffae3fb:rayGun",
-		float Volume = 1,
-		float Pitch = 1,
-		bool Positional = true,
-	},
-	DamageOnCollide = 
-	{
-		float Damage = 30,
-		bool DestroyOnCollide = true,
+		
 	},
 },

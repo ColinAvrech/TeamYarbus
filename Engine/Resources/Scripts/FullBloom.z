@@ -1,21 +1,23 @@
 class Josh : Component
 {
-  //var Cinder:ScriptSystem = null;
+	//var Owner:GameObject = null;
+	var ObjectSys:ObjectSystem = null;
+	var OHai : String = "";
+	var Obj:GameObject = null;
+
+	var SpawnedObject:GameObject = null;
   
-  var OHai : String = "";
-  var Obj:GameObject = null;
-  var ObjectSys:ObjectSystem = null;
-  var SpawnedObject:GameObject = null;
-  
-  constructor() : base()
-  {
-	Console.WriteLine("SASA");
-	
-  }
-  
-  function Initialize(objectSystem:ObjectSystem)
-  {
-	this.ObjectSys = objectSystem;
+	constructor() : base()
+	{
+
+	}
+
+	function Initialize(owner:GameObject)
+	{
+	this.Owner = owner;
+	//this.ObjectSys
+	Console.WriteLine(owner.Sprite.Texture.Name);
+	//this.ObjectSys = objectSystem;
 	//Cinder2.Connect(this, Events.UpdateEvent, this.LogicUpdate);
 	//Cinder2.Connect(this, Events.KeyEvent, this.KeyIsPressed);
 	//var obj : GameObject = Cinder.objsys.CreateObject();
@@ -26,44 +28,45 @@ class Josh : Component
 	EventSystem.Connect("KUP", this.KeyIsPressed);
 	Console.WriteLine(this);
 	Console.WriteLine("hello");
-	var gameobject = this.ObjectSys.CreateObject();
-	Console.WriteLine("GAMEOBJECT");
-	gameobject.AddComponent("Transform");
-	Console.WriteLine("COMPONENTT");
+	//var gameobject = this.ObjectSys.CreateObject();
+	//Console.WriteLine("GAMEOBJECT");
+	//gameobject.AddComponent("Transform");
+	//Console.WriteLine("COMPONENTT");
 	//gameobject.Transform;
-	Console.WriteLine(gameobject.Transform);
-	gameobject.AddComponent("Sprite");
+	//Console.WriteLine(gameobject.Transform);
+	//gameobject.AddComponent("Sprite");
 	//newsprite.LoadSprite("Env.png", "Default");
-	Console.WriteLine(gameobject.Sprite.Texture.Name);
-	this.SpawnedObject = gameobject;
-	
+	//Console.WriteLine(gameobject.Sprite.Texture.Name);
+	//this.SpawnedObject = gameobject;
+
 	var file:ZilchFile = ZInterface.OpenFile("..//..//Resources//Scripts//test.z");
 	var i = 0;
 	//Console.WriteLine(file.ReadLine(100) == "\0");
-	
+
 	while (file.ReadLine(i) != "\0")
 	{
 		Console.WriteLine(file.ReadLine(i));
 		i += 1;
 	}
-	
-	
-	
-	
+
+
+
+
 	//Console.WriteLine();
-  }
- 
-  function LogicUpdate(e: UpdateEvent)
-  {
+	}
+
+	function LogicUpdate(e: UpdateEvent)
+	{
 	//Console.WriteLine(e.TimePassed);
 	//this.SpawnedObject.Transform.Translate(0,0.1,0);
-  }
-  
-  function KeyIsPressed(e: KeyEvent)
-  {
+	}
+
+	function KeyIsPressed(e: KeyEvent)
+	{
 	//Console.WriteLine(e);
-	this.SpawnedObject.Transform.Translate(0.0,0.1,0);
-  }
+	//this.Owner.Transform.Translate(0.0,0.1,0);
+	this.Owner.RigidBody.ApplyForce(Real3(0,100,0));
+	}
  
 }
 

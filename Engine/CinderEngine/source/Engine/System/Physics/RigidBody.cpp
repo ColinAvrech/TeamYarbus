@@ -16,6 +16,12 @@
 
 namespace Framework
 {
+	ZilchDefineType(RigidBody, CinderZilch)
+	{
+		type->HandleManager = ZilchManagerId(Zilch::PointerManager);
+		ZilchBindMethod(ApplyForce);
+
+	}
 	//Destructor
 	RigidBody::~RigidBody()
 	{
@@ -142,6 +148,11 @@ namespace Framework
 	void RigidBody::AddForce(vec3 force)
 	{
 		accumulatedForce += force;
+	}
+
+	void RigidBody::ApplyForce(Zilch::Real3 force)
+	{
+		accumulatedForce += vec3(float(force.x), float(force.y), float(force.z));
 	}
 
 	DefineComponentName(RigidBody);

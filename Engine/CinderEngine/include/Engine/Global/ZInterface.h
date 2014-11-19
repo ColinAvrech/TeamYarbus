@@ -14,6 +14,7 @@
 #include <fstream>
 #include <string>
 #include "ZilchCompiledLib.h"
+#include "GameObject.h"
 
 using namespace std;
 namespace Framework
@@ -25,7 +26,7 @@ namespace Framework
 		ZilchFile(ifstream* file);
 		~ZilchFile();
 
-
+		
 		Zilch::String ReadLine(Zilch::Integer line);
 
 	private:
@@ -37,6 +38,8 @@ namespace Framework
 	{
 	public:
 		ZilchDeclareBaseType(ZInterface, Zilch::TypeCopyMode::ReferenceType);
+		static ObjectSystem* ObjectSys;
+		
 
 		static ZilchFile* OpenFile(Zilch::String filepath);
 		

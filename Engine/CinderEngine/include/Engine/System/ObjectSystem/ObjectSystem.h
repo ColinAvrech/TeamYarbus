@@ -66,7 +66,8 @@ namespace Framework
     void DestroyGameObjectsToBeDestroyed();
 
     void ObjectSystem::LoadLevel(string level);
-
+	void ObjectSystem::ZilchLoadLevel(Zilch::String level);
+	void ObjectSystem::LoadLevelAdditive(Zilch::String level);
     /*!Used to generator unique GOCIds*/
     static unsigned LastGameObjectId;
 
