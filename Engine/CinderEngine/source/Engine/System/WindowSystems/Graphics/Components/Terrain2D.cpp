@@ -111,7 +111,7 @@ namespace Framework
     shader->Disable ();
   }
 
-  std::vector <std::pair <glm::vec2, glm::vec2>>& Terrain2D::Get_Edges()
+  std::vector <std::pair <vec2, vec2>>& Terrain2D::Get_Edges()
 {
     return edges;
   }

@@ -19,7 +19,7 @@ namespace Framework
 	{
 	private:
 		static const int maxContacts = 256;
-		unsigned numOfContacts;
+		int numOfContacts;
 
 		void ResolvePositions(const float dt);
 		void ResolveVelocities(const float dt);

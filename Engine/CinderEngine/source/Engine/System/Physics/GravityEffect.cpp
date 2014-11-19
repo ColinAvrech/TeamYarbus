@@ -30,7 +30,7 @@ namespace Framework
 		strength = Strength;
 
 		//Direction
-		glm::vec3 Direction;
+		vec3 Direction;
 		temp = data->FindElement(data, "Direction");
 		temp->GetValue(&Active);
 		direction.x = Direction.x;

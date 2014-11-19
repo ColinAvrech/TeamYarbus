@@ -121,18 +121,18 @@ namespace Framework
       //Get Cell Pixel size
       float GetCellSize(){ return CellSize; }
       //Get Map size
-      glm::vec2 GetMapSize(){ return MapSize; }
+      vec2 GetMapSize(){ return MapSize; }
       //Get cell temperature
       float GetCellTemperature(const float& x, const float& y);
       //Get cell oxygen content
       float GetCellOxygen(const float& x, const float& y);
       //Get cell velocity
-      glm::vec2 GetCellVelocity(const float& x, const float& y);
+      vec2 GetCellVelocity(const float& x, const float& y);
 
       // Setters
       void ToggleAutoDissipation();
       float SetCellTemperature(const float& x, const float& y, const float& temp, const double& dt);
-      void SetCellVelocity (const int x, const int y, glm::vec2 v);
+      void SetCellVelocity (const int x, const int y, vec2 v);
 
 #pragma endregion
 
@@ -174,7 +174,7 @@ namespace Framework
       //Automatically equalize pressure over time
       bool EqualizePressure;
       float CellSize;
-      glm::vec2 MapOffset;
+      vec2 MapOffset;
       float AtmosphericTemperature;
 
       //Temperature Map. Temperature is stored in Kelvin.
@@ -223,7 +223,7 @@ namespace Framework
       -----------------------------------------------------------------------*/
 #pragma region Private Functions
       //Determine subscript from position
-      glm::vec2 GetSubscript(const float& x, const float& y);
+      vec2 GetSubscript(const float& x, const float& y);
 #pragma endregion
 
 

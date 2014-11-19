@@ -19,13 +19,13 @@ namespace Framework
     m_count = maxSize;
     m_countAlive = 0;
 
-    m_pos.reset (new glm::vec4 [maxSize]);
-    m_col.reset (new glm::vec4 [maxSize]);
-    m_startCol.reset (new glm::vec4 [maxSize]);
-    m_endCol.reset (new glm::vec4 [maxSize]);
-    m_vel.reset (new glm::vec4 [maxSize]);
-    m_acc.reset (new glm::vec4 [maxSize]);
-    m_time.reset (new glm::vec4 [maxSize]);
+    m_pos.reset (new vec4 [maxSize]);
+    m_col.reset (new vec4 [maxSize]);
+    m_startCol.reset (new vec4 [maxSize]);
+    m_endCol.reset (new vec4 [maxSize]);
+    m_vel.reset (new vec4 [maxSize]);
+    m_acc.reset (new vec4 [maxSize]);
+    m_time.reset (new vec4 [maxSize]);
     m_alive.reset (new bool [maxSize]);
   }
 
@@ -95,7 +95,7 @@ namespace Framework
 
   size_t ParticleData::computeMemoryUsage (const ParticleData &p)
   {
-    return p.m_count * (7 * sizeof(glm::vec4) + sizeof(bool)) + sizeof(size_t) * 2;
+    return p.m_count * (7 * sizeof(vec4) + sizeof(bool)) + sizeof(size_t) * 2;
   }
 
   ////////////////////////////////////////////////////////////////////////////////
@@ -130,8 +130,8 @@ namespace Framework
 
   void ParticleSystem::init (int maxCount)
   {
-    //SSBOParticles = new SSBO (maxCount * (7 * sizeof (glm::vec4) + sizeof(bool) +2 * sizeof(size_t)));
-    //std::cout << maxCount * (7 * sizeof (glm::vec4) + sizeof(bool) +2 * sizeof(size_t)) << "\n";
+    //SSBOParticles = new SSBO (maxCount * (7 * sizeof (vec4) + sizeof(bool) +2 * sizeof(size_t)));
+    //std::cout << maxCount * (7 * sizeof (vec4) + sizeof(bool) +2 * sizeof(size_t)) << "\n";
     m_count = maxCount;
     m_particles.generate (maxCount);
     m_aliveParticles.generate (maxCount);

@@ -15,6 +15,7 @@
 #include <string>
 #include <vector>
 #include "type_vec.hpp"
+#include "CinderMath.h"
 
 using std::string;
 
@@ -85,9 +86,9 @@ namespace Framework
       void GetValue(double* store);
       void GetValue(bool* store);
       void GetValue(string* store);
-      void GetValue(glm::vec2* store);
-      void GetValue(glm::vec3* store);
-      void GetValue(glm::vec4* store);
+      void GetValue(vec2* store);
+      void GetValue(vec3* store);
+      void GetValue(vec4* store);
       //Find specific object
       DynamicElement* FindElement(DynamicElement* branch, const char* name);
     private:

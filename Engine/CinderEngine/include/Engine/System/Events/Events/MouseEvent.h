@@ -25,6 +25,6 @@
 //    ZilchDeclareBaseType(MouseEvent, Zilch::TypeCopyMode::ReferenceType);
 //
 //    bool ButtonDown;
-//    glm::vec2 MousePosition;
+//    vec2 MousePosition;
 //  };
 //}

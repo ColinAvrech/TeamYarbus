@@ -42,7 +42,7 @@ using namespace Framework;
 //! Window title
 const char WindowTitle [] = "CinderEngine";
 const int ClientWidth = 1024;
-const int ClientHeight = 768;
+const int ClientHeight = 1024;
 
 
 // Temporary Getter functions for System
@@ -57,6 +57,8 @@ ZilchDefineType(Cinder, CinderZilch)
 
 int main (void)
 {
+  bool launchFullScreen = false;
+
   EnableMemoryLeakChecking ();
 
   // TODO (EXTRA): make a window to show while the game is loading
@@ -66,7 +68,7 @@ int main (void)
   //! Create the core engine which manages all systems.
   CoreEngine * engine = new CoreEngine ();
   Physics::ThermodynamicsSystem * thermo = new Physics::ThermodynamicsSystem ();
-  WindowSystem * windows = new WindowSystem (WindowTitle, ClientWidth, ClientHeight, false);
+  WindowSystem * windows = new WindowSystem (WindowTitle, ClientWidth, ClientHeight, launchFullScreen);
   AudioSystem* audio = new AudioSystem ();
   EventSystem * events = new EventSystem ();
   ScriptSystem * zilch = new ScriptSystem();

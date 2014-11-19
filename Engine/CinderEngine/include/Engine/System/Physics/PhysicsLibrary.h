@@ -26,15 +26,15 @@ namespace Framework
     } //namespace Constant
 	//float DetermineRestitution(GameObject* a, GameObject* b);
 	//float DetermineFriction(GameObject* a, GameObject* b);
-    float Distance(glm::vec3& pos1, glm::vec3& pos2);
-	float DistanceSquared(glm::vec3& pos1, glm::vec3& pos2);
-    float DotProduct(glm::vec3& u, glm::vec3& v);
-	glm::vec3 applyNetForce(glm::vec3 sumForce, double InvMass);
-    glm::vec3 applyAccel(glm::vec3 accel, double dt);
-    glm::vec3 getNormal(glm::vec3 p1, glm::vec3 p2);
-    glm::vec3 getAccel(glm::vec3 force, double mass);
-    glm::vec3 getReflection(glm::vec3& normal, glm::vec3& velocity);
-    //glm::vec3 applyConstVelocity(GameObject * go, glm::vec3 initial);
+    float Distance(vec3& pos1, vec3& pos2);
+	float DistanceSquared(vec3& pos1, vec3& pos2);
+    float DotProduct(vec3& u, vec3& v);
+	vec3 applyNetForce(vec3 sumForce, double InvMass);
+    vec3 applyAccel(vec3 accel, double dt);
+    vec3 getNormal(vec3 p1, vec3 p2);
+    vec3 getAccel(vec3 force, double mass);
+    vec3 getReflection(vec3& normal, vec3& velocity);
+    //vec3 applyConstVelocity(GameObject * go, vec3 initial);
 
   } //Physics
 } //Framework

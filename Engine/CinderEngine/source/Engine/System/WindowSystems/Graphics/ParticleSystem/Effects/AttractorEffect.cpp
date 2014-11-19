@@ -25,10 +25,10 @@ namespace Framework
 
     // ADD COLOR GENERATOR
     m_colGenerator = std::make_shared<BasicColorGen> ();
-    m_colGenerator->m_minStartCol = glm::vec4{ 0.99, 0.99, 0.99, 1.0 };
-    m_colGenerator->m_maxStartCol = glm::vec4{ 0.99, 0.99, 1.0, 1.0 };
-    m_colGenerator->m_minEndCol = glm::vec4{ 0.99, 0.99, 0.99, 0.0 };
-    m_colGenerator->m_maxEndCol = glm::vec4{ 0.99, 0.99, 1.0, 0.25 };
+    m_colGenerator->m_minStartCol = vec4{ 0.99, 0.99, 0.99, 1.0 };
+    m_colGenerator->m_maxStartCol = vec4{ 0.99, 0.99, 1.0, 1.0 };
+    m_colGenerator->m_minEndCol = vec4{ 0.99, 0.99, 0.99, 0.0 };
+    m_colGenerator->m_maxEndCol = vec4{ 0.99, 0.99, 1.0, 0.25 };
 
     // ADD SPHERE VELOCITY GENERATOR
     auto velGenerator = std::make_shared<SphereVelGen> ();
@@ -48,8 +48,8 @@ namespace Framework
 
       // POSITION CALCULATION:
       m_posGenerators [0] = std::make_shared<BoxPosGen> ();
-      m_posGenerators [0]->m_pos = glm::vec4{ 2.0, 0.0, -0.25, 0.0 };
-      m_posGenerators [0]->m_maxStartPosOffset = glm::vec4{ 0.0, 0.0, 0.0, 0.0 };
+      m_posGenerators [0]->m_pos = vec4{ 2.0, 0.0, -0.25, 0.0 };
+      m_posGenerators [0]->m_maxStartPosOffset = vec4{ 0.0, 0.0, 0.0, 0.0 };
       particleEmitter->addGenerator (m_posGenerators [0]);
 
       particleEmitter->addGenerator (m_colGenerator);
@@ -65,8 +65,8 @@ namespace Framework
       particleEmitter2->m_emitRate = (float) NUM_PARTICLES*0.1f;
 
       m_posGenerators [1] = std::make_shared<BoxPosGen> ();
-      m_posGenerators [1]->m_pos = glm::vec4{ 0.0, 0.0, 0.25, 0.0 };
-      m_posGenerators [1]->m_maxStartPosOffset = glm::vec4{ 0.0, 0.0, 0.0, 0.0 };
+      m_posGenerators [1]->m_pos = vec4{ 0.0, 0.0, 0.25, 0.0 };
+      m_posGenerators [1]->m_maxStartPosOffset = vec4{ 0.0, 0.0, 0.0, 0.0 };
       particleEmitter2->addGenerator (m_posGenerators [1]);
 
       particleEmitter2->addGenerator (m_colGenerator);
@@ -82,8 +82,8 @@ namespace Framework
       particleEmitter3->m_emitRate = (float) NUM_PARTICLES*0.1f;
 
       m_posGenerators [2] = std::make_shared<BoxPosGen> ();
-      m_posGenerators [2]->m_pos = glm::vec4{ 0.0, 0.0, 0.25, 0.0 };
-      m_posGenerators [2]->m_maxStartPosOffset = glm::vec4{ 0.0, 0.0, 0.0, 0.0 };
+      m_posGenerators [2]->m_pos = vec4{ 0.0, 0.0, 0.25, 0.0 };
+      m_posGenerators [2]->m_maxStartPosOffset = vec4{ 0.0, 0.0, 0.0, 0.0 };
       particleEmitter3->addGenerator (m_posGenerators [2]);
 
       particleEmitter3->addGenerator (m_colGenerator);
@@ -99,19 +99,19 @@ namespace Framework
     m_system->addUpdater (timeUpdater);
 
     auto colorUpdater = std::make_shared<VelColorUpdater> ();
-    colorUpdater->m_minVel = glm::vec4{ -0.5f, -0.5f, -0.5f, 0.0f };
-    colorUpdater->m_maxVel = glm::vec4{ 4.0f, 2.0f, 2.0f, 2.0f };
+    colorUpdater->m_minVel = vec4{ -0.5f, -0.5f, -0.5f, 0.0f };
+    colorUpdater->m_maxVel = vec4{ 4.0f, 2.0f, 2.0f, 2.0f };
     m_system->addUpdater (colorUpdater);
 
     m_attractors = std::make_shared<AttractorUpdater> ();
-    m_attractors->add (glm::vec4{ 0.0, 0.0, 0.75, 1.0 });
-    m_attractors->add (glm::vec4{ 0.0, 0.0, -0.75, 1.0 });
-    m_attractors->add (glm::vec4{ 0.0, 0.75, 0.0, 1.0 });
-    m_attractors->add (glm::vec4{ 0.0, -0.75, 0.0, 1.0 });
+    m_attractors->add (vec4{ 0.0, 0.0, 0.75, 1.0 });
+    m_attractors->add (vec4{ 0.0, 0.0, -0.75, 1.0 });
+    m_attractors->add (vec4{ 0.0, 0.75, 0.0, 1.0 });
+    m_attractors->add (vec4{ 0.0, -0.75, 0.0, 1.0 });
     m_system->addUpdater (m_attractors);
 
     auto eulerUpdater = std::make_shared<EulerUpdater> ();
-    eulerUpdater->m_globalAcceleration = glm::vec4{ 0.0, 0.0, 0.0, 0.0 };
+    eulerUpdater->m_globalAcceleration = vec4{ 0.0, 0.0, 0.0, 0.0 };
     m_system->addUpdater (eulerUpdater);
 
     m_zScale = 1.0f;

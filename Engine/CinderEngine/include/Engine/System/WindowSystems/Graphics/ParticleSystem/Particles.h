@@ -24,13 +24,13 @@ namespace Framework
   class ParticleData
   {
   public:
-    std::unique_ptr<glm::vec4 []> m_pos;
-    std::unique_ptr<glm::vec4 []> m_col;
-    std::unique_ptr<glm::vec4 []> m_startCol;
-    std::unique_ptr<glm::vec4 []> m_endCol;
-    std::unique_ptr<glm::vec4 []> m_vel;
-    std::unique_ptr<glm::vec4 []> m_acc;
-    std::unique_ptr<glm::vec4 []> m_time;
+    std::unique_ptr<vec4 []> m_pos;
+    std::unique_ptr<vec4 []> m_col;
+    std::unique_ptr<vec4 []> m_startCol;
+    std::unique_ptr<vec4 []> m_endCol;
+    std::unique_ptr<vec4 []> m_vel;
+    std::unique_ptr<vec4 []> m_acc;
+    std::unique_ptr<vec4 []> m_time;
     std::unique_ptr<bool []>  m_alive;
 
     size_t m_count{ 0 };
@@ -78,7 +78,7 @@ namespace Framework
     std::vector<std::shared_ptr<ParticleGenerator>> m_generators;
   public:
     bool active;
-    glm::vec3 position;
+    vec3 position;
     float m_emitRate{ 0.0 };
   public:
     ParticleEmitter () { }

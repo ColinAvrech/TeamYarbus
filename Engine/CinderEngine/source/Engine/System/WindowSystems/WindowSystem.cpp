@@ -272,7 +272,7 @@ namespace Framework
       CORE->QuitGame ();
     }
 
-    void Create_Context (GLFWwindow** GLFWwindowptr, const bool& fullscreen)
+    void Create_Context(GLFWwindow** GLFWwindowptr, const int& ClientWidth, const int& ClientHeight, const bool& fullscreen)
     {
       // Init GLFW Before Using Any Functionality
       if (!glfwInit ())
@@ -281,13 +281,22 @@ namespace Framework
         CORE->QuitGame ();
       }
 
-      WINDOWSYSTEM->Set_W_H (1024, 1024);
-      //WINDOWSYSTEM->Set_W_H(1920, 1080);
 
       // Window Creation
-      GLFWmonitor* primaryMonitor = nullptr;
+      int count = 0;
+      GLFWmonitor* primaryMonitor = glfwGetPrimaryMonitor();
+      const GLFWvidmode* mode = glfwGetVideoMode(primaryMonitor);
+
+      //TODO: use this for resolution selector
+      //const GLFWvidmode* modes = glfwGetVideoModes(primaryMonitor, &count);
       if (fullscreen)
-        primaryMonitor = glfwGetPrimaryMonitor();
+      {
+        WINDOWSYSTEM->Set_W_H(mode->width, mode->height);
+      }
+      else
+      {
+        WINDOWSYSTEM->Set_W_H(ClientWidth, ClientHeight);
+      }
     
       *GLFWwindowptr = glfwCreateWindow (WINDOWSYSTEM->Get_Width (), WINDOWSYSTEM->Get_Height (), "OpenGL", primaryMonitor, nullptr); // Windowed
 
@@ -315,7 +324,7 @@ namespace Framework
   WindowSystem::WindowSystem(const char* WindowTitle, const int& ClientWidth, const int& ClientHeight, const bool& fullscreen)
   {
     WINDOWSYSTEM = this;
-    WindowNameSpace::Create_Context (&window, fullscreen);
+    WindowNameSpace::Create_Context (&window, ClientWidth, ClientHeight, fullscreen);
     WindowNameSpace::Init_Glew ();
   }
 

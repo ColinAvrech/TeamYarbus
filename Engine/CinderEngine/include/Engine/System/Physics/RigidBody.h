@@ -27,10 +27,10 @@ namespace Framework
 		};
 
 		const static string Name;
-		glm::vec3 vel;
-		glm::vec3 angVel;
+		vec3 vel;
+		vec3 angVel;
 
-		glm::vec3 accumulatedForce;
+		vec3 accumulatedForce;
 		bool allowSleep;
 		bool rotationLocked;
 		DynamicState state;
@@ -58,16 +58,16 @@ namespace Framework
 		void Initialize() override;
 		void Serialize(Serializer::DataNode* data) override;
 		void Update();
-		void AddForce(glm::vec3 force);
+		void AddForce(vec3 force);
 		void Integrate(const float dt);
-		void SetPosition(glm::vec3);
-		void SetVelocity(glm::vec3);
+		void SetPosition(vec3);
+		void SetVelocity(vec3);
 
 		void setMass(float Mass) { mass = Mass; }
 		float calculateMass(void);
 
 	private:
-		glm::vec3 pos, prevPos;
+		vec3 pos, prevPos;
 		float mass;
 		float invMass;
 		float restitution;

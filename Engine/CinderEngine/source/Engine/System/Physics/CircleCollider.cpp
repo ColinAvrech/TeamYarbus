@@ -56,10 +56,10 @@ namespace Framework
 	void CircleCollider::DetectCollision(CircleCollider* c)
 	{
 		// not counting offset
-		glm::vec3 pos;
+		vec3 pos;
 		pos.x = (gameObject->Transform)->GetPosition().x;
 		pos.y = (gameObject->Transform)->GetPosition().y;
-		glm::vec3 cpos;
+		vec3 cpos;
 		cpos.x = (c->gameObject->Transform)->GetPosition().x;
 		cpos.y = (c->gameObject->Transform)->GetPosition().y;
 		float rad = GetRadius() + c->GetRadius();
@@ -68,7 +68,7 @@ namespace Framework
 		{
 			if (gameObject->FireStarter)
 				std::cout << "Sparked!" << std::endl;
-			glm::vec3 normalVec = gameObject->Transform->GetPosition() -
+			vec3 normalVec = gameObject->Transform->GetPosition() -
 				c->gameObject->Transform->GetPosition();
 			float penetration = rad - dist;
 			glm::normalize(normalVec);
@@ -84,13 +84,13 @@ namespace Framework
 	//repeat
 	void CircleCollider::DetectCollision(PointCollider* p)
 	{
-		glm::vec3 ppos = p->getPosition();
-		glm::vec3 pos = getPosition();
+		vec3 ppos = p->getPosition();
+		vec3 pos = getPosition();
 		float rad = GetRadius();
 
 		if (Physics::CirclevsPoint(rad, pos, ppos))
 		{
-			glm::vec3 normalVec = gameObject->Transform->GetPosition() -
+			vec3 normalVec = gameObject->Transform->GetPosition() -
 				p->gameObject->Transform->GetPosition();
 			float penetration = rad - Physics::Distance(gameObject->Transform->GetPosition(),
 				p->gameObject->Transform->GetPosition());
@@ -110,7 +110,7 @@ namespace Framework
 		//float rad = GetRadius();
 		float rad = radius;
 		float penetration;
-		glm::vec3 pos;
+		vec3 pos;
 		pos.x = gameObject->Transform->GetPosition().x;
 		pos.y = gameObject->Transform->GetPosition().y;
 		if (gameObject->RigidBody)

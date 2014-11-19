@@ -55,15 +55,15 @@ namespace Framework
     Shader* shader;
     Texture* texture;
     SpriteSheet* atlas;
-    glm::vec4 color;
+    vec4 color;
     GLenum BlendMode;
 
     // Animated Sprites
     bool animated;
     GLuint uniTexOffset;
     GLuint uniFrameRatio;
-    glm::vec2 texOffset;
-    glm::vec2 frameRatio;
+    vec2 texOffset;
+    vec2 frameRatio;
     unsigned frameNumber;
 
     // Helper Functions
