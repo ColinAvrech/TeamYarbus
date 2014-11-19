@@ -25,7 +25,7 @@ namespace Framework
   GameObject * OtherObject;
 	GameObject * thisObject;
 	float Penetration;
-	glm::vec3 normal;
+	vec3 normal;
 
   };
 

@@ -112,7 +112,7 @@ namespace Framework
     //Get cell temperature
     float ThermodynamicsSystem::GetCellTemperature (const float& x, const float& y)
     {
-      glm::vec2 sub = GetSubscript(x, y);
+      vec2 sub = GetSubscript(x, y);
       int sub_x = int (sub.x);
       int sub_y = int (sub.y);
       if (sub_x < 0 || sub_x >= MapSize.x || sub_y < 0 || sub_y >= MapSize.y)
@@ -123,7 +123,7 @@ namespace Framework
     //Get cell oxygen content
     float ThermodynamicsSystem::GetCellOxygen (const float& x, const float& y)
     {
-      glm::vec2 sub = GetSubscript(x, y);
+      vec2 sub = GetSubscript(x, y);
       int sub_x = int(sub.x);
       int sub_y = int(sub.y);
       if (sub_x < 0 || sub_x > MapSize.x || sub_y < 0 || sub_y > MapSize.y)
@@ -131,16 +131,16 @@ namespace Framework
       return DensityMap.Get(sub_x, sub_y);
     }
     //Get cell velocity
-    glm::vec2 ThermodynamicsSystem::GetCellVelocity(const float& x, const float& y)
+    vec2 ThermodynamicsSystem::GetCellVelocity(const float& x, const float& y)
     {
-      glm::vec2 sub = GetSubscript(x, y);
+      vec2 sub = GetSubscript(x, y);
       int sub_x = int(sub.x);
       int sub_y = int(sub.y);
       if (sub_x < 0 || sub_x > MapSize.x || sub_y < 0 || sub_y > MapSize.y)
       {
-        return glm::vec2 (0, 0);
+        return vec2 (0, 0);
       }
-      return glm::vec2 (VelocityMapX.Get(sub_x, sub_y), VelocityMapY.Get(sub_x, sub_y));
+      return vec2 (VelocityMapX.Get(sub_x, sub_y), VelocityMapY.Get(sub_x, sub_y));
     }
 
     // Setters
@@ -151,7 +151,7 @@ namespace Framework
 
     float ThermodynamicsSystem::SetCellTemperature(const float& x, const float& y, const float& temp, const double& dt)
     {
-      glm::vec2 sub = GetSubscript(x, y);
+      vec2 sub = GetSubscript(x, y);
       int sub_x = int(sub.x);
       int sub_y = int(sub.y);
       float dQ;
@@ -166,7 +166,7 @@ namespace Framework
       return dQ;
     }
 
-    void ThermodynamicsSystem::SetCellVelocity(const int x, const int y, glm::vec2 v)
+    void ThermodynamicsSystem::SetCellVelocity(const int x, const int y, vec2 v)
     {
       if (x < 0 || x > MapSize.x || y < 0 || y > MapSize.y)
         return;
@@ -243,7 +243,7 @@ namespace Framework
     //Update velocity vectors
     void ThermodynamicsSystem::ComputeVelocity(const int& start_index, const int& end_index, const double& dt)
     {
-      //glm::vec2 dirvec [8] = {
+      //vec2 dirvec [8] = {
       //  { -1, -1 },
       //  { 0, -1 },
       //  { 1, -1 },
@@ -290,7 +290,7 @@ namespace Framework
       //      } //for x
       //    } //for y
       //    //OxygenMap[i][j] -= dDenseSum * (float)dt;
-      //    VelocityMap->Get(i, j) += (glm::vec2 (0, 1) * buoyancy);
+      //    VelocityMap->Get(i, j) += (vec2 (0, 1) * buoyancy);
       //  }//for i
       //} //for j
     }
@@ -358,11 +358,11 @@ namespace Framework
       FuelMap.fill (10.f);
     }
 
-    glm::vec2 ThermodynamicsSystem::GetSubscript(const float &x, const float &y)
+    vec2 ThermodynamicsSystem::GetSubscript(const float &x, const float &y)
     {
       int sub_x = int(std::abs(((x)* (MapSize.x / 2 - 1) + MapOffset.x - 1)));
       int sub_y = int(std::abs(((y)* (MapSize.y / 2 - 1) + MapOffset.y - 1)));
-      glm::vec2 res(sub_x, sub_y);
+      vec2 res(sub_x, sub_y);
       return res;
     }
 

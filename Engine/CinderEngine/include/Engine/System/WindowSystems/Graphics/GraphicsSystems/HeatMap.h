@@ -33,9 +33,9 @@ namespace Framework
   void Generate_Triangle_Buffer ();
   void Update_Temperature_Buffer ();
   private:
-    glm::vec2 Size;
+    vec2 Size;
     GLbyte graph [256][256];
-    glm::vec2 vertices [101][101];
+    vec2 vertices [101][101];
     GLushort indices [100 * 101 * 6];
     float temperatures [101][101];
 

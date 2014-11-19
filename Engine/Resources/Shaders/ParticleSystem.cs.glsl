@@ -169,7 +169,7 @@ void BasicTimeUpdater::Update (double dt)
   //unsigned int endId = count;
   //float localDT = float (dt);
 
-  ////glm::vec4 * __restrict t = p->m_time.get ();
+  ////vec4 * __restrict t = p->m_time.get ();
 
   //if (endId == 0) return;
 

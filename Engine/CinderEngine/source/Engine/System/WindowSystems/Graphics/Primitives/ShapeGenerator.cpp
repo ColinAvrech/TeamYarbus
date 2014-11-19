@@ -21,25 +21,25 @@ namespace Framework
     VertexData vd [] =
     {
       // 1
-      glm::vec3 (-0.5f, 0.5f, 0.0f),
-      glm::vec4 (1.0f, 1.0f, 1.0f, 1.0f),
-      glm::vec3 (0.0f, 0.0f, 1.0f),
-      glm::vec2 (0.0f, 0.0f),
+      vec3 (-0.5f, 0.5f, 0.0f),
+      vec4 (1.0f, 1.0f, 1.0f, 1.0f),
+      vec3 (0.0f, 0.0f, 1.0f),
+      vec2 (0.0f, 0.0f),
       // 2
-      glm::vec3 (0.5f, 0.5f, 0.0f),
-      glm::vec4 (1.0f, 1.0f, 1.0f, 1.0f),
-      glm::vec3 (0.0f, 0.0f, 1.0f),
-      glm::vec2 (1.0f, 0.0f),
+      vec3 (0.5f, 0.5f, 0.0f),
+      vec4 (1.0f, 1.0f, 1.0f, 1.0f),
+      vec3 (0.0f, 0.0f, 1.0f),
+      vec2 (1.0f, 0.0f),
       // 3
-      glm::vec3 (0.5f, -0.5f, 0.0f),
-      glm::vec4 (1.0f, 1.0f, 1.0f, 1.0f),
-      glm::vec3 (0.0f, 0.0f, 1.0f),
-      glm::vec2 (1.0f, 1.0f),
+      vec3 (0.5f, -0.5f, 0.0f),
+      vec4 (1.0f, 1.0f, 1.0f, 1.0f),
+      vec3 (0.0f, 0.0f, 1.0f),
+      vec2 (1.0f, 1.0f),
       // 4
-      glm::vec3 (-0.5f, -0.5f, 0.0f),
-      glm::vec4 (1.0f, 1.0f, 1.0f, 1.0f),
-      glm::vec3 (0.0f, 0.0f, 1.0f),
-      glm::vec2 (0.0f, 1.0f)
+      vec3 (-0.5f, -0.5f, 0.0f),
+      vec4 (1.0f, 1.0f, 1.0f, 1.0f),
+      vec3 (0.0f, 0.0f, 1.0f),
+      vec2 (0.0f, 1.0f)
     };
 
     GLuint ind [] =
@@ -64,107 +64,107 @@ namespace Framework
     ShapeData data;
     VertexData stackVerts [] =
     {
-      glm::vec3 (-1.0f, 1.0f, 1.0f        ),  // 0
-      glm::vec4 (1.0f, 0.0f, 0.0f, 1.0f   ),	// Color
-      glm::vec3 (0.0f, 1.0f, 0.0f         ),  // Normal
-      glm::vec2 (0.0f, 0.0f               ),
-      glm::vec3 (1.0f, 1.0f, 1.0f         ),  // 1
-      glm::vec4 (0.0f, 1.0f, 0.0f, 1.0f   ),	// Color
-      glm::vec3 (0.0f, 1.0f, 0.0f         ),  // Normal
-      glm::vec2 (0.0f, 0.0f               ),
-      glm::vec3 (1.0f, 1.0f, -1.0f        ),  // 2
-      glm::vec4 (0.0f, 0.0f, 1.0f, 1.0f   ),  // Color
-      glm::vec3 (0.0f, 1.0f, 0.0f         ),  // Normal
-      glm::vec2 (0.0f, 0.0f               ),
-      glm::vec3 (-1.0f, 1.0f, -1.0f       ),  // 3
-      glm::vec4 (1.0f, 1.0f, 1.0f, 1.0f   ),  // Color
-      glm::vec3 (0.0f, 1.0f, 0.0f         ),  // Normal
-      glm::vec2 (0.0f, 0.0f               ),
+      vec3 (-1.0f, 1.0f, 1.0f        ),  // 0
+      vec4 (1.0f, 0.0f, 0.0f, 1.0f   ),	// Color
+      vec3 (0.0f, 1.0f, 0.0f         ),  // Normal
+      vec2 (0.0f, 0.0f               ),
+      vec3 (1.0f, 1.0f, 1.0f         ),  // 1
+      vec4 (0.0f, 1.0f, 0.0f, 1.0f   ),	// Color
+      vec3 (0.0f, 1.0f, 0.0f         ),  // Normal
+      vec2 (0.0f, 0.0f               ),
+      vec3 (1.0f, 1.0f, -1.0f        ),  // 2
+      vec4 (0.0f, 0.0f, 1.0f, 1.0f   ),  // Color
+      vec3 (0.0f, 1.0f, 0.0f         ),  // Normal
+      vec2 (0.0f, 0.0f               ),
+      vec3 (-1.0f, 1.0f, -1.0f       ),  // 3
+      vec4 (1.0f, 1.0f, 1.0f, 1.0f   ),  // Color
+      vec3 (0.0f, 1.0f, 0.0f         ),  // Normal
+      vec2 (0.0f, 0.0f               ),
 
-      glm::vec3 (-1.0f, 1.0f, -1.0f       ),  // 4
-      glm::vec4 (1.0f, 0.0f, 1.0f, 1.0f   ),  // Color
-      glm::vec3 (0.0f, 0.0f, -1.0f        ),  // Normal
-      glm::vec2 (0.0f, 0.0f               ),
-      glm::vec3 (1.0f, 1.0f, -1.0f        ),  // 5
-      glm::vec4 (0.0f, 0.5f, 0.2f, 1.0f   ),  // Color
-      glm::vec3 (0.0f, 0.0f, -1.0f        ),  // Normal
-      glm::vec2 (0.0f, 0.0f               ),
-      glm::vec3 (1.0f, -1.0f, -1.0f       ),  // 6
-      glm::vec4 (0.8f, 0.6f, 0.4f, 1.0f   ),  // Color
-      glm::vec3 (0.0f, 0.0f, -1.0f        ),  // Normal
-      glm::vec2 (0.0f, 0.0f               ),
-      glm::vec3 (-1.0f, -1.0f, -1.0f      ),  // 7
-      glm::vec4 (0.3f, 1.0f, 0.5f, 1.0f   ),  // Color
-      glm::vec3 (0.0f, 0.0f, -1.0f        ),  // Normal
-      glm::vec2 (0.0f, 0.0f               ),
+      vec3 (-1.0f, 1.0f, -1.0f       ),  // 4
+      vec4 (1.0f, 0.0f, 1.0f, 1.0f   ),  // Color
+      vec3 (0.0f, 0.0f, -1.0f        ),  // Normal
+      vec2 (0.0f, 0.0f               ),
+      vec3 (1.0f, 1.0f, -1.0f        ),  // 5
+      vec4 (0.0f, 0.5f, 0.2f, 1.0f   ),  // Color
+      vec3 (0.0f, 0.0f, -1.0f        ),  // Normal
+      vec2 (0.0f, 0.0f               ),
+      vec3 (1.0f, -1.0f, -1.0f       ),  // 6
+      vec4 (0.8f, 0.6f, 0.4f, 1.0f   ),  // Color
+      vec3 (0.0f, 0.0f, -1.0f        ),  // Normal
+      vec2 (0.0f, 0.0f               ),
+      vec3 (-1.0f, -1.0f, -1.0f      ),  // 7
+      vec4 (0.3f, 1.0f, 0.5f, 1.0f   ),  // Color
+      vec3 (0.0f, 0.0f, -1.0f        ),  // Normal
+      vec2 (0.0f, 0.0f               ),
 
-      glm::vec3 (1.0f, 1.0f, -1.0f        ),  // 8
-      glm::vec4 (0.2f, 0.5f, 0.2f, 1.0f   ),  // Color
-      glm::vec3 (1.0f, 0.0f, 0.0f         ),  // Normal
-      glm::vec2 (0.0f, 0.0f               ),
-      glm::vec3 (1.0f, 1.0f, 1.0f         ),  // 9
-      glm::vec4 (0.9f, 0.3f, 0.7, 1.0f    ),  // Color
-      glm::vec3 (1.0f, 0.0f, 0.0f         ),  // Normal
-      glm::vec2 (0.0f, 0.0f               ),
-      glm::vec3 (1.0f, -1.0f, 1.0f        ),  // 10
-      glm::vec4 (0.3f, 0.7f, 0.5f, 1.0f   ),  // Color
-      glm::vec3 (1.0f, 0.0f, 0.0f         ),  // Normal
-      glm::vec2 (0.0f, 0.0f               ),
-      glm::vec3 (1.0f, -1.0f, -1.0f       ),  // 11
-      glm::vec4 (0.5f, 0.7f, 0.5f, 1.0f   ),  // Color
-      glm::vec3 (1.0f, 0.0f, 0.0f         ),  // Normal
-      glm::vec2 (0.0f, 0.0f               ),
+      vec3 (1.0f, 1.0f, -1.0f        ),  // 8
+      vec4 (0.2f, 0.5f, 0.2f, 1.0f   ),  // Color
+      vec3 (1.0f, 0.0f, 0.0f         ),  // Normal
+      vec2 (0.0f, 0.0f               ),
+      vec3 (1.0f, 1.0f, 1.0f         ),  // 9
+      vec4 (0.9f, 0.3f, 0.7, 1.0f    ),  // Color
+      vec3 (1.0f, 0.0f, 0.0f         ),  // Normal
+      vec2 (0.0f, 0.0f               ),
+      vec3 (1.0f, -1.0f, 1.0f        ),  // 10
+      vec4 (0.3f, 0.7f, 0.5f, 1.0f   ),  // Color
+      vec3 (1.0f, 0.0f, 0.0f         ),  // Normal
+      vec2 (0.0f, 0.0f               ),
+      vec3 (1.0f, -1.0f, -1.0f       ),  // 11
+      vec4 (0.5f, 0.7f, 0.5f, 1.0f   ),  // Color
+      vec3 (1.0f, 0.0f, 0.0f         ),  // Normal
+      vec2 (0.0f, 0.0f               ),
 
-      glm::vec3 (-1.0f, 1.0f, 1.0f        ),  // 12
-      glm::vec4 (0.7f, 0.8f, 0.2f, 1.0f   ),  // Color
-      glm::vec3 (-1.0f, 0.0f, 0.0f        ),  // Normal
-      glm::vec2 (0.0f, 0.0f               ),
-      glm::vec3 (-1.0f, 1.0f, -1.0f       ),  // 13
-      glm::vec4 (0.5f, 0.7f, 0.3f, 1.0f   ),  // Color
-      glm::vec3 (-1.0f, 0.0f, 0.0f        ),  // Normal
-      glm::vec2 (0.0f, 0.0f               ),
-      glm::vec3 (-1.0f, -1.0f, -1.0f      ),  // 14
-      glm::vec4 (0.4f, 0.7f, 0.7f, 1.0f   ),  // Color
-      glm::vec3 (-1.0f, 0.0f, 0.0f        ),  // Normal
-      glm::vec2 (0.0f, 0.0f               ),
-      glm::vec3 (-1.0f, -1.0f, 1.0f       ),  // 15
-      glm::vec4 (0.2f, 0.5f, 1.0f, 1.0f   ),  // Color
-      glm::vec3 (-1.0f, 0.0f, 0.0f        ),  // Normal
-      glm::vec2 (0.0f, 0.0f               ),
+      vec3 (-1.0f, 1.0f, 1.0f        ),  // 12
+      vec4 (0.7f, 0.8f, 0.2f, 1.0f   ),  // Color
+      vec3 (-1.0f, 0.0f, 0.0f        ),  // Normal
+      vec2 (0.0f, 0.0f               ),
+      vec3 (-1.0f, 1.0f, -1.0f       ),  // 13
+      vec4 (0.5f, 0.7f, 0.3f, 1.0f   ),  // Color
+      vec3 (-1.0f, 0.0f, 0.0f        ),  // Normal
+      vec2 (0.0f, 0.0f               ),
+      vec3 (-1.0f, -1.0f, -1.0f      ),  // 14
+      vec4 (0.4f, 0.7f, 0.7f, 1.0f   ),  // Color
+      vec3 (-1.0f, 0.0f, 0.0f        ),  // Normal
+      vec2 (0.0f, 0.0f               ),
+      vec3 (-1.0f, -1.0f, 1.0f       ),  // 15
+      vec4 (0.2f, 0.5f, 1.0f, 1.0f   ),  // Color
+      vec3 (-1.0f, 0.0f, 0.0f        ),  // Normal
+      vec2 (0.0f, 0.0f               ),
 
-      glm::vec3 (1.0f, 1.0f, 1.0f         ),  // 16
-      glm::vec4 (0.6f, 1.0f, 0.7f, 1.0f   ),  // Color
-      glm::vec3 (0.0f, 0.0f, 1.0f         ),  // Normal
-      glm::vec2 (0.0f, 0.0f               ),
-      glm::vec3 (-1.0f, 1.0f, 1.0f        ),  // 17
-      glm::vec4 (0.6f, 0.4f, 0.8f, 1.0f   ),  // Color
-      glm::vec3 (0.0f, 0.0f, 1.0f         ),  // Normal
-      glm::vec2 (0.0f, 0.0f               ),
-      glm::vec3 (-1.0f, -1.0f, 1.0f       ),  // 18
-      glm::vec4 (0.2f, 0.8f, 0.7f, 1.0f   ),  // Color
-      glm::vec3 (0.0f, 0.0f, 1.0f         ),  // Normal
-      glm::vec2 (0.0f, 0.0f               ),
-      glm::vec3 (1.0f, -1.0f, 1.0f        ),  // 19
-      glm::vec4 (0.2f, 0.7f, 1.0f, 1.0f   ),  // Color
-      glm::vec3 (0.0f, 0.0f, 1.0f         ),  // Normal
-      glm::vec2 (0.0f, 0.0f               ),
+      vec3 (1.0f, 1.0f, 1.0f         ),  // 16
+      vec4 (0.6f, 1.0f, 0.7f, 1.0f   ),  // Color
+      vec3 (0.0f, 0.0f, 1.0f         ),  // Normal
+      vec2 (0.0f, 0.0f               ),
+      vec3 (-1.0f, 1.0f, 1.0f        ),  // 17
+      vec4 (0.6f, 0.4f, 0.8f, 1.0f   ),  // Color
+      vec3 (0.0f, 0.0f, 1.0f         ),  // Normal
+      vec2 (0.0f, 0.0f               ),
+      vec3 (-1.0f, -1.0f, 1.0f       ),  // 18
+      vec4 (0.2f, 0.8f, 0.7f, 1.0f   ),  // Color
+      vec3 (0.0f, 0.0f, 1.0f         ),  // Normal
+      vec2 (0.0f, 0.0f               ),
+      vec3 (1.0f, -1.0f, 1.0f        ),  // 19
+      vec4 (0.2f, 0.7f, 1.0f, 1.0f   ),  // Color
+      vec3 (0.0f, 0.0f, 1.0f         ),  // Normal
+      vec2 (0.0f, 0.0f               ),
 
-      glm::vec3 (1.0f, -1.0f, -1.0f       ),  // 20
-      glm::vec4 (0.8f, 0.3f, 0.7f, 1.0f   ),  // Color
-      glm::vec3 (0.0f, -1.0f, 0.0f        ),  // Normal
-      glm::vec2 (0.0f, 0.0f               ),
-      glm::vec3 (-1.0f, -1.0f, -1.0f      ),  // 21
-      glm::vec4 (0.8f, 0.9f, 0.5f, 1.0f   ),  // Color
-      glm::vec3 (0.0f, -1.0f, 0.0f        ),  // Normal
-      glm::vec2 (0.0f, 0.0f               ),
-      glm::vec3 (-1.0f, -1.0f, 1.0f       ),  // 22
-      glm::vec4 (0.5f, 0.8f, 0.5f, 1.0f   ),  // Color
-      glm::vec3 (0.0f, -1.0f, 0.0f        ),  // Normal
-      glm::vec2 (0.0f, 0.0f               ),
-      glm::vec3 (1.0f, -1.0f, 1.0f        ),  // 23
-      glm::vec4 (0.9f, 1.0f, 0.2f, 1.0f   ),  // Color
-      glm::vec3 (0.0f, -1.0f, 0.0f        ),  // Normal
-      glm::vec2 (0.0f, 0.0f               )
+      vec3 (1.0f, -1.0f, -1.0f       ),  // 20
+      vec4 (0.8f, 0.3f, 0.7f, 1.0f   ),  // Color
+      vec3 (0.0f, -1.0f, 0.0f        ),  // Normal
+      vec2 (0.0f, 0.0f               ),
+      vec3 (-1.0f, -1.0f, -1.0f      ),  // 21
+      vec4 (0.8f, 0.9f, 0.5f, 1.0f   ),  // Color
+      vec3 (0.0f, -1.0f, 0.0f        ),  // Normal
+      vec2 (0.0f, 0.0f               ),
+      vec3 (-1.0f, -1.0f, 1.0f       ),  // 22
+      vec4 (0.5f, 0.8f, 0.5f, 1.0f   ),  // Color
+      vec3 (0.0f, -1.0f, 0.0f        ),  // Normal
+      vec2 (0.0f, 0.0f               ),
+      vec3 (1.0f, -1.0f, 1.0f        ),  // 23
+      vec4 (0.9f, 1.0f, 0.2f, 1.0f   ),  // Color
+      vec3 (0.0f, -1.0f, 0.0f        ),  // Normal
+      vec2 (0.0f, 0.0f               )
     };
 
     data.numVertices = ARRAY_SIZE (stackVerts);
@@ -199,7 +199,7 @@ namespace Framework
       const VertexData& sourceVertex = data.vertices [i];
       v1.position = sourceVertex.position;
       v2.position = sourceVertex.position + sourceVertex.normal;
-      v1.color = v2.color = glm::vec4 (1.0f);
+      v1.color = v2.color = vec4 (1.0f);
     }
 
     data.numIndices = data.numVertices;

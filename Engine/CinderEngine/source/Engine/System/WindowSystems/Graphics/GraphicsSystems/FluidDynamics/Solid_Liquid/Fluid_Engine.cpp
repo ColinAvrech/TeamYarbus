@@ -75,7 +75,7 @@ namespace Framework
         FluidPhysics.ParticleTable
         )
       {
-        glm::vec4 pos = vp * glm::vec4 (FluidPhysics.ParticleTable [temp_index_2].GetPosition ().X,
+        vec4 pos = vp * vec4 (FluidPhysics.ParticleTable [temp_index_2].GetPosition ().X,
           FluidPhysics.ParticleTable [temp_index_2].GetPosition ().Y, 0, 1);
         glColor4fv (Graphics_Color::Red ().GetRGBA ());
         glVertex4fv (glm::value_ptr(pos));
@@ -104,7 +104,7 @@ namespace Framework
           end_position
           )
         {
-          glm::vec2 pos = glm::mat2 (vp) * glm::vec2 (pointTable [temp_index_1].X, pointTable [temp_index_1].Y);
+          vec2 pos = glm::mat2 (vp) * vec2 (pointTable [temp_index_1].X, pointTable [temp_index_1].Y);
           glColor4f (1, 1, 1, 1);
           glVertex2fv (glm::value_ptr (pos));
         }

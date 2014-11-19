@@ -16,8 +16,8 @@ namespace Framework
 {
   void BoxPosGen::generate (double dt, ParticleData *p, size_t startId, size_t endId)
   {
-    glm::vec4 posMin{ m_pos.x - m_maxStartPosOffset.x, m_pos.y - m_maxStartPosOffset.y, m_pos.z - m_maxStartPosOffset.z, 1.0 };
-    glm::vec4 posMax{ m_pos.x + m_maxStartPosOffset.x, m_pos.y + m_maxStartPosOffset.y, m_pos.z + m_maxStartPosOffset.z, 1.0 };
+    vec4 posMin{ m_pos.x - m_maxStartPosOffset.x, m_pos.y - m_maxStartPosOffset.y, m_pos.z - m_maxStartPosOffset.z, 1.0 };
+    vec4 posMax{ m_pos.x + m_maxStartPosOffset.x, m_pos.y + m_maxStartPosOffset.y, m_pos.z + m_maxStartPosOffset.z, 1.0 };
 
     for (size_t i = startId; i < endId; ++i)
     {
@@ -30,7 +30,7 @@ namespace Framework
     for (size_t i = startId; i < endId; ++i)
     {
       double ang = glm::linearRand (0.0, M_PI*2.0);
-      p->m_pos [i] = m_center + glm::vec4 (m_radX*sin (ang), m_radY*cos (ang), 0.0, 1.0);
+      p->m_pos [i] = m_center + vec4 (m_radX*sin (ang), m_radY*cos (ang), 0.0, 1.0);
     }
   }
 
@@ -72,7 +72,7 @@ namespace Framework
     for (size_t i = startId; i < endId; ++i)
     {
       float scale = static_cast<float>(glm::linearRand (m_minScale, m_maxScale));
-      glm::vec4 vel = (p->m_pos [i] - m_offset);
+      vec4 vel = (p->m_pos [i] - m_offset);
       p->m_vel [i] = scale * vel;
     }
   }

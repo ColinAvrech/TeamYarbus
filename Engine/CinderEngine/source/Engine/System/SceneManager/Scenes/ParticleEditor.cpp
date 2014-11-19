@@ -56,7 +56,7 @@ namespace Framework
   static struct CAMERA
   {
     float camDistance;
-    glm::vec3 cameraDir;
+    vec3 cameraDir;
     glm::mat4 modelviewMatrix;
     glm::mat4 projectionMatrix;
   } camera_;
@@ -99,16 +99,16 @@ namespace Framework
       gSelectedEffect = 2;
       break;
     case GLFW_KEY_W:
-      Camera::main->worldToView = glm::translate (Camera::main->worldToView, glm::vec3 (0, -0.01f, 0));
+      Camera::main->worldToView = glm::translate (Camera::main->worldToView, vec3 (0, -0.01f, 0));
       break;
     case GLFW_KEY_S:
-      Camera::main->worldToView = glm::translate (Camera::main->worldToView, glm::vec3 (0, 0.01f, 0));
+      Camera::main->worldToView = glm::translate (Camera::main->worldToView, vec3 (0, 0.01f, 0));
       break;
     case GLFW_KEY_D:
-      Camera::main->worldToView = glm::translate (Camera::main->worldToView, glm::vec3 (-0.01f, 0, 0));
+      Camera::main->worldToView = glm::translate (Camera::main->worldToView, vec3 (-0.01f, 0, 0));
       break;
     case GLFW_KEY_A:
-      Camera::main->worldToView = glm::translate (Camera::main->worldToView, glm::vec3 (0.01f, 0, 0));
+      Camera::main->worldToView = glm::translate (Camera::main->worldToView, vec3 (0.01f, 0, 0));
       break;
     default:
       break;
@@ -327,7 +327,7 @@ namespace Framework
     
     // camera
     
-    camera_.modelviewMatrix = glm::lookAt (camera_.cameraDir * camera_.camDistance, glm::vec3 (0.0f, 0.0f, 0.0f), glm::vec3 (0.0f, 1.0f, 0.0f));
+    camera_.modelviewMatrix = glm::lookAt (camera_.cameraDir * camera_.camDistance, vec3 (0.0f, 0.0f, 0.0f), vec3 (0.0f, 1.0f, 0.0f));
 
     glEnable (GL_POINT_SPRITE);
     glEnable (GL_PROGRAM_POINT_SIZE);

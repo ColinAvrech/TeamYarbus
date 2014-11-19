@@ -27,9 +27,9 @@ namespace Framework
     virtual void Initialize ();
     virtual void Serialize (Serializer::DataNode* data);
 
-    void MouseUpdate (const glm::vec2& newPosition);
-    void MouseUpdateY (const glm::vec2& newPosition);
-    void UpdatePosition (const glm::vec3& deltaPos);
+    void MouseUpdate (const vec2& newPosition);
+    void MouseUpdateY (const vec2& newPosition);
+    void UpdatePosition (const vec3& deltaPos);
     void Zoom (float zoom);
 
     glm::mat4 WorldToViewMatrix ();
@@ -42,15 +42,15 @@ namespace Framework
     static Camera* current;
     static Camera* main;
 
-    glm::vec3 position;
-    glm::vec3 viewDirection;
+    vec3 position;
+    vec3 viewDirection;
     glm::mat4 worldToView;
     glm::mat4 viewToProjection;
 
     // The non-base component usees DefineComponentName macro to name component
     const static string Name;
   private:
-    const glm::vec3 up;
+    const vec3 up;
     glm:: vec2 oldPosition;
     bool matricesReady;
 
