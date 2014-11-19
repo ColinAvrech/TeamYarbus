@@ -32,7 +32,8 @@ class Josh : Component
 	//gameobject.Transform;
 	Console.WriteLine(gameobject.Transform);
 	gameobject.AddComponent("Sprite");
-	//newsprite.LoadSprite("Env.png", "Default");
+	gameobject.Sprite.Change_Texture ("UIPauseTitle.png");
+  gameobject.Sprite.Change_Color (1,0,0,1);
 	Console.WriteLine(gameobject.Sprite);
 	
 	Console.WriteLine("ASDADAD");

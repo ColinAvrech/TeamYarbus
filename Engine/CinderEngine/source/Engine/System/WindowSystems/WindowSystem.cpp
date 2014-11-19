@@ -292,13 +292,13 @@ namespace Framework
       if (fullscreen)
       {
         WINDOWSYSTEM->Set_W_H(mode->width, mode->height);
+        *GLFWwindowptr = glfwCreateWindow (WINDOWSYSTEM->Get_Width (), WINDOWSYSTEM->Get_Height (), "OpenGL", primaryMonitor, nullptr); // Windowed
       }
       else
       {
         WINDOWSYSTEM->Set_W_H(ClientWidth, ClientHeight);
+        *GLFWwindowptr = glfwCreateWindow (WINDOWSYSTEM->Get_Width (), WINDOWSYSTEM->Get_Height (), "OpenGL", nullptr, nullptr); // Windowed
       }
-    
-      *GLFWwindowptr = glfwCreateWindow (WINDOWSYSTEM->Get_Width (), WINDOWSYSTEM->Get_Height (), "OpenGL", primaryMonitor, nullptr); // Windowed
 
       //*GLFWwindowptr = glfwCreateWindow (800, 600, "OpenGL", glfwGetPrimaryMonitor (), nullptr);
       glfwMakeContextCurrent (*GLFWwindowptr);
@@ -372,10 +372,10 @@ namespace Framework
     {
       i->Draw ();
     }
-    grid.Update ();
-    grid.Draw ();
-    water.Update ();
-    water.Render ();
+    //grid.Update ();
+    //grid.Draw ();
+    //water.Update ();
+    //water.Render ();
 
     glfwSwapBuffers (window);
   }

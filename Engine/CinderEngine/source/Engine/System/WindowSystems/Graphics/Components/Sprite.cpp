@@ -15,7 +15,7 @@ namespace Framework
 		type->HandleManager = ZilchManagerId(Zilch::PointerManager);
 		ZilchBindConstructor(Sprite);
 		ZilchBindMethodOverload(Change_Shader, void, Zilch::String);
-		ZilchBindMethodOverload(Change_Texture, void, Zilch::String);
+		ZilchBindMethod(Change_Texture);
 		ZilchBindMethod(Change_Color);
 		ZilchBindMethod(GetCurrentFrame);
 		ZilchBindMethod(GetAnimationSpeed);
@@ -31,6 +31,7 @@ namespace Framework
 	{
 		texture = Resources::RS->Get_Texture("Default");
 		shader = Resources::RS->Get_Shader("Default");
+    color = { 1, 1, 1, 1 };
 		animated = false;
 	}
 
@@ -173,13 +174,6 @@ namespace Framework
 		shader->Disable();
 	}
 
-	// Call To Change Texture Used By Sprite
-	void Sprite::Change_Texture(Texture* _texture)
-	{
-		texture = _texture;
-		Specify_Attributes();
-	}
-
 
 	// Used To Communicate With Shader and Specify Attributes from Vertex Data
 	void Sprite::Specify_Attributes()
@@ -245,6 +239,7 @@ namespace Framework
 	{
 		vao->bindVAO();
 		shader->Use();
+    shader->uni4fv ("overrideColor", glm::value_ptr (color));
 		shader->uniMat4("modelViewProjectionMatrix", glm::value_ptr(gameObject->Transform->GetModelViewProjectionMatrix()));
 		(this->*DrawFunction)();
 		shader->Disable();

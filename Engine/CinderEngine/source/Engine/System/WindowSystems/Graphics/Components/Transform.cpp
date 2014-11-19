@@ -22,14 +22,21 @@ namespace Framework
 
   ZilchDefineType(Transform, CinderZilch)
   {
-	type->HandleManager = ZilchManagerId(Zilch::PointerManager);
+	  type->HandleManager = ZilchManagerId(Zilch::PointerManager);
     ZilchBindConstructor();
-	ZilchBindMethod(Initialize);
+	  ZilchBindMethod(Initialize);
     ZilchBindMethodOverload(Scale, void, float, float, float);
     ZilchBindMethodOverload(Scale, void, float);
-	ZilchBindMethodOverload(Translate, void, float, float, float);
+	  ZilchBindMethodOverload(Translate, void, float, float, float);
     ZilchBindMethod(Rotate);
-	//ZilchBindMethod(GetScreenPosition);
+	  //ZilchBindMethod(GetScreenPosition);
+  }
+
+  Transform::Transform ()
+  {
+    position = { 0, 0, 0 };
+    scale = { 1, 1, 1 };
+    rotation = 0.0f;
   }
 
   Transform::~Transform ()

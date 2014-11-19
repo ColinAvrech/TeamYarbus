@@ -36,7 +36,7 @@ namespace Framework
   public:
     ZilchDeclareBaseType(Transform, Zilch::TypeCopyMode::ReferenceType);
     
-    Transform () {}
+    Transform ();
     virtual ~Transform();
     virtual void Initialize ();
     virtual void Serialize (Serializer::DataNode* data);
