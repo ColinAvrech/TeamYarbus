@@ -34,7 +34,7 @@ starts the game loop.
 
 #include "UpdateEvent.h"
 #include "Zilch.hpp"
-#include "ZInterface.h"
+//#include "ZInterface.h"
 
 #define _DEGUB
 using namespace Framework;
