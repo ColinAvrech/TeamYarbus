@@ -416,7 +416,7 @@ namespace Framework
     FMOD::Sound* pSound;
 
     // FMOD error check to check if sounds are being created in the system
-    ErrCheck(pFMODAudioSystem->createStream(filename, FMOD_SOFTWARE, 0, &pSound));
+    ErrCheck(pFMODAudioSystem->createStream(filename, FMOD_INIT_NORMAL, 0, &pSound));
 
     // Piles up the sound on the stack
     sound_queue_.push_back(pSound);
@@ -726,7 +726,7 @@ namespace Framework
       //std::cout << CinderConsole::cyan << "FIVE SECONDS" << std::endl;
       //this->SweepEQ1(100.0f, 5.5f, 10.0f, 4.0f);
       //this->SweepEQ2(5000.0f, 5.0f, 10.0f, 4.0f);
-      this->VolumeFade(0.0f, 5.0f);
+      //this->VolumeFade(0.0f, 5.0f);
     }
     if (this->GetTime() > 10000 && this->GetTime() < 10500 && test2 == true)
     {

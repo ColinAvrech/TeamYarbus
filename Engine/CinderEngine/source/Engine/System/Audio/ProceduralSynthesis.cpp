@@ -49,7 +49,7 @@ namespace Framework
 
     if (!active)
     {
-      result = pChannel->addDSP(0, objects_DSP.dsp_noise, 0);
+      result = pChannel->addDSP(0, objects_DSP.dsp_noise);
       ErrCheck(result);
     }
   }
