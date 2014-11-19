@@ -24,6 +24,7 @@ namespace Framework
   {
 	type->HandleManager = ZilchManagerId(Zilch::PointerManager);
     ZilchBindConstructor();
+	ZilchBindMethod(Initialize);
     ZilchBindMethodOverload(Scale, void, float, float, float);
     ZilchBindMethodOverload(Scale, void, float);
 	ZilchBindMethodOverload(Translate, void, float, float, float);
