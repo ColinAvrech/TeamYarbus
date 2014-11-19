@@ -26,7 +26,7 @@ namespace Framework
 
 	void ContactSet::ResolveContacts(const float dt)
 	{
-		//ResolvePositions(dt);
+		ResolvePositions(dt);
 		ResolveVelocities(dt);
 	}
 
@@ -59,8 +59,8 @@ namespace Framework
 		//apply penetration resolution
 		Transform * moveValue0 = c.Bodies[0]->Transform;
 		Transform * moveValue1 = c.Bodies[1]->Transform;
-		c.Bodies[0]->Transform->Translate(moveValue0->GetPosition() + velA);
-		c.Bodies[1]->Transform->Translate(moveValue1->GetPosition() + velB);
+		c.Bodies[0]->Transform->Translate(velA);
+		c.Bodies[1]->Transform->Translate(velB);
 	}
 
 	void ContactSet::ResolvePositions(const float dt)
