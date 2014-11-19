@@ -34,7 +34,7 @@ starts the game loop.
 
 #include "UpdateEvent.h"
 #include "Zilch.hpp"
-
+#include "ZInterface.h"
 
 #define _DEGUB
 using namespace Framework;
@@ -115,10 +115,12 @@ int main (void)
   // Connect example
   //MyClass _myclass;
   //EVENTSYSTEM->mConnect<UpdateEvent, MyClass>(Events::UPDATEEVENT, &_myclass, &MyClass::Print);
-
+	//ZInterface::OpenFile();
 
   //! Run the game! NOW!
   engine->GameLoop ();
+
+  
 
   //! Delete all systems
   engine->DestroySystems ();

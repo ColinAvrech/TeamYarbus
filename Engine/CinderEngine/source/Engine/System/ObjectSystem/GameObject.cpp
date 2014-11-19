@@ -15,7 +15,6 @@
 #include "Component.h"
 #include "Zilch.hpp"
 
-#include "Sprite.h"
 namespace Framework
 {
   GameObject* Component::GetOwner() { return gameObject; }
@@ -36,6 +35,7 @@ namespace Framework
 
     ZilchBindFieldGet(Transform);
     ZilchBindFieldGet(Sprite);
+	//ZilchBindFieldGet(Name);
 	ZilchBindMethodOverload(GetComponent, Component*, Zilch::String);
     //ZilchBindFieldGetSet(ShapeCollider);
     //ZilchBindFieldGetSet(Camera);
