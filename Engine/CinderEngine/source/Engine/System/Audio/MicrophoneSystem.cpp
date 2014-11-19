@@ -57,7 +57,7 @@ namespace Framework
     }
 
     // Get microphone drivcer information
-    result = pFMODAudioSystem->getRecordDriverInfo(0, NULL, NULL, 0, 0, 
+    result = pFMODAudioSystem->getRecordDriverInfo(0, NULL, 0, 0,
                                         &_recordrate, 0, &_recordchannels);
     ErrCheck(result);
 
@@ -182,7 +182,7 @@ namespace Framework
 
       if (_check == true)
       {
-        micFilter(); // Apply microphone filter
+        micFilter(100, 1.0); // Apply microphone filter
         micMeter();  // Get the RMS peaks from the mic
         //micFrequencyData(); //Get dominant frequency ranges       
 
@@ -243,7 +243,7 @@ namespace Framework
     }
     else
     {      
-      result = micChannel->addDSP(0, fft, 0);
+      result = micChannel->addDSP(0, fft);
       ErrCheck(result);
     }
   }
@@ -289,7 +289,7 @@ namespace Framework
     }
     else
     {
-      result = micChannel->addDSP(0, filter, 0);
+      result = micChannel->addDSP(0, filter);
       ErrCheck(result);
     }  
   }

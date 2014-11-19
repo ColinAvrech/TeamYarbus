@@ -27,18 +27,18 @@ namespace Framework
   public:
     ZilchDeclareBaseType(Sprite, Zilch::TypeCopyMode::ReferenceType);
 
-    Sprite () {}
+	Sprite();
     virtual ~Sprite();
 
     virtual void Initialize ();
     virtual void Serialize (Serializer::DataNode* data);
     virtual void Draw ();
 
+	  void LoadSprite(Zilch::String texturename, Zilch::String shadername);
     void Create_Sprite (Shader* _shader, Texture* _texture = NULL);
     void Create_Sprite (Shader* _shader, SpriteSheet* _atlas);
     void Change_Shader (Shader* _shaderID);
     void Change_Shader (Zilch::String);
-    void Change_Texture (Texture* _textureID);
     void Change_Texture (Zilch::String);
     void Update_Shader ();
 
@@ -54,15 +54,15 @@ namespace Framework
     Shader* shader;
     Texture* texture;
     SpriteSheet* atlas;
-    glm::vec4 color;
+    vec4 color;
     GLenum BlendMode;
 
     // Animated Sprites
     bool animated;
     GLuint uniTexOffset;
     GLuint uniFrameRatio;
-    glm::vec2 texOffset;
-    glm::vec2 frameRatio;
+    vec2 texOffset;
+    vec2 frameRatio;
     unsigned frameNumber;
 
     // Helper Functions

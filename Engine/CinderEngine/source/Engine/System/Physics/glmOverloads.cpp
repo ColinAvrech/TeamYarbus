@@ -3,9 +3,9 @@
 namespace Framework
 {
 
-	glm::vec3 operator*(const glm::vec3& vec, const float scale)
+	vec3 operator*(const vec3& vec, const float scale)
 	{
-		glm::vec3 temp;
+		vec3 temp;
 		temp.x = vec.x * scale;
 		temp.y = vec.y * scale;
 		temp.z = vec.z * scale;
@@ -13,9 +13,9 @@ namespace Framework
 	}
 
 
-	glm::vec3 operator*(const float scale, const glm::vec3& vec)
+	vec3 operator*(const float scale, const vec3& vec)
 	{
-		glm::vec3 temp;
+		vec3 temp;
 		temp.x = vec.x * scale;
 		temp.y = vec.y * scale;
 		temp.z = vec.z * scale;

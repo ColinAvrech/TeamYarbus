@@ -36,7 +36,7 @@ namespace Framework
   public:
     ZilchDeclareBaseType(Transform, Zilch::TypeCopyMode::ReferenceType);
     
-    Transform () {}
+    Transform ();
     virtual ~Transform();
     virtual void Initialize ();
     virtual void Serialize (Serializer::DataNode* data);
@@ -44,7 +44,7 @@ namespace Framework
     // Transformations
     void Load_Identity ();
     void Translate (float x, float y, float z);
-	void Translate(glm::vec3 &v);
+	void Translate(vec3 &v);
     void Scale (float x, float y, float z);
     void Scale (float v);
     void Rotate (float angle);
@@ -55,11 +55,11 @@ namespace Framework
     //getters
     glm::mat4 GetModelMatrix ();
     glm::mat4 GetModelViewProjectionMatrix ();
-    inline glm::vec3 GetPosition ();
-    inline glm::vec3 GetScale ();
+    inline vec3 GetPosition ();
+    inline vec3 GetScale ();
     inline float GetRotation ();
-    glm::vec2 GetScreenPosition ();
-    static void Print (glm::vec3 position);
+    vec2 GetScreenPosition ();
+    static void Print (vec3 position);
 
     // The non-base component usees DefineComponentName macro to name component
     const static string Name;
@@ -77,8 +77,8 @@ namespace Framework
     std::vector <glm::mat4> modelViewProjectionmatrix;
     void push_matrix ();
     void pop_matrix ();
-    glm::vec3 position;
-    glm::vec3 scale;
+    vec3 position;
+    vec3 scale;
     float rotation;
     glm::mat3 normalMatrix;
 
@@ -86,12 +86,12 @@ namespace Framework
     bool matricesReady;
   };
 
-  inline glm::vec3 Transform::GetPosition ()
+  inline vec3 Transform::GetPosition ()
   {
     return position;
   }
 
-  inline glm::vec3 Transform::GetScale ()
+  inline vec3 Transform::GetScale ()
   {
     return scale;
   }

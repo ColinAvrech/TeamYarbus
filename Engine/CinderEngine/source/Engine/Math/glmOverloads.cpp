@@ -11,16 +11,16 @@
 
 namespace Framework
 {
-  glm::vec2 operator*(const glm::vec2& vec, const float scale)
+  vec2 operator*(const vec2& vec, const float scale)
   {
-    glm::vec2 newvec = vec;
+    vec2 newvec = vec;
     newvec *= scale;
     return newvec;
   }
 
-  glm::vec2 operator*(const float scale, const glm::vec2& vec)
+  vec2 operator*(const float scale, const vec2& vec)
   {
-    glm::vec2 newvec = vec;
+    vec2 newvec = vec;
     newvec *= scale;
     return newvec;
   }

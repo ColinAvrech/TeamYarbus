@@ -49,7 +49,7 @@ namespace Framework
     }
     else
     {
-      result = pChannel->addDSP(0, objects_DSP.dsp_lpf, 0);
+      result = pChannel->addDSP(0, objects_DSP.dsp_lpf);
       ErrCheck(result);
     }
   }
@@ -111,7 +111,7 @@ namespace Framework
     }
     else
     {
-      result = pChannel->addDSP(0, objects_DSP.dsp_hpf, 0);
+      result = pChannel->addDSP(0, objects_DSP.dsp_hpf);
       ErrCheck(result);
     }
   }
@@ -228,7 +228,7 @@ namespace Framework
     }
     else
     {
-      result = pChannel->addDSP(0, objects_DSP.dsp_reverb, 0);
+      result = pChannel->addDSP(0, objects_DSP.dsp_reverb);
       ErrCheck(result);
     }
   }
@@ -461,7 +461,7 @@ namespace Framework
 
     if (!active && _EQStateA == false)
     {
-      result = pChannel->addDSP(0, objects_DSP.dsp_sweepA, 0);
+      result = pChannel->addDSP(0, objects_DSP.dsp_sweepA);
       ErrCheck(result);
 
       //FOR TESTING
@@ -658,7 +658,7 @@ namespace Framework
 
     if (!active && _EQStateB == false)
     {
-      result = pChannel->addDSP(0, objects_DSP.dsp_sweepB, 0);
+      result = pChannel->addDSP(0, objects_DSP.dsp_sweepB);
       ErrCheck(result);
 
       // FOR TESTING

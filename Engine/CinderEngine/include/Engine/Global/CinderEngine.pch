@@ -31,3 +31,5 @@ using std::string;
 #include "Windows.h"
 
 #pragma hdrstop
+
+#include "CinderMath.h"

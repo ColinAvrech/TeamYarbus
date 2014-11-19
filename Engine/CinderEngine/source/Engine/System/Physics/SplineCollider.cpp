@@ -25,7 +25,7 @@ namespace Framework
 	};
 
 	// Getters
-	//glm::vec2 GetNormal(void) { return normalVec; }
+	//vec2 GetNormal(void) { return normalVec; }
 	//float GetP1DotNormal(void) { return p1dotNormal; }
 
 	// Private member functions
@@ -47,14 +47,14 @@ namespace Framework
     throw std::logic_error ("The method or operation is not implemented.");
   }
 
-  void SplineCollider::AddLineCollider (glm::vec2 _p1, glm::vec2 _p2)
+  void SplineCollider::AddLineCollider (vec2 _p1, vec2 _p2)
   {
-	  glm::vec3 p1(_p1.x, _p1.y, 0.0f);
-	  glm::vec3 p2(_p2.x, _p2.y, 0.0f);
+	  vec3 p1(_p1.x, _p1.y, 0.0f);
+	  vec3 p2(_p2.x, _p2.y, 0.0f);
     colliders.push_back (new LineCollider (p1, p2));
   }
 
-  void SplineCollider::AddLineCollider (std::vector <std::pair <glm::vec2, glm::vec2>>& lines)
+  void SplineCollider::AddLineCollider (std::vector <std::pair <vec2, vec2>>& lines)
   {
     for (auto& i : lines)
     {

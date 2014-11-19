@@ -26,7 +26,7 @@ namespace Framework
 
 	void ContactSet::ResolveContacts(const float dt)
 	{
-		ResolvePositions(dt);
+		//ResolvePositions(dt);
 		ResolveVelocities(dt);
 	}
 
@@ -34,8 +34,8 @@ namespace Framework
 	{
 		float invMassA = 0.0f;
 		float invMassB = 0.0f;
-		glm::vec3 velA = { 0, 0, 0 };
-		glm::vec3 velB = { 0, 0, 0 };
+		vec3 velA = { 0, 0, 0 };
+		vec3 velB = { 0, 0, 0 };
 		if (c.Bodies[0]->RigidBody)
 		{
 			invMassA = c.Bodies[0]->RigidBody->getInvMass();
@@ -48,7 +48,7 @@ namespace Framework
 		}
 		float totalInverseMass = invMassA + invMassB;
 
-		glm::vec3 movePerImass = c.ContactNormal * (c.Penetration / totalInverseMass);
+		vec3 movePerImass = c.ContactNormal * (c.Penetration / totalInverseMass);
 
 		movePerImass *= Physics::PHYSICSSYSTEM->penetrationResolvePercent;
 
@@ -57,8 +57,6 @@ namespace Framework
 		c.Movement[1] = movePerImass * -invMassB;
 
 		//apply penetration resolution
-		Transform * moveValue0 = c.Bodies[0]->Transform;
-		Transform * moveValue1 = c.Bodies[1]->Transform;
 		c.Bodies[0]->Transform->Translate(velA);
 		c.Bodies[1]->Transform->Translate(velB);
 	}
@@ -91,7 +89,7 @@ namespace Framework
 			ResolvePenetration(contactArray[contactIndex], dt);
 
 			//Update penetrations for related contacts
-			glm::vec3* movement = contactArray[contactIndex].Movement;
+			vec3* movement = contactArray[contactIndex].Movement;
 			for (int i = 0; i < numOfContacts; ++i)
 			{
 				if (contactArray[i].Bodies[0] == contactArray[contactIndex].Bodies[0])
@@ -120,7 +118,7 @@ namespace Framework
 		for (int i = 0; i < numOfContacts; ++i)
 		{
 			float imassA;
-			glm::vec3 velA;
+			vec3 velA;
 			if (contactArray[i].Bodies[0]->RigidBody)
 			{
 				imassA = contactArray[i].Bodies[0]->RigidBody->getInvMass();
@@ -132,7 +130,7 @@ namespace Framework
 				velA = { 0.0f, 0.0f, 0.0f };
 			}
 			float imassB;
-			glm::vec3 velB;
+			vec3 velB;
 			if (contactArray[i].Bodies[1] && contactArray[i].Bodies[1]->RigidBody)
 			{
 				imassB = contactArray[i].Bodies[1]->RigidBody->getInvMass();

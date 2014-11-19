@@ -49,7 +49,7 @@
 //  static VAO* vao;
 //  static VBO* vbo;
 //  static EBO* ebo;
-//  static glm::vec2 texoffset (0.0f, 0.0f);
+//  static vec2 texoffset (0.0f, 0.0f);
 //  static const int samples = 4;
 //  static bool fadeOut;
 //  static int frames;
@@ -115,22 +115,22 @@
 //    case GLFW_KEY_LEFT:
 //      //////////////////////////////////////////////////////////////////////////
 //      // Only For Testing
-//      teamLogo.modelMatrix = glm::translate (teamLogo.modelMatrix, glm::vec3 (-0.1f, 0.0f, 0.0f));
+//      teamLogo.modelMatrix = glm::translate (teamLogo.modelMatrix, vec3 (-0.1f, 0.0f, 0.0f));
 //      //////////////////////////////////////////////////////////////////////////
-//      //camera.UpdatePosition (glm::vec3 (-camScrollSpeed, 0.0f, 0.0f));
+//      //camera.UpdatePosition (vec3 (-camScrollSpeed, 0.0f, 0.0f));
 //      break;
 //    case GLFW_KEY_RIGHT:
 //      //////////////////////////////////////////////////////////////////////////
 //      // Only Fore Testing
-//      teamLogo.modelMatrix = glm::translate (teamLogo.modelMatrix, glm::vec3 (0.1f, 0.0f, 0.0f));
+//      teamLogo.modelMatrix = glm::translate (teamLogo.modelMatrix, vec3 (0.1f, 0.0f, 0.0f));
 //      //////////////////////////////////////////////////////////////////////////
-//      //camera.UpdatePosition (glm::vec3 (camScrollSpeed, 0.0f, 0.0f));
+//      //camera.UpdatePosition (vec3 (camScrollSpeed, 0.0f, 0.0f));
 //      break;
 //    case GLFW_KEY_UP:
-//      Camera::current->UpdatePosition (glm::vec3 (0.0f, camScrollSpeed, 0.0f));
+//      Camera::current->UpdatePosition (vec3 (0.0f, camScrollSpeed, 0.0f));
 //      break;
 //    case GLFW_KEY_DOWN:
-//      Camera::current->UpdatePosition (glm::vec3 (0.0f, -camScrollSpeed, 0.0f));
+//      Camera::current->UpdatePosition (vec3 (0.0f, -camScrollSpeed, 0.0f));
 //      break;
 //    case GLFW_KEY_Z:
 //      Camera::current->Zoom (0.01f);
@@ -167,7 +167,7 @@
 //  {
 //  if (isPressed)
 //  {
-//  camera.MouseUpdate (glm::vec2 (float (xPos), float (yPos)));
+//  camera.MouseUpdate (vec2 (float (xPos), float (yPos)));
 //  }
 //  }*/
 //
@@ -210,17 +210,17 @@
 //      Resources::RS->Get_Texture ("TeamYarbus.png")
 //      );
 //
-//    teamLogo.modelMatrix = glm::translate (glm::vec3 (0.0f, 0.0f, -1.0f));
-//    teamLogo.modelMatrix = glm::scale (teamLogo.modelMatrix, glm::vec3 (0.5f, 0.5f, 1.0f));
+//    teamLogo.modelMatrix = glm::translate (vec3 (0.0f, 0.0f, -1.0f));
+//    teamLogo.modelMatrix = glm::scale (teamLogo.modelMatrix, vec3 (0.5f, 0.5f, 1.0f));
 //
-//    vectorLogo.modelMatrix = glm::translate (glm::vec3 (0.0f, 0.0f, -1.0f));
-//    vectorLogo.modelMatrix = glm::scale (vectorLogo.modelMatrix, glm::vec3 (0.5f, 0.5f, 1.0f));
+//    vectorLogo.modelMatrix = glm::translate (vec3 (0.0f, 0.0f, -1.0f));
+//    vectorLogo.modelMatrix = glm::scale (vectorLogo.modelMatrix, vec3 (0.5f, 0.5f, 1.0f));
 //
-//    teamName.modelMatrix = glm::translate (glm::vec3 (0.0f, -0.3f, -1.0f));
-//    teamName.modelMatrix = glm::scale (teamName.modelMatrix, glm::vec3 (0.4f, 0.4f / teamName.Get_Texture()->Get_Aspect_Ratio(), 1.0f));
+//    teamName.modelMatrix = glm::translate (vec3 (0.0f, -0.3f, -1.0f));
+//    teamName.modelMatrix = glm::scale (teamName.modelMatrix, vec3 (0.4f, 0.4f / teamName.Get_Texture()->Get_Aspect_Ratio(), 1.0f));
 //
-//    dpLogo.modelMatrix = glm::translate (glm::vec3 (0, 0.0f, -1));
-//    dpLogo.modelMatrix = glm::scale (dpLogo.modelMatrix, glm::vec3 (0.5f, 0.5f / dpLogo.Get_Texture ()->Get_Aspect_Ratio (), 1.0f));
+//    dpLogo.modelMatrix = glm::translate (vec3 (0, 0.0f, -1));
+//    dpLogo.modelMatrix = glm::scale (dpLogo.modelMatrix, vec3 (0.5f, 0.5f / dpLogo.Get_Texture ()->Get_Aspect_Ratio (), 1.0f));
 //
 //    //SoundName.test1 = ResourceManager::RESOURCE_MANAGER->Get_Sound("music2.mp3");
 //    //SoundName.test1->Play();

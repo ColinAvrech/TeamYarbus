@@ -8,8 +8,7 @@
 */
 /*****************************************************************************/
 #include "FractalNoise.h"
-#include "glm/gtc/random.hpp"
-#include "glm/gtc/noise.hpp"
+#include "CinderMath.h"
 #include <stdlib.h>
 #include <iostream>
 namespace Framework
@@ -32,7 +31,7 @@ namespace Framework
         for (int j = 0; j < sizeY; j++)
         {
           int r = rand() % 2;
-          Buffer[i][j] = std::abs(glm::simplex(glm::vec2(r, r)));
+          Buffer[i][j] = std::abs(glm::simplex(vec2(r, r)));
         }
       }
       for (int i = 0; i < sizeX; i++)

@@ -60,32 +60,30 @@ Level =
 	},
 	Cog = 
 	{
-		LinkId = 
+	  LinkId = 
+	  {
+		  uint Id = 0,
+	  },
+	  Named = 
+	  {
+		  string Name = "Camera",
+	  },
+    Transform = 
+	  {
+		  Vec3 Translation = [0, 0, -10],
+		  Vec3 Scale = [1, 1, 1],
+		  Quat Rotation = [0, 0, 0, 1],
+	  },
+    Camera = 
 		{
-			uint Id = 2,
+      bool main = true,
+      Vec3 Facing = [0, 0, 1],
+			float FieldOfView = 120,
+			float NearPlane = 0.1,
+			float FarPlane = 20,
+			float Size = 1,
 		},
-		Named = 
-		{
-			string Name = "Camera",
-		},
-		Transform = 
-		{
-			Vec3 Translation = [0, 0, 40],
-			Vec3 Scale = [1, 1, 1],
-			Quat Rotation = [0, 0, 0, 1],
-		},
-		Camera = 
-		{
-			ProjectionMode ProjectionMode = Orthographic,
-			Vec3 Facing = [0, 0, -1],
-			SpriteSort SpriteSort = ZDepth,
-			string SpriteLayerOrder = "52b23ad3c402d436:DefaultSpriteLayerOrder",
-			float FieldOfView = 45,
-			float NearPlane = 0.5,
-			float FarPlane = 200,
-			float Size = 20,
-		},
-	},
+  },
 	Cog = 
 	{
 		LinkId = 
@@ -98,14 +96,15 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [-0.0543478, -3.2337, -0.001],
-			Vec3 Scale = [28.6523, 1, 1],
+			Vec3 Translation = [0, 0, 0],
+			Vec3 Scale = [0.5, 0.5, 0.5],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Sprite = 
 		{
-			string SpriteSource = "env.png",
+			string SpriteSource = "Circle.png",
 			string Shader = "Default",
+			Vec4 Color = [1, 1,	1, 1],
 		},
 		Josh = 
 		{

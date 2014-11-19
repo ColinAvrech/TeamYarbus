@@ -4,30 +4,65 @@ class Josh : Component
   
   var OHai : String = "";
   var Obj:GameObject = null;
+  var ObjectSys:ObjectSystem = null;
+  var SpawnedObject:GameObject = null;
   
-  
-  constructor() : base(this)
+  constructor() : base()
   {
 	Console.WriteLine("SASA");
+	
   }
   
-  function Initialize()
+  function Initialize(objectSystem:ObjectSystem)
   {
+	this.ObjectSys = objectSystem;
 	//Cinder2.Connect(this, Events.UpdateEvent, this.LogicUpdate);
+	//Cinder2.Connect(this, Events.KeyEvent, this.KeyIsPressed);
 	//var obj : GameObject = Cinder.objsys.CreateObject();
 	//Console.Writeline(obj);
 	//Console.Writeline(obj);
 	//Console.WriteLine(new Player());
 	//Console.WriteLine(this.Owner);
+	EventSystem.Connect("KUP", this.KeyIsPressed);
+	Console.WriteLine(this);
+	Console.WriteLine("hello");
+	var gameobject = this.ObjectSys.CreateObject();
+	Console.WriteLine("GAMEOBJECT");
+	gameobject.AddComponent("Transform");
+	Console.WriteLine("COMPONENTT");
+	//gameobject.Transform;
+	Console.WriteLine(gameobject.Transform);
+	gameobject.AddComponent("Sprite");
+	//newsprite.LoadSprite("Env.png", "Default");
+	Console.WriteLine(gameobject.Sprite.Texture.Name);
+	this.SpawnedObject = gameobject;
+	
+	var file:ZilchFile = ZInterface.OpenFile("..//..//Resources//Scripts//test.z");
+	var i = 0;
+	//Console.WriteLine(file.ReadLine(100) == "\0");
+	
+	while (file.ReadLine(i) != "\0")
+	{
+		Console.WriteLine(file.ReadLine(i));
+		i += 1;
+	}
 	
 	
 	
-	Console.WriteLine(this.GetOwner());
+	
+	//Console.WriteLine();
   }
  
   function LogicUpdate(e: UpdateEvent)
   {
 	//Console.WriteLine(e.TimePassed);
+	//this.SpawnedObject.Transform.Translate(0,0.1,0);
+  }
+  
+  function KeyIsPressed(e: KeyEvent)
+  {
+	//Console.WriteLine(e);
+	this.SpawnedObject.Transform.Translate(0.0,0.1,0);
   }
  
 }
@@ -36,10 +71,11 @@ class Cinder2
 {
 	//NEEDS FIXED ANY TYPE?
 	[Static]
-	function Connect(eventListener:Josh, eventName:String, functionDelegate:delegate(e:UpdateEvent))
+	function Connect(eventListener:Josh, eventName:String, functionDelegate:delegate(e:KeyEvent))
 	{
 		EventSystem.Connect(eventName, functionDelegate);
 	}
 
 	sends UpdateEvent:UpdateEvent;
+	sends KeyEvent:KeyEvent;
 }

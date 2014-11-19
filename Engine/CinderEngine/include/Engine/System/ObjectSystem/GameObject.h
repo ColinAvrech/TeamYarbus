@@ -64,7 +64,7 @@ namespace Framework
     Component* AddZilchComponent(string name);
 
     Component* GetComponent(string component);
-
+	Component* GetComponent(Zilch::String component);
 
     //Public Variables
     string Name;

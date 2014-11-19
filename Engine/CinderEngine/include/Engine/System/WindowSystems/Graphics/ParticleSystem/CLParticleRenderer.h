@@ -23,7 +23,7 @@ namespace Framework
   class KeyEvent;
   class CLParticleEmitter
   {
-    glm::vec4 position;
+    vec4 position;
     int particles;
   };
 

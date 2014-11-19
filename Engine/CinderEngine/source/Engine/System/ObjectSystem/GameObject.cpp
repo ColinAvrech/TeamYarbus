@@ -21,15 +21,22 @@ namespace Framework
 
   ZilchDefineType(Component, CinderZilch)
   {
-    ZilchBindConstructor(Component);
+	type->HandleManager = ZilchManagerId(Zilch::PointerManager);
+	
+	ZilchBindConstructor();
     ZilchBindMethod(GetOwner);	
+	ZilchBindMethod(Initialize);
   }
 
   ZilchDefineType(GameObject, CinderZilch)
   {
     //Pointerrs
+	type->HandleManager = ZilchManagerId(Zilch::PointerManager);
+
     ZilchBindFieldGet(Transform);
     ZilchBindFieldGet(Sprite);
+	//ZilchBindFieldGet(Name);
+	ZilchBindMethodOverload(GetComponent, Component*, Zilch::String);
     //ZilchBindFieldGetSet(ShapeCollider);
     //ZilchBindFieldGetSet(Camera);
     //ZilchBindFieldGetSet(RigidBody);
@@ -101,6 +108,9 @@ namespace Framework
   }
   Component* GameObject::AddZilchComponent(string name)
   {
+	  
+    //bob = state->AllocateDefaultConstructedHeapObject(ZilchClass, report, Zilch::HeapFlags::NonReferenceCounted);
+
     //not sure about error handling
     Component* zc = new ZilchComponent(name);
     zc->Initialize();
@@ -119,6 +129,22 @@ namespace Framework
       return it->second;
     }
     return NULL;
+  }
+
+  //JOSH
+  Component* GameObject::GetComponent(Zilch::String component)
+  {
+	  string stdcomp = component.c_str();
+	  ComponentMap::iterator it = Components.find(stdcomp);
+	  if (it == Components.end())
+	  {
+		  return NULL;
+	  }
+	  else
+	  {
+		  return it->second;
+	  }
+	  return NULL;
   }
 
 }

@@ -14,7 +14,7 @@
 
 namespace Framework
 {
-  LineCollider::LineCollider (glm::vec3 _p1, glm::vec3 _p2)
+  LineCollider::LineCollider (vec3 _p1, vec3 _p2)
   {
     Initialize (_p1, _p2);
   }
@@ -26,7 +26,7 @@ namespace Framework
 		p1dotNormal = Physics::DotProduct(p1, normalVec);
 	}
 
-  void LineCollider::Initialize (glm::vec3 _p1, glm::vec3 _p2)
+  void LineCollider::Initialize (vec3 _p1, vec3 _p2)
   {
     p1 = _p1;
     p2 = _p2;
@@ -38,9 +38,9 @@ namespace Framework
 	{
 		Serializer::DataNode* temp;
 		
-		glm::vec3 objPosition = gameObject->Transform->GetPosition();
-		glm::vec3 boxSize;
-		glm::vec3 objScale = gameObject->Transform->GetScale();
+		vec3 objPosition = gameObject->Transform->GetPosition();
+		vec3 boxSize;
+		vec3 objScale = gameObject->Transform->GetScale();
 		temp = data->FindElement(data, "Size");
 		temp->GetValue(&boxSize);
 
@@ -55,7 +55,7 @@ namespace Framework
 	}
 
 	// Getters
-	//glm::vec3 GetNormal(void) { return normalVec; }
+	//vec3 GetNormal(void) { return normalVec; }
 	//float GetP1DotNormal(void) { return p1dotNormal; }
 
 	// Private member functions

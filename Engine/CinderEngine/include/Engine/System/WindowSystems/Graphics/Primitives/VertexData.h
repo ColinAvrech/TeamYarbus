@@ -18,10 +18,10 @@ namespace Framework
 {
   struct VertexData
   {
-    glm::vec3 position;
-    glm::vec4 color;
-    glm::vec3 normal;
-    glm::vec2 texCoord;
+    vec3 position;
+    vec4 color;
+    vec3 normal;
+    vec2 texCoord;
   };
 
   struct textureData
