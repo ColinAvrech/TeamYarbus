@@ -32,13 +32,11 @@ class Josh : Component
 	//gameobject.Transform;
 	Console.WriteLine(gameobject.Transform);
 	gameobject.AddComponent("Sprite");
-	//newsprite.LoadSprite("Env.png", "Default");
-	Console.WriteLine(gameobject.Sprite.Texture.Name);
+	gameobject.Sprite.Change_Texture ("UIPauseTitle.png");
+  gameobject.Sprite.Change_Color (1,0,0,1);
+	Console.WriteLine(gameobject.Sprite);
 	
-	var file:ZilchFile = ZInterface.OpenFile("..//..//Resources//Scripts//test.z");
-	
-	
-	Console.WriteLine(file.ReadLine(100) == null);
+	Console.WriteLine("ASDADAD");
 	
 	
 	
