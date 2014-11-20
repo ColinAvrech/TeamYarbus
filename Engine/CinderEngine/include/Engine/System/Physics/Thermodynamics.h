@@ -85,14 +85,14 @@ namespace Framework
       bool Initialize();
 
       // Called every frame
-      void Update(const double dt);
+      void Update(const double& dt);
 
       //Update temperatures
-      void UpdateTemp (int start_index, int end_index, const double dt);
+      void UpdateTemp(const int& start_index, const int& end_index, const double& dt);
       //Calculate velocity vectors
-      void ComputeVelocity (int start_index, int end_index, const double dt);
+      void ComputeVelocity(const int& start_index, const int& end_index, const double& dt);
       //Update fire
-      void UpdateFire (int start_index, int end_index, const double dt);
+      void UpdateFire(const int& start_index, const int& end_index, const double& dt);
 
       void Reset ();
 
@@ -115,24 +115,24 @@ namespace Framework
 
     public:
       // Returns name of System
-      const std::string GetName() { return "ThermodynamicsSystem"; }
+      const string GetName() { return "ThermodynamicsSystem"; }
 
       // Getters
       //Get Cell Pixel size
       float GetCellSize(){ return CellSize; }
       //Get Map size
-      glm::vec2 GetMapSize(){ return MapSize; }
+      vec2 GetMapSize(){ return MapSize; }
       //Get cell temperature
-      float GetCellTemperature(float x, float y);
+      float GetCellTemperature(const float& x, const float& y);
       //Get cell oxygen content
-      float GetCellOxygen(float x, float y);
+      float GetCellOxygen(const float& x, const float& y);
       //Get cell velocity
-      glm::vec2 GetCellVelocity(float x, float y);
+      vec2 GetCellVelocity(const float& x, const float& y);
 
       // Setters
       void ToggleAutoDissipation();
-      float SetCellTemperature(const float x, const float y, const float temp, const double dt);
-      void SetCellVelocity (const int x, const int y, glm::vec2 v);
+      float SetCellTemperature(const float& x, const float& y, const float& temp, const double& dt);
+      void SetCellVelocity (const int x, const int y, vec2 v);
 
 #pragma endregion
 
@@ -174,7 +174,7 @@ namespace Framework
       //Automatically equalize pressure over time
       bool EqualizePressure;
       float CellSize;
-      glm::vec2 MapOffset;
+      vec2 MapOffset;
       float AtmosphericTemperature;
 
       //Temperature Map. Temperature is stored in Kelvin.
@@ -207,7 +207,7 @@ namespace Framework
 
       struct conductionProperties
       {
-        //std::string name will be used to map these;
+        //string name will be used to map these;
         bool  isFluid;  //Is the material a fluid
         bool  Volatile; //Can this material catch fire
         float Hc;       //Heat transfer coefficient
@@ -215,7 +215,7 @@ namespace Framework
         float c;        //Specific heat
       };
 
-      std::unordered_map<std::string, conductionProperties*> materialList;
+      std::unordered_map<string, conductionProperties*> materialList;
 #pragma endregion
 
       /*-----------------------------------------------------------------------
@@ -223,7 +223,7 @@ namespace Framework
       -----------------------------------------------------------------------*/
 #pragma region Private Functions
       //Determine subscript from position
-      glm::vec2 GetSubscript(const float x, const float y);
+      vec2 GetSubscript(const float& x, const float& y);
 #pragma endregion
 
 

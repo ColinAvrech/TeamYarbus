@@ -10,7 +10,6 @@
 #pragma once
 
 #include "Common.h"
-#include "glm.hpp"
 
 namespace Framework
 {
@@ -58,9 +57,9 @@ namespace Framework
         return _data;
       }
 
-      glm::vec2 getSize() const
+      vec2 getSize() const
       {
-        return glm::vec2(_width, _height);
+        return vec2(_width, _height);
       }
 
       unsigned int getLength() const

@@ -60,7 +60,7 @@ namespace Framework
     // OpenGL 3.3+
     // Create a VAO and never use it again!!!
     vao = new VAO ();
-    SSBOPos = new SSBO (particleCount * sizeof(glm::vec4));
+    SSBOPos = new SSBO (particleCount * sizeof(vec4));
 
     // Fill
     ResetPosition ();
@@ -68,7 +68,7 @@ namespace Framework
     SSBOPos->BindBufferBase (0);
 
 
-    SSBOVel = new SSBO (particleCount * sizeof(glm::vec4));
+    SSBOVel = new SSBO (particleCount * sizeof(vec4));
     ResetVelocity ();
     // Bind buffer to target index 1
     SSBOVel->BindBufferBase (1);
@@ -126,7 +126,7 @@ namespace Framework
     destPosX = (float) (cursorX / (windowWidth) -0.5f) * 2.0f;
     destPosY = (float) ((windowHeight - cursorY) / windowHeight - 0.5f) * 2.0f;
 
-    glm::vec4* verticesPos = (glm::vec4*) SSBOPos->MapBufferRange<glm::vec4> (0, particleCount);
+    vec4* verticesPos = (vec4*) SSBOPos->MapBufferRange<vec4> (0, particleCount);
     for (int i = 0; i < particleCount; i++)
     {
       float rnd = (float) rand () / (float) (RAND_MAX);
@@ -145,7 +145,7 @@ namespace Framework
 
   void CLParticleRenderer::ResetVelocity ()
   {
-    glm::vec4* verticesVel = SSBOVel->MapBufferRange<glm::vec4> (0, particleCount);
+    vec4* verticesVel = SSBOVel->MapBufferRange<vec4> (0, particleCount);
     for (int i = 0; i < particleCount; i++)
     {
       verticesVel [i].x = 0.0f;

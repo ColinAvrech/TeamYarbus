@@ -10,23 +10,26 @@
 
 
 //! External Dependencies
-#include <iostream>
-#include <fstream>
+#include <algorithm> //! std::sorts
 #include <chrono>
+#include <fstream>
 #include <functional>
-#include <thread>
+#include <iostream>
 #include <list>
-#include <vector>
-#include <utility>
 #include <map>
-#include <unordered_map>
 #include <set>
 #include <string>
-#include <algorithm> //! std::sorts
+#include <thread>
+#include <unordered_map>
+#include <utility>
+#include <vector>
 
+using std::string;
 
 //Windows
 #define WIN32_LEAN_AND_MEAN
 #include "Windows.h"
 
 #pragma hdrstop
+
+#include "CinderMath.h"

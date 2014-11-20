@@ -53,9 +53,9 @@ namespace Framework
       value_.Bool_ = value;
     }
     
-    void DataNode::SetValue(std::string& value)
+    void DataNode::SetValue(string& value)
     {
-      value_.String_ = new std::string(value);
+      value_.String_ = new string(value);
     }
 
     void DataNode::SetValue(std::vector<float>& value)
@@ -96,25 +96,25 @@ namespace Framework
       ErrorIf(!store, "Pointer Uninitialized");
       *store = value_.Bool_;
     }
-    void DataNode::GetValue(std::string* store)
+    void DataNode::GetValue(string* store)
     {
       ErrorIf(!store, "Pointer Uninitialized");
       *store = *value_.String_;
     }
-    void DataNode::GetValue(glm::vec2* store)
+    void DataNode::GetValue(vec2* store)
     {
       ErrorIf(value_.VecN_->size() < 2, "Wrong data type");
       store->x = (*value_.VecN_)[0];
       store->y = (*value_.VecN_)[1];
     }
-    void DataNode::GetValue(glm::vec3* store)
+    void DataNode::GetValue(vec3* store)
     {
       ErrorIf(value_.VecN_->size() < 3, "Wrong data type");
       store->x = (*value_.VecN_)[0];
       store->y = (*value_.VecN_)[1];
       store->z = (*value_.VecN_)[2];
     }
-    void DataNode::GetValue(glm::vec4* store)
+    void DataNode::GetValue(vec4* store)
     {
       ErrorIf(value_.VecN_->size() < 4, "Wrong data type");
       store->x = (*value_.VecN_)[0];

@@ -29,12 +29,12 @@ namespace Framework
   virtual void Initialize ();
   virtual void Draw ();
 
-  std::vector <std::pair <glm::vec2, glm::vec2>>& Get_Edges ();
+  std::vector <std::pair <vec2, vec2>>& Get_Edges ();
   void Generate_Height_Points ();
   void Generate_Edges ();
   void Generate_Vertices ();
   void Generate_Buffers ();
-  const static std::string Name;
+  const static string Name;
 
   private:
     int MapSize;
@@ -49,8 +49,8 @@ namespace Framework
     VBO* vbo;
     Shader* shader;
 
-    std::vector <std::pair <glm::vec2, glm::vec2>> edges;
-    std::vector <glm::vec2> height_points;
+    std::vector <std::pair <vec2, vec2>> edges;
+    std::vector <vec2> height_points;
     std::vector <float> vertices;
     int PeakHeight;
   };

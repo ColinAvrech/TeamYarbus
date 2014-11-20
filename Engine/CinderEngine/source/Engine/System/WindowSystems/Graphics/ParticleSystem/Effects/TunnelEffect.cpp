@@ -34,21 +34,21 @@ namespace Framework
 
       // pos:
       m_posGenerator = std::make_shared<RoundPosGen> ();
-      m_posGenerator->m_center = glm::vec4{ 0.0, 0.0, 0.0, 0.0 };
+      m_posGenerator->m_center = vec4{ 0.0, 0.0, 0.0, 0.0 };
       m_posGenerator->m_radX = 0.15f;
       m_posGenerator->m_radY = 0.15f;
       particleEmitter->addGenerator (m_posGenerator);
 
       m_colGenerator = std::make_shared<BasicColorGen> ();
-      m_colGenerator->m_minStartCol = glm::vec4{ 0.7, 0.0, 0.7, 1.0 };
-      m_colGenerator->m_maxStartCol = glm::vec4{ 1.0, 1.0, 1.0, 1.0 };
-      m_colGenerator->m_minEndCol = glm::vec4{ 0.5, 0.0, 0.6, 0.0 };
-      m_colGenerator->m_maxEndCol = glm::vec4{ 0.7, 0.5, 1.0, 0.0 };
+      m_colGenerator->m_minStartCol = vec4{ 0.7, 0.0, 0.7, 1.0 };
+      m_colGenerator->m_maxStartCol = vec4{ 1.0, 1.0, 1.0, 1.0 };
+      m_colGenerator->m_minEndCol = vec4{ 0.5, 0.0, 0.6, 0.0 };
+      m_colGenerator->m_maxEndCol = vec4{ 0.7, 0.5, 1.0, 0.0 };
       particleEmitter->addGenerator (m_colGenerator);
 
       auto velGenerator = std::make_shared<BasicVelGen> ();
-      velGenerator->m_minStartVel = glm::vec4{ 0.0f, 0.0f, 0.15f, 0.0f };
-      velGenerator->m_maxStartVel = glm::vec4{ 0.0f, 0.0f, 0.45f, 0.0f };
+      velGenerator->m_minStartVel = vec4{ 0.0f, 0.0f, 0.15f, 0.0f };
+      velGenerator->m_maxStartVel = vec4{ 0.0f, 0.0f, 0.45f, 0.0f };
       particleEmitter->addGenerator (velGenerator);
 
       auto timeGenerator = std::make_shared<BasicTimeGen> ();
@@ -62,12 +62,12 @@ namespace Framework
     m_system->addUpdater (timeUpdater);
 
     auto colorUpdater = std::make_shared<BasicColorUpdater> ();
-    //colorUpdater->m_minPos = glm::vec4{ -1.0f };
-    //colorUpdater->m_maxPos = glm::vec4{ 1.0f };
+    //colorUpdater->m_minPos = vec4{ -1.0f };
+    //colorUpdater->m_maxPos = vec4{ 1.0f };
     m_system->addUpdater (colorUpdater);
 
     auto eulerUpdater = std::make_shared<EulerUpdater> ();
-    eulerUpdater->m_globalAcceleration = glm::vec4{ 0.0, 0.0, 0.0, 0.0 };
+    eulerUpdater->m_globalAcceleration = vec4{ 0.0, 0.0, 0.0, 0.0 };
     m_system->addUpdater (eulerUpdater);
 
     return true;

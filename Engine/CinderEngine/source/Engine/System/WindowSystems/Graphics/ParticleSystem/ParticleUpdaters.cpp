@@ -18,9 +18,9 @@ namespace Framework
   {
     particleCount = maxCount;
     cs = Resources::RS->Get_ComputeShader ("ParticleSystem.cs.glsl");
-    SSBOPos = new SSBO (maxCount * sizeof (glm::vec4));
+    SSBOPos = new SSBO (maxCount * sizeof (vec4));
 
-    glm::vec4* vPos = SSBOPos->MapBufferRange<glm::vec4> (0, maxCount);
+    vec4* vPos = SSBOPos->MapBufferRange<vec4> (0, maxCount);
     for (int i = 0; i < maxCount; ++i)
     {
       vPos [i] = { 0.5f, 0, 0, 0 };
@@ -31,12 +31,12 @@ namespace Framework
 
   void EulerUpdater::update (double dt, ParticleData *p)
   {
-    const glm::vec4 globalA{ dt * m_globalAcceleration.x, dt * m_globalAcceleration.y, dt * m_globalAcceleration.z, 0.0 };
+    const vec4 globalA{ dt * m_globalAcceleration.x, dt * m_globalAcceleration.y, dt * m_globalAcceleration.z, 0.0 };
     const float localDT = (float) dt;
 
-    glm::vec4 * __restrict acc = p->m_acc.get ();
-    glm::vec4 * __restrict vel = p->m_vel.get ();
-    glm::vec4 * __restrict pos = p->m_pos.get ();
+    vec4 * __restrict acc = p->m_acc.get ();
+    vec4 * __restrict vel = p->m_vel.get ();
+    vec4 * __restrict pos = p->m_pos.get ();
 
     const unsigned int endId = p->m_countAlive;
     for (size_t i = 0; i < endId; ++i)
@@ -51,23 +51,23 @@ namespace Framework
   {
     const float localDT = (float) dt;
 
-    glm::vec4 * __restrict acc = p->m_acc.get ();
-    glm::vec4 * __restrict vel = p->m_vel.get ();
-    glm::vec4 * __restrict pos = p->m_pos.get ();
+    vec4 * __restrict acc = p->m_acc.get ();
+    vec4 * __restrict vel = p->m_vel.get ();
+    vec4 * __restrict pos = p->m_pos.get ();
 
     const size_t endId = p->m_countAlive;
     for (size_t i = 0; i < endId; ++i)
     {
       if (pos [i].y < m_floorY)
       {
-        glm::vec4 force = p->m_acc [i];
-        float normalFactor = glm::dot (force, glm::vec4 (0.0f, 1.0f, 0.0f, 0.0f));
+        vec4 force = p->m_acc [i];
+        float normalFactor = glm::dot (force, vec4 (0.0f, 1.0f, 0.0f, 0.0f));
         if (normalFactor < 0.0f)
-          force -= glm::vec4 (0.0f, 1.0f, 0.0f, 0.0f) * normalFactor;
+          force -= vec4 (0.0f, 1.0f, 0.0f, 0.0f) * normalFactor;
 
-        float velFactor = glm::dot (vel [i], glm::vec4 (0.0f, 1.0f, 0.0f, 0.0f));
+        float velFactor = glm::dot (vel [i], vec4 (0.0f, 1.0f, 0.0f, 0.0f));
         //if (velFactor < 0.0)
-        vel [i] -= glm::vec4 (0.0f, 1.0f, 0.0f, 0.0f) * (1.0f + m_bounceFactor) * velFactor;
+        vel [i] -= vec4 (0.0f, 1.0f, 0.0f, 0.0f) * (1.0f + m_bounceFactor) * velFactor;
 
         acc [i] = force;
       }
@@ -79,13 +79,13 @@ namespace Framework
   {
     const float localDT = (float) dt;
 
-    glm::vec4 * __restrict acc = p->m_acc.get ();
-    glm::vec4 * __restrict vel = p->m_vel.get ();
-    glm::vec4 * __restrict pos = p->m_pos.get ();
+    vec4 * __restrict acc = p->m_acc.get ();
+    vec4 * __restrict vel = p->m_vel.get ();
+    vec4 * __restrict pos = p->m_pos.get ();
 
     const size_t endId = p->m_countAlive;
     const size_t countAttractors = m_attractors.size ();
-    glm::vec4 off;
+    vec4 off;
     float dist;
     size_t a;
     for (size_t i = 0; i < endId; ++i)
@@ -107,10 +107,10 @@ namespace Framework
 
   void BasicColorUpdater::update (double dt, ParticleData *p)
   {
-    glm::vec4 * __restrict col = p->m_col.get ();
-    glm::vec4 * __restrict startCol = p->m_startCol.get ();
-    glm::vec4 * __restrict endCol = p->m_endCol.get ();
-    glm::vec4 * __restrict t = p->m_time.get ();
+    vec4 * __restrict col = p->m_col.get ();
+    vec4 * __restrict startCol = p->m_startCol.get ();
+    vec4 * __restrict endCol = p->m_endCol.get ();
+    vec4 * __restrict t = p->m_time.get ();
 
     const size_t endId = p->m_countAlive;
 
@@ -122,11 +122,11 @@ namespace Framework
 
   void PosColorUpdater::update (double dt, ParticleData *p)
   {
-    glm::vec4 * __restrict col = p->m_col.get ();
-    glm::vec4 * __restrict startCol = p->m_startCol.get ();
-    glm::vec4 * __restrict endCol = p->m_endCol.get ();
-    glm::vec4 * __restrict t = p->m_time.get ();
-    glm::vec4 * __restrict pos = p->m_pos.get ();
+    vec4 * __restrict col = p->m_col.get ();
+    vec4 * __restrict startCol = p->m_startCol.get ();
+    vec4 * __restrict endCol = p->m_endCol.get ();
+    vec4 * __restrict t = p->m_time.get ();
+    vec4 * __restrict pos = p->m_pos.get ();
 
     const int endId = (int) p->m_countAlive;
     float scaler, scaleg, scaleb;
@@ -148,11 +148,11 @@ namespace Framework
 
   void VelColorUpdater::update (double dt, ParticleData *p)
   {
-    glm::vec4 * __restrict col = p->m_col.get ();
-    glm::vec4 * __restrict startCol = p->m_startCol.get ();
-    glm::vec4 * __restrict endCol = p->m_endCol.get ();
-    glm::vec4 * __restrict t = p->m_time.get ();
-    glm::vec4 * __restrict vel = p->m_vel.get ();
+    vec4 * __restrict col = p->m_col.get ();
+    vec4 * __restrict startCol = p->m_startCol.get ();
+    vec4 * __restrict endCol = p->m_endCol.get ();
+    vec4 * __restrict t = p->m_time.get ();
+    vec4 * __restrict vel = p->m_vel.get ();
 
     const size_t endId = p->m_countAlive;
     float scaler, scaleg, scaleb;
@@ -176,7 +176,7 @@ namespace Framework
     unsigned int endId = p->m_countAlive;
     const float localDT = (float) dt;
 
-    glm::vec4 * __restrict t = p->m_time.get ();
+    vec4 * __restrict t = p->m_time.get ();
 
     if (endId == 0) return;
 

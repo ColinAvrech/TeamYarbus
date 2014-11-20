@@ -25,6 +25,7 @@ starts the game loop.
 #include "Physics/PhysicsSystem.h"
 #include "ResourceManager.h"
 #include "Serializer/JSONSerializer.h"
+#include "UISystem.h"
 
 
 //testing includes
@@ -34,7 +35,7 @@ starts the game loop.
 
 #include "UpdateEvent.h"
 #include "Zilch.hpp"
-
+//#include "ZInterface.h"
 
 #define _DEGUB
 using namespace Framework;
@@ -42,7 +43,7 @@ using namespace Framework;
 //! Window title
 const char WindowTitle [] = "CinderEngine";
 const int ClientWidth = 1024;
-const int ClientHeight = 768;
+const int ClientHeight = 1024;
 
 
 // Temporary Getter functions for System
@@ -57,6 +58,8 @@ ZilchDefineType(Cinder, CinderZilch)
 
 int main (void)
 {
+  bool launchFullScreen = false;
+
   EnableMemoryLeakChecking ();
 
   // TODO (EXTRA): make a window to show while the game is loading
@@ -66,12 +69,13 @@ int main (void)
   //! Create the core engine which manages all systems.
   CoreEngine * engine = new CoreEngine ();
   Physics::ThermodynamicsSystem * thermo = new Physics::ThermodynamicsSystem ();
-  WindowSystem * windows = new WindowSystem (WindowTitle, ClientWidth, ClientHeight);
+  WindowSystem * windows = new WindowSystem (WindowTitle, ClientWidth, ClientHeight, launchFullScreen);
   AudioSystem* audio = new AudioSystem ();
   EventSystem * events = new EventSystem ();
   ScriptSystem * zilch = new ScriptSystem();
   Physics::PhysicsSystem * phys = new Physics::PhysicsSystem ();
   ObjectSystem* objsys = new ObjectSystem ();
+  UISystem* ui = new UISystem ();
 
   engine->AddSystem (phys);
   engine->AddSystem (windows);
@@ -80,6 +84,7 @@ int main (void)
   engine->AddSystem (zilch);
   engine->AddSystem (thermo);
   engine->AddSystem(objsys);
+  engine->AddSystem (ui);
   ////Cinder.PhysicsSystem = phys;
   ////Cinder.Thermodynamics = thero;
   //Cinder::Windows = windows;
@@ -94,16 +99,16 @@ int main (void)
   //! Initialize all added Systems. DON'T INIT YOUR OWN
   engine->Initialize ();
 
-  Sound *test = audio->LoadSound("Pads.ogg", "NOISE", Sound::SOUND_2D, 1.0f);
-  test->GenerateNoise();
-  test->LowPassFilter();
-  test->SetLPF(0, 1.0);
+  //Sound *test = audio->LoadSound("Pads.ogg", "NOISE", Sound::SOUND_2D, 1.0f);
+  //test->GenerateNoise();
+  //test->LowPassFilter();
+  //test->SetLPF(0, 1.0);
 
   audio->LoadMicData ();
 
 
   //! activate the window.
-  OBJECTSYSTEM->LoadLevel("PhysicsTest");
+  OBJECTSYSTEM->LoadLevel("ZilchTestLevel");
 
 
   // Connect example
@@ -115,10 +120,12 @@ int main (void)
   // Connect example
   //MyClass _myclass;
   //EVENTSYSTEM->mConnect<UpdateEvent, MyClass>(Events::UPDATEEVENT, &_myclass, &MyClass::Print);
-
+	//ZInterface::OpenFile();
 
   //! Run the game! NOW!
   engine->GameLoop ();
+
+  
 
   //! Delete all systems
   engine->DestroySystems ();

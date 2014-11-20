@@ -53,10 +53,10 @@ namespace Framework
 
     virtual bool Initialize ();
     //!Update the factory, Destroying dead objects
-    virtual void Update(const double dt);
+    virtual void Update(const double& dt);
 
     //!name of the system if the Factory, duh.
-    virtual const std::string GetName(){ return "ObjectSystem"; }
+    virtual const string GetName(){ return "ObjectSystem"; }
 
     GameObject* CreateObject();
 
@@ -65,13 +65,14 @@ namespace Framework
 
     void DestroyGameObjectsToBeDestroyed();
 
-    void ObjectSystem::LoadLevel(std::string level);
-
+    void ObjectSystem::LoadLevel(string level);
+	void ObjectSystem::ZilchLoadLevel(Zilch::String level);
+	void ObjectSystem::LoadLevelAdditive(Zilch::String level);
     /*!Used to generator unique GOCIds*/
     static unsigned LastGameObjectId;
 
 
-    typedef std::unordered_map<std::string, ComponentCreator *> SerializationMap;
+    typedef std::unordered_map<string, ComponentCreator *> SerializationMap;
     SerializationMap SerialMap;
 
     typedef std::unordered_map<unsigned, GameObject*> GameObjectMap;
@@ -80,10 +81,10 @@ namespace Framework
   private:
 
     void ObjectSystem::SerializeObject(Serializer::DataNode* data);
-    void ObjectSystem::SerializeComponent(std::string ComponentName, Serializer::DataNode* data);
+    void ObjectSystem::SerializeComponent(string ComponentName, Serializer::DataNode* data);
 
     void RegisterComponents(void);
-    void AddComponentCreator(std::string name, ComponentCreator* creator);
+    void AddComponentCreator(string name, ComponentCreator* creator);
     void InitializeObject ();
     typedef std::vector<GameObject *> ObjectsToBeDestroyed;
     ObjectsToBeDestroyed GameObjectsToBeDestroyed;

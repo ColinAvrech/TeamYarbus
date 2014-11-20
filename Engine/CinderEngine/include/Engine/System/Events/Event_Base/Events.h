@@ -20,13 +20,14 @@
 #define MouseEventPrefix 'M'
 #define KeyEventPrefix 'K'
 #define GameEventPrefix 'G'
+#define UIEventPrefix 'I'
 
-//#define DeclareEvent(Name) namespace Events { static const std::string Name(#Name); }
-#define DeclareEvent(Name, String) namespace Events { static const std::string Name(#String); }
+//#define DeclareEvent(Name) namespace Events { static const string Name(#Name); }
+#define DeclareEvent(Name, String) namespace Events { static const string Name(#String); }
 
 namespace Framework
 {
-  std::string CollisionEventName (unsigned GameObjectID);
+  string CollisionEventName (unsigned GameObjectID);
 
   /*********************************************/
   // Input
@@ -114,5 +115,6 @@ namespace Framework
 
   DeclareEvent(UPDATEEVENT, U)
   DeclareEvent(COLLISION, C)
+  DeclareEvent (UI, I)
 
 }

@@ -22,8 +22,8 @@ namespace Framework
   class BoxPosGen : public ParticleGenerator
   {
   public:
-    glm::vec4 m_pos;
-    glm::vec4 m_maxStartPosOffset;
+    vec4 m_pos;
+    vec4 m_maxStartPosOffset;
   public:
     BoxPosGen () : m_pos (0.0), m_maxStartPosOffset (0.0) { }
 
@@ -35,12 +35,12 @@ namespace Framework
   class RoundPosGen : public ParticleGenerator
   {
   public:
-    glm::vec4 m_center;
+    vec4 m_center;
     float m_radX;
     float m_radY;
   public:
     RoundPosGen () : m_center (0.0), m_radX (0.0), m_radY (0.0) { }
-    RoundPosGen (const glm::vec4 &center, double radX, double radY)
+    RoundPosGen (const vec4 &center, double radX, double radY)
       : m_center (center)
       , m_radX ((float) radX)
       , m_radY ((float) radY)
@@ -54,10 +54,10 @@ namespace Framework
   class BasicColorGen : public ParticleGenerator
   {
   public:
-    glm::vec4 m_minStartCol;
-    glm::vec4 m_maxStartCol;
-    glm::vec4 m_minEndCol;
-    glm::vec4 m_maxEndCol;
+    vec4 m_minStartCol;
+    vec4 m_maxStartCol;
+    vec4 m_minEndCol;
+    vec4 m_maxEndCol;
   public:
     BasicColorGen () : m_minStartCol (0.0), m_maxStartCol (0.0), m_minEndCol (0.0), m_maxEndCol (0.0) { }
 
@@ -69,8 +69,8 @@ namespace Framework
   class BasicVelGen : public ParticleGenerator
   {
   public:
-    glm::vec4 m_minStartVel;
-    glm::vec4 m_maxStartVel;
+    vec4 m_minStartVel;
+    vec4 m_maxStartVel;
   public:
     BasicVelGen () : m_minStartVel (0.0), m_maxStartVel (0.0) { }
 
@@ -95,12 +95,12 @@ namespace Framework
   class VelFromPosGen : public ParticleGenerator
   {
   public:
-    glm::vec4 m_offset;
+    vec4 m_offset;
     float m_minScale;
     float m_maxScale;
   public:
     VelFromPosGen () : m_offset (0.0), m_minScale (0.0), m_maxScale (0.0) { }
-    VelFromPosGen (const glm::vec4 &off, double minS, double maxS)
+    VelFromPosGen (const vec4 &off, double minS, double maxS)
       : m_offset (off)
       , m_minScale ((float) minS)
       , m_maxScale ((float) maxS)

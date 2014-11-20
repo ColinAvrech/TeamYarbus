@@ -10,7 +10,7 @@ namespace Framework
   class CharacterController : public Component
   {
   public:
-    const static std::string Name;
+    const static string Name;
     float accel;
     float drag;
     float maxXVel;

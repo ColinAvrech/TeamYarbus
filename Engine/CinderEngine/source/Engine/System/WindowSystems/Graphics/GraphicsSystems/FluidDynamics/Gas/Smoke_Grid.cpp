@@ -243,5 +243,10 @@ namespace Framework
       draw_velocity ();
     else
       draw_density ();
+
+    glMatrixMode (GL_PROJECTION);
+    glLoadIdentity ();
+    glMatrixMode (GL_MODELVIEW);
+    glLoadIdentity ();
   }
 }

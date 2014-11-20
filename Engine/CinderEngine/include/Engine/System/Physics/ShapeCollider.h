@@ -22,14 +22,14 @@ namespace Framework
 	class ShapeCollider : public Component
 	{
 	public:
-    const static std::string Name;
+    const static string Name;
 	void SerializeMaterial(const char* name);
 	int numOfShapes;
 		// Getters
-		glm::vec3 getPosition(void){
+		vec3 getPosition(void){
 			return position;
 		}
-		glm::vec3 getOffset(void){
+		vec3 getOffset(void){
 			return offset;
 		}
 		float getDensity(void)
@@ -44,15 +44,15 @@ namespace Framework
 		// Private data
 		struct MaterialProperties
 		{
-			std::string name;
+			string name;
 			float density;
 			float restitution;
 			float staticfriction;
 			float dynamicfriction;
 		};
 		MaterialProperties material;
-		glm::vec3 position;
-		glm::vec3 offset;
+		vec3 position;
+		vec3 offset;
 		bool ghost;
 		bool sendsEvents;
 	};

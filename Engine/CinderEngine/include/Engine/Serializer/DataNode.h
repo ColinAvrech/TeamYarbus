@@ -15,6 +15,9 @@
 #include <string>
 #include <vector>
 #include "type_vec.hpp"
+#include "CinderMath.h"
+
+using std::string;
 
 namespace Framework
 {
@@ -45,12 +48,12 @@ namespace Framework
     typedef struct DynamicElement {
       DynamicElement(TYPE type, const char* name)
         : previous(NULL), next(NULL), branch(NULL),
-        dataType(type), objectName(std::string(name)){};
+        dataType(type), objectName(string(name)){};
 
       DynamicElement* previous;
       TYPE dataType;
-      std::string typeString;
-      std::string objectName;
+      string typeString;
+      string objectName;
       union
       {
         int Int_;
@@ -59,10 +62,10 @@ namespace Framework
         float Float_;
         double Double_;
         bool Bool_;
-        std::string* String_;
+        string* String_;
         std::vector<float>* VecN_; //2, 3 or 4
-        std::string* Enum_;
-        std::string* Custom_;
+        string* Enum_;
+        string* Custom_;
       } value_;
       DynamicElement* branch;
       DynamicElement* next;
@@ -73,7 +76,7 @@ namespace Framework
       void SetValue(float& value);
       void SetValue(double& value);
       void SetValue(bool& value);
-      void SetValue(std::string& value);
+      void SetValue(string& value);
       void SetValue(std::vector<float>& value);
       //Overloaded getters///////////////////////////////////
       void GetValue(unsigned int* store);
@@ -82,10 +85,10 @@ namespace Framework
       void GetValue(float* store);
       void GetValue(double* store);
       void GetValue(bool* store);
-      void GetValue(std::string* store);
-      void GetValue(glm::vec2* store);
-      void GetValue(glm::vec3* store);
-      void GetValue(glm::vec4* store);
+      void GetValue(string* store);
+      void GetValue(vec2* store);
+      void GetValue(vec3* store);
+      void GetValue(vec4* store);
       //Find specific object
       DynamicElement* FindElement(DynamicElement* branch, const char* name);
     private:

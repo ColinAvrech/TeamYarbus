@@ -22,11 +22,21 @@ namespace Framework
 
   ZilchDefineType(Transform, CinderZilch)
   {
-    ZilchBindConstructor(Transform);
+	  type->HandleManager = ZilchManagerId(Zilch::PointerManager);
+    ZilchBindConstructor();
+	  ZilchBindMethod(Initialize);
     ZilchBindMethodOverload(Scale, void, float, float, float);
     ZilchBindMethodOverload(Scale, void, float);
-	ZilchBindMethodOverload(Translate, void, float, float, float);
+	  ZilchBindMethodOverload(Translate, void, float, float, float);
     ZilchBindMethod(Rotate);
+	  //ZilchBindMethod(GetScreenPosition);
+  }
+
+  Transform::Transform ()
+  {
+    position = { 0, 0, 0 };
+    scale = { 1, 1, 1 };
+    rotation = 0.0f;
   }
 
   Transform::~Transform ()
@@ -40,8 +50,8 @@ namespace Framework
     if (currentMatrix == MODEL_MATRIX || currentMatrix == VIEW_MATRIX)
     {
       modelMatrix [currentMatrix] = glm::mat4 (1.0);
-      position = glm::vec3 (0);
-      scale = glm::vec3 (1);
+      position = vec3 (0);
+      scale = vec3 (1);
       rotation = 0;
     }
     matricesReady = false;
@@ -52,8 +62,8 @@ namespace Framework
   {
     //////////////////////////////////////////////////////////////////////////
     // DATA TO BE SERIALIZED
-    // position : glm::vec3 (Serialized Data)
-    // scale    : glm::vec3 (Serialized Data)
+    // position : vec3 (Serialized Data)
+    // scale    : vec3 (Serialized Data)
     // rotation : float (Serialized Data)
     //////////////////////////////////////////////////////////////////////////
     Serializer::DataNode* value = data->FindElement (data, "Translation");
@@ -71,7 +81,7 @@ namespace Framework
   {
     gameObject->Transform = this;
     modelMatrix.push_back (glm::translate (position) *
-      glm::rotate (rotation, glm::vec3 (0, 0, 1)) *
+      glm::rotate (rotation, vec3 (0, 0, 1)) *
       glm::scale (scale));
     modelViewProjectionmatrix.push_back (glm::mat4 (1));
     normalMatrix = glm::mat3 (1);
@@ -100,11 +110,11 @@ namespace Framework
   // Replace the Fixed Functionality glTranslatef, glScalef,...
   void Transform::Translate (float x, float y, float z)
   {
-    position += glm::vec3 (x, y, z);
+    position += vec3 (x, y, z);
     matricesReady = false;
   }
 
-  void Transform::Translate(glm::vec3 &v)
+  void Transform::Translate(vec3 &v)
   {
 	  position += v;
 	  matricesReady = false;
@@ -113,14 +123,14 @@ namespace Framework
   // Non-Uniform Scale
   void Transform::Scale (float x, float y, float z)
   {
-    scale = glm::vec3 (x, y, z);
+    scale = vec3 (x, y, z);
     matricesReady = false;
   }
 
   // Uniform Scale
   void Transform::Scale (float v)
   {
-    scale = glm::vec3 (v);
+    scale = vec3 (v);
     matricesReady = false;
   }
 
@@ -146,11 +156,24 @@ namespace Framework
   }
 
 
-  glm::vec2 Transform::GetScreenPosition ()
+  vec2 Transform::GetScreenPosition ()
   {
-    return glm::vec2 (GetModelViewProjectionMatrix () [3][0] / GetModelViewProjectionMatrix () [3][3],
+    return vec2 (GetModelViewProjectionMatrix () [3][0] / GetModelViewProjectionMatrix () [3][3],
       GetModelViewProjectionMatrix () [3][1] / GetModelViewProjectionMatrix () [3][3]);
   }
+
+  glm::vec2 Transform::GetScreenPosition (glm::vec2 v)
+  {
+    glm::mat4 matrix = modelMatrix[currentMatrix];
+    matrix [3][0] = v.x;
+    matrix [3][1] = v.y;
+    glm::mat4 mvp = Camera::GetViewToProjectionMatrix () *
+      Camera::GetWorldToViewMatrix () * matrix;
+
+    return glm::vec2 (mvp [3][0] / mvp [3][3], mvp [3][1] / mvp [3][3]);
+  }
+
+
 
   //GLSL
   void Transform::UpdateMatrices()
@@ -159,7 +182,7 @@ namespace Framework
     {
       modelMatrix [currentMatrix] =
         glm::translate (position) *
-        glm::rotate (rotation, glm::vec3 (0, 0, 1)) *
+        glm::rotate (rotation, vec3 (0, 0, 1)) *
         glm::scale (scale);
 
       modelViewProjectionmatrix [currentMatrix] =
@@ -186,7 +209,7 @@ namespace Framework
   }
 
 
-  void Transform::Print (glm::vec3 position)
+  void Transform::Print (vec3 position)
   {
     std::cout << "( " << position.x << ", " << position.y << ", " << position.z << " )\n";
   }

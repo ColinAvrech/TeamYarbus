@@ -207,7 +207,7 @@ namespace Framework
   \return Returns nothing
   */
   /***************************************************************************/
-  void AudioSystem::Update(const double dt)
+  void AudioSystem::Update(const double &dt)
   {
     // Checks if audio system is not on
     if (Sound::system_on_ == false)
@@ -220,7 +220,7 @@ namespace Framework
     UpdateMicData();
 
     // Updates all the Sound Object Instances
-    std::map<std::string, Sound*>::iterator it;
+    std::map<string, Sound*>::iterator it;
     for (it = soundMap.begin(); it != soundMap.end(); ++it)
     {
       it->second->Update(dt);
@@ -368,7 +368,7 @@ namespace Framework
     FMOD_RESULT result;
 
     // Deletes all the sounds objects
-    std::map<std::string, Sound*>::iterator it;
+    std::map<string, Sound*>::iterator it;
     for (it = soundMap.begin(); it != soundMap.end(); ++it)
     {
       delete it->second;

@@ -30,37 +30,38 @@ namespace Framework
     gameObject->Camera = nullptr;
   }
 
+
   void Camera::OnKeyPressed (KeyEvent* key)
   {
     float camSpeed = 0.25f;
     float zoomSpeed = 0.1f;
     if (key->KeyDown)
-    switch (key->KeyValue)
+      switch (key->KeyValue)
     {
-    case GLFW_KEY_A:
-      Camera::main->gameObject->Transform->Translate (-camSpeed, 0, 0);
-      Camera::main->matricesReady = false;
-      break;
-    case GLFW_KEY_D:
-      Camera::main->gameObject->Transform->Translate (camSpeed, 0, 0);
-      Camera::main->matricesReady = false;
-      break;
-    case GLFW_KEY_S:
-      Camera::main->gameObject->Transform->Translate (0, -camSpeed, 0);
-      Camera::main->matricesReady = false;
-      break;
-    case GLFW_KEY_W:
-      Camera::main->gameObject->Transform->Translate (0, camSpeed, 0);
-      Camera::main->matricesReady = false;
-      break;
-    case GLFW_KEY_Z:
-      Camera::main->Zoom (zoomSpeed);
-      break;
-    case GLFW_KEY_X:
-      Camera::main->Zoom (-zoomSpeed);
-      break;
-    default:
-      break;
+      case GLFW_KEY_A:
+        Camera::main->gameObject->Transform->Translate (-camSpeed, 0, 0);
+        Camera::main->matricesReady = false;
+        break;
+      case GLFW_KEY_D:
+        Camera::main->gameObject->Transform->Translate (camSpeed, 0, 0);
+        Camera::main->matricesReady = false;
+        break;
+      case GLFW_KEY_S:
+        Camera::main->gameObject->Transform->Translate (0, -camSpeed, 0);
+        Camera::main->matricesReady = false;
+        break;
+      case GLFW_KEY_W:
+        Camera::main->gameObject->Transform->Translate (0, camSpeed, 0);
+        Camera::main->matricesReady = false;
+        break;
+      case GLFW_KEY_Z:
+        Camera::main->Zoom (zoomSpeed);
+        break;
+      case GLFW_KEY_X:
+        Camera::main->Zoom (-zoomSpeed);
+        break;
+      default:
+        break;
     }
   }
 
@@ -73,7 +74,7 @@ namespace Framework
     if (mainCamera)
     {
       Camera::main = this;
-      worldToView = glm::lookAt(size * viewDirection + glm::vec3 (gameObject->Transform->GetPosition().x, gameObject->Transform->GetPosition().y, 0.0), gameObject->Transform->GetPosition(), up);
+      worldToView = glm::lookAt(size * viewDirection + vec3 (gameObject->Transform->GetPosition().x, gameObject->Transform->GetPosition().y, 0.0), gameObject->Transform->GetPosition(), up);
       viewToProjection = glm::perspective(fov * M_PI / 180, aspect, nearPlane, farPlane);
     }
     Camera::current = this;
@@ -84,7 +85,7 @@ namespace Framework
   {
     //////////////////////////////////////////////////////////////////////////
     // DATA TO BE SERIALIZED
-    // viewDirection  : glm::vec3 (Serialized Data)
+    // viewDirection  : vec3 (Serialized Data)
     // aspect         : float     (Serialized Data)
     // nearPlane      : float     (Serialized Data)
     // farPlane       : float     (Serialized Data)
@@ -115,16 +116,16 @@ namespace Framework
   }
 
 
-  void Camera::MouseUpdate(const glm::vec2& newPosition)
+  void Camera::MouseUpdate(const vec2& newPosition)
   {
-    glm::vec2 mouseDelta = newPosition - oldPosition;
+    vec2 mouseDelta = newPosition - oldPosition;
 
     const float ROTATION_SPEED = 0.01f;
     const float MAX_DELTA = 150.0f;
 
     if (mouseDelta.length() < MAX_DELTA)
     {
-      glm::vec3 vRotation = glm::cross(viewDirection, up);
+      vec3 vRotation = glm::cross(viewDirection, up);
       glm::mat4 rotator = glm::mat4
         (glm::rotate(mouseDelta.x * ROTATION_SPEED, up) * glm::rotate(mouseDelta.y * ROTATION_SPEED, vRotation));
       viewDirection = glm::mat3(rotator) * viewDirection;
@@ -133,7 +134,7 @@ namespace Framework
     matricesReady = false;
   }
 
-  void Camera::UpdatePosition(const glm::vec3& deltaPos)
+  void Camera::UpdatePosition(const vec3& deltaPos)
   {
     position += deltaPos;
     matricesReady = false;
@@ -151,7 +152,7 @@ namespace Framework
     {
       Camera::main->worldToView = glm::lookAt
         (
-        Camera::main->size * Camera::main->viewDirection + glm::vec3 (Camera::main->gameObject->Transform->GetPosition ().x, Camera::main->gameObject->Transform->GetPosition ().y, 0.0),
+        Camera::main->size * Camera::main->viewDirection + vec3 (Camera::main->gameObject->Transform->GetPosition ().x, Camera::main->gameObject->Transform->GetPosition ().y, 0.0),
         Camera::main->gameObject->Transform->GetPosition(),
         Camera::main->up
         );

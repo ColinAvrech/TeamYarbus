@@ -56,11 +56,11 @@ namespace Framework
     GLuint fragmentShader;
     GLuint geometryShader;
     GLuint shaderProgram;
-    std::string Read_Shader (const char* filename);
+    string Read_Shader (const char* filename);
     GLuint Create_Shader (const char* filename, GLenum shaderType);
-    GLuint Create_Shader (const char*, std::string, GLenum shaderType);
-    GLuint Create_Shader_From_String (std::string& vs, std::string& fs);
-    GLuint Create_Program (std::string name, GLuint _vertexShader, GLuint _fragmentShader, GLuint _geometryShader = 0);
+    GLuint Create_Shader (const char*, string, GLenum shaderType);
+    GLuint Create_Shader_From_String (string& vs, string& fs);
+    GLuint Create_Program (string name, GLuint _vertexShader, GLuint _fragmentShader, GLuint _geometryShader = 0);
   };
 
 

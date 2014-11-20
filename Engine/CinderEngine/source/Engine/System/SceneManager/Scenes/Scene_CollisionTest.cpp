@@ -69,7 +69,7 @@
 //    {
 //		if (glfwGetKey(WINDOWSYSTEM->Get_Window(), GLFW_KEY_A))
 //		{
-//			glm::vec2 force, accel;
+//			vec2 force, accel;
 //			force = { -5.0f, 0 }; //WASD control    
 //			//float mass = 2;
 //			//force should be multiplied by friction to get smaller every update
@@ -267,7 +267,7 @@
 ////    {
 ////		if (glfwGetKey(WINDOWSYSTEM->Get_Window(), GLFW_KEY_A))
 ////		{
-////			glm::vec2 force, accel;
+////			vec2 force, accel;
 ////			force = { -5.0f, 0 }; //WASD control    
 ////			//float mass = 2;
 ////			//force should be multiplied by friction to get smaller every update

@@ -47,7 +47,7 @@ namespace Framework
   }
 
 
-  std::string Shader::Read_Shader (const char* filename)
+  string Shader::Read_Shader (const char* filename)
   {
     std::ifstream shaderFile (filename);
 
@@ -57,14 +57,14 @@ namespace Framework
       return NULL;
     }
 
-    return std::string (std::istreambuf_iterator<char> (shaderFile),
+    return string (std::istreambuf_iterator<char> (shaderFile),
       std::istreambuf_iterator<char> ());
   }
 
 
   GLuint Shader::Create_Shader (const char* filename, GLenum shaderType)
   {
-    std::string shaderSource;
+    string shaderSource;
     shaderSource = Read_Shader (filename);
     const char* source = shaderSource.c_str ();
     GLuint shader = glCreateShader (shaderType);
@@ -79,7 +79,7 @@ namespace Framework
   }
 
 
-  GLuint Shader::Create_Shader (const char* filename, std::string shaderSource, GLenum shaderType)
+  GLuint Shader::Create_Shader (const char* filename, string shaderSource, GLenum shaderType)
   {
     const char* source = shaderSource.c_str ();
     GLuint shader = glCreateShader (shaderType);
@@ -94,7 +94,7 @@ namespace Framework
   }
 
 
-  GLuint Shader::Create_Program(std::string name, GLuint _vertexShader, GLuint _fragmentShader, GLuint _geometryShader /*= 0*/)
+  GLuint Shader::Create_Program(string name, GLuint _vertexShader, GLuint _fragmentShader, GLuint _geometryShader /*= 0*/)
 {
     GLuint program = glCreateProgram ();
     glAttachShader (program, _vertexShader);
@@ -110,7 +110,7 @@ namespace Framework
     return program;
   }
 
-  GLuint Shader::Create_Shader_From_String (std::string& vs, std::string& fs)
+  GLuint Shader::Create_Shader_From_String (string& vs, string& fs)
   {
     // Create and compile the vertex shader
     GLuint vertexShader = glCreateShader (GL_VERTEX_SHADER);

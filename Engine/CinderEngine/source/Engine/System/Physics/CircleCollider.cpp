@@ -56,21 +56,23 @@ namespace Framework
 	void CircleCollider::DetectCollision(CircleCollider* c)
 	{
 		// not counting offset
-		glm::vec3 pos;
+		vec3 pos;
 		pos.x = (gameObject->Transform)->GetPosition().x;
 		pos.y = (gameObject->Transform)->GetPosition().y;
-		glm::vec3 cpos;
+		vec3 cpos;
 		cpos.x = (c->gameObject->Transform)->GetPosition().x;
 		cpos.y = (c->gameObject->Transform)->GetPosition().y;
 		float rad = GetRadius() + c->GetRadius();
 		float dist = Physics::Distance(pos, cpos);
 		if (rad >= dist)
 		{
-			glm::vec3 normalVec = gameObject->Transform->GetPosition() -
+			if (gameObject->FireStarter)
+				std::cout << "Sparked!" << std::endl;
+			vec3 normalVec = gameObject->Transform->GetPosition() -
 				c->gameObject->Transform->GetPosition();
 			float penetration = rad - dist;
 			glm::normalize(normalVec);
-			BodyContact contact(gameObject->RigidBody, c->gameObject->RigidBody,
+			BodyContact contact(gameObject, c->gameObject,
 				normalVec, penetration);
 			Physics::PHYSICSSYSTEM->addContact(&contact);
 
@@ -82,19 +84,19 @@ namespace Framework
 	//repeat
 	void CircleCollider::DetectCollision(PointCollider* p)
 	{
-		glm::vec3 ppos = p->getPosition();
-		glm::vec3 pos = getPosition();
+		vec3 ppos = p->getPosition();
+		vec3 pos = getPosition();
 		float rad = GetRadius();
 
 		if (Physics::CirclevsPoint(rad, pos, ppos))
 		{
-			glm::vec3 normalVec = gameObject->Transform->GetPosition() -
+			vec3 normalVec = gameObject->Transform->GetPosition() -
 				p->gameObject->Transform->GetPosition();
 			float penetration = rad - Physics::Distance(gameObject->Transform->GetPosition(),
 				p->gameObject->Transform->GetPosition());
 			glm::normalize(normalVec);
 
-			BodyContact contact(gameObject->RigidBody, p->gameObject->RigidBody,
+			BodyContact contact(gameObject, p->gameObject,
 				normalVec, penetration);
 			//CollisionEvent collision;
 			//collision.OtherObject = p->gameObject;
@@ -108,7 +110,7 @@ namespace Framework
 		//float rad = GetRadius();
 		float rad = radius;
 		float penetration;
-		glm::vec3 pos;
+		vec3 pos;
 		pos.x = gameObject->Transform->GetPosition().x;
 		pos.y = gameObject->Transform->GetPosition().y;
 		if (gameObject->RigidBody)
@@ -124,7 +126,7 @@ namespace Framework
 		penetration = Physics::CirclevsLine(rad, pos, l);
 		if (penetration >= 0)
 		{
-			BodyContact contact(gameObject->RigidBody, nullptr,
+			BodyContact contact(gameObject, nullptr,
 				l->normalVec, penetration);
 			Physics::PHYSICSSYSTEM->addContact(&contact);
 			//CollisionEvent collision;

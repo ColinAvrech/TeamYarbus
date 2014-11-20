@@ -25,7 +25,7 @@ namespace Framework
     bool wakeUpOnChange;
     bool localSpace;
     float strength;      //scale gravity vector by this
-    glm::vec3 direction; //not normalized
+    vec3 direction; //not normalized
 
     //virtual member functions===================
     /*!Telegraph that the component is active*/
@@ -36,7 +36,7 @@ namespace Framework
     
 
     // The non-base component uses DefineComponentName macro to name component
-    const static std::string Name;
+    const static string Name;
 
   private:
     

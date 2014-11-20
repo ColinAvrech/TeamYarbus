@@ -24,7 +24,7 @@ namespace Framework
   class EulerUpdater : public ParticleUpdater
   {
   public:
-    glm::vec4 m_globalAcceleration;
+    vec4 m_globalAcceleration;
     ComputeShader* cs;
     SSBO* SSBOPos;
     int particleCount;
@@ -53,13 +53,13 @@ namespace Framework
   class AttractorUpdater : public ParticleUpdater
   {
   protected:
-    std::vector<glm::vec4> m_attractors; // .w is force
+    std::vector<vec4> m_attractors; // .w is force
   public:
     virtual void update (double dt, ParticleData *p) override;
 
     size_t collectionSize () const { return m_attractors.size (); }
-    void add (const glm::vec4 &attr) { m_attractors.push_back (attr); }
-    glm::vec4 &get (size_t id) { return m_attractors [id]; }
+    void add (const vec4 &attr) { m_attractors.push_back (attr); }
+    vec4 &get (size_t id) { return m_attractors [id]; }
   };
 
 
@@ -82,8 +82,8 @@ namespace Framework
   class PosColorUpdater : public ParticleUpdater
   {
   public:
-    glm::vec4 m_minPos;
-    glm::vec4 m_maxPos;
+    vec4 m_minPos;
+    vec4 m_maxPos;
   public:
     PosColorUpdater () : m_minPos (0.0), m_maxPos (1.0) { }
 
@@ -96,8 +96,8 @@ namespace Framework
   class VelColorUpdater : public ParticleUpdater
   {
   public:
-    glm::vec4 m_minVel;
-    glm::vec4 m_maxVel;
+    vec4 m_minVel;
+    vec4 m_maxVel;
   public:
     VelColorUpdater () : m_minVel (0.0), m_maxVel (1.0) { }
 

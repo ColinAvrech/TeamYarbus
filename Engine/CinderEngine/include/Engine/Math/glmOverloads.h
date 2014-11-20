@@ -11,7 +11,7 @@
 
 namespace Framework
 {
-  glm::vec3 operator*(const glm::vec3& vec, const float scale);
-  glm::vec3 operator*(const float scale, const glm::vec3& vec);
+  vec3 operator*(const vec3& vec, const float scale);
+  vec3 operator*(const float scale, const vec3& vec);
 
 }

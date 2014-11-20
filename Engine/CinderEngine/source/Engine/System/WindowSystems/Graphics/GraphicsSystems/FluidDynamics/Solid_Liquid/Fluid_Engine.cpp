@@ -28,8 +28,8 @@
 
 namespace Framework
 {
-#define   LOCAL_number_of_pixels_width 32	
-#define   LOCAL_number_of_pixels_height 32
+  const float LOCAL_number_of_pixels_width = 32.0f;
+  const float LOCAL_number_of_pixels_height = 32.0f;
 
   std::vector <float> mesh;
   INT32 LOCAL_width;
@@ -40,23 +40,16 @@ namespace Framework
   BOOL Plasticity = BOOLEAN_true;
   BOOL Viscosity = BOOLEAN_false;
   BOOL PauseSimulation = BOOLEAN_false;
-  INT32 GraphicalMode = 3;
+  INT32 GraphicalMode = 1;
   Fluid_Physics_Engine FluidPhysics;
   Fluid_Marching_Squares GraphicsMarchingSquares;
   enum RenderModes{ LargeParticleMode = 1, SmallParticleMode = 2, MarchingSquareMode = 3 };
 
+  glm::mat4 vp;
+  glm::mat4 wv;
+
   void Fluid_Engine::Render ()
   {
-    glMatrixMode (GL_PROJECTION);
-    glLoadIdentity ();
-    glOrtho (
-      -LOCAL_number_of_pixels_width,
-      LOCAL_number_of_pixels_width,
-      -LOCAL_number_of_pixels_height,
-      LOCAL_number_of_pixels_height, 0, 1000);
-    glMatrixMode (GL_MODELVIEW);
-    glLoadIdentity ();
-
     INDEX temp_index_1, temp_index_2, start_position, end_position;
 
     if (GraphicalMode == LargeParticleMode)
@@ -82,9 +75,10 @@ namespace Framework
         FluidPhysics.ParticleTable
         )
       {
+        vec4 pos = vp * vec4 (FluidPhysics.ParticleTable [temp_index_2].GetPosition ().X,
+          FluidPhysics.ParticleTable [temp_index_2].GetPosition ().Y, 0, 1);
         glColor4fv (Graphics_Color::Red ().GetRGBA ());
-        glVertex2f (FluidPhysics.ParticleTable [temp_index_2].GetPosition ().X,
-          FluidPhysics.ParticleTable [temp_index_2].GetPosition ().Y);
+        glVertex4fv (glm::value_ptr(pos));
       }
       glEnd ();
       break;
@@ -110,9 +104,9 @@ namespace Framework
           end_position
           )
         {
+          vec2 pos = glm::mat2 (vp) * vec2 (pointTable [temp_index_1].X, pointTable [temp_index_1].Y);
           glColor4f (1, 1, 1, 1);
-          glVertex2f (pointTable [temp_index_1].X,
-            pointTable [temp_index_1].Y);
+          glVertex2fv (glm::value_ptr (pos));
         }
         glEnd ();
         start_position += table [temp_index_2];
@@ -155,25 +149,25 @@ namespace Framework
         {
           index_1 = INT32 (FluidPhysics.ParticleTable [particle_index].GetPosition ().X)
             - 1
-            + LOCAL_number_of_pixels_width;
+            + (int)LOCAL_number_of_pixels_width;
         }
         else
         {
           index_1 = INT32 (FluidPhysics.ParticleTable [particle_index].GetPosition ().X)
-            + LOCAL_number_of_pixels_width;
+            + (int)LOCAL_number_of_pixels_width;
         }
 
         if (FluidPhysics.ParticleTable [particle_index].GetPosition ().Y < 0.0f)
         {
           index_2 = INT32 (FluidPhysics.ParticleTable [particle_index].GetPosition ().Y)
             - 1
-            - LOCAL_number_of_pixels_height;
+            - (int)LOCAL_number_of_pixels_height;
           index_2 *= -1;
         }
         else
         {
           index_2 = INT32 (FluidPhysics.ParticleTable [particle_index].GetPosition ().Y)
-            - LOCAL_number_of_pixels_height;
+            - (int)LOCAL_number_of_pixels_height;
           index_2 *= -1;
         }
 
@@ -291,15 +285,16 @@ namespace Framework
 
   void Fluid_Engine::Initialize ()
   {
-    glMatrixMode (GL_PROJECTION);
-    glLoadIdentity ();
-    //glOrtho (
-    //  -LOCAL_number_of_pixels_width,
-    //  LOCAL_number_of_pixels_width,
-    //  -LOCAL_number_of_pixels_height,
-    //  LOCAL_number_of_pixels_height, 0, 1000);
-    glMatrixMode (GL_MODELVIEW);
-    glLoadIdentity ();
+    vp = glm::ortho
+      (
+        -LOCAL_number_of_pixels_width,
+        LOCAL_number_of_pixels_width,
+        -LOCAL_number_of_pixels_height,
+        LOCAL_number_of_pixels_height,
+        0.0f,
+        1000.0f
+      );
+
     glEnable (GL_POINT_SMOOTH);
 
     FluidPhysics.Initialize (
@@ -307,8 +302,8 @@ namespace Framework
       LOCAL_number_of_pixels_height);
 
     EVENTSYSTEM->gConnect (Events::KEY_ANY, &OnKeyPressed);
-    glfwSetMouseButtonCallback (WINDOWSYSTEM->Get_Window (), &mouse);
-    glfwSetCursorPosCallback (WINDOWSYSTEM->Get_Window (), &motion);
+    //glfwSetMouseButtonCallback (WINDOWSYSTEM->Get_Window (), &mouse);
+    //glfwSetCursorPosCallback (WINDOWSYSTEM->Get_Window (), &motion);
 
     if (Plasticity)
     {

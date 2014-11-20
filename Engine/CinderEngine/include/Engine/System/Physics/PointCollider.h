@@ -18,7 +18,7 @@ namespace Framework
 	class PointCollider : public ShapeCollider
 	{
 	public:
-		const static std::string Name;
+		const static string Name;
     PointCollider () {}
 		~PointCollider(){}
 

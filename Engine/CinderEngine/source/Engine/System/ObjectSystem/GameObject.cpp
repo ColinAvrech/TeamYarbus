@@ -21,18 +21,26 @@ namespace Framework
 
   ZilchDefineType(Component, CinderZilch)
   {
-    ZilchBindConstructor(Component);
+	type->HandleManager = ZilchManagerId(Zilch::PointerManager);
+	
+	ZilchBindConstructor();
     ZilchBindMethod(GetOwner);	
+	ZilchBindMethod(Initialize);
+	ZilchBindFieldGetSetAs(gameObject, "Owner");
   }
 
   ZilchDefineType(GameObject, CinderZilch)
   {
     //Pointerrs
+	type->HandleManager = ZilchManagerId(Zilch::PointerManager);
+
     ZilchBindFieldGet(Transform);
     ZilchBindFieldGet(Sprite);
+	//ZilchBindFieldGet(Name);
+	ZilchBindMethodOverload(GetComponent, Component*, Zilch::String);
     //ZilchBindFieldGetSet(ShapeCollider);
     //ZilchBindFieldGetSet(Camera);
-    //ZilchBindFieldGetSet(RigidBody);
+    ZilchBindFieldGet(RigidBody);
     //ZilchBindFieldGetSet(CharacterController);
 
     // 
@@ -57,7 +65,7 @@ namespace Framework
   // Zilch method for adding components to GameObjects
   Component* GameObject::AddComponent(Zilch::String name)
   {
-    std::string stdname = name.c_str();
+    string stdname = name.c_str();
       ErrorIf(Components.find(stdname) != Components.end(), "COMPONENT CREATED TWICE ON SAME OBJECT");
     if (OBJECTSYSTEM->SerialMap.find(stdname) != OBJECTSYSTEM->SerialMap.end())
     {
@@ -74,7 +82,7 @@ namespace Framework
     }
   }
 
-  Component* GameObject::AddComponent(std::string name)
+  Component* GameObject::AddComponent(string name)
   {
     ErrorIf(Components.find(name) != Components.end(), "COMPONENT CREATED TWICE ON SAME OBJECT");
     if (OBJECTSYSTEM->SerialMap.find(name) != OBJECTSYSTEM->SerialMap.end())
@@ -93,21 +101,24 @@ namespace Framework
 
   Component* GameObject::AddZilchComponent(Zilch::String name)
   {
-    std::string stdname = name.c_str();
+    string stdname = name.c_str();
 
     //not sure about error handling
     Component* zc = new ZilchComponent(stdname);
     return zc;
   }
-  Component* GameObject::AddZilchComponent(std::string name)
+  Component* GameObject::AddZilchComponent(string name)
   {
+	  
+    //bob = state->AllocateDefaultConstructedHeapObject(ZilchClass, report, Zilch::HeapFlags::NonReferenceCounted);
+
     //not sure about error handling
     Component* zc = new ZilchComponent(name);
-    zc->Initialize();
+    //zc->Initialize();
     return zc;
   }
 
-  Component* GameObject::GetComponent(std::string component)
+  Component* GameObject::GetComponent(string component)
   {
     ComponentMap::iterator it = Components.find(component);
     if (it == Components.end())
@@ -119,6 +130,22 @@ namespace Framework
       return it->second;
     }
     return NULL;
+  }
+
+  //JOSH
+  Component* GameObject::GetComponent(Zilch::String component)
+  {
+	  string stdcomp = component.c_str();
+	  ComponentMap::iterator it = Components.find(stdcomp);
+	  if (it == Components.end())
+	  {
+		  return NULL;
+	  }
+	  else
+	  {
+		  return it->second;
+	  }
+	  return NULL;
   }
 
 }

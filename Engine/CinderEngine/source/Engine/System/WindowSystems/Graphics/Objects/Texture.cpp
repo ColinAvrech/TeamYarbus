@@ -1,9 +1,15 @@
 #include "Texture.h"
+
+#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
 namespace Framework
 {
-
+	ZilchDefineType(Texture, CinderZilch)
+	{
+		type->HandleManager = ZilchManagerId(Zilch::PointerManager);
+		ZilchBindFieldGet(Name);
+	}
   // DEFAULT CONSTRUCTOR
   // WILL BE USE TO DYNAMICALLY GENERATE TEXTURE (FRAME BUFFER)
   Texture::Texture ()
@@ -33,10 +39,11 @@ namespace Framework
   // RETURNS TEXTURE ID
   void Texture::Load_Texture (const char* filename)
   {
-    std::string file = filename;
+    string file = filename;
+	Name = Zilch::String(file.c_str());
     bool hasAlpha = false;
     unsigned pos = file.find_last_of ('.');
-    std::string format = file.substr (pos + 1, file.size () - 1);
+    string format = file.substr (pos + 1, file.size () - 1);
     if (format == "png")
     {
       hasAlpha = true;

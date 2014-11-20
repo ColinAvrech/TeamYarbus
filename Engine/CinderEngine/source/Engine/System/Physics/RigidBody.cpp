@@ -16,6 +16,12 @@
 
 namespace Framework
 {
+	ZilchDefineType(RigidBody, CinderZilch)
+	{
+		type->HandleManager = ZilchManagerId(Zilch::PointerManager);
+		ZilchBindMethod(ApplyForce);
+
+	}
 	//Destructor
 	RigidBody::~RigidBody()
 	{
@@ -28,7 +34,7 @@ namespace Framework
 		invMass = 1 / mass;
 		friction = 0.0f;
 		restitution = 0.0f;
-		accumulatedForce = glm::vec3(0.0f, 0.0f, 0.0f);
+		accumulatedForce = vec3(0.0f, 0.0f, 0.0f);
 
 		//get starting position
 		prevPos = gameObject->Transform->GetPosition();
@@ -64,14 +70,14 @@ namespace Framework
 			allowSleep = false;
 
 		//Velocity
-		glm::vec3 Velocity;
+		vec3 Velocity;
 		temp = data->FindElement(data, "Velocity");
 		temp->GetValue(&Velocity);
 		vel.x = Velocity.x;
 		vel.y = Velocity.y;
 
 		//Angular Velocity
-		glm::vec3 AngVel;
+		vec3 AngVel;
 		temp = data->FindElement(data, "AngularVelocity");
 		temp->GetValue(&AngVel);
 		angVel.x = AngVel.x;
@@ -100,7 +106,7 @@ namespace Framework
 	{
 		if (this->gameObject->ShapeCollider)
 		{
-			glm::vec3 scale = gameObject->Transform->GetScale();
+			vec3 scale = gameObject->Transform->GetScale();
 			float density = gameObject->ShapeCollider->getDensity();
 			mass = (scale.x * scale.y * scale.z) * density;
 			return mass;
@@ -116,7 +122,7 @@ namespace Framework
 			return;
 
 		//determine acceleration
-		glm::vec3 acceleration = Physics::applyNetForce(accumulatedForce, invMass) + glm::vec3(0, -9.8f, 0);
+		vec3 acceleration = Physics::applyNetForce(accumulatedForce, invMass) + vec3(0, -9.8f, 0);
 
 		//integrate velocity
 		vel = vel + acceleration * dt_;
@@ -136,12 +142,17 @@ namespace Framework
 
 		gameObject->Transform->Translate(vel.x * dt_, vel.y * dt_, vel.z * dt_);
 		//clear force
-		accumulatedForce = glm::vec3(0.0f, 0.0f, 0.0f);
+		accumulatedForce = vec3(0.0f, 0.0f, 0.0f);
 	}
 
-	void RigidBody::AddForce(glm::vec3 force)
+	void RigidBody::AddForce(vec3 force)
 	{
 		accumulatedForce += force;
+	}
+
+	void RigidBody::ApplyForce(Zilch::Real3 force)
+	{
+		accumulatedForce += vec3(float(force.x), float(force.y), float(force.z));
 	}
 
 	DefineComponentName(RigidBody);

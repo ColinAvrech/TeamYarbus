@@ -19,36 +19,36 @@ namespace Framework
 			return 0;
 		}
 
-		glm::vec3 applyNetForce(glm::vec3 sumForce, double InvMass)
+		vec3 applyNetForce(vec3 sumForce, double InvMass)
 		{
-			glm::vec3 accel = sumForce * (float)InvMass;
+			vec3 accel = sumForce * (float)InvMass;
 			return accel;
 		}
 
-		glm::vec3 getReflection(glm::vec3& normal, glm::vec3& velocity)
+		vec3 getReflection(vec3& normal, vec3& velocity)
 		{
-			glm::vec3 reflect;
+			vec3 reflect;
 			float dP = DotProduct(velocity, normal);
 			reflect = velocity - (2.0f * dP * normal);
 			return reflect;
 		}
 
-		float Distance(glm::vec3& pos1, glm::vec3& pos2)
+		float Distance(vec3& pos1, vec3& pos2)
 		{
 			return float(sqrt((pos2.x - pos1.x) * (pos2.x - pos1.x)
 				+ (pos2.y - pos1.y) * (pos2.y - pos1.y)));
 		}
 
-		float DistanceSquared(glm::vec3& pos1, glm::vec3& pos2)
+		float DistanceSquared(vec3& pos1, vec3& pos2)
 		{
 			return float((pos2.x - pos1.x) * (pos2.x - pos1.x)
 				+ (pos2.y - pos1.y) * (pos2.y - pos1.y));
 		}
 
-		glm::vec3 getNormal(glm::vec3 p1, glm::vec3 p2)
+		vec3 getNormal(vec3 p1, vec3 p2)
 		{
-			glm::vec3 norm;
-			glm::vec3 line = p2 - p1;
+			vec3 norm;
+			vec3 line = p2 - p1;
 			norm.x = -line.y;
 			norm.y = line.x;
 			norm = glm::normalize(norm);
@@ -56,21 +56,21 @@ namespace Framework
 			return norm;
 		}
 
-		float DotProduct(glm::vec3& u, glm::vec3& v)
+		float DotProduct(vec3& u, vec3& v)
 		{
 			float result = float((u.x * v.x) + (u.y * v.y));
 			return result;
 		}
 
-		glm::vec3 applyAccel(glm::vec3 accel, double dt)
+		vec3 applyAccel(vec3 accel, double dt)
 		{
-			glm::vec3 velChange = accel * (float)dt;
+			vec3 velChange = accel * (float)dt;
 			return velChange;
 		}
 
-		glm::vec3 getAccel(glm::vec3 force, double mass)
+		vec3 getAccel(vec3 force, double mass)
 		{
-			glm::vec3 accel = force / (float)mass;
+			vec3 accel = force / (float)mass;
 			return accel;
 		}
 	}
