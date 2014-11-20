@@ -74,14 +74,14 @@ namespace Framework
 		delete File;
 	}
 
-	Zilch::String ZilchFile::ReadLine(Zilch::Integer line)
+	Zilch::String* ZilchFile::ReadLine(Zilch::Integer line)
 	{
 		if (line > Data.size() - 1)
 		{
-			return Zilch::String('\0');
+			return NULL;
 		}
 
-		return Zilch::String(Data.at(line).c_str());
+		return &Zilch::String(Data.at(line).c_str());
 		//File->
 	}
 }
