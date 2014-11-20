@@ -153,7 +153,9 @@ Level =
 		{
       Vec2 Dimension = [5, 1],
 			string SpriteSource = "UIExitWhite.png",
-			Vec4 Color = [1, 1,	1, 1],
+			Vec4 NormalColor = [1, 1,	1, 1],
+      Vec4 HoverColor = [1, 0, 0, 1],
+      Vec4 DownColor = [0, 0, 1, 1],
       string Message = "Exit",
 		},
 	},
