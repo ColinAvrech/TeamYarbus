@@ -80,7 +80,7 @@ namespace Framework
 		{
 			return NULL;
 		}
-
+		//NULL
 		return &Zilch::String(Data.at(line).c_str());
 		//File->
 	}
