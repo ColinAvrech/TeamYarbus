@@ -20,7 +20,7 @@ namespace Framework
 	public:
 		const static string Name;
 		float p1dotNormal;
-		vec3 normalVec;
+		vec2 normalVec;
 		vec3 p1; //points
 		vec3 p2;
 

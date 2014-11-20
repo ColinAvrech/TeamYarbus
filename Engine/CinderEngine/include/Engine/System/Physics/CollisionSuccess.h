@@ -14,45 +14,46 @@
 
 namespace Framework
 {
-	class RigidBody;
-	///Data for a contact between two bodies.
-	///Used to resolve world collisions.
-	class BodyContact
-	{
-	public:
-		GameObject* Bodies[2];
-		vec3 Movement[2];
-		vec3 ContactNormal;
-		float Penetration;
-		float Restitution;
-		float FrictionCof;
+  class RigidBody;
+  ///Data for a contact between two bodies.
+  ///Used to resolve world collisions.
+  class BodyContact
+  {
+  public:
+    GameObject* Bodies[2];
+    glm::vec3 Movement[2];
+    glm::vec3 ContactNormal;
+    float t;       //intersection time
+    glm::vec3 pi;  //intersection point
+    float Penetration;
+    float Restitution;
+    float FrictionCof;
 
-		float SeperatingVelocity;
-		float ContactImpulse;
-		float CalculateSeparatingVelocity();
-		BodyContact(GameObject* Body1, GameObject* Body2, 
-			vec3& contactNormal, float penetration)
-			: ContactNormal(contactNormal),
-			Penetration(penetration){
-			Bodies[0] = Body1; Bodies[1] = Body2;
-		};
+    float SeperatingVelocity;
+    float ContactImpulse;
+    float CalculateSeparatingVelocity();
+    BodyContact(){};
+    BodyContact(GameObject* Body1, GameObject* Body2,
+      glm::vec3& contactNormal, float penetration)
+      : ContactNormal(contactNormal),
+      Penetration(penetration){
+      Bodies[0] = Body1; Bodies[1] = Body2;
+    }
+  };
 
-		BodyContact(){};
-	};
 
+  class ContactSet;
+  class ShapeCollider;
 
-	class ContactSet;
-	class ShapeCollider;
-
-	//macro - what do?
-	typedef bool(*CollisionTest)(ShapeCollider*a, vec3 at, ShapeCollider*b, Vec2 bt, ContactSet*c);
-	///The collision database provides collision detection between shape types.
-	class CollisionDatabase
-	{
-	public:
-		CollisionDatabase();
-		//CollisionTest CollisionRegistry[ShapeCollider::numOfShapes][ShapeCollider::SidNumberOfShapes];
-		bool GenerateContacts(ShapeCollider* shapeA, vec3 poistionA, ShapeCollider* shapeB, vec3 poistionB, ContactSet*c);
-		//void RegisterCollsionTest(Shape::ShapeId a, Shape::ShapeId b, CollisionTest test);
-	};
+  //macro - what do?
+  typedef bool(*CollisionTest)(ShapeCollider*a, glm::vec3 at, ShapeCollider*b, Vec2 bt, ContactSet*c);
+  ///The collision database provides collision detection between shape types.
+  class CollisionDatabase
+  {
+  public:
+    CollisionDatabase();
+    //CollisionTest CollisionRegistry[ShapeCollider::numOfShapes][ShapeCollider::SidNumberOfShapes];
+    bool GenerateContacts(ShapeCollider* shapeA, glm::vec3 poistionA, ShapeCollider* shapeB, glm::vec3 poistionB, ContactSet*c);
+    //void RegisterCollsionTest(Shape::ShapeId a, Shape::ShapeId b, CollisionTest test);
+  };
 }

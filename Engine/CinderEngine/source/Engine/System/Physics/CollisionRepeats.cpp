@@ -61,7 +61,7 @@ namespace Framework
       glm::vec2 pe_ = { pe.x, pe.y };
       float nDotps = glm::dot(ps_, l.normalVec);
       glm::vec2 vVec = pe_ - ps_;
-      float tVel = glm::dot(glm::vec2(vVec.x, vVec.y), l.normalVec);
+      float tVel = glm::dot(vec2(vVec.x, vVec.y), l.normalVec);
       BodyContact res;
       res.t = -1.0f;
       if (tVel == 0)
