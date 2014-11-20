@@ -21,6 +21,8 @@ namespace Framework
     TREE_0,
     TREE_1,
     TREE_2,
+    TREE_3,
+    GRASS,
   };
 
 
@@ -51,6 +53,7 @@ namespace Framework
     void Make_Tree0 (float x1, float y1, float length1, float angle1, int depth);
     void Make_Tree1 (float x1, float y1, float x2, float y2, float angle, int depth, int branchCount);
     void Make_Tree2 (float x1, float y1, float length, float angle, int depth);
+    void Make_Tree3 (float x1, float y1, float length1, float angle1, int depth);
   };  
 }
 

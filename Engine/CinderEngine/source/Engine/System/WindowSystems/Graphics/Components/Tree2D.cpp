@@ -59,6 +59,9 @@ namespace Framework
     case Framework::TREE_2:
       Make_Tree2(0, -0.1f, 0.1f, 1.5, 15);
       break;
+    case Framework::TREE_3:
+      Make_Tree3(0, -0.1f, 0.1f, 1.5, 15);
+      break;
     default:
       break;
     }
@@ -187,7 +190,7 @@ namespace Framework
 
       y2 = y1 + length * (2 * (SCALE + myrand(RAND))) * sin(-((15 - depth) / 10.f)*angle);
      
-      x2 = x1 + length * (3 * (SCALE + 3*myrand(RAND))) * cos(angle - angle2);
+      x2 = x1 + length * (2 * (SCALE + 3*myrand(RAND))) * cos(angle - angle2);
         
      
        
@@ -197,7 +200,7 @@ namespace Framework
       treeMesh.push_back(x2);
       treeMesh.push_back(y2);
 
-      x2 = x1 + length * (3 * (SCALE + 3*myrand(RAND))) * cos(angle + angle2);
+      x2 = x1 + length * (2 * (SCALE + 3*myrand(RAND))) * cos(angle + angle2);
 
       y2 = y1 + length * (2 * (SCALE + myrand(RAND))) * sin(-((15 - depth)/10.f)*angle);
 
@@ -207,5 +210,48 @@ namespace Framework
       treeMesh.push_back(y2);
     }
   }
+
+  void Tree2D::Make_Tree3(float x1, float y1, float length, float angle, int depth)
+  {
+    float SCALE = 1.0f;
+    float ANGLE = 0.0f;
+    float RAND = 0.1f;
+    if (depth > 0)
+    {
+      float x2 = x1 + length * cos(angle);
+      float y2 = y1 + length * sin(angle);
+
+      treeMesh.push_back(x1);
+      treeMesh.push_back(y1);
+      treeMesh.push_back(x2);
+      treeMesh.push_back(y2);
+
+      x1 = x1 + length / 2 * cos(angle);
+      y1 = y1 + length / 2 * sin(angle);
+
+      float length2 = length / 2;
+      float angle2;
+      if (depth % 2 == 0)
+        angle2 = angle + ANGLE + myrand(RAND);
+      else
+        angle2 = angle - ANGLE + myrand(RAND);
+
+      int factor = 80 + rand() % 20;
+      float f = factor / 100.f;
+
+      Make_Tree3(x2, y2, length * f, angle2, depth - 1);
+
+      //y2 = y1 + length * (2 * (SCALE + myrand(RAND))) * sin(-((15 - depth) / 10.f)*angle);
+      //
+      //x2 = x1 + length * (2 * (SCALE + 3 * myrand(RAND))) * cos(angle - angle2);
+      int r = rand() % 100;
+      if (r > 20 - depth)
+        Make_Tree0(x2, y2, length2, angle/2 + angle2, depth/2);
+      r = rand() % 100;
+      if (r > 20 - depth)
+        Make_Tree0(x2, y2, length2, -angle/2 + angle2, depth/2);
+    }
+  }
+
 
 }
