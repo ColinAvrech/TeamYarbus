@@ -20,9 +20,11 @@ namespace Framework
 	class BodyContact
 	{
 	public:
-		RigidBody* Bodies[2];
+    GameObject* Bodies[2];
 		glm::vec3 Movement[2];
 		glm::vec3 ContactNormal;
+    float t;       //intersection time
+    glm::vec3 pi;  //intersection point
 		float Penetration;
 		float Restitution;
 		float FrictionCof;
@@ -30,14 +32,13 @@ namespace Framework
 		float SeperatingVelocity;
 		float ContactImpulse;
 		float CalculateSeparatingVelocity();
-		BodyContact(RigidBody* Body1, RigidBody* Body2, 
+    BodyContact(){};
+		BodyContact(GameObject* Body1, GameObject* Body2, 
 			glm::vec3& contactNormal, float penetration)
 			: ContactNormal(contactNormal),
 			Penetration(penetration){
 			Bodies[0] = Body1; Bodies[1] = Body2;
-		};
-
-		BodyContact(){};
+		}
 	};
 
 

@@ -33,7 +33,7 @@ namespace Framework
 	//collision
 	void PointCollider::DetectCollision(CircleCollider* c)
 	{
-		glm::vec3 ppos = getPosition();
+		/*glm::vec3 ppos = getPosition();
 		glm::vec3 cpos = c->getPosition();
 		float rad = c->GetRadius();
 		if (Physics::CirclevsPoint(rad, cpos, ppos))
@@ -42,19 +42,19 @@ namespace Framework
 			collision.OtherObject = c->gameObject;
 			collision.normal = cpos - ppos;
 			glm::normalize(collision.normal);
-		}
+		}*/
 	}
 
 	void PointCollider::DetectCollision(LineCollider* l)
 	{
-		glm::vec3 pos = getPosition();
+		/*glm::vec3 pos = getPosition();
 		if (Physics::PointvsLine(pos, *l))
 		{
 			CollisionEvent collision;
 			collision.OtherObject = l->gameObject;
 			collision.normal = l->normalVec;
 			glm::normalize(collision.normal);
-		}
+		}*/
 	}
 	DefineComponentName(PointCollider);
 }

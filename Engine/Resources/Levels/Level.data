@@ -74,7 +74,7 @@ Level =
 		},
 		Named = 
 		{
-			string Name = "bg",
+			string Name = "terrain",
 		},
 		Transform = 
 		{
@@ -101,6 +101,60 @@ Level =
 		},
 		Named = 
 		{
+			string Name = "terrain",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0, 2.2, -2.5],
+			Vec3 Scale = [10, 4, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Terrain2D = 
+		{
+      int MapSize = 500,
+      int BaseHeight = 100,
+      int PeakHeight = 100,
+      int Passes = 1,
+      int Waves = 5,
+      int Water = 20,
+      bool AddCollider = false,
+		},
+  },
+   Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 8,
+		},
+		Named = 
+		{
+			string Name = "terrain",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0, 2.2, -5],
+			Vec3 Scale = [10, 4, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Terrain2D = 
+		{
+      int MapSize = 700,
+      int BaseHeight = 200,
+      int PeakHeight = 100,
+      int Passes = 1,
+      int Waves = 3,
+      int Water = 0,
+      bool AddCollider = false,
+		},
+  },
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 8,
+		},
+		Named = 
+		{
 			string Name = "tree0",
 		},
 		Transform = 
@@ -111,7 +165,7 @@ Level =
 		},
 		Tree2D = 
 		{
-      int Tree_Type = 0,
+      int Tree_Type = 2,
       Vec4 Color = [1.0, 0.2, 0.1, 1.0],
 		},
   },
@@ -225,19 +279,19 @@ Level =
       Vec4 Color = [0.4, 0.2, 0.1, 1.0],
 		},
   },
-  Cog = 
+	  Cog = 
 	{
 		LinkId = 
 		{
-			uint Id = 5,
+			uint Id = 4,
 		},
 		Named = 
 		{
-			string Name = "Player2",
+			string Name = "Player",
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, 1, 0],
+			Vec3 Translation = [0, 2, 0],
 			Vec3 Scale = [0.2, 0.2, 0],
 			Quat Rotation = [0, 0, 0, 1],
 		},
@@ -280,7 +334,7 @@ Level =
 			float Radius = .5,
 		},
 	},
-	  Cog = 
+  Cog = 
 	{
 		LinkId = 
 		{
@@ -288,11 +342,11 @@ Level =
 		},
 		Named = 
 		{
-			string Name = "Player",
+			string Name = "Player2",
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, 2, 0],
+			Vec3 Translation = [4, 2, 0],
 			Vec3 Scale = [0.2, 0.2, 0],
 			Quat Rotation = [0, 0, 0, 1],
 		},
@@ -301,7 +355,7 @@ Level =
 			string SpriteSource = "Circle.png",
 			bool FlipX = false,
 			bool FlipY = false,
-			Vec4 Color = [1, 1, 1, 1],
+			Vec4 Color = [1, 0, 0, 1],
 			bool Visible = true,
 			bool OnTop = false,
 			bool AnimationActive = true,

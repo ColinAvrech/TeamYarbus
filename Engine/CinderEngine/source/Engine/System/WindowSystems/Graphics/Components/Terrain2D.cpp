@@ -69,19 +69,20 @@ namespace Framework
     Generate_Edges ();
     Generate_Vertices ();
     Generate_Buffers ();
-
-    spline = new SplineCollider ();
-    Physics::PHYSICSSYSTEM->SplineColliders.push_back (spline);
-
-    spline->AddLineCollider (edges);
+    if (AddCollider)
+    {
+      spline = new SplineCollider();
+      Physics::PHYSICSSYSTEM->SplineColliders.push_back(spline);
+      spline->AddLineCollider(edges);
+    }
 
     vao1 = new VAO ();
     for (unsigned i = 0; i < height_points.size () - 1; ++i)
     {
-      lineVertices.push_back (height_points [i].x);
-      lineVertices.push_back (height_points [i].y);
-      lineVertices.push_back (height_points [i + 1].x);
-      lineVertices.push_back (height_points [i + 1].y);
+      lineVertices.push_back (1.f);
+      lineVertices.push_back(2.f);
+      lineVertices.push_back (3.f);
+      lineVertices.push_back (4.f);
     }
     vbo1 = new VBO (lineVertices.size () * sizeof (float), lineVertices.data ());
     GLint posAttrib = shader->attribLocation ("position");

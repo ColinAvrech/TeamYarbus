@@ -45,9 +45,9 @@ namespace Framework
 				+ (pos2.y - pos1.y) * (pos2.y - pos1.y));
 		}
 
-		glm::vec3 getNormal(glm::vec3 p1, glm::vec3 p2)
+		glm::vec2 getNormal(glm::vec3 p1, glm::vec3 p2)
 		{
-			glm::vec3 norm;
+			glm::vec2 norm;
 			glm::vec3 line = p2 - p1;
 			norm.x = -line.y;
 			norm.y = line.x;
@@ -56,7 +56,7 @@ namespace Framework
 			return norm;
 		}
 
-		float DotProduct(glm::vec3& u, glm::vec3& v)
+		float DotProduct(const glm::vec3& u, const glm::vec3& v)
 		{
 			float result = float((u.x * v.x) + (u.y * v.y));
 			return result;

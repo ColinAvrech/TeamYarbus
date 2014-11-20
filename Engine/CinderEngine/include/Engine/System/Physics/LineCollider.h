@@ -20,7 +20,7 @@ namespace Framework
 	public:
 		const static std::string Name;
 		float p1dotNormal;
-		glm::vec3 normalVec;
+		glm::vec2 normalVec;
 		glm::vec3 p1; //points
 		glm::vec3 p2;
 
