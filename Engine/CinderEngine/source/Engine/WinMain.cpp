@@ -25,6 +25,7 @@ starts the game loop.
 #include "Physics/PhysicsSystem.h"
 #include "ResourceManager.h"
 #include "Serializer/JSONSerializer.h"
+#include "UISystem.h"
 
 
 //testing includes
@@ -74,6 +75,7 @@ int main (void)
   ScriptSystem * zilch = new ScriptSystem();
   Physics::PhysicsSystem * phys = new Physics::PhysicsSystem ();
   ObjectSystem* objsys = new ObjectSystem ();
+  UISystem* ui = new UISystem ();
 
   engine->AddSystem (phys);
   engine->AddSystem (windows);
@@ -82,6 +84,7 @@ int main (void)
   engine->AddSystem (zilch);
   engine->AddSystem (thermo);
   engine->AddSystem(objsys);
+  engine->AddSystem (ui);
   ////Cinder.PhysicsSystem = phys;
   ////Cinder.Thermodynamics = thero;
   //Cinder::Windows = windows;

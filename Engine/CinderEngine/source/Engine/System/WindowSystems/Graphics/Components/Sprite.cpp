@@ -75,8 +75,6 @@ namespace Framework
 
 	void Sprite::Initialize()
 	{
-
-		IGraphicsObject::Register();
 		gameObject->Sprite = this;
 
 		if (vao == nullptr || vbo == nullptr || ebo == nullptr)
@@ -118,7 +116,6 @@ namespace Framework
 	Sprite::~Sprite()
 	{
 		gameObject->Sprite = nullptr;
-		IGraphicsObject::Deregister();
 
 		if (vao != nullptr)
 		{

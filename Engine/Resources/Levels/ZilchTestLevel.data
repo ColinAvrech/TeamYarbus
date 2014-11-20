@@ -133,4 +133,28 @@ Level =
 			string OHai = "Sagnik",
 		},
 	},
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 5,
+		},
+		Named = 
+		{
+			string Name = "Ground",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0, -0.5, 0],
+			Vec3 Scale = [0.5, 0.5, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		UIBox = 
+		{
+      Vec2 Dimension = [5, 1],
+			string SpriteSource = "UIExitWhite.png",
+			Vec4 Color = [1, 1,	1, 1],
+      string Message = "Exit",
+		},
+	},
 },

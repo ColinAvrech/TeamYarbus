@@ -15,13 +15,20 @@
 
 
 // Old Use BaseEvent to make customEvents
-//namespace Framework
-//{
-//
-//  // Basic GameEvent for callbacks
-//  class GameEvent : public BaseEvent
-//  {
-//  public:
-//
-//  };
-//}
+namespace Framework
+{
+
+  // Basic GameEvent for callbacks
+  class GameEvent : public BaseEvent
+  {
+  public:
+
+  };
+
+  // Basic GameEvent for callbacks
+  class UIEvent : public BaseEvent
+  {
+  public:
+    std::string Message;
+  };
+}

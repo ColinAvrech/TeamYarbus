@@ -44,7 +44,7 @@ namespace Framework
     // Transformations
     void Load_Identity ();
     void Translate (float x, float y, float z);
-	void Translate(vec3 &v);
+	  void Translate(vec3 &v);
     void Scale (float x, float y, float z);
     void Scale (float v);
     void Rotate (float angle);
@@ -59,6 +59,8 @@ namespace Framework
     inline vec3 GetScale ();
     inline float GetRotation ();
     vec2 GetScreenPosition ();
+    glm::vec2 GetScreenPosition (glm::vec2 v);
+
     static void Print (vec3 position);
 
     // The non-base component usees DefineComponentName macro to name component

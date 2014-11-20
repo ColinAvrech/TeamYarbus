@@ -18,6 +18,7 @@ deleted.
 #include "Tree2D.h"
 #include "FireStarter.h"
 #include "Microphone.h"
+#include "CinderEngine_UI.h"
 
 namespace Framework
 {
@@ -91,8 +92,9 @@ namespace Framework
     RegisterComponent(FountainEffect);
     RegisterComponent(Terrain2D);
     RegisterComponent(Tree2D);
-	RegisterComponent(FireStarter);
-	RegisterComponent(Microphone);
+	  RegisterComponent(FireStarter);
+	  RegisterComponent(Microphone);
+    RegisterComponent (UIBox);
     //RegisterComponent (SplineCollider);
     AddComponentCreator ("SplineCollider", new ComponentCreatorType<SplineCollider> ("SplineCollider"));
     AddComponentCreator("SphereCollider", new ComponentCreatorType<CircleCollider>("SphereCollider"));

@@ -14,11 +14,12 @@
 #include "GraphicsCommon.h"
 #include "glfw3.h"
 #include "KeyEvent.h"
-#include "IGraphicsObject.h"
 
 
 namespace Framework
 {
+  class IGraphicsObject;
+  class UIComponent;
 
   namespace WindowNameSpace
   {
@@ -29,6 +30,7 @@ namespace Framework
   class WindowSystem : public BaseSystem
   {
   public:
+    glm::dvec2 cursorPosition;
     WindowSystem(const char* WindowTitle, const int& ClientWidth = 1920, const int& ClientHeight = 1080, const bool& fullscreen = true);
     ~WindowSystem();
 
@@ -49,6 +51,8 @@ namespace Framework
 
     int Get_Width ();
     int Get_Height ();
+    glm::vec2 Get_Mouse_Position ();
+    glm::vec2 Get_Normalized_Mouse_Position ();
     inline GLFWwindow* Get_Window ()
     {
       return window;
@@ -57,11 +61,10 @@ namespace Framework
 
     static std::list <Transform*> transformList;
     static std::list <IGraphicsObject*> graphicsObjects;
+    static std::list <UIComponent*> uiObjects;
 
   private:
     GLFWwindow* window;
-
-
     int WindowHeight;
     int WindowWidth;
   };

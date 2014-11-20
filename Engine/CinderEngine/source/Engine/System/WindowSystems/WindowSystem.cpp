@@ -21,6 +21,8 @@ function to handle windows Messages.
 #include "Thermodynamics.h"
 #include "Fluid_Engine.h"
 #include "Smoke_Grid.h"
+#include "IGraphicsObject.h"
+#include "CinderEngine_UI.h"
 
 namespace Framework
 {
@@ -29,6 +31,7 @@ namespace Framework
 
   std::list <Transform*> WindowSystem::transformList;
   std::list <IGraphicsObject*> WindowSystem::graphicsObjects;
+  std::list <UIComponent*> WindowSystem::uiObjects;
   Fluid_Engine water;
   Smoke_Grid grid;
 
@@ -265,6 +268,8 @@ namespace Framework
     }
     void GLFWMouseCursorMoved (GLFWwindow* window, const double xPos, const double yPos)
     {
+      WINDOWSYSTEM->cursorPosition.x = xPos;
+      WINDOWSYSTEM->cursorPosition.y = yPos;
     }
 
     void GLFWWindowClosed (GLFWwindow* window)
@@ -372,6 +377,13 @@ namespace Framework
     {
       i->Draw ();
     }
+
+    for (auto& i : uiObjects)
+    {
+      i->Update (dt);
+      i->Draw ();
+    }
+
     //grid.Update ();
     //grid.Draw ();
     //water.Update ();
@@ -395,6 +407,20 @@ namespace Framework
     glViewport (0, 0, w, h);
     WindowWidth = w;
     WindowHeight = h;
+  }
+
+  glm::vec2 WindowSystem::Get_Mouse_Position ()
+  {
+    return glm::vec2 (cursorPosition);
+  }
+
+  glm::vec2 WindowSystem::Get_Normalized_Mouse_Position ()
+  {
+    glm::vec2 normPos;
+    normPos.x = (float) (cursorPosition.x / (WindowWidth) -0.5f) * 2.0f;
+    normPos.y = (float) ((WindowHeight - cursorPosition.y) / WindowHeight - 0.5f) * 2.0f;
+
+    return normPos;
   }
 
 }

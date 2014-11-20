@@ -161,7 +161,19 @@ namespace Framework
     return vec2 (GetModelViewProjectionMatrix () [3][0] / GetModelViewProjectionMatrix () [3][3],
       GetModelViewProjectionMatrix () [3][1] / GetModelViewProjectionMatrix () [3][3]);
   }
- 
+
+  glm::vec2 Transform::GetScreenPosition (glm::vec2 v)
+  {
+    glm::mat4 matrix = modelMatrix[currentMatrix];
+    matrix [3][0] = v.x;
+    matrix [3][1] = v.y;
+    glm::mat4 mvp = Camera::GetViewToProjectionMatrix () *
+      Camera::GetWorldToViewMatrix () * matrix;
+
+    return glm::vec2 (mvp [3][0] / mvp [3][3], mvp [3][1] / mvp [3][3]);
+  }
+
+
 
   //GLSL
   void Transform::UpdateMatrices()

@@ -16,11 +16,15 @@ namespace Framework
 
   // Constructor
   IGraphicsObject::IGraphicsObject ()
-  {}
+  {
+    Register ();
+  }
   
   // Destructor
   IGraphicsObject::~IGraphicsObject ()
-  {}
+  {
+    Deregister ();
+  }
 
 
   void IGraphicsObject::Register ()
