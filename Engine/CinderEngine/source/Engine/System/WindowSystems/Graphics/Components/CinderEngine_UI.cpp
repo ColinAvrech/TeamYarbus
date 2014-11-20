@@ -1,6 +1,6 @@
 /******************************************************************************/
 /*!
-\file   UIBox.cpp
+\file   CinderEngine_UI.cpp
 \author Manas Sudhir Kulkarni
 \par    Course: GAM200
 \par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
@@ -22,6 +22,7 @@ namespace Framework
   VAO* UIBox::vao;
   VBO* UIBox::vbo;
   EBO* UIBox::ebo;
+  UIEvent* UIBox::uiEvent;
 
   bool Rect::Intersects (glm::vec2 normPos)
   {
@@ -112,6 +113,12 @@ namespace Framework
     box.Min.y = gameObject->Transform->GetPosition ().y - box.Dimension.y * gameObject->Transform->GetScale ().y * 0.5f;
     box.Max.x = gameObject->Transform->GetPosition ().x + box.Dimension.x * gameObject->Transform->GetScale ().x * 0.5f;
     box.Max.y = gameObject->Transform->GetPosition ().y + box.Dimension.y * gameObject->Transform->GetScale ().y * 0.5f;
+
+    if (uiEvent == nullptr)
+    {
+      uiEvent = new UIEvent ();
+      uiEvent->Message = "";
+    }
   }
 
   void UIBox::Update (double dt)
@@ -125,15 +132,20 @@ namespace Framework
       color = hoverColor;
       if (glfwGetMouseButton (WINDOWSYSTEM->Get_Window (), GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
       {
+        buttonState = GLFW_PRESS;
         color = downColor;
-        UIEvent uiEvent;
-        uiEvent.Message = Message;
-        EVENTSYSTEM->TriggerEvent (Events::UI, uiEvent);
-        //CORE->QuitGame ();
+      }
+      else if (glfwGetMouseButton (WINDOWSYSTEM->Get_Window (), GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE
+        && buttonState == GLFW_PRESS)
+      {
+        buttonState = GLFW_RELEASE;
+        uiEvent->Message = Message;
+        EVENTSYSTEM->TriggerEvent (Events::UI, *uiEvent);
       }
     }
     else
     {
+      buttonState = GLFW_RELEASE;
       color = normalColor;
     }
   }

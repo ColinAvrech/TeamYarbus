@@ -16,6 +16,8 @@
 
 namespace Framework
 {
+  class UIEvent;
+
   struct Rect
   {
     glm::vec2 Dimension;
@@ -65,11 +67,13 @@ namespace Framework
     glm::vec4 downColor;
     Shader* shader;
     Texture* texture;
+    int buttonState;
     std::string Message;
 
     static VAO* vao;
     static VBO* vbo;
     static EBO* ebo;
+    static UIEvent* uiEvent;
 
     void Specify_Attributes ();
   };  
