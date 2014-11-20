@@ -28,10 +28,10 @@ namespace Framework
 	//float DetermineFriction(GameObject* a, GameObject* b);
     float Distance(glm::vec3& pos1, glm::vec3& pos2);
 	float DistanceSquared(glm::vec3& pos1, glm::vec3& pos2);
-    float DotProduct(const glm::vec3& u, const glm::vec3& v);
+    float DotProduct(glm::vec3& u, glm::vec3& v);
 	glm::vec3 applyNetForce(glm::vec3 sumForce, double InvMass);
     glm::vec3 applyAccel(glm::vec3 accel, double dt);
-    glm::vec2 getNormal(glm::vec3 p1, glm::vec3 p2);
+    glm::vec3 getNormal(glm::vec3 p1, glm::vec3 p2);
     glm::vec3 getAccel(glm::vec3 force, double mass);
     glm::vec3 getReflection(glm::vec3& normal, glm::vec3& velocity);
     //glm::vec3 applyConstVelocity(GameObject * go, glm::vec3 initial);

@@ -23,7 +23,7 @@ namespace Framework
 	{
 		gameObject->ShapeCollider = this;
 		normalVec = Physics::getNormal(p1, p2);
-		p1dotNormal = glm::dot(glm::vec2(p1.x, p1.y), normalVec);
+		p1dotNormal = Physics::DotProduct(p1, normalVec);
 	}
 
   void LineCollider::Initialize (glm::vec3 _p1, glm::vec3 _p2)
@@ -31,8 +31,7 @@ namespace Framework
     p1 = _p1;
     p2 = _p2;
     normalVec = Physics::getNormal (p1, p2);
-    p1dotNormal = glm::dot(glm::vec2(p1.x, p1.y), normalVec);
-    gameObject = nullptr;
+    p1dotNormal = Physics::DotProduct (p1, normalVec);
   }
 
   void LineCollider::Serialize (Serializer::DataNode* data)

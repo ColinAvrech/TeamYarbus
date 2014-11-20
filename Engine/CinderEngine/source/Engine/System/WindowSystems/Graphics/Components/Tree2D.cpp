@@ -54,10 +54,7 @@ namespace Framework
       Make_Tree0 (0, -0.1f, 0.1f, 1.5, 10);
       break;
     case Framework::TREE_1:
-      Make_Tree1 (0, -0.5f, 0.0f, 0.25f, 45, 5, 3);
-      break;
-    case Framework::TREE_2:
-      Make_Tree2(0, -0.1f, 0.1f, 1.5, 15);
+      Make_Tree1 (0, -0.5f, 0.0f, 0.25f, 45, 5, 10);
       break;
     default:
       break;
@@ -102,20 +99,13 @@ namespace Framework
       float angle2 = angle1 + ANGLE + myrand (RAND);
       int factor = 80 + rand () % 20;
       float f = factor / 100.f;
-      int fork;
-      if (depth % 2 != 0)
-        fork = rand() % 100;
-      else
-        fork = (rand() % 10) * (rand() % 10);
-      if (fork > 20 - depth * 2)
+      int fork = rand () % 100;
+      if (fork > 30)
         Make_Tree0 (x2, y2, length2 * f, angle2, depth - 1);
       length2 = length1 * (SCALE + myrand (RAND));
       angle2 = angle1 - ANGLE + myrand (RAND);
-      if (depth % 2 == 0)
-        fork = rand() % 100;
-      else
-        fork = (rand() % 10) * (rand() % 10);
-      if (fork > 20 - depth * 2)
+      fork = rand () % 100;
+      if (fork > 30)
         Make_Tree0 (x2, y2, length2 * f, angle2, depth - 1);
     }
   }
@@ -152,59 +142,6 @@ namespace Framework
       {
         Make_Tree1 (x2, y2, x3 * cos (nowAngle) + y3 * sin (nowAngle) + x2, -x3 * sin (nowAngle) + y3 * cos (nowAngle) + y2, angle, nn, branchCount);
       }
-    }
-  }
-
-  void Tree2D::Make_Tree2(float x1, float y1, float length, float angle, int depth)
-  {
-    float SCALE = 1.0f;
-    float ANGLE = 0.0f;
-    float RAND = 0.1f;
-    if (depth > 0)
-    {
-      float x2 = x1 + length * cos(angle);
-      float y2 = y1 + length * sin(angle);
-
-      treeMesh.push_back(x1);
-      treeMesh.push_back(y1);
-      treeMesh.push_back(x2);
-      treeMesh.push_back(y2);
-
-      x1 = x1 + length / 2 * cos(angle);
-      y1 = y1 + length / 2 * sin(angle);
-
-      float length2 = length * (SCALE + myrand(RAND));
-      float angle2;
-      if (depth % 2 == 0)
-        angle2 = angle + ANGLE + myrand(RAND);
-      else
-        angle2 = angle - ANGLE + myrand(RAND);
-
-      int factor = 80 + rand() % 20;
-      float f = factor / 100.f;
-
-      Make_Tree2(x2, y2, length2 * f, angle2, depth - 1);
-
-      y2 = y1 + length * (2 * (SCALE + myrand(RAND))) * sin(-((15 - depth) / 10.f)*angle);
-     
-      x2 = x1 + length * (3 * (SCALE + 3*myrand(RAND))) * cos(angle - angle2);
-        
-     
-       
-      
-      treeMesh.push_back(x1);
-      treeMesh.push_back(y1);
-      treeMesh.push_back(x2);
-      treeMesh.push_back(y2);
-
-      x2 = x1 + length * (3 * (SCALE + 3*myrand(RAND))) * cos(angle + angle2);
-
-      y2 = y1 + length * (2 * (SCALE + myrand(RAND))) * sin(-((15 - depth)/10.f)*angle);
-
-      treeMesh.push_back(x1);
-      treeMesh.push_back(y1);
-      treeMesh.push_back(x2);
-      treeMesh.push_back(y2);
     }
   }
 
