@@ -41,7 +41,7 @@ class Josh : Component
 
 	var file:ZilchFile = ZInterface.OpenFile("..//..//Resources//Scripts//test.z");
 	var i = 0;
-	//Console.WriteLine(file.ReadLine(100) == "\0");
+	//Console.WriteLine(file.ReadLine(100) == '\0');
 
 	while (file.ReadLine(i) != "\0")
 	{

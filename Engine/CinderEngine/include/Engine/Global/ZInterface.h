@@ -27,7 +27,7 @@ namespace Framework
 		~ZilchFile();
 
 		
-		Zilch::String* ReadLine(Zilch::Integer line);
+		Zilch::String ReadLine(Zilch::Integer line);
 
 	private:
 		ifstream* File;
