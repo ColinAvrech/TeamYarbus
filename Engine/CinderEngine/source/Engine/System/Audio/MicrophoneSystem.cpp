@@ -182,9 +182,10 @@ namespace Framework
 
       if (_check == true)
       {
-        micFilter(100, 1.0); // Apply microphone filter
-        micMeter();  // Get the RMS peaks from the mic
-        //micFrequencyData(); //Get dominant frequency ranges       
+        micChannel->setMute(true); // Avoid acoustic feedback
+        micFilter();               // Apply microphone filter
+        micMeter();                // Get the RMS peaks from the mic
+        micFrequencyData();        //Get dominant frequency ranges       
 
         _check = false;        
       }      
@@ -243,7 +244,7 @@ namespace Framework
     }
     else
     {      
-      result = micChannel->addDSP(0, fft);
+      result = micChannel->addDSP(FMOD_CHANNELCONTROL_DSP_TAIL, fft);
       ErrCheck(result);
     }
   }
@@ -289,7 +290,7 @@ namespace Framework
     }
     else
     {
-      result = micChannel->addDSP(0, filter);
+      result = micChannel->addDSP(FMOD_CHANNELCONTROL_DSP_TAIL, filter);
       ErrCheck(result);
     }  
   }
