@@ -31,7 +31,6 @@ namespace Framework
   // Destructor
   Tree2D::~Tree2D ()
   {
-    IGraphicsObject::Deregister ();
     delete vao, vbo;
   }
 
@@ -46,8 +45,6 @@ namespace Framework
 
   void Tree2D::Initialize ()
   {
-    IGraphicsObject::Register ();
-
     switch (type)
     {
     case Framework::TREE_0:
