@@ -43,6 +43,8 @@ factory in the next loop.
 
 namespace Framework
 {
+  class ButtonController;
+  class MenuController;
   class Component;
   class FireStarter;
   class Microphone;
@@ -75,12 +77,16 @@ namespace Framework
     //Components
     ComponentPointer(Transform);
     ComponentPointer(Sprite);
-	ComponentPointer(ShapeCollider);
+	  ComponentPointer(ShapeCollider);
     ComponentPointer(Camera);
     ComponentPointer(RigidBody);
     ComponentPointer(CharacterController);
-	ComponentPointer(FireStarter);
-	ComponentPointer(Microphone);
+	  ComponentPointer(FireStarter);
+    ComponentPointer(Microphone);
+
+   // Menu Components
+   ComponentPointer(MenuController);
+   ComponentPointer(ButtonController);
 
   private:
 
