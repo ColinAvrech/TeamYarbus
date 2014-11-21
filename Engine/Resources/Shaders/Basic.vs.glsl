@@ -10,12 +10,12 @@ out vec4 Color;
 out vec3 Normal;
 out vec2 Texcoord;
 
-uniform mat4 modelViewProjectionMatrix;
+uniform mat4 mvp;
 
 
 void main()
 {
-  gl_Position = modelViewProjectionMatrix * vec4(position, 0.5);
+  gl_Position = mvp * vec4(position, 1.0);
   Position = vec3 (position.xy, 1.0);
   Color = color;
   Normal = normal;

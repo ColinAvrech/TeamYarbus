@@ -22,6 +22,7 @@
 #define KeyEventPrefix 'K'
 #define PingEventPrefix 'P'
 #define GameEventPrefix 'G'
+#define UIEventPrefix 'I'
 
 //#define DeclareEvent(Name) namespace Events { static const string Name(#Name); }
 #define DeclareEvent(Name, String) namespace Events { static const string Name(#String); }
@@ -126,5 +127,6 @@ namespace Framework
 
   DeclareEvent(UPDATEEVENT, U)
   DeclareEvent(COLLISION, C)
+  DeclareEvent (UI, I)
 
 }

@@ -9,12 +9,14 @@ out vec3 fragColor;
 
 uniform float radius;
 uniform int divisions;
-uniform mat4 modelViewProjectionMatrix;
+uniform mat4 mvp;
 
 const float PI = 3.1415926;
 
 void main()
 {
+  float rX = radius;
+  float rY = radius * 4.0 / 3.0;
   fragColor = Color[0];
 
   // Safe, GLfloats can represent small integers exactly
@@ -24,8 +26,8 @@ void main()
     float ang = PI * 2.0 / divisions * i;
 
     // Offset from center of point (0.3 to accomodate for aspect ratio)
-    vec4 offset = vec4(cos(ang) * 0.3, -sin(ang) * 0.4, 0.0, 0.0);
-    gl_Position = modelViewProjectionMatrix * (gl_in[0].gl_Position) + offset;
+    vec4 offset = vec4(cos(ang) * rX, -sin(ang) * rX, 0.0, 1.0);
+    gl_Position = mvp * (offset);
 
     EmitVertex();
   }

@@ -62,7 +62,7 @@ Level =
       Vec3 Facing = [0, 0, 1],
 			float FieldOfView = 120,
 			float NearPlane = 0.1,
-			float FarPlane = 20,
+			float FarPlane = 2000,
 			float Size = 1,
 		},
   },
@@ -133,7 +133,7 @@ Level =
 		},
 		Tree2D = 
 		{
-      int Tree_Type = 0,
+      int Tree_Type = 3,
       Vec4 Color = [1.0, 0.2, 0.1, 1.0],
 		},
   },
@@ -149,13 +149,13 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, -1.0, 0],
+			Vec3 Translation = [2, -1.0, 0],
 			Vec3 Scale = [1, 1, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Tree2D = 
 		{
-      int Tree_Type = 0,
+      int Tree_Type = 2,
       Vec4 Color = [1.0, 0.2, 0.1, 1.0],
 		},
   },
@@ -177,7 +177,7 @@ Level =
 		},
 		Tree2D = 
 		{
-      int Tree_Type = 0,
+      int Tree_Type = 2,
       Vec4 Color = [1.0, 0.2, 0.1, 1.0],
 		},
   },
@@ -199,7 +199,7 @@ Level =
 		},
 		Tree2D = 
 		{
-      int Tree_Type = 0,
+      int Tree_Type = 6,
       Vec4 Color = [1.0, 0.2, 0.1, 1.0],
 		},
   },
@@ -211,76 +211,109 @@ Level =
 		},
 		Named = 
 		{
-			string Name = "tree1",
+			string Name = "grass",
 		},
 		Transform = 
 		{
-			Vec3 Translation = [-2, -1.0, 0],
-			Vec3 Scale = [0.2, 0.2, 1],
+			Vec3 Translation = [-2.4, -1.0, 0],
+			Vec3 Scale = [1, 1, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Tree2D = 
 		{
-      int Tree_Type = 0,
-      Vec4 Color = [0.4, 0.2, 0.1, 1.0],
+      int Tree_Type = 5,
+      Vec4 Color = [0.1, 1.0, 0.1, 1.0],
 		},
   },
   Cog = 
 	{
 		LinkId = 
 		{
-			uint Id = 5,
+			uint Id = 8,
 		},
 		Named = 
 		{
-			string Name = "Player2",
+			string Name = "grass",
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, 1, 0],
-			Vec3 Scale = [0.2, 0.2, 0],
+			Vec3 Translation = [-2.2, -1.0, 0],
+			Vec3 Scale = [1, 1, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
-		Sprite = 
+		Tree2D = 
 		{
-			string SpriteSource = "Circle.png",
-			bool FlipX = false,
-			bool FlipY = false,
-			Vec4 Color = [1, 1, 1, 1],
-			bool Visible = true,
-			bool OnTop = false,
-			bool AnimationActive = true,
-			float AnimationSpeed = 1,
-			uint StartFrame = 0,
-			BlendMode BlendMode = Alpha,
-			SpriteGeometryMode GeometryMode = ZPlane,
-			string SpriteLayer = "52ad5fa30d7fcd50:DefaultSpriteLayer",
-			string Shader = "Default",
+      int Tree_Type = 5,
+      Vec4 Color = [0.1, 1.0, 0.1, 1.0],
 		},
-		RigidBody = 
+  },
+  Cog = 
+	{
+		LinkId = 
 		{
-			bool Static = false,
-			bool Asleep = false,
-			bool Kinematic = false,
-			bool RotationLocked = false,
-			bool Mode2D = true,
-			bool AllowSleep = true,
-			bool Inherit2DMode = true,
-			Vec3 Velocity = [0, 0, 0],
-			Vec3 AngularVelocity = [0, 0, 0],
+			uint Id = 8,
 		},
-		SphereCollider = 
+		Named = 
 		{
-			bool Ghost = false,
-			bool SendsMessages = true,
-			bool Seamless = true,
-			string MaterialName = "4de020863e872da8:DefaultPhysicsMaterial",
-			string SerializedGroupName = "4e740859314e5515:DefaultGroup",
-			Vec3 Offset = [0, 0, 0],
-			float Radius = .5,
+			string Name = "grass",
 		},
-	},
-	  Cog = 
+		Transform = 
+		{
+			Vec3 Translation = [-2.0, -1.0, 0],
+			Vec3 Scale = [1, 1, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Tree2D = 
+		{
+      int Tree_Type = 5,
+      Vec4 Color = [0.1, 1.0, 0.1, 1.0],
+		},
+  },
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 8,
+		},
+		Named = 
+		{
+			string Name = "grass",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [-1.8, -1.0, 0],
+			Vec3 Scale = [1, 1, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Tree2D = 
+		{
+      int Tree_Type = 5,
+      Vec4 Color = [0.1, 1.0, 0.1, 1.0],
+		},
+  },
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 8,
+		},
+		Named = 
+		{
+			string Name = "grass",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [-1.6, -1.0, 0],
+			Vec3 Scale = [1, 1, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Tree2D = 
+		{
+      int Tree_Type = 5,
+      Vec4 Color = [0.1, 1.0, 0.1, 1.0],
+		},
+  },
+	Cog = 
 	{
 		LinkId = 
 		{
@@ -293,7 +326,7 @@ Level =
 		Transform = 
 		{
 			Vec3 Translation = [0, 2, 0],
-			Vec3 Scale = [0.2, 0.2, 0],
+			Vec3 Scale = [0.2, 0.2, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Sprite = 
@@ -332,7 +365,59 @@ Level =
 			string MaterialName = "4de020863e872da8:DefaultPhysicsMaterial",
 			string SerializedGroupName = "4e740859314e5515:DefaultGroup",
 			Vec3 Offset = [0, 0, 0],
-			float Radius = .5,
+			float Radius = 1,
+		},
+	},
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 9,
+		},
+		Named = 
+		{
+			string Name = "Button_Exit",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0, -0.5, 0],
+			Vec3 Scale = [0.5, 0.5, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		UIBox = 
+		{
+      Vec2 Dimension = [5, 1],
+			string SpriteSource = "UIExitWhite.png",
+			Vec4 NormalColor = [1, 1,	1, 1],
+      Vec4 HoverColor = [1, 0, 0, 1],
+      Vec4 DownColor = [0, 0, 1, 1],
+      string Message = "Exit",
+		},
+	},
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 9,
+		},
+		Named = 
+		{
+			string Name = "Button_Restart",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0, 1, 0],
+			Vec3 Scale = [0.5, 0.5, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		UIBox = 
+		{
+      Vec2 Dimension = [5, 1],
+			string SpriteSource = "UIExitWhite.png",
+			Vec4 NormalColor = [1, 1,	1, 1],
+      Vec4 HoverColor = [1, 0, 0, 1],
+      Vec4 DownColor = [0, 0, 1, 1],
+      string Message = "Restart",
 		},
 	},
 },

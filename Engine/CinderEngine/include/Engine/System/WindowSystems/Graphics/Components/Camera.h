@@ -17,6 +17,8 @@
 namespace Framework
 {
   class KeyEvent;
+  class Pipeline;
+
   class Camera : public Component
   {
   public:
@@ -27,6 +29,7 @@ namespace Framework
     virtual void Initialize ();
     virtual void Serialize (Serializer::DataNode* data);
 
+    void UpdateCamera (Pipeline* p);
     void MouseUpdate (const vec2& newPosition);
     void MouseUpdateY (const vec2& newPosition);
     void UpdatePosition (const vec3& deltaPos);

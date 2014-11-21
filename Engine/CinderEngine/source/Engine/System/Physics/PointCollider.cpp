@@ -12,6 +12,7 @@
 #include "CollisionRepeats.h"
 #include "Resolution.h"
 #include "CollisionEvent.h"
+#include "DebugRenderer.h"
 
 namespace Framework
 {
@@ -33,7 +34,7 @@ namespace Framework
 	//collision
 	void PointCollider::DetectCollision(CircleCollider* c)
 	{
-		vec3 ppos = getPosition();
+		/*vec3 ppos = getPosition();
 		vec3 cpos = c->getPosition();
 		float rad = c->GetRadius();
 		if (Physics::CirclevsPoint(rad, cpos, ppos))
@@ -42,19 +43,29 @@ namespace Framework
 			collision.OtherObject = c->gameObject;
 			collision.normal = cpos - ppos;
 			glm::normalize(collision.normal);
-		}
+		}*/
 	}
 
 	void PointCollider::DetectCollision(LineCollider* l)
 	{
-		vec3 pos = getPosition();
-		if (Physics::PointvsLine(pos, *l))
+		/*vec3 pos = getPosition();
+		if (Physics::PointvsLine(pos, l))
 		{
 			CollisionEvent collision;
 			collision.OtherObject = l->gameObject;
 			collision.normal = l->normalVec;
 			glm::normalize(collision.normal);
-		}
+		}*/
 	}
+
+  //////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////
+  // Debug Draw
+  void PointCollider::Draw ()
+  {
+    dr->Draw (this);
+  }
+  //////////////////////////////////////////////////////////////////////////
+
 	DefineComponentName(PointCollider);
 }

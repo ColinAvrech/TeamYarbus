@@ -18,6 +18,9 @@ deleted.
 #include "Tree2D.h"
 #include "FireStarter.h"
 #include "Microphone.h"
+#include "CinderEngine_UI.h"
+#include "Core.h"
+#include "PhysicsSystem.h"
 
 namespace Framework
 {
@@ -25,14 +28,18 @@ namespace Framework
   ObjectSystem * OBJECTSYSTEM = NULL;
   //!Set first object's id to zero
   unsigned ObjectSystem::LastGameObjectId = 0;
+  string ObjectSystem::LoadedLevel;
 
   ZilchDefineType(ObjectSystem, CinderZilch)
   {
-	type->HandleManager = ZilchManagerId(Zilch::PointerManager);
+	  type->HandleManager = ZilchManagerId(Zilch::PointerManager);
     ZilchBindMethod(CreateObject);
-	//ZilchBindMethod(LoadLevel);
+	  ZilchBindMethod(DestroyAllObjects);
+	  ZilchBindMethod(LoadLevelAdditive);
+	  ZilchBindMethod(ZilchLoadLevel);
+	  //ZilchBindMethod(LoadLevel);
     //ZilchBindConstructor(Transform);
-    //ZilchBindMethodOverload(Scale, void, float, float, float);
+    //ZilchBindMethodOverload(LoadLevel, void, Zilch::String);
     //ZilchBindMethodOverload(Scale, void, float);
     //ZilchBindMethod(Rotate);
   }
@@ -88,8 +95,9 @@ namespace Framework
     RegisterComponent(FountainEffect);
     RegisterComponent(Terrain2D);
     RegisterComponent(Tree2D);
-	RegisterComponent(FireStarter);
-	RegisterComponent(Microphone);
+	  RegisterComponent(FireStarter);
+	  RegisterComponent(Microphone);
+    RegisterComponent (UIBox);
     //RegisterComponent (SplineCollider);
     AddComponentCreator ("SplineCollider", new ComponentCreatorType<SplineCollider> ("SplineCollider"));
     AddComponentCreator("SphereCollider", new ComponentCreatorType<CircleCollider>("SphereCollider"));
@@ -132,6 +140,41 @@ namespace Framework
     Serializer::DataNode* Trunk = data.GetTrunk();
     SerializeObject (Trunk);
     //InitializeObject ();
+    LoadedLevel = level;
+  }
+
+
+  void ObjectSystem::RestartLevel ()
+  {
+    //if (LoadedLevel != "")
+    //{
+    //  LoadLevel (LoadedLevel);
+    //}
+  }
+
+
+  void ObjectSystem::ZilchLoadLevel(Zilch::String level)
+  {
+	  DestroyAllObjects();
+
+	  Serializer::ZeroSerializer data;
+
+	  data.open(level.c_str());
+	  data.CreateArchive();
+	  Serializer::DataNode* Trunk = data.GetTrunk();
+	  SerializeObject(Trunk);
+	  //InitializeObject ();
+  }
+
+  void ObjectSystem::LoadLevelAdditive(Zilch::String level)
+  {
+	  Serializer::ZeroSerializer data;
+
+	  data.open(level.c_str());
+	  data.CreateArchive();
+	  Serializer::DataNode* Trunk = data.GetTrunk();
+	  SerializeObject(Trunk);
+	  //InitializeObject ();
   }
 
   //Private function to create and serilize an object
@@ -168,9 +211,9 @@ namespace Framework
           {
             newcomp = newobj->AddZilchComponent(ct->objectName);
             newcomp->gameObject = newobj;
-            newcomp->Serialize(ct->branch);
+            //newcomp->Serialize(ct->branch);
 
-            //newcomp->Initialize();
+            newcomp->Initialize();
           }
           ct = ct->next;
         }

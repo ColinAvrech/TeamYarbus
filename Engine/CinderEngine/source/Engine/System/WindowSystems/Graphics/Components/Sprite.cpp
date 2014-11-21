@@ -21,6 +21,7 @@ namespace Framework
 		ZilchBindMethod(GetAnimationSpeed);
 		ZilchBindMethod(Initialize);
 		ZilchBindMethod(LoadSprite);
+		ZilchBindFieldGetAs(texture, "Texture");
 	}
 
 	VAO* Sprite::vao;
@@ -31,6 +32,7 @@ namespace Framework
 	{
 		texture = Resources::RS->Get_Texture("Default");
 		shader = Resources::RS->Get_Shader("Default");
+		color = { 1, 1, 1, 1 };
 		animated = false;
 	}
 
@@ -73,8 +75,6 @@ namespace Framework
 
 	void Sprite::Initialize()
 	{
-
-		IGraphicsObject::Register();
 		gameObject->Sprite = this;
 
 		if (vao == nullptr || vbo == nullptr || ebo == nullptr)
@@ -116,8 +116,7 @@ namespace Framework
 	Sprite::~Sprite()
 	{
 		gameObject->Sprite = nullptr;
-		IGraphicsObject::Deregister();
-		
+
 		if (vao != nullptr)
 		{
 			delete vao;
@@ -171,13 +170,6 @@ namespace Framework
 		shader->uni1i("image", 0);
 		texture->Unbind();
 		shader->Disable();
-	}
-
-	// Call To Change Texture Used By Sprite
-	void Sprite::Change_Texture(Texture* _texture)
-	{
-		texture = _texture;
-		Specify_Attributes();
 	}
 
 
@@ -245,7 +237,8 @@ namespace Framework
 	{
 		vao->bindVAO();
 		shader->Use();
-		shader->uniMat4("modelViewProjectionMatrix", glm::value_ptr(gameObject->Transform->GetModelViewProjectionMatrix()));
+		shader->uni4fv("overrideColor", glm::value_ptr(color));
+		//shader->uniMat4("modelViewProjectionMatrix", glm::value_ptr(gameObject->Transform->GetModelViewProjectionMatrix()));
 		(this->*DrawFunction)();
 		shader->Disable();
 		vao->unbindVAO();

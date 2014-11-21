@@ -12,10 +12,14 @@
 #define _DEBUG_CIRCLE_H
 
 #include "GraphicsCommon.h"
-#include "ComponentInclude.h"
 
 namespace Framework
 {
+  class ShapeCollider;
+  class CircleCollider;
+  class LineCollider;
+  class PointCollider;
+
   class DebugRenderer
   {
   public:
@@ -40,13 +44,7 @@ namespace Framework
     VBO* vbo;
     int circleDivisions = 40;
     bool wireframe = true;
-
-    inline void EnableVertexArrays ()
-    {
-      vao->bindVAO ();
-      circleShader->enableVertexAttribArray (circleShader->attribLocation ("position"));
-      circleShader->enableVertexAttribArray (circleShader->attribLocation ("color"));
-    }
+    void EnableVertexArrays ();
 
   };
 }

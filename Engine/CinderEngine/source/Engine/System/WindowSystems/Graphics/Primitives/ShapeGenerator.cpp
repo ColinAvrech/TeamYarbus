@@ -21,22 +21,22 @@ namespace Framework
     VertexData vd [] =
     {
       // 1
-      vec3 (-0.5f, 0.5f, 0.0f),
+      vec3 (-1.0f, 1.0f, 0.0f),
       vec4 (1.0f, 1.0f, 1.0f, 1.0f),
       vec3 (0.0f, 0.0f, 1.0f),
       vec2 (0.0f, 0.0f),
       // 2
-      vec3 (0.5f, 0.5f, 0.0f),
+      vec3 (1.0f, 1.0f, 0.0f),
       vec4 (1.0f, 1.0f, 1.0f, 1.0f),
       vec3 (0.0f, 0.0f, 1.0f),
       vec2 (1.0f, 0.0f),
       // 3
-      vec3 (0.5f, -0.5f, 0.0f),
+      vec3 (1.0f, -1.0f, 0.0f),
       vec4 (1.0f, 1.0f, 1.0f, 1.0f),
       vec3 (0.0f, 0.0f, 1.0f),
       vec2 (1.0f, 1.0f),
       // 4
-      vec3 (-0.5f, -0.5f, 0.0f),
+      vec3 (-1.0f, -1.0f, 0.0f),
       vec4 (1.0f, 1.0f, 1.0f, 1.0f),
       vec3 (0.0f, 0.0f, 1.0f),
       vec2 (0.0f, 1.0f)

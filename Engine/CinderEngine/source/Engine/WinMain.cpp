@@ -25,6 +25,7 @@ starts the game loop.
 #include "Physics/PhysicsSystem.h"
 #include "ResourceManager.h"
 #include "Serializer/JSONSerializer.h"
+#include "UISystem.h"
 
 
 //testing includes
@@ -34,7 +35,7 @@ starts the game loop.
 
 #include "UpdateEvent.h"
 #include "Zilch.hpp"
-
+//#include "ZInterface.h"
 
 #define _DEGUB
 using namespace Framework;
@@ -74,6 +75,7 @@ int main (void)
   ScriptSystem * zilch = new ScriptSystem();
   Physics::PhysicsSystem * phys = new Physics::PhysicsSystem ();
   ObjectSystem* objsys = new ObjectSystem ();
+  UISystem* ui = new UISystem ();
 
   engine->AddSystem (phys);
   engine->AddSystem (windows);
@@ -82,6 +84,7 @@ int main (void)
   engine->AddSystem (zilch);
   engine->AddSystem (thermo);
   engine->AddSystem(objsys);
+  engine->AddSystem (ui);
   ////Cinder.PhysicsSystem = phys;
   ////Cinder.Thermodynamics = thero;
   //Cinder::Windows = windows;
@@ -105,7 +108,7 @@ int main (void)
 
 
   //! activate the window.
-  OBJECTSYSTEM->LoadLevel("ZilchTestLevel");
+  OBJECTSYSTEM->LoadLevel("Level");
 
 
   // Connect example
@@ -117,10 +120,12 @@ int main (void)
   // Connect example
   //MyClass _myclass;
   //EVENTSYSTEM->mConnect<UpdateEvent, MyClass>(Events::UPDATEEVENT, &_myclass, &MyClass::Print);
-
+	//ZInterface::OpenFile();
 
   //! Run the game! NOW!
   engine->GameLoop ();
+
+  
 
   //! Delete all systems
   engine->DestroySystems ();

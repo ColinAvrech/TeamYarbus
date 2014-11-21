@@ -1,7 +1,5 @@
 Level = 
 {
-Level = 
-{
 	LevelSettings = 
 	{
 		LinkId = 
@@ -62,32 +60,30 @@ Level =
 	},
 	Cog = 
 	{
-		LinkId = 
+	  LinkId = 
+	  {
+		  uint Id = 0,
+	  },
+	  Named = 
+	  {
+		  string Name = "Camera",
+	  },
+    Transform = 
+	  {
+		  Vec3 Translation = [0, 0, -10],
+		  Vec3 Scale = [1, 1, 1],
+		  Quat Rotation = [0, 0, 0, 1],
+	  },
+    Camera = 
 		{
-			uint Id = 2,
+      bool main = true,
+      Vec3 Facing = [0, 0, 1],
+			float FieldOfView = 120,
+			float NearPlane = 0.1,
+			float FarPlane = 20,
+			float Size = 1,
 		},
-		Named = 
-		{
-			string Name = "Camera",
-		},
-		Transform = 
-		{
-			Vec3 Translation = [0, 0, 40],
-			Vec3 Scale = [1, 1, 1],
-			Quat Rotation = [0, 0, 0, 1],
-		},
-		Camera = 
-		{
-			ProjectionMode ProjectionMode = Orthographic,
-			Vec3 Facing = [0, 0, -1],
-			SpriteSort SpriteSort = ZDepth,
-			string SpriteLayerOrder = "52b23ad3c402d436:DefaultSpriteLayerOrder",
-			float FieldOfView = 45,
-			float NearPlane = 0.5,
-			float FarPlane = 200,
-			float Size = 20,
-		},
-	},
+  },
 	Cog = 
 	{
 		LinkId = 
@@ -100,19 +96,67 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, 0, -1],
-			Vec3 Scale = [1, 1, 1],
+			Vec3 Translation = [0, 0, 0],
+			Vec3 Scale = [0.5, 0.5, 0.5],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Sprite = 
 		{
-			string SpriteSource = "EnvHighRes.png",
+			string SpriteSource = "Circle.png",
 			string Shader = "Default",
-			Vec4 Color = [1, 1,	 1, 1],
+			Vec4 Color = [1, 1,	1, 1],
+		},
+		SphereCollider = 
+		{
+			bool Ghost = false,
+			bool SendsMessages = true,
+			bool Seamless = true,
+			string MaterialName = "4de020863e872da8:DefaultPhysicsMaterial",
+			string SerializedGroupName = "4e740859314e5515:DefaultGroup",
+			Vec3 Offset = [0, 0, 0],
+			float Radius = 1,
+		},
+		RigidBody = 
+		{
+			bool Static = false,
+			bool Asleep = false,
+			bool Kinematic = false,
+			bool RotationLocked = false,
+			bool Mode2D = true,
+			bool AllowSleep = true,
+			bool Inherit2DMode = true,
+			Vec3 Velocity = [0, 0, 0],
+			Vec3 AngularVelocity = [0, 0, 0],
 		},
 		Josh = 
 		{
 			string OHai = "Sagnik",
+		},
+	},
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 5,
+		},
+		Named = 
+		{
+			string Name = "Ground",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0, -0.5, 0],
+			Vec3 Scale = [0.5, 0.5, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		UIBox = 
+		{
+      Vec2 Dimension = [5, 1],
+			string SpriteSource = "UIExitWhite.png",
+			Vec4 NormalColor = [1, 1,	1, 1],
+      Vec4 HoverColor = [1, 0, 0, 1],
+      Vec4 DownColor = [0, 0, 1, 1],
+      string Message = "Exit",
 		},
 	},
 },

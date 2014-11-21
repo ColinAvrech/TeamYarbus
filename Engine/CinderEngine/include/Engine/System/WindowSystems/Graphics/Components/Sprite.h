@@ -28,7 +28,7 @@ namespace Framework
     ZilchDeclareBaseType(Sprite, Zilch::TypeCopyMode::ReferenceType);
 
 	Sprite();
-    virtual ~Sprite();
+	virtual ~Sprite();
 
     virtual void Initialize ();
     virtual void Serialize (Serializer::DataNode* data);
@@ -38,8 +38,8 @@ namespace Framework
     void Create_Sprite (Shader* _shader, Texture* _texture = NULL);
     void Create_Sprite (Shader* _shader, SpriteSheet* _atlas);
     void Change_Shader (Shader* _shaderID);
+	void Change_Texture(Texture* _texture);
     void Change_Shader (Zilch::String);
-    void Change_Texture (Texture* _textureID);
     void Change_Texture (Zilch::String);
     void Update_Shader ();
 
@@ -52,7 +52,6 @@ namespace Framework
   private:
 
     // Resources
-    Shader* shader;
     Texture* texture;
     SpriteSheet* atlas;
     vec4 color;

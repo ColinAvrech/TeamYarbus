@@ -66,9 +66,12 @@ namespace Framework
     void DestroyGameObjectsToBeDestroyed();
 
     void ObjectSystem::LoadLevel(string level);
-
+    void ObjectSystem::RestartLevel ();
+	  void ObjectSystem::ZilchLoadLevel(Zilch::String level);
+	  void ObjectSystem::LoadLevelAdditive(Zilch::String level);
     /*!Used to generator unique GOCIds*/
     static unsigned LastGameObjectId;
+    static string LoadedLevel;
 
 
     typedef std::unordered_map<string, ComponentCreator *> SerializationMap;

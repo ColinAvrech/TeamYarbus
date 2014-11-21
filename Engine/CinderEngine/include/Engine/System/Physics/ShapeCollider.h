@@ -17,14 +17,17 @@
 
 namespace Framework
 {
+  class DebugRenderer;
 	class CircleCollider;
 	class LineCollider;
 	class ShapeCollider : public Component
 	{
 	public:
     const static string Name;
-	void SerializeMaterial(const char* name);
-	int numOfShapes;
+    ShapeCollider ();
+    ~ShapeCollider ();
+    void SerializeMaterial (const char* name);
+    int numOfShapes;
 		// Getters
 		vec3 getPosition(void){
 			return position;
@@ -39,6 +42,14 @@ namespace Framework
 
 		virtual void DetectCollision(CircleCollider * circle) = 0;
 		virtual void DetectCollision(LineCollider * line) = 0;
+
+    //////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
+    // Debug Draw
+    static DebugRenderer* dr;
+    virtual void Draw ();
+    //////////////////////////////////////////////////////////////////////////
+
 
 	private:
 		// Private data

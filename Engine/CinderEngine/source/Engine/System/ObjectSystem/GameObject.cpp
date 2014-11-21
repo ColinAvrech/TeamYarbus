@@ -15,7 +15,6 @@
 #include "Component.h"
 #include "Zilch.hpp"
 
-#include "Sprite.h"
 namespace Framework
 {
   GameObject* Component::GetOwner() { return gameObject; }
@@ -27,6 +26,7 @@ namespace Framework
 	ZilchBindConstructor();
     ZilchBindMethod(GetOwner);	
 	ZilchBindMethod(Initialize);
+	ZilchBindFieldGetSetAs(gameObject, "Owner");
   }
 
   ZilchDefineType(GameObject, CinderZilch)
@@ -36,10 +36,11 @@ namespace Framework
 
     ZilchBindFieldGet(Transform);
     ZilchBindFieldGet(Sprite);
+	//ZilchBindFieldGet(Name);
 	ZilchBindMethodOverload(GetComponent, Component*, Zilch::String);
     //ZilchBindFieldGetSet(ShapeCollider);
     //ZilchBindFieldGetSet(Camera);
-    //ZilchBindFieldGetSet(RigidBody);
+    ZilchBindFieldGet(RigidBody);
     //ZilchBindFieldGetSet(CharacterController);
 
     // 
@@ -113,7 +114,7 @@ namespace Framework
 
     //not sure about error handling
     Component* zc = new ZilchComponent(name);
-    zc->Initialize();
+    //zc->Initialize();
     return zc;
   }
 

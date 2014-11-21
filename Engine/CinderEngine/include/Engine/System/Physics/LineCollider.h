@@ -20,7 +20,7 @@ namespace Framework
 	public:
 		const static string Name;
 		float p1dotNormal;
-		vec3 normalVec;
+		vec2 normalVec;
 		vec3 p1; //points
 		vec3 p2;
 
@@ -52,6 +52,12 @@ namespace Framework
 		void DetectCollision(CircleCollider* c);  //if player is a circle
 		void DetectCollision(PointCollider* p);	  //if player is a point
 		void DetectCollision(LineCollider* p);
+
+    //////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
+    // Debug Draw
+    virtual void Draw ();
+    //////////////////////////////////////////////////////////////////////////
 
 	private:
 		// Private data

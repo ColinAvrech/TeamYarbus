@@ -21,6 +21,9 @@ function to handle windows Messages.
 #include "Thermodynamics.h"
 #include "Fluid_Engine.h"
 #include "Smoke_Grid.h"
+#include "IGraphicsObject.h"
+#include "CinderEngine_UI.h"
+#include "Pipeline.h"
 
 namespace Framework
 {
@@ -29,6 +32,9 @@ namespace Framework
 
   std::list <Transform*> WindowSystem::transformList;
   std::list <IGraphicsObject*> WindowSystem::graphicsObjects;
+  std::list <UIComponent*> WindowSystem::uiObjects;
+  std::list <ShapeCollider*> WindowSystem::debugColliders;
+
   Fluid_Engine water;
   Smoke_Grid grid;
 
@@ -36,12 +42,12 @@ namespace Framework
   {
     void GLFWResize (GLFWwindow* window, const int w, const int h)
     {
-      WINDOWSYSTEM->Set_W_H (w, h);
+      WINDOWSYSTEM->Set_W_H (w, (int)(w / (1.6f / 0.9f)));
+      glfwSetWindowSize (window, WINDOWSYSTEM->Get_Width (), WINDOWSYSTEM->Get_Height ());
     }
 
     void GLFWFrameBufferResize (GLFWwindow* _window, const int w, const int h)
     {
-      glViewport (0, 0, w, h);
     }
 
 
@@ -265,6 +271,8 @@ namespace Framework
     }
     void GLFWMouseCursorMoved (GLFWwindow* window, const double xPos, const double yPos)
     {
+      WINDOWSYSTEM->cursorPosition.x = xPos;
+      WINDOWSYSTEM->cursorPosition.y = yPos;
     }
 
     void GLFWWindowClosed (GLFWwindow* window)
@@ -291,14 +299,28 @@ namespace Framework
       //const GLFWvidmode* modes = glfwGetVideoModes(primaryMonitor, &count);
       if (fullscreen)
       {
-        WINDOWSYSTEM->Set_W_H(mode->width, mode->height);
+        WINDOWSYSTEM->Set_W_H (mode->width, mode->height);
+        *GLFWwindowptr = glfwCreateWindow
+          (
+            WINDOWSYSTEM->Get_Width (),
+            WINDOWSYSTEM->Get_Height (),
+            "OpenGL",
+            primaryMonitor,
+            nullptr
+          ); // Windowed
       }
       else
       {
-        WINDOWSYSTEM->Set_W_H(ClientWidth, ClientHeight);
+        WINDOWSYSTEM->Set_W_H (ClientWidth, (int)(ClientWidth / (16.f / 9)));
+        *GLFWwindowptr = glfwCreateWindow
+          (
+            WINDOWSYSTEM->Get_Width(),
+            WINDOWSYSTEM->Get_Height(),
+            "OpenGL",
+            nullptr,
+            nullptr
+          ); // Windowed
       }
-    
-      *GLFWwindowptr = glfwCreateWindow (WINDOWSYSTEM->Get_Width (), WINDOWSYSTEM->Get_Height (), "OpenGL", primaryMonitor, nullptr); // Windowed
 
       //*GLFWwindowptr = glfwCreateWindow (800, 600, "OpenGL", glfwGetPrimaryMonitor (), nullptr);
       glfwMakeContextCurrent (*GLFWwindowptr);
@@ -333,6 +355,7 @@ namespace Framework
   {
     std::cout << GetName () << " initialized\n";
 
+    OPENGL = new Pipeline ();
     water.Initialize ();
     grid.Initialize ();
 
@@ -342,6 +365,7 @@ namespace Framework
 
   WindowSystem::~WindowSystem ()
   {
+    delete OPENGL;
     glfwTerminate ();
   }
 
@@ -359,23 +383,7 @@ namespace Framework
 
   void WindowSystem::GraphicsUpdate (const double& dt)
   {
-    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glEnable (GL_BLEND);
-    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    for (auto& i : transformList)
-    {
-      i->UpdateMatrices ();
-    }
-
-    for (auto& i : graphicsObjects)
-    {
-      i->Draw ();
-    }
-    grid.Update ();
-    grid.Draw ();
-    water.Update ();
-    water.Render ();
+    OPENGL->Update ();
 
     glfwSwapBuffers (window);
   }
@@ -395,6 +403,20 @@ namespace Framework
     glViewport (0, 0, w, h);
     WindowWidth = w;
     WindowHeight = h;
+  }
+
+  glm::vec2 WindowSystem::Get_Mouse_Position ()
+  {
+    return glm::vec2 (cursorPosition);
+  }
+
+  glm::vec2 WindowSystem::Get_Normalized_Mouse_Position ()
+  {
+    glm::vec2 normPos;
+    normPos.x = (float) (cursorPosition.x / (WindowWidth) -0.5f) * 2.0f;
+    normPos.y = (float) ((WindowHeight - cursorPosition.y) / WindowHeight - 0.5f) * 2.0f;
+
+    return normPos;
   }
 
 }

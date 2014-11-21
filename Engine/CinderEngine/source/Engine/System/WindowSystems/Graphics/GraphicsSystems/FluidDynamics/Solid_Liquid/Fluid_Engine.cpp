@@ -302,8 +302,8 @@ namespace Framework
       LOCAL_number_of_pixels_height);
 
     EVENTSYSTEM->gConnect (Events::KEY_ANY, &OnKeyPressed);
-    glfwSetMouseButtonCallback (WINDOWSYSTEM->Get_Window (), &mouse);
-    glfwSetCursorPosCallback (WINDOWSYSTEM->Get_Window (), &motion);
+    //glfwSetMouseButtonCallback (WINDOWSYSTEM->Get_Window (), &mouse);
+    //glfwSetCursorPosCallback (WINDOWSYSTEM->Get_Window (), &motion);
 
     if (Plasticity)
     {

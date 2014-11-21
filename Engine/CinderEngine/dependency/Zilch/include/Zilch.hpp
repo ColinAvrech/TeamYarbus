@@ -24820,6 +24820,8 @@ namespace Zilch
 
     // Grab the handle manager via the state
     HandleManager* manager = state->GetHandleManager(type->HandleManager);
+	
+	
 
     // Create a handle that goes with the given manager index
     Handle* handle = new (stackFrame) Handle();
