@@ -15,9 +15,13 @@
 #include "EventSystem.h"
 #include "WindowSystem.h"
 #include "AudioSystem.h"
+#include "ObjectSystem.h"
+#include "AudioSystem.h"
+
+// Events
+#include "PingEvent.h"
 #include "UpdateEvent.h"
 #include "KeyEvent.h"
-#include "ObjectSystem.h"
 
 namespace Framework
 {
@@ -35,8 +39,7 @@ namespace Framework
   {
     EVENTSYSTEM->mConnect<KeyEvent, MicahPC>(Events::KEY_ANY, this, &MicahPC::KeyPressed);
     EVENTSYSTEM->mConnect<UpdateEvent, MicahPC>(Events::UPDATEEVENT, this, &MicahPC::Update);
-
-    CreateFireStarters();
+    EVENTSYSTEM->mConnect<PingEvent, MicahPC>(Events::PING_GAMEOBJECT, this, &MicahPC::GetCreatedFireStarters);
   }
   
   void MicahPC::Serialize(Serializer::DataNode* data)
@@ -47,21 +50,13 @@ namespace Framework
 
   void MicahPC::Update(UpdateEvent* e)
   {
-    std::cout << "MicahPC: Update" << std::endl;
-    WindDirection = { 0, 0 };
+    //std::cout << "MicahPC: Update" << std::endl;
+    WindDirection.x = 0;
+    WindDirection.y = 0;
 
+    //std::cout << AUDIOSYSTEM->input.peaklevel << std::endl;
   }
 
-
-  void MicahPC::CreateFireStarters()
-  {
-    
-    FireStarters.push_back(OBJECTSYSTEM->CreateObject());
-
-    for each(auto starter in FireStarters)
-    {
-    }
-  }
 
   void MicahPC::KeyPressed(KeyEvent * e)
   {
@@ -70,12 +65,21 @@ namespace Framework
     unsigned key_pressed = e->KeyValue;
 
     // Get Vector direction for wind
-    if (key_pressed == GLFW_KEY_W) { WindDirection.y += 1; }
-    if (key_pressed == GLFW_KEY_S) { WindDirection.y -= 1; }
-    if (key_pressed == GLFW_KEY_D) { WindDirection.y += 1; }
-    if (key_pressed == GLFW_KEY_A) { WindDirection.y -= 1; }
+    if (key_pressed == GLFW_KEY_W) { WindDirection.y += 1; glm::normalize(WindDirection);}
+    if (key_pressed == GLFW_KEY_S) { WindDirection.y -= 1; glm::normalize(WindDirection);}
+    if (key_pressed == GLFW_KEY_D) { WindDirection.x += 1; glm::normalize(WindDirection);}
+    if (key_pressed == GLFW_KEY_A) { WindDirection.x -= 1; glm::normalize(WindDirection);}
     
-    glm::normalize(WindDirection);
+    std::cout << (float)WindDirection.x << " " << (float)WindDirection.y << std::endl;
+  }
+
+
+  void MicahPC::GetCreatedFireStarters(PingEvent* e)
+  {
+    if (e->Ping->Name == "FirePoint")
+    {
+      FirePoints.push_back(e->Ping);
+    }
   }
 
 
