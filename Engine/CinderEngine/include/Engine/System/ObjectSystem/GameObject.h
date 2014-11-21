@@ -59,14 +59,14 @@ namespace Framework
     ~GameObject();
 
     // Adding Components
-    Component* AddComponent(Zilch::String name);
+    Component* ZAddComponent(Zilch::String name);
     Component* AddComponent(string name);
 
-    Component* AddZilchComponent(Zilch::String name);
+    Component* ZAddZilchComponent(Zilch::String name);
     Component* AddZilchComponent(string name);
 
+    Component* ZGetComponent(Zilch::String component);
     Component* GetComponent(string component);
-	Component* GetComponent(Zilch::String component);
 
     //Public Variables
     string Name;
