@@ -84,15 +84,7 @@ namespace Framework
       lineVertices.push_back (height_points [i + 1].x);
       lineVertices.push_back (height_points [i + 1].y);
     }
-    //for (auto& i : edges)
-    //{
-    //  glm::vec2 p1 = i.first;
-    //  glm::vec2 p2 = i.second;
-    //  lineVertices.push_back (p1.x);
-    //  lineVertices.push_back (p1.y);
-    //  lineVertices.push_back (p2.x);
-    //  lineVertices.push_back (p2.y);
-    //}
+
     vbo1 = new VBO (lineVertices.size () * sizeof (float), lineVertices.data ());
     GLint posAttrib = shader->attribLocation ("position");
     shader->enableVertexAttribArray (posAttrib);
