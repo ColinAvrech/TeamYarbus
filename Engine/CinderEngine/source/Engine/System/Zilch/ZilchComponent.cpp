@@ -55,7 +55,18 @@ namespace Framework
     Zilch::Handle bob;
     Zilch::ExecutableState* state = ZILCH->GetDependencies();
     bob = state->AllocateDefaultConstructedHeapObject(ZilchClass, report, Zilch::HeapFlags::NonReferenceCounted);
+
+	//var Owner : GameObject;
+	//owner->PropertyType == ZilchTypeId(Real);
+	/*
+	Field* owner = ZilchClass->InstanceFields["Owner"];
 	
+	{
+		Zilch::Call call(owner->Set, ZILCH->GetDependencies());
+		call.SetHandle(Zilch::Call::This, bob);
+		call.Set(0, gameObject);
+	}
+	*/
 	//Trevor touched this stuff
 	//this->gameObject = (GameObject*)0x12345678;
 

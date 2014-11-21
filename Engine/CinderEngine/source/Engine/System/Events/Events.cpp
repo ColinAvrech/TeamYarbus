@@ -22,6 +22,7 @@
 
 namespace Framework
 {
+  
   string CollisionEventName(unsigned GameObjectID)
   {
     string ColEventStr = string("C");

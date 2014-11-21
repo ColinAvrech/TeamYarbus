@@ -23,11 +23,13 @@ namespace Framework
 	{
 	public:
 		ZilchDeclareBaseType(ZilchFile, Zilch::TypeCopyMode::ReferenceType);
+		
 		ZilchFile(ifstream* file);
 		~ZilchFile();
 
 		
 		Zilch::String ReadLine(Zilch::Integer line);
+		
 
 	private:
 		ifstream* File;
@@ -40,6 +42,7 @@ namespace Framework
 		ZilchDeclareBaseType(ZInterface, Zilch::TypeCopyMode::ReferenceType);
 		static ObjectSystem* ObjectSys;
 		
+		static void QuitGame();
 
 		static ZilchFile* OpenFile(Zilch::String filepath);
 		

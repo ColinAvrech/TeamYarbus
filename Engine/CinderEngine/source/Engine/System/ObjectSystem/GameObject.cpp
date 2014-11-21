@@ -45,7 +45,7 @@ namespace Framework
 
     // 
     ZilchBindMethodOverload(AddComponent, Component*, Zilch::String);
-    ZilchBindMethodOverload(AddZilchComponent, Component*, Zilch::String);
+    ZilchBindMethodOverload(AddZilchComponent, ZilchComponent*, Zilch::String);
   }
 
   GameObject::GameObject(unsigned gameObjectID)
@@ -99,21 +99,21 @@ namespace Framework
     }
   }
 
-  Component* GameObject::AddZilchComponent(Zilch::String name)
+  ZilchComponent* GameObject::AddZilchComponent(Zilch::String name)
   {
     string stdname = name.c_str();
 
     //not sure about error handling
-    Component* zc = new ZilchComponent(stdname);
+    ZilchComponent* zc = new ZilchComponent(stdname);
     return zc;
   }
-  Component* GameObject::AddZilchComponent(string name)
+  ZilchComponent* GameObject::AddZilchComponent(string name)
   {
 	  
     //bob = state->AllocateDefaultConstructedHeapObject(ZilchClass, report, Zilch::HeapFlags::NonReferenceCounted);
 
     //not sure about error handling
-    Component* zc = new ZilchComponent(name);
+    ZilchComponent* zc = new ZilchComponent(name);
     //zc->Initialize();
     return zc;
   }

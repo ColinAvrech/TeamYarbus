@@ -38,6 +38,7 @@ factory in the next loop.
 #include "IncludeForAllCollision.h"
 #include "CharacterController.h"
 #include "Zilch.hpp"
+#include "ScriptComponent.h"
 //#include "FireStarter.h"
 //#include "Microphone.h"
 
@@ -51,7 +52,9 @@ namespace Framework
   {
   public:
     ZilchDeclareBaseType(GameObject, Zilch::TypeCopyMode::ReferenceType);
-
+	
+	
+	//ZilchDefineType(Zilch::Array<GameObject*>);
     //! Called by Factory
     GameObject(unsigned gameObjectID);
     ~GameObject();
@@ -60,8 +63,8 @@ namespace Framework
     Component* AddComponent(Zilch::String name);
     Component* AddComponent(string name);
 
-    Component* AddZilchComponent(Zilch::String name);
-    Component* AddZilchComponent(string name);
+    ZilchComponent* AddZilchComponent(Zilch::String name);
+    ZilchComponent* AddZilchComponent(string name);
 
     Component* GetComponent(string component);
 	Component* GetComponent(Zilch::String component);

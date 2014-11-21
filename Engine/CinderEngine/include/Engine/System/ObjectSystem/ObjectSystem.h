@@ -26,6 +26,7 @@ namespace Framework
 #include "GameObject.h"
 #include "JSONSerializer.h"
 
+
 namespace Framework
 {
   /*!Game Object Factory:
@@ -37,12 +38,16 @@ namespace Framework
 
   //!Set the factory to null to indicate is hasn't been created yet
   extern ObjectSystem * OBJECTSYSTEM;
-
+  
   class ObjectSystem : public BaseSystem
   {
   public:
     ZilchDeclareBaseType(ObjectSystem, Zilch::TypeCopyMode::ReferenceType);
-
+	
+	//ZilchDeclareBaseType(Zilch::Array<GameObject*>, Zilch::TypeCopyMode::ReferenceType);
+	//ZilchDeclareBaseType(Zilch::Array<GameObject*>, Zilch::TypeCopyMode::ReferenceType);
+	
+	
     friend class GameObject;
     friend class Component;
 
@@ -68,6 +73,9 @@ namespace Framework
     void ObjectSystem::LoadLevel(string level);
 	void ObjectSystem::ZilchLoadLevel(Zilch::String level);
 	void ObjectSystem::LoadLevelAdditive(Zilch::String level);
+
+	void ObjectSystem::FindAllObjectsByName(Zilch::String name);
+	GameObject* ObjectSystem::FindObjectByName(Zilch::String obj);
     /*!Used to generator unique GOCIds*/
     static unsigned LastGameObjectId;
 
@@ -80,7 +88,7 @@ namespace Framework
 
   private:
 
-    void ObjectSystem::SerializeObject(Serializer::DataNode* data);
+	void ObjectSystem::SerializeObject(Serializer::DataNode* data);
     void ObjectSystem::SerializeComponent(string ComponentName, Serializer::DataNode* data);
 
     void RegisterComponents(void);

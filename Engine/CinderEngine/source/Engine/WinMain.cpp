@@ -108,7 +108,7 @@ int main (void)
 
 
   //! activate the window.
-  OBJECTSYSTEM->LoadLevel("Level");
+  OBJECTSYSTEM->LoadLevel("ZilchTestLevel");
 
 
   // Connect example

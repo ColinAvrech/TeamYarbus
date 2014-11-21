@@ -17,6 +17,8 @@ class Josh : Component
 	this.Owner = owner;
 	//this.ObjectSys
 	Console.WriteLine(owner.Sprite.Texture.Name);
+	//ZInterface.ObjectSystem.LoadLevelAdditive("MainMenu");
+	Console.WriteLine(ZInterface.ObjectSystem);
 	//this.ObjectSys = objectSystem;
 	//Cinder2.Connect(this, Events.UpdateEvent, this.LogicUpdate);
 	//Cinder2.Connect(this, Events.KeyEvent, this.KeyIsPressed);
@@ -26,8 +28,8 @@ class Josh : Component
 	//Console.WriteLine(new Player());
 	//Console.WriteLine(this.Owner);
 	EventSystem.Connect("KUP", this.KeyIsPressed);
-	Console.WriteLine(this);
-	Console.WriteLine("hello");
+	//Console.WriteLine(this);
+	//Console.WriteLine("hello");
 	//var gameobject = this.ObjectSys.CreateObject();
 	//Console.WriteLine("GAMEOBJECT");
 	//gameobject.AddComponent("Transform");
@@ -38,16 +40,18 @@ class Josh : Component
 	//newsprite.LoadSprite("Env.png", "Default");
 	//Console.WriteLine(gameobject.Sprite.Texture.Name);
 	//this.SpawnedObject = gameobject;
-
-	var file:ZilchFile = ZInterface.OpenFile("..//..//Resources//Scripts//test.z");
-	var i = 0;
+	
+	
+	//var file:ZilchFile = ZInterface.OpenFile("..//..//Resources//Scripts//test.z");
+	//var i = 0;
 	//Console.WriteLine(file.ReadLine(100) == '\0');
-
+	/*
 	while (file.ReadLine(i) != "\0")
 	{
 		Console.WriteLine(file.ReadLine(i));
 		i += 1;
 	}
+	*/
 
 
 
@@ -80,5 +84,5 @@ class Cinder2
 	}
 
 	sends UpdateEvent:UpdateEvent;
-	sends KeyEvent:KeyEvent;
+	sends KANY:KeyEvent;
 }

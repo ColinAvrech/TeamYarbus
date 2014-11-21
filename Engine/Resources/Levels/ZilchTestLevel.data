@@ -4,7 +4,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 1,
+			uint Id = 0,
 		},
 		Named = 
 		{
@@ -62,7 +62,7 @@ Level =
 	{
 	  LinkId = 
 	  {
-		  uint Id = 0,
+		  uint Id = 1,
 	  },
 	  Named = 
 	  {
@@ -88,7 +88,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 5,
+			uint Id = 2,
 		},
 		Named = 
 		{
@@ -130,14 +130,13 @@ Level =
 		},
 		Josh = 
 		{
-			string OHai = "Sagnik",
 		},
 	},
   Cog = 
 	{
 		LinkId = 
 		{
-			uint Id = 5,
+			uint Id = 3,
 		},
 		Named = 
 		{
@@ -145,18 +144,18 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, -0.5, 0],
+			Vec3 Translation = [0, -0.5, -10],
 			Vec3 Scale = [0.5, 0.5, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		UIBox = 
 		{
-      Vec2 Dimension = [5, 1],
-			string SpriteSource = "UIExitWhite.png",
-			Vec4 NormalColor = [1, 1,	1, 1],
-      Vec4 HoverColor = [1, 0, 0, 1],
-      Vec4 DownColor = [0, 0, 1, 1],
-      string Message = "Exit",
+		  Vec2 Dimension = [5, 1],
+				string SpriteSource = "UIExitWhite.png",
+				Vec4 NormalColor = [1, 1, 1, 0],
+		  Vec4 HoverColor = [1, 0, 0, 1],
+		  Vec4 DownColor = [0, 0, 1, 1],
+		  string Message = "Exit",
 		},
 	},
 },

@@ -11608,6 +11608,7 @@ namespace Zilch
   typedef PropertyExtensionMap::range                     PropertyExtensionRange;
   typedef HashMap<BoundType*, IndirectionType*>           TypeToIndirect;
   typedef TypeToIndirect::range                           TypeToIndirectRange;
+  
 
   typedef Function*                   (Type::*GetFunctionFn)            (String name) const;
   typedef const FunctionArray*        (Type::*GetOverloadedFunctionsFn) (String name) const;

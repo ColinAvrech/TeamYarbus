@@ -51,8 +51,13 @@ namespace Framework
 
 		value = data->FindElement(data, "Shader");
 		std::string shadername;
+		/*
+		if (shader)
+			shadername = shader->name;*/
 		value->GetValue(&shadername);
 		shader = Resources::RS->Get_Shader(shadername);
+
+		//SerializeResource(shader, "BasicDefault");
 
 		value = data->FindElement(data, "Color");
 		value->GetValue(&color);

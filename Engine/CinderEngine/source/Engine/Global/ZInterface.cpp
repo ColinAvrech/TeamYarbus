@@ -9,6 +9,7 @@
 /******************************************************************************/
 #include "ZInterface.h"
 #include "Zilch.hpp"
+#include "Core.h"
 
 namespace Framework
 {
@@ -16,18 +17,21 @@ namespace Framework
 	ZilchDefineType(ZilchFile, CinderZilch)
 	{
 		type->HandleManager = ZilchManagerId(Zilch::PointerManager);
-
+		
 		
 		ZilchBindMethod(ReadLine);
 
 	}
+
+
 
 	ZilchDefineType(ZInterface, CinderZilch)
 	{
 		type->HandleManager = ZilchManagerId(Zilch::PointerManager);
 
 		ZilchBindStaticMethod(OpenFile);
-		ZilchBindStaticFieldGet(ObjectSys);
+		ZilchBindStaticMethod(QuitGame);
+		ZilchBindStaticFieldGetAs(ObjectSys, "ObjectSystem");
 		
 		
 	}
@@ -83,5 +87,10 @@ namespace Framework
 
 		return Zilch::String(Data.at(line).c_str());
 		//File->
+	}
+
+	void ZInterface::QuitGame()
+	{
+		CORE->QuitGame();
 	}
 }

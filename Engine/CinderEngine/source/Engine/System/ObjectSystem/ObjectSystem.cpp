@@ -19,6 +19,8 @@ deleted.
 #include "FireStarter.h"
 #include "Microphone.h"
 #include "CinderEngine_UI.h"
+#include "ZInterface.h"
+#include "ScriptComponent.h"
 
 namespace Framework
 {
@@ -34,6 +36,7 @@ namespace Framework
 	ZilchBindMethod(DestroyAllObjects);
 	ZilchBindMethod(LoadLevelAdditive);
 	ZilchBindMethod(ZilchLoadLevel);
+	
 	//ZilchBindMethod(LoadLevel);
     //ZilchBindConstructor(Transform);
     //ZilchBindMethodOverload(LoadLevel, void, Zilch::String);
@@ -41,10 +44,13 @@ namespace Framework
     //ZilchBindMethod(Rotate);
   }
 
+
+
   ObjectSystem::ObjectSystem()
   {
     ErrorIf(OBJECTSYSTEM != NULL, "Factory Already Created");
     OBJECTSYSTEM = this;
+	ZInterface::ObjectSys = this;
     RegisterComponents();
   }
 
@@ -77,6 +83,11 @@ namespace Framework
     GameObjects[LastGameObjectId] = obj;
     ++LastGameObjectId;
     return obj;
+  }
+
+  GameObject* ObjectSystem::FindObjectByName(Zilch::String obj)
+  {
+	  return nullptr;
   }
 
   /*
@@ -139,6 +150,11 @@ namespace Framework
     //InitializeObject ();
   }
 
+  void ObjectSystem::FindAllObjectsByName(Zilch::String name)
+  {
+	  //return Zilch::Array<GameObject*>();
+  }
+
   void ObjectSystem::ZilchLoadLevel(Zilch::String level)
   {
 	  DestroyAllObjects();
@@ -149,6 +165,7 @@ namespace Framework
 	  data.CreateArchive();
 	  Serializer::DataNode* Trunk = data.GetTrunk();
 	  SerializeObject(Trunk);
+	  //return objects;
 	  //InitializeObject ();
   }
 
@@ -160,6 +177,7 @@ namespace Framework
 	  data.CreateArchive();
 	  Serializer::DataNode* Trunk = data.GetTrunk();
 	  SerializeObject(Trunk);
+	 // return objects;
 	  //InitializeObject ();
   }
 
@@ -168,7 +186,9 @@ namespace Framework
   {
     //GameObject* go = new GameObject(data->branch->value_.UInt_);
     auto it = data->branch;
-    /*
+	Zilch::Array<GameObject*> objectlist;
+	vector<std::pair<ZilchComponent*, Serializer::DynamicElement*> > scripts;
+	/*
     go->Name = data->objectName;
     GameObjects[go->GameObjectID] = go;
     */
@@ -195,12 +215,14 @@ namespace Framework
           }
           else
           {
-            newcomp = newobj->AddZilchComponent(ct->objectName);
+            ZilchComponent* zilchComp = newobj->AddZilchComponent(ct->objectName);
+			newcomp = zilchComp;
             newcomp->gameObject = newobj;
             //newcomp->Serialize(ct->branch);
-
-            newcomp->Initialize();
+			scripts.push_back(std::pair<ZilchComponent*, Serializer::DynamicElement*>(zilchComp, ct->branch));
+            //newcomp->Initialize();
           }
+		  objectlist.append(newobj);
           ct = ct->next;
         }
 
@@ -209,6 +231,15 @@ namespace Framework
       }
       it = it->next;
     }
+	
+	//Initializing Zilch COmponents
+	for each (auto i in scripts)
+	{
+		//i.first->InitializeAndSerialize(i.second);
+		i.first->Initialize();
+	}
+
+	//return objectlist;
   }
 
   //Private function to create and serilize a component
