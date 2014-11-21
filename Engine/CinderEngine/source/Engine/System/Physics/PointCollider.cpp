@@ -12,6 +12,7 @@
 #include "CollisionRepeats.h"
 #include "Resolution.h"
 #include "CollisionEvent.h"
+#include "DebugRenderer.h"
 
 namespace Framework
 {
@@ -56,5 +57,15 @@ namespace Framework
 			glm::normalize(collision.normal);
 		}*/
 	}
+
+  //////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////
+  // Debug Draw
+  void PointCollider::Draw ()
+  {
+    dr->Draw (this);
+  }
+  //////////////////////////////////////////////////////////////////////////
+
 	DefineComponentName(PointCollider);
 }

@@ -18,7 +18,9 @@
 #define UpdateEventPrefix 'U'
 #define CollisionEventPrefix 'C'
 #define MouseEventPrefix 'M'
+#define MenuChangeEventPrefix 'm'
 #define KeyEventPrefix 'K'
+#define PingEventPrefix 'P'
 #define GameEventPrefix 'G'
 #define UIEventPrefix 'I'
 
@@ -106,6 +108,16 @@ namespace Framework
   /*********************************************/
   // Misc Events Created by Systems always
   /*********************************************/
+
+  // Ping Event
+  DeclareEvent(PING_GAMEOBJECT, PPING)
+
+  // MenuStateChange Event
+  DeclareEvent(Menu_MENUSTATECHANGE, mMENUSTATECHANGE)
+
+  // GameEvents
+  DeclareEvent(GAME_LEVELSTARTED, GLEVELSTARTED)
+  DeclareEvent(GAME_MENUSTATECHANGE, GMENUSTATECHANGE)
 
   // Windows System Related Events
 

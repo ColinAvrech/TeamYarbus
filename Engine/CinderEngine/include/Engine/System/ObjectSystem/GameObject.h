@@ -44,6 +44,8 @@ factory in the next loop.
 
 namespace Framework
 {
+  class ButtonController;
+  class MenuController;
   class Component;
   class FireStarter;
   class Microphone;
@@ -60,14 +62,14 @@ namespace Framework
     ~GameObject();
 
     // Adding Components
-    Component* AddComponent(Zilch::String name);
+    Component* ZAddComponent(Zilch::String name);
     Component* AddComponent(string name);
 
-    ZilchComponent* AddZilchComponent(Zilch::String name);
-    ZilchComponent* AddZilchComponent(string name);
+   ZilchComponent* ZAddZilchComponent(Zilch::String name);
+   ZilchComponent* AddZilchComponent(string name);
 
+    Component* ZGetComponent(Zilch::String component);
     Component* GetComponent(string component);
-	Component* GetComponent(Zilch::String component);
 
     //Public Variables
     string Name;
@@ -78,12 +80,16 @@ namespace Framework
     //Components
     ComponentPointer(Transform);
     ComponentPointer(Sprite);
-	ComponentPointer(ShapeCollider);
+	  ComponentPointer(ShapeCollider);
     ComponentPointer(Camera);
     ComponentPointer(RigidBody);
     ComponentPointer(CharacterController);
-	ComponentPointer(FireStarter);
-	ComponentPointer(Microphone);
+	  ComponentPointer(FireStarter);
+    ComponentPointer(Microphone);
+
+   // Menu Components
+   ComponentPointer(MenuController);
+   ComponentPointer(ButtonController);
 
   private:
 

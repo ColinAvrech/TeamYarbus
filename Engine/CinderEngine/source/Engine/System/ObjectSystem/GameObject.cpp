@@ -36,16 +36,16 @@ namespace Framework
 
     ZilchBindFieldGet(Transform);
     ZilchBindFieldGet(Sprite);
-	//ZilchBindFieldGet(Name);
-	ZilchBindMethodOverload(GetComponent, Component*, Zilch::String);
+	  //ZilchBindFieldGet(Name);
+	  ZilchBindMethodOverloadAs(ZGetComponent, "GetComponent", Component*, Zilch::String);
     //ZilchBindFieldGetSet(ShapeCollider);
     //ZilchBindFieldGetSet(Camera);
     ZilchBindFieldGet(RigidBody);
     //ZilchBindFieldGetSet(CharacterController);
 
     // 
-    ZilchBindMethodOverload(AddComponent, Component*, Zilch::String);
-    ZilchBindMethodOverload(AddZilchComponent, ZilchComponent*, Zilch::String);
+    ZilchBindMethodOverloadAs(ZAddComponent, "AddComponent", Component*, Zilch::String);
+    ZilchBindMethodOverloadAs(ZAddZilchComponent, "AddZilchComponent", ZilchComponent*, Zilch::String);
   }
 
   GameObject::GameObject(unsigned gameObjectID)
@@ -63,7 +63,7 @@ namespace Framework
   }
 
   // Zilch method for adding components to GameObjects
-  Component* GameObject::AddComponent(Zilch::String name)
+  Component* GameObject::ZAddComponent(Zilch::String name)
   {
     string stdname = name.c_str();
       ErrorIf(Components.find(stdname) != Components.end(), "COMPONENT CREATED TWICE ON SAME OBJECT");
@@ -99,7 +99,7 @@ namespace Framework
     }
   }
 
-  ZilchComponent* GameObject::AddZilchComponent(Zilch::String name)
+  ZilchComponent* GameObject::ZAddZilchComponent(Zilch::String name)
   {
     string stdname = name.c_str();
 
@@ -133,7 +133,7 @@ namespace Framework
   }
 
   //JOSH
-  Component* GameObject::GetComponent(Zilch::String component)
+  Component* GameObject::ZGetComponent(Zilch::String component)
   {
 	  string stdcomp = component.c_str();
 	  ComponentMap::iterator it = Components.find(stdcomp);

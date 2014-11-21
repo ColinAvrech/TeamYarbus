@@ -11,6 +11,7 @@
 #include "Transform.h"
 #include "GameObject.h"
 #include "WindowSystem.h"
+#include "Pipeline.h"
 
 
 using namespace Zilch;
@@ -41,19 +42,16 @@ namespace Framework
 
   Transform::~Transform ()
   {
-    WINDOWSYSTEM->transformList.remove (this);
+    OPENGL->transforms.remove (this);
     gameObject->Transform = nullptr;
   }
 
   void Transform::Load_Identity ()
   {
-    if (currentMatrix == MODEL_MATRIX || currentMatrix == VIEW_MATRIX)
-    {
-      modelMatrix [currentMatrix] = glm::mat4 (1.0);
-      position = vec3 (0);
-      scale = vec3 (1);
-      rotation = 0;
-    }
+    modelMatrix = glm::mat4 (1.0);
+    position = vec3 (0);
+    scale = vec3 (1);
+    rotation = 0;
     matricesReady = false;
   }
 
@@ -80,10 +78,10 @@ namespace Framework
   void Transform::Initialize ()
   {
     gameObject->Transform = this;
-    modelMatrix.push_back (glm::translate (position) *
+    modelMatrix = (glm::translate (position) *
       glm::rotate (rotation, vec3 (0, 0, 1)) *
       glm::scale (scale));
-    modelViewProjectionmatrix.push_back (glm::mat4 (1));
+    modelViewProjectionMatrix = (glm::mat4 (1));
     normalMatrix = glm::mat3 (1);
     matricesReady = false;
     currentMatrix = 0;
@@ -91,19 +89,7 @@ namespace Framework
 
     gameObject->Transform = this;
 
-    WINDOWSYSTEM->transformList.push_back (this);
-  }
-
-
-  bool Transform::MatrixMode (int m)
-  {
-    if (m == MODEL_MATRIX || m == VIEW_MATRIX || m == PROJECTION_MATRIX)
-    {
-      currentMatrix = m;
-      return true;
-    }
-
-    return false;
+    OPENGL->transforms.push_back (this);
   }
 
 
@@ -144,15 +130,12 @@ namespace Framework
   //getters
   glm::mat4 Transform::GetModelMatrix ()
   {
-    return modelMatrix [currentMatrix];
+    return modelMatrix;
   }
 
   glm::mat4 Transform::GetModelViewProjectionMatrix ()
   {
-    //if (!matricesReady)
-      return Camera::GetViewToProjectionMatrix () * Camera::GetWorldToViewMatrix () * modelMatrix [currentMatrix];
-
-    return modelViewProjectionmatrix [currentMatrix];
+    return modelViewProjectionMatrix;
   }
 
 
@@ -164,15 +147,29 @@ namespace Framework
 
   glm::vec2 Transform::GetScreenPosition (glm::vec2 v)
   {
-    glm::mat4 matrix = modelMatrix[currentMatrix];
+    glm::mat4 matrix = modelMatrix;
     matrix [3][0] = v.x;
     matrix [3][1] = v.y;
-    glm::mat4 mvp = Camera::GetViewToProjectionMatrix () *
-      Camera::GetWorldToViewMatrix () * matrix;
+    glm::mat4 mvp = (modelViewProjectionMatrix / modelMatrix) * matrix;
 
     return glm::vec2 (mvp [3][0] / mvp [3][3], mvp [3][1] / mvp [3][3]);
   }
 
+
+  vec3 Transform::GetPosition ()
+  {
+    return position;
+  }
+
+  vec3 Transform::GetScale ()
+  {
+    return scale;
+  }
+
+  float Transform::GetRotation ()
+  {
+    return rotation;
+  }
 
 
   //GLSL
@@ -180,34 +177,19 @@ namespace Framework
   {
     //if (!matricesReady)
     {
-      modelMatrix [currentMatrix] =
-        glm::translate (position) *
-        glm::rotate (rotation, vec3 (0, 0, 1)) *
-        glm::scale (scale);
+      OPENGL->MatrixMode (MODEL);
+      OPENGL->Translatefv (glm::value_ptr (position));
+      OPENGL->Scalefv (glm::value_ptr (scale));
 
-      modelViewProjectionmatrix [currentMatrix] =
-        Camera::GetViewToProjectionMatrix () *
-        Camera::GetWorldToViewMatrix () *
-        modelMatrix [currentMatrix];
+      modelMatrix = OPENGL->GetModelMatrix ();
+      modelViewProjectionMatrix = OPENGL->GetModelViewProjectionMatrix ();
+      OPENGL->LoadIdentity ();
 
       matricesReady = true;
     }
+
+    //matricesReady = true;
   }
-
-  // PRIVATE METHODS
-
-  void Transform::push_matrix ()
-  {
-    ++currentMatrix;
-    modelMatrix.push_back (glm::mat4 (1));
-  }
-
-  void Transform::pop_matrix ()
-  {
-    modelMatrix.pop_back ();
-    --currentMatrix;
-  }
-
 
   void Transform::Print (vec3 position)
   {

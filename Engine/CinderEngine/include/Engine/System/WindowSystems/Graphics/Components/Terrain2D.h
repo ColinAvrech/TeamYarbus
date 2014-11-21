@@ -47,7 +47,6 @@ namespace Framework
 
     VAO* vao;
     VBO* vbo;
-    Shader* shader;
 
     std::vector <std::pair <vec2, vec2>> edges;
     std::vector <vec2> height_points;

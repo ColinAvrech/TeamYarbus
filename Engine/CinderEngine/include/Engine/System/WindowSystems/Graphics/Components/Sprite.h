@@ -52,7 +52,6 @@ namespace Framework
   private:
 
     // Resources
-    Shader* shader;
     Texture* texture;
     SpriteSheet* atlas;
     vec4 color;

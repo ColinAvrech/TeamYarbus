@@ -61,6 +61,7 @@ namespace Framework
 
     static std::list <Transform*> transformList;
     static std::list <IGraphicsObject*> graphicsObjects;
+    static std::list <ShapeCollider*> debugColliders;
     static std::list <UIComponent*> uiObjects;
 
   private:
