@@ -1,7 +1,7 @@
 PhysicsMaterial =
 {
-	float Restitution = 0.3,
-	float StaticFriction = 0.5,
-	float DynamicFriction = 0.5,
-	float Density = 1,
+	float Restitution = 1.0,
+	float StaticFriction = 1.0,
+	float DynamicFriction = 1.0,
+	float Density = 100,
 },

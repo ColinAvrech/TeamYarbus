@@ -11,6 +11,7 @@
 #include "EventSystem.h"
 #include "CollisionRepeats.h"
 #include "Resolution.h"
+#include "DebugRenderer.h"
 
 namespace Framework
 {
@@ -51,7 +52,9 @@ namespace Framework
   {
 	  vec3 p1(_p1.x, _p1.y, 0.0f);
 	  vec3 p2(_p2.x, _p2.y, 0.0f);
-    colliders.push_back (new LineCollider (p1, p2));
+    LineCollider* l = new LineCollider (p1, p2);
+    l->gameObject = this->gameObject;
+    colliders.push_back (l);
   }
 
   void SplineCollider::AddLineCollider (std::vector <std::pair <vec2, vec2>>& lines)
@@ -60,6 +63,14 @@ namespace Framework
     {
       AddLineCollider (i.first, i.second);
     }
+  }
+
+  void SplineCollider::Draw ()
+  {
+    //for (auto* i : colliders)
+    //{
+    //  i->Draw ();
+    //}
   }
 
 	DefineComponentName(SplineCollider);

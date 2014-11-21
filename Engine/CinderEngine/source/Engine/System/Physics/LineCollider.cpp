@@ -11,6 +11,7 @@
 #include "EventSystem.h"
 #include "CollisionRepeats.h"
 #include "Resolution.h"
+#include "DebugRenderer.h"
 
 namespace Framework
 {
@@ -69,6 +70,11 @@ namespace Framework
   }	  //if player is a point
   void LineCollider::DetectCollision(LineCollider *l)
   {
+  }
+
+  void LineCollider::Draw ()
+  {
+    dr->Draw (this);
   }
 
   DefineComponentName(LineCollider);

@@ -19,6 +19,8 @@ deleted.
 #include "FireStarter.h"
 #include "Microphone.h"
 #include "CinderEngine_UI.h"
+#include "Core.h"
+#include "PhysicsSystem.h"
 
 namespace Framework
 {
@@ -26,15 +28,16 @@ namespace Framework
   ObjectSystem * OBJECTSYSTEM = NULL;
   //!Set first object's id to zero
   unsigned ObjectSystem::LastGameObjectId = 0;
+  string ObjectSystem::LoadedLevel;
 
   ZilchDefineType(ObjectSystem, CinderZilch)
   {
-	type->HandleManager = ZilchManagerId(Zilch::PointerManager);
+	  type->HandleManager = ZilchManagerId(Zilch::PointerManager);
     ZilchBindMethod(CreateObject);
-	ZilchBindMethod(DestroyAllObjects);
-	ZilchBindMethod(LoadLevelAdditive);
-	ZilchBindMethod(ZilchLoadLevel);
-	//ZilchBindMethod(LoadLevel);
+	  ZilchBindMethod(DestroyAllObjects);
+	  ZilchBindMethod(LoadLevelAdditive);
+	  ZilchBindMethod(ZilchLoadLevel);
+	  //ZilchBindMethod(LoadLevel);
     //ZilchBindConstructor(Transform);
     //ZilchBindMethodOverload(LoadLevel, void, Zilch::String);
     //ZilchBindMethodOverload(Scale, void, float);
@@ -137,7 +140,18 @@ namespace Framework
     Serializer::DataNode* Trunk = data.GetTrunk();
     SerializeObject (Trunk);
     //InitializeObject ();
+    LoadedLevel = level;
   }
+
+
+  void ObjectSystem::RestartLevel ()
+  {
+    //if (LoadedLevel != "")
+    //{
+    //  LoadLevel (LoadedLevel);
+    //}
+  }
+
 
   void ObjectSystem::ZilchLoadLevel(Zilch::String level)
   {

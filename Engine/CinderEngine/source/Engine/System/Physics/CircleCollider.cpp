@@ -14,6 +14,7 @@
 #include "CollisionEvent.h"
 #include "PhysicsSystem.h"
 #include "JSONSerializer.h"
+#include "DebugRenderer.h"
 
 namespace Framework
 {
@@ -23,7 +24,7 @@ namespace Framework
     Serializer::DataNode* temp;
     temp = data->FindElement(data, "Radius");
     temp->GetValue(&radius);
-
+    radius *= gameObject->Transform->GetScale ().x;
     //Material Properties
     temp = data->FindElement(data, "MaterialName");
     std::string name;
@@ -126,6 +127,11 @@ namespace Framework
 
       Physics::PHYSICSSYSTEM->addContact(&contact);
     }
+  }
+
+  void CircleCollider::Draw ()
+  {
+    dr->Draw (this);
   }
 
   DefineComponentName(CircleCollider);
