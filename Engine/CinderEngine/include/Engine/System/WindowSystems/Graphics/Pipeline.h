@@ -48,6 +48,7 @@ namespace Framework
     void UploadMatrices (Shader* shader);
     void Update ();
     void Draw ();
+    void ResetBlendMode ();
     void PushMatrix ();
     void PopMatrix ();
 
@@ -71,6 +72,8 @@ namespace Framework
     glm::mat4 viewProjectionMatrix;
     glm::mat4 modelViewProjectionMatrix;
 
+    GLenum sFactor;
+    GLenum dFactor;
     int currentMatrix;
     bool matricesReady;
   };

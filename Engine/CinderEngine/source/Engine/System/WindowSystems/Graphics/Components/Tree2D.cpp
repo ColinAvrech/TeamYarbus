@@ -12,6 +12,7 @@
 #include "WindowSystem.h"
 #include "ResourceManager.h"
 #include "GameObject.h"
+#include "Pipeline.h"
 #include "random.hpp"
 
 namespace Framework
@@ -62,6 +63,9 @@ namespace Framework
     case Framework::TREE_4:
       Make_Tree4(0, -0.1f, 0.1f, 1.5, 5);
       break;
+    case Framework::TREE_5:
+      tree.Generate_Tree ();
+      break;
     case Framework::GRASS:
       Make_Grass(0, -0.1f, 0.1f);
       break;
@@ -80,13 +84,47 @@ namespace Framework
 
   void Tree2D::Draw ()
   {
-    shader->Use ();
-    //shader->uniMat4 ("mvp", glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix()));
-    shader->uni4fv ("color", glm::value_ptr(color));
-    vao->bindVAO ();
-    glDrawArrays (GL_LINES, 0, treeMesh.size () / 2);
-    vao->unbindVAO ();
-    shader->Disable ();
+    if (type == TREE_5)
+    {
+      static bool newTree = false;
+      static int counter = 0;
+      static unsigned timer = unsigned (glfwGetTime () * 1000);
+
+      // Tree Growth
+      if (counter < tree.getTotalLines ())
+      {
+        tree.Draw_Tree (counter);
+        counter += int (0.005f * tree.getTotalLines ());
+      }
+      else
+      {
+        if (!newTree)
+          timer = unsigned (glfwGetTime () * 1000);
+        tree.Draw_Tree (tree.getTotalLines ());
+        newTree = true;
+      }
+
+      if (newTree && float (glfwGetTime ()) * 1000 - timer > 500)
+      {
+        do {
+          tree.Generate_Tree ();
+        } while (0.0001*tree.getTotalLines () < 1);
+
+        counter = 0;
+        newTree = false;
+      }
+
+      OPENGL->ResetBlendMode ();
+    }
+    else
+    {
+      shader->Use ();
+      shader->uni4fv ("color", glm::value_ptr (color));
+      vao->bindVAO ();
+      glDrawArrays (GL_LINES, 0, treeMesh.size () / 2);
+      vao->unbindVAO ();
+      shader->Disable ();
+    }
   }
 
   void Tree2D::Make_Tree0 (float x1, float y1, float length1, float angle1, int depth)
@@ -187,14 +225,14 @@ namespace Framework
       x2 = x1 + length * (2 * (SCALE + 3*myrand(RAND))) * cos(angle - angle2);
       
       //Add_Branch(x1, y1, x2, y2);
-      Make_Pine_Branch(x1, y1, length, angle - 1.2*angle2, depth - 1, 1);
+      Make_Pine_Branch(x1, y1, length, angle - 1.2f * angle2, depth - 1, 1);
 
       x2 = x1 + length * (2 * (SCALE + 3*myrand(RAND))) * cos(angle + angle2);
 
       y2 = y1 + length * (2 * (SCALE + myrand(RAND))) * sin(-((15 - depth)/10.f)*angle);
 
       //Add_Branch(x1, y1, x2, y2);
-      Make_Pine_Branch(x1, y1, length, angle + 1.2*angle2, depth - 1, 0);
+      Make_Pine_Branch(x1, y1, length, angle + 1.2f * angle2, depth - 1, 0);
     }
   }
 
@@ -245,13 +283,13 @@ namespace Framework
     float RAND = 0.2f;
     int tuft = rand() % 10;
     if (tuft >= 7)
-      Make_Grass_Stalk(x1, y1, 0.1f, 1.5, 2 + rand() % 3, rand() % 2);
-    float angle = 1.5 + ANGLE + myrand(RAND);
+      Make_Grass_Stalk(x1, y1, 0.1f, 1.5f, 2 + rand() % 3, rand() % 2);
+    float angle = 1.5f + ANGLE + myrand(RAND);
     float x = x1 - myrand(RAND);
     for (int i = 0; i < tuft - 1; ++i)
     {
       float angle2 = angle + i * myrand(RAND);
-      float length2 = length1 * (1 + std::sin(i * 3.14 / (tuft - 2)));
+      float length2 = length1 * (1 + std::sin(i * 3.14f / (tuft - 2)));
       Make_Grass_Blade(x1, y1, length2, angle2);
       x1 += myrand(RAND) / (tuft/2);
     }
@@ -320,7 +358,7 @@ namespace Framework
       else
         angle2 = angle + ANGLE + myrand(RAND);
 
-      Make_Pine_Branch(x2, y2, length / 1.5, angle2, depth - 2, curve);
+      Make_Pine_Branch(x2, y2, length / 1.5f, angle2, depth - 2, curve);
       if (curve == 0) //Right side
         angle2 = -angle2 + angle / 8;
       else            //Left side

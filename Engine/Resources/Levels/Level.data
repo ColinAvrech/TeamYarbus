@@ -149,7 +149,7 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, -1.0, 0],
+			Vec3 Translation = [2, -1.0, 0],
 			Vec3 Scale = [1, 1, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
@@ -199,7 +199,7 @@ Level =
 		},
 		Tree2D = 
 		{
-      int Tree_Type = 0,
+      int Tree_Type = 6,
       Vec4 Color = [1.0, 0.2, 0.1, 1.0],
 		},
   },

@@ -153,8 +153,11 @@ namespace Framework
   void Pipeline::Update ()
   {
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClearColor (0.1, 0.1, 0.2, 1.0);
     glEnable (GL_BLEND);
-    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    sFactor = GL_SRC_ALPHA;
+    dFactor = GL_ONE_MINUS_SRC_ALPHA;
+    glBlendFunc (sFactor, dFactor);
 
     for (auto* i : transforms)
     {
@@ -287,6 +290,11 @@ namespace Framework
     }
 
     return modelViewProjectionMatrix;
+  }
+
+  void Pipeline::ResetBlendMode ()
+  {
+    glBlendFunc (sFactor, dFactor);
   }
 
 }

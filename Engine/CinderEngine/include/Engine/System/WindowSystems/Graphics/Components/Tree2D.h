@@ -13,6 +13,7 @@
 
 #include "GraphicsCommon.h"
 #include "IGraphicsObject.h"
+#include "FractalGenerator.h"
 
 namespace Framework
 {
@@ -24,6 +25,7 @@ namespace Framework
     TREE_3,
     TREE_4,
     GRASS,
+    TREE_5,
   };
 
 
@@ -46,8 +48,8 @@ namespace Framework
     VBO* vbo;
     std::vector <float> treeMesh;
     Tree_Type type;
-
     // Resources
+    FractalGenerator tree;
     glm::vec4 color;
 
     void Make_Tree0(float x1, float y1, float length1, float angle1, int depth);
