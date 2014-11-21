@@ -86,7 +86,7 @@ namespace Framework
   {
     if (type == TREE_5)
     {
-      //glBlendFunc (GL_SRC_ALPHA, GL_ONE);
+      //glBlendFunc (GL_SRC_COLOR, GL_ONE_MINUS_SRC_COLOR);
       static bool newTree = false;
       static int counter = 0;
       static unsigned timer = unsigned (glfwGetTime () * 1000);

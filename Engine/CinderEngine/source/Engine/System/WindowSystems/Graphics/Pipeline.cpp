@@ -150,10 +150,26 @@ namespace Framework
     matricesReady = false;
   }
 
+  static void Draw_Quad ()
+  {
+    glMatrixMode (GL_PROJECTION);
+    glLoadIdentity ();
+    glMatrixMode (GL_MODELVIEW);
+    glLoadIdentity ();
+    glBegin (GL_QUADS);
+    glColor4d (1, 1, 1, 0.8f);
+    glVertex2f (-1, -1);
+    glVertex2f (1, -1);
+    glColor4d (1, 1, 0.7, 0.5f);
+    glVertex2f (1, 1);
+    glVertex2f (-1, 1);
+    glEnd ();
+  }
+
   void Pipeline::Update ()
   {
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glClearColor (0.1f, 0.1f, 0.2f, 1.0f);
+    glClearColor (0, 0, 0, 0);
     glEnable (GL_BLEND);
     sFactor = GL_SRC_ALPHA;
     dFactor = GL_ONE_MINUS_SRC_ALPHA;
@@ -165,6 +181,8 @@ namespace Framework
     }
 
     camera->UpdateCamera (this);
+
+    Draw_Quad ();
 
     for (auto* i : graphicsObjects)
     {
