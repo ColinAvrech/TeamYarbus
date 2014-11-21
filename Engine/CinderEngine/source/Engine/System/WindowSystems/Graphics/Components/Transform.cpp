@@ -175,7 +175,7 @@ namespace Framework
   //GLSL
   void Transform::UpdateMatrices()
   {
-    if (!matricesReady)
+    //if (!matricesReady)
     {
       OPENGL->MatrixMode (MODEL);
       OPENGL->Translatefv (glm::value_ptr (position));
