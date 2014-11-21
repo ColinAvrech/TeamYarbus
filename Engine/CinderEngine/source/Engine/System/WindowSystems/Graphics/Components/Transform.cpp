@@ -149,9 +149,6 @@ namespace Framework
 
   glm::mat4 Transform::GetModelViewProjectionMatrix ()
   {
-    //if (!matricesReady)
-      return Camera::GetViewToProjectionMatrix () * Camera::GetWorldToViewMatrix () * modelMatrix [currentMatrix];
-
     return modelViewProjectionmatrix [currentMatrix];
   }
 
@@ -167,8 +164,7 @@ namespace Framework
     glm::mat4 matrix = modelMatrix[currentMatrix];
     matrix [3][0] = v.x;
     matrix [3][1] = v.y;
-    glm::mat4 mvp = Camera::GetViewToProjectionMatrix () *
-      Camera::GetWorldToViewMatrix () * matrix;
+    glm::mat4 mvp = (modelViewProjectionmatrix [currentMatrix] / modelMatrix [currentMatrix]) * matrix;
 
     return glm::vec2 (mvp [3][0] / mvp [3][3], mvp [3][1] / mvp [3][3]);
   }

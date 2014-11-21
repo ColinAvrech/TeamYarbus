@@ -31,7 +31,6 @@ namespace Framework
   // Destructor
   Terrain2D::~Terrain2D ()
   {
-    IGraphicsObject::Deregister ();
     delete vao, vbo, tc, spline;
     delete vao1, vbo1;
   }
@@ -63,18 +62,18 @@ namespace Framework
 
   void Terrain2D::Initialize ()
   {
-    IGraphicsObject::Register ();
-
     Generate_Height_Points ();
     Generate_Edges ();
     Generate_Vertices ();
     Generate_Buffers ();
 
-    spline = new SplineCollider ();
-    spline->gameObject = this->gameObject;
-    Physics::PHYSICSSYSTEM->SplineColliders.push_back (spline);
-
-    spline->AddLineCollider (edges);
+    if (AddCollider)
+    {
+      spline = new SplineCollider ();
+      spline->gameObject = this->gameObject;
+      Physics::PHYSICSSYSTEM->SplineColliders.push_back (spline);
+      spline->AddLineCollider (edges);
+    }
 
     vao1 = new VAO ();
     for (unsigned i = 0; i < height_points.size () - 1; ++i)
@@ -108,7 +107,7 @@ namespace Framework
     vao1->bindVAO ();
     shader->uniMat4 ("mvp", glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix ()));
     shader->uni4f ("color", 1, 1, 1, 1.0f);
-    glDrawArrays (GL_LINES, 0, lineVertices.size () / 2);
+    //glDrawArrays (GL_LINES, 0, lineVertices.size () / 2);
     vao1->unbindVAO ();
     shader->Disable ();
 
@@ -170,8 +169,8 @@ namespace Framework
         (
         std::make_pair
         (
-        glm::mat2 (gameObject->Transform->GetModelMatrix()) * height_points [i],
-        glm::mat2 (gameObject->Transform->GetModelMatrix ()) * height_points [i + 1]
+        height_points [i],
+        height_points [i + 1]
         )
         );
     }

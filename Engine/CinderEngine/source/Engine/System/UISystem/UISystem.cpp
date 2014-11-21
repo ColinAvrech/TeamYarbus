@@ -62,6 +62,10 @@ namespace Framework
     {
       CORE->QuitGame ();
     }
+    else if (ui->Message == "Restart")
+    {
+      OBJECTSYSTEM->RestartLevel ();
+    }
   }
 
 }

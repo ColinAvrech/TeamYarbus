@@ -61,7 +61,7 @@ namespace Framework
     GLfloat points [] =
     {
       //  Coordinates  Color
-      0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+      0.45f, 0.45f, 0.0f, 1.0f, 0.0f, 0.0f,
     };
 
     // Create VBO with point coordinates
@@ -76,6 +76,14 @@ namespace Framework
     GLint colAttrib = circleShader->attribLocation ("color");
     circleShader->enableVertexAttribArray (colAttrib);
     circleShader->vertexAttribPtr (colAttrib, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), 3 * sizeof(GLfloat));
+
+    posAttrib = lineShader->attribLocation ("position");
+    lineShader->enableVertexAttribArray (posAttrib);
+    lineShader->vertexAttribPtr (posAttrib, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), 0);
+
+    colAttrib = lineShader->attribLocation ("color");
+    lineShader->enableVertexAttribArray (colAttrib);
+    lineShader->vertexAttribPtr (colAttrib, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), 3 * sizeof(GLfloat));
   }
 
   void DebugRenderer::Draw (CircleCollider* circle)
@@ -84,7 +92,7 @@ namespace Framework
 
     circleShader->Use ();
 
-    circleShader->uni1f ("radius", circle->GetRadius());
+    circleShader->uni1f ("radius", circle->GetRadius() / circle->gameObject->Transform->GetScale().x);
     circleShader->uni1i ("divisions", (GLint) circleDivisions);
 
     if (circle != nullptr)
@@ -110,9 +118,11 @@ namespace Framework
 
     if (line != nullptr)
     {
+      glm::vec2 p1 = glm::vec2 (line->p1);
+      glm::vec2 p2 = glm::vec2 (line->p2);
       lineShader->uniMat4 ("mvp", glm::value_ptr (line->gameObject->Transform->GetModelViewProjectionMatrix ()));
-      lineShader->uni3fv ("p1", glm::value_ptr (line->p1));
-      lineShader->uni3fv ("p2", glm::value_ptr (line->p2));
+      lineShader->uni2fv ("p1", glm::value_ptr (p1));
+      lineShader->uni2fv ("p2", glm::value_ptr (p2));
     }
     else
       lineShader->uniMat4 ("mvp", glm::value_ptr (glm::mat4(1)));
@@ -122,6 +132,11 @@ namespace Framework
 
     lineShader->Disable ();
     vao->unbindVAO ();
+  }
+
+  void DebugRenderer::EnableVertexArrays ()
+  {
+    vao->bindVAO ();
   }
 
 

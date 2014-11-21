@@ -24,7 +24,7 @@ namespace Framework
     Serializer::DataNode* temp;
     temp = data->FindElement(data, "Radius");
     temp->GetValue(&radius);
-
+    radius *= gameObject->Transform->GetScale ().x;
     //Material Properties
     temp = data->FindElement(data, "MaterialName");
     std::string name;

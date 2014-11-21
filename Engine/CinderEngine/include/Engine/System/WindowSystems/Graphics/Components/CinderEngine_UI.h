@@ -16,6 +16,7 @@
 
 namespace Framework
 {
+  class UpdateEvent;
   class UIEvent;
 
   struct Rect
@@ -37,7 +38,7 @@ namespace Framework
     virtual ~UIComponent ();
     virtual void Initialize () = 0;
     virtual void Serialize (Serializer::DataNode* data) = 0;
-    virtual void Update (double dt) = 0;
+    virtual void Update (UpdateEvent*) = 0;
     virtual void Draw () = 0;
 
   private:
@@ -54,7 +55,7 @@ namespace Framework
 
     virtual void Initialize ();
     virtual void Serialize (Serializer::DataNode* data);
-    virtual void Update (double dt);
+    virtual void Update (UpdateEvent*);
     virtual void Draw ();
 
     const static std::string Name;

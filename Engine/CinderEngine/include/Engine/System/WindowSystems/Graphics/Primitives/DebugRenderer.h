@@ -44,13 +44,7 @@ namespace Framework
     VBO* vbo;
     int circleDivisions = 40;
     bool wireframe = true;
-
-    inline void EnableVertexArrays ()
-    {
-      vao->bindVAO ();
-      circleShader->enableVertexAttribArray (circleShader->attribLocation ("position"));
-      circleShader->enableVertexAttribArray (circleShader->attribLocation ("color"));
-    }
+    void EnableVertexArrays ();
 
   };
 }

@@ -225,7 +225,7 @@ Level =
       Vec4 Color = [0.4, 0.2, 0.1, 1.0],
 		},
   },
-	  Cog = 
+	Cog = 
 	{
 		LinkId = 
 		{
@@ -238,7 +238,7 @@ Level =
 		Transform = 
 		{
 			Vec3 Translation = [0, 2, 0],
-			Vec3 Scale = [0.2, 0.2, 0],
+			Vec3 Scale = [0.2, 0.2, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Sprite = 
@@ -278,6 +278,58 @@ Level =
 			string SerializedGroupName = "4e740859314e5515:DefaultGroup",
 			Vec3 Offset = [0, 0, 0],
 			float Radius = 1,
+		},
+	},
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 9,
+		},
+		Named = 
+		{
+			string Name = "Button_Exit",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0, -0.5, 0],
+			Vec3 Scale = [0.5, 0.5, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		UIBox = 
+		{
+      Vec2 Dimension = [5, 1],
+			string SpriteSource = "UIExitWhite.png",
+			Vec4 NormalColor = [1, 1,	1, 1],
+      Vec4 HoverColor = [1, 0, 0, 1],
+      Vec4 DownColor = [0, 0, 1, 1],
+      string Message = "Exit",
+		},
+	},
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 9,
+		},
+		Named = 
+		{
+			string Name = "Button_Restart",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0, 1, 0],
+			Vec3 Scale = [0.5, 0.5, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		UIBox = 
+		{
+      Vec2 Dimension = [5, 1],
+			string SpriteSource = "UIExitWhite.png",
+			Vec4 NormalColor = [1, 1,	1, 1],
+      Vec4 HoverColor = [1, 0, 0, 1],
+      Vec4 DownColor = [0, 0, 1, 1],
+      string Message = "Restart",
 		},
 	},
 },

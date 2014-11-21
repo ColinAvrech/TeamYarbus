@@ -46,7 +46,6 @@ namespace Framework
 
     void GLFWFrameBufferResize (GLFWwindow* _window, const int w, const int h)
     {
-      glViewport (0, 0, w, (int)(w / (1.6f / 0.9f)));
     }
 
 
@@ -298,13 +297,27 @@ namespace Framework
       //const GLFWvidmode* modes = glfwGetVideoModes(primaryMonitor, &count);
       if (fullscreen)
       {
-        WINDOWSYSTEM->Set_W_H(mode->width, mode->height);
-        *GLFWwindowptr = glfwCreateWindow (WINDOWSYSTEM->Get_Width (), WINDOWSYSTEM->Get_Height (), "OpenGL", primaryMonitor, nullptr); // Windowed
+        WINDOWSYSTEM->Set_W_H (mode->width, mode->height);
+        *GLFWwindowptr = glfwCreateWindow
+          (
+            WINDOWSYSTEM->Get_Width (),
+            WINDOWSYSTEM->Get_Height (),
+            "OpenGL",
+            primaryMonitor,
+            nullptr
+          ); // Windowed
       }
       else
       {
-        WINDOWSYSTEM->Set_W_H(ClientWidth, ClientHeight);
-        *GLFWwindowptr = glfwCreateWindow (WINDOWSYSTEM->Get_Width (),int (WINDOWSYSTEM->Get_Width () / (16.f / 9)), "OpenGL", nullptr, nullptr); // Windowed
+        WINDOWSYSTEM->Set_W_H (ClientWidth, (int)(ClientWidth / (16.f / 9)));
+        *GLFWwindowptr = glfwCreateWindow
+          (
+            WINDOWSYSTEM->Get_Width(),
+            WINDOWSYSTEM->Get_Height(),
+            "OpenGL",
+            nullptr,
+            nullptr
+          ); // Windowed
       }
 
       //*GLFWwindowptr = glfwCreateWindow (800, 600, "OpenGL", glfwGetPrimaryMonitor (), nullptr);
@@ -370,23 +383,22 @@ namespace Framework
     glEnable (GL_BLEND);
     glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    for (auto& i : transformList)
+    for (auto* i : transformList)
     {
       i->UpdateMatrices ();
     }
 
-    for (auto& i : graphicsObjects)
+    for (auto* i : graphicsObjects)
     {
       i->Draw ();
     }
 
-    for (auto& i : uiObjects)
+    for (auto* i : uiObjects)
     {
-      i->Update (dt);
       i->Draw ();
     }
 
-    for (auto& i : debugColliders)
+    for (auto* i : debugColliders)
     {
       i->Draw ();
     }
