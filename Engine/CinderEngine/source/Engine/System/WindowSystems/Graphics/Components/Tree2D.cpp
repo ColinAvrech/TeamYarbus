@@ -86,6 +86,7 @@ namespace Framework
   {
     if (type == TREE_5)
     {
+      //glBlendFunc (GL_SRC_ALPHA, GL_ONE);
       static bool newTree = false;
       static int counter = 0;
       static unsigned timer = unsigned (glfwGetTime () * 1000);
@@ -106,9 +107,11 @@ namespace Framework
 
       if (newTree && float (glfwGetTime ()) * 1000 - timer > 500)
       {
-        do {
+        do
+        {
           tree.Generate_Tree ();
-        } while (0.0001*tree.getTotalLines () < 1);
+        }
+        while (0.0001*tree.getTotalLines () < 1);
 
         counter = 0;
         newTree = false;

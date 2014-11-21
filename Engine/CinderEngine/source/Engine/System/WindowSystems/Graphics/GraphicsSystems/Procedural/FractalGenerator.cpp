@@ -68,7 +68,8 @@ namespace Framework
     angles.push_back (degrees);
 
     int branches = rand () % (maxBranches - minBranches) + 1 + minBranches;
-    for (int i = 0; i < branches; i++) {
+    for (int i = 0; i < branches; ++i)
+    {
       int x = rand () % 2 == 1 ? -1 : 1;
       Generate_Fractal (newPosX, newPosY, size * (rand () % maxShrink + minShrink) / 1000.0f, degrees + x * rand () % maxAngle);
     }
