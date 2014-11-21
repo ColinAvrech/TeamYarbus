@@ -71,6 +71,7 @@ namespace Framework
     Generate_Buffers ();
 
     spline = new SplineCollider ();
+    spline->gameObject = this->gameObject;
     Physics::PHYSICSSYSTEM->SplineColliders.push_back (spline);
 
     spline->AddLineCollider (edges);
@@ -83,6 +84,15 @@ namespace Framework
       lineVertices.push_back (height_points [i + 1].x);
       lineVertices.push_back (height_points [i + 1].y);
     }
+    //for (auto& i : edges)
+    //{
+    //  glm::vec2 p1 = i.first;
+    //  glm::vec2 p2 = i.second;
+    //  lineVertices.push_back (p1.x);
+    //  lineVertices.push_back (p1.y);
+    //  lineVertices.push_back (p2.x);
+    //  lineVertices.push_back (p2.y);
+    //}
     vbo1 = new VBO (lineVertices.size () * sizeof (float), lineVertices.data ());
     GLint posAttrib = shader->attribLocation ("position");
     shader->enableVertexAttribArray (posAttrib);
@@ -109,6 +119,14 @@ namespace Framework
     glDrawArrays (GL_LINES, 0, lineVertices.size () / 2);
     vao1->unbindVAO ();
     shader->Disable ();
+
+    std::vector <LineCollider*>& c = spline->Get_Colliders ();
+
+    //for (unsigned i = 0; i < height_points.size () - 1; ++i)
+    //{
+    //  c [i]->p1 = (glm::mat3)gameObject->Transform->GetModelViewProjectionMatrix () * glm::vec3 (height_points[i], 0.0f);
+    //  c [i]->p2 = (glm::mat3)gameObject->Transform->GetModelViewProjectionMatrix () * glm::vec3 (height_points [i + 1], 0.0f);
+    //}
   }
 
   std::vector <std::pair <vec2, vec2>>& Terrain2D::Get_Edges()
@@ -160,8 +178,8 @@ namespace Framework
         (
         std::make_pair
         (
-        (glm::mat2)gameObject->Transform->GetModelViewProjectionMatrix () * height_points [i],
-        (glm::mat2)gameObject->Transform->GetModelViewProjectionMatrix () * height_points [i + 1]
+        glm::mat2 (gameObject->Transform->GetModelMatrix()) * height_points [i],
+        glm::mat2 (gameObject->Transform->GetModelMatrix ()) * height_points [i + 1]
         )
         );
     }

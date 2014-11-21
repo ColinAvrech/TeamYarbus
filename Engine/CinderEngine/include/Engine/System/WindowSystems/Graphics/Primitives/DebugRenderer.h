@@ -12,10 +12,14 @@
 #define _DEBUG_CIRCLE_H
 
 #include "GraphicsCommon.h"
-#include "ComponentInclude.h"
 
 namespace Framework
 {
+  class ShapeCollider;
+  class CircleCollider;
+  class LineCollider;
+  class PointCollider;
+
   class DebugRenderer
   {
   public:

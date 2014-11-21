@@ -174,6 +174,21 @@ namespace Framework
   }
 
 
+  vec3 Transform::GetPosition ()
+  {
+    return position;
+  }
+
+  vec3 Transform::GetScale ()
+  {
+    return scale;
+  }
+
+  float Transform::GetRotation ()
+  {
+    return rotation;
+  }
+
 
   //GLSL
   void Transform::UpdateMatrices()

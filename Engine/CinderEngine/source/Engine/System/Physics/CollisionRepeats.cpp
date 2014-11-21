@@ -25,7 +25,7 @@ namespace Framework
     {
       float ps2l = DistancePoint2Line(ps, l);
       float pe2l = DistancePoint2Line(pe, l);
-      float rad = c.radius * c.gameObject->Transform->GetScale().x;
+      float rad = c.radius;
       BodyContact res;
       res.t = -1.0f;
       if ((ps2l <= 0 && pe2l >= 0) ||

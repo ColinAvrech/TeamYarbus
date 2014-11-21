@@ -55,9 +55,9 @@ namespace Framework
     //getters
     glm::mat4 GetModelMatrix ();
     glm::mat4 GetModelViewProjectionMatrix ();
-    inline vec3 GetPosition ();
-    inline vec3 GetScale ();
-    inline float GetRotation ();
+    /*inline*/ vec3 GetPosition ();
+    /*inline*/ vec3 GetScale ();
+    /*inline*/ float GetRotation ();
     vec2 GetScreenPosition ();
     glm::vec2 GetScreenPosition (glm::vec2 v);
 
@@ -87,21 +87,6 @@ namespace Framework
     // To avoid Unnecesary calculation in Update Matrices
     bool matricesReady;
   };
-
-  inline vec3 Transform::GetPosition ()
-  {
-    return position;
-  }
-
-  inline vec3 Transform::GetScale ()
-  {
-    return scale;
-  }
-
-  inline float Transform::GetRotation ()
-  {
-    return rotation;
-  }
 }
 
 #endif

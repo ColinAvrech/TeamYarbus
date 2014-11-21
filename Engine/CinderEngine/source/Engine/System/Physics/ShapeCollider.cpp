@@ -11,6 +11,8 @@
 #include "IncludeForAllCollision.h"
 #include "EventSystem.h"
 #include "JSONSerializer.h"
+#include "DebugRenderer.h"
+#include "WindowSystem.h"
 
 #pragma once
 namespace Framework
@@ -42,5 +44,37 @@ namespace Framework
 
 		materialtype.close();
 	}
-    DefineComponentName(ShapeCollider);
+
+  //////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////
+  // Debug Draw
+  DebugRenderer* ShapeCollider::dr;
+
+  ShapeCollider::ShapeCollider ()
+  {
+    if (dr == nullptr)
+    {
+      dr = new DebugRenderer ();
+      dr->Initialize ();
+    }
+
+    WindowSystem::debugColliders.push_back (this);
+  }
+
+  ShapeCollider::~ShapeCollider ()
+  {
+    if (dr != nullptr)
+    {
+      delete dr;
+      dr = nullptr;
+    }
+
+    WindowSystem::debugColliders.remove (this);
+  }
+
+  void ShapeCollider::Draw ()
+  {}
+  //////////////////////////////////////////////////////////////////////////
+
+  DefineComponentName (ShapeCollider);
 }

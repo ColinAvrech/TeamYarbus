@@ -11,17 +11,18 @@
 #include "DebugRenderer.h"
 #include "ResourceManager.h"
 #include "GameObject.h"
+#include "ComponentInclude.h"
 
 namespace Framework
 {
   static glm::mat4 Circle_Matrix (CircleCollider* circle)
   {
-    float radius = circle->GetRadius ();
+    //float radius = circle->GetRadius ();
     //vec2 offset(circle->getOffset().x, circle->getOffset().y);
-	vec3 offset = circle->getOffset();
+	  //vec3 offset = circle->getOffset();
 
-    glm::mat4 cm = glm::translate (offset) * glm::scale (vec3 (radius, radius, 1.0f)); //* glm::rotate (circle->gameObject->Transform->GetRotation (), vec3 (0, 0, 1));
-    return Camera::GetViewToProjectionMatrix () * Camera::GetWorldToViewMatrix () * cm;
+    //glm::mat4 cm = glm::translate (circle->gameObject->Transform->GetPosition() + offset); //* glm::rotate (circle->gameObject->Transform->GetRotation (), vec3 (0, 0, 1));
+    return circle->gameObject->Transform->GetModelViewProjectionMatrix();
   }
 
 
@@ -60,7 +61,7 @@ namespace Framework
     GLfloat points [] =
     {
       //  Coordinates  Color
-      -0.45f, 0.45f, 1.0, 1.0f, 0.0f, 0.0f,
+      0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
     };
 
     // Create VBO with point coordinates
@@ -83,15 +84,17 @@ namespace Framework
 
     circleShader->Use ();
 
-    circleShader->uni1f ("radius", 0.1f * 10);
+    circleShader->uni1f ("radius", circle->GetRadius());
     circleShader->uni1i ("divisions", (GLint) circleDivisions);
 
     if (circle != nullptr)
-      circleShader->uniMat4 ("modelViewProjectionMatrix", glm::value_ptr (Circle_Matrix(circle)));
+    {
+      circleShader->uniMat4 ("mvp", glm::value_ptr (Circle_Matrix (circle)));
+    }
     else
-      circleShader->uniMat4 ("modelViewProjectionMatrix", glm::value_ptr (glm::mat4 (1)));
+      circleShader->uniMat4 ("mvp", glm::value_ptr (glm::mat4 (1)));
 
-    glPointSize (16.0f);
+    glPointSize (1.0f);
     glDrawArrays (GL_POINTS, 0, 1);
 
     circleShader->Disable ();
@@ -106,11 +109,15 @@ namespace Framework
     lineShader->Use ();
 
     if (line != nullptr)
-      lineShader->uniMat4 ("modelViewProjectionMatrix", glm::value_ptr (line->gameObject->Transform->GetModelViewProjectionMatrix()));
+    {
+      lineShader->uniMat4 ("mvp", glm::value_ptr (line->gameObject->Transform->GetModelViewProjectionMatrix ()));
+      lineShader->uni3fv ("p1", glm::value_ptr (line->p1));
+      lineShader->uni3fv ("p2", glm::value_ptr (line->p2));
+    }
     else
-      lineShader->uniMat4 ("modelViewProjectionMatrix", glm::value_ptr (glm::mat4(1)));
+      lineShader->uniMat4 ("mvp", glm::value_ptr (glm::mat4(1)));
 
-    glPointSize (16.0f);
+    glPointSize (1.0f);
     glDrawArrays (GL_POINTS, 0, 1);
 
     lineShader->Disable ();

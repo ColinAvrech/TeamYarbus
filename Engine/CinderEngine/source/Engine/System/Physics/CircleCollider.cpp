@@ -14,6 +14,7 @@
 #include "CollisionEvent.h"
 #include "PhysicsSystem.h"
 #include "JSONSerializer.h"
+#include "DebugRenderer.h"
 
 namespace Framework
 {
@@ -126,6 +127,11 @@ namespace Framework
 
       Physics::PHYSICSSYSTEM->addContact(&contact);
     }
+  }
+
+  void CircleCollider::Draw ()
+  {
+    dr->Draw (this);
   }
 
   DefineComponentName(CircleCollider);
