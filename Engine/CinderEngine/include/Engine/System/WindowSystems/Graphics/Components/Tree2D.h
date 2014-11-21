@@ -47,7 +47,6 @@ namespace Framework
     Tree_Type type;
 
     // Resources
-    Shader* shader;
     glm::vec4 color;
 
     void Make_Tree0 (float x1, float y1, float length1, float angle1, int depth);

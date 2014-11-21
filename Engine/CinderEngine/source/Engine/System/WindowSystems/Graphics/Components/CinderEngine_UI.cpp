@@ -114,7 +114,7 @@ namespace Framework
     box.Min.y = gameObject->Transform->GetPosition ().y - box.Dimension.y * gameObject->Transform->GetScale ().y * 0.5f;
     box.Max.x = gameObject->Transform->GetPosition ().x + box.Dimension.x * gameObject->Transform->GetScale ().x * 0.5f;
     box.Max.y = gameObject->Transform->GetPosition ().y + box.Dimension.y * gameObject->Transform->GetScale ().y * 0.5f;
-    EVENTSYSTEM->mConnect<UpdateEvent, UIBox> (Events::UPDATEEVENT, this, &UIBox::Update);
+    EVENTSYSTEM->mConnect<UpdateEvent, UIBox> (Events::UPDATEEVENT, this, &UIBox::UIUpdate);
 
     if (uiEvent == nullptr)
     {
@@ -123,7 +123,7 @@ namespace Framework
     }
   }
 
-  void UIBox::Update (UpdateEvent* update)
+  void UIBox::UIUpdate (UpdateEvent* update)
   {
     glm::vec2 normPos = WINDOWSYSTEM->Get_Normalized_Mouse_Position ();
     box.S_Min = gameObject->Transform->GetScreenPosition (box.Min);
@@ -152,13 +152,13 @@ namespace Framework
     }
   }
 
-  void UIBox::Draw ()
+  void UIBox::UIDraw ()
   {
     vao->bindVAO ();
     shader->Use ();
     texture->Bind ();
     shader->uni4fv ("overrideColor", glm::value_ptr (color));
-    shader->uniMat4 ("modelViewProjectionMatrix",
+    shader->uniMat4 ("mvp",
       glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix ()));
     glDrawElements (GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     texture->Unbind ();

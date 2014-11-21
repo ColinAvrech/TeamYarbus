@@ -13,6 +13,7 @@
 
 #include "Component.h"
 #include "GraphicsCommon.h"
+#include "IGraphicsObject.h"
 
 namespace Framework
 {
@@ -36,10 +37,8 @@ namespace Framework
   public:
     UIComponent ();
     virtual ~UIComponent ();
-    virtual void Initialize () = 0;
-    virtual void Serialize (Serializer::DataNode* data) = 0;
-    virtual void Update (UpdateEvent*) = 0;
-    virtual void Draw () = 0;
+    virtual void UIUpdate (UpdateEvent*) = 0;
+    virtual void UIDraw () = 0;
 
   private:
     void Register ();
@@ -55,8 +54,8 @@ namespace Framework
 
     virtual void Initialize ();
     virtual void Serialize (Serializer::DataNode* data);
-    virtual void Update (UpdateEvent*);
-    virtual void Draw ();
+    virtual void UIUpdate (UpdateEvent*);
+    virtual void UIDraw ();
 
     const static std::string Name;
 
@@ -66,6 +65,7 @@ namespace Framework
     glm::vec4 normalColor;
     glm::vec4 hoverColor;
     glm::vec4 downColor;
+
     Shader* shader;
     Texture* texture;
     int buttonState;

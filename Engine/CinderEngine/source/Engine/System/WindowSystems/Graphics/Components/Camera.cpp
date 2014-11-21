@@ -14,6 +14,7 @@
 #include "BaseEvent.h"
 #include "WindowSystem.h"
 #include "GameObject.h"
+#include "Pipeline.h"
 
 
 namespace Framework
@@ -28,6 +29,7 @@ namespace Framework
   {
     allCameras.remove (this);
     gameObject->Camera = nullptr;
+    OPENGL->camera = nullptr;
   }
 
 
@@ -78,6 +80,18 @@ namespace Framework
       viewToProjection = glm::perspective(fov * M_PI / 180, aspect, nearPlane, farPlane);
     }
     Camera::current = this;
+
+    OPENGL->camera = this;
+    OPENGL->Perspective (fov, aspect, nearPlane, farPlane);
+    OPENGL->MatrixMode (MODEL);
+    OPENGL->Translatefv (const_cast <float*>(glm::value_ptr (gameObject->Transform->GetPosition ())));
+    OPENGL->MatrixMode (VIEW);
+    OPENGL->LookAt
+      (size * viewDirection +
+      glm::vec3 (gameObject->Transform->GetPosition ().x, gameObject->Transform->GetPosition ().y, 0.0),
+      gameObject->Transform->GetPosition (), up);
+    OPENGL->MatrixMode (MODEL);
+    OPENGL->LoadIdentity ();
     matricesReady = true;
   }
 
@@ -132,6 +146,20 @@ namespace Framework
     }
     oldPosition = newPosition;
     matricesReady = false;
+  }
+
+  void Camera::UpdateCamera (Pipeline* p)
+  {
+    if (!matricesReady)
+    {
+      OPENGL->Perspective (fov, aspect, nearPlane, farPlane);
+      OPENGL->LookAt
+        (size * viewDirection +
+        glm::vec3 (gameObject->Transform->GetPosition ().x, gameObject->Transform->GetPosition ().y, 0.0),
+        gameObject->Transform->GetPosition (), up);
+      OPENGL->MatrixMode (MODEL);
+      OPENGL->LoadIdentity ();
+    }
   }
 
   void Camera::UpdatePosition(const vec3& deltaPos)

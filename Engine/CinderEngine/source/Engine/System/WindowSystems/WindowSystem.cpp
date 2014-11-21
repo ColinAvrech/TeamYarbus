@@ -23,6 +23,7 @@ function to handle windows Messages.
 #include "Smoke_Grid.h"
 #include "IGraphicsObject.h"
 #include "CinderEngine_UI.h"
+#include "Pipeline.h"
 
 namespace Framework
 {
@@ -33,6 +34,7 @@ namespace Framework
   std::list <IGraphicsObject*> WindowSystem::graphicsObjects;
   std::list <UIComponent*> WindowSystem::uiObjects;
   std::list <ShapeCollider*> WindowSystem::debugColliders;
+
   Fluid_Engine water;
   Smoke_Grid grid;
 
@@ -353,6 +355,7 @@ namespace Framework
   {
     std::cout << GetName () << " initialized\n";
 
+    OPENGL = new Pipeline ();
     water.Initialize ();
     grid.Initialize ();
 
@@ -362,6 +365,7 @@ namespace Framework
 
   WindowSystem::~WindowSystem ()
   {
+    delete OPENGL;
     glfwTerminate ();
   }
 
@@ -379,34 +383,7 @@ namespace Framework
 
   void WindowSystem::GraphicsUpdate (const double& dt)
   {
-    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glEnable (GL_BLEND);
-    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    for (auto* i : transformList)
-    {
-      i->UpdateMatrices ();
-    }
-
-    for (auto* i : graphicsObjects)
-    {
-      i->Draw ();
-    }
-
-    for (auto* i : uiObjects)
-    {
-      i->Draw ();
-    }
-
-    for (auto* i : debugColliders)
-    {
-      i->Draw ();
-    }
-
-    //grid.Update ();
-    //grid.Draw ();
-    //water.Update ();
-    //water.Render ();
+    OPENGL->Update ();
 
     glfwSwapBuffers (window);
   }

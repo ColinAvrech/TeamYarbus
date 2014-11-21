@@ -119,7 +119,11 @@ namespace Framework
     if (line != nullptr)
     {
       glm::vec2 p1 = glm::vec2 (line->p1);
+      p1.x /= line->gameObject->Transform->GetModelMatrix () [3][0];
+      p1.y /= line->gameObject->Transform->GetModelMatrix () [3][1];
       glm::vec2 p2 = glm::vec2 (line->p2);
+      p2.x /= line->gameObject->Transform->GetModelMatrix () [3][0];
+      p2.y /= line->gameObject->Transform->GetModelMatrix () [3][1];
       lineShader->uniMat4 ("mvp", glm::value_ptr (line->gameObject->Transform->GetModelViewProjectionMatrix ()));
       lineShader->uni2fv ("p1", glm::value_ptr (p1));
       lineShader->uni2fv ("p2", glm::value_ptr (p2));

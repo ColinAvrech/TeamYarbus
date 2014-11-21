@@ -16,6 +16,7 @@
 
 namespace Framework
 {
+  class Shader;
 
   class IGraphicsObject : public Component
   {
@@ -25,10 +26,15 @@ namespace Framework
   
   virtual void Serialize (Serializer::DataNode* data) = 0;
   virtual void Initialize () = 0;
+  void Update ();
   virtual void Draw ();
 
   void Register ();
   void Deregister ();
+
+  protected:
+    Shader* shader;
+
   private:
 
   };  

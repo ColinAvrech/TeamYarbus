@@ -23,13 +23,6 @@
 
 namespace Framework
 {
-  enum MatrixModes
-  {
-    MODEL_MATRIX = 0,
-    VIEW_MATRIX,
-    PROJECTION_MATRIX
-  };
-
 
   class Transform : public Component
   {
@@ -72,13 +65,9 @@ namespace Framework
 
   private:
     int currentMatrix;
-    //Matrix Stack
-    // Useful When Using Parent-Child Structure For Complex Objects
-    // Eg. Robot, Objects with many parts as children
-    std::vector <glm::mat4> modelMatrix;
-    std::vector <glm::mat4> modelViewProjectionmatrix;
-    void push_matrix ();
-    void pop_matrix ();
+
+    glm::mat4 modelMatrix;
+    glm::mat4 modelViewProjectionMatrix;
     vec3 position;
     vec3 scale;
     float rotation;

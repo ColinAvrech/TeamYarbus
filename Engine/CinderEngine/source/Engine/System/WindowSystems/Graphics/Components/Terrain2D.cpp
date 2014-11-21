@@ -96,7 +96,7 @@ namespace Framework
   {
     shader->Use ();
     vao->bindVAO ();
-    shader->uniMat4 ("mvp", glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix()));
+    //shader->uniMat4 ("mvp", glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix()));
     shader->uni4f ("color", 0.25f, 0.25f, 0.25f, 1.0f);
     //shader->enableVertexAttribArray (shader->attribLocation ("position"));
 
@@ -105,7 +105,7 @@ namespace Framework
     vao->unbindVAO ();
 
     vao1->bindVAO ();
-    shader->uniMat4 ("mvp", glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix ()));
+    //shader->uniMat4 ("mvp", glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix ()));
     shader->uni4f ("color", 1, 1, 1, 1.0f);
     //glDrawArrays (GL_LINES, 0, lineVertices.size () / 2);
     vao1->unbindVAO ();
@@ -113,11 +113,11 @@ namespace Framework
 
     std::vector <LineCollider*>& c = spline->Get_Colliders ();
 
-    //for (unsigned i = 0; i < height_points.size () - 1; ++i)
-    //{
-    //  c [i]->p1 = (glm::mat3)gameObject->Transform->GetModelViewProjectionMatrix () * glm::vec3 (height_points[i], 0.0f);
-    //  c [i]->p2 = (glm::mat3)gameObject->Transform->GetModelViewProjectionMatrix () * glm::vec3 (height_points [i + 1], 0.0f);
-    //}
+    for (unsigned i = 0; i < height_points.size () - 1; ++i)
+    {
+      c [i]->p1 = (glm::mat3)gameObject->Transform->GetModelMatrix() * glm::vec3 (height_points [i], 0.0f);
+      c [i]->p2 = (glm::mat3)gameObject->Transform->GetModelMatrix() * glm::vec3 (height_points [i + 1], 0.0f);
+    }
   }
 
   std::vector <std::pair <vec2, vec2>>& Terrain2D::Get_Edges()
