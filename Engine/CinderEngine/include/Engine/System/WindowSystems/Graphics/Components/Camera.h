@@ -11,8 +11,8 @@
 #ifndef _CAMERA_H
 #define _CAMERA_H
 
-#include "GraphicsCommon.h"
 #include "ComponentInclude.h"
+#include "CinderMath.h"
 
 namespace Framework
 {

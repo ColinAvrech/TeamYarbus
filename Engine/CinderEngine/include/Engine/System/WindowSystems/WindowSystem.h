@@ -59,10 +59,6 @@ namespace Framework
     }
     void Set_W_H (const int& w, const int& h);
 
-    static std::list <Transform*> transformList;
-    static std::list <IGraphicsObject*> graphicsObjects;
-    static std::list <ShapeCollider*> debugColliders;
-    static std::list <UIComponent*> uiObjects;
 
   private:
     GLFWwindow* window;

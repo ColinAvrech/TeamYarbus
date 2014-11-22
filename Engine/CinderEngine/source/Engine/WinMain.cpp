@@ -84,7 +84,7 @@ int main (void)
   engine->AddSystem (zilch);
   engine->AddSystem (thermo);
   engine->AddSystem(objsys);
-  //engine->AddSystem (ui);
+  engine->AddSystem (ui);
   ////Cinder.PhysicsSystem = phys;
   ////Cinder.Thermodynamics = thero;
   //Cinder::Windows = windows;

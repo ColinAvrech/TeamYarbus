@@ -44,16 +44,24 @@ namespace Framework
       INDEX
         temp_index;
 
-      CINDER_LOOP_THROUGH_INDEX (temp_index, 0, INDEX (Width) * 2)
+      if (SurfaceValueTable != nullptr)
       {
-        delete [] SurfaceValueTable [temp_index];
+        CINDER_LOOP_THROUGH_INDEX (temp_index, 0, INDEX (Width) * 2)
+        {
+          delete [] SurfaceValueTable [temp_index];
+        }
       }
-      CINDER_LOOP_THROUGH_INDEX (temp_index, 0, INDEX (Width) * 2 - 1)
+      if (IsInsideSurface != nullptr)
       {
-        delete [] IsInsideSurface [temp_index];
+        CINDER_LOOP_THROUGH_INDEX (temp_index, 0, INDEX (Width) * 2 - 1)
+        {
+          delete [] IsInsideSurface [temp_index];
+        }
       }
-      delete SurfaceValueTable;
-      delete IsInsideSurface;
+      if (SurfaceValueTable != nullptr)
+        delete SurfaceValueTable;
+      if (IsInsideSurface != nullptr)
+        delete IsInsideSurface;
     }
 
 

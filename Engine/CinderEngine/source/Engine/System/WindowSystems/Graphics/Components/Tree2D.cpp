@@ -8,7 +8,10 @@
 */
 /******************************************************************************/
 
+#include "FractalGenerator.h"
 #include "Tree2D.h"
+#include "VertexArrayObject.h"
+#include "VertexBufferObject.h"
 #include "WindowSystem.h"
 #include "ResourceManager.h"
 #include "GameObject.h"
@@ -33,6 +36,11 @@ namespace Framework
   Tree2D::~Tree2D ()
   {
     delete vao, vbo;
+    if (tree != nullptr)
+    {
+      delete tree;
+      tree = nullptr;
+    }
   }
 
   void Tree2D::Serialize (Serializer::DataNode* data)
@@ -64,7 +72,8 @@ namespace Framework
       Make_Tree4(0, -0.1f, 0.1f, 1.5, 5);
       break;
     case Framework::TREE_5:
-      tree.Generate_Tree ();
+      tree = new FractalGenerator ();
+      tree->Generate_Tree ();
       break;
     case Framework::GRASS:
       Make_Grass(0, -0.1f, 0.1f);
@@ -92,16 +101,16 @@ namespace Framework
       static unsigned timer = unsigned (glfwGetTime () * 1000);
 
       // Tree Growth
-      if (counter < tree.getTotalLines ())
+      if (counter < tree->getTotalLines ())
       {
-        tree.Draw_Tree (counter);
-        counter += int (0.005f * tree.getTotalLines ());
+        tree->Draw_Tree (counter);
+        counter += int (0.005f * tree->getTotalLines ());
       }
       else
       {
         if (!newTree)
           timer = unsigned (glfwGetTime () * 1000);
-        tree.Draw_Tree (tree.getTotalLines ());
+        tree->Draw_Tree (tree->getTotalLines ());
         newTree = true;
       }
 
@@ -109,9 +118,9 @@ namespace Framework
       {
         do
         {
-          tree.Generate_Tree ();
+          tree->Generate_Tree ();
         }
-        while (0.0001*tree.getTotalLines () < 1);
+        while (0.0001*tree->getTotalLines () < 1);
 
         counter = 0;
         newTree = false;

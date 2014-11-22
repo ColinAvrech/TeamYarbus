@@ -14,6 +14,7 @@
 #include "EventSystem.h"
 #include "GameEvent.h"
 #include "UpdateEvent.h"
+#include "Pipeline.h"
 #include "Core.h"
 
 namespace Framework
@@ -47,12 +48,12 @@ namespace Framework
 
   void UIComponent::Register ()
   {
-    WindowSystem::uiObjects.push_back (this);
+    OPENGL->uiObjects.push_back (this);
   }
 
   void UIComponent::Deregister ()
   {
-    WindowSystem::uiObjects.remove (this);
+    OPENGL->uiObjects.remove (this);
   }
 
   UIBox::~UIBox ()

@@ -11,7 +11,9 @@
 #ifndef _FRACTAL_GENERATOR_H
 #define _FRACTAL_GENERATOR_H
 
-#include "GraphicsCommon.h"
+#include <vector>
+#include "VertexArrayObject.h"
+#include "VertexBufferObject.h"
 
 namespace Framework
 {

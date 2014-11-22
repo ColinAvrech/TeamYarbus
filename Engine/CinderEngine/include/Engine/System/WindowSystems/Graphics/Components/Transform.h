@@ -36,11 +36,11 @@ namespace Framework
     //////////////////////////////////////////////////////////////////////////
     // Transformations
     void Load_Identity ();
-    void Translate (float x, float y, float z);
-	  void Translate(vec3 &v);
-    void Scale (float x, float y, float z);
-    void Scale (float v);
-    void Rotate (float angle);
+    void Translate (const float x, const float y, const float z);
+	  void Translate(const vec3 &v);
+    void Scale (const float x, const float y, const float z);
+    void Scale (const float v);
+    void Rotate (const float angle);
     //////////////////////////////////////////////////////////////////////////
     bool MatrixMode (int m);
     void UpdateMatrices ();
@@ -52,16 +52,13 @@ namespace Framework
     /*inline*/ vec3 GetScale ();
     /*inline*/ float GetRotation ();
     vec2 GetScreenPosition ();
-    glm::vec2 GetScreenPosition (glm::vec2 v);
+    glm::vec2 GetScreenPosition (const glm::vec2& v);
 
     static void Print (vec3 position);
 
     // The non-base component usees DefineComponentName macro to name component
     const static string Name;
 
-
-
-    
 
   private:
     int currentMatrix;

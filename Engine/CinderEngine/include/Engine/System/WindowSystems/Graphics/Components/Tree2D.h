@@ -11,12 +11,15 @@
 #ifndef _TREE_2D_H
 #define _TREE_2D_H
 
-#include "GraphicsCommon.h"
+#include <vector>
 #include "IGraphicsObject.h"
-#include "FractalGenerator.h"
 
 namespace Framework
 {
+  class VertexArrayObject;
+  class VertexBufferObject;
+  class FractalGenerator;
+
   enum Tree_Type
   {
     TREE_0,
@@ -49,7 +52,7 @@ namespace Framework
     std::vector <float> treeMesh;
     Tree_Type type;
     // Resources
-    FractalGenerator tree;
+    FractalGenerator* tree;
     glm::vec4 color;
 
     void Make_Tree0(float x1, float y1, float length1, float angle1, int depth);

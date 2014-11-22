@@ -11,13 +11,19 @@
 #ifndef _PIPELINE_H
 #define _PIPELINE_H
 
-#include "GraphicsCommon.h"
+#include "glew.h"
+#include "CinderMath.h"
+#include <vector>
+#include <list>
 
 namespace Framework
 {
   class Transform;
   class IGraphicsObject;
   class Camera;
+  class UIComponent;
+  class ShapeCollider;
+  class Shader;
 
   enum MATRIX_MODE
   {
@@ -61,7 +67,9 @@ namespace Framework
   
     static std::list <Transform*> transforms;
     static std::list <IGraphicsObject*> graphicsObjects;
+    static std::list <UIComponent*> uiObjects;
     static Camera* camera;
+    static std::list <ShapeCollider*> debugColliders;
 
   private:
     std::vector <glm::mat4> modelMatrix;
