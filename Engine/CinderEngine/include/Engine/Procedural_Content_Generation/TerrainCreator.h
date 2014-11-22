@@ -21,13 +21,14 @@ namespace Framework
       TerrainCreator (){}
       //Constructor
       //Takes map width, map height, base height, smoothing passes, number of waves
-      TerrainCreator(int width, int height, int baseHeight, int passes = 3, int waves = 2, int peak = 100, int water = 50);
+      TerrainCreator(int width, int baseHeight, int passes = 3, int waves = 2, int peak = 100, int water = 50);
       //Destructor
       ~TerrainCreator();
-      int ** const GetMap(){ return Map; };
+      float * const GetRockMap() { return HeightMapRock;  }
+      float * const GetSoilMapl(){ return HeightMapSoil;  }
+      float * const GetWaterMap(){ return HeightMapWater; }
 
       inline int Get_Width ();
-      inline int Get_Height ();
 
       void Generate();
       void Save(const char *file);
@@ -38,10 +39,10 @@ namespace Framework
       int passes;
       int waves;
       int MapWidth;
-      int MapHeight;
       int BaseHeight; //Must be a number between 0 and height.
-      float *HeightMap;
-      int ** Map;
+      float *HeightMapRock;
+      float *HeightMapSoil;
+      float *HeightMapWater;
       int PeakHeight;
       int WaterDepth;
 
@@ -53,20 +54,14 @@ namespace Framework
       void AddWater();
 
       //Helper functions
-      void GenerateHeightMap();
-      void ApplyHeightMap();
+      void GenerateHeightMap(float **Array, int base, int height);
+      void SettleWater();
     }; //class terrain
 
     inline int TerrainCreator::Get_Width ()
     {
       return MapWidth;
     }
-
-    inline int TerrainCreator::Get_Height ()
-    {
-      return MapHeight;
-    }
-
 
   } //Procedural
 } //Framework

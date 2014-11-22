@@ -58,6 +58,9 @@ namespace Framework
 
     value = data->FindElement(data, "AddCollider");
     value->GetValue(&AddCollider);
+
+    value = data->FindElement(data, "Color");
+    value->GetValue(&color);
   }
 
   void Terrain2D::Initialize ()
@@ -97,7 +100,7 @@ namespace Framework
     shader->Use ();
     vao->bindVAO ();
     //shader->uniMat4 ("mvp", glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix()));
-    shader->uni4f ("color", 0.25f, 0.25f, 0.25f, 1.0f);
+    shader->uni4f ("color", color.r, color.g, color.b, color.a);
     //shader->enableVertexAttribArray (shader->attribLocation ("position"));
 
     glDrawArrays (GL_TRIANGLES, 0, vertices.size () / 2);
@@ -127,35 +130,30 @@ namespace Framework
 
   void Terrain2D::Generate_Height_Points ()
   {
-    tc = new Procedural::TerrainCreator (MapSize, MapSize, BaseHeight, Passes, Waves, PeakHeight, WaterDepth);
+    tc = new Procedural::TerrainCreator (MapSize, BaseHeight, Passes, Waves, PeakHeight, WaterDepth);
     Procedural::TerrainCreator& t = *tc;
-    int** Map = t.GetMap ();
+    float* Map = t.GetRockMap ();
 
     float offsetX = -1.0f;
     float offsetY = -1.0f;
     float nX = 2.f / (t.Get_Width () - 1);
-    float nY = 2.f / (t.Get_Height () - 1);
+    float nY = 2.f / (t.Get_Width() - 1);
     float previousHeight = -1.f;
 
-    for (int i = 0; i < t.Get_Height (); ++i)
+    for (int i = 0; i < t.Get_Width (); ++i)
     {
-      for (int j = 0; j < t.Get_Width (); j += 4)
+      /*height_points.push_back ({ offsetX, offsetY });
+      offsetY = -1.0f;
+      break;*/
+      if (previousHeight != offsetY || i == t.Get_Width() - 1)
       {
-        if (Map [i][j] == 0)
-        {
-          /*height_points.push_back ({ offsetX, offsetY });
-          offsetY = -1.0f;
-          break;*/
-          if (previousHeight != offsetY || j == t.Get_Width() - 1)
-          {
-            height_points.push_back({ offsetX, offsetY });
-            previousHeight = offsetY;
-          }
-          offsetY = -1.0f;
-          break;
-        }
-        offsetY += nY;
+        height_points.push_back({ offsetX, offsetY });
+        previousHeight = offsetY;
       }
+      
+      offsetY = Map[i] * nY;
+      if (offsetY < 0)
+        offsetY = 0.0f;
       offsetX += 4 * nX;
     }
   }

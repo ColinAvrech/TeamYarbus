@@ -43,6 +43,7 @@ namespace Framework
     int Waves;
     int WaterDepth;
     bool AddCollider;
+    glm::vec4 color;
     Procedural::TerrainCreator* tc;
 
     VAO* vao;
