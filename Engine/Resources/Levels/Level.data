@@ -74,24 +74,24 @@ Level =
 		},
 		Named = 
 		{
-			string Name = "bg",
+			string Name = "Mountains",
 		},
 		Transform = 
 		{
 			Vec3 Translation = [0, 2, -4],
-			Vec3 Scale = [10, 4, 1],
+			Vec3 Scale = [40, 4, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Terrain2D = 
 		{
       int MapSize = 512,
       int BaseHeight = 128,
-      int PeakHeight = 128,
+      int PeakHeight = 256,
       int Passes = 0,
       int Waves = 20,
       int Water = 0,
       Vec4 Color = [0.2, 0.21, 0.2, 1],
-      bool AddCollider = true,
+      bool AddCollider = false,
 		},
   },
   Cog = 
@@ -102,12 +102,12 @@ Level =
 		},
 		Named = 
 		{
-			string Name = "bg",
+			string Name = "Forest",
 		},
 		Transform = 
 		{
 			Vec3 Translation = [0, 0, -2],
-			Vec3 Scale = [10, 4, 1],
+			Vec3 Scale = [20, 4, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Terrain2D = 
@@ -119,7 +119,7 @@ Level =
       int Waves = 1,
       int Water = 0,
       Vec4 Color = [0.2, 0.3, 0.2, 1],
-      bool AddCollider = true,
+      bool AddCollider = false,
 		},
   },
   Cog = 
@@ -130,7 +130,7 @@ Level =
 		},
 		Named = 
 		{
-			string Name = "bg",
+			string Name = "Terrain",
 		},
 		Transform = 
 		{
@@ -149,6 +149,9 @@ Level =
       Vec4 Color = [0.2, 0.0, 0.01, 1],
       bool AddCollider = true,
 		},
+    EcoSystem = 
+    {
+    },
   },
   Cog = 
 	{

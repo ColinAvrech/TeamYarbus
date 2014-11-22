@@ -34,6 +34,8 @@ namespace Framework
   void Generate_Edges ();
   void Generate_Vertices ();
   void Generate_Buffers ();
+  const float* GetTerrain();
+  int GetWidth();
   const static string Name;
 
   private:

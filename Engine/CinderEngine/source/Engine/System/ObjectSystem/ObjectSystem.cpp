@@ -24,6 +24,7 @@ deleted.
 #include "PhysicsSystem.h"
 #include "ZInterface.h"
 #include "ScriptComponent.h"
+#include "Trees.h"
 
 
 namespace Framework
@@ -108,6 +109,7 @@ namespace Framework
 		RegisterComponent(FountainEffect);
 		RegisterComponent(Terrain2D);
 		RegisterComponent(Tree2D);
+    RegisterComponent(EcoSystem);
 		RegisterComponent(FireStarter);
 		RegisterComponent(Microphone);
 		RegisterComponent(UIBox);

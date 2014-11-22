@@ -65,6 +65,7 @@ namespace Framework
 
   void Terrain2D::Initialize ()
   {
+    gameObject->Terrain2D = this;
     Generate_Height_Points ();
     Generate_Edges ();
     Generate_Vertices ();
@@ -122,6 +123,9 @@ namespace Framework
       c [i]->p2 = (glm::mat3)gameObject->Transform->GetModelMatrix() * glm::vec3 (height_points [i + 1], 0.0f);
     }
   }
+
+  const float* Terrain2D::GetTerrain(){ return tc->GetRockMap(); }
+  int Terrain2D::GetWidth(){ return MapSize; }
 
   std::vector <std::pair <vec2, vec2>>& Terrain2D::Get_Edges()
 {

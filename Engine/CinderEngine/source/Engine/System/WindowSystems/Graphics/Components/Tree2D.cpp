@@ -139,6 +139,12 @@ namespace Framework
     }
   }
 
+  void Tree2D::Set(glm::vec4& _color, Tree_Type _type)
+  {
+    color = _color;
+    type = _type;
+  }
+
   void Tree2D::Make_Tree0 (float x1, float y1, float length1, float angle1, int depth)
   {
     float SCALE = 1.0f;

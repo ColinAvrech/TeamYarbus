@@ -42,7 +42,7 @@ namespace Framework
   virtual void Initialize ();
   virtual void Draw ();
 
-
+  void Set(glm::vec4& _color, Tree_Type _type);
   const static std::string Name;
   private:
 

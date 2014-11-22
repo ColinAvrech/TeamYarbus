@@ -49,6 +49,7 @@ namespace Framework
   class Component;
   class FireStarter;
   class Microphone;
+  class Terrain2D;
 
   class GameObject
   {
@@ -86,6 +87,7 @@ namespace Framework
     ComponentPointer(CharacterController);
 	  ComponentPointer(FireStarter);
     ComponentPointer(Microphone);
+    ComponentPointer(Terrain2D);
 
    // Menu Components
    ComponentPointer(MenuController);
