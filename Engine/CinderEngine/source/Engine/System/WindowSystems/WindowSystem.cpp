@@ -30,14 +30,6 @@ namespace Framework
   //! Global pointer to  the windows system.
   WindowSystem* WINDOWSYSTEM = NULL;
 
-  std::list <Transform*> WindowSystem::transformList;
-  std::list <IGraphicsObject*> WindowSystem::graphicsObjects;
-  std::list <UIComponent*> WindowSystem::uiObjects;
-  std::list <ShapeCollider*> WindowSystem::debugColliders;
-
-  Fluid_Engine water;
-  Smoke_Grid grid;
-
   namespace WindowNameSpace
   {
     void GLFWResize (GLFWwindow* window, const int w, const int h)
@@ -356,8 +348,6 @@ namespace Framework
     std::cout << GetName () << " initialized\n";
 
     OPENGL = new Pipeline ();
-    water.Initialize ();
-    grid.Initialize ();
 
     return true;
   }

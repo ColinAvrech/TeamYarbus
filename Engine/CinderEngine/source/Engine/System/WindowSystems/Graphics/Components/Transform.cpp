@@ -100,7 +100,7 @@ namespace Framework
     matricesReady = false;
   }
 
-  void Transform::Translate(vec3 &v)
+  void Transform::Translate(const vec3 &v)
   {
 	  position += v;
 	  matricesReady = false;
@@ -145,7 +145,7 @@ namespace Framework
       GetModelViewProjectionMatrix () [3][1] / GetModelViewProjectionMatrix () [3][3]);
   }
 
-  glm::vec2 Transform::GetScreenPosition (glm::vec2 v)
+  glm::vec2 Transform::GetScreenPosition (const glm::vec2& v)
   {
     glm::mat4 matrix = modelMatrix;
     matrix [3][0] = v.x;

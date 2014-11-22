@@ -13,6 +13,7 @@
 #include "JSONSerializer.h"
 #include "DebugRenderer.h"
 #include "WindowSystem.h"
+#include "Pipeline.h"
 
 #pragma once
 namespace Framework
@@ -58,7 +59,7 @@ namespace Framework
       dr->Initialize ();
     }
 
-    WindowSystem::debugColliders.push_back (this);
+    OPENGL->debugColliders.push_back (this);
   }
 
   ShapeCollider::~ShapeCollider ()
@@ -69,7 +70,7 @@ namespace Framework
       dr = nullptr;
     }
 
-    WindowSystem::debugColliders.remove (this);
+    OPENGL->debugColliders.remove (this);
   }
 
   void ShapeCollider::Draw ()

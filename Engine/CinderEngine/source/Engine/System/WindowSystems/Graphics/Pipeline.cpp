@@ -12,6 +12,8 @@
 #include "Transform.h"
 #include "IGraphicsObject.h"
 #include "Camera.h"
+#include "ShapeCollider.h"
+#include "CinderEngine_UI.h"
 
 namespace Framework
 {
@@ -20,7 +22,9 @@ namespace Framework
 
   std::list <Transform*> Pipeline::transforms;
   std::list <IGraphicsObject*> Pipeline::graphicsObjects;
+  std::list <UIComponent*> Pipeline::uiObjects;
   Camera* Pipeline::camera;
+  std::list <ShapeCollider*> Pipeline::debugColliders;
 
   Pipeline::Pipeline ()
   {
@@ -190,15 +194,15 @@ namespace Framework
       i->Draw ();
     }
 
-    //for (auto* i : uiObjects)
-    //{
-    //  i->UIDraw ();
-    //}
+    for (auto* i : uiObjects)
+    {
+      i->UIDraw ();
+    }
 
-    //for (auto* i : debugColliders)
-    //{
-    //  i->Draw ();
-    //}
+    for (auto* i : debugColliders)
+    {
+      i->Draw ();
+    }
   }
 
   void Pipeline::UpdateMatrices ()

@@ -2,7 +2,7 @@
 #define _TEXTURE_H
 
 #include "GraphicsCommon.h"
-#include "SOIL2.h"
+#include "SOIL.h"
 #include "ZilchCompiledLib.h"
 
 namespace Framework

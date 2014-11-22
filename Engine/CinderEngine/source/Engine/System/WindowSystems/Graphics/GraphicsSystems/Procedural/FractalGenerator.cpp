@@ -8,6 +8,8 @@
 */
 /******************************************************************************/
 
+#include "VertexArrayObject.h"
+#include "VertexBufferObject.h"
 #include "FractalGenerator.h"
 #include "WindowSystem.h"
 

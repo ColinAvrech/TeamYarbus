@@ -80,7 +80,7 @@ namespace Framework
 
 	Zilch::String ZilchFile::ReadLine(Zilch::Integer line)
 	{
-		if (line > Data.size() - 1)
+		if ((unsigned)line > Data.size() - 1)
 		{
 			return Zilch::String('\0');
 		}
