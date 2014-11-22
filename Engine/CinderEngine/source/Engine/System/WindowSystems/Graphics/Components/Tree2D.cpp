@@ -30,7 +30,9 @@ namespace Framework
 
   // Constructor
   Tree2D::Tree2D ()
-  {}
+  {
+    tree = nullptr;
+  }
   
   // Destructor
   Tree2D::~Tree2D ()
@@ -95,37 +97,37 @@ namespace Framework
   {
     if (type == TREE_5)
     {
-      //glBlendFunc (GL_SRC_COLOR, GL_ONE_MINUS_SRC_COLOR);
-      static bool newTree = false;
-      static int counter = 0;
-      static unsigned timer = unsigned (glfwGetTime () * 1000);
+      ////glBlendFunc (GL_SRC_COLOR, GL_ONE_MINUS_SRC_COLOR);
+      //static bool newTree = false;
+      //static int counter = 0;
+      //static unsigned timer = unsigned (glfwGetTime () * 1000);
 
-      // Tree Growth
-      if (counter < tree->getTotalLines ())
-      {
-        tree->Draw_Tree (counter);
-        counter += int (0.005f * tree->getTotalLines ());
-      }
-      else
-      {
-        if (!newTree)
-          timer = unsigned (glfwGetTime () * 1000);
-        tree->Draw_Tree (tree->getTotalLines ());
-        newTree = true;
-      }
+      //// Tree Growth
+      //if (counter < tree->getTotalLines ())
+      //{
+      //  tree->Draw_Tree (counter);
+      //  counter += int (0.005f * tree->getTotalLines ());
+      //}
+      //else
+      //{
+      //  if (!newTree)
+      //    timer = unsigned (glfwGetTime () * 1000);
+      //  tree->Draw_Tree (tree->getTotalLines ());
+      //  newTree = true;
+      //}
 
-      if (newTree && float (glfwGetTime ()) * 1000 - timer > 500)
-      {
-        do
-        {
-          tree->Generate_Tree ();
-        }
-        while (0.0001*tree->getTotalLines () < 1);
+      //if (newTree && float (glfwGetTime ()) * 1000 - timer > 500)
+      //{
+      //  do
+      //  {
+      //    tree->Generate_Tree ();
+      //  }
+      //  while (0.0001*tree->getTotalLines () < 1);
 
-        counter = 0;
-        newTree = false;
-      }
-
+      //  counter = 0;
+      //  newTree = false;
+      //}
+      tree->Draw_Tree (tree->getTotalLines ());
       OPENGL->ResetBlendMode ();
     }
     else

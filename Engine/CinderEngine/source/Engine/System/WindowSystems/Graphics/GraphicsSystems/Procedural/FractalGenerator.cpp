@@ -48,12 +48,12 @@ namespace Framework
     else if (randVarGreen == 1)
       treeGreen = 0.30f;
 
-    Generate_Fractal (screenWidth / 2.0f, screenHeight - 20.0f, (rand () % screenHeight / 4) + 40.0f, 0.0f);
+    Generate_Fractal (0, 0, (rand () % screenHeight / 4) + 40.0f, 0.0f);
   }
 
   void FractalGenerator::Generate_Fractal (GLfloat xPos, GLfloat yPos, GLfloat size, GLfloat degrees)
   {
-    if (size < 5.0f || yPos - size < 10.0f)
+    if (size < 5.0f || yPos - size > 10.0f)
       return;
 
     static const int maxShrink = 900; // per thousand
@@ -83,7 +83,8 @@ namespace Framework
     screenHeight = WINDOWSYSTEM->Get_Height ();
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity ();
-    glOrtho (0.0, WINDOWSYSTEM->Get_Width(), WINDOWSYSTEM->Get_Height(), 0.0, -1.0, 1.0);
+    glOrtho (-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
+    glScaled (1.0 / WINDOWSYSTEM->Get_Width (), -1.0 / WINDOWSYSTEM->Get_Height (), 1.0);
     glMatrixMode (GL_MODELVIEW);
 
     if (lines > (int)xPositions.size ())
