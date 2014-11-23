@@ -436,6 +436,34 @@ namespace Framework
               << " milliseconds" 
               << std::endl;
   }
+
+  /***************************************************************************/
+  /*!
+  \brief  Checks if the microphone is present in the system
+
+  \return Returns a bool stating the presence of the microphone
+  */
+  /***************************************************************************/
+  bool AudioSystem::checkMicrophone()
+  {
+    FMOD_RESULT result;
+    bool micPresent;
+
+    result = pFMODAudioSystem->getRecordNumDrivers(&_recordnumdrivers);
+    ErrCheck(result);
+
+    // If no microphone is detected
+    if (_recordnumdrivers <= 0)
+    {
+      micPresent = false;
+      return micPresent;
+    }
+    else
+    {
+      micPresent = true;
+      return micPresent;
+    }
+  }
 }
 
 //-----------------------------------------------------------------------------

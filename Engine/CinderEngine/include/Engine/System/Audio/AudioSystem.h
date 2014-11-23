@@ -81,6 +81,7 @@ namespace Framework
       void          meterConsoleOut();
       void          frequencyConsoleOut();
       void          latencyConsoleOut();
+      bool          checkMicrophone();
 
       // Called every frame
       virtual void  Update(const double &dt);
