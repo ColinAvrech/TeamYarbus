@@ -10,10 +10,12 @@
 #include "ZInterface.h"
 #include "Zilch.hpp"
 #include "Core.h"
+#include "WindowSystem.h"
 
 namespace Framework
 {
 	ObjectSystem* ZInterface::ObjectSys = OBJECTSYSTEM;
+	WindowSystem* ZInterface::WindowSys = WINDOWSYSTEM;
 	ZilchDefineType(ZilchFile, CinderZilch)
 	{
 		type->HandleManager = ZilchManagerId(Zilch::PointerManager);
@@ -32,6 +34,7 @@ namespace Framework
 		ZilchBindStaticMethod(OpenFile);
 		ZilchBindStaticMethod(QuitGame);
 		ZilchBindStaticFieldGetAs(ObjectSys, "ObjectSystem");
+		ZilchBindStaticFieldGetAs(WindowSys, "WindowSystem");
 		
 		
 	}

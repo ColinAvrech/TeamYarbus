@@ -60,11 +60,11 @@ namespace Framework
   {
     if (ui->Message == "Exit")
     {
-      CORE->QuitGame ();
+      //CORE->QuitGame ();
     }
     else if (ui->Message == "Restart")
     {
-      OBJECTSYSTEM->RestartLevel ();
+      //OBJECTSYSTEM->RestartLevel ();
     }
   }
 

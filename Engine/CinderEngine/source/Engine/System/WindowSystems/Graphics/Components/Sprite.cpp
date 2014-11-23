@@ -14,14 +14,16 @@ namespace Framework
 	{
 		type->HandleManager = ZilchManagerId(Zilch::PointerManager);
 		ZilchBindConstructor(Sprite);
-		ZilchBindMethodOverload(Change_Shader, void, Zilch::String);
-		ZilchBindMethodOverload(Change_Texture, void, Zilch::String);
-		ZilchBindMethod(Change_Color);
+		ZilchBindMethodOverloadAs(Change_Shader,"ChangeShader", void, Zilch::String);
+		ZilchBindMethodOverloadAs(Change_Texture,"ChangeTexture", void, Zilch::String);
+		ZilchBindMethodAs(Change_Color, "ChangeColor");
 		ZilchBindMethod(GetCurrentFrame);
 		ZilchBindMethod(GetAnimationSpeed);
 		ZilchBindMethod(Initialize);
 		ZilchBindMethod(LoadSprite);
 		ZilchBindFieldGetAs(texture, "Texture");
+		ZilchBindFieldGet(Width);
+		ZilchBindFieldGet(Height);
 	}
 
 	VAO* Sprite::vao;
@@ -34,6 +36,9 @@ namespace Framework
 		shader = Resources::RS->Get_Shader("Default");
 		color = { 1, 1, 1, 1 };
 		animated = false;
+
+		Width = Zilch::Real(texture->width / (WINDOWSYSTEM->Get_Width()-0.5f) * 2.0f);
+		Height = Zilch::Real(texture->height / (WINDOWSYSTEM->Get_Height() - 0.5f) * 2.0f);
 	}
 
 	void Sprite::Serialize(Serializer::DataNode* data)
@@ -63,6 +68,9 @@ namespace Framework
 		value->GetValue(&color);
 
 		animated = false;
+
+		Width = Zilch::Real(texture->width / (WINDOWSYSTEM->Get_Width() - 0.5f) * 2.0f);
+		Height = Zilch::Real(texture->height / (WINDOWSYSTEM->Get_Height() - 0.5f) * 2.0f);
 	}
 
 	//JOSH
@@ -74,6 +82,9 @@ namespace Framework
 		texture = Resources::RS->Get_Texture(stdname);
 		shader = Resources::RS->Get_Shader(stdshader);
 		animated = false;
+
+		Width = Zilch::Real(texture->width / (WINDOWSYSTEM->Get_Width() - 0.5f) * 2.0f);
+		Height = Zilch::Real(texture->height / (WINDOWSYSTEM->Get_Height() - 0.5f) * 2.0f);
 
 	}
 
@@ -104,6 +115,9 @@ namespace Framework
 		texture = _texture;
 		animated = false;
 		Specify_Attributes();
+
+		Width = Zilch::Real(texture->width / (WINDOWSYSTEM->Get_Width() - 0.5f) * 2.0f);
+		Height = Zilch::Real(texture->height / (WINDOWSYSTEM->Get_Height() - 0.5f) * 2.0f);
 	}
 
 
@@ -114,6 +128,9 @@ namespace Framework
 		atlas = _atlas;
 		animated = true;
 		Specify_Attributes();
+
+		Width = Zilch::Real(texture->width / (WINDOWSYSTEM->Get_Width() - 0.5f) * 2.0f);
+		Height = Zilch::Real(texture->height / (WINDOWSYSTEM->Get_Height() - 0.5f) * 2.0f);
 	}
 
 
@@ -175,6 +192,9 @@ namespace Framework
 		shader->uni1i("image", 0);
 		texture->Unbind();
 		shader->Disable();
+
+		Width = Zilch::Real(texture->width / (WINDOWSYSTEM->Get_Width() - 0.5f) * 2.0f);
+		Height = Zilch::Real(texture->height / (WINDOWSYSTEM->Get_Height() - 0.5f) * 2.0f);
 	}
 
 

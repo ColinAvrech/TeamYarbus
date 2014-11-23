@@ -9,6 +9,8 @@ namespace Framework
 	{
 		type->HandleManager = ZilchManagerId(Zilch::PointerManager);
 		ZilchBindFieldGet(Name);
+		ZilchBindFieldGetAs(width, "Width");
+		ZilchBindFieldGetAs(height, "Height");
 	}
   // DEFAULT CONSTRUCTOR
   // WILL BE USE TO DYNAMICALLY GENERATE TEXTURE (FRAME BUFFER)

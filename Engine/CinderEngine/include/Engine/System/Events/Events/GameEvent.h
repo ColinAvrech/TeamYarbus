@@ -29,6 +29,7 @@ namespace Framework
   class UIEvent : public BaseEvent
   {
   public:
-    std::string Message;
+	ZilchDeclareBaseType(UIEvent, Zilch::TypeCopyMode::ReferenceType);
+    Zilch::String Message;
   };
 }

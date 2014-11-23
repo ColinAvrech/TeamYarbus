@@ -30,6 +30,14 @@ namespace Framework
   //! Global pointer to  the windows system.
   WindowSystem* WINDOWSYSTEM = NULL;
 
+  ZilchDefineType(WindowSystem, CinderZilch)
+  {
+	  type->HandleManager = ZilchManagerId(Zilch::PointerManager);
+	  ZilchBindMethodAs(ZGet_Mouse_Position, "GetMousePosition");
+	  ZilchBindMethodAs(ZGet_Normalized_Mouse_Position, "GetNormalMousePosition");
+
+  }
+
   namespace WindowNameSpace
   {
     void GLFWResize (GLFWwindow* window, const int w, const int h)
@@ -400,6 +408,11 @@ namespace Framework
     return glm::vec2 (cursorPosition);
   }
 
+  Zilch::Real2 WindowSystem::ZGet_Mouse_Position()
+  {
+	  return Zilch::Real2(Zilch::Real(cursorPosition.x), Zilch::Real(cursorPosition.y));
+  }
+
   glm::vec2 WindowSystem::Get_Normalized_Mouse_Position ()
   {
     glm::vec2 normPos;
@@ -407,6 +420,15 @@ namespace Framework
     normPos.y = (float) ((WindowHeight - cursorPosition.y) / WindowHeight - 0.5f) * 2.0f;
 
     return normPos;
+  }
+
+  Zilch::Real2 WindowSystem::ZGet_Normalized_Mouse_Position()
+  {
+	  glm::vec2 normPos;
+	  normPos.x = (float)(cursorPosition.x / (WindowWidth)-0.5f) * 2.0f;
+	  normPos.y = (float)((WindowHeight - cursorPosition.y) / WindowHeight - 0.5f) * 2.0f;
+
+	  return Zilch::Real2(Zilch::Real(normPos.x), Zilch::Real(normPos.y));
   }
 
 }

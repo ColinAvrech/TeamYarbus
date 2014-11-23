@@ -41,6 +41,7 @@ namespace Framework
 	public:
 		ZilchDeclareBaseType(ZInterface, Zilch::TypeCopyMode::ReferenceType);
 		static ObjectSystem* ObjectSys;
+		static WindowSystem* WindowSys;
 		
 		static void QuitGame();
 

@@ -51,6 +51,8 @@ namespace Framework
     /*inline*/ vec3 GetPosition ();
     /*inline*/ vec3 GetScale ();
     /*inline*/ float GetRotation ();
+	Zilch::Real3 Transform::GetTranslation();
+	Zilch::Real3 Transform::ZGetScale();
     vec2 GetScreenPosition ();
     glm::vec2 GetScreenPosition (const glm::vec2& v);
 

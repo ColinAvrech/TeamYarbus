@@ -25,13 +25,13 @@ namespace Framework
     void Unbind (int num = 0);
     void Release_Texture ();
     void Image2D (GLenum format, int w, int h, int border, GLenum type, const void* pixels);
-
+	int width;
+    int height;
 
 	Zilch::String Name;
   protected:
     GLuint textureID;
-    int width;
-    int height;
+    
     float aspect;
 
   };

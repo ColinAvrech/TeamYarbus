@@ -26,7 +26,7 @@ starts the game loop.
 #include "ResourceManager.h"
 #include "Serializer/JSONSerializer.h"
 #include "UISystem.h"
-
+#include "ZInterface.h"
 
 //testing includes
 #include "ComponentInclude.h"
@@ -46,15 +46,6 @@ const int ClientWidth = 1024;
 const int ClientHeight = 1024;
 
 
-// Temporary Getter functions for System
-EventSystem*  Cinder::GetEventSystem() { return EVENTSYSTEM; }
-ObjectSystem* Cinder::GetObjectSystem(){ return OBJECTSYSTEM; }
-
-ZilchDefineType(Cinder, CinderZilch)
-{
-  ZilchBindMethod(GetEventSystem);
-  ZilchBindMethod(GetObjectSystem);
-}
 
 int main (void)
 {
@@ -76,6 +67,11 @@ int main (void)
   Physics::PhysicsSystem * phys = new Physics::PhysicsSystem ();
   ObjectSystem* objsys = new ObjectSystem ();
   UISystem* ui = new UISystem ();
+  
+  //Adding Pointer to ZilchInterface
+  ZInterface::ObjectSys = objsys;
+  ZInterface::WindowSys = windows;
+
 
   engine->AddSystem (phys);
   engine->AddSystem (windows);
@@ -108,7 +104,7 @@ int main (void)
 
 
   //! activate the window.
-  OBJECTSYSTEM->LoadLevel("Level");
+  OBJECTSYSTEM->LoadLevel("ZilchTestLevel");
 
 
   // Connect example

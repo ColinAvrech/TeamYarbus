@@ -28,6 +28,9 @@ namespace Framework
 	  ZilchBindMethod(Initialize);
     ZilchBindMethodOverload(Scale, void, float, float, float);
     ZilchBindMethodOverload(Scale, void, float);
+	ZilchBindMethod(GetTranslation);
+	ZilchBindMethod(GetRotation);
+	ZilchBindMethodAs(ZGetScale, "GetScale");
 	  ZilchBindMethodOverload(Translate, void, float, float, float);
     ZilchBindMethod(Rotate);
 	  //ZilchBindMethod(GetScreenPosition);
@@ -94,6 +97,16 @@ namespace Framework
 
 
   // Replace the Fixed Functionality glTranslatef, glScalef,...
+  Zilch::Real3 Transform::GetTranslation()
+  {
+	  return Zilch::Real3(Zilch::Real(position.x), Zilch::Real(position.y), Zilch::Real(position.z));
+  }
+
+  Zilch::Real3 Transform::ZGetScale()
+  {
+	  return Zilch::Real3(Zilch::Real(scale.x), Zilch::Real(scale.y), Zilch::Real(scale.z));
+  }
+
   void Transform::Translate (float x, float y, float z)
   {
     position += vec3 (x, y, z);

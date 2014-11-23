@@ -14,9 +14,12 @@
 #include "Events.h"
 #include "ZilchCompiledLib.h"
 
+#include "GameEvent.h"
 #include "UpdateEvent.h"
 #include "KeyEvent.h"
 #include "CollisionEvent.h"
+#include "PingEvent.h"
+#include "MenuChangeEvent.h"
 //#include "UpdateEvent.h"
 //#include "UpdateEvent.h"
 
@@ -55,8 +58,26 @@ namespace Framework
     ZilchBindFieldGet(Penetration);
 
     //Need to add Game Object to zilch Library Before using these
-    //ZilchBindFieldGetSet(thisObject);
-    //ZilchBindFieldGetSet(OtherObject);
+    ZilchBindFieldGetAs(thisObject, "Object");
+    ZilchBindFieldGet(OtherObject);
+	//ZilchBindFieldGetAs(normal, "Normal");
+  }
+
+  ZilchDefineType(PingEvent, CinderZilch)
+  {
+	  type->HandleManager = ZilchManagerId(PointerManager);
+	  ZilchBindFieldGet(Ping);
+
+  }
+  ZilchDefineType(MenuChangeEvent, CinderZilch)
+  {
+	  type->HandleManager = ZilchManagerId(PointerManager);
+  }
+
+  ZilchDefineType(UIEvent, CinderZilch)
+  {
+	  type->HandleManager = ZilchManagerId(PointerManager);
+	  ZilchBindFieldGetSet(Message);
   }
 
 

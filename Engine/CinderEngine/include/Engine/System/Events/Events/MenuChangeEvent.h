@@ -28,5 +28,4 @@ namespace Framework
     typedef void(*MenuAction)(void);
     MenuAction Action = nullptr;
   };
-
 }

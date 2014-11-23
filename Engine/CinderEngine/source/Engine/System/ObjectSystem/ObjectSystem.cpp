@@ -38,7 +38,7 @@ namespace Framework
 	ZilchDefineType(ObjectSystem, CinderZilch)
 	{
 		type->HandleManager = ZilchManagerId(Zilch::PointerManager);
-		type->HandleManager = ZilchManagerId(Zilch::PointerManager);
+		
 		ZilchBindMethod(CreateObject);
 		ZilchBindMethod(DestroyAllObjects);
 		ZilchBindMethod(LoadLevelAdditive);
@@ -56,7 +56,7 @@ namespace Framework
 	{
 		ErrorIf(OBJECTSYSTEM != NULL, "Factory Already Created");
 		OBJECTSYSTEM = this;
-		ZInterface::ObjectSys = this;
+		
 		RegisterComponents();
 	}
 

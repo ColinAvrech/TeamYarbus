@@ -15,19 +15,25 @@ class Josh : Component
 	function Initialize(owner:GameObject)
 	{
 	this.Owner = owner;
+	
+	//var detector = new MouseDetector(this.Owner, this.OnMouseEvent);
+	//Console.WriteLine(detector);
+	//var obj = new Dot();
+	
 	//this.ObjectSys
-	Console.WriteLine(owner.Sprite.Texture.Name);
-	//ZInterface.ObjectSystem.LoadLevelAdditive("MainMenu");
+	Console.WriteLine(ZInterface.WindowSystem);
+	ZInterface.ObjectSystem.LoadLevelAdditive("MainMenu");
 	Console.WriteLine(ZInterface.ObjectSystem);
-	//this.ObjectSys = objectSystem;
-	//Cinder2.Connect(this, Events.UpdateEvent, this.LogicUpdate);
-	//Cinder2.Connect(this, Events.KeyEvent, this.KeyIsPressed);
+	
+	//Cinder.Connect(this, Events.UpdateEvent, this.LogicUpdate);
+	//Cinder.Connect(this, Events.KeyEvent, this.KeyIsPressed);
 	//var obj : GameObject = Cinder.objsys.CreateObject();
 	//Console.Writeline(obj);
 	//Console.Writeline(obj);
 	//Console.WriteLine(new Player());
 	//Console.WriteLine(this.Owner);
-	EventSystem.Connect("KUP", this.KeyIsPressed);
+	//EventSystem.Connect(Events.UpdateEvent, this.LogicUpdate);
+	
 	//Console.WriteLine(this);
 	//Console.WriteLine("hello");
 	//var gameobject = this.ObjectSys.CreateObject();
@@ -53,16 +59,41 @@ class Josh : Component
 	}
 	*/
 
+	//var collider:CircleCollider = this.Owner.ShapeCollider as any as CircleCollider;
 
-
-
-	//Console.WriteLine();
+	
+	
+	//Console.WriteLine(collider.Radius);
 	}
-
+	
+	function OnMouseEvent(e: MouseEvent)
+	{
+		if (e.State == MouseState.MouseOutside)
+		{
+			//Console.WriteLine("Outside");
+		}
+		else if (e.State == MouseState.MouseEnter)
+		{
+			Console.WriteLine("Enter");
+		}
+		else if (e.State == MouseState.MouseExit)
+		{
+			Console.WriteLine("Exit");
+		}
+		//Console.WriteLine("MOUSE!");
+	}
+	
+	function Ping(e: UIEvent)
+	{
+		Console.WriteLine("PING!");
+		Console.WriteLine(e.Message);
+	}
+	
 	function LogicUpdate(e: UpdateEvent)
 	{
 	//Console.WriteLine(e.TimePassed);
 	//this.SpawnedObject.Transform.Translate(0,0.1,0);
+		//Console.WriteLine(ZInterface.WindowSystem.GetNormalMousePosition());
 	}
 
 	function KeyIsPressed(e: KeyEvent)
@@ -74,7 +105,28 @@ class Josh : Component
  
 }
 
-class Cinder2
+class Dot
+{
+	var Object: GameObject = null;
+	
+	constructor()
+	{
+		this.Object = ZInterface.ObjectSystem.CreateObject();
+		
+		this.Object.AddComponent("Transform");
+		this.Object.Transform.Translate(0,0,-2);
+		Console.WriteLine(this.Object.Transform.GetTranslation());
+		this.Object.Transform.Scale(1, 1, 1);
+		
+		this.Object.AddComponent("Sprite");
+		this.Object.Sprite.ChangeTexture("Default");
+		Console.WriteLine(this.Object.Sprite.Texture.Name);
+	}
+	
+	
+}
+
+class Cinder
 {
 	//NEEDS FIXED ANY TYPE?
 	[Static]

@@ -43,6 +43,9 @@ namespace Framework
     void Change_Texture (Zilch::String);
     void Update_Shader ();
 
+	Zilch::Real Width;
+	Zilch::Real Height;
+
     Shader* Get_Shader ();
     Texture* Get_Texture ();
     void Specify_Attributes ();

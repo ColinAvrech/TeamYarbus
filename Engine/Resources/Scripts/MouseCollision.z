@@ -1,0 +1,187 @@
+enum MouseState
+{
+	MouseEnter,
+	MouseExit,
+	MousePersist,
+	MouseOutside
+}
+
+class MouseEvent
+{
+	var State: MouseState = MouseState.MouseEnter;
+	var Position: Real2 = Real2();
+	
+	constructor(state:MouseState, pos: Real2)
+	{
+		this.State = state;
+		this.Position = pos;
+	}
+}
+
+class MouseDetector
+{
+	var Target: GameObject = null;
+	var Rect: Rectangle = null;
+	var Funct: delegate(e: MouseEvent) = null;
+	var CollidingLast: Boolean = false;
+	var CollidingThis: Boolean = false;
+	
+	var Dot1: Dot = null;
+	var Dot2: Dot = null;
+	var Dot3: Dot = null;
+	var Dot4: Dot = null;
+  
+	constructor(gameObject:GameObject, funct: delegate(e: MouseEvent))
+	{
+		if(gameObject.Sprite == null)
+		{
+			throw new Exception("The GameObject requires a Sprite component for MouseCollision.");
+		}
+		if(gameObject.Transform == null)
+		{
+			throw new Exception("The GameObject requires a Transform component for MouseCollision.");
+		}
+		this.Target = gameObject;
+		this.Rect = new Rectangle(0,0);
+		this.Funct = funct;
+		this.Initialize();
+		
+	}
+
+	function Initialize()
+	{
+		var sprite = this.Target.Sprite;
+		var translation = this.Target.Transform.GetTranslation();
+		var scale = this.Target.Transform.GetScale();
+		this.Rect.Width = sprite.Width * scale.X;
+		this.Rect.Height = sprite.Height * scale.Y;
+		this.Rect.X = translation.X;
+		this.Rect.Y = translation.Y;
+		
+		this.Dot1 = new Dot();
+		this.Dot2 = new Dot();
+		this.Dot3 = new Dot();
+		this.Dot4 = new Dot();
+		EventSystem.Connect(Events.UpdateEvent, this.LogicUpdate);
+	}
+
+	
+	function LogicUpdate(e: UpdateEvent)
+	{
+		var sprite = this.Target.Sprite;
+		var translation = this.Target.Transform.GetTranslation();
+		var scale = this.Target.Transform.GetScale();
+		this.Rect.Width = sprite.Width * scale.X;
+		this.Rect.Height = sprite.Height * scale.Y;
+		this.Rect.X = translation.X;
+		this.Rect.Y = translation.Y;
+		var mousePos = ZInterface.WindowSystem.GetNormalMousePosition();
+		var collision = this.Rect.Contains(mousePos);
+		this.CollidingThis = collision;
+		
+		this.Dot1.Object.Transform.Translate(this.Rect.TopLeft().X, this.Rect.TopLeft().Y, -2);
+		this.Dot2.Object.Transform.Translate(this.Rect.TopRight().X, this.Rect.TopRight().Y, -2);
+		this.Dot3.Object.Transform.Translate(this.Rect.BottomLeft().X, this.Rect.BottomLeft().Y, -2);
+		this.Dot4.Object.Transform.Translate(this.Rect.BottomRight().X, this.Rect.BottomRight().Y, -2);
+		
+		if(this.CollidingLast && this.CollidingThis)
+		{
+			this.Funct(new MouseEvent(MouseState.MousePersist, mousePos));
+		}
+		else if(!this.CollidingLast && this.CollidingThis)
+		{
+			this.Funct(new MouseEvent(MouseState.MouseEnter, mousePos));
+		}
+		else if(this.CollidingLast && !this.CollidingThis)
+		{
+			this.Funct(new MouseEvent(MouseState.MouseExit, mousePos));
+		}
+		else if(this.CollidingLast && !this.CollidingThis)
+		{
+			this.Funct(new MouseEvent(MouseState.MouseOutside, mousePos));
+		}
+		
+		this.CollidingLast = this.CollidingThis;
+	}
+ 
+}
+
+class Rectangle
+{
+	var Width: Real = 0;
+	var Height: Real = 0;
+	var X:Real = 0;
+	var Y:Real = 0;
+	
+	
+	constructor(width: Real, height: Real)
+	{
+		this.Width = width;
+		this.Height = height;
+	}
+	constructor(dimensions: Real2)
+	{
+		this.Width = dimensions.X;
+		this.Height = dimensions.Y;
+	}
+	
+	function HalfWidth(): Real
+	{
+		return this.Width/2;
+	}
+	
+	function HalfHeight(): Real
+	{
+		return this.Height/2;
+	}
+	
+	function Contains(x: Real, y: Real):Boolean
+	{
+		var halfWidth = this.HalfWidth();
+		var halfHeight = this.HalfHeight();
+		if(x <= (this.X + halfWidth) && x >= (this.X - halfWidth))
+		{
+            if(y <= (this.Y + halfHeight) && y >= (this.X - halfHeight))
+            {
+                return true;
+            }
+		}
+		
+		return false;
+    }
+	
+	function Contains(pos:Real2):Boolean
+	{
+    	var halfWidth = this.HalfWidth();
+		var halfHeight = this.HalfHeight();
+		if(pos.X < (this.X + halfWidth) && pos.X > (this.X - halfWidth))
+		{
+            if(pos.Y < (this.Y + halfHeight) && pos.Y > (this.Y - halfHeight))
+            {
+                return true;
+            }
+		}
+		
+		return false;
+	}
+	
+    function TopLeft(): Real2
+    {
+        return Real2(this.X - this.HalfWidth(), this.Y + this.HalfHeight());
+    }
+    
+    function TopRight(): Real2
+    {
+        return Real2(this.X + this.HalfWidth(), this.Y  + this.HalfHeight());
+    }
+    
+    function BottomLeft(): Real2
+    {
+        return Real2(this.X - this.HalfWidth(), this.Y - this.HalfHeight());
+    }
+    
+    function BottomRight(): Real2
+    {
+        return Real2(this.X + this.HalfWidth(), this.Y - this.HalfHeight());
+    }
+}

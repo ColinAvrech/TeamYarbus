@@ -142,7 +142,7 @@ namespace Framework
         && buttonState == GLFW_PRESS)
       {
         buttonState = GLFW_RELEASE;
-        uiEvent->Message = Message;
+        uiEvent->Message = Zilch::String(Message.c_str());
         EVENTSYSTEM->TriggerEvent (Events::UI, *uiEvent);
       }
     }

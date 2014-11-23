@@ -38,7 +38,8 @@ namespace Framework
     ZilchBindFieldGet(Sprite);
 	  //ZilchBindFieldGet(Name);
 	  ZilchBindMethodOverloadAs(ZGetComponent, "GetComponent", Component*, Zilch::String);
-    //ZilchBindFieldGetSet(ShapeCollider);
+    
+	ZilchBindFieldGetSet(ShapeCollider);
     //ZilchBindFieldGetSet(Camera);
     ZilchBindFieldGet(RigidBody);
     //ZilchBindFieldGetSet(CharacterController);

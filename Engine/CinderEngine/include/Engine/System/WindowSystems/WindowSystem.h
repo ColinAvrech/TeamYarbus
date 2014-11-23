@@ -30,6 +30,8 @@ namespace Framework
   class WindowSystem : public BaseSystem
   {
   public:
+	ZilchDeclareBaseType(WindowSystem, Zilch::TypeCopyMode::ReferenceType);
+
     glm::dvec2 cursorPosition;
     WindowSystem(const char* WindowTitle, const int& ClientWidth = 1920, const int& ClientHeight = 1080, const bool& fullscreen = true);
     ~WindowSystem();
@@ -52,7 +54,9 @@ namespace Framework
     int Get_Width ();
     int Get_Height ();
     glm::vec2 Get_Mouse_Position ();
+	Zilch::Real2 ZGet_Mouse_Position();
     glm::vec2 Get_Normalized_Mouse_Position ();
+	Zilch::Real2 ZGet_Normalized_Mouse_Position();
     inline GLFWwindow* Get_Window ()
     {
       return window;
