@@ -14,9 +14,19 @@
 #include "Camera.h"
 #include "ShapeCollider.h"
 #include "CinderEngine_UI.h"
+#include "glfw3.h"
 
 namespace Framework
 {
+  enum COLOR_STATE
+  {
+    IDLE,
+    INTERPOLATE,
+  };
+
+  COLOR_STATE cState = IDLE;
+
+
   //! Global pointer to  the windows system.
   Pipeline* OPENGL = NULL;
 
@@ -137,6 +147,20 @@ namespace Framework
     matricesReady = false;
   }
 
+  void Pipeline::Rotatef (float r, float x, float y, float z)
+  {
+    if (currentMatrix == MODEL)
+    {
+      modelMatrix [modelMatrix.size () - 1] *= glm::rotate (r * M_PI / 180, glm::vec3 (x, y, z));
+    }
+    else if (currentMatrix == VIEW)
+    {
+      viewMatrix [viewMatrix.size () - 1] *= glm::rotate (r * M_PI / 180, glm::vec3 (x, y, z));
+    }
+
+    matricesReady = false;
+  }
+
   void Pipeline::LookAt (glm::vec3 eye, glm::vec3 center, glm::vec3 up)
   {
     viewMatrix [viewMatrix.size () - 1] = glm::lookAt (eye, center, up);
@@ -170,10 +194,39 @@ namespace Framework
     glEnd ();
   }
 
+  static float t = 0.0f;
+  glm::vec4 startColor, endColor;
+  glm::vec4 color;
+
   void Pipeline::Update ()
   {
+    switch (cState)
+    {
+    case Framework::IDLE:
+      t += 0.016f;
+      if (t > 1.0f)
+      {
+        cState = INTERPOLATE;
+        t = 0.0f;
+        startColor = color;
+        endColor = glm::linearRand (glm::vec4 (0,0,0,0), glm::vec4 (1.0f, 1.0f, 1.0f, 1.0f));
+      }
+      break;
+    case Framework::INTERPOLATE:
+      t += 0.016f;
+      color = glm::mix (startColor, endColor, t * 5);
+      if (t > 0.2f)
+      {
+        t = 0.0f;
+        cState = IDLE;
+      }
+      break;
+    default:
+      break;
+    }
+
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glClearColor (0, 0, 0, 0);
+    glClearColor (color.r, color.g, color.b, 1.0f);
     glEnable (GL_BLEND);
     sFactor = GL_SRC_ALPHA;
     dFactor = GL_ONE_MINUS_SRC_ALPHA;
@@ -183,10 +236,9 @@ namespace Framework
     {
       i->UpdateMatrices ();
     }
-
     camera->UpdateCamera (this);
 
-    Draw_Quad ();
+    //Draw_Quad ();
 
     for (auto* i : graphicsObjects)
     {

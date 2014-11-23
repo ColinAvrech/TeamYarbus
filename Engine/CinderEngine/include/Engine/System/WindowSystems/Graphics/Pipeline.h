@@ -45,8 +45,8 @@ namespace Framework
     void Scalef (float x, float y, float z);
     void Scalef (float s);
     void Scalefv (float* v);
-    void Rotatef (float z);
-    void Rotatefv (float* v);
+    void Rotatef (float r, float x, float y, float z);
+    void Rotatefv (float r, float* v);
     void Ortho (float left, float right, float bottom, float top, float near = 0.0f, float farPlane = 1.0f);
     void Perspective (float fov, float aspect, float nearPlane, float farPlane);
     void LookAt (glm::vec3 eye, glm::vec3 center, glm::vec3 up);

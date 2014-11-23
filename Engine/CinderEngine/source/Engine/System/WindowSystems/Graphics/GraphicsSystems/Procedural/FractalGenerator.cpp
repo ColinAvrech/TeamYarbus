@@ -12,6 +12,8 @@
 #include "VertexBufferObject.h"
 #include "FractalGenerator.h"
 #include "WindowSystem.h"
+#include "Pipeline.h"
+#include "ResourceManager.h"
 
 namespace Framework
 {
@@ -21,17 +23,20 @@ namespace Framework
 
   // Constructor
   FractalGenerator::FractalGenerator ()
-  {}
+  {
+  }
   
   // Destructor
   FractalGenerator::~FractalGenerator ()
-  {}
+  {
+  }
 
   void FractalGenerator::Generate_Tree ()
   {
     xPositions.clear ();
     yPositions.clear ();
     sizes.clear ();
+    colors.clear ();
     angles.clear ();
 
     int randVarRed = rand () % 3;
@@ -64,9 +69,10 @@ namespace Framework
     GLfloat newPosX = xPos + size * sin (degrees / 180.0f * M_PI);
     GLfloat newPosY = yPos - size * cos (degrees / 180.0f * M_PI);
 
-    xPositions.push_back (xPos);
-    yPositions.push_back (yPos);
-    sizes.push_back (size);
+    xPositions.push_back (xPos / screenWidth);
+    yPositions.push_back (yPos / screenWidth);
+    colors.push_back (size);
+    sizes.push_back (size / screenWidth);
     angles.push_back (degrees);
 
     int branches = rand () % (maxBranches - minBranches) + 1 + minBranches;
@@ -77,32 +83,50 @@ namespace Framework
     }
   }
 
-  void FractalGenerator::Draw_Tree (int lines)
-  {
+  void FractalGenerator::Create_Mesh(int lines, std::vector <float>* mesh)
+{
+    mesh->clear ();
     screenWidth = WINDOWSYSTEM->Get_Width ();
     screenHeight = WINDOWSYSTEM->Get_Height ();
-    glMatrixMode (GL_PROJECTION);
-    glLoadIdentity ();
-    glOrtho (-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
-    glScaled (1.0 / WINDOWSYSTEM->Get_Width (), -1.0 / WINDOWSYSTEM->Get_Height (), 1.0);
-    glMatrixMode (GL_MODELVIEW);
 
-    if (lines > (int)xPositions.size ())
+    OPENGL->MatrixMode (MODEL);
+    OPENGL->LoadIdentity ();
+    OPENGL->Scalef (1.0f, -1.0f * ((float)screenWidth / screenHeight), 1.0f);
+
+    if (lines > (int) xPositions.size ())
+    {
       return;
+    }
+
+    glm::vec2 p1;
+    glm::vec2 p2;
+    glm::vec4 color;
 
     for (int i = 0; i < lines; ++i)
     {
-      glColor3f (1.0f / (sizes.at (i) * treeRed), 1.0f / (sizes.at (i) * treeGreen), 0.0f);
-      glLineWidth (sizes.at (i) / 40.0f + 1.0f);
-      glPushMatrix ();
-      glTranslatef (xPositions.at (i), yPositions.at (i), 0.0f);
-      glRotatef (angles.at (i), 0.0f, 0.0f, 1.0f);
-      glBegin (GL_LINES);
-      glVertex2f (0.0f, 0.0f);
-      glVertex2f (0.0f, -sizes.at (i));
-      glEnd ();
-      glPopMatrix ();
+      OPENGL->PushMatrix ();
+      OPENGL->Translatef (xPositions.at (i), yPositions.at (i), 0.0f);
+      OPENGL->Rotatef (angles.at (i), 0.0f, 0.0f, 1.0f);
+      p1 = glm::vec2 (OPENGL->GetModelMatrix () * glm::vec4 (0, 0, 0, 1));
+      p2 = glm::vec2 (OPENGL->GetModelMatrix () * glm::vec4 (0, -sizes.at(i), 0, 1));
+      OPENGL->PopMatrix ();
+      color = glm::vec4 (1.0f / (colors.at (i) * treeRed), 1.0f / (colors.at (i) * treeGreen), 0.0f, 1.0f);
+      mesh->push_back (p1.x);
+      mesh->push_back (p1.y);
+      mesh->push_back (color.r);
+      mesh->push_back (color.g);
+      mesh->push_back (color.b);
+      mesh->push_back (color.a);
+      mesh->push_back (p2.x);
+      mesh->push_back (p2.y);
+      mesh->push_back (color.r);
+      mesh->push_back (color.g);
+      mesh->push_back (color.b);
+      mesh->push_back (color.a);
     }
+
+    OPENGL->MatrixMode (MODEL);
+    OPENGL->LoadIdentity();
   }
 
 }
