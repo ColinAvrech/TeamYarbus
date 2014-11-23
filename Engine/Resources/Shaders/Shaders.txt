@@ -63,3 +63,8 @@ Terrain.vs.glsl
 Terrain.frag.glsl
 0
 Terrain
+>
+Tree.vs.glsl
+Tree.frag.glsl
+0
+Tree

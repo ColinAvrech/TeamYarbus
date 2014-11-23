@@ -137,6 +137,20 @@ namespace Framework
     matricesReady = false;
   }
 
+  void Pipeline::Rotatef (float r, float x, float y, float z)
+  {
+    if (currentMatrix == MODEL)
+    {
+      modelMatrix [modelMatrix.size () - 1] *= glm::rotate (r * M_PI / 180, glm::vec3 (x, y, z));
+    }
+    else if (currentMatrix == VIEW)
+    {
+      viewMatrix [viewMatrix.size () - 1] *= glm::rotate (r * M_PI / 180, glm::vec3 (x, y, z));
+    }
+
+    matricesReady = false;
+  }
+
   void Pipeline::LookAt (glm::vec3 eye, glm::vec3 center, glm::vec3 up)
   {
     viewMatrix [viewMatrix.size () - 1] = glm::lookAt (eye, center, up);

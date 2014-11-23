@@ -17,6 +17,7 @@
 
 namespace Framework
 {
+  class Shader;
 
   class FractalGenerator
   {
@@ -25,7 +26,8 @@ namespace Framework
   ~FractalGenerator ();
   
   void Generate_Tree ();
-  void Draw_Tree (int lines);
+  void Create_Mesh (int lines);
+  void Draw ();
 
   int getTotalLines ()
   {
@@ -43,6 +45,7 @@ namespace Framework
 
     VAO* vao;
     VBO* vbo;
+    Shader* shader;
     std::vector <float> mesh;
     void Generate_Fractal (GLfloat xPos, GLfloat yPos, GLfloat size, GLfloat degrees);
   };  
