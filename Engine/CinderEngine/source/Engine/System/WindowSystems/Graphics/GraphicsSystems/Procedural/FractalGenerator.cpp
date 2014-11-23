@@ -24,26 +24,11 @@ namespace Framework
   // Constructor
   FractalGenerator::FractalGenerator ()
   {
-    shader = Resources::RS->Get_Shader ("Tree");
-    shader->Use ();
-    vao = new VAO ();
-    vbo = new VBO ((GLuint)0, (GLuint*)nullptr);
-    GLint posAttrib = shader->attribLocation ("position");
-    GLint colAttrib = shader->attribLocation ("color");
-
-    shader->enableVertexAttribArray (posAttrib);
-    shader->vertexAttribPtr (posAttrib, 2, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), 0);
-
-    shader->enableVertexAttribArray (colAttrib);
-    shader->vertexAttribPtr (colAttrib, 4, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), 2 * sizeof(GLfloat));
-    shader->Disable ();
-    vao->unbindVAO ();
   }
   
   // Destructor
   FractalGenerator::~FractalGenerator ()
   {
-    delete vao, vbo;
   }
 
   void FractalGenerator::Generate_Tree ()
@@ -98,14 +83,15 @@ namespace Framework
     }
   }
 
-  void FractalGenerator::Create_Mesh (int lines)
-  {
-    mesh.clear ();
+  void FractalGenerator::Create_Mesh(int lines, std::vector <float>* mesh)
+{
+    mesh->clear ();
     screenWidth = WINDOWSYSTEM->Get_Width ();
     screenHeight = WINDOWSYSTEM->Get_Height ();
 
     OPENGL->MatrixMode (MODEL);
     OPENGL->LoadIdentity ();
+    OPENGL->Scalef (1.0f, -1.0f * ((float)screenWidth / screenHeight), 1.0f);
 
     if (lines > (int) xPositions.size ())
     {
@@ -125,36 +111,22 @@ namespace Framework
       p2 = glm::vec2 (OPENGL->GetModelMatrix () * glm::vec4 (0, -sizes.at(i), 0, 1));
       OPENGL->PopMatrix ();
       color = glm::vec4 (1.0f / (colors.at (i) * treeRed), 1.0f / (colors.at (i) * treeGreen), 0.0f, 1.0f);
-      mesh.push_back (p1.x);
-      mesh.push_back (p1.y);
-      mesh.push_back (color.r);
-      mesh.push_back (color.g);
-      mesh.push_back (color.b);
-      mesh.push_back (color.a);
-      mesh.push_back (p2.x);
-      mesh.push_back (p2.y);
-      mesh.push_back (color.r);
-      mesh.push_back (color.g);
-      mesh.push_back (color.b);
-      mesh.push_back (color.a);
+      mesh->push_back (p1.x);
+      mesh->push_back (p1.y);
+      mesh->push_back (color.r);
+      mesh->push_back (color.g);
+      mesh->push_back (color.b);
+      mesh->push_back (color.a);
+      mesh->push_back (p2.x);
+      mesh->push_back (p2.y);
+      mesh->push_back (color.r);
+      mesh->push_back (color.g);
+      mesh->push_back (color.b);
+      mesh->push_back (color.a);
     }
 
-    vbo->bufferData (mesh.size () * sizeof (float), mesh.data (), GL_STREAM_DRAW);
-    vbo->unBindVBO ();
-  }
-
-  void FractalGenerator::Draw ()
-  {
     OPENGL->MatrixMode (MODEL);
-    OPENGL->LoadIdentity ();
-    OPENGL->Scalef (1.0f, -1.0f * ((float) screenWidth / screenHeight), 1.0f);
-    OPENGL->Translatef (0, 0, -1);
-    shader->Use ();
-    shader->uniMat4 ("mvp", glm::value_ptr (OPENGL->GetModelViewProjectionMatrix ()));
-    vao->bindVAO ();
-    glDrawArrays (GL_LINES, 0, mesh.size () / 6);
-    vao->unbindVAO ();
-    shader->Disable ();
+    OPENGL->LoadIdentity();
   }
 
 }

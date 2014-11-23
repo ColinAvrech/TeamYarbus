@@ -65,32 +65,52 @@ namespace Framework
       Make_Tree1 (0, -0.5f, 0.0f, 0.25f, 45, 5, 3);
       break;
     case Framework::TREE_2:
-      Make_Tree2(0, -0.1f, 0.1f, 1.5, 15);
+      Make_Tree2 (0, -0.1f, 0.1f, 1.5, 15);
       break;
     case Framework::TREE_3:
-      Make_Tree3(0, -0.1f, 0.1f, 1.5, 15);
+      Make_Tree3 (0, -0.1f, 0.1f, 1.5, 15);
       break;
     case Framework::TREE_4:
-      Make_Tree4(0, -0.1f, 0.1f, 1.5, 5);
+      Make_Tree4 (0, -0.1f, 0.1f, 1.5, 5);
       break;
     case Framework::TREE_5:
       tree = new FractalGenerator ();
       tree->Generate_Tree ();
-      tree->Create_Mesh (tree->getTotalLines ());
+      shader = Resources::RS->Get_Shader ("Tree");
+      tree->Create_Mesh (tree->getTotalLines (), &treeMesh);
+      Generate_Buffers ();
       break;
     case Framework::GRASS:
-      Make_Grass(0, -0.1f, 0.1f);
+      Make_Grass (0, -0.1f, 0.1f);
       break;
     default:
       break;
     }
 
-    shader = Resources::RS->Get_Shader ("Terrain");
+    if (type != TREE_5)
+    {
+      shader = Resources::RS->Get_Shader ("Tree");
+      vao = new VAO ();
+      vbo = new VBO (treeMesh.size () * sizeof (float), treeMesh.data ());
+      GLint posAttrib = shader->attribLocation ("position");
+      shader->enableVertexAttribArray (posAttrib);
+      shader->vertexAttribPtr (posAttrib, 2, GL_FLOAT, GL_FALSE, 2 * sizeof (float), 0);
+      vao->unbindVAO ();
+    }
+  }
+
+
+  void Tree2D::Generate_Buffers ()
+  {
+    shader = Resources::RS->Get_Shader ("Tree");
     vao = new VAO ();
     vbo = new VBO (treeMesh.size () * sizeof (float), treeMesh.data ());
     GLint posAttrib = shader->attribLocation ("position");
     shader->enableVertexAttribArray (posAttrib);
-    shader->vertexAttribPtr (posAttrib, 2, GL_FLOAT, GL_FALSE, 2 * sizeof (float), 0);
+    shader->vertexAttribPtr (posAttrib, 2, GL_FLOAT, GL_FALSE, 6 * sizeof (float), 0);
+    GLint colAttrib = shader->attribLocation ("color");
+    shader->enableVertexAttribArray (colAttrib);
+    shader->vertexAttribPtr (colAttrib, 4, GL_FLOAT, GL_FALSE, 6 * sizeof (float), 2 * sizeof (float));
     vao->unbindVAO ();
   }
 
@@ -128,7 +148,13 @@ namespace Framework
       //  counter = 0;
       //  newTree = false;
       //}
-      tree->Draw ();
+      glLineWidth (10.0f);
+      shader->Use ();
+      vao->bindVAO ();
+      shader->uniMat4 ("mvp", glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix ()));
+      glDrawArrays (GL_LINES, 0, treeMesh.size () / 6);
+      vao->unbindVAO ();
+      shader->Disable ();
       OPENGL->ResetBlendMode ();
     }
     else
@@ -396,4 +422,5 @@ namespace Framework
     treeMesh.push_back(x2);
     treeMesh.push_back(y2);
   }
+
 }

@@ -71,7 +71,8 @@ namespace Framework
     void Make_Stalk_Head(float x1, float y1, float length, float angle);
     //call for adding a line
     void Add_Branch(float x1, float y1, float x2, float y2);
-  };  
+    void Generate_Buffers ();
+  };
 }
 
 #endif
