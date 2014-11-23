@@ -61,8 +61,8 @@ Level =
 	  },
     Camera = 
 		{
-      bool main = true,
-      Vec3 Facing = [0, 0, 1],
+			bool main = true,
+			Vec3 Facing = [0, 0, 1],
 			float FieldOfView = 120,
 			float NearPlane = 0,
 			float FarPlane = 20,
