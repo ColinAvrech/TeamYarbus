@@ -36,3 +36,4 @@ UINoWhite.png
 UIGotItBlack.png
 UIGotItWhite.png
 UIInstructionsScreen.png
+UIExitWhite.jpg
