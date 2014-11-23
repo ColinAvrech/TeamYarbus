@@ -151,7 +151,7 @@ namespace Framework
       glLineWidth (10.0f);
       shader->Use ();
       vao->bindVAO ();
-      shader->uniMat4 ("mvp", glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix ()));
+      //shader->uniMat4 ("mvp", glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix ()));
       glDrawArrays (GL_LINES, 0, treeMesh.size () / 6);
       vao->unbindVAO ();
       shader->Disable ();
