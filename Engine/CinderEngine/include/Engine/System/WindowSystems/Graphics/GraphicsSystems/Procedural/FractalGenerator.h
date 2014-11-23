@@ -33,10 +33,11 @@ namespace Framework
   }
 
   private:
-    std::vector<GLfloat> xPositions;
-    std::vector<GLfloat> yPositions;
-    std::vector<GLfloat> sizes;
-    std::vector<GLfloat> angles;
+    std::vector <GLfloat> xPositions;
+    std::vector <GLfloat> yPositions;
+    std::vector <GLfloat> sizes;
+    std::vector <GLfloat> colors;
+    std::vector <GLfloat> angles;
     GLfloat treeRed;
     GLfloat treeGreen;
 

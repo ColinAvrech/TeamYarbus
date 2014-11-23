@@ -32,6 +32,7 @@ namespace Framework
     xPositions.clear ();
     yPositions.clear ();
     sizes.clear ();
+    colors.clear ();
     angles.clear ();
 
     int randVarRed = rand () % 3;
@@ -64,9 +65,10 @@ namespace Framework
     GLfloat newPosX = xPos + size * sin (degrees / 180.0f * M_PI);
     GLfloat newPosY = yPos - size * cos (degrees / 180.0f * M_PI);
 
-    xPositions.push_back (xPos);
-    yPositions.push_back (yPos);
-    sizes.push_back (size);
+    xPositions.push_back (xPos / screenWidth);
+    yPositions.push_back (yPos / screenWidth);
+    colors.push_back (size);
+    sizes.push_back (size / screenWidth);
     angles.push_back (degrees);
 
     int branches = rand () % (maxBranches - minBranches) + 1 + minBranches;
@@ -83,17 +85,23 @@ namespace Framework
     screenHeight = WINDOWSYSTEM->Get_Height ();
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity ();
-    glOrtho (-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
-    glScaled (1.0 / WINDOWSYSTEM->Get_Width (), -1.0 / WINDOWSYSTEM->Get_Height (), 1.0);
+    //float depth = glm::dot (glm::vec3 (0, 0, 0) - Camera::main->gameObject->Transform->GetPosition (), Camera::main->viewDirection);
+    //float width = Camera::GetViewToProjectionMatrix () [0][0] * depth;
+    //float height = Camera::GetViewToProjectionMatrix () [1][1] * depth;
+    //glFrustum (-1, 1, -1, 1, -1, 1);
+
     glMatrixMode (GL_MODELVIEW);
+    glLoadIdentity ();
+    glScaled (1.0, -((double) screenWidth / screenHeight), 1.0);
+    glTranslated (0, 0.1, 0);
 
     if (lines > (int)xPositions.size ())
       return;
 
     for (int i = 0; i < lines; ++i)
     {
-      glColor3f (1.0f / (sizes.at (i) * treeRed), 1.0f / (sizes.at (i) * treeGreen), 0.0f);
-      glLineWidth (sizes.at (i) / 40.0f + 1.0f);
+      glColor3f (1.0f / (colors.at (i) * treeRed), 1.0f / (colors.at (i) * treeGreen), 0.0f);
+      glLineWidth (colors.at (i) / 40.0f + 1.0f);
       glPushMatrix ();
       glTranslatef (xPositions.at (i), yPositions.at (i), 0.0f);
       glRotatef (angles.at (i), 0.0f, 0.0f, 1.0f);
