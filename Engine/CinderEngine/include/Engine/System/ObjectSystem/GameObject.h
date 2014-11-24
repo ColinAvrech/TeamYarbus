@@ -50,6 +50,7 @@ namespace Framework
   class FireStarter;
   class Microphone;
   class Terrain2D;
+  class ShapeCollider2D;
 
   class GameObject
   {
@@ -81,6 +82,7 @@ namespace Framework
     //Components
     ComponentPointer(Transform);
     ComponentPointer(Sprite);
+    ComponentPointer (ShapeCollider2D);
 	  ComponentPointer(ShapeCollider);
     ComponentPointer(Camera);
     ComponentPointer(RigidBody);

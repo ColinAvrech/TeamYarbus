@@ -15,6 +15,9 @@
 #include "IncludeForAllCollision.h"
 #include "PhysicsSystem.h"
 #include "random.hpp"
+#include "PhysicsSystemNew.h"
+#include "Collider2D.h"
+#include "RigidBody2D.h"
 
 namespace Framework
 {
@@ -67,16 +70,16 @@ namespace Framework
   {
     gameObject->Terrain2D = this;
     Generate_Height_Points ();
-    Generate_Edges ();
     Generate_Vertices ();
     Generate_Buffers ();
 
     if (AddCollider)
     {
-      spline = new SplineCollider ();
-      spline->gameObject = this->gameObject;
-      Physics::PHYSICSSYSTEM->SplineColliders.push_back (spline);
-      spline->AddLineCollider (edges);
+      Generate_Edges ();
+      //spline = new SplineCollider ();
+      //spline->gameObject = this->gameObject;
+      //Physics::PHYSICSSYSTEM->SplineColliders.push_back (spline);
+      //spline->AddLineCollider (edges);
     }
 
     vao1 = new VAO ();
@@ -114,14 +117,6 @@ namespace Framework
     //glDrawArrays (GL_LINES, 0, lineVertices.size () / 2);
     vao1->unbindVAO ();
     shader->Disable ();
-
-    std::vector <LineCollider*>& c = spline->Get_Colliders ();
-
-    for (unsigned i = 0; i < height_points.size () - 1; ++i)
-    {
-      c [i]->p1 = (glm::mat3)gameObject->Transform->GetModelMatrix() * glm::vec3 (height_points [i], 0.0f);
-      c [i]->p2 = (glm::mat3)gameObject->Transform->GetModelMatrix() * glm::vec3 (height_points [i + 1], 0.0f);
-    }
   }
 
   const float* Terrain2D::GetTerrain(){ return tc->GetRockMap(); }
@@ -134,48 +129,163 @@ namespace Framework
 
   void Terrain2D::Generate_Height_Points ()
   {
+    std::vector <float> heights;
     tc = new Procedural::TerrainCreator (MapSize, BaseHeight, Passes, Waves, PeakHeight, WaterDepth);
     Procedural::TerrainCreator& t = *tc;
     float* Map = t.GetRockMap ();
 
-    float offsetX = -1.0f;
-    float offsetY = -1.0f;
-    float nX = 2.f / (t.Get_Width () - 1);
-    float nY = 2.f / (t.Get_Width() - 1);
-    float previousHeight = -1.f;
-
-    for (int i = 0; i < t.Get_Width (); ++i)
     {
-      /*height_points.push_back ({ offsetX, offsetY });
-      offsetY = -1.0f;
-      break;*/
-      if (previousHeight != offsetY || i == t.Get_Width() - 1)
+      float offsetX = -1.0f;
+      float offsetY = -1.0f;
+      float nX = 2.f / (t.Get_Width () - 1);
+      float nY = 2.f / (t.Get_Width () - 1);
+      float previousHeight = -1.f;
+
+      for (int i = 0; i < t.Get_Width (); ++i)
       {
-        height_points.push_back({ offsetX, offsetY });
-        previousHeight = offsetY;
+        /*height_points.push_back ({ offsetX, offsetY });
+        offsetY = -1.0f;
+        break;*/
+        if (previousHeight != offsetY || i == t.Get_Width () - 1)
+        {
+          heights.push_back ({ offsetY });
+          previousHeight = offsetY;
+        }
+
+        offsetY = (Map [i] * nY) / 2.0f;
+        if (offsetY < 0)
+          offsetY = 0.0f;
+        offsetX += 4 * nX;
       }
-      
-      offsetY = Map[i] * nY;
-      if (offsetY < 0)
-        offsetY = 0.0f;
-      offsetX += 4 * nX;
+    }
+
+    float peak = *std::max_element (heights.begin (), heights.end ());
+
+    {
+      float offsetX = -1.0f;
+      float offsetY = -1.0f;
+      float nX = 2.f / (t.Get_Width () - 1);
+      float nY = 2.f / (t.Get_Width () - 1);
+      float previousHeight = -1.f;
+
+      for (int i = 0; i < t.Get_Width (); ++i)
+      {
+        /*height_points.push_back ({ offsetX, offsetY });
+        offsetY = -1.0f;
+        break;*/
+        if (previousHeight != offsetY || i == t.Get_Width () - 1)
+        {
+          height_points.push_back ({ offsetX, offsetY / peak });
+          previousHeight = offsetY;
+        }
+
+        offsetY = (Map [i] * nY) / 2.0f;
+        if (offsetY < 0)
+          offsetY = 0.0f;
+        offsetX += 4 * nX;
+      }
     }
   }
 
+
+  bool CalculateIntersectionPoint
+    (
+      double Ax, double Ay,
+      double Bx, double By,
+      double Cx, double Cy,
+      double Dx, double Dy,
+      double *X, double *Y
+    )
+  {
+
+    double  distAB, theCos, theSin, newX, ABpos;
+
+    //  Fail if either line segment is zero-length.
+    if (Ax == Bx && Ay == By || Cx == Dx && Cy == Dy)
+      return false;
+
+    //  Fail if the segments share an end-point.
+    if (Ax == Cx && Ay == Cy || Bx == Cx && By == Cy
+      || Ax == Dx && Ay == Dy || Bx == Dx && By == Dy) {
+      return true;
+    }
+
+    //  (1) Translate the system so that point A is on the origin.
+    Bx -= Ax; By -= Ay;
+    Cx -= Ax; Cy -= Ay;
+    Dx -= Ax; Dy -= Ay;
+
+    //  Discover the length of segment A-B.
+    distAB = sqrt (Bx*Bx + By*By);
+
+    //  (2) Rotate the system so that point B is on the positive X axis.
+    theCos = Bx / distAB;
+    theSin = By / distAB;
+    newX = Cx*theCos + Cy*theSin;
+    Cy = Cy*theCos - Cx*theSin; Cx = newX;
+    newX = Dx*theCos + Dy*theSin;
+    Dy = Dy*theCos - Dx*theSin; Dx = newX;
+
+    //  Fail if segment C-D doesn't cross line A-B.
+    if (Cy < 0. && Dy < 0. || Cy >= 0. && Dy >= 0.)
+      return false;
+
+    //  (3) Discover the position of the intersection point along line A-B.
+    ABpos = Dx + (Cx - Dx)*Dy / (Dy - Cy);
+
+    //  Fail if segment C-D crosses line A-B outside of segment A-B.
+    if (ABpos<0. || ABpos>distAB)
+      return false;
+
+    //  (4) Apply the discovered position to line A-B in the original coordinate system.
+    *X = Ax + ABpos*theCos;
+    *Y = Ay + ABpos*theSin;
+
+    //  Success.
+    return true;
+  }
+
+
   void Terrain2D::Generate_Edges ()
   {
+    Vector2* p = new Vector2 [4];
+    float y = -1.0f;
     // Edges for Line Colliders
     for (unsigned i = 0; i < height_points.size () - 1; ++i)
     {
-      edges.push_back
+      float offset = 0.0f;
+      PolygonCollider2D poly;
+      glm::dvec2 center;
+      glm::vec2 p0 = (glm::mat2)gameObject->Transform->GetModelMatrix () * glm::vec2 (height_points [i].x, y);
+      glm::vec2 p1 = (glm::mat2)gameObject->Transform->GetModelMatrix () * glm::vec2 (height_points [i + 1].x, y);
+      glm::vec2 p2 = (glm::mat2)gameObject->Transform->GetModelMatrix () * glm::vec2 (height_points [i + 1].x, height_points [i + 1].y);
+      glm::vec2 p3 = (glm::mat2)gameObject->Transform->GetModelMatrix () * glm::vec2 (height_points [i].x, height_points [i].y);
+      offset = p0.x + p1.x - p0.x;
+      p [0] = Vector2 (p2.x, p2.y);
+      p [1] = Vector2 (p3.x, p3.y);
+      p [2] = Vector2 (p0.x, p0.y);
+      p [3] = Vector2 (p1.x, p1.y);
+      p [2].y = p [3].y = y;
+
+      CalculateIntersectionPoint
         (
-        std::make_pair
-        (
-        height_points [i],
-        height_points [i + 1]
-        )
+        p0.x, p0.y,
+        p2.x, p2.y,
+        p1.x, p1.y,
+        p3.x, p3.y,
+        &center.x, &center.y
         );
+
+      poly.Set (p, 4);
+      RigidBody2D* b = PHYSICS->Add (&poly, gameObject->Transform->GetPosition().x + (float)(center.x),
+        gameObject->Transform->GetPosition ().y + (float)(center.y));
+      b->SetOrient (0);
+      b->SetStatic ();
+      b->restitution = 0.5f;
+      b->staticFriction = 1.0f;
+      b->dynamicFriction = 1.0f;
     }
+    delete [] p;
   }
 
   void Terrain2D::Generate_Vertices ()

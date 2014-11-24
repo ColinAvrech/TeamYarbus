@@ -156,7 +156,7 @@ namespace Framework
       OPENGL->LookAt
         (size * viewDirection +
         glm::vec3 (gameObject->Transform->GetPosition ().x, gameObject->Transform->GetPosition ().y, 0.0),
-        gameObject->Transform->GetPosition (), up);
+        gameObject->Transform->GetPosition(), up);
       OPENGL->MatrixMode (MODEL);
       OPENGL->LoadIdentity ();
     }
@@ -181,7 +181,7 @@ namespace Framework
       Camera::main->worldToView = glm::lookAt
         (
         Camera::main->size * Camera::main->viewDirection + vec3 (Camera::main->gameObject->Transform->GetPosition ().x, Camera::main->gameObject->Transform->GetPosition ().y, 0.0),
-        Camera::main->gameObject->Transform->GetPosition(),
+        Camera::main->gameObject->Transform->GetPosition (),
         Camera::main->up
         );
     }
@@ -197,13 +197,23 @@ namespace Framework
       glm::perspective
       (
       Camera::main->fov * M_PI / 180,
-      Camera::main->aspect,
+      (float)WINDOWSYSTEM->Get_Width() / WINDOWSYSTEM->Get_Height(),
       Camera::main->nearPlane,
       Camera::main->farPlane
       );
     }
 
     return Camera::main->viewToProjection;
+  }
+
+  float Camera::GetSize ()
+  {
+    return size;
+  }
+
+  float Camera::GetFOV ()
+  {
+    return fov;
   }
 
 }

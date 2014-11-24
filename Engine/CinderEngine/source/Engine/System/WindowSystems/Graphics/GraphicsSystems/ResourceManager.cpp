@@ -238,9 +238,13 @@ namespace Framework
         {
           type = Sound::MUSIC;
         }
-        else if (t == "SFX")
+        else if (t == "2D")
         {
           type = Sound::SOUND_2D;
+        }
+        else if (t == "3D")
+        {
+          type = Sound::SOUND_3D;
         }
         char* c = strstr ((char*)str.c_str(), str.c_str ());
         Sound* sound = AUDIOSYSTEM->LoadSound ((AudioResourcePath + str).c_str (), c, type, 0.0f);

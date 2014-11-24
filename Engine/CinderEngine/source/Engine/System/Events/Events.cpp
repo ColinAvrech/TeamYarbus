@@ -80,5 +80,11 @@ namespace Framework
 	  ZilchBindFieldGetSet(Message);
   }
 
+  ZilchDefineType(GameEvent, CinderZilch)
+  {
+	  type->HandleManager = ZilchManagerId(PointerManager);
+	  
+  }
+
 
 }

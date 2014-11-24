@@ -28,12 +28,14 @@ namespace Framework
 	  ZilchBindMethod(Initialize);
     ZilchBindMethodOverload(Scale, void, float, float, float);
     ZilchBindMethodOverload(Scale, void, float);
-	ZilchBindMethod(GetTranslation);
+	ZilchBindMethodAs(ZGetTranslation, "GetTranslation");
+	ZilchBindMethodAs(ZSetTranslation, "SetTranslation");
 	ZilchBindMethod(GetRotation);
 	ZilchBindMethodAs(ZGetScale, "GetScale");
+	ZilchBindMethodAs(ZSetScale, "SetScale");
 	  ZilchBindMethodOverload(Translate, void, float, float, float);
-    ZilchBindMethod(Rotate);
-	  //ZilchBindMethod(GetScreenPosition);
+    ZilchBindMethodAs(Rotate, "SetRotation");
+	ZilchBindMethodAs(ZGetScreenPosition, "GetScreenPosition");
   }
 
   Transform::Transform ()
@@ -97,7 +99,7 @@ namespace Framework
 
 
   // Replace the Fixed Functionality glTranslatef, glScalef,...
-  Zilch::Real3 Transform::GetTranslation()
+  Zilch::Real3 Transform::ZGetTranslation()
   {
 	  return Zilch::Real3(Zilch::Real(position.x), Zilch::Real(position.y), Zilch::Real(position.z));
   }
@@ -105,6 +107,16 @@ namespace Framework
   Zilch::Real3 Transform::ZGetScale()
   {
 	  return Zilch::Real3(Zilch::Real(scale.x), Zilch::Real(scale.y), Zilch::Real(scale.z));
+  }
+
+  void Transform::ZSetTranslation(Zilch::Real3 newpos)
+  {
+	  position = vec3(newpos.x, newpos.y, newpos.z);
+  }
+
+  void Transform::ZSetScale(Zilch::Real3 newscale)
+  {
+	  scale = vec3(newscale.x, newscale.y, newscale.z);
   }
 
   void Transform::Translate (float x, float y, float z)
@@ -168,6 +180,28 @@ namespace Framework
     return glm::vec2 (mvp [3][0] / mvp [3][3], mvp [3][1] / mvp [3][3]);
   }
 
+  Zilch::Real2 Transform::ZGetScreenPosition(Zilch::Real2 pos)
+  {
+	  glm::mat4 matrix = modelMatrix;
+	  matrix[3][0] = pos.x;
+	  matrix[3][1] = pos.y;
+	  glm::mat4 mvp = (modelViewProjectionMatrix / modelMatrix) * matrix;
+
+	  return Zilch::Real2(mvp[3][0] / mvp[3][3], mvp[3][1] / mvp[3][3]);
+  }
+  /*
+  Zilch::Real2 WindowSystem::ZGetMouseScreenPosition()
+  {
+	  glm::vec2 pos = WindowSystem::Get_Normalized_Mouse_Position();
+
+	  glm::mat4 matrix = modelMatrix;
+	  matrix[3][0] = pos.x;
+	  matrix[3][1] = pos.y;
+	  glm::mat4 mvp = (modelViewProjectionMatrix * modelMatrix) / matrix;
+
+	  return Zilch::Real2(mvp[3][0] / mvp[3][3], mvp[3][1] / mvp[3][3]);
+  }
+  */
 
   vec3 Transform::GetPosition ()
   {
@@ -193,6 +227,7 @@ namespace Framework
       OPENGL->MatrixMode (MODEL);
       OPENGL->Translatefv (glm::value_ptr (position));
       OPENGL->Scalefv (glm::value_ptr (scale));
+      OPENGL->Rotatef (rotation, 0, 0, 1);
 
       modelMatrix = OPENGL->GetModelMatrix ();
       modelViewProjectionMatrix = OPENGL->GetModelViewProjectionMatrix ();

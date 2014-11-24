@@ -89,7 +89,7 @@ Level =
 		{
 			string SpriteSource = "Default",
 			string Shader = "Default",
-			Vec4 Color = [1, 1,	1, 1],
+			Vec4 Color = [1, 1,	1, 0],
 		},
 		Josh = 
 		{

@@ -25,11 +25,9 @@ class MouseDetector
 	var Funct: delegate(e: MouseEvent) = null;
 	var CollidingLast: Boolean = false;
 	var CollidingThis: Boolean = false;
+	var Offset: Real2 = Real2();
 	
-	var Dot1: Dot = null;
-	var Dot2: Dot = null;
-	var Dot3: Dot = null;
-	var Dot4: Dot = null;
+	
   
 	constructor(gameObject:GameObject, funct: delegate(e: MouseEvent))
 	{
@@ -50,41 +48,38 @@ class MouseDetector
 
 	function Initialize()
 	{
-		var sprite = this.Target.Sprite;
-		var translation = this.Target.Transform.GetTranslation();
-		var scale = this.Target.Transform.GetScale();
-		this.Rect.Width = sprite.Width * scale.X;
-		this.Rect.Height = sprite.Height * scale.Y;
-		this.Rect.X = translation.X;
-		this.Rect.Y = translation.Y;
-		/*
-		this.Dot1 = new Dot();
-		this.Dot2 = new Dot();
-		this.Dot3 = new Dot();
-		this.Dot4 = new Dot();
-		*/
+		var sprite = this.Target.Sprite.Texture;
+		var transform = this.Target.Transform;
+		var scale = transform.GetScale();
+		var dimensions = Real2(sprite.Width * scale.X, sprite.Height * scale.Y);
+		this.Rect.Width = dimensions.X;
+		this.Rect.Height = dimensions.Y;
+		var position = transform.GetScreenPosition(Real2(transform.GetTranslation().X + this.Offset.X, 
+													transform.GetTranslation().Y + this.Offset.Y));
+		this.Rect.X = position.X;
+		this.Rect.Y = position.Y;
+		
+		
 		EventSystem.Connect(Events.UpdateEvent, this.LogicUpdate);
 	}
 
 	
 	function LogicUpdate(e: UpdateEvent)
 	{
-		//var sprite = this.Target.Sprite;
-		var translation = this.Target.Transform.GetTranslation();
-		//var scale = this.Target.Transform.GetScale();
-		//this.Rect.Width = sprite.Width * scale.X;
-		//this.Rect.Height = sprite.Height * scale.Y;
-		this.Rect.X = translation.X;
-		this.Rect.Y = translation.Y;
+		var transform = this.Target.Transform;
+		var position = transform.GetScreenPosition(Real2(transform.GetTranslation().X + this.Offset.X, 
+													transform.GetTranslation().Y + this.Offset.Y));
+		this.Rect.X = position.X;
+		this.Rect.Y = position.Y;
 		var mousePos = ZInterface.WindowSystem.GetNormalMousePosition();
 		var collision = this.Rect.Contains(mousePos);
+		
+		
+		
+		
 		this.CollidingThis = collision;
-		/*
-		this.Dot1.Object.Transform.Translate(this.Rect.TopLeft().X, this.Rect.TopLeft().Y, -2);
-		this.Dot2.Object.Transform.Translate(this.Rect.TopRight().X, this.Rect.TopRight().Y, -2);
-		this.Dot3.Object.Transform.Translate(this.Rect.BottomLeft().X, this.Rect.BottomLeft().Y, -2);
-		this.Dot4.Object.Transform.Translate(this.Rect.BottomRight().X, this.Rect.BottomRight().Y, -2);
-		*/
+		
+		
 		if(this.CollidingLast && this.CollidingThis)
 		{
 			this.Funct(new MouseEvent(MouseState.MousePersist, mousePos));
@@ -155,7 +150,6 @@ class Rectangle
 	{
     	var halfWidth = this.HalfWidth();
 		var halfHeight = this.HalfHeight();
-		//Console.WriteLine(halfWidth, halfHeight);
 		if(pos.X < (this.X + halfWidth) && pos.X > (this.X - halfWidth))
 		{
             if(pos.Y < (this.Y + halfHeight) && pos.Y > (this.Y - halfHeight))
