@@ -98,7 +98,7 @@ namespace Framework
     CreateSoundGroups();
     InitMicData();
 
-    Trace("Audio System Initialized");
+    std::cout << "Audio System Initialized" << std::endl;
 	  return true;
   }
 
