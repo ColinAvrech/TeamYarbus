@@ -1,5 +1,5 @@
-#ifndef COLLISION_H
-#define COLLISION_H
+#ifndef _COLLISION_NEW_H
+#define _COLLISION_NEW_H
 
 #include "Collider2D.h"
 
@@ -19,4 +19,4 @@ namespace Framework
 }
 
 
-#endif // COLLISION_H
+#endif // _COLLISION_NEW_H

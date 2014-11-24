@@ -1,5 +1,5 @@
-#ifndef SCENE_H
-#define SCENE_H
+#ifndef _PHYSICS_SYSTEM_NEW_H
+#define _PHYSICS_SYSTEM_NEW_H
 
 #include <vector>
 #include "Manifold.h"
@@ -37,4 +37,4 @@ namespace Framework
 }
 
 
-#endif // SCENE_H
+#endif // _PHYSICS_SYSTEM_NEW_H
