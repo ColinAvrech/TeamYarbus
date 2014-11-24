@@ -21,8 +21,8 @@ namespace Framework
 	  torque = 0;
 	  orient = MyRandom( -PI, PI );
 	  force.Set( 0, 0 );
-	  staticFriction = 0.0f;
-	  dynamicFriction = 0.0f;
+	  staticFriction = 0.4f;
+	  dynamicFriction = 0.4f;
 	  restitution = 0.2f;
 	  shape->ComputeMass( 1.0f );
 	  r = MyRandom( 0.2f, 1.0f );
