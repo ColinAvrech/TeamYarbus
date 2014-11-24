@@ -114,9 +114,9 @@ namespace Framework
 	  A->position -= correction * A->im;
 	  B->position += correction * B->im;
     if (A->gameObject != nullptr)
-      A->gameObject->Transform->Translate (-correction.x * A->im, -correction.y * A->im, 0.0f);
+      A->gameObject->Transform->SetPosition (A->position.x, A->position.y);
     if (B->gameObject != nullptr)
-	  B->gameObject->Transform->Translate (correction.x * B->im, -correction.y * B->im, 0.0f);
+	  B->gameObject->Transform->SetPosition (B->position.x, B->position.y);
 	}
 	
 	void Manifold::InfiniteMassCorrection( void )

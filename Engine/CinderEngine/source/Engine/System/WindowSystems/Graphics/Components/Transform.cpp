@@ -81,9 +81,13 @@ namespace Framework
   void Transform::Initialize ()
   {
     gameObject->Transform = this;
-    modelMatrix = (glm::translate (position) *
-      glm::rotate (rotation, vec3 (0, 0, 1)) *
-      glm::scale (scale));
+    OPENGL->MatrixMode (MODEL);
+    OPENGL->LoadIdentity ();
+    OPENGL->Scalefv (glm::value_ptr (scale));
+    OPENGL->Rotatef (rotation, 0, 0, 1);
+    OPENGL->Translatefv (glm::value_ptr (position));
+    modelMatrix = OPENGL->GetModelMatrix ();
+    OPENGL->LoadIdentity ();
     modelViewProjectionMatrix = (glm::mat4 (1));
     normalMatrix = glm::mat3 (1);
     matricesReady = false;
@@ -208,6 +212,12 @@ namespace Framework
   void Transform::Print (vec3 position)
   {
     std::cout << "( " << position.x << ", " << position.y << ", " << position.z << " )\n";
+  }
+
+  void Transform::SetPosition (float x, float y)
+  {
+    position.x = x;
+    position.y = y;
   }
 
 }

@@ -351,12 +351,27 @@ namespace Framework
   }
 
 
+  static void OnKeyPressed (KeyEvent* key)
+  {
+    if (key->KeyDown)
+    {
+      switch (key->KeyValue)
+      {
+      case GLFW_KEY_ESCAPE:
+        CORE->QuitGame ();
+        break;
+      default:
+        break;
+      }
+    }
+  }
+
   bool WindowSystem::Initialize ()
   {
     std::cout << GetName () << " initialized\n";
 
     OPENGL = new Pipeline ();
-
+    EVENTSYSTEM->gConnect (Events::KEY_ANY, &OnKeyPressed);
     return true;
   }
 

@@ -51,16 +51,19 @@ namespace Framework
     /*inline*/ vec3 GetPosition ();
     /*inline*/ vec3 GetScale ();
     /*inline*/ float GetRotation ();
-	Zilch::Real3 Transform::GetTranslation();
-	Zilch::Real3 Transform::ZGetScale();
+	  Zilch::Real3 Transform::GetTranslation();
+	  Zilch::Real3 Transform::ZGetScale();
     vec2 GetScreenPosition ();
     glm::vec2 GetScreenPosition (const glm::vec2& v);
+
+    void SetPosition (float x, float y);
 
     static void Print (vec3 position);
 
     // The non-base component usees DefineComponentName macro to name component
     const static string Name;
 
+    friend class RigidBody2D;
 
   private:
     int currentMatrix;

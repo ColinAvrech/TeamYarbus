@@ -51,6 +51,7 @@ namespace Framework
   class Microphone;
   class Terrain2D;
   class ShapeCollider2D;
+  class RigidBody2D;
 
   class GameObject
   {
@@ -83,6 +84,7 @@ namespace Framework
     ComponentPointer(Transform);
     ComponentPointer(Sprite);
     ComponentPointer (ShapeCollider2D);
+    ComponentPointer (RigidBody2D);
 	  ComponentPointer(ShapeCollider);
     ComponentPointer(Camera);
     ComponentPointer(RigidBody);
