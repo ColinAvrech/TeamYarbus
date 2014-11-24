@@ -1,5 +1,5 @@
-#ifndef SHAPE_H
-#define SHAPE_H
+#ifndef _COLLIDER_2D_H
+#define _COLLIDER_2D_H
 
 #include "RigidBody2D.h"
 #include <algorithm>
@@ -100,4 +100,4 @@ namespace Framework
 }
 
 
-#endif // SHAPE_H
+#endif // _COLLIDER_2D_H
