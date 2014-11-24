@@ -41,18 +41,22 @@ namespace Framework
       switch (key->KeyValue)
     {
       case GLFW_KEY_A:
+        OPENGL->MatrixMode (VIEW);
         Camera::main->gameObject->Transform->Translate (-camSpeed, 0, 0);
         Camera::main->matricesReady = false;
         break;
       case GLFW_KEY_D:
+        OPENGL->MatrixMode (VIEW);
         Camera::main->gameObject->Transform->Translate (camSpeed, 0, 0);
         Camera::main->matricesReady = false;
         break;
       case GLFW_KEY_S:
+        OPENGL->MatrixMode (VIEW);
         Camera::main->gameObject->Transform->Translate (0, -camSpeed, 0);
         Camera::main->matricesReady = false;
         break;
       case GLFW_KEY_W:
+        OPENGL->MatrixMode (VIEW);
         Camera::main->gameObject->Transform->Translate (0, camSpeed, 0);
         Camera::main->matricesReady = false;
         break;
@@ -126,7 +130,7 @@ namespace Framework
 
     value = data->FindElement (data, "Size");
     value->GetValue (&size);
-	  aspect = 16.f / 9;
+	  aspect = (float)WINDOWSYSTEM->Get_Width() / WINDOWSYSTEM->Get_Height();
   }
 
 
@@ -214,6 +218,41 @@ namespace Framework
   float Camera::GetFOV ()
   {
     return fov;
+  }
+
+  glm::vec2 Camera::GetWorldMousePosition()
+  {
+    glm::vec2 ndc = { (WINDOWSYSTEM->Get_Mouse_Position ().x / WINDOWSYSTEM->Get_Width () - 0.5f) * 2.0f,
+      ((WINDOWSYSTEM->Get_Height () - WINDOWSYSTEM->Get_Mouse_Position ().y) / WINDOWSYSTEM->Get_Height () - 0.5f) * 2.0f };
+    
+    //
+    /*
+        destPosX = (float) (cursorX / (windowWidth) -0.5f) * 2.0f;
+        destPosY = (float) ((windowHeight - cursorY) / windowHeight - 0.5f) * 2.0f;
+    */
+    //
+    return glm::vec2
+      (
+        ndc.x * Camera::main->size, ndc.y * Camera::main->size / Camera::main->aspect
+      );
+  }
+
+  Zilch::Real2 Camera::GetCameraMousePosition ()
+  {
+    glm::vec2 ndc = { (WINDOWSYSTEM->Get_Mouse_Position ().x / WINDOWSYSTEM->Get_Width () - 0.5f) * 2.0f,
+      ((WINDOWSYSTEM->Get_Height () - WINDOWSYSTEM->Get_Mouse_Position ().y) / WINDOWSYSTEM->Get_Height () - 0.5f) * 2.0f };
+    
+    //
+    /*
+    destPosX = (float) (cursorX / (windowWidth) -0.5f) * 2.0f;
+    destPosY = (float) ((windowHeight - cursorY) / windowHeight - 0.5f) * 2.0f;
+    */
+    //
+
+    return Zilch::Real2
+      (
+      ndc.x * Camera::main->size, ndc.y * Camera::main->size / Camera::main->aspect
+      );
   }
 
 }

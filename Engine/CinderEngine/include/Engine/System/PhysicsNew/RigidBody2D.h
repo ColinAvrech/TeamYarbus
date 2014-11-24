@@ -1,5 +1,5 @@
-#ifndef BODY_H
-#define BODY_H
+#ifndef _RIGID_BODY_2D_H
+#define _RIGID_BODY_2D_H
 
 #include "MathExtensionLibrary.h"
 #include "Component.h"
@@ -54,7 +54,6 @@ namespace Framework
 	  float m;  // mass
 	  float im; // inverse masee
 	
-	  // http://gamedev.tutsplus.com/tutorials/implementation/how-to-create-a-custom-2d-physics-engine-friction-scene-and-jump-table/
 	  float staticFriction;
 	  float dynamicFriction;
 	  float restitution;
@@ -68,4 +67,4 @@ namespace Framework
 }
 
 
-#endif // BODY_H
+#endif // _RIGID_BODY_2D_H

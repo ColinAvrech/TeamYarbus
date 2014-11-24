@@ -224,6 +224,7 @@ namespace Framework
     }
 
     b->gameObject = this->gameObject;
+    gameObject->RigidBody2D = b;
 	}
 	
 	void PolygonCollider2D::Serialize (Framework::Serializer::DataNode* data)
@@ -301,6 +302,7 @@ namespace Framework
     }
 
     b->gameObject = this->gameObject;
+    gameObject->RigidBody2D = b;
 	}
 
 	// First and last use of CS225

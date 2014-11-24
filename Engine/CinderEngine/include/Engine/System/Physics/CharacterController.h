@@ -11,12 +11,12 @@ namespace Framework
   {
   public:
     const static string Name;
-    float accel;
+    glm::vec2 accel;
     float drag;
     float maxXVel;
     float jumpVel;
     float currentforce;
-
+    glm::vec2 maxAcceleration;
     CharacterController(GameObject * obj)
     {
       gameObject = obj;

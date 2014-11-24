@@ -269,7 +269,7 @@ namespace Framework
 
     void GLFWMouseButtonFunction (GLFWwindow *, const int button, const int action, const int mod)
     {
-		WINDOWSYSTEM->IsMouseDown = action;
+		  WINDOWSYSTEM->IsMouseDown = action;
     }
     void GLFWMouseCursorMoved (GLFWwindow* window, const double xPos, const double yPos)
     {
@@ -353,12 +353,27 @@ namespace Framework
   }
 
 
+  static void OnKeyPressed (KeyEvent* key)
+  {
+    if (key->KeyDown)
+    {
+      switch (key->KeyValue)
+      {
+      case GLFW_KEY_ESCAPE:
+        CORE->QuitGame ();
+        break;
+      default:
+        break;
+      }
+    }
+  }
+
   bool WindowSystem::Initialize ()
   {
     std::cout << GetName () << " initialized\n";
 
     OPENGL = new Pipeline ();
-
+    EVENTSYSTEM->gConnect (Events::KEY_ANY, &OnKeyPressed);
     return true;
   }
 
@@ -373,6 +388,8 @@ namespace Framework
   {
     WindowsUpdate (dt);
     GraphicsUpdate (dt);
+
+    //std::cout << "{ " << Camera::GetWorldMousePosition ().x << ", " << Camera::GetWorldMousePosition ().y << " }\n";
   }
 
 

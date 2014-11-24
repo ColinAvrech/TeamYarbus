@@ -74,7 +74,7 @@ Level =
 		},
 		Named = 
 		{
-			string Name = "Ball1",
+			string Name = "Player",
 		},
 		Transform = 
 		{
@@ -103,6 +103,9 @@ Level =
       float Radius = 1,
       bool Static = false,
     },
+    CharacterController = 
+    {
+    },
 	},
   Cog = 
 	{
@@ -116,15 +119,15 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, -3.5, 0],
-			Vec3 Scale = [5, 1, 1],
+			Vec3 Translation = [-3.5, -3.5, 0],
+			Vec3 Scale = [5, 4, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Terrain2D = 
 		{
       int MapSize = 128,
-      int BaseHeight = 100,
-      int PeakHeight = 28,
+      int BaseHeight = 32,
+      int PeakHeight = 96,
       int Passes = 1,
       int Waves = 5,
       int Water = 5,
