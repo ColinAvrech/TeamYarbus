@@ -53,7 +53,7 @@ namespace Framework
     // If no microphone is detected
     if (_recordnumdrivers <= 0)
     {
-      std::cout << CinderConsole::red << "No recording devices found/plugged in!";
+      std::cout << CinderConsole::red << "No recording devices found/plugged in!" << std::endl;
     }
 
     // Get microphone drivcer information
@@ -192,8 +192,8 @@ namespace Framework
       meter->getMeteringInfo(&input, 0);
 
       // FOR TESTING
-      //frequencyConsoleOut();   
-      //meterConsoleOut();
+      frequencyConsoleOut();   
+      meterConsoleOut();
       //latencyConsoleOut();
     }   
   }

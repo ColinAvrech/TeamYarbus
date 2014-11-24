@@ -74,13 +74,13 @@ void TracePrint(const char * msg, ...);
 /*! Trace Macro:
 ->prints the statement to the consule
 */
-#define Trace(...) TracePrint(__VA_ARGS__)
+//#define Trace(...) TracePrint(__VA_ARGS__)
 #else
 
 /*!If diagnostics are not enabled, functions do nothing*/
 #define Assert(...) ((void)0)
 #define ErrorIf(...) ((void)0)
-#define Trace(...) ((void)0)
+//#define Trace(...) ((void)0)
 
 #endif
 
