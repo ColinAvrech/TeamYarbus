@@ -58,7 +58,7 @@ namespace Framework
   {
     string name = GetSoundName();
 
-    if (name == "NOISE")
+    if (name == "NOISE" && objects_DSP.dsp_noise)
     {
       if (_windCutOff == true && _windBandwidth == true)
       {

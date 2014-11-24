@@ -3,7 +3,8 @@ class Josh : Component
 	//var Owner:GameObject = null;
 	var ObjectSys:ObjectSystem = null;
 	var OHai : String = "";
-	var Obj:GameObject = null;
+	var Obj: GameObject = null;
+	var Detector: MouseDetector = null;
 
 	var SpawnedObject:GameObject = null;
   
@@ -16,15 +17,15 @@ class Josh : Component
 	{
 	this.Owner = owner;
 	
-	var detector = new MouseDetector(this.Owner, this.OnMouseEvent);
-	detector.Rect.Width = 1;
-	detector.Rect.Height = 1;
-	Console.WriteLine(detector.Rect.Width, detector.Rect.Height);
+	//this.Detector = new MouseDetector(this.Owner, this.OnMouseEvent);
+	
+	
+	
 	//var obj = new Dot();
 	
 	//this.ObjectSys
 	Console.WriteLine(ZInterface.WindowSystem);
-	//ZInterface.ObjectSystem.LoadLevelAdditive("MainMenu");
+	ZInterface.ObjectSystem.LoadLevelAdditive("MainMenu");
 	Console.WriteLine(ZInterface.ObjectSystem);
 	
 	//Cinder.Connect(this, Events.UpdateEvent, this.LogicUpdate);
@@ -98,6 +99,8 @@ class Josh : Component
 	//Console.WriteLine(e.TimePassed);
 	//this.SpawnedObject.Transform.Translate(0,0.1,0);
 		//Console.WriteLine(ZInterface.WindowSystem.GetNormalMousePosition());
+		this.Detector.Rect.Width = this.Owner.Transform.GetScreenPosition(Real2(1, 1)).X;
+		this.Detector.Rect.Height = this.Owner.Transform.GetScreenPosition(Real2(1, 1)).Y;
 	}
 
 	function KeyIsPressed(e: KeyEvent)
@@ -118,12 +121,12 @@ class Dot
 		this.Object = ZInterface.ObjectSystem.CreateObject();
 		
 		this.Object.AddComponent("Transform");
-		this.Object.Transform.Translate(0,0,-2);
+		this.Object.Transform.SetTranslation(Real3(0,0,-1));
 		Console.WriteLine(this.Object.Transform.GetTranslation());
-		this.Object.Transform.Scale(1, 1, 1);
+		this.Object.Transform.Scale(0.1, 0.1, 0.1);
 		
 		this.Object.AddComponent("Sprite");
-		this.Object.Sprite.ChangeTexture("Default");
+		this.Object.Sprite.ChangeTexture("Circle.png");
 		Console.WriteLine(this.Object.Sprite.Texture.Name);
 	}
 	

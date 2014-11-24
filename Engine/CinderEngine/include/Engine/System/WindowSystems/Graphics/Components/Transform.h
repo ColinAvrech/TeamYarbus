@@ -37,7 +37,7 @@ namespace Framework
     // Transformations
     void Load_Identity ();
     void Translate (const float x, const float y, const float z);
-	  void Translate(const vec3 &v);
+	void Translate(const vec3 &v);
     void Scale (const float x, const float y, const float z);
     void Scale (const float v);
     void Rotate (const float angle);
@@ -51,19 +51,19 @@ namespace Framework
     /*inline*/ vec3 GetPosition ();
     /*inline*/ vec3 GetScale ();
     /*inline*/ float GetRotation ();
-	  Zilch::Real3 Transform::GetTranslation();
-	  Zilch::Real3 Transform::ZGetScale();
+	Zilch::Real3 Transform::ZGetTranslation();
+	Zilch::Real3 Transform::ZGetScale();
+	void Transform::ZSetTranslation(Zilch::Real3 newpos);
+	void Transform::ZSetScale(Zilch::Real3 newscale);
+	Zilch::Real2 ZGetScreenPosition(Zilch::Real2);
     vec2 GetScreenPosition ();
     glm::vec2 GetScreenPosition (const glm::vec2& v);
-
-    void SetPosition (float x, float y);
 
     static void Print (vec3 position);
 
     // The non-base component usees DefineComponentName macro to name component
     const static string Name;
 
-    friend class RigidBody2D;
 
   private:
     int currentMatrix;

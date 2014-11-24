@@ -35,6 +35,7 @@ namespace Framework
 	  type->HandleManager = ZilchManagerId(Zilch::PointerManager);
 	  ZilchBindMethodAs(ZGet_Mouse_Position, "GetMousePosition");
 	  ZilchBindMethodAs(ZGet_Normalized_Mouse_Position, "GetNormalMousePosition");
+	  ZilchBindFieldGet(IsMouseDown);
 
   }
 
@@ -268,6 +269,7 @@ namespace Framework
 
     void GLFWMouseButtonFunction (GLFWwindow *, const int button, const int action, const int mod)
     {
+		WINDOWSYSTEM->IsMouseDown = action;
     }
     void GLFWMouseCursorMoved (GLFWwindow* window, const double xPos, const double yPos)
     {
