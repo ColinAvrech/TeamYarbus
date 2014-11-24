@@ -192,8 +192,8 @@ namespace Framework
       meter->getMeteringInfo(&input, 0);
 
       // FOR TESTING
-      frequencyConsoleOut();   
-      meterConsoleOut();
+      //frequencyConsoleOut();   
+      //meterConsoleOut();
       //latencyConsoleOut();
     }   
   }
