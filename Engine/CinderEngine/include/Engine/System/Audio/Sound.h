@@ -164,7 +164,7 @@ namespace Framework
       float           GetVolume();   
       unsigned        GetTime();
       unsigned        GetID(){return ID;}
-      string     GetSoundName(){ return _soundName;}
+      string          GetSoundName(){ return _soundName;}
       float*          GetVolumePtr();
 
       inline FMOD::Channel* Get_Channel() {return pChannel;}
