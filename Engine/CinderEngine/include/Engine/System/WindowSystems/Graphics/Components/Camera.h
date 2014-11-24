@@ -41,6 +41,8 @@ namespace Framework
     static glm::mat4 GetWorldToViewMatrix ();
     static glm::mat4 GetViewToProjectionMatrix ();
     void OnKeyPressed (KeyEvent* key);
+    float GetSize ();
+    float GetFOV ();
     static std::list <Camera*> allCameras;
     static Camera* current;
     static Camera* main;

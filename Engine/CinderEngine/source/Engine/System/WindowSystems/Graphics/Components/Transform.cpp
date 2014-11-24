@@ -193,6 +193,7 @@ namespace Framework
       OPENGL->MatrixMode (MODEL);
       OPENGL->Translatefv (glm::value_ptr (position));
       OPENGL->Scalefv (glm::value_ptr (scale));
+      OPENGL->Rotatef (rotation, 0, 0, 1);
 
       modelMatrix = OPENGL->GetModelMatrix ();
       modelViewProjectionMatrix = OPENGL->GetModelViewProjectionMatrix ();

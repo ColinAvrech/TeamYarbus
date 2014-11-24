@@ -23,6 +23,7 @@ starts the game loop.
 #include "Core.h"
 #include "Physics/Thermodynamics.h"
 #include "Physics/PhysicsSystem.h"
+#include "PhysicsSystemNew.h"
 #include "ResourceManager.h"
 #include "Serializer/JSONSerializer.h"
 #include "UISystem.h"
@@ -60,11 +61,12 @@ int main (void)
   //! Create the core engine which manages all systems.
   CoreEngine * engine = new CoreEngine ();
   Physics::ThermodynamicsSystem * thermo = new Physics::ThermodynamicsSystem ();
+  PhysicsSystemNew* physNew = new PhysicsSystemNew (1.0f / 60.0f, 10);
   WindowSystem * windows = new WindowSystem (WindowTitle, ClientWidth, ClientHeight, launchFullScreen);
   AudioSystem* audio = new AudioSystem ();
   EventSystem * events = new EventSystem ();
   ScriptSystem * zilch = new ScriptSystem();
-  Physics::PhysicsSystem * phys = new Physics::PhysicsSystem ();
+  //Physics::PhysicsSystem * phys = new Physics::PhysicsSystem ();
   ObjectSystem* objsys = new ObjectSystem ();
   UISystem* ui = new UISystem ();
   
@@ -73,7 +75,7 @@ int main (void)
   ZInterface::WindowSys = windows;
 
 
-  engine->AddSystem (phys);
+  engine->AddSystem (physNew);
   engine->AddSystem (windows);
   engine->AddSystem (audio);
   engine->AddSystem (events);
@@ -104,7 +106,7 @@ int main (void)
 
 
   //! activate the window.
-  OBJECTSYSTEM->LoadLevel("ZilchTestLevel");
+  OBJECTSYSTEM->LoadLevel("NewPhysics");
 
 
   // Connect example
