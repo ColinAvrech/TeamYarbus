@@ -98,6 +98,7 @@ int main (void)
   engine->Initialize ();
 
   //Sound *test = audio->LoadSound("Pads.ogg", "NOISE", Sound::SOUND_2D, 1.0f);
+  //test->Play();
   //test->GenerateNoise();
   //test->LowPassFilter();
   //test->SetLPF(0, 1.0);
@@ -106,7 +107,7 @@ int main (void)
 
 
   //! activate the window.
-  OBJECTSYSTEM->LoadLevel("NewPhysics");
+  OBJECTSYSTEM->LoadLevel("ZilchTestLevel");
 
 
   // Connect example

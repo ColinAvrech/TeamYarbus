@@ -25,7 +25,7 @@ class Josh : Component
 	
 	//this.ObjectSys
 	Console.WriteLine(ZInterface.WindowSystem);
-	ZInterface.ObjectSystem.LoadLevelAdditive("MainMenu");
+	//ZInterface.ObjectSystem.LoadLevelAdditive("MainMenu");
 	Console.WriteLine(ZInterface.ObjectSystem);
 	
 	//Cinder.Connect(this, Events.UpdateEvent, this.LogicUpdate);
@@ -36,7 +36,14 @@ class Josh : Component
 	//Console.WriteLine(new Player());
 	//Console.WriteLine(this.Owner);
 	//EventSystem.Connect(Events.UpdateEvent, this.LogicUpdate);
-	
+	var obj = ZInterface.ObjectSystem.CreateObject();
+	var comp = obj.AddComponent("Transform");
+	obj.AddComponent("Sprite");
+	Console.WriteLine("watss");
+	obj.Sprite.ChangeTexture("Circle.png");
+	var blah:Transform = comp as Transform;
+	Console.WriteLine(blah);
+	Console.WriteLine("wat");
 	//Console.WriteLine(this);
 	//Console.WriteLine("hello");
 	//var gameobject = this.ObjectSys.CreateObject();

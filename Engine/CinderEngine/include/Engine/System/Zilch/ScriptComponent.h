@@ -78,7 +78,7 @@ namespace Framework
     //Destructor
     virtual ~ZilchComponent();
 
-#ifdef _DEBUG
+
   private:
     //Private data ----------------------------------
     //Zilch class name
@@ -98,6 +98,5 @@ namespace Framework
     //Hack!!!!!!!!!!
     string ohai;
 
-#endif
   }; //class scriptcomponent
 }  //namespace framework

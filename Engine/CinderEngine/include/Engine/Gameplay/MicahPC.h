@@ -26,7 +26,7 @@ namespace Framework
   class MicahPC : public Component
   {
   public:
-    ZilchDeclareBaseType(MicahPC, Zilch::TypeCopyMode::ReferenceType);
+    //ZilchDeclareBaseType(MicahPC, Zilch::TypeCopyMode::ReferenceType);
 
     MicahPC();
     virtual ~MicahPC();

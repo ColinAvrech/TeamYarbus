@@ -27,7 +27,7 @@ namespace Framework
   class Transform : public Component
   {
   public:
-    ZilchDeclareBaseType(Transform, Zilch::TypeCopyMode::ReferenceType);
+    ZilchDeclareDerivedType(Transform, Component);
     
     Transform ();
     virtual ~Transform();
