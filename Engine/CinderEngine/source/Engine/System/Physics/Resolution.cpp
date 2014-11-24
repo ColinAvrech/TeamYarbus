@@ -26,92 +26,64 @@ namespace Framework
 
   void ContactSet::ResolveContacts(const float dt)
   {
-    //ResolvePositions(dt);
+    ResolvePositions(dt);
     ResolveVelocities(dt);
   }
 
   void ResolvePenetration(BodyContact& c, const float dt)
   {
-    float invMassA = 0.0f;
-    float invMassB = 0.0f;
-    glm::vec3 velA = { 0, 0, 0 };
-    glm::vec3 velB = { 0, 0, 0 };
-    if (c.Bodies[0]->RigidBody)
-    {
-      invMassA = c.Bodies[0]->RigidBody->getInvMass();
-      velA = c.Bodies[0]->RigidBody->vel;
-    }
-    if (c.Bodies[1]->RigidBody)
-    {
-      invMassB = c.Bodies[1]->RigidBody->getInvMass();
-      velB = c.Bodies[1]->RigidBody->vel;
-    }
-    float totalInverseMass = invMassA + invMassB;
+    //float invMassA = 0.0f;
+    //float invMassB = 0.0f;
+    //glm::vec3 velA = { 0, 0, 0 };
+    //glm::vec3 velB = { 0, 0, 0 };
+    //if (c.Bodies[0]->RigidBody)
+    //{
+    //  invMassA = c.Bodies[0]->RigidBody->getInvMass();
+    //  velA = c.Bodies[0]->RigidBody->vel;
+    //}
+    //if (c.Bodies[1]->RigidBody)
+    //{
+    //  invMassB = c.Bodies[1]->RigidBody->getInvMass();
+    //  velB = c.Bodies[1]->RigidBody->vel;
+    //}
+    //float totalInverseMass = invMassA + invMassB;
 
-    glm::vec3 movePerImass = c.ContactNormal * (c.Penetration / totalInverseMass);
+    //glm::vec3 movePerImass = c.ContactNormal * (c.Penetration / totalInverseMass);
 
-    movePerImass *= Physics::PHYSICSSYSTEM->penetrationResolvePercent;
+    //movePerImass *= Physics::PHYSICSSYSTEM->penetrationResolvePercent;
 
-    //calculate movement amounts
-    c.Movement[0] = movePerImass * invMassA;
-    c.Movement[1] = movePerImass * -invMassB;
+    ////calculate movement amounts
+    //c.Movement[0] = movePerImass * invMassA;
+    //c.Movement[1] = movePerImass * -invMassB;
 
-    //apply penetration resolution
-    Transform * moveValue0 = c.Bodies[0]->Transform;
-    Transform * moveValue1 = c.Bodies[1]->Transform;
-    c.Bodies[0]->Transform->Translate(moveValue0->GetPosition() + velA);
-    c.Bodies[1]->Transform->Translate(moveValue1->GetPosition() + velB);
+    ////apply penetration resolution
+    //Transform * moveValue0 = c.Bodies[0]->Transform;
+    //Transform * moveValue1 = c.Bodies[1]->Transform;
+    //c.Bodies[0]->Transform->Translate(moveValue0->GetPosition() + velA);
+    //c.Bodies[1]->Transform->Translate(moveValue1->GetPosition() + velB);
   }
 
   void ContactSet::ResolvePositions(const float dt)
   {
-    int iterations = 0;
-    int maxIterations = numOfContacts * 5;
-    const float positionEpsilon = Physics::PHYSICSSYSTEM->penetrationEpsilon;
-
-    while (iterations < maxIterations)
+    for (int i = 0; i < numOfContacts; ++i)
     {
-      //find biggest penetration greater than 
-      //correction epsilon
-      float maxPenetration = positionEpsilon;
-      int contactIndex = numOfContacts;
+      float iMassA = 0.0f;
+      float iMassB = 0.0f;
 
-      for (int i = 0; i < numOfContacts; ++i)
-      {
-        if (contactArray[i].Penetration > maxPenetration)
-        {
-          maxPenetration = contactArray[i].Penetration;
-          contactIndex = i;
-        }
-      }
-      if (contactIndex == numOfContacts)
-        break;
+      GameObject* obj_A = contactArray[i].Bodies[0];
+      GameObject* obj_B = contactArray[i].Bodies[1];
 
-      //Resolve penetration - poke with stick method
-      ResolvePenetration(contactArray[contactIndex], dt);
+      if (obj_A->RigidBody)
+        iMassA = obj_A->RigidBody->getInvMass();
+      if (obj_B->RigidBody)
+        iMassB = obj_B->RigidBody->getInvMass();
 
-      //Update penetrations for related contacts
-      glm::vec3* movement = contactArray[contactIndex].Movement;
-      for (int i = 0; i < numOfContacts; ++i)
-      {
-        if (contactArray[i].Bodies[0] == contactArray[contactIndex].Bodies[0])
-        {
-          contactArray[i].Penetration -= glm::dot(movement[0], contactArray[i].ContactNormal);
-        }
-        else if (contactArray[i].Bodies[0] == contactArray[contactIndex].Bodies[1])
-        {
-          contactArray[i].Penetration -= glm::dot(movement[1], contactArray[i].ContactNormal);
-        }
-        if (contactArray[i].Bodies[1] == contactArray[contactIndex].Bodies[0])
-        {
-          contactArray[i].Penetration += glm::dot(movement[0], contactArray[i].ContactNormal);
-        }
-        else if (contactArray[i].Bodies[1] == contactArray[contactIndex].Bodies[0])
-        {
-          contactArray[i].Penetration += glm::dot(movement[1], contactArray[i].ContactNormal);
-        }
-      }
-      ++iterations;
+      float iMassFactor = 1 / (iMassA + iMassB);
+      glm::vec3 offset_A = glm::vec3(contactArray[i].Penetration, 0.0f) * iMassA * iMassFactor;
+      glm::vec3 offset_B = -glm::vec3(contactArray[i].Penetration, 0.0f) * iMassB * iMassFactor;
+
+      obj_A->Transform->Translate(offset_A);
+      obj_B->Transform->Translate(offset_B);
     }
   }
 
@@ -150,7 +122,8 @@ namespace Framework
       {
         contactArray[i].Bodies[0]->RigidBody->vel.x = bunch11 * velA.x + bunch12 * velB.x;
         contactArray[i].Bodies[0]->RigidBody->vel.y = bunch11 * velA.y + bunch12 * velB.y;
-        contactArray[i].Bodies[0]->RigidBody->vel = Physics::getReflection(contactArray[i].ContactNormal, -contactArray[i].Bodies[0]->RigidBody->vel);
+        //reflect across normal
+        contactArray[i].Bodies[0]->RigidBody->vel = Physics::getReflection(contactArray[i].ContactNormal, -contactArray[i].Bodies[0]->RigidBody->vel) * contactArray[i].Restitution;
       }
 
       float bunch21 = (imassB - imassA) / (imassA + imassB);
@@ -159,8 +132,8 @@ namespace Framework
       {
         contactArray[i].Bodies[1]->RigidBody->vel.x = bunch21 * velA.x + bunch22 * velB.x;
         contactArray[i].Bodies[1]->RigidBody->vel.y = bunch21 * velA.y + bunch22 * velB.y;
-        contactArray[i].Bodies[1]->RigidBody->vel = Physics::getReflection(contactArray[i].ContactNormal, -contactArray[i].Bodies[1]->RigidBody->vel);
-
+        //reflect across normal
+        contactArray[i].Bodies[1]->RigidBody->vel = Physics::getReflection(contactArray[i].ContactNormal, -contactArray[i].Bodies[1]->RigidBody->vel) * contactArray[i].Restitution;
       }
     }
   }
