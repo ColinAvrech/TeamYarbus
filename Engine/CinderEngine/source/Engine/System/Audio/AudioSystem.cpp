@@ -319,7 +319,8 @@ namespace Framework
     }
 
     // Pauses all Music sounds
-    if (id == Sound::MUSIC || id == -1)
+    if (id == Sound::MUSIC
+      || id == Sound::SFX_ALL || id == -1)
     {
       GroupMusic->setPaused(paused);
     }
