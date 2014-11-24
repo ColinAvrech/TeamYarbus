@@ -27,7 +27,7 @@ namespace Framework
   class FirePointController : public Component
   {
   public:
-    ZilchDeclareBaseType(FirePointController, Zilch::TypeCopyMode::ReferenceType);
+    //ZilchDeclareBaseType(FirePointController, Zilch::TypeCopyMode::ReferenceType);
 
     FirePointController();
     virtual ~FirePointController();

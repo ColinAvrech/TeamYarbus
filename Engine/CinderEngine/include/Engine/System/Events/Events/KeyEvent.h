@@ -21,6 +21,7 @@ namespace Framework
   {
   public:
     ZilchDeclareBaseType(KeyEvent, Zilch::TypeCopyMode::ReferenceType);
+	
     //Key value as dictated by GLFW
     int KeyValue;
 

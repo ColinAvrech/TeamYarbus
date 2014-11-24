@@ -18,7 +18,7 @@ namespace Framework
 	class RigidBody : public Component
 	{
 	public:
-		ZilchDeclareBaseType(RigidBody, Zilch::TypeCopyMode::ReferenceType);
+		ZilchDeclareDerivedType(RigidBody, Component);
 		// The non-base component uses DefineComponentName macro to name component
 		enum DynamicState
 		{
