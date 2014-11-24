@@ -64,13 +64,13 @@ namespace Framework
     b->SetStatic ();
     b->SetOrient (0);
 
-    //PolygonCollider2D poly1;
-    //poly1.SetBox (0.5f, 0.5f);
-    //b = PHYSICS->Add (&poly1, 5, -2);
-    ////b->SetStatic ();
-    //b->SetOrient (0);
-    //b->dynamicFriction = 0.0f;
-    //b->staticFriction = 0.0f;
+    PolygonCollider2D poly1;
+    poly1.SetBox (0.5f, 0.5f);
+    b = PHYSICS->Add (&poly1, 15, -2);
+    b->SetStatic ();
+    b->SetOrient (0);
+    b->dynamicFriction = 0.0f;
+    b->staticFriction = 0.0f;
   }
 
   Pipeline::~Pipeline ()
