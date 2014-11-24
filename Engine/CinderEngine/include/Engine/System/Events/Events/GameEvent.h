@@ -22,6 +22,7 @@ namespace Framework
   class GameEvent : public BaseEvent
   {
   public:
+	  ZilchDeclareBaseType(GameEvent, Zilch::TypeCopyMode::ReferenceType);
 
   };
 

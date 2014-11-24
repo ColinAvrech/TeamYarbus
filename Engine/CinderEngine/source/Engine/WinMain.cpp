@@ -105,7 +105,7 @@ int main (void)
 
   //! activate the window.
   OBJECTSYSTEM->LoadLevel("ZilchTestLevel");
-
+  //EVENTSYSTEM->TriggerEvent("GameStarted", )
 
   // Connect example
   //MyClass _myclass;
