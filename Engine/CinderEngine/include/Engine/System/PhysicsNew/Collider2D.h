@@ -20,10 +20,11 @@ namespace Framework
 	    eCount
 	  };
 	
-	  ShapeCollider2D() {}
+    ShapeCollider2D ();
     virtual ~ShapeCollider2D ();
 	
 	  virtual void Serialize (Serializer::DataNode* data){}
+    void SerializeMaterial (std::string name);
     virtual ShapeCollider2D *Clone (void) const
     {
       return nullptr;
@@ -42,6 +43,10 @@ namespace Framework
 	  // For circle shape
 	  float radius;
     bool isStatic;
+    float Density;
+    float StaticFriction;
+    float DynamicFriction;
+    float Bounciness;
 	
 	  // For Polygon shape
 	  Mat2 u; // Orientation matrix from model to world
@@ -73,7 +78,7 @@ namespace Framework
 	{
 	public:
 	  const static std::string Name;
-	  PolygonCollider2D () {}
+    PolygonCollider2D ();
     virtual ~PolygonCollider2D ();
 	  virtual void Serialize (Serializer::DataNode* data);
 	

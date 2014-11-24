@@ -70,6 +70,90 @@ Level =
 	{
 		LinkId = 
 		{
+			uint Id = 8,
+		},
+		Named = 
+		{
+			string Name = "Mountains",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0, 2, -4],
+			Vec3 Scale = [40, 4, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Terrain2D = 
+		{
+      int MapSize = 512,
+      int BaseHeight = 128,
+      int PeakHeight = 256,
+      int Passes = 0,
+      int Waves = 20,
+      int Water = 0,
+      Vec4 Color = [0.2, 0.21, 0.2, 1],
+      bool AddCollider = false,
+		},
+  },
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 8,
+		},
+		Named = 
+		{
+			string Name = "Forest",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0, -3, -2],
+			Vec3 Scale = [20, 4, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Terrain2D = 
+		{
+      int MapSize = 128,
+      int BaseHeight = 32,
+      int PeakHeight = 64,
+      int Passes = 0,
+      int Waves = 1,
+      int Water = 0,
+      Vec4 Color = [0.2, 0.3, 0.2, 1],
+      bool AddCollider = false,
+		},
+  },
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 8,
+		},
+		Named = 
+		{
+			string Name = "Terrain",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [-3.5, -3.5, 0],
+			Vec3 Scale = [5, 4, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Terrain2D = 
+		{
+      int MapSize = 128,
+      int BaseHeight = 32,
+      int PeakHeight = 96,
+      int Passes = 1,
+      int Waves = 5,
+      int Water = 5,
+      Vec4 Color = [0.2, 0.0, 0.01, 1],
+      bool AddCollider = true,
+		},
+  },
+  Cog = 
+	{
+		LinkId = 
+		{
 			uint Id = 4,
 		},
 		Named = 
@@ -102,37 +186,10 @@ Level =
     {
       float Radius = 1,
       bool Static = false,
+      string Material = "4de020863e872da8:DefaultPhysicsMaterial",
     },
     CharacterController = 
     {
     },
 	},
-  Cog = 
-	{
-		LinkId = 
-		{
-			uint Id = 8,
-		},
-		Named = 
-		{
-			string Name = "Terrain",
-		},
-		Transform = 
-		{
-			Vec3 Translation = [-3.5, -3.5, 0],
-			Vec3 Scale = [5, 4, 1],
-			Quat Rotation = [0, 0, 0, 1],
-		},
-		Terrain2D = 
-		{
-      int MapSize = 128,
-      int BaseHeight = 32,
-      int PeakHeight = 96,
-      int Passes = 1,
-      int Waves = 5,
-      int Water = 5,
-      Vec4 Color = [0.2, 0.0, 0.01, 1],
-      bool AddCollider = true,
-		},
-  },
 },

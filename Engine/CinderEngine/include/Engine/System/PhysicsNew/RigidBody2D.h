@@ -12,10 +12,11 @@ namespace Framework
 	{
 	public:
 	  const static std::string Name;
-	  RigidBody2D( ShapeCollider2D *shape_, float x, float y );
+	  RigidBody2D(ShapeCollider2D *shape_, float x, float y);
 	  RigidBody2D ();
 	
 	  virtual void Serialize (Framework::Serializer::DataNode* data);
+    void SerializeMaterial (const char* name);
 	  virtual void Initialize ();
 	
 	  void ApplyForce( const Vector2& f )
@@ -38,7 +39,7 @@ namespace Framework
 	  }
 	
 	  void SetOrient( float radians );
-	
+
 	  Vector2 position;
 	  Vector2 velocity;
 	
