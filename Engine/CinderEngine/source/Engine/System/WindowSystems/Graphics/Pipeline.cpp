@@ -14,10 +14,16 @@
 #include "Camera.h"
 #include "ShapeCollider.h"
 #include "CinderEngine_UI.h"
-#include "glfw3.h"
+#include "PhysicsSystemNew.h"
+#include "RigidBody2D.h"
+#include "Collider2D.h"
+#include "MathExtensionLibrary.h"
+#include "WindowSystem.h"
+#include "glut.h"
 
 namespace Framework
 {
+
   enum COLOR_STATE
   {
     IDLE,
@@ -27,7 +33,7 @@ namespace Framework
   COLOR_STATE cState = IDLE;
 
 
-  //! Global pointer to  the windows system.
+  //! Global pointer to  the Pipeline.
   Pipeline* OPENGL = NULL;
 
   std::list <Transform*> Pipeline::transforms;
@@ -47,6 +53,24 @@ namespace Framework
     modelViewProjectionMatrix = glm::mat4 (1.0);
     matricesReady = true;
     currentMatrix = 0;
+
+    RigidBody2D* b;
+    //CircleCollider2D c (1.0f);
+    //b = PHYSICS->Add (&c, 2, 1);
+
+    PolygonCollider2D poly;
+    poly.SetBox (0.5f, 0.5f);
+    b = PHYSICS->Add (&poly, -5, -2);
+    b->SetStatic ();
+    b->SetOrient (0);
+
+    //PolygonCollider2D poly1;
+    //poly1.SetBox (0.5f, 0.5f);
+    //b = PHYSICS->Add (&poly1, 5, -2);
+    ////b->SetStatic ();
+    //b->SetOrient (0);
+    //b->dynamicFriction = 0.0f;
+    //b->staticFriction = 0.0f;
   }
 
   Pipeline::~Pipeline ()
@@ -209,7 +233,7 @@ namespace Framework
         cState = INTERPOLATE;
         t = 0.0f;
         startColor = color;
-        endColor = glm::linearRand (glm::vec4 (0,0,0,0), glm::vec4 (1.0f, 1.0f, 1.0f, 1.0f));
+        endColor = glm::linearRand (glm::vec4 (0, 0, 0, 0), glm::vec4 (1.0f, 1.0f, 1.0f, 1.0f));
       }
       break;
     case Framework::INTERPOLATE:
@@ -255,6 +279,8 @@ namespace Framework
     {
       i->Draw ();
     }
+
+    PHYSICS->Render ();
   }
 
   void Pipeline::UpdateMatrices ()

@@ -25,6 +25,7 @@ deleted.
 #include "ZInterface.h"
 #include "ScriptComponent.h"
 #include "Trees.h"
+#include "Collider2D.h"
 
 
 namespace Framework
@@ -113,6 +114,10 @@ namespace Framework
 		RegisterComponent(FireStarter);
 		RegisterComponent(Microphone);
 		RegisterComponent(UIBox);
+    RegisterComponent (RigidBody2D);
+    RegisterComponent (ShapeCollider2D);
+    RegisterComponent (CircleCollider2D);
+    RegisterComponent (PolygonCollider2D);
 		//RegisterComponent (SplineCollider);
 		AddComponentCreator("SplineCollider", new ComponentCreatorType<SplineCollider>("SplineCollider"));
 		AddComponentCreator("SphereCollider", new ComponentCreatorType<CircleCollider>("SphereCollider"));
