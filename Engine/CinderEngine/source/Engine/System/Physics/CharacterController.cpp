@@ -29,8 +29,7 @@ namespace Framework
 
   void CharacterController::OnKeyPressed(KeyEvent* _key)
   {
-    vec3 force, accelH = { 1.0f, 0.0f, 0.0f }, accelV = { 0.0f, 1.0f, 0.0f };
-    if (_key->KeyDown)
+    //vec3 force, accelH = { 1.0f, 0.0f, 0.0f }, accelV = { 0.0f, 1.0f, 0.0f };
     switch (_key->KeyValue)
     {
     case GLFW_KEY_UP:
@@ -41,14 +40,14 @@ namespace Framework
       break;
 
     case GLFW_KEY_RIGHT:
-      gameObject->RigidBody2D->ApplyForce (Vector2 (30, 0));
+      gameObject->RigidBody2D->ApplyForce (Vector2 (50, 0));
       //if (gameObject->RigidBody->vel.x <= maxXVel)
       //  gameObject->RigidBody->vel.x += accel*0.016f;
       //gameObject->Transform->Translate(1, 0, 0);
       break;
 
     case GLFW_KEY_LEFT:
-      gameObject->RigidBody2D->ApplyForce (Vector2 (-30, 0));
+      gameObject->RigidBody2D->ApplyForce (Vector2 (-50, 0));
       //if (gameObject->RigidBody->vel.x >= -maxXVel)
       //  gameObject->RigidBody->vel.x -= accel*0.016f;
       //gameObject->Transform->Translate(-1, 0, 0);

@@ -126,7 +126,7 @@ namespace Framework
 
     value = data->FindElement (data, "Size");
     value->GetValue (&size);
-	  aspect = 16.f / 9;
+	  aspect = (float)WINDOWSYSTEM->Get_Width() / WINDOWSYSTEM->Get_Height();
   }
 
 
@@ -214,6 +214,34 @@ namespace Framework
   float Camera::GetFOV ()
   {
     return fov;
+  }
+
+  glm::vec2 Camera::GetWorldMousePosition()
+  {
+    glm::vec2 ndc = { (WINDOWSYSTEM->Get_Mouse_Position ().x / WINDOWSYSTEM->Get_Width () - 0.5f) * 2.0f,
+      ((WINDOWSYSTEM->Get_Height () - WINDOWSYSTEM->Get_Mouse_Position ().y) / WINDOWSYSTEM->Get_Height () - 0.5f) * 2.0f };
+    /*
+        destPosX = (float) (cursorX / (windowWidth) -0.5f) * 2.0f;
+        destPosY = (float) ((windowHeight - cursorY) / windowHeight - 0.5f) * 2.0f;
+    */
+    return glm::vec2
+      (
+        ndc.x * Camera::main->size, ndc.y * Camera::main->size / Camera::main->aspect
+      );
+  }
+
+  Zilch::Real2 Camera::GetCameraMousePosition ()
+  {
+    glm::vec2 ndc = { (WINDOWSYSTEM->Get_Mouse_Position ().x / WINDOWSYSTEM->Get_Width () - 0.5f) * 2.0f,
+      ((WINDOWSYSTEM->Get_Height () - WINDOWSYSTEM->Get_Mouse_Position ().y) / WINDOWSYSTEM->Get_Height () - 0.5f) * 2.0f };
+    /*
+    destPosX = (float) (cursorX / (windowWidth) -0.5f) * 2.0f;
+    destPosY = (float) ((windowHeight - cursorY) / windowHeight - 0.5f) * 2.0f;
+    */
+    return Zilch::Real2
+      (
+      ndc.x * Camera::main->size, ndc.y * Camera::main->size / Camera::main->aspect
+      );
   }
 
 }
