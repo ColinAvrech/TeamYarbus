@@ -269,7 +269,7 @@ namespace Framework
 
     void GLFWMouseButtonFunction (GLFWwindow *, const int button, const int action, const int mod)
     {
-		WINDOWSYSTEM->IsMouseDown = action;
+		  WINDOWSYSTEM->IsMouseDown = action;
     }
     void GLFWMouseCursorMoved (GLFWwindow* window, const double xPos, const double yPos)
     {
