@@ -19,6 +19,7 @@ starts the game loop.
 #include "EventSystem.h"
 #include "SceneManager.h"
 #include "AudioSystem.h"
+#include "AudioEvents.h"
 #include "ZilchCompiledLib.h"
 #include "Core.h"
 #include "Physics/Thermodynamics.h"
@@ -65,6 +66,7 @@ int main (void)
   WindowSystem * windows = new WindowSystem (WindowTitle, ClientWidth, ClientHeight, launchFullScreen);
   AudioSystem* audio = new AudioSystem ();
   EventSystem * events = new EventSystem ();
+  AudioEvents* audioEvents = new AudioEvents();  audioEvents->Initialize();
   ScriptSystem * zilch = new ScriptSystem();
   //Physics::PhysicsSystem * phys = new Physics::PhysicsSystem ();
   ObjectSystem* objsys = new ObjectSystem ();
@@ -131,6 +133,7 @@ int main (void)
 
   //! Delete engine
   delete engine;
+  delete audioEvents;
 
   //! Free console
   CinderConsole::Free_Cinder_Console ();
