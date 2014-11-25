@@ -148,7 +148,7 @@ namespace Framework
       //  counter = 0;
       //  newTree = false;
       //}
-      glLineWidth (10.0f);
+      glLineWidth (7.0f);
       shader->Use ();
       vao->bindVAO ();
       //shader->uniMat4 ("mvp", glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix ()));

@@ -20,20 +20,30 @@
 namespace Framework
 {
 
-  class FountainEffect : public IEffect
+  class KeyEvent;
+
+  class PlayerEffect : public IEffect
   {
   private:
     std::shared_ptr<ParticleSystem> m_system;
     std::shared_ptr<IParticleRenderer> m_renderer;
-    std::shared_ptr<BoxPosGen> m_posGenerator;
-    std::shared_ptr<BasicColorGen> m_colGenerator;
     std::shared_ptr<EulerUpdater> m_eulerUpdater;
     std::shared_ptr<FloorUpdater> m_floorUpdater;
+
+    //////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
+    // EMITTERS - GENERATORS
+    //////////////////////////////////////////////////////////////////////////
+    std::shared_ptr<ParticleEmitter> trailEmitter;
+    std::shared_ptr<BoxPosGen> trailGenerator;
+    std::shared_ptr<BoxPosGen> trailGenerator1;
+    std::shared_ptr<ParticleEmitter> ringEmitter;
+    //////////////////////////////////////////////////////////////////////////
+
     Texture* texture;
-    Shader* shader;
   public:
-    FountainEffect () { }
-    virtual ~FountainEffect ();
+    PlayerEffect () { }
+    virtual ~PlayerEffect ();
 
     bool initialize (size_t numParticles) override;
     bool initializeRenderer () override;
@@ -46,14 +56,16 @@ namespace Framework
     void cpuUpdate (double dt) override;
     void gpuUpdate (double dt) override;
     void render () override;
-
+    void OnKeyPressed (KeyEvent*);
     int numAllParticles () override { return m_system->numAllParticles (); }
     int numAliveParticles () override { return m_system->numAliveParticles (); }
-    void AddFireEmitter (bool active, vec3 position, vec3 minVelocity, vec3 maxVelocity, float emitRate);
-
+    void CreateTrailEmitter (std::shared_ptr<BoxPosGen> trail, bool active, vec3 position, vec3 minVelocity, vec3 maxVelocity, float emitRate);
+    void CreateRingEmitter (bool active, vec3 position, vec3 minVelocity, vec3 maxVelocity, float emitRate);
     virtual void Initialize ();
 
     virtual void Serialize (Serializer::DataNode* data);
+
+    virtual void Draw ();
     const static string Name;
   };
 }

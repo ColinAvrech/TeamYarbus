@@ -19,10 +19,7 @@ namespace Framework
     void SerializeMaterial (const char* name);
 	  virtual void Initialize ();
 	
-	  void ApplyForce( const Vector2& f )
-	  {
-	    force += f;
-	  }
+	  void ApplyForce( const Vector2& f );
 	
 	  void ApplyImpulse( const Vector2& impulse, const Vector2& contactVector )
 	  {
