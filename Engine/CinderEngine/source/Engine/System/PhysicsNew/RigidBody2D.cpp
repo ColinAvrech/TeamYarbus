@@ -50,5 +50,14 @@ namespace Framework
 	
 	void RigidBody2D::Initialize ()
 	{}
+
+  void RigidBody2D::ApplyForce (const Vector2& f)
+  {
+    if (force.y < 0.1f)
+      force += f;
+
+    std::cout << force.y << "\n";
+  }
+
 }
 

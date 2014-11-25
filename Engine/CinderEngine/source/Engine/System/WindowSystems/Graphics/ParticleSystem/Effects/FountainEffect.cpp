@@ -13,6 +13,9 @@
 #include "FountainEffect.h"
 #include "ResourceManager.h"
 #include "WindowSystem.h"
+#include "Pipeline.h"
+#include "EventSystem.h"
+#include "KeyEvent.h"
 
 namespace Framework
 {
@@ -41,17 +44,30 @@ namespace Framework
     value->GetValue (&minSize);
   }
 
+  void FountainEffect::OnKeyPressed (KeyEvent* key)
+  {
+    switch (key->KeyValue)
+    {
+    case GLFW_KEY_F:
+      break;
+    default:
+      break;
+    }
+  }
+
 
   void FountainEffect::Initialize ()
   {
     initialize (0);
     initializeRenderer ();
+
+    EVENTSYSTEM->mConnect<KeyEvent, FountainEffect> (Events::KEY_ANY, this, &FountainEffect::OnKeyPressed);
   }
 
 
   bool FountainEffect::initialize (size_t numParticles)
   {
-    texture = Resources::RS->Get_Texture ("Capture.png");
+    texture = Resources::RS->Get_Texture ("Particle.bmp");
     shader = Resources::RS->Get_Shader ("Particle");
     //
     // particles
@@ -61,9 +77,9 @@ namespace Framework
     m_system->init (NUM_PARTICLES);
 
     // Emitters
-    vec3 position = (glm::mat3)Camera::GetViewToProjectionMatrix () * (glm::mat3)Camera::GetWorldToViewMatrix () * gameObject->Transform->GetPosition ();
+    vec3 position = gameObject->Transform->GetPosition ();
     float x = 0.01f, y = -0.12f;
-    AddFireEmitter (true, position, { -0.05f, 0.01f, -0.05f }, { 0.05f, 0.1f, 0.05f }, 10);
+    AddFireEmitter (true, position, { -0.5f, 1.5f, -0.5f }, { 0.5f, 3.0f, 0.5f }, 100);
 
     auto timeUpdater = std::make_shared<BasicTimeUpdater> ();
     m_system->addUpdater (timeUpdater);
@@ -122,7 +138,7 @@ namespace Framework
     static double time = 0.0;
     time += dt;
 	//std::cout << particleEmitter->m_emitRate << "\n";
-	if (getmic() > 0.1f)
+	/*if (getmic() > 0.1f)
 	{
 		if (velGenerator->m_maxStartVel.y < 0.9f)
 		velGenerator->m_maxStartVel.y += getmic() * 0.016f;
@@ -144,7 +160,7 @@ namespace Framework
 
 		if (size > minSize)
 			size -= 0.016f;
-	}
+	}*/
 	//velGenerator->m_maxStartVel.x = sin(getmic()) * 0.0001f;
     //m_posGenerator->m_pos.x = 0.1f*sin ((float) time*2.5f);
     //m_posGenerator->m_pos.z = 0.1f*cos ((float) time*2.5f);
@@ -152,12 +168,21 @@ namespace Framework
 
   void FountainEffect::cpuUpdate (double dt)
   {
+    m_posGenerator->m_pos = glm::vec4 (gameObject->Transform->GetPosition (), 1.0f);
+    //particleEmitter->position = gameObject->Transform->GetPosition ();
     m_system->update (dt);
   }
 
   void FountainEffect::gpuUpdate (double dt)
   {
     m_renderer->update ();
+  }
+
+  void FountainEffect::Draw ()
+  {
+    cpuUpdate (0.016);
+    gpuUpdate (0.016);
+    render ();
   }
 
   void FountainEffect::render ()
@@ -171,6 +196,7 @@ namespace Framework
     shader->Use ();
     shader->uni1i ("tex", 0);
     shader->uni1f ("size", size);
+
     shader->uniMat4 ("matModel", glm::value_ptr (gameObject->Transform->GetModelMatrix ()));
     shader->uniMat4 ("matProjection", glm::value_ptr (Camera::GetViewToProjectionMatrix()));
     shader->uniMat4 ("matModelview", glm::value_ptr (Camera::GetWorldToViewMatrix()));

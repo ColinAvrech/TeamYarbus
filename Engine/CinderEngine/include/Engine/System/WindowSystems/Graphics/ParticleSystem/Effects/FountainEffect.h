@@ -20,6 +20,8 @@
 namespace Framework
 {
 
+  class KeyEvent;
+
   class FountainEffect : public IEffect
   {
   private:
@@ -30,7 +32,6 @@ namespace Framework
     std::shared_ptr<EulerUpdater> m_eulerUpdater;
     std::shared_ptr<FloorUpdater> m_floorUpdater;
     Texture* texture;
-    Shader* shader;
   public:
     FountainEffect () { }
     virtual ~FountainEffect ();
@@ -46,7 +47,7 @@ namespace Framework
     void cpuUpdate (double dt) override;
     void gpuUpdate (double dt) override;
     void render () override;
-
+    void OnKeyPressed (KeyEvent*);
     int numAllParticles () override { return m_system->numAllParticles (); }
     int numAliveParticles () override { return m_system->numAliveParticles (); }
     void AddFireEmitter (bool active, vec3 position, vec3 minVelocity, vec3 maxVelocity, float emitRate);
@@ -54,6 +55,9 @@ namespace Framework
     virtual void Initialize ();
 
     virtual void Serialize (Serializer::DataNode* data);
+
+    virtual void Draw ();
+
     const static string Name;
   };
 }

@@ -72,7 +72,8 @@ namespace Framework
 
       tree_list[i] = Evaluate_Compatibility(i);
       //Hack!!
-      if (tree_list[i] == TREE_5)
+      //if (tree_list[i] == TREE_5)
+      if (i % ((rand() % 10) + 1) == 0)
         GenerateType(
           offsetX + Translation.x,
           offsetY + Translation.y,
@@ -92,6 +93,7 @@ namespace Framework
     if (c)
     {
       static_cast<Transform*>(c)->Translate(x, y, z);
+      static_cast<Transform*>(c)->Scale (7, 4, z);
       c->Initialize();
     }
     c = grass->AddComponent("Tree2D");
