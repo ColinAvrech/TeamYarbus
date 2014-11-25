@@ -15,6 +15,7 @@
 #include "GraphicsCommon.h"
 #include "Events.h"
 
+
 namespace Framework
 {
   class DebugRenderer;
@@ -23,6 +24,7 @@ namespace Framework
 	class ShapeCollider : public Component
 	{
 	public:
+	//ZilchDeclareDerivedType(ShapeCollider, Component);
     const static string Name;
     ShapeCollider ();
     ~ShapeCollider ();

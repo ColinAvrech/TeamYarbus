@@ -82,17 +82,41 @@ Level =
 		Transform = 
 		{
 			Vec3 Translation = [0, 0, 0],
-			Vec3 Scale = [1, 1, 1],
+			Vec3 Scale = [0.1, 0.005, 0.1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Sprite = 
 		{
 			string SpriteSource = "Default",
 			string Shader = "Default",
-			Vec4 Color = [1, 1,	1, 0],
+			Vec4 Color = [1, 1,	1, 1],
 		},
 		Josh = 
 		{
+		},
+	},
+	
+	Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 2,
+		},
+		Named = 
+		{
+			string Name = "Ground",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [1, 0, 10],
+			Vec3 Scale = [1, 1, 1],
+			Quat Rotation = [1, 0, 0, 1],
+		},
+		Sprite = 
+		{
+			string SpriteSource = "Default",
+			string Shader = "Default",
+			Vec4 Color = [1, 1,	1, 1],
 		},
 	},
 },

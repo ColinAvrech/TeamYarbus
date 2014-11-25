@@ -36,6 +36,8 @@ namespace Framework
 	  ZilchBindMethodAs(ZGet_Mouse_Position, "GetMousePosition");
 	  ZilchBindMethodAs(ZGet_Normalized_Mouse_Position, "GetNormalMousePosition");
 	  ZilchBindFieldGet(IsMouseDown);
+	  ZilchBindMethodAs(Get_Width, "GetWidth");
+	  ZilchBindMethodAs(Get_Height, "GetHeight");
 
   }
 
@@ -443,6 +445,9 @@ namespace Framework
 
   Zilch::Real2 WindowSystem::ZGet_Normalized_Mouse_Position()
   {
+	  
+
+	  
 	  glm::vec2 normPos;
 	  normPos.x = (float)(cursorPosition.x / (WindowWidth)-0.5f) * 2.0f;
 	  normPos.y = (float)((WindowHeight - cursorPosition.y) / WindowHeight - 0.5f) * 2.0f;

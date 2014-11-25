@@ -19,14 +19,16 @@ class Josh : Component
 	
 	//this.Detector = new MouseDetector(this.Owner, this.OnMouseEvent);
 	
-	
-	
 	//var obj = new Dot();
 	
 	//this.ObjectSys
 	Console.WriteLine(ZInterface.WindowSystem);
-	//ZInterface.ObjectSystem.LoadLevelAdditive("MainMenu");
+	ZInterface.ObjectSystem.LoadLevelAdditive("MainMenu");
 	Console.WriteLine(ZInterface.ObjectSystem);
+	this.Detector = new MouseDetector(this.Owner, this.OnMouseEvent);
+	this.Detector.Rect.Width = 1;
+	this.Detector.Rect.Height = 1;
+	
 	
 	//Cinder.Connect(this, Events.UpdateEvent, this.LogicUpdate);
 	//Cinder.Connect(this, Events.KeyEvent, this.KeyIsPressed);
@@ -35,15 +37,7 @@ class Josh : Component
 	//Console.Writeline(obj);
 	//Console.WriteLine(new Player());
 	//Console.WriteLine(this.Owner);
-	//EventSystem.Connect(Events.UpdateEvent, this.LogicUpdate);
-	var obj = ZInterface.ObjectSystem.CreateObject();
-	var comp = obj.AddComponent("Transform");
-	obj.AddComponent("Sprite");
-	Console.WriteLine("watss");
-	obj.Sprite.ChangeTexture("Circle.png");
-	var blah:Transform = comp as Transform;
-	Console.WriteLine(blah);
-	Console.WriteLine("wat");
+	EventSystem.Connect(Events.UpdateEvent, this.LogicUpdate);
 	//Console.WriteLine(this);
 	//Console.WriteLine("hello");
 	//var gameobject = this.ObjectSys.CreateObject();
@@ -78,6 +72,13 @@ class Josh : Component
 	
 	function OnMouseEvent(e: MouseEvent)
 	{
+		var transform1 = this.Detector.Dot1.Object.Transform;
+		var transform2 = this.Detector.Dot2.Object.Transform;
+		var pos1 = this.Detector.Dot1.Object.Transform.GetTranslation();
+		var pos11 = transform1.GetScreenPosition(Real2(0,0));
+		var pos2 = this.Detector.Dot2.Object.Transform.GetTranslation();
+		var pos22 = transform2.GetScreenPosition(Real2(0,1));
+		Console.WriteLine(Camera.Main.Aspect);
 		if (e.State == MouseState.MouseOutside)
 		{
 			//Console.WriteLine("Outside");
@@ -106,8 +107,9 @@ class Josh : Component
 	//Console.WriteLine(e.TimePassed);
 	//this.SpawnedObject.Transform.Translate(0,0.1,0);
 		//Console.WriteLine(ZInterface.WindowSystem.GetNormalMousePosition());
-		this.Detector.Rect.Width = this.Owner.Transform.GetScreenPosition(Real2(1, 1)).X;
-		this.Detector.Rect.Height = this.Owner.Transform.GetScreenPosition(Real2(1, 1)).Y;
+		//this.Detector.Rect.Width = this.Owner.Transform.GetScreenPosition(Real2(1, 1)).X;
+		//this.Detector.Rect.Height = this.Owner.Transform.GetScreenPosition(Real2(1, 1)).Y;
+	Console.WriteLine(ZInterface.WindowSystem.GetNormalMousePosition());
 	}
 
 	function KeyIsPressed(e: KeyEvent)
@@ -116,7 +118,7 @@ class Josh : Component
 	//this.Owner.Transform.Translate(0.0,0.1,0);
 	this.Owner.RigidBody.ApplyForce(Real3(0,100,0));
 	}
- 
+
 }
 
 class Dot
@@ -130,11 +132,11 @@ class Dot
 		this.Object.AddComponent("Transform");
 		this.Object.Transform.SetTranslation(Real3(0,0,-1));
 		Console.WriteLine(this.Object.Transform.GetTranslation());
-		this.Object.Transform.Scale(0.1, 0.1, 0.1);
+		this.Object.Transform.Scale(0.05, 0.05, 0.05);
 		
 		this.Object.AddComponent("Sprite");
 		this.Object.Sprite.ChangeTexture("Circle.png");
-		Console.WriteLine(this.Object.Sprite.Texture.Name);
+		
 	}
 	
 	
@@ -142,11 +144,31 @@ class Dot
 
 class Cinder
 {
+	[Static]
+	var ScreenUnitRatioX:Real = 3.07919694543663;
+	
+	[Static]
+	var ScreenUnitRatioY:Real = 1.732051615138131;
+	
 	//NEEDS FIXED ANY TYPE?
 	[Static]
 	function Connect(eventListener:Josh, eventName:String, functionDelegate:delegate(e:KeyEvent))
 	{
 		EventSystem.Connect(eventName, functionDelegate);
+	}
+	
+	[Static]
+	function MouseToWorldZPlane():Real2
+	{
+		var position = ZInterface.WindowSystem.GetNormalMousePosition();
+		position.X *= 3.07919694543663;
+		position.Y *= 1.732051615138131;
+		var cameraPos = Camera.Main.Owner.Transform.GetTranslation();
+		position.X += cameraPos.X;
+		position.Y += cameraPos.Y;
+		//Console.WriteLine(position);
+		
+		return position;
 	}
 
 	sends UpdateEvent:UpdateEvent;

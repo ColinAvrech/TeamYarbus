@@ -19,14 +19,14 @@
 namespace Framework
 {
   //serialize, initialize, update
-
+	/*
 	ZilchDefineType(CircleCollider, CinderZilch)
 	{
 		type->HandleManager = ZilchManagerId(Zilch::PointerManager);
 		ZilchBindFieldGetAs(radius, "Radius")
 
 	}
-
+	*/
   void CircleCollider::Serialize(Serializer::DataNode* data)
   {
     Serializer::DataNode* temp;

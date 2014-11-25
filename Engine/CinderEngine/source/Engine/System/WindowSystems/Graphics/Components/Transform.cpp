@@ -116,11 +116,13 @@ namespace Framework
   void Transform::ZSetTranslation(Zilch::Real3 newpos)
   {
 	  position = vec3(newpos.x, newpos.y, newpos.z);
+	  matricesReady = false;
   }
 
   void Transform::ZSetScale(Zilch::Real3 newscale)
   {
 	  scale = vec3(newscale.x, newscale.y, newscale.z);
+	  matricesReady = false;
   }
 
   void Transform::Translate (float x, float y, float z)

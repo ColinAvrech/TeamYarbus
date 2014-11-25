@@ -18,6 +18,12 @@
 #pragma once
 namespace Framework
 {
+	/*
+	ZilchDefineType(ShapeCollider, CinderZilch)
+	{
+
+	}
+	*/
 	void ShapeCollider::SerializeMaterial(const char* name)
 	{
 		//opens file

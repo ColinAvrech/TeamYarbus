@@ -42,7 +42,7 @@ namespace Framework
   class ObjectSystem : public BaseSystem
   {
   public:
-    ZilchDeclareBaseType(ObjectSystem, Zilch::TypeCopyMode::ReferenceType);
+    ZilchDeclareDerivedType(ObjectSystem, BaseSystem);
 	
 	//ZilchDeclareBaseType(Zilch::Array<GameObject*>, Zilch::TypeCopyMode::ReferenceType);
 	//ZilchDeclareBaseType(Zilch::Array<GameObject*>, Zilch::TypeCopyMode::ReferenceType);
@@ -75,8 +75,9 @@ namespace Framework
 	  void ObjectSystem::ZilchLoadLevel(Zilch::String level);
 	  void ObjectSystem::LoadLevelAdditive(Zilch::String level);
 
+	GameObject* ObjectSystem::FindObjectByName(Zilch::String name);
+	GameObject* ObjectSystem::FindObjectByID(Zilch::Integer id);
 	void ObjectSystem::FindAllObjectsByName(Zilch::String name);
-	GameObject* ObjectSystem::FindObjectByName(Zilch::String obj);
     /*!Used to generator unique GOCIds*/
     static unsigned LastGameObjectId;
     static string LoadedLevel;

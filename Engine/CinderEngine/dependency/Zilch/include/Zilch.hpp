@@ -41,14 +41,11 @@
 // End header protection
 #endif
 
-
-#pragma warning(disable:4005)
-
 namespace Zilch
 {
   // Defines
   #ifndef ZilchLoop
-    #define ZilchLoop for(;;)
+    #define ZilchLoop for (;;)
   #endif
 
   // Don't allow copying of a type
@@ -81,6 +78,11 @@ namespace Zilch
   // MSVC++ 6.0  _MSC_VER == 1200
   // MSVC++ 5.0  _MSC_VER == 1100
 
+  // Thread local storage is supported by everything but clang on Windows
+  #if !(defined(__clang__) && (defined(_WIN32) || defined(WIN32)))
+    #define ZilchSupportsThreadLocalStorage
+  #endif
+
   // If we're running 0x features in gcc, or the C++ version is defined, or we're in VS2010 or later...
   #if defined(__GXX_EXPERIMENTAL_CXX0X__) ||  __cplusplus >= 201103L || _MSC_VER >= 1600
     #define ZilchSupportsDecltypeAuto
@@ -90,7 +92,6 @@ namespace Zilch
 
   // This just changes how we do auto, theoretically the same (it's all wrapped in a macro anyways...)
   //#define ZilchUseDeclTypeForAuto
-
 
   // *************** Compiler Specific Warnings ***************
 
@@ -140,6 +141,10 @@ namespace Zilch
     // and if the destructor is trivial, it complains that the self parameter is not used
     #pragma warning(disable : 4189)
 
+    // We get a warning about an outer structure being padded due to inner members having alignment specifications
+    // An example of this is using jmp_buf anywhere (such as in PerFrameData) especially with 64-bit compatability warnings
+    #pragma warning(disable : 4324)
+
     // We really don't care about C++ initializing POD types to zero
     #pragma warning(disable : 4345)
 
@@ -168,17 +173,75 @@ namespace Zilch
     // It's nice to know these are deprecated, but we'll deal with them when they become actual errors
     #pragma warning(disable : 4996)
 
+    // Static analysis complains about passing a 'char' into isspace and similar functions
+    // For some weird reason it requires casting the char to an 'unsigned char', even though isspace is defined to take an int
+    // This is well formed C and C++ code, static analysis is complaining about it
+    #pragma warning(disable : 6330)
 
+    // Static analysis also complains about the use of alloca, which has a well defined meaning
+    // It recommends the usage of _malloca, a completely non-standard MSVC only function which functions EXACTLY the same in Release mode
+    #pragma warning(disable : 6255)
 
+    // Disabling the local declaration hiding, for now (this one is the most valid, but we have valid cases for it)
+    #pragma warning(disable : 6246)
+
+    // Static analysis also complains about 'Dereferencing NULL pointer' for every single instance we use in-place new, which is simply not correct
+    #pragma warning(disable : 6011)
+
+    // Comparing a constant to another constant (not caught by the W4 via templates) is considered bad by static analysis, even though
+    // it completly makes sense and will be optimized out if it is in fact a constant
+    #pragma warning(disable : 6326)
+
+    // This particular warning complains about the dereferencing a null pointer because it implied
+    // that a variable could be null (assigned to another variable, check that variable)
+    // The entire warning is fundamentally flawed:
+    //  Player* foundPlayer = nullptr;
+    //  if (SomeCondition)
+    //  {
+    //    Player* globalPlayer = GrabGlobalPlayer();
+    //    if (globalPlayer->IsAlive()) <--- Here it complains that 'globalPlayer' could be null, simply because of the below line
+    //      foundPlayer = globalPlayer;
+    //  }
+    //  if (foundPlayer != nullptr) <--- It sees that 'foundPlayer' is being checked for null, and because foundPlayer
+    //    ...                            is assigned from nearestPlayer, then it thinks 'globalPlayer' could be null
+    #pragma warning(disable : 28182)
+
+    // Standard examples (such as setting thread name) from Microsoft's own documentation cause the static analysis to complain
+    // about __try and __catch (about continuing from the exception possibly causing an infinite loop, which it does not)
+    #pragma warning(disable : 6312)
+    #pragma warning(disable : 6322)
+
+    // We don't care about using deprecated Windows code, we'll change it later if we care
+    #pragma warning(disable : 28159)
+
+    ZilchTodo("These must be fixed / examined");
+    #pragma warning(disable : 6201)
+    #pragma warning(disable : 6031)
+
+    // These static analysis warnings are literally happening inside Microsoft's own 'wspiapi.h'
+    #pragma warning(disable : 6101)
+    #pragma warning(disable : 6102)
+    #pragma warning(disable : 6387)
+    #pragma warning(disable : 6386)
+    #pragma warning(disable : 28196)
 
   #endif
-
 
   // *************** Compiler Specific Macros ***************
 
   // If we're on the Microsoft compiler...
   #ifdef _MSC_VER
+    
+    // When we want to declare a thread local variable
+    // This must be used in the declaration (after static or extern if applicable)
+    // and also in the cpp file before anything
+    // Thread locals cannot be initialized
+    #define ZilchThreadLocal __declspec(thread)
 
+    // On some compilers we need to define static thread locals (as members of a class)
+    // This macro will remove any of its contents for compilers that don't need it
+    #define ZilchDefineStaticThreadLocal(StaticVariableDefinition) StaticVariableDefinition
+    
     // Atttempts to trigger a breakpoint in the debugger
     #define ZilchDebugBreak() __debugbreak()
 
@@ -196,6 +259,20 @@ namespace Zilch
       // We don't have access to the 'override' keyword
       #define override
     #endif
+    
+    // When we want to declare a thread local variable
+    // This must be used in the declaration (after static or extern if applicable)
+    // and also in the cpp file before anything
+    // Thread locals cannot be initialized
+    #ifdef ZilchSupportsThreadLocalStorage
+      #define ZilchThreadLocal __thread
+    #else
+      #define ZilchThreadLocal
+    #endif
+
+    // On some compilers we still need to define static thread locals (as members of a class)
+    // This macro will remove any of its contents for compilers that don't need it
+    #define ZilchDefineStaticThreadLocal(StaticVariableDefinition)
 
     // Atttempts to trigger a breakpoint in the debugger
     #define ZilchDebugBreak()
@@ -253,6 +330,13 @@ namespace Zilch
     #define ZilchAutoVal(VariableName, Expression) typeof(Expression)  VariableName = Expression;
     #define ZilchAutoRef(VariableName, Expression) typeof(Expression)& VariableName = Expression;
   #endif
+
+  // Visual Studio 2010's (and maybe other compilers) decltype has an issue with getting the type
+  // of the address of a function template instantiation (decltype(Lerp<Real>) for instance).
+  // This template and macro are a work around for doing this.
+  template <typename T>
+  T ZilchFunctionPointerPassThrough(T);
+  #define ZilchTypeOfFunctionPointer(FunctionPointer)  ZilchTypeOf(ZilchFunctionPointerPassThrough(FunctionPointer))
 
   // If we support static assert (otherwise there's an alternative not as clear way)
   #ifdef ZilchSupportsStaticAssert
@@ -315,7 +399,6 @@ namespace Zilch
 
 // End header protection
 #endif
-
 
 // C Standard Library
 #include <ctype.h>
@@ -451,8 +534,10 @@ extern char gDiscardBuffer[2];
   #define CStringCopy(dest, destSize, source, sourceSize) \
     strncpy_s(dest, (destSize), source, sourceSize);
 
+#if _MSC_VER < 1800
   #define va_copy(dest, source) \
     dest = source;
+#endif
 
 #else
 
@@ -508,6 +593,13 @@ extern char gDiscardBuffer[2];
 #else
 #define TypeOf(type) typeof(type)
 #endif
+
+// Visual Studio 2010's (and maybe other compilers) decltype has an issue with getting the type
+// of the address of a function template instantiation (decltype(Lerp<Real>) for instance).
+// This template and macro are a work around for doing this.
+template <typename T>
+T FunctionPointerPassThrough(T);
+#define TypeOfFunctionPointer(type) TypeOf(FunctionPointerPassThrough(type))
 
 #if _MSC_VER
   #define ZeroHasTypeOf 0
@@ -586,7 +678,6 @@ typedef unsigned long long u64;
 
 #pragma once
 
-
 /*
 
 These macros are only for displaying information to developers. 
@@ -652,7 +743,6 @@ private:
 };
 
 }//namespace Zero
-
 
 #if !defined(ZERO_ENABLE_ERROR) 
 #   if defined(_DEBUG)
@@ -726,7 +816,6 @@ do { if((Expression) && Zero::ErrorSignaler::SignalError(Zero::ErrorSignaler::Fi
     FileErrorIf(Expression, file , Line , __VA_ARGS__);                   \
     return whatToReturn;                                                  \
   } } while(gConditionalFalseConstant)
-
 
 ///////////////////////////////////////////////////////////////////////////////
 ///
@@ -906,6 +995,9 @@ bool IsBigEndian();
 
 #include <cstddef>
 
+// In the case we need to initialize thread locals and similar things to null, they must be considered a 'constant expression'
+#define nullptr_constant nullptr
+
 #else // CAFE and older versions of GCC / Clang
 
 namespace std
@@ -964,10 +1056,10 @@ bool operator !=(nullptr_t, T value)
 // Create an instance of the null pointer type
 const std::nullptr_t nullptr = std::nullptr_t();
 
+// In the case we need to initialize thread locals and similar things to null, they must be considered a 'constant expression'
+#define nullptr_constant NULL
+
 #endif
-
-
-
 
 ///////////////////////////////////////////////////////////////////////////////
 ///
@@ -1051,7 +1143,6 @@ struct PodOverride
 template<> struct is_pod<typeName> : public true_type {};
 
 }//namespace zero
-
 
 //For placement new
 #include <new>
@@ -1278,7 +1369,6 @@ inline void uninitialized_fill(type* /*dest*/, size_t /*size*/,
   //do nothing for pod types
 }
 
-
 template<typename type>
 inline void destroyElements(type* begin, size_t size, false_type /*ispod*/)
 {
@@ -1322,7 +1412,6 @@ struct IteratorRange
   iterator end;
 };
 
-
 //Forms a range with iterators.
 template<typename iteratorType>
 struct IteratorTypedRange
@@ -1347,7 +1436,6 @@ struct IteratorTypedRange
   iterator begin;
   iterator end;
 };
-
 
 //Pointer Range. Forms a range between two pointers.
 template<typename type>
@@ -1402,7 +1490,6 @@ inline void DeleteOp(Pair<const keytype,type>& entry) { delete entry.second; }
 template<typename keytype, typename type>
 inline void DeleteOp(Pair<keytype,type>& entry) { delete entry.second; }
 
-
 template<typename rangeType>
 void DeleteObjectsIn(rangeType range)
 {
@@ -1436,7 +1523,6 @@ struct DataBlock
   byte* Data;
   size_t Size;
 };
-
 
 }//namespace Zero
 
@@ -1479,7 +1565,6 @@ struct DataBlock
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-
 namespace Zero
 {
 
@@ -1506,7 +1591,6 @@ MemPtr zStaticAllocate(size_t size);
 
 }
 
-
 ///////////////////////////////////////////////////////////////////////////////
 ///
 /// \file InList.hpp
@@ -1518,7 +1602,6 @@ MemPtr zStaticAllocate(size_t size);
 ///////////////////////////////////////////////////////////////////////////////
 
 #pragma once
-
 
 //For ptrdiff
 #include <cstddef>
@@ -1798,7 +1881,6 @@ public:
     SetEmpty();
   };
 
-
   sub_reference front()
   {
     return *static_cast<refType*>(Next(GetHeader()));
@@ -1927,7 +2009,6 @@ public:
     if(!rightR.empty())
       splice(leftR.begin, rightR);
   }
-
 
   template<typename Comparer>
   void sort(Comparer comparer)
@@ -2072,15 +2153,12 @@ private:
   void operator=(const InListBaseLink&){}
 };
 
-
 template<typename type, Link<type> type::* PtrToMember>
 void EraseAndDelete(type* element)
 {
   InList<type, PtrToMember>::Unlink(element);
   delete element;
 }
-
-
 
 //Erase helper  function
 template<typename type, Link<type> type::* PtrToMember>
@@ -2107,7 +2185,6 @@ void DeleteObjectsIn(InListBaseLink<type, baseLinkType>& container)
 {
   container.safeForEach(container.begin(), container.end(), EraseAndDeleteBase<type, baseLinkType>);
 }
-
 
 }//namespace Zero
 
@@ -2246,7 +2323,7 @@ public:
   typedef char value_type;
   typedef const char* iterator;
 
-  static const uint InvalidIndex = (uint)-1;
+  static const size_t InvalidIndex = (uint)-1;
 
   StringRange()
     : begin(cEmpty), end(cEmpty)
@@ -2347,7 +2424,7 @@ public:
     return InvalidIndex;
   }
 
-  uint FindFirstOf(const StringRange& value)
+  uint FindFirstOf(const StringRange& value) const
   {
     size_t rangeSize = size();
     size_t valueSize = value.size();
@@ -2376,9 +2453,9 @@ public:
     if(size() == 0)
       return InvalidIndex;
 
-    uint last = size() - 1;
+    size_t last = size() - 1;
 
-    for (uint i = 0; i <= last; ++i)
+    for (size_t i = 0; i <= last; ++i)
     {
       if (begin[last - i] == value)
         return last - i;
@@ -2395,11 +2472,11 @@ public:
     if (!valueSize || valueSize > rangeSize)
       return InvalidIndex;
 
-    uint last = rangeSize - valueSize;
+    size_t last = rangeSize - valueSize;
 
-    for (uint i = 0; i <= last; ++i)
+    for (size_t i = 0; i <= last; ++i)
     {
-      uint j;
+      size_t j;
       for (j = 0; j < valueSize; ++j)
       {
         if (begin[last - i + j] != value.begin[j])
@@ -2426,9 +2503,9 @@ public:
 
   uint FindLastNonWhitespaceCharIndex() const
   {
-    uint last = size() - 1;
+    size_t last = size() - 1;
 
-    for (uint i = 0; i <= last; ++i)
+    for (size_t i = 0; i <= last; ++i)
     {
       if (!isspace(begin[last - i]))
         return last - i;
@@ -2439,7 +2516,7 @@ public:
 
   value_type FindFirstNonWhitespaceChar() const
   {
-    uint i = FindLastNonWhitespaceCharIndex();
+    uint i = FindFirstNonWhitespaceCharIndex();
     if (i != InvalidIndex)
       return begin[i];
     else
@@ -2453,6 +2530,24 @@ public:
       return begin[i];
     else
       return '\0';
+  }
+
+  StringRange Trim()
+  {
+    uint startIndex = FindFirstNonWhitespaceCharIndex();
+    if(startIndex == InvalidIndex)
+      return StringRange();
+
+    uint endIndex = FindLastNonWhitespaceCharIndex();
+
+    return sub_string(startIndex, endIndex - startIndex + 1);
+  }
+
+  bool Contains(const StringRange& value) const
+  {
+    uint index = FindFirstOf(value);
+
+    return index != InvalidIndex;
   }
 
   bool IsAllUpper() const
@@ -2521,7 +2616,6 @@ public:
   iterator begin;
   iterator end;
 };
-
 
 template<size_t maxSize>
 class FixedString : public FixedArray<char, maxSize>
@@ -2618,7 +2712,6 @@ inline bool operator!=(const FixedString<s>& left, cstr right)
   return strcmp(left.data(), right) != 0;
 }
 
-
 //String range vs other string types
 template<typename stringType>
 inline bool operator==(const stringType& left, const StringRange& right)
@@ -2675,7 +2768,6 @@ inline bool operator<(cstr left, const StringRange& right)
 }
 
 }//namespace Zero
-
 
 namespace Zero
 {
@@ -2762,7 +2854,6 @@ private:
   void operator=(const Graph&);
 };
 
-
 class Heap;
 class Root: public Graph
 {
@@ -2808,7 +2899,6 @@ public:
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-
 namespace Zero
 {
 namespace Memory
@@ -2851,9 +2941,7 @@ void HeapDeallocate(Heap* heap, type* instance)
   heap->Deallocate(instance,sizeof(type));
 }
 
-
 }//namespace Memory
-
 
 #define UseStaticHeap() \
   static void* operator new(size_t size){ return Memory::GetStaticHeap()->Allocate(size); } \
@@ -2883,13 +2971,50 @@ public:
   NodeType* mNode;
 };
 
+// This allocator specifically works with 
+template<typename NodeType>
+class MemsetZeroTypedAllocator : public TypedAllocator<NodeType>
+{
+public:
+  MemsetZeroTypedAllocator()
+    :mNode(Memory::GetGlobalHeap())
+  {
+  }
+
+  MemsetZeroTypedAllocator(cstr name)
+    :mNode(Memory::GetNamedHeap(name))
+  {
+  }
+
+  MemsetZeroTypedAllocator(NodeType* manager)
+    :mNode(manager)
+  {
+  }
+
+  MemPtr Allocate(size_t numberOfBytes)
+  {
+    if(mNode == nullptr)
+      mNode = Memory::GetGlobalHeap();
+    return mNode->Allocate(numberOfBytes);
+  }
+
+  void Deallocate(MemPtr ptr, size_t numberOfBytes)
+  {
+    if(mNode == nullptr)
+      mNode = Memory::GetGlobalHeap();
+    mNode->Deallocate(ptr, numberOfBytes);
+  }
+
+  NodeType* mNode;
+};
+
 typedef TypedAllocator<Memory::Heap> HeapAllocator;
 
 //Override default
 typedef TypedAllocator<Memory::Heap> DefaultAllocator;
+typedef MemsetZeroTypedAllocator<Memory::Heap> MemsetZeroDefaultAllocator;
 
 }//namespace Zero
-
 
 #else
 
@@ -2927,8 +3052,6 @@ public:
 
 #endif
 
-
-
 namespace Zero
 {
 
@@ -2956,18 +3079,21 @@ inline size_t Hash64to32Shift(u64 key)
   return (uint) key;
 }
 
-//Generic hash function.
+// Policy for how values are tested for equality
+// Allow the containers to be searched by values
+// that are not the same as the stored type
 template<typename type>
 struct ComparePolicy
 {
-  inline bool equal(const type& left, const type& right) const
+  //Default use operator ==
+  template<typename otherType>
+  inline bool equal(const type& left, const otherType& right) const
   {
-    //Default use operator ==
-    return left == right;
+    return right == left;
   }
 };
 
-//Generic hash function.
+// Policy for how values are hashed
 template<typename type>
 struct HashPolicy : public ComparePolicy<type>
 {
@@ -3041,6 +3167,7 @@ struct HashPolicy<type*> : public ComparePolicy<type*>
   }
 };
 
+///Hash Function for floats.
 template<>
 struct HashPolicy<float> : public ComparePolicy<float>
 {
@@ -3051,6 +3178,8 @@ struct HashPolicy<float> : public ComparePolicy<float>
   }
 };
 
+// Compare Policty for const char * which
+// uses string comparison
 template<>
 struct ComparePolicy<const char*>
 {
@@ -3058,9 +3187,16 @@ struct ComparePolicy<const char*>
   {
     return strcmp(left, right) == 0;
   }
+
+  template<typename stringType>
+  inline bool equal(const char* left, const stringType& right) const
+  {
+    // use operator == to other type, usually strings
+    return right == left;
+  }
 };
 
-///Hash functor for const char *
+///Hash function for const char *
 template<>
 struct HashPolicy<const char*> : public ComparePolicy<const char*>
 {
@@ -3122,7 +3258,7 @@ protected:
 
 public:
 
-  //Default contstructor
+  //Default constructor
   HashedContainer()
   {
     mTableSize = 0;
@@ -3383,7 +3519,6 @@ public:
 
   }
 
-
   ////////Find//////////////////////////////
 
   //Find an element value that hashes and compares to a
@@ -3407,7 +3542,7 @@ public:
       {
         //Check to see if the value of this node is equal
         //to the search value.
-        if(searchHasher.equal(node->Value, searchValue))
+        if(searchHasher.equal(searchValue, node->Value))
           return node;
 
         //Move through all the objects in the linked list.
@@ -3428,9 +3563,7 @@ public:
       return 0;
   }
 
-
   ///////Erasing//////////////////////////
-
 
   //Erase a value if found.
   void erase(const_reference value)
@@ -3488,7 +3621,6 @@ public:
     mMaxLoadFactor = newMax;
     checkForExpand(mSize);
   }
-
 
   ///Equals///////////
 
@@ -3633,9 +3765,6 @@ protected:
 
 }//namespace Zero
 
-
-
-
 namespace Zero
 {
 //----------------------------------------------------------------------- Utility
@@ -3770,7 +3899,6 @@ public:
 
   ////////Equality and Inequality///////
 
-
   //////////Equal operators//////////////
   //Primary equal operator for strings
   friend inline bool operator == (const this_type& left, const this_type& right)
@@ -3863,6 +3991,16 @@ public:
     return all().FindLastNonWhitespaceChar();
   }
 
+  StringRange Trim()
+  {
+    return all().Trim();
+  }
+
+  bool Contains(const StringRange& value) const
+  {
+    return all().Contains(value);
+  }
+
   /// Returns true if all the characters in a string are upper-case
   bool IsAllUpper() const
   {
@@ -3912,13 +4050,16 @@ public:
     return String(buffer, numberOfTimes);
   }
 
+  // Internally allocates a node
+  // This should never be called by the user except in rare optimization cases
+  static StringNode* allocateNode(size_type size);
+
 private:
   void initializeToDefault();
   void addRef();
   void release();
   void assign(const_pointer data, size_type size);
   void assign(StringNode* node);
-  StringNode* allocateNode(size_type size);
   StringNode* mNode;
 };
 
@@ -3937,7 +4078,6 @@ public:
   bool empty();
   StringRange curRange;
 };
-
 
 inline bool operator==(const String& left, cstr right)
 {
@@ -3967,7 +4107,7 @@ inline bool operator==(const String& left, const FixedString<s>& right)
 }
 
 //--------------------------------------------------- Hash Policy (String Range)
-//Hash function for standard string.
+//Hash policy for string range
 template<>
 struct HashPolicy<StringRange>
 {
@@ -3976,10 +4116,22 @@ struct HashPolicy<StringRange>
   {
     return HashString(value.begin, value.size());
   }
+
+  inline bool equal(const StringRange& left, const StringRange& right) const
+  {
+    return left == right;
+  }
+
+  template<typename stringType>
+  inline bool equal(const StringRange& left, const stringType& right) const
+  {
+    // use operator == to other type, usually strings
+    return right == left;
+  }
 };
 
 //--------------------------------------------------------- Hash Policy (String)
-//Hash function for String class.
+//Hash policy for String class.
 template<>
 struct HashPolicy<String>
 {
@@ -4035,8 +4187,6 @@ String WordWrap(StringRange input, size_t maxLineLength);
 ///////////////////////////////////////////////////////////////////////////////
 
 #pragma once
-
-
 
 namespace Zero
 {
@@ -4376,7 +4526,6 @@ public:
     insert(0, BuildRange(begin,end));
   }
 
-
   template<typename inputRangeType>
   void assign(inputRangeType range)
   {    
@@ -4544,7 +4693,6 @@ protected:
         if(firstBlockSize != 0)
           uninitialized_move(startOfFirstBlock, mData, firstBlockSize, typePodMove());
 
-
         //Copy over second block of data
         if(secondBlockSize != 0)
         {
@@ -4556,7 +4704,6 @@ protected:
       //Deallocate old memory
       if(mCapacity != 0)
         mAllocator.Deallocate(mData, sizeof(type)*mCapacity);
-
 
       mCapacity = newCapacity;
       mData = newData;
@@ -4638,7 +4785,6 @@ protected:
     if(mCapacity != 0)
       mAllocator.Deallocate(mData, sizeof(type)*mCapacity);
 
-
     mCapacity = newCapacity;
     mData = newData;
   }
@@ -4683,9 +4829,7 @@ struct MoveOperator<Array<type, Allocator, tt_traits> >
   }
 };
 
-
 }//namespace Zero
-
 
 namespace Zero
 {
@@ -4746,7 +4890,6 @@ StringRange RangeUntilFirst(String string, Predicate predicate)
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-
 ///////////////////////////////////////////////////////////////////////////////
 ///
 /// \file StringConversion.hpp
@@ -4758,27 +4901,34 @@ StringRange RangeUntilFirst(String string, Predicate predicate)
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-
-
-
 namespace Zero
 {
+
+// Convert Integers into hexadecimal format "4A34"
+uint WriteToHex(char* buffer, uint bufferSize, u64 integerValue);
+uint WriteToHex(char* buffer, uint bufferSize, u32 integerValue);
+
+// Write out 'places' number of hex digits from integerValue
+uint WriteToHexSize(char* buffer, uint bufferSize, uint places, u64 integerValue);
 
 // Read 64 bit hex string
 u64 ReadHexString(StringRange range);
 
-uint WriteToHex(char* buffer, uint bufferSize, u64 integerValue);
-uint WriteToHex(char* buffer, uint bufferSize, u32 integerValue);
-uint WriteToHexSize(uint places, char* buffer, uint bufferSize, u64 integerValue);
-
-// Enum Conversion
-uint ConvertNameToIndex(cstr source, cstr nameArray[]);
-
 //Basic conversion function (input must be UTF-16/2) DestAscii must unicodeLength +1 (for null terminator)
 void ConvertUnicodeToAscii(char* destAscii, uint destAsciiLength, const wchar_t* unicodeData, size_t unicodeLength);
 
+// Convert String to value (takes value reference so function can be overloaded)
+void ToValue(StringRange range, String& value);
+void ToValue(StringRange range, StringRange& value);
 
-// Convert String to Value Type
+void ToValue(StringRange range, bool& value);
+void ToValue(StringRange range, float& value);
+void ToValue(StringRange range, double& value);
+void ToValue(StringRange range, int& value);
+void ToValue(StringRange range, uint& value);
+void ToValue(StringRange range, u64& value);
+void ToValue(StringRange range, s64& value);
+
 template<typename type>
 inline void ToValue(StringRange token, type& value)
 {
@@ -4786,34 +4936,20 @@ inline void ToValue(StringRange token, type& value)
   type::InvalidCall();
 }
 
-inline void ToValue(StringRange range, String& value)
-{
-  value = range;
-}
+// Convert value to string and  write into buffer returns the number of bytes written.
+uint ToBuffer(char* buffer, uint bufferSize, bool value);
+uint ToBuffer(char* buffer, uint bufferSize, float value);
+uint ToBuffer(char* buffer, uint bufferSize, double value);
+uint ToBuffer(char* buffer, uint bufferSize, int value);
+uint ToBuffer(char* buffer, uint bufferSize, uint value);
+uint ToBuffer(char* buffer, uint bufferSize, u64 value);
 
-void ToValue(StringRange range, float& value);
-void ToValue(StringRange range, double& value);
-void ToValue(StringRange range, int& value);
-void ToValue(StringRange range, unsigned int& value);
-void ToValue(StringRange range, StringRange& value);
-void ToValue(StringRange range, bool& value);
-void ToValue(StringRange range, u64& value);
-void ToValue(StringRange range, s64& value);
-
-// Convert Type to String
 template<typename type>
 uint ToBuffer(char* buffer, uint bufferSize, const type& value)
 {
-  //no ToBuffer for this type
+  // No ToBuffer for this type
   return type::InvalidCall();
 }
-
-uint ToBuffer(char* buffer, uint bufferSize, const int& value);
-uint ToBuffer(char* buffer, uint bufferSize, const unsigned int& value);
-uint ToBuffer(char* buffer, uint bufferSize, const float& value);
-uint ToBuffer(char* buffer, uint bufferSize, const double& value);
-uint ToBuffer(char* buffer, uint bufferSize, const bool& value);
-uint ToBuffer(char* buffer, uint bufferSize, const u64& value);
 
 }//namespace Zero
 
@@ -4827,8 +4963,6 @@ uint ToBuffer(char* buffer, uint bufferSize, const u64& value);
 ///
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
-
-
 
 namespace Zero
 {
@@ -4963,7 +5097,6 @@ private:
 
 }
 
-
 namespace Zero
 {
 
@@ -4975,7 +5108,6 @@ String BuildString(StringRange a, StringRange b, StringRange c, StringRange d, S
 String BuildString(StringRange** ranges, uint count);
 
 String StringJoin(Array<String>& strings, StringParam joinToken);
-
 
 ///Extension of ByteBuffer for building strings. Has
 ///stream operators overloaded so it can act as a replacement
@@ -5049,7 +5181,6 @@ inline StringBuilder& operator<<(StringBuilder& builder, const type& value)
   return builder;
 }
 
-
 }//namespace Zero
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -5063,9 +5194,6 @@ inline StringBuilder& operator<<(StringBuilder& builder, const type& value)
 ///////////////////////////////////////////////////////////////////////////////
 
 #pragma once
-
-
-
 
 namespace Zero
 {
@@ -5091,9 +5219,10 @@ struct PairHashAdapter
     return mHasher.equal(left.first, right.first);
   }
 
-  bool equal(const pair_type& left, const KeyType& right)
+  template<typename otherPairType>
+  bool equal(const KeyType& left, const otherPairType& rightPair)
   {
-    return mHasher.equal(left.first, right);
+    return mHasher.equal(left, rightPair.first);
   }
 };
 
@@ -5220,12 +5349,12 @@ public:
   {
     Node* node = base_type::internal_find_as(searchKey, 
                                              PairHashAdapter< searchHasher,
-                                                              KeyType,
+                                                              searchType,
                                                               DataType >());
     if(node != cHashOpenNode)
-      return range(node, node + 1);
+      return range(node, node + 1, 1);
     else
-      return range((Node*)cHashOpenNode, (Node*)cHashOpenNode);
+      return range((Node*)cHashOpenNode, (Node*)cHashOpenNode, 0);
   }
 
   range find(const key_type& searchKey) const
@@ -5322,8 +5451,6 @@ private:
 ///////////////////////////////////////////////////////////////////////////////
 
 #pragma once
-
-
 
 namespace Zero
 {
@@ -5465,7 +5592,6 @@ public:
 
 }//namespace Zero
 
-
 ///////////////////////////////////////////////////////////////////////////////
 ///
 /// \file OwnedArray.hpp
@@ -5477,7 +5603,6 @@ public:
 ///////////////////////////////////////////////////////////////////////////////
 
 #pragma once
-
 
 namespace Zero
 {
@@ -5500,10 +5625,7 @@ public:
   }
 };
 
-
-
 }//namespace Zero
-
 
 ///////////////////////////////////////////////////////////////////////////////
 ///
@@ -5516,8 +5638,6 @@ public:
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-
-
 ///////////////////////////////////////////////////////////////////////////////
 ///
 /// \file Algorithm.hpp
@@ -5528,7 +5648,6 @@ public:
 ///
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
-
 
 namespace Zero
 {
@@ -5607,7 +5726,6 @@ inputRange find_first_of(inputRange input, testInputRange testInput)
   }
   return input;
 }
-
 
 // Performs the unary operation on all elements in the range.
 template<typename inputRange, typename unaryOperator>
@@ -5893,7 +6011,6 @@ bool IsSorted(rangeType range)
   return true;
 }
 
-
 template<typename rangeType, typename searchType, typename valueType>
 valueType& BinarySearch(rangeType& range, const searchType& searchValue, valueType& valueIfNotFound)
 {
@@ -5987,9 +6104,7 @@ bool SortedInsert(containertype& container, type& value)
   return true;
 }
 
-
 //Array Algorithms
-
 
 template<typename desttype, typename range>
 void PushAll(desttype& a, range inputRange )
@@ -5999,7 +6114,6 @@ void PushAll(desttype& a, range inputRange )
     a.push_back(inputRange.front());
   }
 }
-
 
 template<typename type>
 struct EqualTo
@@ -6085,7 +6199,6 @@ void RemoveSwap(ArrayType& array, size_t index)
 }
 
 }//namespace Zero
-
 
 namespace Zero
 {
@@ -6522,7 +6635,6 @@ public:
 
 }//namespace Zero
 
-
 ///////////////////////////////////////////////////////////////////////////////
 ///
 /// \file ForEachRange.hpp
@@ -6533,7 +6645,6 @@ public:
 ///
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
-
 
 #if !ZeroHasAuto && !ZeroHasTypeOf 
 
@@ -6767,7 +6878,6 @@ UniquePointer<type> MakeUnique(const param0& p0, const param0& p1)
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-
 namespace Zero
 {
 
@@ -6793,7 +6903,6 @@ bool AtomicCompareExchange64(volatile s64* number, s64 exchange, s64 comparison)
 
 }
 
-
 ///////////////////////////////////////////////////////////////////////////////
 ///
 /// \file Socket.hpp
@@ -6816,9 +6925,6 @@ bool AtomicCompareExchange64(volatile s64* number, s64 exchange, s64 comparison)
 ///
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
-
-
-
 
 namespace Zero
 {
@@ -6871,8 +6977,6 @@ private:
 
 }//namespace Zero
 
-
-
 ///////////////////////////////////////////////////////////////////////////////
 ///
 /// \file EnumDeclaration.hpp
@@ -6894,6 +6998,7 @@ private:
   namespace name                                                              \
   {                                                                           \
   typedef uint Type;                                                          \
+  static cstr EnumName = #name;                                               \
   enum       Enum {value1 = mode 0};                                          \
   enum {Size = 1};                                                            \
   static cstr Names[] = {#value1, NULL};                                      \
@@ -6903,6 +7008,7 @@ private:
   namespace name                                                              \
   {                                                                           \
   typedef uint Type;                                                          \
+  static cstr EnumName = #name;                                               \
   enum       Enum {value1 = mode 0, value2 = mode 1};                         \
   enum {Size = 2};                                                            \
   static cstr Names[] = {#value1, #value2, NULL};                             \
@@ -6912,6 +7018,7 @@ private:
   namespace name                                                              \
   {                                                                           \
   typedef uint Type;                                                          \
+  static cstr EnumName = #name;                                               \
   enum       Enum {value1 = mode 0, value2 = mode 1, value3 = mode 2};        \
   enum {Size = 3};                                                            \
   static cstr Names[] = {#value1, #value2, #value3, NULL};                    \
@@ -6921,6 +7028,7 @@ private:
   namespace name                                                              \
   {                                                                           \
   typedef uint Type;                                                          \
+  static cstr EnumName = #name;                                               \
   enum       Enum {value1 = mode 0, value2 = mode 1, value3 = mode 2,         \
                    value4 = mode 3};                                          \
   enum {Size = 4};                                                            \
@@ -6931,6 +7039,7 @@ private:
   namespace name                                                              \
   {                                                                           \
   typedef uint Type;                                                          \
+  static cstr EnumName = #name;                                               \
   enum       Enum {value1 = mode 0, value2 = mode 1, value3 = mode 2,         \
                    value4 = mode 3, value5 = mode 4};                         \
   enum {Size = 5};                                                            \
@@ -6941,6 +7050,7 @@ private:
   namespace name                                                              \
   {                                                                           \
   typedef uint Type;                                                          \
+  static cstr EnumName = #name;                                               \
   enum       Enum {value1 = mode 0, value2 = mode 1, value3 = mode 2,         \
                    value4 = mode 3, value5 = mode 4, value6 = mode 5};        \
   enum {Size = 6};                                                            \
@@ -6953,6 +7063,7 @@ private:
   namespace name                                                              \
   {                                                                           \
   typedef uint Type;                                                          \
+  static cstr EnumName = #name;                                               \
   enum       Enum {value1 = mode 0, value2 = mode 1, value3 = mode 2,         \
                    value4 = mode 3, value5 = mode 4, value6 = mode 5,         \
                    value7 = mode 6};                                          \
@@ -6966,6 +7077,7 @@ private:
   namespace name                                                              \
   {                                                                           \
   typedef uint Type;                                                          \
+  static cstr EnumName = #name;                                               \
   enum       Enum {value1 = mode 0, value2 = mode 1, value3 = mode 2,         \
                    value4 = mode 3, value5 = mode 4, value6 = mode 5,         \
                    value7 = mode 6, value8 = mode 7};                         \
@@ -6979,6 +7091,7 @@ private:
   namespace name                                                              \
   {                                                                           \
   typedef uint Type;                                                          \
+  static cstr EnumName = #name;                                               \
   enum       Enum {value1 = mode 0, value2 = mode 1, value3 = mode 2,         \
                    value4 = mode 3, value5 = mode 4, value6 = mode 5,         \
                    value7 = mode 6, value8 = mode 7, value9 = mode 8};        \
@@ -6992,6 +7105,7 @@ private:
   namespace name                                                              \
   {                                                                           \
   typedef uint Type;                                                          \
+  static cstr EnumName = #name;                                               \
   enum       Enum {value1 = mode 0, value2 = mode 1, value3 = mode 2,         \
                    value4 = mode 3, value5 = mode 4, value6 = mode 5,         \
                    value7 = mode 6, value8 = mode 7, value9 = mode 8,         \
@@ -7006,6 +7120,7 @@ private:
   namespace name                                                              \
   {                                                                           \
   typedef uint Type;                                                          \
+  static cstr EnumName = #name;                                               \
   enum       Enum {value1 = mode 0, value2 = mode 1, value3 = mode 2,         \
                    value4 = mode 3, value5 = mode 4, value6 = mode 5,         \
                    value7 = mode 6, value8 = mode 7, value9 = mode 8,         \
@@ -7021,6 +7136,7 @@ private:
   namespace name                                                              \
   {                                                                           \
   typedef uint Type;                                                          \
+  static cstr EnumName = #name;                                               \
   enum       Enum {value1 = mode 0, value2 = mode 1, value3 = mode 2,         \
                    value4 = mode 3, value5 = mode 4, value6 = mode 5,         \
                    value7 = mode 6, value8 = mode 7, value9 = mode 8,         \
@@ -7036,6 +7152,7 @@ private:
   namespace name                                                              \
   {                                                                           \
   typedef uint Type;                                                          \
+  static cstr EnumName = #name;                                               \
   enum       Enum {value1 = mode 0, value2 = mode 1, value3 = mode 2,         \
                    value4 = mode 3, value5 = mode 4, value6 = mode 5,         \
                    value7 = mode 6, value8 = mode 7, value9 = mode 8,         \
@@ -7053,6 +7170,7 @@ private:
   namespace name                                                              \
   {                                                                           \
   typedef uint Type;                                                          \
+  static cstr EnumName = #name;                                               \
   enum       Enum {value1 = mode 0, value2 = mode 1, value3 = mode 2,         \
                    value4 = mode 3, value5 = mode 4, value6 = mode 5,         \
                    value7 = mode 6, value8 = mode 7, value9 = mode 8,         \
@@ -7070,6 +7188,7 @@ private:
   namespace name                                                              \
   {                                                                           \
   typedef uint Type;                                                          \
+  static cstr EnumName = #name;                                               \
   enum       Enum {value1 = mode 0, value2 = mode 1, value3 = mode 2,         \
                    value4 = mode 3, value5 = mode 4, value6 = mode 5,         \
                    value7 = mode 6, value8 = mode 7, value9 = mode 8,         \
@@ -7088,6 +7207,7 @@ private:
   namespace name                                                              \
   {                                                                           \
   typedef uint Type;                                                          \
+  static cstr EnumName = #name;                                               \
   enum       Enum {value1 = mode 0, value2 = mode 1, value3 = mode 2,         \
                    value4 = mode 3, value5 = mode 4, value6 = mode 5,         \
                    value7 = mode 6, value8 = mode 7, value9 = mode 8,         \
@@ -7107,6 +7227,7 @@ private:
   namespace name                                                              \
   {                                                                           \
   typedef uint Type;                                                          \
+  static cstr EnumName = #name;                                               \
   enum       Enum {value1 = mode 0, value2 = mode 1, value3 = mode 2,         \
                    value4 = mode 3, value5 = mode 4, value6 = mode 5,         \
                    value7 = mode 6, value8 = mode 7, value9 = mode 8,         \
@@ -7126,6 +7247,7 @@ private:
   namespace name                                                              \
   {                                                                           \
   typedef uint Type;                                                          \
+  static cstr EnumName = #name;                                               \
   enum       Enum {value1 = mode 0, value2 = mode 1, value3 = mode 2,         \
                    value4 = mode 3, value5 = mode 4, value6 = mode 5,         \
                    value7 = mode 6, value8 = mode 7, value9 = mode 8,         \
@@ -7145,6 +7267,7 @@ private:
   namespace name                                                              \
   {                                                                           \
   typedef uint Type;                                                          \
+  static cstr EnumName = #name;                                               \
   enum       Enum {value1 = mode 0, value2 = mode 1, value3 = mode 2,         \
                    value4 = mode 3, value5 = mode 4, value6 = mode 5,         \
                    value7 = mode 6, value8 = mode 7, value9 = mode 8,         \
@@ -7166,6 +7289,7 @@ private:
   namespace name                                                              \
   {                                                                           \
   typedef uint Type;                                                          \
+  static cstr EnumName = #name;                                               \
   enum       Enum {value1 = mode 0, value2 = mode 1, value3 = mode 2,         \
                    value4 = mode 3, value5 = mode 4, value6 = mode 5,         \
                    value7 = mode 6, value8 = mode 7, value9 = mode 8,         \
@@ -7188,6 +7312,7 @@ private:
   namespace name                                                              \
   {                                                                           \
   typedef uint Type;                                                          \
+  static cstr EnumName = #name;                                               \
   enum       Enum {value1 = mode 0, value2 = mode 1, value3 = mode 2,         \
                    value4 = mode 3, value5 = mode 4, value6 = mode 5,         \
                    value7 = mode 6, value8 = mode 7, value9 = mode 8,         \
@@ -7210,6 +7335,7 @@ private:
   namespace name                                                              \
   {                                                                           \
   typedef uint Type;                                                          \
+  static cstr EnumName = #name;                                               \
   enum       Enum {value1 = mode 0, value2 = mode 1, value3 = mode 2,         \
                    value4 = mode 3, value5 = mode 4, value6 = mode 5,         \
                    value7 = mode 6, value8 = mode 7, value9 = mode 8,         \
@@ -7233,6 +7359,7 @@ private:
   namespace name                                                              \
   {                                                                           \
   typedef uint Type;                                                          \
+  static cstr EnumName = #name;                                               \
   enum       Enum {value1 = mode 0, value2 = mode 1, value3 = mode 2,         \
                    value4 = mode 3, value5 = mode 4, value6 = mode 5,         \
                    value7 = mode 6, value8 = mode 7, value9 = mode 8,         \
@@ -7256,6 +7383,7 @@ private:
   namespace name                                                              \
   {                                                                           \
   typedef uint Type;                                                          \
+  static cstr EnumName = #name;                                               \
   enum       Enum {value1 = mode 0, value2 = mode 1, value3 = mode 2,         \
                    value4 = mode 3, value5 = mode 4, value6 = mode 5,         \
                    value7 = mode 6, value8 = mode 7, value9 = mode 8,         \
@@ -7279,6 +7407,7 @@ private:
   namespace name                                                              \
   {                                                                           \
   typedef uint Type;                                                          \
+  static cstr EnumName = #name;                                               \
   enum       Enum {value1 = mode 0, value2 = mode 1, value3 = mode 2,         \
                    value4 = mode 3, value5 = mode 4, value6 = mode 5,         \
                    value7 = mode 6, value8 = mode 7, value9 = mode 8,         \
@@ -7305,6 +7434,7 @@ private:
   namespace name                                                              \
   {                                                                           \
   typedef uint Type;                                                          \
+  static cstr EnumName = #name;                                               \
   enum       Enum {value1 = mode 0, value2 = mode 1, value3 = mode 2,         \
                    value4 = mode 3, value5 = mode 4, value6 = mode 5,         \
                    value7 = mode 6, value8 = mode 7, value9 = mode 8,         \
@@ -7331,6 +7461,7 @@ private:
   namespace name                                                              \
   {                                                                           \
   typedef uint Type;                                                          \
+  static cstr EnumName = #name;                                               \
   enum       Enum {value1 = mode 0, value2 = mode 1, value3 = mode 2,         \
                    value4 = mode 3, value5 = mode 4, value6 = mode 5,         \
                    value7 = mode 6, value8 = mode 7, value9 = mode 8,         \
@@ -7357,6 +7488,7 @@ private:
   namespace name                                                              \
   {                                                                           \
   typedef uint Type;                                                          \
+  static cstr EnumName = #name;                                               \
   enum       Enum {value1 = mode 0, value2 = mode 1, value3 = mode 2,         \
                    value4 = mode 3, value5 = mode 4, value6 = mode 5,         \
                    value7 = mode 6, value8 = mode 7, value9 = mode 8,         \
@@ -7384,6 +7516,7 @@ private:
   namespace name                                                              \
   {                                                                           \
   typedef uint Type;                                                          \
+  static cstr EnumName = #name;                                               \
   enum       Enum {value1 = mode 0, value2 = mode 1, value3 = mode 2,         \
                    value4 = mode 3, value5 = mode 4, value6 = mode 5,         \
                    value7 = mode 6, value8 = mode 7, value9 = mode 8,         \
@@ -7411,6 +7544,7 @@ private:
   namespace name                                                              \
   {                                                                           \
   typedef uint Type;                                                          \
+  static cstr EnumName = #name;                                               \
   enum       Enum {value1 = mode 0, value2 = mode 1, value3 = mode 2,         \
                    value4 = mode 3, value5 = mode 4, value6 = mode 5,         \
                    value7 = mode 6, value8 = mode 7, value9 = mode 8,         \
@@ -7439,6 +7573,7 @@ private:
   namespace name                                                              \
   {                                                                           \
   typedef uint Type;                                                          \
+  static cstr EnumName = #name;                                               \
   enum       Enum {value1 = mode 0, value2 = mode 1, value3 = mode 2,         \
                    value4 = mode 3, value5 = mode 4, value6 = mode 5,         \
                    value7 = mode 6, value8 = mode 7, value9 = mode 8,         \
@@ -7469,6 +7604,7 @@ private:
   namespace name                                                              \
   {                                                                           \
   typedef uint Type;                                                          \
+  static cstr EnumName = #name;                                               \
   enum       Enum {value1 = mode 0, value2 = mode 1, value3 = mode 2,         \
                    value4 = mode 3, value5 = mode 4, value6 = mode 5,         \
                    value7 = mode 6, value8 = mode 7, value9 = mode 8,         \
@@ -7489,7 +7625,6 @@ private:
                          #value26, #value27, #value28, #value29, #value30,    \
                          #value31, #value32, NULL};                           \
   }                                                                           \
-
 
 #define DeclareEnum1(name,v1)                                                 \
         _ExpandNames1(name,_Indexed(),v1)
@@ -7752,7 +7887,6 @@ private:
                        v25,v26,v27,v28,v29,v30,v31,v32)                       \
         _AddNone(name)
 
-
 ///////////////////////////////////////////////////////////////////////////////
 ///
 /// \file ErrorCodes.hpp
@@ -7763,9 +7897,6 @@ private:
 ///
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
-
-
-
 
 namespace Zero
 {
@@ -7825,7 +7956,6 @@ public:
 
 }
 
-
 ///////////////////////////////////////////////////////////////////////////////
 ///
 /// \file File.hpp
@@ -7836,7 +7966,6 @@ public:
 ///
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
-
 
 #define ZeroDeclarePrivateData(Type, Size) \
   byte mPrivateData[Size];                 \
@@ -7863,7 +7992,6 @@ public:
 
 #define ZeroDestructPrivateData(Type, ...)  \
     ((Type*)mPrivateData)->~Type();
-
 
 namespace Zero
 {
@@ -8014,6 +8142,10 @@ namespace Zero
     /// The general idea is that these errors should not be reported via asserts because they are common
     static bool IsReceiveCloseError(int extendedErrorCode);
 
+    /// Checks if an error code is simply just that the remote client terminated a handshake during accept
+    /// Generally these errors are considered continuable (not critical)
+    static bool IsAcceptRemoteError(int extendedErrorCode);
+
     /// Convert a buffer of bytes into network byte order or back (big endian)
     /// On machines whose endianness matches the network byte order, this does nothing
     /// The output and input can overlap (be the same pointer)
@@ -8028,6 +8160,7 @@ namespace Zero
     }
 
     /// Returns if the socket descriptor is valid
+    /// This does not imply that the socket is connected, only that we have a valid handle
     bool IsValid();
 
     /// Creates a new socket descriptor (closes the old one if one exists)
@@ -8097,8 +8230,6 @@ namespace Zero
 ///
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
-
-
 
 namespace Zero
 {
@@ -8175,8 +8306,6 @@ private:
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-
-
 namespace Zero
 {
 
@@ -8236,8 +8365,6 @@ private:
 ///
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
-
-
 
 namespace Zero
 {
@@ -8303,7 +8430,6 @@ String GetVersionString();
 u64 GenerateUniqueId64();
 
 }//namespace Zero
-
 
 ///////////////////////////////////////////////////////////////////////////////
 ///
@@ -8378,14 +8504,22 @@ real Pow(real base, real exp);
 real Log(real val);
 real Log(real val, real base);
 real Log10(real val);
+real Log2(real val);
 real Exp(real val);
+real Exp2(real val);
 real Abs(real val);
 int Abs(int val);
 real FMod(real dividend, real divisor);
+bool SafeFMod(real dividend, real divisor, real& result);
 real GetSign(real val);
+int Sign(real val);
+int Sign(int val);
 real Cos(real val);
 real Sin(real val);
 real Tan(real angle);
+real Cosh(real val);
+real Sinh(real val);
+real Tanh(real angle);
 real ArcCos(real angle);
 real ArcSin(real angle);
 real ArcTan(real angle);
@@ -8407,6 +8541,8 @@ real Ceil(real val, int places, int base);
 real Floor(real val);
 real Floor(real val, int places);
 real Floor(real val, int places, int base);
+real Step(real y, real x);
+int CountBits(int value);
 bool IsValid(real val);
 
 template <typename T>
@@ -8526,6 +8662,15 @@ inline Data Lerp(const Data& start, const Data& end, T interpolationValue)
   return (T(1.0) - interpolationValue) * start + interpolationValue * end;
 }
 
+template <typename Data>
+inline Data SmoothStep(const Data& start, const Data& end, real t)
+{
+  t = Clamp((t - start) / (end - start));
+  
+  // 3t^2 - 2t^3
+  return t * t * (3 - 2 * t);
+}
+
 }// namespace Math
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -8539,7 +8684,6 @@ inline Data Lerp(const Data& start, const Data& end, T interpolationValue)
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-
 ///////////////////////////////////////////////////////////////////////////////
 ///
 /// \file BoolVector2.hpp
@@ -8550,7 +8694,6 @@ inline Data Lerp(const Data& start, const Data& end, T interpolationValue)
 ///
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
-
 
 namespace Math
 {
@@ -8596,7 +8739,6 @@ struct BoolVector2
 
 }// namespace Math
 
-
 namespace Math
 {
 
@@ -8612,6 +8754,7 @@ struct Vector2
 {
   Vector2(void) {};
   explicit Vector2(real x, real y);
+  explicit Vector2(real xy);
   explicit Vector2(ConstRealPointer data);
 
   real& operator[](uint index);
@@ -8783,8 +8926,6 @@ Vector2 GetPerpendicular(Vec2Param vec);
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-
-
 ///////////////////////////////////////////////////////////////////////////////
 ///
 /// \file BoolVector3.hpp
@@ -8795,7 +8936,6 @@ Vector2 GetPerpendicular(Vec2Param vec);
 ///
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
-
 
 namespace Math
 {
@@ -8841,7 +8981,6 @@ struct BoolVector3
 };
 
 }// namespace Math
-
 
 namespace Math
 {
@@ -9072,9 +9211,9 @@ bool AllGreater(Vec3Param lhs, Vec3Param rhs);
 ///Returns if any value in lhs is greater than any value in rhs
 bool AnyGreater(Vec3Param lhs, Vec3Param rhs);
 
+real DistanceToLineSq(Vec3Param start, Vec3Param end, Vec3Param point);
+
 }// namespace Math
-
-
 
 namespace Math
 {
@@ -9187,7 +9326,6 @@ inline real Dot(Vec3Param lhs, Vec3Param rhs)
 
 }//namespace Math
 
-
 ///////////////////////////////////////////////////////////////////////////////
 ///
 /// \file Vector4.hpp
@@ -9200,7 +9338,6 @@ inline real Dot(Vec3Param lhs, Vec3Param rhs)
 
 #pragma once
 
-
 ///////////////////////////////////////////////////////////////////////////////
 ///
 /// \file BoolVector4.hpp
@@ -9211,7 +9348,6 @@ inline real Dot(Vec3Param lhs, Vec3Param rhs)
 ///
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
-
 
 namespace Math
 {
@@ -9258,7 +9394,6 @@ struct BoolVector4
 };
 
 }// namespace Math
-
 
 namespace Math
 {
@@ -9372,7 +9507,6 @@ Vector4 Lerp(Vec4Param start, Vec4Param end, real tValue);
 
 }// namespace Math
 
-
 ///////////////////////////////////////////////////////////////////////////////
 ///
 /// \file Matrix2.hpp
@@ -9383,9 +9517,6 @@ Vector4 Lerp(Vec4Param start, Vec4Param end, real tValue);
 ///
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
-
-
-
 
 namespace Math
 {
@@ -9457,7 +9588,6 @@ public:
   Vector2 Basis(uint index) const;
   Vector2 Cross(uint index) const;
 
-
   union 
   {
     struct
@@ -9511,13 +9641,9 @@ Vector2 Transform(Mat2Param mat, Vec2Param vector);
 ///column operations (so basis vectors in the rows, I know it's backwards but go 
 ///with it), and xmvector and SSE 4 are more efficient with row operations (so 
 ///basis vectors in the columns).
-#if 1
-  #define ColumnBasis
+#ifndef ColumnBasis
+#define ColumnBasis 1
 #endif
-
-
-
-
 
 namespace Math
 {
@@ -9541,7 +9667,7 @@ typedef Matrix3* Mat3Ptr;
 ///square matrices, 2 dimensional vectors, and 3 dimensional vectors.
 struct Matrix3
 {
-#ifdef ColumnBasis
+#if ColumnBasis == 1
 typedef Vector3   BasisVector;
 typedef Vec3Param CrossVector;
 #else
@@ -9670,7 +9796,7 @@ public:
   {
     struct
     {
-#ifdef ColumnBasis
+#if ColumnBasis == 1
       real m00, m01, m02,
            m10, m11, m12, 
            m20, m21, m22;
@@ -9734,11 +9860,6 @@ Matrix3 Inverted(Mat3Param matrix);
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-
-
-
-
-
 namespace Math
 {
 ///Forward declaration
@@ -9760,7 +9881,7 @@ typedef Matrix4* Mat4Ptr;
 ///square matrices, 3 dimensional vectors, and 4 dimensional vectors.
 struct Matrix4
 {
-#ifdef ColumnBasis
+#if ColumnBasis == 1
 typedef Vector4   BasisVector;
 typedef Vec4Param CrossVector;
 #else
@@ -9923,7 +10044,7 @@ public:
   {
     struct
     {
-#ifdef ColumnBasis
+#if ColumnBasis == 1
       real m00, m01, m02, m03, 
            m10, m11, m12, m13, 
            m20, m21, m22, m23, 
@@ -9979,12 +10100,6 @@ real Trace(Mat4Param matrix);
 ///
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
-
-
-
-
-
-
 
 namespace Math
 {
@@ -10102,7 +10217,6 @@ Quaternion CreateDiagonalizer(Mat3Param matrix);
 ///
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
-
 
 namespace Math
 {
@@ -10233,8 +10347,6 @@ struct EulerOrder
 
 }// namespace Math
 
-
-
 namespace Math
 {
 
@@ -10277,7 +10389,6 @@ struct EulerAngles
   ///Index operator to access the Angles data directly.
   real& operator [] (uint index);
 
-
   real I(void) const;
   real J(void) const;
   real K(void) const;
@@ -10306,8 +10417,6 @@ struct EulerAngles
 ///
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
-
-
 
 namespace Math
 {
@@ -10425,8 +10534,6 @@ IntVector2 Max(IntVec2Param lhs, IntVec2Param rhs);
 ///
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
-
-
 
 namespace Math
 {
@@ -10546,8 +10653,6 @@ IntVector3 Max(IntVec3Param lhs, IntVec3Param rhs);
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-
-
 namespace Math
 {
 
@@ -10655,10 +10760,6 @@ IntVector4 Min(IntVec4Param lhs, IntVec4Param rhs);
 IntVector4 Max(IntVec4Param lhs, IntVec4Param rhs);
 
 }// namespace Math
-
-
-
-
 
 namespace Math
 {
@@ -10901,7 +11002,6 @@ Vector3 QuatToEulerDegrees(QuatParam rotation);
 
 }// namespace Math
 
-
 // Bring Zero primitives into the Zilch namespace
 namespace Zilch
 {
@@ -11016,7 +11116,6 @@ namespace Zilch
   class CodeLocation;
   class CollectorContext;
   class CompilationErrors;
-  class CompiledFunction;
   class ConditionalLoopNode;
   class ConstructorNode;
   class ContinueNode;
@@ -11069,6 +11168,7 @@ namespace Zilch
   class ParameterNode;
   class PointerManager;
   class PostExpressionNode;
+  class Project;
   class Property;
   class PropertyDelegateOperatorNode;
   class RelativeJumpOpcode;
@@ -11488,7 +11588,6 @@ namespace Zilch
     IntrusiveLink(Ref, InternalLink);
   };
 
-
   // This structure should be placed as a mutable member of your class
   template <typename Type, typename DeletePolicy = StandardDelete<Type> >
   class RefLink
@@ -11543,12 +11642,7 @@ namespace Zilch
   typedef signed int          OperandIndex;
   typedef signed int          OperandLocal;
   typedef signed int          ByteCodeOffset;
-  typedef unsigned short      ObjectSize;
-  typedef unsigned short      ObjectOffset;
-  typedef unsigned short      ArrayIndex;
-  typedef unsigned short      MemorySize;
   typedef unsigned long long  GuidType;
-  typedef unsigned int        ByteCodeAbsolute;
 
   // Type-defines for the primitive language types
   typedef int             Integer;
@@ -11561,7 +11655,6 @@ namespace Zilch
 // End header protection
 #endif
 
-
 // Standard Zilch Type-defines
 namespace Zilch
 {
@@ -11569,7 +11662,6 @@ namespace Zilch
   typedef Ref<const Library>                              ConstLibraryRef;
 
   typedef Array<Function*>                                FunctionArray;
-  typedef Array<CompiledFunction*>                        CompiledFunctionArray;
   typedef HashMap<String, Variable*>                      VariableMap;
   typedef VariableMap::range                              VariableRange;
   typedef VariableMap::valuerange                         VariableValueRange;
@@ -11608,7 +11700,6 @@ namespace Zilch
   typedef PropertyExtensionMap::range                     PropertyExtensionRange;
   typedef HashMap<BoundType*, IndirectionType*>           TypeToIndirect;
   typedef TypeToIndirect::range                           TypeToIndirectRange;
-  
 
   typedef Function*                   (Type::*GetFunctionFn)            (String name) const;
   typedef const FunctionArray*        (Type::*GetOverloadedFunctionsFn) (String name) const;
@@ -11804,7 +11895,7 @@ namespace Zilch
     HandleManager* Manager;
 
     // An offset from the base of the handle (used in dereferencing)
-    ObjectOffset Offset;
+    size_t Offset;
 
     // Flags we put on the handle
     HandleFlags::Compact Flags;
@@ -11817,26 +11908,10 @@ namespace Zilch
 // End header protection
 #endif
 
-
 namespace Zilch
 {
   // Invalid constants
-  const ByteCodeAbsolute InvalidOpcodeLocation = (ByteCodeAbsolute)-1;
-  const ArrayIndex InvalidTypeIndex = (ArrayIndex)-1;
-
-  // Store the location that we've put a function (both in the executable state, and in byte code location)
-  class DelegateInfo
-  {
-  public:
-    // Constructor
-    DelegateInfo();
-
-    // The function we run when invoking this delegate
-    Function* BoundFunction;
-
-    // The location of the opcode we want to execute (changes per linkage)
-    ByteCodeAbsolute OpcodeLocation;
-  };
+  const size_t InvalidOpcodeLocation = (size_t)-1;
 
   // A delegate is a simple type that consists of an index for a function, as well as the this pointer object
   class Delegate
@@ -11856,8 +11931,8 @@ namespace Zilch
     int Hash() const;
 
   public:
-    // The function information for the delegate
-    DelegateInfo Info;
+    // The function we run when invoking this delegate
+    Function* BoundFunction;
 
     // The handle for the delegate
     Handle ThisHandle;
@@ -11866,7 +11941,6 @@ namespace Zilch
 
 // End header protection
 #endif
-
 
 namespace Zilch
 {
@@ -11900,7 +11974,7 @@ namespace Zilch
     bool operator!=(const Any& rhs) const;
 
     // Allocates data if the size goes past the sizeof(this->Data), or returns a pointer to this->Data
-    byte* AllocateData(ObjectSize size);
+    byte* AllocateData(size_t size);
 
     // Get the raw type data that we point at (may be our internal Data, or may be allocated)
     const byte* GetData() const;
@@ -11988,7 +12062,6 @@ namespace Zilch
 
 // Includes
 
-
 namespace Zilch
 {
   // Type-defines
@@ -12020,6 +12093,31 @@ namespace Zilch
     };
   }
 
+  // Tells us whether a type is a primitive (built in type)
+  template <typename T>
+  class IsPrimitive
+  {
+  public:
+    static const bool Value = false;
+    typedef void FalseType;
+  };
+
+  // Mark all the basic types that we know of as primtiive
+  template <> class IsPrimitive<          bool     > { public: static const bool Value = true; };
+  template <> class IsPrimitive<          float    > { public: static const bool Value = true; };
+  template <> class IsPrimitive<          double   > { public: static const bool Value = true; };
+  template <> class IsPrimitive<          char     > { public: static const bool Value = true; };
+  template <> class IsPrimitive<signed    char     > { public: static const bool Value = true; };
+  template <> class IsPrimitive<unsigned  char     > { public: static const bool Value = true; };
+  template <> class IsPrimitive<signed    short    > { public: static const bool Value = true; };
+  template <> class IsPrimitive<unsigned  short    > { public: static const bool Value = true; };
+  template <> class IsPrimitive<signed    int      > { public: static const bool Value = true; };
+  template <> class IsPrimitive<unsigned  int      > { public: static const bool Value = true; };
+  template <> class IsPrimitive<signed    long     > { public: static const bool Value = true; };
+  template <> class IsPrimitive<unsigned  long     > { public: static const bool Value = true; };
+  template <> class IsPrimitive<signed    long long> { public: static const bool Value = true; };
+  template <> class IsPrimitive<unsigned  long long> { public: static const bool Value = true; };
+
   // This is the interface we expect to see when creating any static
   // library / using the binding system. The only other function that
   // is expected is a static 'GetLibrary()' function which returns a
@@ -12046,7 +12144,7 @@ namespace Zilch
     BoundType* MakeType
     (
       StringParam         name,
-      ObjectSize          size,
+      size_t              size,
       TypeCopyMode::Enum  copyMode,
       BoundType*          parent,
       size_t              nativeVirtualCount
@@ -12176,10 +12274,6 @@ namespace Zilch
 
   /*************************** VIRTUAL DERIVED TYPE ******************************/
 
-  // Defines
-  #define ZilchStaticType(Type) Zilch::TypeBinding::StaticTypeId<Type>
-  #define ZilchTypeId(Type) (ZilchStaticType(Type)::Get())
-
   // Derive from object
   class IZilchObject
   {
@@ -12219,6 +12313,11 @@ namespace Zilch
 
   
   /********************************** BINDING ************************************/
+
+  // Helper macros for accessing these types
+  #define ZilchStaticType(Type) Zilch::TypeBinding::StaticTypeId<Type>
+  #define ZilchTypeId(Type) (ZilchStaticType(Type)::Get())
+  #define ZilchBindingType(Type) typename ZilchStaticType(Type)::BindingType
 
   // All things relevant to binding types
   class TypeBinding
@@ -12269,56 +12368,187 @@ namespace Zilch
       return DynamicCastEx<typename StaticDereference<Derived>::Type, typename StaticDereference<Base>::Type>(baseClassPointer);
     }
 
-    // Root template for size safe cast (both true/false for size safe are specialized)
-    template <bool sizeSafe, typename To, typename From>
-    class SizeSafeCastTemplate
+    // Using SFINAE we can detect if we have the 'ZilchGetDerivedType' method on a type T
+    template <typename T>
+    class CanGetDerivedType
     {
+    private:
+      typedef char Yes[1];
+      typedef char No[2];
+
+      template <typename U, U>
+      class GenericTemplate;
+
+      template <typename C>
+      static Yes& Test(GenericTemplate<BoundType* (C::*)() const, &C::ZilchGetDerivedType>*);
+
+      template <typename>
+      static No& Test(...);
+
     public:
+        static bool const Result = sizeof(Test<T>(0)) == sizeof(Yes);
     };
 
-    // Size safe cast when the sizes match (reinterpret cast)
-    template <typename To, typename From>
-    class SizeSafeCastTemplate<true, To, From>
+    // The macro ZilchVirtualTypeId will create this template using the above SFINAE template (checking for ZilchGetDerivedType)
+    // If the method does not exist on type T, then this one will get called (just resulting in the static typeid)
+    template <typename T, bool HasZilchGetDerivedType>
+    class DiscoverDerivedType
     {
     public:
-      typedef To& ResultType;
-      static To& Cast(From* from)
+      static BoundType* Get(T* object)
       {
-        return *reinterpret_cast<To*>(from);
+        return ZilchTypeId(T);
       }
     };
 
-    // Size safe cast when the sizes do not match (static cast)
-    template <typename To, typename From>
-    class SizeSafeCastTemplate<false, To, From>
+    // If the type T has ZilchGetDerivedType when invoking the macro ZilchVirtualTypeId, this one will get chosen, and will actually invoke ZilchGetDerivedType
+    template <typename T>
+    class DiscoverDerivedType<T, true>
     {
     public:
-      typedef To ResultType;
-      static To Cast(From* from)
+      static BoundType* Get(T* object)
       {
-        return static_cast<To>(*from);
+        return object->ZilchGetDerivedType();
       }
     };
 
-    // A helper for letting us more easily grab the actual result type of the cast
-    template <typename To, typename From>
-    class SizeSafeCastType
-    {
-    public:
-      typedef typename SizeSafeCastTemplate<sizeof(From) == sizeof(To), To, From>::ResultType ResultType;
-    };
-
-    // A size safe cast is a cast that, if they types have the same size, it will reinterpret the memory
-    // Otherwise, if the types are different sizes, it will attmept to static cast
-    // This is generally only intended for value types (Integer, Real, Real3.. etc)
-    template <typename To, typename From>
-    static typename SizeSafeCastType<To, From>::ResultType SizeSafeCast(const From* from)
-    {
-      return SizeSafeCastTemplate<sizeof(From) == sizeof(To), To, From>::Cast((From*)from);
-    }
+    // Get the type of the pointer (using virtual behavior if possible)
+    #define ZilchVirtualTypeId(Pointer) Zilch::TypeBinding::DiscoverDerivedType<ZilchStrip(ZilchTypeOf(Pointer)), Zilch::TypeBinding::CanGetDerivedType<ZilchStrip(ZilchTypeOf(Pointer))>::Result>::Get(Pointer)
 
     template <typename T>
-    class FromPointerData
+    class StripQualifiers
+    {
+    public:
+      typedef T Type;
+    };
+
+    template <typename T>
+    class StripQualifiers<T*>
+    {
+    public:
+      // Use template recursion to strip all qualifiers
+      typedef typename StripQualifiers<T>::Type Type;
+    };
+
+    template <typename T>
+    class StripQualifiers<T&>
+    {
+    public:
+      // Use template recursion to strip all qualifiers
+      typedef typename StripQualifiers<T>::Type Type;
+    };
+
+    template <typename T>
+    class StripQualifiers<const T>
+    {
+    public:
+      // Use template recursion to strip all qualifiers
+      typedef typename StripQualifiers<T>::Type Type;
+    };
+
+    template <typename T>
+    class StripQualifiers<volatile T>
+    {
+    public:
+      // Use template recursion to strip all qualifiers
+      typedef typename StripQualifiers<T>::Type Type;
+    };
+
+    // Strip all const, pointer, reference, and volatile qualifiers from a type to get its core
+    #define ZilchStrip(T) typename Zilch::TypeBinding::StripQualifiers<T>::Type
+
+    // Handles:
+    //  int
+    //  const int
+    //  int&
+    //  const int&
+    template <typename T>
+    static T* InternalToPointer(const T& value)
+    {
+      return (T*)&value;
+    }
+
+    // Handles:
+    //  int*
+    //  const int*
+    //  int*&
+    //  const int*&
+    //  int* const
+    //  const int* const
+    //  int* const&
+    //  const int* const&
+    template <typename T>
+    static T* InternalToPointer(const T* value)
+    {
+      return (T*)value;
+    }
+
+    // Handles:
+    //  const int**
+    //  const int**&
+    template <typename T>
+    static T* InternalToPointer(const T** value)
+    {
+      return (T*)*value;
+    }
+
+    // Handles:
+    //  int**
+    //  int**&
+    template <typename T>
+    static T* InternalToPointer(T* const* value)
+    {
+      return (T*)*value;
+    }
+
+    // Takes any expression and turns it into a pointer of the core type
+    // Examples: const int** -> int*, or const int& -> int*
+    // To just get the type as a pointer rather than the expression, use ZilchStrip(T)*
+    #define ZilchToPointer(Expression) (Zilch::TypeBinding::InternalToPointer<ZilchStrip(ZilchTypeOf(Expression))>(Expression))
+
+    // Strips all forms of const from a type
+    template <typename T>
+    class StripConst
+    {
+    public:
+      typedef T Type;
+    };
+
+    template <typename T>
+    class StripConst<const T> : public StripConst<T>
+    {
+    };
+
+    template <typename T>
+    class StripConst<const T&> : public StripConst<typename StripConst<T>::Type&>
+    {
+    };
+
+    // Value to value
+    template <typename From, typename To> class ReferenceCast              { public: static To  Cast(From   from) { return  from; } };
+    // Value to pointer (illegal)
+    template <typename From, typename To> class ReferenceCast<From  , To*> { public: static To* Cast(From   from) { return "IllegalConversionFromValueToPointer"; } };
+    // Value to reference (illegal)
+    template <typename From, typename To> class ReferenceCast<From  , To&> { public: static To& Cast(From   from) { return "IllegalConversionFromValueToReference"; } };
+    // Pointer to pointer
+    template <typename From, typename To> class ReferenceCast<From* , To*> { public: static To* Cast(From*  from) { return  from; } };
+    // Pointer to reference
+    template <typename From, typename To> class ReferenceCast<From* , To&> { public: static To& Cast(From*  from) { return *from; } };
+    // Pointer to value (only works because we specialized pointer and reference above)
+    template <typename From, typename To> class ReferenceCast<From* , To > { public: static To  Cast(From*  from) { return *from; } };
+    // Reference to reference
+    template <typename From, typename To> class ReferenceCast<From& , To&> { public: static To& Cast(From&  from) { return  from; } };
+    // Reference to pointer
+    template <typename From, typename To> class ReferenceCast<From& , To*> { public: static To* Cast(From&  from) { return &from; } };
+    // Reference to value
+    template <typename From, typename To> class ReferenceCast<From& , To > { public: static To  Cast(From&  from) { return  from; } };
+    // Reference to a pointer to pointer
+    template <typename From, typename To> class ReferenceCast<From*&, To*> { public: static To* Cast(From*& from) { return  from; } };
+    // Reference to a pointer to reference
+    template <typename From, typename To> class ReferenceCast<From*&, To&> { public: static To& Cast(From*& from) { return *from; } };
+
+    template <typename T>
+    class FromDataPointer
     {
     public:
       static T Cast(byte* data)
@@ -12328,7 +12558,7 @@ namespace Zilch
     };
 
     template <typename T>
-    class FromPointerData<T*>
+    class FromDataPointer<T*>
     {
     public:
       static T* Cast(byte* data)
@@ -12338,7 +12568,7 @@ namespace Zilch
     };
 
     template <typename T>
-    class FromPointerData<T&>
+    class FromDataPointer<T&>
     {
     public:
       static T& Cast(byte* data)
@@ -12348,76 +12578,55 @@ namespace Zilch
     };
 
     template <typename T>
-    class ToPointer
+    class ToDataPointer
     {
     public:
-      static const T* Cast(const T& value)
+      static byte* Cast(const T& value)
       {
-        return &value;
-      }
-
-      static T* Cast(T& value)
-      {
-        return &value;
+        return (byte*)&value;
       }
     };
 
     template <typename T>
-    class ToPointer<T*>
+    class ToDataPointer<T*>
     {
     public:
-      static T* Cast(T* value)
+      static byte* Cast(T* value)
       {
-        return value;
+        return (byte*)value;
       }
     };
 
     template <typename T>
-    class ToPointer<T&>
+    class ToDataPointer<T&>
     {
     public:
-      static T* Cast(T& value)
+      static byte* Cast(T& value)
       {
-        return &value;
-      }
-    };
-    
-    template <typename T>
-    class TrueType
-    {
-    public:
-      typedef T   Type;
-      typedef T&  Ref;
-      
-      static T& Read(byte* from)
-      {
-        T& value = *(T*)from;
-        return value;
-      }
-
-      static void Write(const T& value, byte* to)
-      {
-        new (to) T(value);
+        return (byte*)&value;
       }
     };
 
-    // We always strip references
-    template <typename T>
-    class TrueType<T&> : public TrueType<T>
+    // Lets us choose one type or the other based the condition (eg TypeChooser<int, float, false>::Type will be float)
+    template <typename IfTrueType, typename IfFalseType, bool condition>
+    class TypeChooser
     {
     public:
     };
 
-    // We always strip const
-    template <typename T>
-    class TrueType<const T> : public TrueType<T>
+    template <typename IfTrueType, typename IfFalseType>
+    class TypeChooser<IfTrueType, IfFalseType, true>
     {
     public:
+      typedef IfTrueType Type;
     };
 
-    #define ZilchTrueType(T)      Zilch::TypeBinding::TrueType<T>
-    #define ZilchTrueTypeSize(T)  (sizeof(typename ZilchTrueType(T)::Type))
-
+    template <typename IfTrueType, typename IfFalseType>
+    class TypeChooser<IfTrueType, IfFalseType, false>
+    {
+    public:
+      typedef IfFalseType Type;
+    };
 
     // A template for grabbing a TypeInfo given a template type
     // (This template can be specialized using macros)
@@ -12428,6 +12637,40 @@ namespace Zilch
     public:
       // Lets us know at compile time whether this is a value/complex type
       static const TypeCopyMode::Enum CopyMode = T::ZilchCopyMode;
+
+      // The T type (and because partial specializations of 'StaticTypeId', this will always be a stripped type)
+      typedef T UnqualifiedType;
+
+      // This type gets shadowed by the other partial specializations (and will be the actual type when accessed from the ZilchStaticType macro)
+      typedef T QualifiedType;
+
+      // The type we use in any generated binding. This is generally the QualifiedType, however if the type is a redirect, it will be unqualified
+      typedef T BindingType;
+
+      // This is the type that we represent when written to the stack
+      // (as a value type) or dereferenced from a handle (as a reference type)
+      typedef T RepresentedType;
+
+      // Because our representation is the exact same (whether in C++ or on the stack/in a handle)
+      // then our resulting type when read is just a reference (not the case in all specializations!)
+      typedef T& ReadType;
+      
+      // Since our representation is the exact same (as mentioned above) this will be a direct read
+      static const bool DirectRead = true;
+      
+      // Read our object representation from either stack data or handle data
+      static ReadType Read(byte* from)
+      {
+        // Reading and writing by default should just be pulling the object out directly
+        return *(T*)from;
+      }
+
+      // Write our object representation to either stack data or handle data
+      static void Write(const T& value, byte* to)
+      {
+        // Copy construct our object direclty into the memory location
+        new (to) T(value);
+      }
 
       static BoundType* Get()
       {
@@ -12448,6 +12691,11 @@ namespace Zilch
     class StaticTypeId<T&> : public StaticTypeId<T>
     {
     public:
+      // This type gets shadowed by the other partial specializations (and will be the actual type when accessed from the ZilchStaticType macro)
+      typedef T& QualifiedType;
+
+      // Based on whether this object supports direct reading or not, we choose to use the qualified or unqualified type in binding
+      typedef typename TypeChooser<QualifiedType, typename StaticTypeId<T>::UnqualifiedType, StaticTypeId<T>::DirectRead>::Type BindingType;
     };
 
     // A partial specialization for reference types
@@ -12455,6 +12703,11 @@ namespace Zilch
     class StaticTypeId<const T> : public StaticTypeId<T>
     {
     public:
+      // This type gets shadowed by the other partial specializations (and will be the actual type when accessed from the ZilchStaticType macro)
+      typedef const T QualifiedType;
+
+      // Based on whether this object supports direct reading or not, we choose to use the qualified or unqualified type in binding
+      typedef typename TypeChooser<QualifiedType, typename StaticTypeId<T>::UnqualifiedType, StaticTypeId<T>::DirectRead>::Type BindingType;
     };
 
     // A partial specialization for pointer types
@@ -12462,6 +12715,12 @@ namespace Zilch
     class StaticTypeId<T*> : public StaticTypeId<T>
     {
     public:
+      // This type gets shadowed by the other partial specializations (and will be the actual type when accessed from the ZilchStaticType macro)
+      typedef T* QualifiedType;
+
+      // Based on whether this object supports direct reading or not, we choose to use the qualified or unqualified type in binding
+      typedef typename TypeChooser<QualifiedType, typename StaticTypeId<T>::UnqualifiedType, StaticTypeId<T>::DirectRead>::Type BindingType;
+
       // Error checking
       ZilchStaticAssert(
         StaticTypeId<T>::CopyMode != TypeCopyMode::ValueType,
@@ -19499,7 +19758,6 @@ virtual size_t Get1000()
   return 1000;
 }
 
-
     };
 
     // The signature / size that this compiler uses for function pointers in a virtual-table
@@ -19507,7 +19765,7 @@ virtual size_t Get1000()
 
     // Get the number of entries in a class' virtual-table
     template <typename T>
-    static size_t GetVirtualTableCount()
+    static size_t GetVirtualTableCount(typename IsPrimitive<T>::FalseType)
     {
       // We use a trick where we derive from the given type and add a single virtual function,
       // which when invoked on a 'counter' class will return us the index of the last function (eg the count)
@@ -19536,6 +19794,12 @@ virtual size_t Get1000()
 
       // Return the count we got from the virtual table
       return count;
+    }
+
+    template <typename T>
+    static size_t GetVirtualTableCount()
+    {
+      return 0;
     }
 
     // Checks if a class has a virtual-table by counting it's virtual functions
@@ -19587,7 +19851,6 @@ virtual size_t Get1000()
       return guid;
     };
   };
-
   
   /************************************ VOID *************************************/
   template <>
@@ -19597,6 +19860,7 @@ virtual size_t Get1000()
     static BoundType* Get();
   };
 
+  /************************************ NULL POINTER *************************************/
   template <>
   class TypeBinding::StaticTypeId<nullptr_t>
   {
@@ -19604,10 +19868,32 @@ virtual size_t Get1000()
     static BoundType* Get();
   };
 
+  /************************************ ANY *************************************/
   template <>
   class TypeBinding::StaticTypeId<Any>
   {
   public:
+
+    // The T type (and because partial specializations of 'StaticTypeId', this will always be a stripped type)
+    typedef Any UnqualifiedType;
+
+    // This type gets shadowed by the other partial specializations (and will be the actual type when accessed from the ZilchStaticType macro)
+    typedef Any QualifiedType;
+
+    // The type we use in any generated binding. This is generally the QualifiedType, however if the type is a redirect, it will be unqualified
+    typedef Any BindingType;
+
+    // This is the type that we represent when written to the stack
+    // (as a value type) or dereferenced from a handle (as a reference type)
+    typedef Any RepresentedType;
+
+    // Because our representation is the exact same (whether in C++ or on the stack/in a handle)
+    // then our resulting type when read is just a reference (not the case in all specializations!)
+    typedef Any& ReadType;
+      
+    // Since our representation is the exact same (as mentioned above) this will be a direct read
+    static const bool DirectRead = true;
+      
     static AnyType* Get();
   };
   
@@ -19646,7 +19932,6 @@ virtual size_t Get1000()
     }
   };
 
-
   /*********************************** CHECKS ************************************/
 
 // If we're in debug mode, add extra checks...
@@ -19678,10 +19963,16 @@ virtual size_t Get1000()
   #define ZilchDeclareExternalHelper(SelfType, BaseType, TypeCopy)                      \
     /* A specialization so we know that type info exists for this type */               \
     template <>                                                                         \
-    class Zilch::TypeBinding::StaticTypeId<SelfType>                                    \
+    class ZilchStaticType(SelfType)                                                     \
     {                                                                                   \
     public:                                                                             \
       static const TypeCopyMode::Enum CopyMode = TypeCopy;                              \
+      typedef SelfType UnqualifiedType;                                                 \
+      typedef SelfType QualifiedType;                                                   \
+      typedef SelfType BindingType;                                                     \
+      typedef SelfType RepresentedType;                                                 \
+      typedef SelfType& ReadType;                                                       \
+      static const bool DirectRead = true;                                              \
       static Zilch::BoundType* Get();                                                   \
       /* Binding macros need the current class being bound */                           \
       typedef BaseType  Base;                                                           \
@@ -19692,6 +19983,9 @@ virtual size_t Get1000()
       static void InitializeStaticType(Zilch::StaticLibrary& library);                  \
       /* External types still need a way to setup thier bindings */                     \
       static void SetupType(Zilch::LibraryBuilder& builder, Zilch::BoundType* type);    \
+      /* Read and write values from stack data and dereferenced handle data */          \
+      static ReadType Read(byte* from);                                                 \
+      static void Write(const SelfType& value, byte* to);                               \
     };
 
   // Declare an external base type (belongs inside the type definition)
@@ -19707,9 +20001,9 @@ virtual size_t Get1000()
     /* We store the Zilch type, but ideally this would be not accessible */             \
     Zilch::BoundType* __##SelfType##Type = nullptr;                                     \
     /* Implementation of the 'get type' specialization */                               \
-    Zilch::BoundType* Zilch::TypeBinding::StaticTypeId<SelfType>::Get()                 \
+    Zilch::BoundType* ZilchStaticType(SelfType)::Get()                                  \
     {                                                                                   \
-      StaticLibraries& statics = StaticLibraries::GetInstance();                        \
+      Zilch::StaticLibraries& statics = StaticLibraries::GetInstance();                 \
       if (__##SelfType##Type == nullptr)                                                \
       {                                                                                 \
         if (statics.GetBuildState() == BuildState::Building)                            \
@@ -19724,16 +20018,25 @@ virtual size_t Get1000()
       }                                                                                 \
       return __##SelfType##Type;                                                        \
     }                                                                                   \
+    /* Read our object representation from either stack data or handle data */          \
+    ZilchStaticType(SelfType)::ReadType ZilchStaticType(SelfType)::Read(byte* from)     \
+    {                                                                                   \
+      return *(SelfType*)from;                                                          \
+    }                                                                                   \
+    /* Write our object representation to either stack data or handle data */           \
+    void ZilchStaticType(SelfType)::Write(const SelfType& value, byte* to)              \
+    {                                                                                   \
+      new (to) SelfType(value);                                                         \
+    }                                                                                   \
     /* This function gets called when the static library we belong to is built */       \
-    void Zilch::TypeBinding::StaticTypeId<SelfType>::                                   \
-      InitializeStaticType(Zilch::StaticLibrary& library)                               \
+    void ZilchStaticType(SelfType)::InitializeStaticType(Zilch::StaticLibrary& library) \
     {                                                                                   \
       /* Check if we've already been initialized */                                     \
       if (__##SelfType##Type != nullptr)                                                \
         return;                                                                         \
-      typedef Zilch::TypeBinding::StaticTypeId<SelfType> InitType;                      \
+      typedef ZilchStaticType(SelfType) InitType;                                       \
       /* First initialize our base type... */                                           \
-      Zilch::TypeBinding::StaticTypeId<Base>::InitializeStaticType(library);            \
+      ZilchStaticType(Base)::InitializeStaticType(library);                             \
       /* Actually create and bind our type */                                           \
       __##SelfType##Type = library.MakeType                                             \
       (                                                                                 \
@@ -19747,10 +20050,10 @@ virtual size_t Get1000()
     }                                                                                   \
     /* Add to the global initializers, so we can ensure initialization of types */      \
     int SelfType##Init = Library::GetInstance().AddInitializer(                         \
-      Zilch::TypeBinding::StaticTypeId<SelfType>::InitializeStaticType);                \
+      ZilchStaticType(SelfType)::InitializeStaticType);                                 \
     /* Implementation of the binding (the user provides the body) */                    \
-    void Zilch::TypeBinding::StaticTypeId<SelfType>::                                   \
-      SetupType(LibraryBuilder& builder, BoundType* type)
+    void ZilchStaticType(SelfType)::                                                    \
+      SetupType(Zilch::LibraryBuilder& builder, Zilch::BoundType* type)
   
   // (Helper) Define an external type
   #define ZilchDefineExternalType(SelfType, Library)                                    \
@@ -19768,46 +20071,55 @@ virtual size_t Get1000()
 
   /**************************** EXTERNAL REDIRECTION *****************************/
   // Declare an external type
-  #define ZilchDeclareRedirectType(SelfType, RedirectType, TypeCopy)                    \
+  #define ZilchDeclareRedirectType(SelfType, RedirectType)                              \
     /* A specialization so we know that type info exists for this type */               \
     template <>                                                                         \
-    class ZilchTrueType(SelfType)                                                       \
+    class ZilchStaticType(SelfType)                                                     \
     {                                                                                   \
     public:                                                                             \
-      typedef RedirectType Type;                                                        \
-      typedef RedirectType Redirect;                                                    \
-      typedef Zilch::TypeBinding::SizeSafeCastType<SelfType, RedirectType>              \
-        ::ResultType Ref;                                                               \
-      static Ref Read(byte* from);                                                      \
-      static void Write(const SelfType& value, byte* to);                               \
-    };                                                                                  \
-    /* A specialization so we know that type info exists for this type */               \
-    template <>                                                                         \
-    class Zilch::TypeBinding::StaticTypeId<SelfType>                                    \
-    {                                                                                   \
-    public:                                                                             \
-      static const TypeCopyMode::Enum CopyMode = TypeCopy;                              \
-      typedef RedirectType Redirect;                                                    \
+      static const TypeCopyMode::Enum CopyMode = StaticTypeId<RedirectType>::CopyMode;  \
+      typedef SelfType UnqualifiedType;                                                 \
+      typedef SelfType QualifiedType;                                                   \
+      typedef SelfType BindingType;                                                     \
+      typedef RedirectType RepresentedType;                                             \
+      typedef SelfType ReadType;                                                        \
+      static const bool DirectRead = false;                                             \
       static Zilch::BoundType* Get();                                                   \
+      /* Read and write values from stack data and dereferenced handle data */          \
+      static ReadType Read(byte* from);                                                 \
+      static void Write(const SelfType& value, byte* to);                               \
     };
 
   // (Helper) Define an external type with a given name
-  #define ZilchDefineRedirectType(SelfType, ToBoundType)                                \
+  #define ZilchDefineRedirectType(SelfType, ConvertFromRedirect, ConvertToRedirect)     \
     /* Implementation of the 'get type' specialization */                               \
-    BoundType* Zilch::TypeBinding::StaticTypeId<SelfType>::Get()                        \
+    Zilch::BoundType* ZilchStaticType(SelfType)::Get()                                  \
     {                                                                                   \
-      return ToBoundType;                                                               \
+      return ZilchTypeId(RepresentedType);                                              \
     }                                                                                   \
-    ZilchTrueType(SelfType)::Ref ZilchTrueType(SelfType)::Read(byte* from)              \
+    /* Read our object representation from either stack data or handle data */          \
+    ZilchStaticType(SelfType)::ReadType ZilchStaticType(SelfType)::Read(byte* from)     \
     {                                                                                   \
-      ZilchTrueType(SelfType)::Ref result =                                             \
-        Zilch::TypeBinding::SizeSafeCast<SelfType>((Redirect*)from);                    \
-      return result;                                                                    \
+      return ConvertToRedirect(*(RepresentedType*)from);                                \
     }                                                                                   \
-    void ZilchTrueType(SelfType)::Write(const SelfType& value, byte* to)                \
+    /* Write our object representation to either stack data or handle data */           \
+    void ZilchStaticType(SelfType)::Write(const SelfType& value, byte* to)              \
     {                                                                                   \
-      new (to) Redirect(Zilch::TypeBinding::SizeSafeCast<Redirect>(&value));            \
+      new (to) RepresentedType(ConvertFromRedirect(value));                             \
     }
+
+  // Can be used by redirection macros to support changing of a type to another type
+  template <typename From, typename To>
+  To StaticCast(const From& from)
+  {
+    return static_cast<To>(from);
+  }
+
+  // Define an external type with a given name that can be statically casted to our redirected type
+  #define ZilchDefineSimpleRedirectType(SelfType)                                       \
+    ZilchDefineRedirectType(SelfType,                                                   \
+    (StaticCast<SelfType, ZilchStaticType(SelfType)::RepresentedType>),                 \
+    (StaticCast<ZilchStaticType(SelfType)::RepresentedType, SelfType>))
 
   /********************************** INTERNAL ***********************************/
   // Declare a type (belongs inside the type definition)
@@ -19850,7 +20162,7 @@ virtual size_t Get1000()
     /* Get the static type id from the object */                                        \
     Zilch::BoundType* SelfType::ZilchGetStaticType()                                    \
     {                                                                                   \
-      StaticLibraries& statics = Zilch::StaticLibraries::GetInstance();                 \
+      Zilch::StaticLibraries& statics = Zilch::StaticLibraries::GetInstance();          \
       if (__##SelfType##Type == nullptr)                                                \
       {                                                                                 \
         if (statics.GetBuildState() == Zilch::BuildState::Building)                     \
@@ -19872,7 +20184,7 @@ virtual size_t Get1000()
       if (__##SelfType##Type != nullptr)                                                \
         return;                                                                         \
       /* First initialize our base type... */                                           \
-      Zilch::TypeBinding::StaticTypeId<ZilchBase>::InitializeStaticType(library);       \
+      ZilchStaticType(ZilchBase)::InitializeStaticType(library);                        \
       /* Actually create and bind our type */                                           \
       __##SelfType##Type = library.MakeType                                             \
       (                                                                                 \
@@ -19905,35 +20217,43 @@ virtual size_t Get1000()
   #define ZilchDefineSimpleType(SelfType, Library)                                      \
     ZilchDefineSimpleTypeAs(SelfType, Library, #SelfType)
 
-
   /********************************** PRIMITIVE **********************************/
   // Declaration of all primitive types (these MUST be seen by anything
   // using type-binding, and therefore they are declared within this file)
-  ZilchDeclareRedirectType(bool,                Boolean,        TypeCopyMode::ValueType);
-  ZilchDeclareRedirectType(Boolean2,            Boolean2,       TypeCopyMode::ValueType);
-  ZilchDeclareRedirectType(Boolean3,            Boolean3,       TypeCopyMode::ValueType);
-  ZilchDeclareRedirectType(Boolean4,            Boolean4,       TypeCopyMode::ValueType);
-  ZilchDeclareRedirectType(char,                Integer,        TypeCopyMode::ValueType);
-  ZilchDeclareRedirectType(signed   char,       Integer,        TypeCopyMode::ValueType);
-  ZilchDeclareRedirectType(unsigned char,       Integer,        TypeCopyMode::ValueType);
-  ZilchDeclareRedirectType(signed   short,      Integer,        TypeCopyMode::ValueType);
-  ZilchDeclareRedirectType(unsigned short,      Integer,        TypeCopyMode::ValueType);
-  ZilchDeclareRedirectType(signed   int,        Integer,        TypeCopyMode::ValueType);
-  ZilchDeclareRedirectType(unsigned int,        Integer,        TypeCopyMode::ValueType);
-  ZilchDeclareRedirectType(signed   long,       Integer,        TypeCopyMode::ValueType);
-  ZilchDeclareRedirectType(unsigned long,       Integer,        TypeCopyMode::ValueType);
-  ZilchDeclareRedirectType(Integer2,            Integer2,       TypeCopyMode::ValueType);
-  ZilchDeclareRedirectType(Integer3,            Integer3,       TypeCopyMode::ValueType);
-  ZilchDeclareRedirectType(Integer4,            Integer4,       TypeCopyMode::ValueType);
-  ZilchDeclareRedirectType(float,               Real,           TypeCopyMode::ValueType);
-  ZilchDeclareRedirectType(Real2,               Real2,          TypeCopyMode::ValueType);
-  ZilchDeclareRedirectType(Real3,               Real3,          TypeCopyMode::ValueType);
-  ZilchDeclareRedirectType(Real4,               Real4,          TypeCopyMode::ValueType);
-  ZilchDeclareRedirectType(Quaternion,          Quaternion,     TypeCopyMode::ValueType);
-  ZilchDeclareRedirectType(String,              String,         TypeCopyMode::ReferenceType);
-  ZilchDeclareRedirectType(double,              DoubleReal,     TypeCopyMode::ValueType);
-  ZilchDeclareRedirectType(signed   long long,  DoubleInteger,  TypeCopyMode::ValueType);
-  ZilchDeclareRedirectType(unsigned long long,  DoubleInteger,  TypeCopyMode::ValueType);
+  ZilchDeclareExternalBaseType(Boolean,       TypeCopyMode::ValueType);
+  ZilchDeclareExternalBaseType(Boolean2,      TypeCopyMode::ValueType);
+  ZilchDeclareExternalBaseType(Boolean3,      TypeCopyMode::ValueType);
+  ZilchDeclareExternalBaseType(Boolean4,      TypeCopyMode::ValueType);
+
+  ZilchDeclareExternalBaseType(Integer,       TypeCopyMode::ValueType);
+  ZilchDeclareExternalBaseType(Integer2,      TypeCopyMode::ValueType);
+  ZilchDeclareExternalBaseType(Integer3,      TypeCopyMode::ValueType);
+  ZilchDeclareExternalBaseType(Integer4,      TypeCopyMode::ValueType);
+
+  ZilchDeclareExternalBaseType(Real,          TypeCopyMode::ValueType);
+  ZilchDeclareExternalBaseType(Real2,         TypeCopyMode::ValueType);
+  ZilchDeclareExternalBaseType(Real3,         TypeCopyMode::ValueType);
+  ZilchDeclareExternalBaseType(Real4,         TypeCopyMode::ValueType);
+
+  ZilchDeclareExternalBaseType(Quaternion,    TypeCopyMode::ValueType);
+
+  ZilchDeclareExternalBaseType(String,        TypeCopyMode::ReferenceType);
+  
+  ZilchDeclareExternalBaseType(DoubleReal,    TypeCopyMode::ValueType);
+  ZilchDeclareExternalBaseType(DoubleInteger, TypeCopyMode::ValueType);
+
+  // All the redirection types
+  ZilchDeclareRedirectType(char,                Integer);
+  ZilchDeclareRedirectType(signed   char,       Integer);
+  ZilchDeclareRedirectType(unsigned char,       Integer);
+  ZilchDeclareRedirectType(signed   short,      Integer);
+  ZilchDeclareRedirectType(unsigned short,      Integer);
+  
+  ZilchDeclareRedirectType(unsigned int,        Integer);
+  ZilchDeclareRedirectType(signed   long,       Integer);
+  ZilchDeclareRedirectType(unsigned long,       Integer);
+
+  ZilchDeclareRedirectType(unsigned long long,  DoubleInteger);
 }
 
 // End header protection
@@ -20002,14 +20322,26 @@ namespace Zilch
     // Default constructor
     CodeLocation();
 
+    // Checks if this location was ever set to a valid value
+    bool IsValid();
+
     // Get a formatted message that includes this location (may include newlines depending on the format)
     String GetFormattedStringWithMessage(MessageFormat::Enum format, StringParam message) const;
 
     // Get this location formatted in different styles (does not include newlines)
     String GetFormattedString(MessageFormat::Enum format) const;
 
+    // Creates a code location that is strictly at the start of this location
+    CodeLocation GetStartOnlyLocation();
+
+    // Creates a code location that is strictly at the end of this location
+    CodeLocation GetEndOnlyLocation();
+
+    // This hash matches the hash used in the CodeEntry, and can generally be used to map back to files
+    size_t GetHash();
+
     // Every file and code string compiled gets a unique id
-    size_t CodeEntryId;
+    String Code;
 
     // The line range that the node originated from
     // Lines start at a value of 1 (a value of 0 is invalid)
@@ -20060,14 +20392,16 @@ namespace Zilch
     String Code;
     String Origin;
     void* CodeUserData;
-    int Id;
-    static int IdCounter;
+
+    // Gets a hash that we can use to uniquely identify this code
+    // This includes the code and its origin
+    // If a file changes names, this will no longer map up to that same file
+    size_t GetHash();
   };
 }
 
 // End header protection
 #endif
-
 
 /**************************************************************\
 * Author: Trevor Sundberg
@@ -20315,7 +20649,6 @@ namespace Zilch
 // End header protection
 #endif
 
-
 namespace Zilch
 {
   // Aligns a number to a machine byte boundary (either the same or a larger value)
@@ -20414,7 +20747,6 @@ namespace Zilch
       return *(T*)this->Read(position, sizeof(T), nextPositionOut);
     }
 
-
     // Get the element at the given position
     byte* GetElement(size_t position);
 
@@ -20455,11 +20787,60 @@ namespace Zilch
 
 // Includes
 
-
-
-
 namespace Zilch
 {
+  // The types of attribute parameters we support
+  namespace AttributeType
+  {
+    enum Enum
+    {
+      Null,
+      String,
+      Number,
+      Boolean
+    };
+  }
+
+  // An attribute parameter can be any of the literal types we support
+  class AttributeParameter
+  {
+  public:
+    // Default constructor
+    AttributeParameter();
+
+    // An optional name given to the parameter (if the user used name parameter calling)
+    String Name;
+
+    // The type of the attribute parameter (literals only, default Null)
+    AttributeType::Enum Type;
+
+    // The original value, unparsed (for strings this includes quotes and escape sequences)
+    String Token;
+
+    // When Type is String, this will be the fully unescaped version of the string (default empty)
+    String StringValue;
+    
+    // When Type is Number, this will be the parsed number value (default 0.0)
+    // Note: Even integers will be stored as a number, and can just be cast out
+    double NumberValue;
+    
+    // When Type is Boolean, this will be set to true or false (default false)
+    bool BooleanValue;
+  };
+
+  // An attribute provides extra data about classes, functions, fields,
+  // properties, etc that the language normally does not provide
+  // An example would be marking a property as have a range of values from 1 to 100 eg [Range(1, 100)]
+  class Attribute
+  {
+  public:
+    // The name of the attribute
+    String Name;
+
+    // All the parameters we parsed from the attributes in the order they were given
+    Array<AttributeParameter> Parameters;
+  };
+
   // Provides a description
   class DocumentedObject : public IZilchObject
   {
@@ -20480,7 +20861,7 @@ namespace Zilch
     StringArray Remarks;
 
     // All the attributes attached to this type
-    StringArray Attributes;
+    Array<Attribute> Attributes;
 
     // All documented objects can be hidden (for things parsed in language, use the [Hidden] attribute)
     bool IsHidden;
@@ -20490,6 +20871,12 @@ namespace Zilch
   class Member : public DocumentedObject
   {
   public:
+
+    // Default constructor
+    Member();
+
+    // The owning type that this member belongs to
+    BoundType* Owner;
   };
 
   // A class property basically consists of two functions that let us get and set a variable
@@ -20513,6 +20900,10 @@ namespace Zilch
     // Whether or not the property is considered static
     bool IsStatic;
 
+    // Mark if this property is hidden when null (useful for showing things like optional components)
+    // This only applies to nullable types like handles and delegates
+    bool IsHiddenWhenNull;
+
     // The type and offset into the class it belongs to
     Function* Get;
     Function* Set;
@@ -20534,7 +20925,7 @@ namespace Zilch
     Field();
 
     // The offset into the class it belongs to
-    ObjectOffset Offset;
+    size_t Offset;
   };
 
   // Store information about a variable inside a function
@@ -20571,7 +20962,6 @@ namespace Zilch
 
 // End header protection
 #endif
-
 
 namespace Zilch
 {
@@ -20667,10 +21057,10 @@ namespace Zilch
     virtual bool IsCopyComplex() const = 0;
 
     // Get the size of the type (or if it's a reference type, the size of a handle)
-    virtual ObjectSize GetCopyableSize() const;
+    virtual size_t GetCopyableSize() const;
 
     // Get the size of the type if we were to allocate it in a memory block
-    virtual ObjectSize GetAllocatedSize() const = 0;
+    virtual size_t GetAllocatedSize() const = 0;
 
     // Constructs a default instance of this type
     // For as many types as possible, this will construct something akin to null
@@ -20686,6 +21076,21 @@ namespace Zilch
     // Performs a handle release in the case that the type is a reference / delegate
     // Otherwise in the case of value types, this does nothing
     virtual void GenericDestruct(byte* value) const = 0;
+
+    // Get the memory of the underlying object (only used for debugging)
+    // For a reference/handle type, we will Dereference the handle (so this could be null)
+    // Otherwise for value types, it will just directly return the passed in memory
+    // For delegate types, this will also directly return the memory
+    // For the AnyType, this will recursively call GenericGetMemory on the value stored inside the Any (if none, it will return itself)
+    virtual byte* GenericGetMemory(const byte* value) const;
+
+    // Get the most derived type of whatever we're looking at
+    // In all case that the values that the value is null of (whatever that means) it will return this types itself
+    // For bound value types this will just return the type directly (value types are always the correct type)
+    // For all handle types (bound reference, indirect, AnyHandleType) this will return the type stored in the handle
+    // For all delegate types (delegate type, AnyDelegateType) this will return the type of the function stored in the delegate
+    // For the AnyType, this will recursively call GenericGetVirtualType on the value stored within the Any (if none, it will return itself)
+    virtual Type* GenericGetVirtualType(const byte* value) const = 0;
 
     // Hashes an object of this type
     virtual Integer GenericHash(const byte* value) const = 0;
@@ -20805,7 +21210,7 @@ namespace Zilch
 
     // Implement the type interface
     bool IsCopyComplex() const override;
-    ObjectSize GetAllocatedSize() const override;
+    size_t GetAllocatedSize() const override;
     GuidType Hash() const override;
     String ToString() const override;
     void GenericDefaultConstruct(byte* toConstruct) const override;
@@ -20814,6 +21219,8 @@ namespace Zilch
     int GenericHash(const byte* value) const override;
     String GenericToString(const byte* value) const override;
     bool GenericEquals(const byte* lhs, const byte* rhs) const override;
+    byte* GenericGetMemory(const byte* value) const override;
+    Type* GenericGetVirtualType(const byte* value) const override;
 
     // Store the referenced type (the parent type that this qualified type represents)
     BoundType* ReferencedType;
@@ -20832,7 +21239,7 @@ namespace Zilch
 
     // Implement the type interface
     bool IsCopyComplex() const override;
-    ObjectSize GetAllocatedSize() const override;
+    size_t GetAllocatedSize() const override;
     GuidType Hash() const override;
     String ToString() const override;
     void GenericDefaultConstruct(byte* toConstruct) const override;
@@ -20841,6 +21248,8 @@ namespace Zilch
     int GenericHash(const byte* value) const override;
     String GenericToString(const byte* value) const override;
     bool GenericEquals(const byte* lhs, const byte* rhs) const override;
+    byte* GenericGetMemory(const byte* value) const override;
+    Type* GenericGetVirtualType(const byte* value) const override;
   };
 
   // An enum that gives us information about the state of the current type's size
@@ -20885,7 +21294,7 @@ namespace Zilch
     ZilchDeclareDerivedType(BoundType, Type);
 
     // Constructor
-    BoundType(const String& name, TypeCopyMode::Enum copyMode, ObjectSize size, size_t nativeVirtualCount);
+    BoundType(const String& name, TypeCopyMode::Enum copyMode, size_t size, size_t nativeVirtualCount);
 
     // Destructor
     ~BoundType();
@@ -20895,15 +21304,18 @@ namespace Zilch
 
     // Implement the type interface
     bool IsCopyComplex() const override;
-    ObjectSize GetCopyableSize() const override;
-    ObjectSize GetAllocatedSize() const override;
+    size_t GetCopyableSize() const override;
+    size_t GetAllocatedSize() const override;
     void GenericDefaultConstruct(byte* toConstruct) const override;
     void GenericCopyConstruct(byte* to, const byte* from) const override;
     void GenericDestruct(byte* value) const override;
     int GenericHash(const byte* value) const override;
     String GenericToString(const byte* value) const override;
     bool GenericEquals(const byte* lhs, const byte* rhs) const override;
+    byte* GenericGetMemory(const byte* value) const override;
+    Type* GenericGetVirtualType(const byte* value) const override;
     Function* FindFunction(StringParam name, const Array<Type*>& parameters, Type* returnType, FindMemberOptions::Flags options) const;
+    Function* FindFunction(StringParam name, DelegateType* type, FindMemberOptions::Flags options) const;
     const FunctionArray* GetOverloadedInstanceFunctions(String name) const override;
     const FunctionArray* GetOverloadedStaticFunctions(String name) const override;
     Field* GetInstanceField(String name) const override;
@@ -20917,11 +21329,6 @@ namespace Zilch
     SendsEventRange GetSendsEvents() const override;
     GuidType Hash() const override;
     String ToString() const override;
-
-    // Get the memory of the underlying object (only used for debugging)
-    // For a reference/handle type, we will Dereference the handle (so this could be null)
-    // Otherwise for value types, it will just directly return the passed in memory
-    byte* GetAllocatedMemory(const byte* value) const;
 
     // Saves documentation in Zilch Documentation format
     String SaveDocumentation();
@@ -21004,7 +21411,7 @@ namespace Zilch
     FunctionArray AllFunctions;
     
     // Store the size of the object
-    ObjectSize Size;
+    size_t Size;
 
     // Store the name of the type
     String Name;
@@ -21054,10 +21461,10 @@ namespace Zilch
     SizeState::Enum SizeState;
 
     // The handles that need to be cleaned up
-    Array<ObjectOffset> Handles;
+    Array<size_t> Handles;
 
     // The delegates that need to be cleaned up
-    Array<ObjectOffset> Delegates;
+    Array<size_t> Delegates;
   };
 
   // Structure for delegate parameters
@@ -21097,7 +21504,7 @@ namespace Zilch
     
     // Implement the type interface
     bool IsCopyComplex() const override;
-    ObjectSize GetAllocatedSize() const override;
+    size_t GetAllocatedSize() const override;
     GuidType Hash() const override;
     String ToString() const override;
     void GenericDefaultConstruct(byte* toConstruct) const override;
@@ -21106,6 +21513,7 @@ namespace Zilch
     int GenericHash(const byte* value) const override;
     String GenericToString(const byte* value) const override;
     bool GenericEquals(const byte* lhs, const byte* rhs) const override;
+    Type* GenericGetVirtualType(const byte* value) const override;
 
     // Builds the just the parameter part of the string (used in overload resolving)
     void BuildParameterString(StringBuilder& builder) const;
@@ -21176,8 +21584,6 @@ namespace Zilch
 #define ZILCH_THREE_ADDRESS_OPCODE_HPP
 
 // Includes
-
-
 
 namespace Zilch
 {
@@ -21265,7 +21671,6 @@ namespace Zilch
   ZilchEnumValue(AssignmentBitwiseOr##Type)       \
   ZilchEnumValue(AssignmentBitwiseXor##Type)      \
   ZilchEnumValue(AssignmentBitwiseAnd##Type)
-
 
 // Core instructions
 ZilchEnumValue(InvalidInstruction)
@@ -21458,12 +21863,12 @@ ZilchEnumValue(AnyDynamicMemberSet)
     explicit Operand(OperandIndex local);
 
     // Construct from a primary index, secondary index, and an access type
-    Operand(OperandIndex handleConstantLocal, ObjectOffset field, OperandType::Enum type);
+    Operand(OperandIndex handleConstantLocal, size_t field, OperandType::Enum type);
 
     // Members for the operand
     OperandType::Enum Type;
     OperandIndex HandleConstantLocal;
-    ObjectOffset Field;
+    size_t Field;
   };
 
   // Opcode for the creation of a handle from a local
@@ -21482,13 +21887,14 @@ ZilchEnumValue(AnyDynamicMemberSet)
   public:
     Operand ToHandle;
     OperandLocal SaveLocal;
+    BoundType* Type;
   };
 
   // Opcode for the creation of generic delegates (never used directly)
   class CreateDelegateOpcode : public Opcode
   {
   public:
-    DelegateInfo Info;
+    Function* BoundFunction;
     OperandLocal SaveLocal;
   };
 
@@ -21507,6 +21913,7 @@ ZilchEnumValue(AnyDynamicMemberSet)
   {
   public:
     Operand ThisHandle;
+    bool CanBeVirtual;
   };
 
   // Opcode for the if-instruction
@@ -21558,7 +21965,7 @@ ZilchEnumValue(AnyDynamicMemberSet)
   class CreateTypeOpcode : public Opcode
   {
   public:
-    ArrayIndex TypeIndex;
+    BoundType* CreatedType;
     OperandLocal SaveHandleLocal;
   };
 
@@ -21574,8 +21981,8 @@ ZilchEnumValue(AnyDynamicMemberSet)
   {
   public:
     OperandLocal ThisHandleLocal;
-    DelegateInfo Get;
-    DelegateInfo Set;
+    Function* Get;
+    Function* Set;
   };
 
   // Opcode for the delete object instruction
@@ -21600,7 +22007,7 @@ ZilchEnumValue(AnyDynamicMemberSet)
     Operand Left;
     Operand Right;
     OperandLocal Output;
-    ObjectSize Size;
+    size_t Size;
   };
 
   // A side effect operator (such as assignment)
@@ -21689,7 +22096,7 @@ ZilchEnumValue(AnyDynamicMemberSet)
   public:
     Operand Source;
     Operand Destination;
-    ObjectSize Size;
+    size_t Size;
     CopyMode::Enum Mode;
   };
 
@@ -21729,8 +22136,8 @@ ZilchEnumValue(AnyDynamicMemberSet)
     Array<DebugOperand> WriteOperands;
     Array<size_t> Sizes;
     Array<size_t> OpcodeOffsets;
-    Array<size_t> DelegateInfos;
-    Array<size_t> TypeIndices;
+    Array<size_t> FunctionPointers;
+    Array<size_t> TypePointers;
     Array<size_t> Options;
     bool IsCopy;
   };
@@ -21741,10 +22148,6 @@ ZilchEnumValue(AnyDynamicMemberSet)
 
 // End header protection
 #endif
-
-
-
-
 
 /**************************************************************\
 * Author: Trevor Sundberg
@@ -21793,7 +22196,6 @@ namespace Zilch
 
 // End header protection
 #endif
-
 
 namespace Zilch
 {
@@ -21855,126 +22257,10 @@ namespace Zilch
     // Data can be written to the buffer and will be properly destructed
     // when this object is destroyed (must be read in the order it's written)
     mutable DestructableBuffer ComplexUserData;
-
-  public:
-
-    // Store the name of the function
-    String Name;
-
-    // The bound function is the function that gets called when this function is invoked
-    BoundFn BoundFunction;
-
-    // Store the type of the function
-    DelegateType* Type;
-
-    // In order to invoke this function, a given amount of stack space is required
-    // For example, all the parameters need space on the stack, and the return also needs space
-    // Moreover, any local variables in a compiled function also need space on the stack
-    // For a user bound function, the required space only includes the parameters and returns,
-    // because any locals they will store will be on the actual C++ stack, not on ours
-    size_t RequiredStackSpace;
-
-    // A pointer the 'this' variable (or null if it is static)
-    // Note that the current calling convention is that the this pointer is the
-    // last parameter passed on the stack, which means this should point to the end of
-    // the required stack space
-    Variable* This;
-
-    // Store the parent library from which the function originated
-    // This information is generally used for linking purposes. When we call a
-    // function we need the library it came from so we can re-link it back up
-    Library* SourceLibrary;
-
-    // The owning type that this function belongs to
-    BoundType* Owner;
-
-    // Any information related to this function being native and virtual
-    NativeVirtualInfo NativeVirtual;
-
-    // If this function is a property getter or setter
-    bool IsPropertyGetOrSet;
-
-    // If this function is virtual or not (whether it can be overridden)
-    // All overriding functions are also marked as virtual
-    bool IsVirtual;
-  };
-
-  class CompilingDelegateRebase
-  {
-  public:
-    // Constructor
-    CompilingDelegateRebase();
-
-    // An index into the compacted opcode where the 'create delegate' opcode should be
-    size_t DelegateInfoLocation;
-
-    // The function that we would be creating a delegate for
-    Function* RelatedFunction;
-
-    // The code location that we attempted to rebase
-    CodeLocation Location;
-  };
-
-  class CompiledDelegateRebase
-  {
-  public:
-    // Constructor
-    CompiledDelegateRebase();
-
-    // An index into the compacted opcode where the 'create delegate' opcode should be
-    size_t DelegateInfoLocation;
-
-    // The library that the function belongs to
-    GuidType Library;
-
-    // The function that we expect to be linked to (within the parent library)
-    GuidType Function;
-
-    // The code location that we attempted to rebase
-    CodeLocation Location;
-  };
-
-  class CompilingTypeCreationRebase
-  {
-  public:
-    // Constructor
-    CompilingTypeCreationRebase();
-
-    // An index into the compacted opcode where the 'create type' opcode should be
-    size_t TypeIndexLocation;
-
-    // The type that we would be creating
-    Type* RelatedType;
-
-    // The code location that we attempted to rebase
-    CodeLocation Location;
-  };
-
-  class CompiledTypeCreationRebase
-  {
-  public:
-    // Constructor
-    CompiledTypeCreationRebase();
-
-    // An index into the compacted opcode where the 'create type' opcode should be
-    size_t TypeIndexLocation;
-
-    // The library that the created type belongs to
-    GuidType Library;
-
-    // The created type that we expect to be linked to (within the parent library)
-    GuidType Type;
-
-    // The code location that we attempted to rebase
-    CodeLocation Location;
-  };
-
-  // This is a function generated within the language, rather than bound to it
-  class CompiledFunction : public Function
-  {
-  public:
-    // Declare the class for RTTI
-    ZilchDeclareDerivedType(CompiledFunction, Function);
+    
+    // Gets the code location from a given program counter location
+    // If the program counter is for a native function (or non active), this will return null
+    CodeLocation* GetCodeLocationFromProgramCounter(size_t programCounter);
 
     // Allocate an argumentless opcode
     Opcode& AllocateArgumentFreeOpcode(Instruction::Enum instruction, DebugOrigin::Enum debugOrigin, const CodeLocation& debugLocation);
@@ -22016,7 +22302,7 @@ namespace Zilch
     }
 
     // Allocates a register and returns its index
-    OperandIndex AllocateRegister(ObjectSize size);
+    OperandIndex AllocateRegister(size_t size);
 
     // Allocates a constant and returns its index
     template <typename T>
@@ -22042,22 +22328,57 @@ namespace Zilch
 
   public:
 
-    // Store an array of constants
+    // Store the name of the function
+    String Name;
+
+    // The bound function is the function that gets called when this function is invoked
+    BoundFn BoundFunction;
+
+    // The variables associated with this function
+    Array<Variable*> Variables;
+
+    // Store the type of the function
+    DelegateType* Type;
+
+    // In order to invoke this function, a given amount of stack space is required
+    // For example, all the parameters need space on the stack, and the return also needs space
+    // Moreover, any local variables in a compiled function also need space on the stack
+    // For a user bound function, the required space only includes the parameters and returns,
+    // because any locals they will store will be on the actual C++ stack, not on ours
+    size_t RequiredStackSpace;
+
+    // A pointer the 'this' variable (or null if it is static)
+    // Note that the current calling convention is that the this pointer is the
+    // last parameter passed on the stack, which means this should point to the end of
+    // the required stack space
+    Variable* This;
+
+    // Store the parent library from which the function originated
+    // This information is generally used for linking purposes. When we call a
+    // function we need the library it came from so we can re-link it back up
+    Library* SourceLibrary;
+
+    // Any information related to this function being native and virtual
+    NativeVirtualInfo NativeVirtual;
+
+    // If this function is a property getter or setter
+    bool IsPropertyGetOrSet;
+
+    // If this function is virtual or not (whether it can be overridden)
+    // All overriding functions are also marked as virtual
+    bool IsVirtual;
+
+    // All the constants used in this function (only used for compiled functions)
     DestructableBuffer Constants;
 
     // A temporary buffer for storing opcode
     UntypedBlockArray<1024> OpcodeBuilder;
 
-    // Rebases that we keep while we are compiling
-    Array<CompilingDelegateRebase>     CompilingDelegateRebases;
-    Array<CompilingTypeCreationRebase> CompilingTypeCreationRebases;
-
-    // Rebases that are kept since we finished compiling
-    Array<CompiledDelegateRebase>     CompiledDelegateRebases;
-    Array<CompiledTypeCreationRebase> CompiledTypeCreationRebases;
+    // The opcode for this function compacted into a linear array
+    Array<byte> CompactedOpcode;
 
     // Store a list of pointers to opcodes for debugging purposes
-    PodArray<size_t> OpcodeCompactedIndices;
+    Array<size_t> OpcodeCompactedIndices;
 
     // Maps from an opcode offset to a code location (so we can determine where we are in debugging)
     HashMap<size_t, CodeLocation> OpcodeLocationToCodeLocation;
@@ -22228,31 +22549,361 @@ namespace Zilch
 
 // Includes
 
+/**************************************************************\
+* Author: Trevor Sundberg
+* Copyright 2012-2014, DigiPen Institute of Technology
+\**************************************************************/
 
+// Include protection
+#pragma once
+#ifndef ZILCH_EVENTS_HPP
+#define ZILCH_EVENTS_HPP
+
+// Includes
 
 namespace Zilch
 {
-  // A user provided callback function for printing
-  typedef void (*WriteTextFn)(StringParam text, void* userData);
-  typedef String (*ReadTextFn)(void* userData);
+  // Declares an event to be sent by an EventHandler
+  // The typical pattern in C++ is to declare these within the Events namespace
+  #define ZilchDeclareEvent(EventName, EventType) const String EventName = #EventName;
+
+  // All events that are sent must be derived from this type
+  class EventData : public IZilchObject
+  {
+  public:
+    ZilchDeclareBaseType(EventData, TypeCopyMode::ReferenceType);
+
+    // Mark the destructor as virtual so we can properly clean up resources
+    virtual ~EventData();
+
+    // The name that we sent the event under
+    String EventName;
+  };
+
+  // The virtual base class that represents a callback
+  // This class is specialized for C++ static and member and Zilch delegates (can be made for other languages too)
+  class EventDelegate
+  {
+  public:
+
+    // The size of the event delegate must be less than or equal to this size
+    static const size_t MaxEventDelegateSize = 80;
+
+    // Default constructor
+    EventDelegate();
+
+    // Mark the destructor as virtual so we can properly clean up resources
+    virtual ~EventDelegate();
+
+    // Invokes the delegate (with whatever representation we use under the hood)
+    virtual void Invoke(EventData* event) = 0;
+
+    // To support safe iteration through events (and modification of event handlers while sending)
+    // All event delegates need to be copyable
+    // This is achieved by knowing the size of the derived event delegate, and implementing an in place clone
+    // Use the macro 'ZilchDefineEventDelegateHelpers' to automatically implement these virtual methods
+
+    // Copy the event delegate in place
+    virtual void CopyInto(byte* destination) = 0;
+
+    // Get a unique id or pointer that lets us identify the owner of the delegate (who the delegate is bound to)
+    virtual void* GetThisPointerOrUniqueId() = 0;
+
+    // The type of event we accept
+    // Note: We'll also accept more derived versions of this type
+    BoundType* Type;
+
+    // Every delegate is connected to the list of dispatched events per message type (MessageDelegateList)
+    Link<EventDelegate> OutgoingLink;
+
+    // Delegates are also connected to the message handler that will receive them (MessageHandler)
+    Link<EventDelegate> IncomingLink;
+  };
+
+  // When we create new event delegates, we put this at the top to automatically implement 'GetSize' and 'CopyInto'
+  // Our implementation of 'CopyInto' just invokes the copy constructor via placement new
+  #define ZilchDefineEventDelegateHelpers(SelfType)                                     \
+    void CopyInto(byte* destination) override                                           \
+    {                                                                                   \
+      ZilchStaticAssert(sizeof(SelfType) <= MaxEventDelegateSize,                       \
+        "The size of the event delegate must not exceed MaxEventDelegateSize",          \
+        EventDelegateExceedsMaxEventDelegateSize);                                      \
+      SelfType* copy = new (destination) SelfType(*this);                               \
+      copy->OutgoingLink.Next = nullptr;                                                \
+      copy->IncomingLink.Next = nullptr;                                                \
+    }
+
+  // We use dual intrusively linked lists with the delegate to ensure that
+  // events get destroyed when either the sender or reciever dies
+  typedef InList<EventDelegate, &EventDelegate::OutgoingLink> OutgoingList;
+  typedef InList<EventDelegate, &EventDelegate::IncomingLink> IncomingList;
+
+  // Stores all outbound connections for a particular event name
+  // As an optimiziation, this list can be pulled out and stored next to an EventHandler (but will be destroyed along with the handler)
+  class EventDelegateList
+  {
+  public:
+
+    // The destructor deletes all outgoing connections
+    ~EventDelegateList();
+
+    // Send an event to all outgoing delegates
+    void Send(EventData* event);
+    
+    //******** Internal ********//
+
+    // Store the name of the events associated with this list
+    String EventName;
+
+    // The intrusive list of all outgoing connections
+    // A connection can be marked as invalid, in which it will be erased
+    OutgoingList Outgoing;
+  };
+
+  // Stores all outgoing connections
+  class EventHandler
+  {
+  public:
+
+    // When we get destructed we mark all outgoing and incoming events as destroyed
+    ~EventHandler();
+
+    // Connects a sender and receiver event handler for a particular event, given an event connection
+    static void Connect(EventHandler* sender, StringParam eventName, EventDelegate* delegate, EventHandler* receiver);
+
+    // Disconnect an event that we previously connected to
+    // Disconnecting can also be done by storing the event delegate and deleting it
+    // Returns the number of connections that were disconnected
+    // Note: There can be more than one disconnected, but only if someone connected to the same event twice on the same object
+    static size_t Disconnect(EventHandler* sender, EventHandler* receiver, StringParam eventName, void* thisPointerOrUniqueId);
+
+    // Get or create a delegate list for the particular event name
+    // As an optimiziation, this list can be pulled out and stored next to an EventHandler (but will be destroyed along with the handler)
+    EventDelegateList* GetOrCreateOutgoingDelegateList(StringParam eventName);
+
+    // Invokes the event handler for anyone listening to this event name on our object
+    void Send(StringParam eventName, EventData* event);
+
+    //******** Internal ********//
+
+    // Whenever we send an event, we look if anyone will respond by looking in this map
+    // The delegate list stores an intrusive list of all event delegates that need to recieve the event
+    HashMap<String, EventDelegateList*> OutgoingPerEventName;
+
+    // We keep track of all delegates that would send events to us
+    // If we get destroyed, we'll mark all these delegates as destroyed
+    IncomingList Incoming;
+
+    // A global event handler (used for registering static functions and such)
+    static EventHandler Global;
+  };
+
+  // When we want to connect up member functions, we use this template
+  template <typename ClassType, typename EventType>
+  class MemberFunctionEventDelegate : public EventDelegate
+  {
+  public:
+    ZilchDefineEventDelegateHelpers(MemberFunctionEventDelegate);
+
+    // This is the signature of method that we accept
+    typedef void (ClassType::*FunctionType)(EventType* event);
+
+    // We store the member function pointer and the 'this' pointer for the class
+    FunctionType FunctionPointer;
+    ClassType* ThisPointer;
+
+    // Constuct a member function delegate from a class instance and member function pointer
+    MemberFunctionEventDelegate(FunctionType function, ClassType* instance) :
+      FunctionPointer(function),
+      ThisPointer(instance)
+    {
+      this->Type = ZilchTypeId(EventType);
+    }
+
+    // Invoking the delegate just invokes the member function pointer (casts the event type too)
+    void Invoke(EventData* event) override
+    {
+      // Technically the event type cast is unsafe, however we validate that it is safe using our reflection
+      (this->ThisPointer->*this->FunctionPointer)((EventType*)event);
+    }
+
+    // We can just directly return the this pointer for the member function connection
+    void* GetThisPointerOrUniqueId() override
+    {
+      return this->ThisPointer;
+    }
+  };
+
+  // A special template helper that can infer template arguments to make member function connecting easier
+  template <typename ClassType, typename EventType>
+  void EventConnect(EventHandler* sender, StringParam eventName, void (ClassType::*function)(EventType*), ClassType* receiver)
+  {
+    // Create a member function delegate
+    typedef MemberFunctionEventDelegate<ClassType, EventType> EventDelegateType;
+    EventDelegateType* eventDelegate = new EventDelegateType(function, receiver);
+    
+    // Connect the event handler up to this newly created member delegate
+    EventHandler::Connect(sender, eventName, eventDelegate, receiver);
+  }
+
+  // When we want to connect up static functions, we use this template
+  template <typename EventType>
+  class StaticFunctionEventDelegate : public EventDelegate
+  {
+  public:
+    ZilchDefineEventDelegateHelpers(StaticFunctionEventDelegate);
+
+    // This is the signature of function that we accept
+    typedef void (*FunctionType)(EventType* event);
+
+    // We store the static function pointer to call
+    FunctionType FunctionPointer;
+
+    // Constuct a member function delegate from a class instance and member function pointer
+    StaticFunctionEventDelegate(FunctionType function) :
+      FunctionPointer(function)
+    {
+      this->Type = ZilchTypeId(EventType);
+    }
+
+    // Invoking the delegate just invokes the static function pointer (casts the event type too)
+    void Invoke(EventData* event) override
+    {
+      // Technically the event type cast is unsafe, however we validate that it is safe using our reflection
+      this->FunctionPointer((EventType*)event);
+    }
+    
+    // Since we have no real 'this' pointer, we're just going to return the function's address
+    void* GetThisPointerOrUniqueId() override
+    {
+      return this->FunctionPointer;
+    }
+  };
+
+  // A special template helper that can infer template arguments to make static function connecting easier
+  template <typename EventType>
+  void EventConnect(EventHandler* sender, StringParam eventName, void (*function)(EventType*))
+  {
+    // Create a member function delegate
+    typedef StaticFunctionEventDelegate<EventType> EventDelegateType;
+    EventDelegateType* eventDelegate = new EventDelegateType(function);
+    
+    // Connect the event handler up to this newly created static function delegate
+    // We use the global event handler here (there is no receiver...)
+    EventHandler::Connect(sender, eventName, eventDelegate, &EventHandler::Global);
+  }
+
+  // When we want to connect up static functions with userdata, we use this template
+  template <typename EventType>
+  class StaticFunctionUserDataEventDelegate : public EventDelegate
+  {
+  public:
+    ZilchDefineEventDelegateHelpers(StaticFunctionUserDataEventDelegate);
+
+    // This is the signature of function that we accept
+    typedef void (*FunctionType)(EventType* event, void* userData);
+
+    // We store the static function pointer to call and the user-data
+    FunctionType FunctionPointer;
+    void* UserData;
+
+    // Constuct a member function delegate from a class instance and member function pointer
+    StaticFunctionUserDataEventDelegate(FunctionType function, void* userData) :
+      FunctionPointer(function),
+      UserData(userData)
+    {
+      this->Type = ZilchTypeId(EventType);
+    }
+
+    // Invoking the delegate just invokes the static function pointer (casts the event type too)
+    void Invoke(EventData* event) override
+    {
+      // Technically the event type cast is unsafe, however we validate that it is safe using our reflection
+      this->FunctionPointer((EventType*)event, this->UserData);
+    }
+    
+    // Return whatever the user gave us as user-data
+    void* GetThisPointerOrUniqueId() override
+    {
+      return this->UserData;
+    }
+  };
+
+  // A special template helper that can infer template arguments to make static function connecting easier (with user-data)
+  template <typename EventType>
+  void EventConnect(EventHandler* sender, StringParam eventName, void (*function)(EventType*), void* userData)
+  {
+    // Create a member function delegate
+    typedef StaticFunctionUserDataEventDelegate<EventType> EventDelegateType;
+    EventDelegateType* eventDelegate = new EventDelegateType(function, userData);
+    
+    // Connect the event handler up to this newly created static function delegate
+    // We use the global event handler here (there is no receiver...)
+    EventHandler::Connect(sender, eventName, eventDelegate, &EventHandler::Global);
+  }
+
+  // A simple event delegate that just forwards events to another EventHandler
+  class ForwardingEventDelegate : public EventDelegate
+  {
+  public:
+    ZilchDefineEventDelegateHelpers(ForwardingEventDelegate);
+
+    // The event handler we forward received events to
+    // Note: This is safe to store as a pointer because we only allow forwarding to
+    // whoever this event delegate is connected to (OutgoingLink)
+    // If that object gets deleted, this delegate will automatically be deleted
+    EventHandler* ForwardTo;
+
+    // Constuct a member function delegate from a class instance and member function pointer
+    ForwardingEventDelegate(EventHandler* forwardTo);
+
+    // EventDelegate interface
+    void Invoke(EventData* event);
+    void* GetThisPointerOrUniqueId();
+  };
+
+  // Automatically forwards all events of a type of event name to another receiver
+  void EventForward(EventHandler* sender, StringParam eventName, EventHandler* receiver);
+}
+
+// End header protection
+#endif
+
+namespace Zilch
+{
+  namespace Events
+  {
+    // Sent when anyone prints to the console
+    ZilchDeclareEvent(ConsoleWrite, ConsoleEvent);
+
+    // Sent when anyone attempts to read from the console
+    ZilchDeclareEvent(ConsoleRead, ConsoleEvent);
+  }
+
+  // When the user prints data using the console, or attempts to read
+  // this will be the event type that we send out (for callbacks)
+  class ConsoleEvent : public EventData
+  {
+  public:
+    // The state invoking the console event
+    ExecutableState* State;
+
+    // The text of the console's WriteLine (to be printed)
+    // If this is a read event, it is up to the user to set this text
+    String Text;
+  };
 
   // The default write text callback that prints to stdio
-  void DefaultWriteText(StringParam text, void* userData);
+  void DefaultWriteText(ConsoleEvent* event);
 
   // The default read text callback that reads text from stdin
-  String DefaultReadText(void* userData);
+  void DefaultReadText(ConsoleEvent* event);
 
   // The type that we use to bind a console to the language
   class Console
   {
   public:
     ZilchDeclareBaseType(Console, TypeCopyMode::ReferenceType);
-
-    // Add a write text callback to the type
-    static void AddWriteTextCallback(WriteTextFn callback, void* userData);
-
-    // Set the read text callback (there is only ever one callback at a time)
-    static void SetReadTextCallback(ReadTextFn callback, void* userData);
 
     // Write to the console (not bound to Zilch)
     static void Write(AnyParam value0);
@@ -22319,28 +22970,20 @@ namespace Zilch
 
   private:
 
-    // Run all callbacks with the given text
-    static void RunCallbacks(StringParam text);
+    // Write out data (sends the write event)
+    static void WriteData(StringParam text);
+
+    // Read text from the console (sends the read event)
+    // If no users handle this then it will return an empty string
+    static String ReadData();
 
     // Helper for writing out objects
     static void DumpValue(StringBuilderExtended& builder, Type* type, const byte* value, Integer howDeep, Integer currentDepth);
 
-  private:
+  public:
 
-    // A callback is basically a delegate (user data is usually 'this')
-    class CallbackEntry
-    {
-    public:
-      WriteTextFn Callback;
-      void* UserData;
-    };
-
-    // All the callbacks we use
-    static PodArray<CallbackEntry> Callbacks;
-
-    // The single read text callback with its userdata
-    static ReadTextFn ReadTextCallback;
-    static void* ReadTextUserData;
+    // Responsible for the console sending and receiveing events (how we hook up callbacks!)
+    static EventHandler Events;
   };
 
   // String builder is a convenient way to concatenate strings
@@ -22399,7 +23042,6 @@ namespace Zilch
 
 // End header protection
 #endif
-
 
 namespace Zilch
 {
@@ -22814,7 +23456,6 @@ namespace Zilch
 // End header protection
 #endif
 
-
 namespace Zilch
 {
   // All the information we need to instantiate a new template
@@ -22863,20 +23504,11 @@ namespace Zilch
     // Store the array of bound functions
     FunctionArray OwnedFunctions;
 
-    // Store the array of compiled functions
-    CompiledFunctionArray CompiledFunctions;
-
     // Store any variable created by the functions
     Array<Variable*> OwnedVariables;
 
     // Store any properties created by the types (includes members)
     Array<Property*> OwnedProperties;
-
-    // All the functions by guid, used in rebasing delegate calls
-    FunctionGuidMap FunctionsByGuid;
-
-    // All the types by guid, used in rebasing created types
-    TypeGuidMap TypesByGuid;
 
     // This map controls how we extend types with functions without using inheritance
     // We map a type guid to the functions we extend it with
@@ -22887,15 +23519,6 @@ namespace Zilch
     // We map a type guid to the properties we extend it with
     PropertyExtensionMap StaticExtensionProperties;
     PropertyExtensionMap InstanceExtensionProperties;
-
-    // When compiling and exporting a library, we need to be certain that any code that
-    // used the library will be able to reference that library again without any changes
-    // happening to that library (otherwise all dependancies would need to be recompiled)
-    // This guid represents a unqiue identifier to this compiled library (like a version)
-    GuidType Guid;
-
-    // The total size of all combined opcode store in this library
-    size_t TotalOpcodeSize;
 
     // All the string literals we contain (effectively the string pool)
     StringArray StringLiterals;
@@ -23030,6 +23653,7 @@ namespace Zilch
   ParameterArray TwoParameters(Type* type1, StringParam name1, Type* type2, StringParam name2);
   ParameterArray ThreeParameters(Type* type);
   ParameterArray ThreeParameters(Type* type1, Type* type2, Type* type3);
+  ParameterArray ThreeParameters(Type* type, StringParam name1, StringParam name2, StringParam name3);
   ParameterArray ThreeParameters(Type* type1, StringParam name1, Type* type2, StringParam name2, Type* type3, StringParam name3);
 
   class LibraryBuilder
@@ -23086,7 +23710,7 @@ namespace Zilch
     Function* AddBoundDestructor(BoundType* owner, BoundFn function);
 
     // Add a member to the library and bound type
-    Field* AddBoundField(BoundType* owner, String name, Type* type, ObjectOffset offset, MemberOptions::Flags options);
+    Field* AddBoundField(BoundType* owner, String name, Type* type, size_t offset, MemberOptions::Flags options);
 
     // Add a property to the library and bound type
     Property* AddBoundProperty(BoundType* owner, String name, Type* type, BoundFn set, BoundFn get, MemberOptions::Flags options);
@@ -23125,11 +23749,10 @@ namespace Zilch
     Property* CreateRawProperty(BoundType* owner, String name, Type* type, BoundFn set, BoundFn get, MemberOptions::Flags options);
 
     // Add a field to the library
-    Field* CreateRawField(String name, Type* type, ObjectOffset offset, MemberOptions::Flags options);
+    Field* CreateRawField(BoundType* owner, String name, Type* type, size_t offset, MemberOptions::Flags options);
 
     // Add a variable to the library
-    Variable* CreateRawVariable(String name);
-
+    Variable* CreateRawVariable(Function* function, String name);
 
     // Add a string constant to the library (typically only done by the compiler)
     const String& AddStringLiteral(cstr text);
@@ -23153,12 +23776,11 @@ namespace Zilch
     // Given a created delegate type, add or merge it into the delegate set (and return the proper type that we should be using...)
     DelegateType* GetDelegateType(const ParameterArray& parameters, Type* returnType);
 
-
     // Adds a callback to the library that will be called any time a user attempts to instantiate a template type with this name
     void AddTemplateInstantiator(StringParam baseName, InstantiateTemplateCallback callback, StringArray& templateArgumentNames, void* userData);
 
     // Adds a bound type to the library builder
-    BoundType* AddBoundType(String name, TypeCopyMode::Enum copyMode, ObjectSize size, size_t nativeVirtualCount = 0);
+    BoundType* AddBoundType(String name, TypeCopyMode::Enum copyMode, size_t size, size_t nativeVirtualCount = 0);
 
     // Adds a bound type to the library
     void AddRawBoundType(BoundType* type);
@@ -23191,14 +23813,13 @@ namespace Zilch
     // A constant that will generate a get/set Function object (can later be replaced)
     static const BoundFn NoOperation;
 
-    // Add a compiled function to the library
-    void AddCompiledFunction(CompiledFunction* function, BoundType* owner);
-
-    // Add a function to a library (which adds to the guid and more)
-    static void AddFunctionToLibrary(Function* function, LibraryRef library);
-
     // Checks to see if a identifier is valid
     static bool CheckIdentifier(StringParam identifier, TokenCheck::Flags flags);
+
+    // Generates the property getter/setter for fields
+    // Must be called AFTER all sizes have been computed
+    // Can be called multiple times (only checks fields with no get/set)
+    void GenerateGetSetFields();
 
   private:
 
@@ -23218,21 +23839,16 @@ namespace Zilch
     ZilchNoCopy(LibraryBuilder);
   };
 
-  class Module
+  // A module contains many libraries
+  class Module : public LibraryArray
   {
   public:
 
-    // Friends
-    friend class Syntaxer;
-
     // Constructor
-    Module(CompilationErrors& errors);
+    Module();
 
-    // Add a library to the module
-    void AddLibrary(LibraryRef library);
-
-    // Get the libraries that we've added to the module (always includes core)
-    LibraryRange GetLibraries();
+    // Finds a type in any of the libraries by name
+    BoundType* FindType(StringParam name);
 
     // Link libraries together to create a single executable application
     ExecutableState* Link() const;
@@ -23268,39 +23884,6 @@ namespace Zilch
 
     // Builds a Json array of documented properties
     void BuildJsonProperties(JsonBuilder& json, const Array<DocumentationProperty*>& properties, StringParam name);
-
-  public:
-
-    // A pointer to any data the user wants to attach
-    mutable const void* UserData;
-
-    // Any user data that cant simply be represented by a pointer
-    // Data can be written to the buffer and will be properly destructed
-    // when this object is destroyed (must be read in the order it's written)
-    mutable DestructableBuffer ComplexUserData;
-
-  private:
-
-    // An array of all the libraries
-    LibraryArray Libraries;
-
-    // A list of all libraries (associated to their guids)
-    LibraryGuidMap LibrariesByGuid;
-
-    // An array of all the compiled functions from the libraries
-    CompiledFunctionArray CompiledFunctions;
-
-    // The total size of all combined opcode store in this library
-    size_t TotalOpcodeSize;
-
-    // Store a reference to the error handler
-    CompilationErrors& Errors;
-
-    // Not copyable
-    ZilchNoCopy(Module);
-
-    // Debuggable reference counting
-    ZilchDebuggableReferencer();
   };
 
   //class ExtensionPropertyMapRange
@@ -23390,8 +23973,6 @@ namespace Zilch
 // End header protection
 #endif
 
-
-
 namespace Zilch
 {
   // The core of zilch contains all types that the compiler uses internally
@@ -23450,6 +24031,19 @@ namespace Zilch
     BoundType* RealTypes    [MaxComponents];
     BoundType* IntegerTypes [MaxComponents];
     BoundType* BooleanTypes [MaxComponents];
+    Array<BoundType*> AllRealTypes;
+    Array<BoundType*> AllIntegerTypes;
+    Array<BoundType*> AllBooleanTypes;
+
+    // Special array of what matrix types to make (real, int, etc...)
+    static const size_t MinMatrixComponents = 2;
+    static const size_t MaxMatrixComponents = 4;
+    static const size_t MaxMatrixElementTypes = 3;
+    BoundType* MatrixElementTypes[MaxMatrixElementTypes];
+    // To perform certain generic matrix operations generically,
+    // MultiplyAdd functions (a += b * c) are needed
+    typedef void (*MatrixMultiplyAddFunction)(byte* outData, byte* inputA, byte* inputB);
+    MatrixMultiplyAddFunction TypeMultiplyAddFunctions[MaxMatrixElementTypes];
 
     // A very special type that allows us to take a delegate of any type
     // This can currently not be declared in language, but can be used from C++
@@ -23538,7 +24132,9 @@ namespace Zilch
     String GetFormattedMessage(MessageFormat::Enum format);
     
     // The code locations of the entire stack and what functions were called
-    Array<StackEntry> Stack;
+    // We have to use a special allocator here that supports being memset to zero
+    // (because exceptions are just memset to 0, no constructor called)
+    Array<StackEntry, Zero::MemsetZeroDefaultAllocator> Stack;
   };
 
   // The base class of any exception that gets thrown
@@ -23608,8 +24204,6 @@ namespace Zilch
 #define ZILCH_ARRAY_HPP
 
 // Includes
-
-
 
 /**************************************************************\
 * Author: Trevor Sundberg
@@ -23746,69 +24340,70 @@ namespace Zilch
       Variable = 115,
       While = 116,
       Access = 117,
-      ExplicitAccess = 118,
-      TypeSpecifier = 119,
-      NameSpecifier = 119,
-      Inheritance = 119,
-      InitializerList = 119,
-      ArgumentSeparator = 120,
-      RefersTo = 121,
-      Assignment = 122,
-      AssignmentSubtract = 123,
-      AssignmentAdd = 124,
-      AssignmentDivide = 125,
-      AssignmentMultiply = 126,
-      AssignmentModulo = 127,
-      AssignmentExponent = 128,
-      AssignmentLeftShift = 129,
-      AssignmentRightShift = 130,
-      AssignmentBitwiseXor = 131,
-      AssignmentBitwiseOr = 132,
-      AssignmentBitwiseAnd = 133,
-      Equality = 134,
-      Inequality = 135,
-      LessThan = 136,
-      LessThanOrEqualTo = 137,
-      GreaterThan = 138,
-      GreaterThanOrEqualTo = 139,
-      Negative = 140,
-      Subtract = 140,
-      Positive = 141,
-      Add = 141,
-      Divide = 142,
-      Multiply = 143,
-      Modulo = 144,
-      Exponent = 145,
-      Decrement = 146,
-      Increment = 147,
-      BitshiftLeft = 148,
-      BitshiftRight = 149,
-      BitwiseXor = 150,
-      BitwiseOr = 151,
-      BitwiseAnd = 152,
-      BitwiseNot = 153,
-      PropertyDelegate = 154,
-      LogicalOr = 155,
-      LogicalAnd = 156,
-      LogicalNot = 157,
-      StatementSeparator = 158,
-      BeginIndex = 159,
-      BeginTemplate = 159,
-      BeginInitializer = 159,
-      EndIndex = 160,
-      EndTemplate = 160,
-      EndInitializer = 160,
-      BeginFunctionCall = 161,
-      BeginFunctionParameters = 161,
-      BeginGroup = 161,
-      EndFunctionCall = 162,
-      EndFunctionParameters = 162,
-      EndGroup = 162,
-      BeginScope = 163,
-      EndScope = 164,
-      CommentLine = 165,
-      CommentStart = 166,
-      CommentEnd = 167,
+      DynamicAccess = 118,
+      NonVirtualAccess = 119,
+      TypeSpecifier = 120,
+      NameSpecifier = 120,
+      Inheritance = 120,
+      InitializerList = 120,
+      ArgumentSeparator = 121,
+      RefersTo = 122,
+      Assignment = 123,
+      AssignmentSubtract = 124,
+      AssignmentAdd = 125,
+      AssignmentDivide = 126,
+      AssignmentMultiply = 127,
+      AssignmentModulo = 128,
+      AssignmentExponent = 129,
+      AssignmentLeftShift = 130,
+      AssignmentRightShift = 131,
+      AssignmentBitwiseXor = 132,
+      AssignmentBitwiseOr = 133,
+      AssignmentBitwiseAnd = 134,
+      Equality = 135,
+      Inequality = 136,
+      LessThan = 137,
+      LessThanOrEqualTo = 138,
+      GreaterThan = 139,
+      GreaterThanOrEqualTo = 140,
+      Negative = 141,
+      Subtract = 141,
+      Positive = 142,
+      Add = 142,
+      Divide = 143,
+      Multiply = 144,
+      Modulo = 145,
+      Exponent = 146,
+      Decrement = 147,
+      Increment = 148,
+      BitshiftLeft = 149,
+      BitshiftRight = 150,
+      BitwiseXor = 151,
+      BitwiseOr = 152,
+      BitwiseAnd = 153,
+      BitwiseNot = 154,
+      PropertyDelegate = 155,
+      LogicalOr = 156,
+      LogicalAnd = 157,
+      LogicalNot = 158,
+      StatementSeparator = 159,
+      BeginIndex = 160,
+      BeginTemplate = 160,
+      BeginInitializer = 160,
+      EndIndex = 161,
+      EndTemplate = 161,
+      EndInitializer = 161,
+      BeginFunctionCall = 162,
+      BeginFunctionParameters = 162,
+      BeginGroup = 162,
+      EndFunctionCall = 163,
+      EndFunctionParameters = 163,
+      EndGroup = 163,
+      BeginScope = 164,
+      EndScope = 165,
+      CommentLine = 166,
+      CommentStart = 167,
+      CommentEnd = 168,
       SymbolCount
     };
 
@@ -23846,8 +24441,6 @@ namespace Zilch
 
 // Includes
 
-
-
 /**************************************************************\
 * Author: Trevor Sundberg
 * Copyright 2012-2014, DigiPen Institute of Technology
@@ -23860,9 +24453,6 @@ namespace Zilch
 
 // Includes
 
-
-
-
 /**************************************************************\
 * Author: Trevor Sundberg
 * Copyright 2012-2014, DigiPen Institute of Technology
@@ -23874,7 +24464,6 @@ namespace Zilch
 #define ZILCH_HANDLE_MANAGER_HPP
 
 // Includes
-
 
 namespace Zilch
 {
@@ -24113,7 +24702,7 @@ namespace Zilch
   private:
 
     // All the slots act as places to hold objects
-    PodArray<ObjectSlot> Objects;
+    Array<ObjectSlot> Objects;
 
     // The next free object slot available to us
     ObjectSlot* NextFreeSlot;
@@ -24184,7 +24773,6 @@ namespace Zilch
 // End header protection
 #endif
 
-
 /**************************************************************\
 * Author: Trevor Sundberg
 * Copyright 2012-2014, DigiPen Institute of Technology
@@ -24229,32 +24817,11 @@ namespace Zilch
 // End header protection
 #endif
 
-
 namespace Zilch
 {
-  // A map that associates functions with their index into the executable state array
-  typedef HashMap<Function*, DelegateInfo> FunctionDelegateMap;
-  typedef FunctionDelegateMap::range FunctionDelegateRange;
-  typedef HashMap<BoundType*, ArrayIndex> BoundTypeIndexMap;
-  typedef BoundTypeIndexMap::range BoundTypeIndexRange;
-
   // Two constants we use to note the state of our debug program counter pointer
   const size_t ProgramCounterNotActive = (size_t)-1;
   const size_t ProgramCounterNative = (size_t)-2;
-
-  // Used to describe which opcode belong to which functions
-  class FunctionLocation
-  {
-  public:
-    // Constructor
-    FunctionLocation();
-
-    // The base of the function's location in the executable state's opcode
-    ByteCodeAbsolute CompactedOpcodeBase;
-
-    // The function at that base location
-    CompiledFunction* Function;
-  };
 
   // The data that exists per scope (per stack frame)
   // Every function has an implicit scope
@@ -24345,6 +24912,10 @@ namespace Zilch
     // Otherwise this will return false if no exception was thrown
     bool AttemptThrowStackExceptions(ExceptionReport& report);
 
+    // Checks if a variable is initialized within the current frame
+    // Note: This is only intended to be used by a debugger, and may be incorrect for value types
+    bool IsVariableInitialized(Variable* variable);
+
     // For the current stack frame, this is where all the data lies
     byte* Frame;
     byte* NextFrame;
@@ -24359,9 +24930,6 @@ namespace Zilch
 
     // The current function that is being executed
     Function* CurrentFunction;
-
-    // Where our program counter should start when entering this frame
-    size_t ProgramCounterStart;
 
     // Any per scope data (this data is generally 'things to be destructed')
     // This is also used to destruct things when exceptions are thrown
@@ -24463,6 +25031,9 @@ namespace Zilch
 
     // Tests if any exceptions were thrown
     bool HasThrownExceptions();
+
+    // Gets all the exceptions concatenated in a list
+    String GetConcatenatedMessages();
     
     // The exceptions that are being thrown (as we unravel the stack)
     Array<Handle> Exceptions;
@@ -24489,6 +25060,10 @@ namespace Zilch
     friend class Call;
     friend class PerFrameData;
     friend class Debugger;
+
+    // Because users often need to access the state in their own bound functions, we provide a thread local
+    // that is the last running state (set before each call to Zilch, and reset to the previous after the call)
+    static ZilchThreadLocal ExecutableState* CallingState;
 
     // Constructor
     ExecutableState();
@@ -24531,9 +25106,6 @@ namespace Zilch
     // Only ever read up to the size of your return, parameters, and this handle
     byte* GetCurrentStackFrame();
 
-    // Get the current function that's being executed
-    Function* GetCurrentFunction();
-
     // Throws a standard null reference exception
     void ThrowNullReferenceException(ExceptionReport& report);
 
@@ -24553,9 +25125,6 @@ namespace Zilch
 
     // Build a stack trace into the stack array
     void GetStackTrace(StackTrace& trace);
-
-    // Find a function by name (typically to be executed)
-    Function* FindFirstFunctionByName(String name);
 
     // Gets a handle manager by type
     template <typename T>
@@ -24589,25 +25158,8 @@ namespace Zilch
     // A callback that occurs when any exception is thrown (nullptr will clear the callback)
     void SetExceptionCallback(ExceptionCallback callback, void* userData);
 
-    // Evaluates the location that the operand should resolve to given an opcode at the location
-    // of the program counter, as well as an offset into the opcode where that operand exists
-    OperandLocation EvaluateOperandLocation(size_t programCounter, size_t operandOffset);
-
-    // Get the function from the ocpode location (or null if the function could not be found)
-    FunctionLocation* GetFunctionFromOpcodeLocation(size_t opcodeLocation);
-
-    // Get the entire opcode buffer for debugging
-    PodArray<byte>::range GetOpcode();
-
-    // Get the indices into the opcode for where the starts of each opcode is (the first part of each opcode is the instruction)
-    PodArray<ByteCodeAbsolute>::range GetOpcodeIndices();
-
     // Get the raw stack array
     const byte* GetRawStack();
-
-    // Gets the code location from a given program counter location
-    // If the program counter is for a native function, this will return null
-    CodeLocation* GetCodeLocationFromProgramCounter(size_t programCounter);
 
     // A pointer to any data the user wants to attach
     mutable const void* UserData;
@@ -24627,16 +25179,16 @@ namespace Zilch
     byte* GetNextStackFrame();
 
     // Push a new stack frame and returns the location on the stack
-    ZilchForceInline PerFrameData* PushFrame(Function* function, size_t opcodeLocation);
+    ZilchForceInline PerFrameData* PushFrame(Function* function);
 
     // A slightly more optmial version of pushing a stack frame (used internally in execution)
-    ZilchForceInline PerFrameData* PushFrame(byte* frame, Function* function, size_t opcodeLocation);
+    ZilchForceInline PerFrameData* PushFrame(byte* frame, Function* function);
 
     // Pops a stack frame and return a pointer to where the return value should be
     ZilchForceInline PerFrameData* PopFrame();
 
     // Initialize a handle to point at a location on the stack
-    void InitializeStackHandle(Handle& handle, byte* location);
+    void InitializeStackHandle(Handle& handle, byte* location, BoundType* type);
 
     // Invokes the pre-constructor (which initializes memory) on a handle
     void InvokePreConstructorOrRelease(Handle& handle, ExceptionReport& report);
@@ -24662,7 +25214,7 @@ namespace Zilch
 
     // An array of functions in the order they were linked
     // This array is used in function rebasing (and has other purposes)
-    FunctionArray Functions;
+    //FunctionArray Functions;
 
     // We need a way to map virtual function ids into our function
     HashMap<GuidType, Function*> ThunksToFunctions;
@@ -24675,6 +25227,12 @@ namespace Zilch
 
     // The maximum number of recursive calls we allow in this state
     size_t MaxRecursionDepth;
+
+    // Used for debugging (the name will show up in the debugger, and so on)
+    String Name;
+
+    // We want to hold references to the libraries that we were compiled with
+    Module Dependencies;
 
   private:
 
@@ -24702,31 +25260,9 @@ namespace Zilch
     // The handle managers we use to derefence and setup handles
     mutable HashMap<HandleManagerId, HandleManager*> UniqueManagers;
 
-    // We want to hold references to the libraries that we were compiled with
-    LibraryArray DependentLibraries;
-
     // Map code entry ids to the code entry itself (the entry will be alive as long as the library is alive)
     // This maintains a list of all code entries used by this state
-    HashMap<int, CodeEntry*> IdToCodeEntries;
-
-    // An array of types in the order they were linked
-    // This array is used in type creation rebasing
-    BoundTypeArray CreatedTypes;
-
-    // A map of types to where they exist in the type array
-    BoundTypeIndexMap CreatedTypeToIndicies;
-
-    // Store a map of function pointers to delegate information
-    FunctionDelegateMap FunctionToDelegateInfo;
-
-    // Store all the compacted opcode
-    PodArray<byte> CompactedOpcode;
-
-    // Store all the indices where the opcodes exist in the compacted opcode buffer
-    PodArray<ByteCodeAbsolute> OpcodeIndices;
-
-    // From any opcode position using this you can find the function you belong to
-    Array<FunctionLocation> OpcodeOffsetToFunction;
+    HashMap<size_t, CodeEntry*> CodeHashToCodeEntry;
 
     // Data that we need each time we jump into a new stack frame
     Array<PerFrameData*> StackFrames;
@@ -24779,10 +25315,12 @@ namespace Zilch
   // You can get the current stack frame by calling 'GetCurrentStackFrame'
   // See 'GetCurrentStackFrame' for the calling conventions
   template <typename T>
-  typename ZilchTrueType(T)::Ref InternalReadValue(byte* stackFrame)
+  T InternalReadValue(byte* stackFrame)
   {
     // Return the read in value and advance the stack forward by the value's size
-    return ZilchTrueType(T)::Read(stackFrame);
+    typedef typename TypeBinding::StaticTypeId<T>::ReadType ReadType;
+    ReadType readValue = TypeBinding::StaticTypeId<T>::Read(stackFrame);
+    return TypeBinding::ReferenceCast<ReadType, T>::Cast(readValue);
   }
 
   // Pushes a value onto the stack frame
@@ -24792,8 +25330,10 @@ namespace Zilch
   template <typename T>
   void InternalWriteValue(const T& value, byte* stackFrame)
   {
-    // Return the read in value and advance the stack forward by the value's size
-    return ZilchTrueType(T)::Write(value, stackFrame);
+    // Write the value directly to the stack frame
+    typedef typename TypeBinding::StaticTypeId<T>::UnqualifiedType& ToType;
+    typedef typename TypeBinding::StripConst<T>::Type& FromType;
+    ZilchStaticType(T)::Write(TypeBinding::ReferenceCast<FromType, ToType>::Cast((FromType)value), stackFrame);
   }
 
   // Grab the next reference type from the stack frame
@@ -24809,8 +25349,8 @@ namespace Zilch
     // Read the data from the handle by dereferencing it
     byte* data = handle.Dereference();
 
-    // Now cast that data into the type we represent (works with value, ref, or pointer)
-    return TypeBinding::FromPointerData<T>::Cast(data);
+    // Read the value from the handle data
+    return InternalReadValue<T>(data);
   }
 
   template <typename T>
@@ -24821,21 +25361,41 @@ namespace Zilch
 
     // Grab the handle manager via the state
     HandleManager* manager = state->GetHandleManager(type->HandleManager);
-	
-	
 
     // Create a handle that goes with the given manager index
     Handle* handle = new (stackFrame) Handle();
     handle->Manager = manager;
-    handle->Type = type;
 
-    // Get a pointer to the given reference
-    ZilchAutoVal(pointer, TypeBinding::ToPointer<T>::Cast(value));
+    // If this is a redirected type...
+    if (ZilchStaticType(T)::DirectRead)
+    {
+      // Get a raw pointer to the value (removes all const, reference, and other qualifiers)
+      ZilchStrip(T)* pointerToValue = ZilchToPointer(value);
+      handle->Type = ZilchVirtualTypeId(pointerToValue);
 
-    // Setup the newly created handle
-    manager->ObjectToHandle((byte*)pointer, *handle);
+      // Setup the newly created handle
+      manager->ObjectToHandle((const byte*)pointerToValue, *handle);
+    }
+    else
+    {
+      // Write the value to a temporary buffer
+      size_t size = sizeof(typename ZilchStaticType(T)::RepresentedType);
+      byte* data = (byte*)alloca(size);
+
+      // This was a redirect, so just take the type of the redirect and put it on the handle
+      handle->Type = type;
+
+      // Convert the value to the redirected type within our temporary buffer
+      InternalWriteValue<T>(value, data);
+
+      // Setup the newly created handle
+      manager->ObjectToHandle(data, *handle);
+
+      // Invoke the destructor on the temporary memory
+      typedef typename ZilchStaticType(T)::RepresentedType RepresentedType;
+      ((RepresentedType*)data)->~RepresentedType();
+    }
   }
-
 
   class Call
   {
@@ -24871,7 +25431,7 @@ namespace Zilch
     void SetValue(size_t index, const T& value)
     {
       // Get the stack location and perform checks
-      byte* stack = this->GetChecked(index, ZilchTrueTypeSize(T), ZilchTypeId(T), CheckPrimitive::Value, Direction::Set);
+      byte* stack = this->GetChecked(index, sizeof(typename ZilchStaticType(T)::RepresentedType), ZilchTypeId(T), CheckPrimitive::Value, Direction::Set);
 
       // Finally, copy the input into the stack position
       InternalWriteValue<T>(value, stack);
@@ -24919,7 +25479,7 @@ namespace Zilch
     T GetValue(size_t index)
     {
       // Get the stack location and perform checks
-      byte* stack = this->GetChecked(index, ZilchTrueTypeSize(T), ZilchTypeId(T), CheckPrimitive::Value, Direction::Get);
+      byte* stack = this->GetChecked(index, sizeof(typename ZilchStaticType(T)::RepresentedType), ZilchTypeId(T), CheckPrimitive::Value, Direction::Get);
       
       // Read the value from the stack and return it (or convert it)
       return InternalReadValue<T>(stack);
@@ -25050,26 +25610,43 @@ namespace Zilch
     PerFrameData* Data;
   };
 
-  // Get either a parameter, return, or this handle from the call
-  // This method auto determines whether it's reference or value type
+  // Set the Any type (handled specially so we can bind 'Any')
   template <>
   void Call::Set<Any>(size_t index, const Any& value);
     
-  // Get either a parameter, return, or this handle from the call
-  // This method auto determines whether it's reference or value type
-  template <>
-  Any* Call::Get<Any*>(size_t index);
-
-  // Handle the by-value, by reference, and const reference specializations of the Get<Any>
+  // Get the Any type (handle pointer, reference, and const types)
+  template <>       Any* Call::Get<      Any*>(size_t index);
   template <>       Any  Call::Get<      Any >(size_t index);
   template <>       Any& Call::Get<      Any&>(size_t index);
   template <> const Any* Call::Get<const Any*>(size_t index);
   template <> const Any& Call::Get<const Any&>(size_t index);
+
+  // Set the Handle type (handled specially so we can bind 'Handle')
+  template <>
+  void Call::Set<Handle>(size_t index, const Handle& value);
+    
+  // Get the Handle type (handle pointer, reference, and const types)
+  template <>       Handle* Call::Get<      Handle*>(size_t index);
+  template <>       Handle  Call::Get<      Handle >(size_t index);
+  template <>       Handle& Call::Get<      Handle&>(size_t index);
+  template <> const Handle* Call::Get<const Handle*>(size_t index);
+  template <> const Handle& Call::Get<const Handle&>(size_t index);
+
+  // Set the Delegate type (handled specially so we can bind 'Delegate')
+  template <>
+  void Call::Set<Delegate>(size_t index, const Delegate& value);
+    
+  // Get the Delegate type (handle pointer, reference, and const types)
+  template <>       Delegate* Call::Get<      Delegate*>(size_t index);
+  template <>       Delegate  Call::Get<      Delegate >(size_t index);
+  template <>       Delegate& Call::Get<      Delegate&>(size_t index);
+  template <> const Delegate* Call::Get<const Delegate*>(size_t index);
+  template <> const Delegate& Call::Get<const Delegate&>(size_t index);
+
 }
 
 // End header protection
 #endif
-
 
 namespace Zilch
 {
@@ -25126,7 +25703,7 @@ static Function* FromStatic(LibraryBuilder& builder, BoundType* classBoundType, 
 template <typename FunctionType, FunctionType function, typename Arg0>
 static void BoundStatic(Call& call, ExceptionReport& report)
 {
-  Arg0 arg0 = call.Get<Arg0>(0);
+  ZilchBindingType(Arg0) arg0 = call.Get<ZilchBindingType(Arg0)>(0);
   function(arg0);
 }
 //EndBound
@@ -25152,8 +25729,8 @@ static Function* FromStatic(LibraryBuilder& builder, BoundType* classBoundType, 
 template <typename FunctionType, FunctionType function, typename Arg0, typename Arg1>
 static void BoundStatic(Call& call, ExceptionReport& report)
 {
-  Arg0 arg0 = call.Get<Arg0>(0);
-  Arg1 arg1 = call.Get<Arg1>(1);
+  ZilchBindingType(Arg0) arg0 = call.Get<ZilchBindingType(Arg0)>(0);
+  ZilchBindingType(Arg1) arg1 = call.Get<ZilchBindingType(Arg1)>(1);
   function(arg0, arg1);
 }
 //EndBound
@@ -25181,9 +25758,9 @@ static Function* FromStatic(LibraryBuilder& builder, BoundType* classBoundType, 
 template <typename FunctionType, FunctionType function, typename Arg0, typename Arg1, typename Arg2>
 static void BoundStatic(Call& call, ExceptionReport& report)
 {
-  Arg0 arg0 = call.Get<Arg0>(0);
-  Arg1 arg1 = call.Get<Arg1>(1);
-  Arg2 arg2 = call.Get<Arg2>(2);
+  ZilchBindingType(Arg0) arg0 = call.Get<ZilchBindingType(Arg0)>(0);
+  ZilchBindingType(Arg1) arg1 = call.Get<ZilchBindingType(Arg1)>(1);
+  ZilchBindingType(Arg2) arg2 = call.Get<ZilchBindingType(Arg2)>(2);
   function(arg0, arg1, arg2);
 }
 //EndBound
@@ -25213,10 +25790,10 @@ static Function* FromStatic(LibraryBuilder& builder, BoundType* classBoundType, 
 template <typename FunctionType, FunctionType function, typename Arg0, typename Arg1, typename Arg2, typename Arg3>
 static void BoundStatic(Call& call, ExceptionReport& report)
 {
-  Arg0 arg0 = call.Get<Arg0>(0);
-  Arg1 arg1 = call.Get<Arg1>(1);
-  Arg2 arg2 = call.Get<Arg2>(2);
-  Arg3 arg3 = call.Get<Arg3>(3);
+  ZilchBindingType(Arg0) arg0 = call.Get<ZilchBindingType(Arg0)>(0);
+  ZilchBindingType(Arg1) arg1 = call.Get<ZilchBindingType(Arg1)>(1);
+  ZilchBindingType(Arg2) arg2 = call.Get<ZilchBindingType(Arg2)>(2);
+  ZilchBindingType(Arg3) arg3 = call.Get<ZilchBindingType(Arg3)>(3);
   function(arg0, arg1, arg2, arg3);
 }
 //EndBound
@@ -25248,11 +25825,11 @@ static Function* FromStatic(LibraryBuilder& builder, BoundType* classBoundType, 
 template <typename FunctionType, FunctionType function, typename Arg0, typename Arg1, typename Arg2, typename Arg3, typename Arg4>
 static void BoundStatic(Call& call, ExceptionReport& report)
 {
-  Arg0 arg0 = call.Get<Arg0>(0);
-  Arg1 arg1 = call.Get<Arg1>(1);
-  Arg2 arg2 = call.Get<Arg2>(2);
-  Arg3 arg3 = call.Get<Arg3>(3);
-  Arg4 arg4 = call.Get<Arg4>(4);
+  ZilchBindingType(Arg0) arg0 = call.Get<ZilchBindingType(Arg0)>(0);
+  ZilchBindingType(Arg1) arg1 = call.Get<ZilchBindingType(Arg1)>(1);
+  ZilchBindingType(Arg2) arg2 = call.Get<ZilchBindingType(Arg2)>(2);
+  ZilchBindingType(Arg3) arg3 = call.Get<ZilchBindingType(Arg3)>(3);
+  ZilchBindingType(Arg4) arg4 = call.Get<ZilchBindingType(Arg4)>(4);
   function(arg0, arg1, arg2, arg3, arg4);
 }
 //EndBound
@@ -25310,7 +25887,7 @@ static Function* FromStatic(LibraryBuilder& builder, BoundType* classBoundType, 
 template <typename FunctionType, FunctionType function, typename Return, typename Arg0>
 static void BoundStaticReturn(Call& call, ExceptionReport& report)
 {
-  Arg0 arg0 = call.Get<Arg0>(0);
+  ZilchBindingType(Arg0) arg0 = call.Get<ZilchBindingType(Arg0)>(0);
   Return result = function(arg0);
   call.Set<Return>(Call::Return, result);
 }
@@ -25337,8 +25914,8 @@ static Function* FromStatic(LibraryBuilder& builder, BoundType* classBoundType, 
 template <typename FunctionType, FunctionType function, typename Return, typename Arg0, typename Arg1>
 static void BoundStaticReturn(Call& call, ExceptionReport& report)
 {
-  Arg0 arg0 = call.Get<Arg0>(0);
-  Arg1 arg1 = call.Get<Arg1>(1);
+  ZilchBindingType(Arg0) arg0 = call.Get<ZilchBindingType(Arg0)>(0);
+  ZilchBindingType(Arg1) arg1 = call.Get<ZilchBindingType(Arg1)>(1);
   Return result = function(arg0, arg1);
   call.Set<Return>(Call::Return, result);
 }
@@ -25367,9 +25944,9 @@ static Function* FromStatic(LibraryBuilder& builder, BoundType* classBoundType, 
 template <typename FunctionType, FunctionType function, typename Return, typename Arg0, typename Arg1, typename Arg2>
 static void BoundStaticReturn(Call& call, ExceptionReport& report)
 {
-  Arg0 arg0 = call.Get<Arg0>(0);
-  Arg1 arg1 = call.Get<Arg1>(1);
-  Arg2 arg2 = call.Get<Arg2>(2);
+  ZilchBindingType(Arg0) arg0 = call.Get<ZilchBindingType(Arg0)>(0);
+  ZilchBindingType(Arg1) arg1 = call.Get<ZilchBindingType(Arg1)>(1);
+  ZilchBindingType(Arg2) arg2 = call.Get<ZilchBindingType(Arg2)>(2);
   Return result = function(arg0, arg1, arg2);
   call.Set<Return>(Call::Return, result);
 }
@@ -25400,10 +25977,10 @@ static Function* FromStatic(LibraryBuilder& builder, BoundType* classBoundType, 
 template <typename FunctionType, FunctionType function, typename Return, typename Arg0, typename Arg1, typename Arg2, typename Arg3>
 static void BoundStaticReturn(Call& call, ExceptionReport& report)
 {
-  Arg0 arg0 = call.Get<Arg0>(0);
-  Arg1 arg1 = call.Get<Arg1>(1);
-  Arg2 arg2 = call.Get<Arg2>(2);
-  Arg3 arg3 = call.Get<Arg3>(3);
+  ZilchBindingType(Arg0) arg0 = call.Get<ZilchBindingType(Arg0)>(0);
+  ZilchBindingType(Arg1) arg1 = call.Get<ZilchBindingType(Arg1)>(1);
+  ZilchBindingType(Arg2) arg2 = call.Get<ZilchBindingType(Arg2)>(2);
+  ZilchBindingType(Arg3) arg3 = call.Get<ZilchBindingType(Arg3)>(3);
   Return result = function(arg0, arg1, arg2, arg3);
   call.Set<Return>(Call::Return, result);
 }
@@ -25436,11 +26013,11 @@ static Function* FromStatic(LibraryBuilder& builder, BoundType* classBoundType, 
 template <typename FunctionType, FunctionType function, typename Return, typename Arg0, typename Arg1, typename Arg2, typename Arg3, typename Arg4>
 static void BoundStaticReturn(Call& call, ExceptionReport& report)
 {
-  Arg0 arg0 = call.Get<Arg0>(0);
-  Arg1 arg1 = call.Get<Arg1>(1);
-  Arg2 arg2 = call.Get<Arg2>(2);
-  Arg3 arg3 = call.Get<Arg3>(3);
-  Arg4 arg4 = call.Get<Arg4>(4);
+  ZilchBindingType(Arg0) arg0 = call.Get<ZilchBindingType(Arg0)>(0);
+  ZilchBindingType(Arg1) arg1 = call.Get<ZilchBindingType(Arg1)>(1);
+  ZilchBindingType(Arg2) arg2 = call.Get<ZilchBindingType(Arg2)>(2);
+  ZilchBindingType(Arg3) arg3 = call.Get<ZilchBindingType(Arg3)>(3);
+  ZilchBindingType(Arg4) arg4 = call.Get<ZilchBindingType(Arg4)>(4);
   Return result = function(arg0, arg1, arg2, arg3, arg4);
   call.Set<Return>(Call::Return, result);
 }
@@ -25499,7 +26076,7 @@ static Function* FromInstance(LibraryBuilder& builder, BoundType* classBoundType
 template <typename FunctionType, FunctionType function, typename Class, typename Arg0>
 static void BoundInstance(Call& call, ExceptionReport& report)
 {
-  Arg0 arg0 = call.Get<Arg0>(0);
+  ZilchBindingType(Arg0) arg0 = call.Get<ZilchBindingType(Arg0)>(0);
   Class* self = (Class*)call.GetHandle(Call::This).Dereference();
   (self->*function)(arg0);
 }
@@ -25526,8 +26103,8 @@ static Function* FromInstance(LibraryBuilder& builder, BoundType* classBoundType
 template <typename FunctionType, FunctionType function, typename Class, typename Arg0, typename Arg1>
 static void BoundInstance(Call& call, ExceptionReport& report)
 {
-  Arg0 arg0 = call.Get<Arg0>(0);
-  Arg1 arg1 = call.Get<Arg1>(1);
+  ZilchBindingType(Arg0) arg0 = call.Get<ZilchBindingType(Arg0)>(0);
+  ZilchBindingType(Arg1) arg1 = call.Get<ZilchBindingType(Arg1)>(1);
   Class* self = (Class*)call.GetHandle(Call::This).Dereference();
   (self->*function)(arg0, arg1);
 }
@@ -25556,9 +26133,9 @@ static Function* FromInstance(LibraryBuilder& builder, BoundType* classBoundType
 template <typename FunctionType, FunctionType function, typename Class, typename Arg0, typename Arg1, typename Arg2>
 static void BoundInstance(Call& call, ExceptionReport& report)
 {
-  Arg0 arg0 = call.Get<Arg0>(0);
-  Arg1 arg1 = call.Get<Arg1>(1);
-  Arg2 arg2 = call.Get<Arg2>(2);
+  ZilchBindingType(Arg0) arg0 = call.Get<ZilchBindingType(Arg0)>(0);
+  ZilchBindingType(Arg1) arg1 = call.Get<ZilchBindingType(Arg1)>(1);
+  ZilchBindingType(Arg2) arg2 = call.Get<ZilchBindingType(Arg2)>(2);
   Class* self = (Class*)call.GetHandle(Call::This).Dereference();
   (self->*function)(arg0, arg1, arg2);
 }
@@ -25589,10 +26166,10 @@ static Function* FromInstance(LibraryBuilder& builder, BoundType* classBoundType
 template <typename FunctionType, FunctionType function, typename Class, typename Arg0, typename Arg1, typename Arg2, typename Arg3>
 static void BoundInstance(Call& call, ExceptionReport& report)
 {
-  Arg0 arg0 = call.Get<Arg0>(0);
-  Arg1 arg1 = call.Get<Arg1>(1);
-  Arg2 arg2 = call.Get<Arg2>(2);
-  Arg3 arg3 = call.Get<Arg3>(3);
+  ZilchBindingType(Arg0) arg0 = call.Get<ZilchBindingType(Arg0)>(0);
+  ZilchBindingType(Arg1) arg1 = call.Get<ZilchBindingType(Arg1)>(1);
+  ZilchBindingType(Arg2) arg2 = call.Get<ZilchBindingType(Arg2)>(2);
+  ZilchBindingType(Arg3) arg3 = call.Get<ZilchBindingType(Arg3)>(3);
   Class* self = (Class*)call.GetHandle(Call::This).Dereference();
   (self->*function)(arg0, arg1, arg2, arg3);
 }
@@ -25625,11 +26202,11 @@ static Function* FromInstance(LibraryBuilder& builder, BoundType* classBoundType
 template <typename FunctionType, FunctionType function, typename Class, typename Arg0, typename Arg1, typename Arg2, typename Arg3, typename Arg4>
 static void BoundInstance(Call& call, ExceptionReport& report)
 {
-  Arg0 arg0 = call.Get<Arg0>(0);
-  Arg1 arg1 = call.Get<Arg1>(1);
-  Arg2 arg2 = call.Get<Arg2>(2);
-  Arg3 arg3 = call.Get<Arg3>(3);
-  Arg4 arg4 = call.Get<Arg4>(4);
+  ZilchBindingType(Arg0) arg0 = call.Get<ZilchBindingType(Arg0)>(0);
+  ZilchBindingType(Arg1) arg1 = call.Get<ZilchBindingType(Arg1)>(1);
+  ZilchBindingType(Arg2) arg2 = call.Get<ZilchBindingType(Arg2)>(2);
+  ZilchBindingType(Arg3) arg3 = call.Get<ZilchBindingType(Arg3)>(3);
+  ZilchBindingType(Arg4) arg4 = call.Get<ZilchBindingType(Arg4)>(4);
   Class* self = (Class*)call.GetHandle(Call::This).Dereference();
   (self->*function)(arg0, arg1, arg2, arg3, arg4);
 }
@@ -25689,7 +26266,7 @@ static Function* FromInstance(LibraryBuilder& builder, BoundType* classBoundType
 template <typename FunctionType, FunctionType function, typename Class, typename Return, typename Arg0>
 static void BoundInstanceReturn(Call& call, ExceptionReport& report)
 {
-  Arg0 arg0 = call.Get<Arg0>(0);
+  ZilchBindingType(Arg0) arg0 = call.Get<ZilchBindingType(Arg0)>(0);
   Class* self = (Class*)call.GetHandle(Call::This).Dereference();
   Return result = (self->*function)(arg0);
   call.Set<Return>(Call::Return, result);
@@ -25717,8 +26294,8 @@ static Function* FromInstance(LibraryBuilder& builder, BoundType* classBoundType
 template <typename FunctionType, FunctionType function, typename Class, typename Return, typename Arg0, typename Arg1>
 static void BoundInstanceReturn(Call& call, ExceptionReport& report)
 {
-  Arg0 arg0 = call.Get<Arg0>(0);
-  Arg1 arg1 = call.Get<Arg1>(1);
+  ZilchBindingType(Arg0) arg0 = call.Get<ZilchBindingType(Arg0)>(0);
+  ZilchBindingType(Arg1) arg1 = call.Get<ZilchBindingType(Arg1)>(1);
   Class* self = (Class*)call.GetHandle(Call::This).Dereference();
   Return result = (self->*function)(arg0, arg1);
   call.Set<Return>(Call::Return, result);
@@ -25748,9 +26325,9 @@ static Function* FromInstance(LibraryBuilder& builder, BoundType* classBoundType
 template <typename FunctionType, FunctionType function, typename Class, typename Return, typename Arg0, typename Arg1, typename Arg2>
 static void BoundInstanceReturn(Call& call, ExceptionReport& report)
 {
-  Arg0 arg0 = call.Get<Arg0>(0);
-  Arg1 arg1 = call.Get<Arg1>(1);
-  Arg2 arg2 = call.Get<Arg2>(2);
+  ZilchBindingType(Arg0) arg0 = call.Get<ZilchBindingType(Arg0)>(0);
+  ZilchBindingType(Arg1) arg1 = call.Get<ZilchBindingType(Arg1)>(1);
+  ZilchBindingType(Arg2) arg2 = call.Get<ZilchBindingType(Arg2)>(2);
   Class* self = (Class*)call.GetHandle(Call::This).Dereference();
   Return result = (self->*function)(arg0, arg1, arg2);
   call.Set<Return>(Call::Return, result);
@@ -25782,10 +26359,10 @@ static Function* FromInstance(LibraryBuilder& builder, BoundType* classBoundType
 template <typename FunctionType, FunctionType function, typename Class, typename Return, typename Arg0, typename Arg1, typename Arg2, typename Arg3>
 static void BoundInstanceReturn(Call& call, ExceptionReport& report)
 {
-  Arg0 arg0 = call.Get<Arg0>(0);
-  Arg1 arg1 = call.Get<Arg1>(1);
-  Arg2 arg2 = call.Get<Arg2>(2);
-  Arg3 arg3 = call.Get<Arg3>(3);
+  ZilchBindingType(Arg0) arg0 = call.Get<ZilchBindingType(Arg0)>(0);
+  ZilchBindingType(Arg1) arg1 = call.Get<ZilchBindingType(Arg1)>(1);
+  ZilchBindingType(Arg2) arg2 = call.Get<ZilchBindingType(Arg2)>(2);
+  ZilchBindingType(Arg3) arg3 = call.Get<ZilchBindingType(Arg3)>(3);
   Class* self = (Class*)call.GetHandle(Call::This).Dereference();
   Return result = (self->*function)(arg0, arg1, arg2, arg3);
   call.Set<Return>(Call::Return, result);
@@ -25819,11 +26396,11 @@ static Function* FromInstance(LibraryBuilder& builder, BoundType* classBoundType
 template <typename FunctionType, FunctionType function, typename Class, typename Return, typename Arg0, typename Arg1, typename Arg2, typename Arg3, typename Arg4>
 static void BoundInstanceReturn(Call& call, ExceptionReport& report)
 {
-  Arg0 arg0 = call.Get<Arg0>(0);
-  Arg1 arg1 = call.Get<Arg1>(1);
-  Arg2 arg2 = call.Get<Arg2>(2);
-  Arg3 arg3 = call.Get<Arg3>(3);
-  Arg4 arg4 = call.Get<Arg4>(4);
+  ZilchBindingType(Arg0) arg0 = call.Get<ZilchBindingType(Arg0)>(0);
+  ZilchBindingType(Arg1) arg1 = call.Get<ZilchBindingType(Arg1)>(1);
+  ZilchBindingType(Arg2) arg2 = call.Get<ZilchBindingType(Arg2)>(2);
+  ZilchBindingType(Arg3) arg3 = call.Get<ZilchBindingType(Arg3)>(3);
+  ZilchBindingType(Arg4) arg4 = call.Get<ZilchBindingType(Arg4)>(4);
   Class* self = (Class*)call.GetHandle(Call::This).Dereference();
   Return result = (self->*function)(arg0, arg1, arg2, arg3, arg4);
   call.Set<Return>(Call::Return, result);
@@ -27158,7 +27735,6 @@ static Function* FromConstructor(LibraryBuilder& builder, BoundType* classBoundT
   );
 }
 
-
     // Wraps a destructor call with the Zilch signature
     template <typename Class>
     static void BoundDestructor(Call& call, ExceptionReport& report)
@@ -27185,7 +27761,6 @@ static Function* FromConstructor(LibraryBuilder& builder, BoundType* classBoundT
     {
       return builder.AddBoundDestructor(classBoundType, BoundDestructor<Class>);
     }
-
 
     template <typename Field, typename Class, Field Class::* field>
     static void BoundInstanceGet(Call& call, ExceptionReport& report)
@@ -27281,13 +27856,16 @@ static Function* FromConstructor(LibraryBuilder& builder, BoundType* classBoundT
   // Workhorse macro for binding methods
   #define ZilchBindMethodHelper(ZilchBuilder, ZilchType, Kind, MethodPtr, Name, NamedParameters, Signature)                   Zilch::TemplateBinding::From##Kind<Signature, MethodPtr>(ZilchBuilder, ZilchType, Name, NamedParameters, static_cast<Signature>(MethodPtr))
 
+  // Property binding
+  #define ZilchBindInternalInstanceGetSet(Method) \
+
   // Method binding (including aliases)
   #define ZilchBindInternalStaticMethod(Method) \
-    ZilchBindMethodHelper(builder, type, Static, &ZilchSelf::Method, #Method, String(), ZilchTypeOf(&ZilchSelf::Method))
+    ZilchBindMethodHelper(builder, type, Static, &ZilchSelf::Method, #Method, Zilch::String(), ZilchTypeOf(&ZilchSelf::Method))
   #define ZilchBindStaticMethod(Method) \
     ZilchBindInternalStaticMethod(Method)
   #define ZilchBindInternalStaticMethodAs(Method, Name) \
-    ZilchBindMethodHelper(builder, type, Static, &ZilchSelf::Method, Name, String(), ZilchTypeOf(&ZilchSelf::Method))
+    ZilchBindMethodHelper(builder, type, Static, &ZilchSelf::Method, Name, Zilch::String(), ZilchTypeOf(&ZilchSelf::Method))
   #define ZilchBindStaticMethodAs(Method, Name) \
     ZilchBindInternalStaticMethodAs(Method, Name)
   #define ZilchBindInternalStaticNamedParameterMethod(Method, NamedParameters) \
@@ -27299,11 +27877,11 @@ static Function* FromConstructor(LibraryBuilder& builder, BoundType* classBoundT
   #define ZilchBindStaticNamedParameterMethodAs(Method, Name, NamedParameters) \
     ZilchBindInternalStaticMethodAs(Method, Name, NamedParameters)
   #define ZilchBindInternalStaticMethodOverload(Method, ReturnType, ...) \
-    ZilchBindMethodHelper(builder, type, Static, &ZilchSelf::Method, #Method, String(), ReturnType (*) (__VA_ARGS__))
+    ZilchBindMethodHelper(builder, type, Static, &ZilchSelf::Method, #Method, Zilch::String(), ReturnType (*) (__VA_ARGS__))
   #define ZilchBindStaticMethodOverload(Method, ReturnType, ...) \
     ZilchBindInternalStaticMethodOverload(Method, ReturnType, __VA_ARGS__)
   #define ZilchBindInternalStaticMethodOverloadAs(Method, Name, ReturnType, ...) \
-    ZilchBindMethodHelper(builder, type, Static, &ZilchSelf::Method, Name, String(), ReturnType (*) (__VA_ARGS__))
+    ZilchBindMethodHelper(builder, type, Static, &ZilchSelf::Method, Name, Zilch::String(), ReturnType (*) (__VA_ARGS__))
   #define ZilchBindStaticMethodOverloadAs(Method, Name, ReturnType, ...) \
     ZilchBindInternalStaticMethodOverloadAs(Method, Name, ReturnType, __VA_ARGS__)
   #define ZilchBindInternalStaticNamedParameterMethodOverload(Method, NamedParameters, ReturnType, ...) \
@@ -27315,11 +27893,11 @@ static Function* FromConstructor(LibraryBuilder& builder, BoundType* classBoundT
   #define ZilchBindStaticNamedParameterMethodOverloadAs(Method, Name, NamedParameters, ReturnType, ...) \
     ZilchBindInternalStaticMethodOverloadAs(Method, Name, NamedParameters, ReturnType, __VA_ARGS__)
   #define ZilchBindInternalInstanceMethod(Method) \
-    ZilchBindMethodHelper(builder, type, Instance, &ZilchSelf::Method, #Method, String(), ZilchTypeOf(&ZilchSelf::Method))
+    ZilchBindMethodHelper(builder, type, Instance, &ZilchSelf::Method, #Method, Zilch::String(), ZilchTypeOf(&ZilchSelf::Method))
   #define ZilchBindMethod(Method) \
     ZilchBindInternalInstanceMethod(Method)
   #define ZilchBindInternalInstanceMethodAs(Method, Name) \
-    ZilchBindMethodHelper(builder, type, Instance, &ZilchSelf::Method, Name, String(), ZilchTypeOf(&ZilchSelf::Method))
+    ZilchBindMethodHelper(builder, type, Instance, &ZilchSelf::Method, Name, Zilch::String(), ZilchTypeOf(&ZilchSelf::Method))
   #define ZilchBindMethodAs(Method, Name) \
     ZilchBindInternalInstanceMethodAs(Method, Name)
   #define ZilchBindInternalInstanceNamedParameterMethod(Method, NamedParameters) \
@@ -27331,11 +27909,11 @@ static Function* FromConstructor(LibraryBuilder& builder, BoundType* classBoundT
   #define ZilchBindNamedParameterMethodAs(Method, Name, NamedParameters) \
     ZilchBindInternalInstanceMethodAs(Method, Name, NamedParameters)
   #define ZilchBindInternalInstanceMethodOverload(Method, ReturnType, ...) \
-    ZilchBindMethodHelper(builder, type, Instance, &ZilchSelf::Method, #Method, String(), ReturnType (ZilchSelf::*) (__VA_ARGS__))
+    ZilchBindMethodHelper(builder, type, Instance, &ZilchSelf::Method, #Method, Zilch::String(), ReturnType (ZilchSelf::*) (__VA_ARGS__))
   #define ZilchBindMethodOverload(Method, ReturnType, ...) \
     ZilchBindInternalInstanceMethodOverload(Method, ReturnType, __VA_ARGS__)
   #define ZilchBindInternalInstanceMethodOverloadAs(Method, Name, ReturnType, ...) \
-    ZilchBindMethodHelper(builder, type, Instance, &ZilchSelf::Method, Name, String(), ReturnType (ZilchSelf::*) (__VA_ARGS__))
+    ZilchBindMethodHelper(builder, type, Instance, &ZilchSelf::Method, Name, Zilch::String(), ReturnType (ZilchSelf::*) (__VA_ARGS__))
   #define ZilchBindMethodOverloadAs(Method, Name, ReturnType, ...) \
     ZilchBindInternalInstanceMethodOverloadAs(Method, Name, ReturnType, __VA_ARGS__)
   #define ZilchBindInternalInstanceNamedParameterMethodOverload(Method, NamedParameters, ReturnType, ...) \
@@ -27347,27 +27925,27 @@ static Function* FromConstructor(LibraryBuilder& builder, BoundType* classBoundT
   #define ZilchBindNamedParameterMethodOverloadAs(Method, Name, NamedParameters, ReturnType, ...) \
     ZilchBindInternalInstanceMethodOverloadAs(Method, Name, NamedParameters, ReturnType, __VA_ARGS__)
   #define ZilchBindExternalStaticMethod(NamespaceAndClass, Method) \
-    ZilchBindMethodHelper(builder, type, Static, &NamespaceAndClass::Method, #Method, String(), ZilchTypeOf(&NamespaceAndClass::Method))
+    ZilchBindMethodHelper(builder, type, Static, &NamespaceAndClass::Method, #Method, Zilch::String(), ZilchTypeOf(&NamespaceAndClass::Method))
   #define ZilchBindExternalStaticMethodAs(NamespaceAndClass, Method, Name) \
-    ZilchBindMethodHelper(builder, type, Static, &NamespaceAndClass::Method, Name, String(), ZilchTypeOf(&NamespaceAndClass::Method))
+    ZilchBindMethodHelper(builder, type, Static, &NamespaceAndClass::Method, Name, Zilch::String(), ZilchTypeOf(&NamespaceAndClass::Method))
   #define ZilchBindExternalStaticNamedParameterMethod(NamespaceAndClass, Method, NamedParameters) \
     ZilchBindMethodHelper(builder, type, Static, &NamespaceAndClass::Method, #Method, NamedParameters, ZilchTypeOf(&NamespaceAndClass::Method))
   #define ZilchBindExternalStaticNamedParameterMethodAs(NamespaceAndClass, Method, Name, NamedParameters) \
     ZilchBindMethodHelper(builder, type, Static, &NamespaceAndClass::Method, Name, NamedParameters, ZilchTypeOf(&NamespaceAndClass::Method))
   #define ZilchBindExternalStaticMethodOverload(NamespaceAndClass, Method, ReturnType, ...) \
-    ZilchBindMethodHelper(builder, type, Static, &NamespaceAndClass::Method, #Method, String(), ReturnType (*) (__VA_ARGS__))
+    ZilchBindMethodHelper(builder, type, Static, &NamespaceAndClass::Method, #Method, Zilch::String(), ReturnType (*) (__VA_ARGS__))
   #define ZilchBindExternalStaticMethodOverloadAs(NamespaceAndClass, Method, Name, ReturnType, ...) \
-    ZilchBindMethodHelper(builder, type, Static, &NamespaceAndClass::Method, Name, String(), ReturnType (*) (__VA_ARGS__))
+    ZilchBindMethodHelper(builder, type, Static, &NamespaceAndClass::Method, Name, Zilch::String(), ReturnType (*) (__VA_ARGS__))
   #define ZilchBindExternalStaticNamedParameterMethodOverload(NamespaceAndClass, Method, NamedParameters, ReturnType, ...) \
     ZilchBindMethodHelper(builder, type, Static, &NamespaceAndClass::Method, #Method, NamedParameters, ReturnType (*) (__VA_ARGS__))
   #define ZilchBindExternalStaticNamedParameterMethodOverloadAs(NamespaceAndClass, Method, Name, NamedParameters, ReturnType, ...) \
     ZilchBindMethodHelper(builder, type, Static, &NamespaceAndClass::Method, Name, NamedParameters, ReturnType (*) (__VA_ARGS__))
   #define ZilchBindExternalInstanceMethod(NamespaceAndClass, Method) \
-    ZilchBindMethodHelper(builder, type, Instance, &NamespaceAndClass::Method, #Method, String(), ZilchTypeOf(&NamespaceAndClass::Method))
+    ZilchBindMethodHelper(builder, type, Instance, &NamespaceAndClass::Method, #Method, Zilch::String(), ZilchTypeOf(&NamespaceAndClass::Method))
   #define ZilchBindExternalMethod(NamespaceAndClass, Method) \
     ZilchBindExternalInstanceMethod(NamespaceAndClass, Method)
   #define ZilchBindExternalInstanceMethodAs(NamespaceAndClass, Method, Name) \
-    ZilchBindMethodHelper(builder, type, Instance, &NamespaceAndClass::Method, Name, String(), ZilchTypeOf(&NamespaceAndClass::Method))
+    ZilchBindMethodHelper(builder, type, Instance, &NamespaceAndClass::Method, Name, Zilch::String(), ZilchTypeOf(&NamespaceAndClass::Method))
   #define ZilchBindExternalMethodAs(NamespaceAndClass, Method, Name) \
     ZilchBindExternalInstanceMethodAs(NamespaceAndClass, Method, Name)
   #define ZilchBindExternalInstanceNamedParameterMethod(NamespaceAndClass, Method, NamedParameters) \
@@ -27379,11 +27957,11 @@ static Function* FromConstructor(LibraryBuilder& builder, BoundType* classBoundT
   #define ZilchBindExternalNamedParameterMethodAs(NamespaceAndClass, Method, Name, NamedParameters) \
     ZilchBindExternalInstanceMethodAs(NamespaceAndClass, Method, Name, NamedParameters)
   #define ZilchBindExternalInstanceMethodOverload(NamespaceAndClass, Method, ReturnType, ...) \
-    ZilchBindMethodHelper(builder, type, Instance, &NamespaceAndClass::Method, #Method, String(), ReturnType (NamespaceAndClass::*) (__VA_ARGS__))
+    ZilchBindMethodHelper(builder, type, Instance, &NamespaceAndClass::Method, #Method, Zilch::String(), ReturnType (NamespaceAndClass::*) (__VA_ARGS__))
   #define ZilchBindExternalMethodOverload(NamespaceAndClass, Method, ReturnType, ...) \
     ZilchBindExternalInstanceMethodOverload(NamespaceAndClass, Method, ReturnType, __VA_ARGS__)
   #define ZilchBindExternalInstanceMethodOverloadAs(NamespaceAndClass, Method, Name, ReturnType, ...) \
-    ZilchBindMethodHelper(builder, type, Instance, &NamespaceAndClass::Method, Name, String(), ReturnType (NamespaceAndClass::*) (__VA_ARGS__))
+    ZilchBindMethodHelper(builder, type, Instance, &NamespaceAndClass::Method, Name, Zilch::String(), ReturnType (NamespaceAndClass::*) (__VA_ARGS__))
   #define ZilchBindExternalMethodOverloadAs(NamespaceAndClass, Method, Name, ReturnType, ...) \
     ZilchBindExternalInstanceMethodOverloadAs(NamespaceAndClass, Method, Name, ReturnType, __VA_ARGS__)
   #define ZilchBindExternalInstanceNamedParameterMethodOverload(NamespaceAndClass, Method, NamedParameters, ReturnType, ...) \
@@ -27395,27 +27973,27 @@ static Function* FromConstructor(LibraryBuilder& builder, BoundType* classBoundT
   #define ZilchBindExternalNamedParameterMethodOverloadAs(NamespaceAndClass, Method, Name, NamedParameters, ReturnType, ...) \
     ZilchBindExternalInstanceMethodOverloadAs(NamespaceAndClass, Method, Name, NamedParameters, ReturnType, __VA_ARGS__)
   #define ZilchBindCustomStaticMethod(ZilchBuilder, ZilchType, NamespaceAndClass, Method) \
-    ZilchBindMethodHelper(ZilchBuilder, ZilchType, Static, &NamespaceAndClass::Method, #Method, String(), ZilchTypeOf(&NamespaceAndClass::Method))
+    ZilchBindMethodHelper(ZilchBuilder, ZilchType, Static, &NamespaceAndClass::Method, #Method, Zilch::String(), ZilchTypeOf(&NamespaceAndClass::Method))
   #define ZilchBindCustomStaticMethodAs(ZilchBuilder, ZilchType, NamespaceAndClass, Method, Name) \
-    ZilchBindMethodHelper(ZilchBuilder, ZilchType, Static, &NamespaceAndClass::Method, Name, String(), ZilchTypeOf(&NamespaceAndClass::Method))
+    ZilchBindMethodHelper(ZilchBuilder, ZilchType, Static, &NamespaceAndClass::Method, Name, Zilch::String(), ZilchTypeOf(&NamespaceAndClass::Method))
   #define ZilchBindCustomStaticNamedParameterMethod(ZilchBuilder, ZilchType, NamespaceAndClass, Method, NamedParameters) \
     ZilchBindMethodHelper(ZilchBuilder, ZilchType, Static, &NamespaceAndClass::Method, #Method, NamedParameters, ZilchTypeOf(&NamespaceAndClass::Method))
   #define ZilchBindCustomStaticNamedParameterMethodAs(ZilchBuilder, ZilchType, NamespaceAndClass, Method, Name, NamedParameters) \
     ZilchBindMethodHelper(ZilchBuilder, ZilchType, Static, &NamespaceAndClass::Method, Name, NamedParameters, ZilchTypeOf(&NamespaceAndClass::Method))
   #define ZilchBindCustomStaticMethodOverload(ZilchBuilder, ZilchType, NamespaceAndClass, Method, ReturnType, ...) \
-    ZilchBindMethodHelper(ZilchBuilder, ZilchType, Static, &NamespaceAndClass::Method, #Method, String(), ReturnType (*) (__VA_ARGS__))
+    ZilchBindMethodHelper(ZilchBuilder, ZilchType, Static, &NamespaceAndClass::Method, #Method, Zilch::String(), ReturnType (*) (__VA_ARGS__))
   #define ZilchBindCustomStaticMethodOverloadAs(ZilchBuilder, ZilchType, NamespaceAndClass, Method, Name, ReturnType, ...) \
-    ZilchBindMethodHelper(ZilchBuilder, ZilchType, Static, &NamespaceAndClass::Method, Name, String(), ReturnType (*) (__VA_ARGS__))
+    ZilchBindMethodHelper(ZilchBuilder, ZilchType, Static, &NamespaceAndClass::Method, Name, Zilch::String(), ReturnType (*) (__VA_ARGS__))
   #define ZilchBindCustomStaticNamedParameterMethodOverload(ZilchBuilder, ZilchType, NamespaceAndClass, Method, NamedParameters, ReturnType, ...) \
     ZilchBindMethodHelper(ZilchBuilder, ZilchType, Static, &NamespaceAndClass::Method, #Method, NamedParameters, ReturnType (*) (__VA_ARGS__))
   #define ZilchBindCustomStaticNamedParameterMethodOverloadAs(ZilchBuilder, ZilchType, NamespaceAndClass, Method, Name, NamedParameters, ReturnType, ...) \
     ZilchBindMethodHelper(ZilchBuilder, ZilchType, Static, &NamespaceAndClass::Method, Name, NamedParameters, ReturnType (*) (__VA_ARGS__))
   #define ZilchBindCustomInstanceMethod(ZilchBuilder, ZilchType, NamespaceAndClass, Method) \
-    ZilchBindMethodHelper(ZilchBuilder, ZilchType, Instance, &NamespaceAndClass::Method, #Method, String(), ZilchTypeOf(&NamespaceAndClass::Method))
+    ZilchBindMethodHelper(ZilchBuilder, ZilchType, Instance, &NamespaceAndClass::Method, #Method, Zilch::String(), ZilchTypeOf(&NamespaceAndClass::Method))
   #define ZilchBindCustomMethod(ZilchBuilder, ZilchType, NamespaceAndClass, Method) \
     ZilchBindCustomInstanceMethod(ZilchBuilder, ZilchType, NamespaceAndClass, Method)
   #define ZilchBindCustomInstanceMethodAs(ZilchBuilder, ZilchType, NamespaceAndClass, Method, Name) \
-    ZilchBindMethodHelper(ZilchBuilder, ZilchType, Instance, &NamespaceAndClass::Method, Name, String(), ZilchTypeOf(&NamespaceAndClass::Method))
+    ZilchBindMethodHelper(ZilchBuilder, ZilchType, Instance, &NamespaceAndClass::Method, Name, Zilch::String(), ZilchTypeOf(&NamespaceAndClass::Method))
   #define ZilchBindCustomMethodAs(ZilchBuilder, ZilchType, NamespaceAndClass, Method, Name) \
     ZilchBindCustomInstanceMethodAs(ZilchBuilder, ZilchType, NamespaceAndClass, Method, Name)
   #define ZilchBindCustomInstanceNamedParameterMethod(ZilchBuilder, ZilchType, NamespaceAndClass, Method, NamedParameters) \
@@ -27427,11 +28005,11 @@ static Function* FromConstructor(LibraryBuilder& builder, BoundType* classBoundT
   #define ZilchBindCustomNamedParameterMethodAs(ZilchBuilder, ZilchType, NamespaceAndClass, Method, Name, NamedParameters) \
     ZilchBindCustomInstanceMethodAs(ZilchBuilder, ZilchType, NamespaceAndClass, Method, Name, NamedParameters)
   #define ZilchBindCustomInstanceMethodOverload(ZilchBuilder, ZilchType, NamespaceAndClass, Method, ReturnType, ...) \
-    ZilchBindMethodHelper(ZilchBuilder, ZilchType, Instance, &NamespaceAndClass::Method, #Method, String(), ReturnType (NamespaceAndClass::*) (__VA_ARGS__))
+    ZilchBindMethodHelper(ZilchBuilder, ZilchType, Instance, &NamespaceAndClass::Method, #Method, Zilch::String(), ReturnType (NamespaceAndClass::*) (__VA_ARGS__))
   #define ZilchBindCustomMethodOverload(ZilchBuilder, ZilchType, NamespaceAndClass, Method, ReturnType, ...) \
     ZilchBindCustomInstanceMethodOverload(ZilchBuilder, ZilchType, NamespaceAndClass, Method, ReturnType, __VA_ARGS__)
   #define ZilchBindCustomInstanceMethodOverloadAs(ZilchBuilder, ZilchType, NamespaceAndClass, Method, Name, ReturnType, ...) \
-    ZilchBindMethodHelper(ZilchBuilder, ZilchType, Instance, &NamespaceAndClass::Method, Name, String(), ReturnType (NamespaceAndClass::*) (__VA_ARGS__))
+    ZilchBindMethodHelper(ZilchBuilder, ZilchType, Instance, &NamespaceAndClass::Method, Name, Zilch::String(), ReturnType (NamespaceAndClass::*) (__VA_ARGS__))
   #define ZilchBindCustomMethodOverloadAs(ZilchBuilder, ZilchType, NamespaceAndClass, Method, Name, ReturnType, ...) \
     ZilchBindCustomInstanceMethodOverloadAs(ZilchBuilder, ZilchType, NamespaceAndClass, Method, Name, ReturnType, __VA_ARGS__)
   #define ZilchBindCustomInstanceNamedParameterMethodOverload(ZilchBuilder, ZilchType, NamespaceAndClass, Method, NamedParameters, ReturnType, ...) \
@@ -27451,21 +28029,21 @@ static Function* FromConstructor(LibraryBuilder& builder, BoundType* classBoundT
   #define ZilchBindVirtualMethod(Method)                                                                                      ZilchBindInternalVirtualMethod(Method)
   
   // Constructor and destructor binding (including aliases)
-  #define ZilchBindInternalConstructor(...)                                                                                   Zilch::TemplateBinding::FromConstructor<ZilchSelf, ##__VA_ARGS__>(builder, type, String())
-  #define ZilchBindInternalConstructorVirtual(...)                                                                            Zilch::TemplateBinding::FromConstructorVirtual<ZilchSelf, ##__VA_ARGS__>(builder, type, String())
+  #define ZilchBindInternalConstructor(...)                                                                                   Zilch::TemplateBinding::FromConstructor<ZilchSelf, ##__VA_ARGS__>(builder, type, Zilch::String())
+  #define ZilchBindInternalConstructorVirtual(...)                                                                            Zilch::TemplateBinding::FromConstructorVirtual<ZilchSelf, ##__VA_ARGS__>(builder, type, Zilch::String())
   #define ZilchBindInternalDestructor()                                                                                       Zilch::TemplateBinding::FromDestructor<ZilchSelf>(builder, type)
   #define ZilchBindConstructor(...)                                                                                           ZilchBindInternalConstructor(__VA_ARGS__)
   #define ZilchBindVirtualConstructor(...)                                                                                    ZilchBindInternalConstructorVirtual(__VA_ARGS__)
   #define ZilchBindDestructor()                                                                                               ZilchBindInternalDestructor()
-  #define ZilchBindExternalConstructor(Class, ...)                                                                            Zilch::TemplateBinding::FromConstructor<Class, ##__VA_ARGS__>(builder, type, String())
-  #define ZilchBindExternalConstructorVirtual(Class, ...)                                                                     Zilch::TemplateBinding::FromConstructorVirtual<Class, ##__VA_ARGS__>(builder, type, String())
+  #define ZilchBindExternalConstructor(Class, ...)                                                                            Zilch::TemplateBinding::FromConstructor<Class, ##__VA_ARGS__>(builder, type, Zilch::String())
+  #define ZilchBindExternalConstructorVirtual(Class, ...)                                                                     Zilch::TemplateBinding::FromConstructorVirtual<Class, ##__VA_ARGS__>(builder, type, Zilch::String())
   #define ZilchBindExternalDestructor(Class)                                                                                  Zilch::TemplateBinding::FromDestructor<Class>(builder, type)
-  #define ZilchBindCustomConstructor(ZilchBuilder, ZilchType, Class, ...)                                                     Zilch::TemplateBinding::FromConstructor<Class, ##__VA_ARGS__>(ZilchBuilder, ZilchType, String())
-  #define ZilchBindCustomConstructorVirtual(ZilchBuilder, ZilchType, Class, ...)                                              Zilch::TemplateBinding::FromConstructorVirtual<Class, ##__VA_ARGS__>(ZilchBuilder, ZilchType, String())
+  #define ZilchBindCustomConstructor(ZilchBuilder, ZilchType, Class, ...)                                                     Zilch::TemplateBinding::FromConstructor<Class, ##__VA_ARGS__>(ZilchBuilder, ZilchType, Zilch::String())
+  #define ZilchBindCustomConstructorVirtual(ZilchBuilder, ZilchType, Class, ...)                                              Zilch::TemplateBinding::FromConstructorVirtual<Class, ##__VA_ARGS__>(ZilchBuilder, ZilchType, Zilch::String())
   #define ZilchBindCustomDestructor(ZilchBuilder, ZilchType, Class)                                                           Zilch::TemplateBinding::FromDestructor<Class>(ZilchBuilder, ZilchType)
 
   // Workhorse macro for binding fields (data members)
-  #define ZilchBindFieldHelper(ZilchBuilder, ZilchType, Kind, FieldPtr, Name, IoMode)                                         Zilch::TemplateBinding::From##Kind##Field<ZilchTypeOf(FieldPtr), FieldPtr>(ZilchBuilder, ZilchType, Name, FieldPtr, PropertyBinding::IoMode);
+  #define ZilchBindFieldHelper(ZilchBuilder, ZilchType, Kind, FieldPtr, Name, IoMode)                                         Zilch::TemplateBinding::From##Kind##Field<ZilchTypeOf(FieldPtr), FieldPtr>(ZilchBuilder, ZilchType, Name, FieldPtr, Zilch::PropertyBinding::IoMode);
 
   // Data member binding (including aliases)
   #define ZilchBindInternalStaticFieldGet(Field)                                                                              ZilchBindFieldHelper(builder, type, Static, &ZilchSelf::Field, #Field, Get)
@@ -27533,7 +28111,6 @@ static Function* FromConstructor(LibraryBuilder& builder, BoundType* classBoundT
 // End header protection
 #endif
 
-
 namespace Zilch
 {
   // Instantiates an array template when requested
@@ -27592,7 +28169,6 @@ size_t base64_decode_block(const char* code_in, const int length_in, char* plain
 
 // Includes
 
-
 /**************************************************************\
 * Author: Trevor Sundberg
 * Copyright 2012-2014, DigiPen Institute of Technology
@@ -27626,7 +28202,6 @@ size_t base64_decode_block(const char* code_in, const int length_in, char* plain
 #define ZILCH_ERROR_DATABASE_HPP
 
 // Includes
-
 
 namespace Zilch
 {
@@ -27665,122 +28240,122 @@ CreationInitializeMemberExpectedInitialValue = 23,
 CreationInitializerExpectedExpression = 24,
 CreationInitializerExpectedSubElement = 25,
 CreationInitializerNotComplete = 26,
-DelegateReturnTypeNotFound = 27,
-DeletingNonReferenceType = 28,
-DeletingNonWritableValue = 29,
-DoWhileBodyNotComplete = 30,
-DoWhileBodyNotFound = 31,
-DoWhileConditionalExpressionNotComplete = 32,
-DoWhileConditionalExpressionNotFound = 33,
-DuplicateLocalVariableName = 34,
-DuplicateMemberName = 35,
-DuplicateTypeName = 36,
-EnumBodyNotComplete = 37,
-EnumBodyNotFound = 38,
-EnumDuplicateValue = 39,
-EnumNameNotFound = 40,
-EnumValueRequiresIntegerLiteral = 41,
-ExternalTypeNamesCollide = 42,
-ForEachInKeywordNotFound = 43,
-ForEachRangeExpressionNotFound = 44,
-ForEachVariableDeclarationNotFound = 45,
-ForLoopBodyNotComplete = 46,
-ForLoopBodyNotFound = 47,
-ForLoopExpressionsNotComplete = 48,
-ForLoopExpressionsNotFound = 49,
-FunctionArgumentListNotComplete = 50,
-FunctionArgumentListNotFound = 51,
-FunctionBodyNotComplete = 52,
-FunctionBodyNotFound = 53,
-FunctionCallExpectedAfterInitializer = 54,
-FunctionCallNamedArgumentNotFound = 55,
-FunctionCallNotComplete = 56,
-FunctionCallOnNonCallableType = 57,
-FunctionNameNotFound = 58,
-FunctionParameterNotFound = 59,
-FunctionReturnTypeNotFound = 60,
-GetFoundAfterSet = 61,
-GroupingOperatorNotComplete = 62,
-IfBodyNotComplete = 63,
-IfBodyNotFound = 64,
-IfConditionalExpressionNotComplete = 65,
-IfConditionalExpressionNotFound = 66,
-IndexerIndicesNotFound = 67,
-IndexerNotComplete = 68,
-InternalError = 69,
-InvalidBinaryOperation = 70,
-InvalidEscapeInStringLiteral = 71,
-InvalidNumberOfTemplateArguments = 72,
-InvalidTypeCast = 73,
-InvalidUnaryOperation = 74,
-LinkerLibraryNotFound = 75,
-LocalCreateMustBeValueType = 76,
-LocalVariableReferenceNotFound = 77,
-LoneTypeShouldOnlyAppearInAccessingStatics = 78,
-LoopBodyNotComplete = 79,
-LoopBodyNotFound = 80,
-MemberAccessNameNotFound = 81,
-MemberNotFound = 82,
-MemberVariableTypesCannotBeInferred = 83,
-MultipleInheritanceNotSupported = 84,
-NoConstructorsProvided = 85,
-NotAllPathsReturn = 86,
-OnlyOneDestructorAllowed = 87,
-OverloadsCannotBeTheSame = 88,
-ParameterTypeNotFound = 89,
-ParameterTypeSpecifierNotFound = 90,
-ParsingNotComplete = 91,
-PropertyDeclarationNotComplete = 92,
-PropertyDelegateOperatorRequiresProperty = 93,
-PropertyDelegateRequiresGetOrSet = 94,
-ReadingFromAWriteOnlyValue = 95,
-ReferencesOnlyToNamedValueTypes = 96,
-ReferenceToUndefinedType = 97,
-ReturnTypeMismatch = 98,
-ReturnValueNotFound = 99,
-ReturnValueUnexpected = 100,
-ScopeBodyNotComplete = 101,
-ScopeBodyNotFound = 102,
-SendsEventStatementNameNotFound = 103,
-SendsEventStatementNotComplete = 104,
-SendsEventStatementTypeNotFound = 105,
-SendsEventStatementTypeSpecifierNotFound = 106,
-StatementSeparatorNotFound = 107,
-StatementsWillNotBeExecutedEarlyReturn = 108,
-StaticCannotBeOverriding = 109,
-StaticCannotBeVirtual = 110,
-StringInterpolantExpectedExpression = 111,
-StringInterpolantNotComplete = 112,
-StringLiteralNotComplete = 113,
-StructsCanOnlyContainValueTypes = 114,
-TemplateArgumentNotFound = 115,
-TemplateTypeArgumentsNotComplete = 116,
-ThrowExceptionExpressionNotFound = 117,
-ThrowTypeMustDeriveFromException = 118,
-TimeoutBodyNotComplete = 119,
-TimeoutBodyNotFound = 120,
-TimeoutSecondsExpectedIntegerLiteral = 121,
-TimeoutSecondsMustBeNonZeroPositive = 122,
-TimeoutSecondsNotComplete = 123,
-TimeoutSecondsNotFound = 124,
-TypeIdExpressionNotComplete = 125,
-TypeIdExpressionNotFound = 126,
-UnableToResolveFunction = 127,
-UnaryOperatorOperandNotFound = 128,
-UnidentifiedSymbol = 129,
-UnnecessaryVirtualAndOverride = 130,
-VariableInitializationNotComplete = 131,
-VariableInitialValueNotFound = 132,
-VariableMustBeInitialized = 133,
-VariableNameNotFound = 134,
-VariableTypeMismatch = 135,
-VariableTypeNotFound = 136,
-WhileBodyNotComplete = 137,
-WhileBodyNotFound = 138,
-WhileConditionalExpressionNotComplete = 139,
-WhileConditionalExpressionNotFound = 140,
-WritingToAReadOnlyValue = 141,
-
+CustomError = 27,
+DelegateReturnTypeNotFound = 28,
+DeletingNonReferenceType = 29,
+DeletingNonWritableValue = 30,
+DoWhileBodyNotComplete = 31,
+DoWhileBodyNotFound = 32,
+DoWhileConditionalExpressionNotComplete = 33,
+DoWhileConditionalExpressionNotFound = 34,
+DuplicateLocalVariableName = 35,
+DuplicateMemberName = 36,
+DuplicateTypeName = 37,
+EnumBodyNotComplete = 38,
+EnumBodyNotFound = 39,
+EnumDuplicateValue = 40,
+EnumNameNotFound = 41,
+EnumValueRequiresIntegerLiteral = 42,
+ExternalTypeNamesCollide = 43,
+ForEachInKeywordNotFound = 44,
+ForEachRangeExpressionNotFound = 45,
+ForEachVariableDeclarationNotFound = 46,
+ForLoopBodyNotComplete = 47,
+ForLoopBodyNotFound = 48,
+ForLoopExpressionsNotComplete = 49,
+ForLoopExpressionsNotFound = 50,
+FunctionArgumentListNotComplete = 51,
+FunctionArgumentListNotFound = 52,
+FunctionBodyNotComplete = 53,
+FunctionBodyNotFound = 54,
+FunctionCallExpectedAfterInitializer = 55,
+FunctionCallNamedArgumentNotFound = 56,
+FunctionCallNotComplete = 57,
+FunctionCallOnNonCallableType = 58,
+FunctionNameNotFound = 59,
+FunctionParameterNotFound = 60,
+FunctionReturnTypeNotFound = 61,
+GetFoundAfterSet = 62,
+GroupingOperatorNotComplete = 63,
+IfBodyNotComplete = 64,
+IfBodyNotFound = 65,
+IfConditionalExpressionNotComplete = 66,
+IfConditionalExpressionNotFound = 67,
+IndexerIndicesNotFound = 68,
+IndexerNotComplete = 69,
+InternalError = 70,
+InvalidBinaryOperation = 71,
+InvalidEscapeInStringLiteral = 72,
+InvalidNumberOfTemplateArguments = 73,
+InvalidTypeCast = 74,
+InvalidUnaryOperation = 75,
+AttributeArgumentMustBeLiteral = 76,
+LocalCreateMustBeValueType = 77,
+LocalVariableReferenceNotFound = 78,
+LoneTypeShouldOnlyAppearInAccessingStatics = 79,
+LoopBodyNotComplete = 80,
+LoopBodyNotFound = 81,
+MemberAccessNameNotFound = 82,
+MemberNotFound = 83,
+MemberVariableTypesCannotBeInferred = 84,
+MultipleInheritanceNotSupported = 85,
+NoConstructorsProvided = 86,
+NotAllPathsReturn = 87,
+OnlyOneDestructorAllowed = 88,
+OverloadsCannotBeTheSame = 89,
+ParameterTypeNotFound = 90,
+ParameterTypeSpecifierNotFound = 91,
+ParsingNotComplete = 92,
+PropertyDeclarationNotComplete = 93,
+PropertyDelegateOperatorRequiresProperty = 94,
+PropertyDelegateRequiresGetOrSet = 95,
+ReadingFromAWriteOnlyValue = 96,
+ReferencesOnlyToNamedValueTypes = 97,
+ReferenceToUndefinedType = 98,
+ReturnTypeMismatch = 99,
+ReturnValueNotFound = 100,
+ReturnValueUnexpected = 101,
+ScopeBodyNotComplete = 102,
+ScopeBodyNotFound = 103,
+SendsEventStatementNameNotFound = 104,
+SendsEventStatementNotComplete = 105,
+SendsEventStatementTypeNotFound = 106,
+SendsEventStatementTypeSpecifierNotFound = 107,
+StatementSeparatorNotFound = 108,
+StatementsWillNotBeExecutedEarlyReturn = 109,
+StaticCannotBeOverriding = 110,
+StaticCannotBeVirtual = 111,
+StringInterpolantExpectedExpression = 112,
+StringInterpolantNotComplete = 113,
+StringLiteralNotComplete = 114,
+StructsCanOnlyContainValueTypes = 115,
+TemplateArgumentNotFound = 116,
+TemplateTypeArgumentsNotComplete = 117,
+ThrowExceptionExpressionNotFound = 118,
+ThrowTypeMustDeriveFromException = 119,
+TimeoutBodyNotComplete = 120,
+TimeoutBodyNotFound = 121,
+TimeoutSecondsExpectedIntegerLiteral = 122,
+TimeoutSecondsMustBeNonZeroPositive = 123,
+TimeoutSecondsNotComplete = 124,
+TimeoutSecondsNotFound = 125,
+TypeIdExpressionNotComplete = 126,
+TypeIdExpressionNotFound = 127,
+UnableToResolveFunction = 128,
+UnaryOperatorOperandNotFound = 129,
+UnidentifiedSymbol = 130,
+UnnecessaryVirtualAndOverride = 131,
+VariableInitializationNotComplete = 132,
+VariableInitialValueNotFound = 133,
+VariableMustBeInitialized = 134,
+VariableNameNotFound = 135,
+VariableTypeMismatch = 136,
+VariableTypeNotFound = 137,
+WhileBodyNotComplete = 138,
+WhileBodyNotFound = 139,
+WhileConditionalExpressionNotComplete = 140,
+WhileConditionalExpressionNotFound = 141,
+WritingToAReadOnlyValue = 142,
 
       Count
     };
@@ -27874,8 +28449,6 @@ WritingToAReadOnlyValue = 141,
 // End header protection
 #endif
 
-
-
 namespace Zilch
 {
   // Type-defines
@@ -27960,8 +28533,6 @@ namespace Zilch
 // End header protection
 #endif
 
-
-
 namespace Zilch
 {
   // This list is used to hold nodes in the tree
@@ -27993,7 +28564,6 @@ namespace Zilch
     void push_back(const ValueType**& item);
     ValueType**& push_back();
   };
-
 
   // This list is used to hold nodes in the tree
   template <typename ValueType>
@@ -28290,7 +28860,7 @@ namespace Zilch
   {
   public:
     // Store the current function that we're building
-    CompiledFunctionArray FunctionStack;
+    FunctionArray FunctionStack;
 
     // Store the current type that we're building
     Array<BoundType*> ClassTypeStack;
@@ -28313,13 +28883,7 @@ namespace Zilch
     void ClassContext(ClassNode*& node, GeneratorContext* context);
 
     // When we encounter a function definition inside the syntax tree, this will be called to generated a function
-    void SetupGenericFunction(GenericFunctionNode* node, BoundType* classType);
-
-    // When we encounter a function definition inside the syntax tree, this will be called to generated a function
     void GenerateFunction(FunctionNode*& node, GeneratorContext* context);
-
-    // When we encounter a constructor definition inside the syntax tree, this will be called to generated a function
-    void GenerateConstructorAndDestructor(GenericFunctionNode*& node, GeneratorContext* context);
 
     // When we encounter a class definition inside the syntax tree, this will be called to generated a preconstructor
     void GeneratePreConstructorAndPushClassContext(ClassNode*& node, GeneratorContext* context);
@@ -28421,7 +28985,7 @@ namespace Zilch
     template <typename T>
     T& DelegateOpcode
     (
-      CompiledFunction*   caller,
+      Function*           caller,
       Function*           toCall,
       OperandIndex        delegateDest,
       const CodeLocation& location,
@@ -28432,11 +28996,12 @@ namespace Zilch
     // Create an instance delegate for the given type or source (the this handle will be created)
     void CreateInstanceDelegateAndThisHandle
     (
-      CompiledFunction*   caller,
+      Function*           caller,
       Function*           toCall,
       Type*               thisType,
       const Operand&      thisSource,
       Operand&            delegateDestOut,
+      bool                canBeVirtual,
       const CodeLocation& location,
       DebugOrigin::Enum   debug
     );
@@ -28444,10 +29009,11 @@ namespace Zilch
     // Create an instance delegate for the given type or source (we provide the this handle)
     void CreateInstanceDelegateWithThisHandle
     (
-      CompiledFunction*   caller,
+      Function*           caller,
       Function*           toCall,
       const Operand&      thisHandle,
       Operand&            delegateDestOut,
+      bool                canBeVirtual,
       const CodeLocation& location,
       DebugOrigin::Enum   debug
     );
@@ -28455,7 +29021,7 @@ namespace Zilch
     // Create a static delegate for the given type or source
     void CreateStaticDelegate
     (
-      CompiledFunction*   caller,
+      Function*           caller,
       Function*           toCall,
       Operand&            delegateDest,
       const CodeLocation& location,
@@ -28478,10 +29044,10 @@ namespace Zilch
     void GenerateFunctionCall(FunctionCallNode*& node, GeneratorContext* context);
 
     // Generate the opcode for a function call (*before* opcode for argument copying)
-    void GenerateCallOpcodePreArgs(CompiledFunction* caller, DelegateType* delegateTypeToCall, const Operand& delegateLocal, const CodeLocation& location, DebugOrigin::Enum debugOrigin);
+    void GenerateCallOpcodePreArgs(Function* caller, DelegateType* delegateTypeToCall, const Operand& delegateLocal, const CodeLocation& location, DebugOrigin::Enum debugOrigin);
 
     // Generate the opcode for a function call (*after* opcode for argument copying)
-    void GenerateCallOpcodePostArgs(CompiledFunction* caller, DelegateType* delegateTypeToCall, Operand* returnAccessOut, const CodeLocation& location, DebugOrigin::Enum debugOrigin);
+    void GenerateCallOpcodePostArgs(Function* caller, DelegateType* delegateTypeToCall, Operand* returnAccessOut, const CodeLocation& location, DebugOrigin::Enum debugOrigin);
 
     // Collect all the values used in expressions
     void CollectValue(ValueNode*& node, GeneratorContext* context);
@@ -28505,40 +29071,40 @@ namespace Zilch
     void GenerateUnnamedOperand(UnnamedOperandNode*& node, GeneratorContext* context);
 
     // Allocate a local on a function (and setup an access to point at it)
-    void CreateLocal(CompiledFunction& function, ObjectSize size, Operand& accessOut);
+    void CreateLocal(Function* function, size_t size, Operand& accessOut);
 
     // Create a r-value unary operator opcode
-    void CreateRValueUnaryOpcode(CompiledFunction& function, UnaryOperatorNode& node, Instruction::Enum instruction, DebugOrigin::Enum debugOrigin);
+    void CreateRValueUnaryOpcode(Function* function, UnaryOperatorNode& node, Instruction::Enum instruction, DebugOrigin::Enum debugOrigin);
 
     // Create a l-value unary operator opcode
-    void CreateLValueUnaryOpcode(CompiledFunction& function, UnaryOperatorNode& node, Instruction::Enum instruction, DebugOrigin::Enum debugOrigin);
+    void CreateLValueUnaryOpcode(Function* function, UnaryOperatorNode& node, Instruction::Enum instruction, DebugOrigin::Enum debugOrigin);
 
     // Create a conversion opcode
-    void CreateConversionOpcode(CompiledFunction& function, TypeCastNode& node, Instruction::Enum instruction, DebugOrigin::Enum debugOrigin);
+    void CreateConversionOpcode(Function* function, TypeCastNode& node, Instruction::Enum instruction, DebugOrigin::Enum debugOrigin);
 
     // Determine the proper opcode for unary operations
-    void GenerateUnaryOp(CompiledFunction& function, UnaryOperatorNode& node, DebugOrigin::Enum debugOrigin);
+    void GenerateUnaryOp(Function* function, UnaryOperatorNode& node, DebugOrigin::Enum debugOrigin);
 
     // Determine the proper opcode for conversion operations
-    void GenerateConversion(CompiledFunction& function, TypeCastNode& node, DebugOrigin::Enum debugOrigin);
+    void GenerateConversion(Function* function, TypeCastNode& node, DebugOrigin::Enum debugOrigin);
 
     // Create a copy opcode
-    void CreateCopyOpcode(CompiledFunction& function, CopyMode::Enum mode, Type* type, const Operand& source, const Operand& destination, DebugOrigin::Enum debugOrigin, const CodeLocation& location);
+    void CreateCopyOpcode(Function* function, CopyMode::Enum mode, Type* type, const Operand& source, const Operand& destination, DebugOrigin::Enum debugOrigin, const CodeLocation& location);
 
     // Determine the proper opcode for copy operations (we're initializing the return value)
-    void GenerateCopyToReturn(CompiledFunction& function, Type* type, const Operand& source, const Operand& destination, DebugOrigin::Enum debugOrigin, const CodeLocation& location);
+    void GenerateCopyToReturn(Function* function, Type* type, const Operand& source, const Operand& destination, DebugOrigin::Enum debugOrigin, const CodeLocation& location);
 
     // Determine the proper opcode for copy operations (we're initializing memory)
-    void GenerateCopyInitialize(CompiledFunction& function, Type* type, const Operand& source, const Operand& destination, DebugOrigin::Enum debugOrigin, const CodeLocation& location);
+    void GenerateCopyInitialize(Function* function, Type* type, const Operand& source, const Operand& destination, DebugOrigin::Enum debugOrigin, const CodeLocation& location);
 
     // Determine the proper opcode for copy parameter operations
-    void GenerateCopyToParameter(CompiledFunction& function, Type* type, const Operand& source, OperandIndex destRegister, DebugOrigin::Enum debugOrigin, const CodeLocation& location);
+    void GenerateCopyToParameter(Function* function, Type* type, const Operand& source, OperandIndex destRegister, DebugOrigin::Enum debugOrigin, const CodeLocation& location);
 
     // Determine the proper opcode for copy return operations
-    void GenerateCopyFromReturn(CompiledFunction& function, Type* type, OperandIndex sourceRegister, OperandIndex destRegister, DebugOrigin::Enum debugOrigin, const CodeLocation& location);
+    void GenerateCopyFromReturn(Function* function, Type* type, OperandIndex sourceRegister, OperandIndex destRegister, DebugOrigin::Enum debugOrigin, const CodeLocation& location);
 
     // Determine the proper opcode for creating a handle
-    void GenerateHandleInitialize(CompiledFunction& function, Type* type, const Operand& source, const Operand& destination, DebugOrigin::Enum debugOrigin, const CodeLocation& location);
+    void GenerateHandleInitialize(Function* function, Type* type, const Operand& source, const Operand& destination, DebugOrigin::Enum debugOrigin, const CodeLocation& location);
 
   private:
 
@@ -28566,10 +29132,6 @@ namespace Zilch
 
 // Includes
 
-
-
-
-
 /**************************************************************\
 * Author: Trevor Sundberg
 * Copyright 2012-2014, DigiPen Institute of Technology
@@ -28581,8 +29143,6 @@ namespace Zilch
 #define ZILCH_TOKEN_HPP
 
 // Includes
-
-
 
 namespace Zilch
 {
@@ -28618,7 +29178,6 @@ namespace Zilch
 // End header protection
 #endif
 
-
 /**************************************************************\
 * Author: Trevor Sundberg
 * Copyright 2012-2014, DigiPen Institute of Technology
@@ -28630,9 +29189,6 @@ namespace Zilch
 #define ZILCH_SHARED_HPP
 
 // Includes
-
-
-
 
 // We need to make a specialization because the hash maps do not work with enums
 // On other compilers, the 'Enum' type is actually an int, which would produce a
@@ -29275,8 +29831,17 @@ namespace Zilch
     ZilchDeclareDerivedType(AttributeNode, SyntaxNode);
     ZilchClonableNode(AttributeNode);
 
+    // Default constructor
+    AttributeNode();
+
+    // SyntaxNode interface
+    void PopulateChildren(NodeChildren& childrenOut) override;
+
     // The attribute type name
     const UserToken* TypeName;
+
+    // An optional node for when the user wants to pass parameters to an attribute
+    FunctionCallNode* AttributeCall;
   };
 
   // A statement node represents any kind of statement
@@ -29759,7 +30324,7 @@ namespace Zilch
     ParameterNode();
 
     // Which parameter this is in the function
-    ArrayIndex ParameterIndex;
+    size_t ParameterIndex;
   };
 
   // A member variable node represents a member variable declaration (such as one inside a class)
@@ -30190,7 +30755,7 @@ namespace Zilch
     DelegateType* Type;
 
     // The function definition that this node represents (will be filled in later)
-    CompiledFunction* Function;
+    Function* DefinedFunction;
 
     // The parameters defined for the function (names, types, defaults, etc)
     NodeList<ParameterNode> Parameters;
@@ -30329,7 +30894,7 @@ namespace Zilch
     NodeList<SyntaxNode> NonTraversedNonOwnedNodesInOrder;
 
     // This function basically acts as a constructor that initializes all the members before we run the invoked constructor
-    CompiledFunction* PreConstructor;
+    Function* PreConstructor;
 
     // A pointer to the attributes this class has
     NodeList<AttributeNode> Attributes;
@@ -30461,9 +31026,6 @@ namespace Zilch
 #define ZILCH_TOKENIZER_HPP
 
 // Includes
-
-
-
 
 namespace Zilch
 {
@@ -30600,9 +31162,6 @@ namespace Zilch
 
 // Includes
 
-
-
-
 namespace Zilch
 {
   // A context we use to collect all class types
@@ -30618,7 +31177,7 @@ namespace Zilch
   {
   public:
     // Store the current function that we're building
-    CompiledFunctionArray FunctionStack;
+    FunctionArray FunctionStack;
 
     // Store the current type that we're building
     Array<BoundType*> ClassTypeStack;
@@ -30707,6 +31266,9 @@ namespace Zilch
     // Setup a class instance for a given class node (called by CollectClass, and CollectTemplateInstantiations)
     void SetupClassInstance(ClassNode* node, ClassContext* context);
 
+    // Read all the attributes from an attribute node list into an array of attributes
+    void ReadAttributes(SyntaxNode* parentNode, NodeList<AttributeNode>& nodes, Array<Attribute>& attributesOut);
+
     // Setup the inheritance chain (including interfaces and base class)
     void CollectClassInheritance(ClassNode*& node, TypingContext* context);
 
@@ -30717,7 +31279,7 @@ namespace Zilch
     void CollectEnumInheritance(EnumNode*& node, TypingContext* context);
 
     // Collect/setup all the functions
-    void SetupGenericFunction(GenericFunctionNode* node, TypingContext* context, String name, bool isStatic, bool isVirtual, Type* returnType);
+    void SetupGenericFunction(GenericFunctionNode* node, TypingContext* context, String name, FunctionOptions::Enum options, Type* returnType);
 
     // Collect all the constructors
     void CollectConstructor(ConstructorNode*& node, TypingContext* context);
@@ -30927,7 +31489,6 @@ namespace Zilch
 
 // Includes
 
-
 namespace Zilch
 {
   // This class is responsible for executing a stream of opcodes
@@ -31108,7 +31669,52 @@ namespace Zilch
 // This is an attempt to force crash reports to store a variable / indirectly referenced memory (not thread safe either)
 // Do NOT ever attempt to access this variable or do anything with it in code
 extern byte* ZilchLastRunningOpcode;
+extern Zilch::Function* ZilchLastRunningFunction;
 extern size_t ZilchLastRunningOpcodeLength;
+
+// End header protection
+#endif
+/**************************************************************\
+* Author: Joshua Davis
+* Copyright 2014, DigiPen Institute of Technology
+\**************************************************************/
+
+// Include protection
+#pragma once
+#ifndef ZILCH_MATRIX_HPP
+#define ZILCH_MATRIX_HPP
+
+namespace Zilch
+{
+
+  // User data for a single matrix so that functions can be generic
+  // to matrices of different sizes and types
+  class MatrixUserData
+  {
+  public:
+    MatrixUserData()
+      : SizeX(4), SizeY(4), ElementTypeIndex(0)
+    {
+
+    }
+
+    MatrixUserData(size_t sizeX, size_t sizeY, size_t elementTypeIndex)
+      : SizeX(sizeX), SizeY(sizeY), ElementTypeIndex(elementTypeIndex)
+    {
+
+    }
+
+    size_t SizeX;
+    size_t SizeY;
+    // What kind of matrix this is (Real, Integer, Boolean).
+    // This is an index into Core::MatrixElementTypes.
+    size_t ElementTypeIndex;
+  };
+
+  // Create all of the matrix types and their functions on the math class
+  void CreateMatrixTypes(LibraryBuilder& builder);
+
+}//namespace Zilch
 
 // End header protection
 #endif
@@ -31138,85 +31744,368 @@ extern size_t ZilchLastRunningOpcodeLength;
 
 namespace Zilch
 {
+  ZilchStaticLibrary(WebSockets);
+
+  namespace Events
+  {
+    // Sent when the listener accepts a connection
+    // This event MUST be handled, otherwise the accepted web-sockets will leak
+    ZilchDeclareEvent(WebSocketAcceptedConnection, WebSocketEvent);
+
+    // Sent any time the threaded web-socket receives data
+    ZilchDeclareEvent(WebSocketReceivedData, WebSocketEvent);
+
+    // Sent any time the threaded web-socket encounters an error
+    // This should generally always be followed by a disconnect event
+    ZilchDeclareEvent(WebSocketError, WebSocketEvent);
+
+    // Sent any time the threaded web-socket is closed
+    // If an error occurs, the web-socket is automatically closed and this event will be sent
+    ZilchDeclareEvent(WebSocketDisconnected, WebSocketEvent);
+  }
+
+  // Describes the raw types of packets we can receive
+  // The only packets that the user will recieve is Text and Binary
+  // (all other packets are handled internally)
   namespace WebSocketPacketType
   {
     enum Enum
     {
-      Invalid,
-      Text,
-      Binary
+      Invalid       = -1,
+      Continuation  = 0x00,
+      Text          = 0x01,
+      Binary        = 0x02,
+      // Reserved Non-Control Frames 0x03-0x07
+      Close         = 0x08,
+      Ping          = 0x09,
+      Pong          = 0x0A
+      // Reserved Control Frames 0x0B-0x0F
     };
   }
 
-  // A connection that we can communicate on (could be from cient to server, or server to client)
-  class WebSocketConnection
+  // Forward declarations
+  class ThreadedWebSocketConnection;
+
+  // An event sent out whenever a web socket connection changes or receives data
+  class WebSocketEvent : public EventData
   {
   public:
-    friend class WebSocketServer;
+    ZilchDeclareDerivedType(WebSocketEvent, EventData);
+
+    // Default constructor
+    WebSocketEvent();
+
+    // The connection involved in the event
+    ThreadedWebSocketConnection* Connection;
+
+    // If we received data, this will contain the data we received (otherwise will be empty if not applicable)
+    WebSocketPacketType::Enum PacketType;
+
+    // Any data that was received by the connection (or empty if not applicable)
+    // The data can be binary or text, depending on PacketType
+    String Data;
+
+    // If any error occurred, this status will hold the error message and state
+    Status ErrorStatus;
+  };
+
+  // A connection that we can communicate on (could be from cient to server, or server to client)
+  // With the blocking version, the user must properly respond to the Close and Ping messages
+  // The threaded version internally takes care of these messages
+  class BlockingWebSocketConnection
+  {
+  public:
 
     // Constructor
-    WebSocketConnection();
+    BlockingWebSocketConnection();
     
     // All the values we read from the HTTP headers
     HashMap<String, String> Headers;
 
-    /// Send a full packet to the remote end
-    /// This function will block until the entire packet is sent
+    // Send a full packet to the remote end
+    // This function will block until the entire packet is sent
+    // It is safe to call this function from another thread (only one thread at a time though)
     void SendFullPacket(Status& status, const byte* data, size_t length, WebSocketPacketType::Enum packetType);
 
-    /// Receives an entire packet of data into an array
-    /// This function will block until the entire packet is received, or an error occurs
-    WebSocketPacketType::Enum ReceiveFullPacket(Status& status, Array<byte>& dataOut);
+    // Receives an entire packet of data into an array
+    // This function will block until the entire packet is received, or an error occurs
+    // It is safe to call this function from another thread (only one thread at a time though)
+    // Note: We use strings both as text and binary blobs of data
+    // If we return an 'Invalid' packet, it means the connection was disconnected or an error occurred (check status)
+    // The packet types we receive can be Text, Binary, Close, or Ping
+    // Close must be responeded to by sending a Close message back, and Ping must be responded to by sending back a Pong
+    WebSocketPacketType::Enum ReceiveFullPacket(Status& status, String& dataOut);
+    
+    // Checks if the connection is initialized
+    bool IsValid();
 
     // The connection to the remote host (we can send and receive on this connection)
     Socket RemoteSocket;
 
     // The address of the remote host (only here for the user and debugging)
     SocketAddress RemoteAddress;
-
-  private:
+    
+    //******** Internal ********//
     
     // As we read data, we place it into this buffer
     Array<byte> ReadData;
   };
 
   // Listens for incoming web-socket connections
-  class WebSocketServer
+  // This class should only be initialized and closed once (it should not be reused)
+  class BlockingWebSocketListener
   {
   public:
 
     // Constructor
-    WebSocketServer();
+    BlockingWebSocketListener();
 
-    /// Creates a new socket descriptor (closes the old one if one exists)
-    void Initialize(Status& status);
-
-    // Host a server on a given port
-    void Host(Status& status, int port);
+    // Host a server on a given port and initialize the internal socket
+    void Initialize(Status& status, int port);
 
     // Closes the socket
     void Close(Status& status);
+
+    // Checks if the object is initialized
+    bool IsValid();
 
     // Blocks until we receive an incoming connection
     // This method performs the full web-socket authentication and will not complete
     // until either the connection fails, or the socket is acceptped
     // Ideally the server should be run on another thread due to blocking
-    void Accept(Status& status, WebSocketConnection& connectionOut);
-
-  public:
+    void Accept(Status& status, BlockingWebSocketConnection& connectionOut);
 
     // The socket that we listen for incoming connections on
-    Socket Listener;
+    Socket ListenerSocket;
+  };
+
+  // A threaded version of the blocking web-socket connection
+  // This class can only be initialized from a ThreadedWebSocketListener
+  // This class maintains a send and receive thread, and when updated we pull data
+  // Either the user or the ThreadedWebSocketServer must periodically call Update from the owning thread
+  // All send and update functions are safe to call from the owning thread (not multiple!)
+  // Once this connection has been terminated, it may not be used again
+  class ThreadedWebSocketConnection : public EventHandler
+  {
+  public:
+    // sends WebSocketReceivedData : WebSocketEvent;
+    // sends WebSocketError : WebSocketEvent;
+    // sends WebSocketDisconnected : WebSocketEvent;
+
+    // Default constructor
+    ThreadedWebSocketConnection();
+
+    // Destructor (terminates threads and closes the socket)
+    ~ThreadedWebSocketConnection();
+
+    // Send a single message
+    // You should only ever send the Text or Binary packet types
+    void SendPacket(StringParam message, WebSocketPacketType::Enum packetType);
+    
+    // Checks if the connection is initialized
+    bool IsValid();
+
+    // Shuts down a connection and closes the socket
+    // Only the first call will actually terminate the socket (multiple calls allowed)
+    void Close();
+
+    // Pumps both recieved messages and events such as a disconnect
+    // If a thread terminates early, or the socket becomes no longer writable, Close will be called and an event will be sent
+    void Update();
+    
+    //******** Internal ********//
+
+    // Thread entrypoints for receive, and send
+    static OsInt ReceiveEntryPoint(void* context);
+    static OsInt SendEntryPoint(void* context);
+
+    // Sets the web-socket and spins up the send/receive threads
+    // We can only be initialized by a listener (after our blocking WebSocket has been initialized)
+    void Initialize();
+    
+    // The thread we receive data on (receive is a blocking call)
+    Thread ReceiveThread;
+
+    // We must lock the array of receive messages/errors it before reading or modifying it
+    ThreadLock IncomingLock;
+
+    // This array is locked by the web-socket receiving thread (and send thread when errors occur)
+    // Any read in messages are enqued here and dispatched when the connection is updated
+    // Note: We use strings both as text and binary blobs
+    Array<WebSocketEvent> ThreadIncomingEvents;
+
+    // This array of recieved messages is maintained by the owning thread, and is regularly swapped with the 'ThreadReceiveMessages'
+    Array<WebSocketEvent> OwnerIncomingEvents;
+
+    // The send outgoing messages on (send is a blocking call)
+    Thread SendThread;
+
+    // We must lock the array of send messages it before reading or modifying it
+    ThreadLock SendLock;
+
+    // This array is locked by the web-socket sending thread
+    // Any messages we want sent should just get added here, and the
+    // 'send' event should be signaled once a message is added (or multiple)
+    // If the send event is signaled and there are no messages, it means we are being destroyed
+    // Note: We use strings both as text and binary blobs
+    Array<WebSocketEvent> SendMessages;
+
+    // Every time we add a message to the queue of messages to be sent we
+    // signal this event, this will wake up the send thread
+    // The send thread will then swap array pointers with the 'SendMessages',
+    // which will very quickly pull all the messages off and clear messages to be sent
+    // If the send event is signaled and there are no messages, it means we are being destroyed
+    OsEvent SendEvent;
+
+    // The web socket we communicate on (where we send our messages, and receive from)
+    // All operations are done on other threads (that we properly lock and make safe to pull into the owning thread)
+    BlockingWebSocketConnection BlockingConnection;
+  };
+
+  
+  // Listens for incoming web-socket connections on a thread
+  // Can only be used once (once it is closed, it should be removed)
+  // Must be preriodically updated by the owning thread, which will then dispatch events for accepted connections
+  class ThreadedWebSocketListener : public EventHandler
+  {
+  public:
+    // sends WebSocketAcceptedConnection : WebSocketEvent;
+    // sends WebSocketError : WebSocketEvent;
+
+    // Default constructor
+    ThreadedWebSocketListener();
+
+    // Destructor (terminates threads and closes the socket)
+    ~ThreadedWebSocketListener();
+
+    // Start listening and accepting connections on a given port
+    // This also initializes the listener and should only be called once
+    void Initialize(int port);
+
+    // Shuts down a connection and closes the socket
+    // Only the first call will actually terminate the socket (multiple calls allowed)
+    void Close();
+
+    // Checks if the object is initialized
+    bool IsValid();
+    
+    // Updates the web socket connection, which pumps both recieved messages and events such as a disconnect
+    void Update();
+    
+    //******** Internal ********//
+
+    // The thread entrypoint we use for accepting socket connections
+    static OsInt AcceptEntryPoint(void* context);
+
+    // The current connection that we are processing
+    // It is NOT safe to access this connection from the owning thread, unless using the 'AcceptingConnectionLock'
+    // Note: The only action we should use the AcceptingConnectionLock for is terminating
+    // the socket for the accepting connection upon our destruction
+    ThreadedWebSocketConnection* AcceptingConnection;
+
+    // Whenever the accepting thread creates a connection, it needs to lock to ensure that the owning thread
+    // is not also accessing the accepting connection
+    // If the accepting thread locks and finds the blocking listening socket to be terminated, we will immediately return
+    ThreadLock AcceptingConnectionLock;
+
+    // Anytime a connection is accepted or an error occurs, this must be locked (to write to ThreadIncomingEvents)
+    ThreadLock IncomingLock;
+
+    // We maintain a list of all connections that we accept and errors that occur
+    Array<WebSocketEvent> ThreadIncomingEvents;
+
+    // This array of recieved messages is maintained by the owning thread, and is regularly swapped with the 'ThreadReceiveMessages'
+    Array<WebSocketEvent> OwnerIncomingEvents;
+
+    // The thread we accept connections on
+    Thread AcceptThread;
+
+    // We tell the blocking listener to accept connections on the accepting thread
+    BlockingWebSocketListener BlockingListener;
+  };
+
+  // The web-socket server maintains threaded web-socket connections and invokes
+  // callbacks for when connections are received and fully handshook, or closed
+  // The thread that owns the server is responsible for occasionally pumping events via Update
+  class ThreadedWebSocketServer : public EventHandler
+  {
+  public:
+    // Events will be forwarded from owned connections to the server
+    // sends WebSocketAcceptedConnection : WebSocketEvent;
+    // sends WebSocketError : WebSocketEvent;
+    // sends WebSocketReceivedData : WebSocketEvent;
+    // sends WebSocketDisconnected : WebSocketEvent;
+
+    // Default constructor that sets the max connections
+    ThreadedWebSocketServer(size_t maxConnections = 64);
+
+    // Destructor (terminates all connections)
+    ~ThreadedWebSocketServer();
+
+    // Start listening and accepting connections on a given port
+    void Host(int port);
+
+    // Tells us if the server has been initialized (specifically, the listener)
+    bool IsValid();
+
+    // Updates the web socket connection, which pumps accepted
+    // connections and all sends/recieves on stored connections
+    void Update();
+    
+    // Send a message to all connections
+    void SendPacketToAll(StringParam message, WebSocketPacketType::Enum packetType);
+
+    // The maximum number of connections we'll accept
+    size_t MaximumConnections;
+
+    // The connections we maintain and accept
+    Array<ThreadedWebSocketConnection*> Connections;
+
+    
+    //******** Internal ********//
+
+    // Occurs when our listener accepts a connection (only when updating the listener)
+    void OnAcceptedConnection(WebSocketEvent* event);
+
+    // The listener we use to accept connections
+    ThreadedWebSocketListener Listener;
   };
 }
 
 // End header protection
 #endif
 
-
-
 namespace Zilch
 {
+  namespace Events
+  {
+    // Sent repeatedly when the program is frozen by the debugger (a breakpoint is hit, or it is paused)
+    // In general no logic that can affect the state of debugging should ever be run within this event handler
+    // However, it can be used to draw screen overlays and other indicators to the user
+    ZilchDeclareEvent(DebuggerPauseUpdate, DebuggerEvent);
+
+    // Sent when we first pause execution (such as entering a breakpoint or clicking pause)
+    ZilchDeclareEvent(DebuggerPause, DebuggerEvent);
+
+    // Sent when we resume execution after being paused
+    // Note that stepping a single line will resume and then pause again
+    ZilchDeclareEvent(DebuggerResume, DebuggerEvent);
+  }
+
+  // When the debugger pauses or resumes, we send this event out
+  class DebuggerEvent : public EventData
+  {
+  public:
+    // The debugger we're currently paused inside of
+    Debugger* RunningDebugger;
+
+    // The state we're currently paused inside of (last running)
+    ExecutableState* State;
+
+    // The location of where we're at in script (generally where we're paused)
+    CodeLocation* Location;
+  };
+
   // Every platform should define an error handler
   bool DebugErrorHandler(ErrorSignaler::ErrorData& errorData);
 
@@ -31251,9 +32140,13 @@ namespace Zilch
   // The debugger is NOT thread safe, so only ExecutableStates from the same thread
   // should be added to the debugger. Note however that you can create multiple
   // debuggers hosted on different ports for different threads
-  class Debugger
+  // Note: The debugger must be periodically updated
+  class Debugger : public EventHandler
   {
   public:
+    // sends DebuggerPauseUpdate : DebuggerEvent;
+    // sends DebuggerPause : DebuggerEvent;
+    // sends DebuggerResume : DebuggerEvent;
 
     // Constructor
     Debugger();
@@ -31264,11 +32157,26 @@ namespace Zilch
     // Starts the debugger hosting on a given port
     void Host(int port);
 
+    // Tells us if the debugger has been initialized (basically if we started hosting or not)
+    bool IsValid();
+
+    // The debugger must be periodically updated to ensure that it receives remote messages
+    void Update();
+
+    // Adds a project whose files we track
+    // We use the hashes of the code from each file to show code entries in the debugger (as well as file name)
+    void AddProject(Project* project);
+
+    // Remove a project that we no longer want to track
+    void RemoveProject(Project* project);
+
     // Adds a state to be debugged (this will inform any running debuggers of the new state)
-    // If a state is deleted it will automatically be removed (it is safe)
+    // Be sure to remove any states that get deleted (they will not be automatically removed!)
+    // A state can only be added once (multiple times will be ignored)
     void AddState(ExecutableState* state);
 
     // Removes a state from the list of states to be debugged
+    // It is safe to call this more than once (and can be called even when the state was not added)
     void RemoveState(ExecutableState* state);
 
     // When we receive a custom json message, this will attempt to handle it
@@ -31276,18 +32184,11 @@ namespace Zilch
 
   private:
 
-    // Thread entrypoints for receive and send
-    static OsInt ReceiveEntryPoint(void* context);
-    static OsInt SendEntryPoint(void* context);
-
     // Send a single message
-    void Send(StringParam message);
+    void SendPacket(StringParam message);
 
     // Send a single json built message (helper function)
-    void Send(const JsonBuilder& message);
-
-    // Send a batch of messages (more efficient than single sends)
-    void SendBatch(const Array<String>& messages);
+    void SendPacket(const JsonBuilder& message);
 
     // When we resume execution, we want to tell the remote client to clear the execution point
     void SetExecutionPoint(CodeLocation* codeLocation, ExecutableState* state);
@@ -31295,12 +32196,30 @@ namespace Zilch
     // When we resume execution, we want to tell the remote client to clear the execution point
     void ClearExecutionPoint();
 
-    // Called by the same thread the debugger / states are on
-    // This will process all incoming messages, such as breakpoint, step, continue, etc
-    void ProcessReceivedMessages();
+    // Updates the view of executable states and their files
+    void UpdateExplorerView();
 
     // The break loop will pause all execution on this thread, only processing debugger messages
     void PauseExecution(CodeLocation* codeLocation, ExecutableState* state);
+
+    // Checks if a type has any debuggable properties (expandable)
+    static bool HasDebuggableProperties(Type* type);
+
+    // Called when the remote debugger connects to us
+    void OnAcceptedConnection(WebSocketEvent* event);
+
+    // Called by the same thread the debugger / states are on
+    // This will process all incoming messages, such as breakpoint, step, continue, etc
+    void OnReceivedData(WebSocketEvent* event);
+
+    // Called when we encounter any errors with a connection or the listener (server)
+    void OnError(WebSocketEvent* event);
+
+    // Called when the remote debugger disconnects
+    void OnDisconnected(WebSocketEvent* event);
+
+    // Attempts to find a code entry by hash (first starting with the project, then with each executable state)
+    CodeEntry* FindCodeEntry(size_t hash);
 
     // Messages from the client:
     // When we receive a remote message to add a breakpoint for a code file and line
@@ -31315,6 +32234,12 @@ namespace Zilch
     static void OnStepOver(const DebuggerMessage& message, void* userData);
     static void OnStepIn(const DebuggerMessage& message, void* userData);
     static void OnStepOut(const DebuggerMessage& message, void* userData);
+    
+    // When the user attempted to view an item in the explorer, we're repsonsible for sending what to show
+    static void OnViewExplorerItem(const DebuggerMessage& message, void* userData);
+    
+    // When the debugger attempts to query an expression (such as when hovering over a variable or watching an expression)
+    static void OnQueryExpression(const DebuggerMessage& message, void* userData);
 
     // Callbacks from the state:
     // Every time the executable state steps into an opcode, this function is called
@@ -31326,22 +32251,24 @@ namespace Zilch
     // Every time the executable state steps out of a function, this function is called
     static void OnExitFunction(ExecutableState* state, Function* function, size_t stackOffset, CodeLocation* location, const void* userData);
 
+    // Every time the executable state steps out of a function, this function is called
+    static void OnException(ExecutableState* state, Exception* exception, const void* userData);
+
+    // Whenever we print anything out using the console, we want to know about it
+    void OnConsoleWrite(ConsoleEvent* event);
+
   private:
 
-    // The thread we receive data on (receive is a blocking call)
-    Thread ReceiveThread;
-
-    // We must lock the array of receive messages it before reading or modifying it
-    ThreadLock ReceiveLock;
-
-    // This array is locked by the web-socket receiving thread
-    // Any read in messages are enqueed here to be handled by the debugger
-    Array<JsonValue*> ReceiveMessages;
+    // This data must be cleared properly upon the client disconnecting
+    //******** BEGIN CLEARED DATA ********//
+    
+    // The last action that was queued up by the debugger for the current state
+    DebuggerAction::Enum Action;
 
     // As we walk over lines of code (callbacks from any running ExecutableState)
     // we will check to see if the line exists in this breakpoints map
-    // The map maps from executable state + code file ids to line numbers
-    HashMap<Pair<ExecutableState*, int>, HashSet<size_t> > Breakpoints;
+    // The map maps from code hash values to line numbers
+    HashMap<size_t, HashSet<size_t> > Breakpoints;
 
     // Store the last location id and line
     CodeLocation LastLocation;
@@ -31351,9 +32278,6 @@ namespace Zilch
 
     // The last state that we were accessing
     ExecutableState* LastState;
-    
-    // The last action that was queued up by the debugger for the current state
-    DebuggerAction::Enum Action;
 
     // When we're doing stepping, we need to save the last location here (but not update it with each opcode step)
     CodeLocation StepLocation;
@@ -31364,27 +32288,17 @@ namespace Zilch
     // The state we were using when stepping out / over (state context relative operations)
     ExecutableState* StepOutOverState;
 
-    // The send outgoing messages on (send is a blocking call)
-    Thread SendThread;
-
-    // We must lock the array of send messages it before reading or modifying it
-    ThreadLock SendLock;
-
-    // This array is locked by the web-socket sending thread
-    // Any messages we want sent should just get added here, and the
-    // 'send' event should be signaled once a message is added (or multiple)
-    // If the send event is signaled and there are no messages, it means we are being destroyed
-    Array<String> SendMessages;
-
-    // Every time we add a message to the queue of messages to be sent we
-    // signal this event, this will wake up the send thread
-    // The send thread will then swap array pointers with the 'SendMessages',
-    // which will very quickly pull all the messages off and clear messages to be sent
-    // If the send event is signaled and there are no messages, it means we are being destroyed
-    OsEvent SendEvent;
+    //******** END CLEARED DATA ********//
 
     // The states we are currently debugging
     Array<ExecutableState*> States;
+
+    // The projects whose code we are currently viewing
+    Array<Project*> Projects;
+
+    // We need to check if any projects change files, then update the remote end if that happens
+    // Currently we just scan the projects each update for any changes (we detect changes by looking for hash code changes)
+    unsigned long long AllProjectsHashCode;
 
     // When we recieve messages from the remote client, we look here to handle any messages
     class DebuggerMessageDelegate
@@ -31395,11 +32309,8 @@ namespace Zilch
     };
     HashMap<String, DebuggerMessageDelegate> MessageHandlers;
 
-    // The server allows one incoming connection (the debugger)
-    WebSocketServer Server;
-
-    // The remote connection to the debugger
-    WebSocketConnection RemoteConnection;
+    // Accepts connections and manages our remote connection
+    ThreadedWebSocketServer Server;
   };
 
   // All information the debugger needs to know per state
@@ -31422,11 +32333,6 @@ namespace Zilch
 #define ZILCH_PROJECT_HPP
 
 // Includes
-
-
-
-
-
 
 namespace Zilch
 {
@@ -31460,6 +32366,7 @@ namespace Zilch
   class Project
   {
   public:
+    friend class Debugger;
 
     // Constructor
     Project(CompilationErrors& errors);
@@ -31474,14 +32381,14 @@ namespace Zilch
     // Returns true if it succeeded, false otherwise
     bool AddCodeFromFile(StringParam fileName, void* codeUserData = nullptr);
 
+    // Clears out the project (removes all files)
+    void Clear();
+
     // Reads a text file into a string, returns true on success, false on failure
     static bool ReadTextFile(StringParam fileName, String& textOut);
 
     // Add a callback to the project that tells us when a type gets parsed
     void AddTypeParsedCallback(TypeParsedCallback callback, void* userData);
-
-    // Clear all the files out from the project
-    void Clear();
 
     // Tokenizes all files into a token stream
     bool Tokenize(Array<UserToken>& tokensOut, Array<UserToken>& commentsOut);
@@ -31556,9 +32463,6 @@ namespace Zilch
 #define ZILCH_FORMATTER_HPP
 
 // Includes
-
-
-
 
 namespace Zilch
 {
@@ -31821,7 +32725,7 @@ namespace Zilch
     CodeFormatterContext();
 
     // The current functions we're generating code for
-    CompiledFunctionArray FunctionStack;
+    FunctionArray FunctionStack;
 
     // The current classes we're generating code for
     Array<BoundType*> ClassTypeStack;
@@ -31924,8 +32828,6 @@ namespace Zilch
 
 // Includes
 
-
-
 namespace Zilch
 {
   typedef HashMap<Any, Any> AnyHashMap;
@@ -31945,9 +32847,6 @@ namespace Zilch
 ///
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
-
-
-
 
 namespace Zero
 {
@@ -32034,7 +32933,6 @@ private:
 
 // Includes
 
-
 namespace Zilch
 {
   // We perform overload checking in three passes
@@ -32120,9 +33018,6 @@ namespace Zilch
 #define ZILCH_PARSER_HPP
 
 // Includes
-
-
-
 
 namespace Zilch
 {
@@ -32295,12 +33190,6 @@ namespace Zilch
     // Parse a get/set function definition
     FunctionNode* GetSetFunctionBody(MemberVariableNode* variable, bool isGet);
 
-    // Generate the standard getter for the given member variable
-    FunctionNode* GenerateStandardGet(MemberVariableNode* variable);
-
-    // Generate the standard setter for the given member variable
-    FunctionNode* GenerateStandardSet(MemberVariableNode* variable);
-
     // Parse a constructor definition
     ConstructorNode* Constructor();
     bool ConstructorInitializerList(ConstructorNode* node);
@@ -32467,9 +33356,6 @@ namespace Zilch
 #ifndef ZILCH_RANDOM_HPP
 #define ZILCH_RANDOM_HPP
 
-
-
-
 ///////////////////////////////////////////////////////////////////////////////
 ///
 /// \file Random.hpp
@@ -32517,16 +33403,11 @@ namespace Zilch
    NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-
    Any feedback is very welcome.
    http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/emt.html
    email: m-mat @ math.sci.hiroshima-u.ac.jp (remove space)
 */
 #pragma once
-
-
-
-
 
 #include <stdlib.h>
 
@@ -32663,7 +33544,6 @@ private:
 
 }// namespace Math
 
-
 namespace Zilch
 {
   // Contains utility functions for random generation
@@ -32762,21 +33642,6 @@ namespace Zilch
 
 // Includes
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 namespace Zilch
 {
   namespace Debugging
@@ -32817,8 +33682,6 @@ namespace Zilch
 ///
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
-
-
 
 namespace Zero
 {
@@ -32899,8 +33762,6 @@ type* Block::AllocateType()
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-
-
 namespace Zero
 {
 namespace Memory
@@ -32965,8 +33826,6 @@ void Pool::DeallocateType(type* instance)
 ///
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
-
-
 
 namespace Zero
 {
@@ -33052,9 +33911,6 @@ public:
 
 // Includes
 
-
-
-
 namespace Zero
 {
   // Type-defines
@@ -33100,10 +33956,7 @@ namespace Zero
     // Validate the regular expression
     static bool Validate(StringRange regex, RegexFlavor::Enum flavor = RegexFlavor::EcmaScript, bool caseSensitive = true);
 
-
-
   private:
-
 
   private:
 
@@ -33127,8 +33980,6 @@ namespace Zero
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-
-
 namespace Zero
 {
 
@@ -33151,7 +34002,6 @@ int GetTraits(int c);
 int ToLower(int c);
 int ToUpper(int c);
 
-
 }//namespace Zero
 ///////////////////////////////////////////////////////////////////////////////
 ///
@@ -33164,7 +34014,6 @@ int ToUpper(int c);
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-
 namespace Zero
 {
 
@@ -33174,22 +34023,22 @@ String ToString(const type& instance)
   return instance.ToString();
 }
 
-inline String ToString(StringRef instance)
-{
-  return instance;
-}
-
 template<typename type>
 String ToString(type*const instance)
 {
   return instance->ToString();
 }
 
+inline String ToString(StringRef instance)
+{
+  return instance;
+}
+
+String ToString(const bool& value);
 String ToString(const int& value);
-String ToString(const unsigned int& value);
+String ToString(const uint& value);
 String ToString(const float& value);
 String ToString(const double& value);
-String ToString(const bool& value);
 String ToString(const u64& value);
 
 }
@@ -33204,7 +34053,6 @@ String ToString(const u64& value);
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-
 #include <cstddef>
 
 namespace Math
@@ -33212,13 +34060,7 @@ namespace Math
 
 }// namespace Math
 
-
-
-
 #pragma once
-
-
-
 
 namespace Math
 {
@@ -33369,12 +34211,6 @@ struct BlockCgPolicy
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-
-
-
-
-
-
 namespace Math
 {
 
@@ -33408,6 +34244,10 @@ struct SplineCurve
   /// How the control points are used to generate the curve.
   uint GetCurveType();
   void SetCurveType(uint curveType);
+
+  /// Estimates the distance between a point and the curve using point-to-line
+  /// on each line segment generated using the given resolution
+  bool DistanceSq(Vec3 point, uint resolution, real& distSq) const;
   
 private:
   /// Get the correct set of control points for baking (continuous set or closed set).
@@ -33460,7 +34300,6 @@ public:
   bool mClosed;
   uint mCurveType;
 };
-
 
 /// A curve that has been baked out to a set of points and their respective arc-lengths.
 /// This table can be used to find a point at a given distance along a curve.
@@ -33566,9 +34405,6 @@ private:
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-
-
-
 namespace Math
 {
 
@@ -33584,6 +34420,11 @@ struct DecomposedMatrix4
 
   Vector3 TransformNormal(Vec3Param normal);
   Vector3 InverseTransformNormal(Vec3Param normal);
+
+  /// Transform the surface normal by doing the inverse transpose of the transform.
+  Vector3 TransformSurfaceNormal(Vec3Param direction);
+  Vector3 InverseTransformSurfaceNormal(Vec3Param direction);
+
   Vector3 TransformPoint(Vec3Param point);
   Vector3 InverseTransformPoint(Vec3Param point);
 
@@ -33602,8 +34443,6 @@ struct DecomposedMatrix4
 ///
 //////////////////////////////////////////////////////////////////////////////
 #pragma once
-
-
 
 namespace Math
 {
@@ -33702,11 +34541,6 @@ struct FixedMatrix
 ///
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
-
-
-
-
-
 
 namespace Math
 {
@@ -33819,9 +34653,6 @@ real EvaluatePolynomial(real x, real* coefficients, uint coefficientCount);
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-
-
-
 namespace Zero
 {
 class Thread;
@@ -33881,7 +34712,6 @@ private:
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-
 namespace Zero
 {
 /// An externally loaded native library (example, a Windows .dll or *nix .so file)
@@ -33919,9 +34749,6 @@ private:
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-
-
-
 namespace Zero
 {
 
@@ -33948,6 +34775,9 @@ bool MoveFile(StringRef dest, StringRef source);
 
 /// Delete a file.
 bool DeleteFile(StringRef file);
+
+/// Delete an entire directory
+bool DeleteDirectory(StringRef directory);
 
 /// Create a directory.
 void CreateDirectory(StringRef dest);
@@ -34117,10 +34947,7 @@ struct FpuControlSystem
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-
-
 #pragma once
-
 
 namespace Zero
 {
@@ -34154,9 +34981,7 @@ class TextStreamNull : public TextStream
   void Write(cstr text) override {};
 };
 
-
 }
-
 
 namespace Zero
 {
@@ -34210,8 +35035,6 @@ private:
 ///
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
-
-
 
 namespace Zero
 {
@@ -34315,7 +35138,6 @@ void Enumerate(Array<Resolution>& resolutions, uint bitDepth, Resolution aspect)
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-
 namespace Zero
 {
 
@@ -34360,7 +35182,6 @@ private:
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-
 namespace Zero
 {
 
@@ -34376,7 +35197,7 @@ void RunEngine(RunEngineFunction runFn, void* engine);
 class CrashHandlerParameters
 {
 public:
-  void AddParameter(StringRange param);
+  void AddParameter(StringRange name, StringRange value);
 
   String GetParameterString();
 
@@ -34457,9 +35278,6 @@ struct CrashHandler
   // rescue any user settings/data (such as modified levels or files).
   static void SetupRescueCallback(FinalRescueCall rescueCall, void* userData);
 
-  // The title of the crash to send out.
-  static String mCrashTitle;
-
   // These functions invoke the various callbacks while wrapping each
   // call in the platform specific __try __except exceptions handlers for safety.
   static void InvokeCrashStartCallback(CrashInfo& info);
@@ -34479,7 +35297,6 @@ struct CrashHandler
   static void DefaultRunCrashHandlerCallback(void* crashData, bool doRescueCall, void* userData);
   static void SetRestartCommandLine(StringRange commandLine);
   static void RestartOnCrash(bool state);
-
 
   static RunCrashHandlerCallback mRunCrashHandlerCallback;
   static void* mRunCrashHandlerUserData;
