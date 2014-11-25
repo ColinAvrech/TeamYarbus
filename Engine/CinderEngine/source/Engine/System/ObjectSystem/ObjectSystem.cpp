@@ -15,6 +15,7 @@ deleted.
 #include "CharacterController.h"
 #include "FountainEffect.h"
 #include "Terrain2D.h"
+#include "Terrain3D.h"
 #include "Tree2D.h"
 #include "FireStarter.h"
 #include "Microphone.h"
@@ -109,6 +110,7 @@ namespace Framework
 		RegisterComponent(RigidBody);
 		RegisterComponent(FountainEffect);
 		RegisterComponent(Terrain2D);
+    RegisterComponent(Terrain3D);
 		RegisterComponent(Tree2D);
     RegisterComponent(EcoSystem);
 		RegisterComponent(FireStarter);
@@ -262,7 +264,7 @@ namespace Framework
 		for each (auto i in scripts)
 		{
 			//i.first->InitializeAndSerialize(i.second);
-			i.first->Initialize();
+			//i.first->Initialize();
 		}
 
 		//return objectlist;
