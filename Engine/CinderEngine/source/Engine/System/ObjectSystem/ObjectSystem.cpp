@@ -20,6 +20,8 @@ deleted.
 #include "FireStarter.h"
 #include "Microphone.h"
 #include "CinderEngine_UI.h"
+#include "GameEvent.h"
+#include "EventSystem.h"
 
 #include "Core.h"
 #include "PhysicsSystem.h"
@@ -161,8 +163,11 @@ namespace Framework
 		data.CreateArchive();
 		Serializer::DataNode* Trunk = data.GetTrunk();
 		SerializeObject(Trunk);
+    GameEvent e;
+    EVENTSYSTEM->TriggerEvent(Events::GAME_ALLOBJECTSINITIALIZED, e);
 		//InitializeObject ();
-		LoadedLevel = level;
+    LoadedLevel = level;
+    EVENTSYSTEM->TriggerEvent(Events::GAME_LEVELSTARTED, e);
 	}
 
 

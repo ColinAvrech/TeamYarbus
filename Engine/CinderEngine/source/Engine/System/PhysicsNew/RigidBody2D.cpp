@@ -10,7 +10,7 @@ namespace Framework
   DefineComponentName (RigidBody2D);
 
 
-	RigidBody2D::RigidBody2D( ShapeCollider2D* shape_, float x, float y )
+	RigidBody2D::RigidBody2D(ShapeCollider2D* shape_, float x, float y)
 	  : shape( shape_->Clone( ) )
 	{
     gameObject = nullptr;
@@ -21,10 +21,11 @@ namespace Framework
 	  torque = 0;
 	  orient = MyRandom( -PI, PI );
 	  force.Set( 0, 0 );
-	  staticFriction = 1.0f;
-	  dynamicFriction = 1.0f;
+	  staticFriction = 0.4f;
+	  dynamicFriction = 0.4f;
 	  restitution = 0.2f;
-	  shape->ComputeMass( 1000.0f );
+    if (shape->gameObject == nullptr)
+      shape->ComputeMass( 1.0f );
 	  r = MyRandom( 0.2f, 1.0f );
 	  g = MyRandom( 0.2f, 1.0f );
 	  b = MyRandom( 0.2f, 1.0f );

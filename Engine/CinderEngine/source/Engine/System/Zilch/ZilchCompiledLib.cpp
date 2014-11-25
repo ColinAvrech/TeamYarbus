@@ -28,6 +28,12 @@ namespace Framework
     //debugger.Host(8000);
 
 
+	// Setup the console so that when we call 'Console.WriteLine' it outputs to stdio
+	Zilch::Console::AddWriteTextCallback(Zilch::DefaultWriteText, nullptr);
+
+	// We can also setup the console so that any 'Read' functions will attempt to read from stdin
+	Zilch::Console::SetReadTextCallback(Zilch::DefaultReadText, nullptr);
+
     // This class encompasses all compilation errors that can occur when compiling Zilch code
     // Its responsibility is to provide friendly error messages, error codes, and callbacks to the user
     //CompilationErrors errors; //this is a public member of Zilch system
@@ -50,6 +56,7 @@ namespace Framework
 
     LinkedLibs = dependencies.Link();
     ErrorIf(LinkedLibs == nullptr, "Failed to link libraries together");
+	LinkedLibs->SetExceptionCallback((Zilch::ExceptionCallback)Zilch::DefaultExceptionCallback, nullptr);
     
     //debugger.AddState(LinkedLibs);
     /////////////////////////////////////////////////////////////////

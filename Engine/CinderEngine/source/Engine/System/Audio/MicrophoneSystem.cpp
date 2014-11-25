@@ -53,7 +53,7 @@ namespace Framework
     // If no microphone is detected
     if (_recordnumdrivers <= 0)
     {
-      std::cout << CinderConsole::red << "No recording devices found/plugged in!";
+      std::cout << CinderConsole::red << "No recording devices found/plugged in!" << std::endl;
     }
 
     // Get microphone drivcer information
@@ -293,6 +293,18 @@ namespace Framework
       result = micChannel->addDSP(FMOD_CHANNELCONTROL_DSP_TAIL, filter);
       ErrCheck(result);
     }  
+  }
+
+  /***************************************************************************/
+  /*!
+  \brief  Value of Microphone Input
+
+  \return Returns value of Microphone Input between 0.0 and 1.0
+  */
+  /***************************************************************************/
+  float AudioSystem::GetMicrophoneValue()
+  {
+    return input.peaklevel[0];
   }
 
   /***************************************************************************/

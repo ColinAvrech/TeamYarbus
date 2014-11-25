@@ -60,7 +60,7 @@ namespace Framework
 
     PolygonCollider2D poly;
     poly.SetBox (0.5f, 0.5f);
-    b = PHYSICS->Add (&poly, -5, -2);
+    b = PHYSICS->Add (&poly, -9, 0);
     b->SetStatic ();
     b->SetOrient (0);
 
@@ -280,7 +280,7 @@ namespace Framework
       i->Draw ();
     }
 
-    PHYSICS->Render ();
+    //PHYSICS->Render ();
   }
 
   void Pipeline::UpdateMatrices ()

@@ -249,18 +249,17 @@ namespace Framework
   void Terrain2D::Generate_Edges ()
   {
     Vector2* p = new Vector2 [4];
-    float y = -1.0f;
+    float y = 0.0f;
     // Edges for Line Colliders
     for (unsigned i = 0; i < height_points.size () - 1; ++i)
     {
-      float offset = 0.0f;
       PolygonCollider2D poly;
       glm::dvec2 center;
       glm::vec2 p0 = (glm::mat2)gameObject->Transform->GetModelMatrix () * glm::vec2 (height_points [i].x, y);
       glm::vec2 p1 = (glm::mat2)gameObject->Transform->GetModelMatrix () * glm::vec2 (height_points [i + 1].x, y);
       glm::vec2 p2 = (glm::mat2)gameObject->Transform->GetModelMatrix () * glm::vec2 (height_points [i + 1].x, height_points [i + 1].y);
       glm::vec2 p3 = (glm::mat2)gameObject->Transform->GetModelMatrix () * glm::vec2 (height_points [i].x, height_points [i].y);
-      offset = p0.x + p1.x - p0.x;
+
       p [0] = Vector2 (p2.x, p2.y);
       p [1] = Vector2 (p3.x, p3.y);
       p [2] = Vector2 (p0.x, p0.y);
@@ -278,7 +277,7 @@ namespace Framework
 
       poly.Set (p, 4);
       RigidBody2D* b = PHYSICS->Add (&poly, gameObject->Transform->GetPosition().x + (float)(center.x),
-        gameObject->Transform->GetPosition ().y + (float)(center.y));
+        (gameObject->Transform->GetPosition ().y + (float)(center.y)));
       b->SetOrient (0);
       b->SetStatic ();
       b->restitution = 0.5f;

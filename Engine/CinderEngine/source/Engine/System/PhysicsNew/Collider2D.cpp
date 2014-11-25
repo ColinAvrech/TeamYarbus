@@ -4,11 +4,206 @@
 
 namespace Framework
 {
-  PolygonCollider2D::~PolygonCollider2D ()
+  //////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////
+  // SHAPE COLLIDER 2D IMPLEMENTATION
+  //////////////////////////////////////////////////////////////////////////
+
+  ShapeCollider2D::ShapeCollider2D ()
+  {
+    gameObject = nullptr;
+  }
+
+  ShapeCollider2D::~ShapeCollider2D ()
+  {
+    rigidBody = nullptr;
+    if (gameObject != nullptr)
+    gameObject->ShapeCollider2D = nullptr;
+  }
+
+  void ShapeCollider2D::SerializeMaterial (std::string name)
+  {
+    //opens file
+    Serializer::DataNode* temp;
+    Serializer::ZeroSerializer materialtype;
+    name = Serializer::SkipHash (name.c_str ());
+    materialtype.open (name.c_str ());
+    materialtype.CreateArchive ();
+    temp = materialtype.GetTrunk ()->branch;
+
+    Serializer::DataNode* temp2;
+    temp2 = temp->FindElement (temp, "Restitution");
+    temp2->GetValue (&Bounciness);
+
+    temp2 = temp->FindElement (temp, "StaticFriction");
+    temp2->GetValue (&StaticFriction);
+
+    temp2 = temp->FindElement (temp, "DynamicFriction");
+    temp2->GetValue (&DynamicFriction);
+
+    temp2 = temp->FindElement (temp, "Density");
+    temp2->GetValue (&Density);
+
+    materialtype.close ();
+  }
+
+  //////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////
+  // CIRCLE COLLIDER 2D IMPLEMENTATION
+  //////////////////////////////////////////////////////////////////////////
+
+  CircleCollider2D::CircleCollider2D (float r)
+  {
+    radius = r;
+  }
+
+  // First and last use of CS225
+  ShapeCollider2D * CircleCollider2D::Clone (void) const
+  {
+    return new CircleCollider2D (radius);
+  }
+
+  CircleCollider2D::~CircleCollider2D ()
   {
     rigidBody = nullptr;
   }
 
+  void CircleCollider2D::Serialize (Serializer::DataNode* data)
+  {
+    Serializer::DataNode* value = data->FindElement (data, "Radius");
+    value->GetValue (&radius);
+    radius *= gameObject->Transform->GetScale ().x;
+
+    value = data->FindElement (data, "Static");
+    value->GetValue (&isStatic);
+
+    std::string Mat;
+    value = data->FindElement (data, "Material");
+    value->GetValue (&Mat);
+    SerializeMaterial (Mat);
+  }
+
+  void CircleCollider2D::Initialize ()
+  {
+    gameObject->ShapeCollider2D = this;
+    RigidBody2D* b = PHYSICS->Add (this, gameObject->Transform->GetPosition ().x, gameObject->Transform->GetPosition ().y);
+    rigidBody = b;
+
+    if (isStatic)
+    {
+      b->SetStatic ();
+    }
+
+    b->restitution = Bounciness;
+    b->dynamicFriction = DynamicFriction;
+    b->staticFriction = StaticFriction;
+    ComputeMass (Density);
+
+    b->gameObject = this->gameObject;
+    gameObject->RigidBody2D = b;
+  }
+
+  void CircleCollider2D::Draw (void) const
+  {
+    const unsigned k_segments = 20;
+
+    // Render a circle with a bunch of lines
+    glColor3f (1, 0, 0);
+    glBegin (GL_LINE_LOOP);
+    float theta = rigidBody->orient;
+    float inc = PI * 2.0f / (float) k_segments;
+    for (unsigned i = 0; i < k_segments; ++i)
+    {
+      theta += inc;
+      Vector2 p (std::cos (theta), std::sin (theta));
+      p *= radius;
+      p += rigidBody->position;
+      glVertex2f (p.x, p.y);
+    }
+    glEnd ();
+
+    // Render line within circle so orientation is visible
+    glBegin (GL_LINE_STRIP);
+    Vector2 r (0, 1.0f);
+    float c = std::cos (rigidBody->orient);
+    float s = std::sin (rigidBody->orient);
+    r.Set (r.x * c - r.y * s, r.x * s + r.y * c);
+    r *= radius;
+    r = r + rigidBody->position;
+    glVertex2f (rigidBody->position.x, rigidBody->position.y);
+    glVertex2f (r.x, r.y);
+    glEnd ();
+  }
+
+  void CircleCollider2D::SetOrient (float radians)
+  {
+
+  }
+
+  void CircleCollider2D::ComputeMass (float density)
+  {
+    rigidBody->m = PI * radius * radius * density;
+    rigidBody->im = (rigidBody->m) ? 1.0f / rigidBody->m : 0.0f;
+    rigidBody->I = rigidBody->m * radius * radius;
+    rigidBody->iI = (rigidBody->I) ? 1.0f / rigidBody->I : 0.0f;
+  }
+
+  ShapeCollider2D::Type CircleCollider2D::GetType (void) const
+  {
+    return eCircle;
+  }
+
+  //////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////
+  // POLYGON COLLIDER 2D IMPLEMENTATION
+  //////////////////////////////////////////////////////////////////////////
+
+  PolygonCollider2D::PolygonCollider2D ()
+  {}
+
+  // First and last use of CS225
+  ShapeCollider2D* PolygonCollider2D::Clone (void) const
+  {
+    PolygonCollider2D* poly = new PolygonCollider2D ();
+    poly->u = u;
+    for (unsigned i = 0; i < m_vertexCount; ++i)
+    {
+      poly->m_vertices [i] = m_vertices [i];
+      poly->m_normals [i] = m_normals [i];
+    }
+    poly->m_vertexCount = m_vertexCount;
+    return poly;
+  }
+
+  PolygonCollider2D::~PolygonCollider2D ()
+  {
+  }
+
+  void PolygonCollider2D::Serialize (Framework::Serializer::DataNode* data)
+  {
+    std::string Mat;
+    data->FindElement (data, "Material")->GetValue (&Mat);
+    SerializeMaterial (Mat);
+  }
+
+  void PolygonCollider2D::Initialize ()
+  {
+    gameObject->ShapeCollider2D = this;
+    RigidBody2D* b = PHYSICS->Add (this, gameObject->Transform->GetPosition ().x, gameObject->Transform->GetPosition ().y);
+
+    if (isStatic)
+    {
+      b->SetStatic ();
+    }
+
+    b->restitution = Bounciness;
+    b->dynamicFriction = DynamicFriction;
+    b->staticFriction = StaticFriction;
+    ComputeMass (Density);
+
+    b->gameObject = this->gameObject;
+    gameObject->RigidBody2D = b;
+  }
 
 	Vector2 PolygonCollider2D::GetSupport (const Vector2& dir)
 	{
@@ -197,130 +392,5 @@ namespace Framework
 	  rigidBody->I = I * density;
 	  rigidBody->iI = rigidBody->I ? 1.0f / rigidBody->I : 0.0f;
 	}
-	
 
-  // First and last use of CS225
-	ShapeCollider2D* PolygonCollider2D::Clone (void) const
-	{
-	  PolygonCollider2D* poly = new PolygonCollider2D ();
-	  poly->u = u;
-	  for (unsigned i = 0; i < m_vertexCount; ++i)
-	  {
-	    poly->m_vertices [i] = m_vertices [i];
-	    poly->m_normals [i] = m_normals [i];
-	  }
-	  poly->m_vertexCount = m_vertexCount;
-	  return poly;
-	}
-	
-	void PolygonCollider2D::Initialize ()
-	{
-	  //ComputeMass (1.0f);
-    RigidBody2D* b = PHYSICS->Add (this, gameObject->Transform->GetPosition ().x, gameObject->Transform->GetPosition ().y);
-
-    if (isStatic)
-    {
-      b->SetStatic ();
-    }
-
-    b->gameObject = this->gameObject;
-	}
-	
-	void PolygonCollider2D::Serialize (Framework::Serializer::DataNode* data)
-	{
-	}
-	
-  CircleCollider2D::~CircleCollider2D ()
-  {
-    rigidBody = nullptr;
-  }
-
-
-	void CircleCollider2D::Draw (void) const
-	{
-	  const unsigned k_segments = 20;
-	
-	  // Render a circle with a bunch of lines
-	  glColor3f (1, 0, 0);
-	  glBegin (GL_LINE_LOOP);
-	  float theta = rigidBody->orient;
-	  float inc = PI * 2.0f / (float) k_segments;
-	  for (unsigned i = 0; i < k_segments; ++i)
-	  {
-	    theta += inc;
-	    Vector2 p (std::cos (theta), std::sin (theta));
-	    p *= radius;
-	    p += rigidBody->position;
-	    glVertex2f (p.x, p.y);
-	  }
-	  glEnd ();
-	
-	  // Render line within circle so orientation is visible
-	  glBegin (GL_LINE_STRIP);
-	  Vector2 r (0, 1.0f);
-	  float c = std::cos (rigidBody->orient);
-	  float s = std::sin (rigidBody->orient);
-	  r.Set (r.x * c - r.y * s, r.x * s + r.y * c);
-	  r *= radius;
-	  r = r + rigidBody->position;
-	  glVertex2f (rigidBody->position.x, rigidBody->position.y);
-	  glVertex2f (r.x, r.y);
-	  glEnd ();
-	}
-	
-	void CircleCollider2D::SetOrient (float radians)
-	{
-	
-	}
-	
-	void CircleCollider2D::ComputeMass (float density)
-	{
-	  rigidBody->m = PI * radius * radius * density;
-	  rigidBody->im = (rigidBody->m) ? 1.0f / rigidBody->m : 0.0f;
-	  rigidBody->I = rigidBody->m * radius * radius;
-	  rigidBody->iI = (rigidBody->I) ? 1.0f / rigidBody->I : 0.0f;
-	}
-
-  void CircleCollider2D::Serialize (Serializer::DataNode* data)
-  {
-    Serializer::DataNode* value = data->FindElement (data, "Radius");
-    value->GetValue (&radius);
-    radius *= gameObject->Transform->GetScale ().x;
-
-    value = data->FindElement (data, "Static");
-    value->GetValue (&isStatic);
-  }
-	
-	void CircleCollider2D::Initialize ()
-	{
-    RigidBody2D* b = PHYSICS->Add (this, gameObject->Transform->GetPosition ().x, gameObject->Transform->GetPosition ().y);
-
-    if (isStatic)
-    {
-      b->SetStatic ();
-    }
-
-    b->gameObject = this->gameObject;
-	}
-
-	// First and last use of CS225
-	ShapeCollider2D * CircleCollider2D::Clone (void) const
-	{
-	  return new CircleCollider2D (radius);
-	}
-	
-	ShapeCollider2D::Type CircleCollider2D::GetType (void) const
-	{
-	  return eCircle;
-	}
-	
-	CircleCollider2D::CircleCollider2D (float r)
-	{
-	  radius = r;
-	}
-
-  ShapeCollider2D::~ShapeCollider2D ()
-  {
-    rigidBody = nullptr;
-  }
 }

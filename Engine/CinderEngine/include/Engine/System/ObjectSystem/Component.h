@@ -33,7 +33,7 @@ namespace Framework
   /*! A Component is added to a Game object composition and is
   a small piece of logic for an object. 
   Ex, Transform component, Sprite Components*/
-  class Component
+  class Component : public Zilch::IZilchObject
   {
   public:
     ZilchDeclareBaseType(Component, Zilch::TypeCopyMode::ReferenceType);

@@ -99,16 +99,16 @@ namespace Framework
       gSelectedEffect = 2;
       break;
     case GLFW_KEY_W:
-      Camera::main->worldToView = glm::translate (Camera::main->worldToView, vec3 (0, -0.01f, 0));
+      //Camera::main->worldToView = glm::translate (Camera::main->worldToView, vec3 (0, -0.01f, 0));
       break;
     case GLFW_KEY_S:
-      Camera::main->worldToView = glm::translate (Camera::main->worldToView, vec3 (0, 0.01f, 0));
+      //Camera::main->worldToView = glm::translate (Camera::main->worldToView, vec3 (0, 0.01f, 0));
       break;
     case GLFW_KEY_D:
-      Camera::main->worldToView = glm::translate (Camera::main->worldToView, vec3 (-0.01f, 0, 0));
+      //Camera::main->worldToView = glm::translate (Camera::main->worldToView, vec3 (-0.01f, 0, 0));
       break;
     case GLFW_KEY_A:
-      Camera::main->worldToView = glm::translate (Camera::main->worldToView, vec3 (0.01f, 0, 0));
+      //Camera::main->worldToView = glm::translate (Camera::main->worldToView, vec3 (0.01f, 0, 0));
       break;
     default:
       break;

@@ -27,7 +27,7 @@ namespace Framework
   class Transform : public Component
   {
   public:
-    ZilchDeclareBaseType(Transform, Zilch::TypeCopyMode::ReferenceType);
+    ZilchDeclareDerivedType(Transform, Component);
     
     Transform ();
     virtual ~Transform();
@@ -51,13 +51,20 @@ namespace Framework
     /*inline*/ vec3 GetPosition ();
     /*inline*/ vec3 GetScale ();
     /*inline*/ float GetRotation ();
-	Zilch::Real3 Transform::ZGetTranslation();
-	Zilch::Real3 Transform::ZGetScale();
-	void Transform::ZSetTranslation(Zilch::Real3 newpos);
-	void Transform::ZSetScale(Zilch::Real3 newscale);
-	Zilch::Real2 ZGetScreenPosition(Zilch::Real2);
     vec2 GetScreenPosition ();
     glm::vec2 GetScreenPosition (const glm::vec2& v);
+
+    void SetPosition (float x, float y);
+
+    //////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
+    // ZILCH FUNCTIONS
+    Zilch::Real3 Transform::ZGetTranslation ();
+    Zilch::Real3 Transform::ZGetScale ();
+    void Transform::ZSetTranslation (Zilch::Real3 newpos);
+    void Transform::ZSetScale (Zilch::Real3 newscale);
+    Zilch::Real2 ZGetScreenPosition (Zilch::Real2);
+    //////////////////////////////////////////////////////////////////////////
 
     static void Print (vec3 position);
 

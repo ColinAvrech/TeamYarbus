@@ -1,10 +1,10 @@
 /******************************************************************************/
 /*!
-\file   InputEvent.h
+\file   WindowFocusEvent.h
 \author Micah Rust
 \par    Course: GAM200
 \par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
-\brief  Sends an event Whenever there is a key state change
+\brief  For alt-tab
 */
 /******************************************************************************/
 
@@ -17,22 +17,12 @@
 namespace Framework
 {
 
-  class KeyEvent : public BaseEvent
+  class WindowFocusEvent : public BaseEvent
   {
   public:
-    ZilchDeclareBaseType(KeyEvent, Zilch::TypeCopyMode::ReferenceType);
-	
-    //Key value as dictated by GLFW
-    int KeyValue;
+    ZilchDeclareBaseType(WindowFocusEvent, Zilch::TypeCopyMode::ReferenceType);
 
-
-    // Set the Key's State
-    bool KeyDown;
-    bool KeyRepeat;
-
-    // Active Key Modifiers
-    bool CTRLPressed;
-    bool ALTPressed;
-    bool SHIFTPressed;
+    int InFocus;
   };
+
 }

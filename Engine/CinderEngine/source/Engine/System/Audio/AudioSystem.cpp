@@ -14,6 +14,9 @@
 #pragma region Includes
 
 #include "AudioSystem.h"
+#include "AudioEvents.h"
+#include "Console.h"
+#include "Core.h"
 
 #pragma endregion
 
@@ -33,9 +36,16 @@ namespace Framework
                                Group2DSFX(NULL), 
                                Group3DSFX(NULL)
   {
+#ifdef _DEBUG
     ErrorIf(AUDIOSYSTEM != NULL, "AudioSystem Audio System already created");
+#endif
     AUDIOSYSTEM = this;
+
+#ifdef _DEBUG
     ErrorIf(CreateFMODSystem() == false, "AudioSystem not created");
+#else
+    CreateFMODSystem ();
+#endif
   }
 
   #pragma endregion
@@ -98,7 +108,7 @@ namespace Framework
     CreateSoundGroups();
     InitMicData();
 
-    Trace("Audio System Initialized");
+    std::cout << "Audio System Initialized" << std::endl;
 	  return true;
   }
 
@@ -295,7 +305,7 @@ namespace Framework
     {
       return sfx2DMuted && sfx3DMuted;
     }
-  }
+  }  
 
   /***************************************************************************/
   /*!
@@ -480,4 +490,5 @@ namespace Framework
   #pragma endregion
 
 }
+
 //-----------------------------------------------------------------------------

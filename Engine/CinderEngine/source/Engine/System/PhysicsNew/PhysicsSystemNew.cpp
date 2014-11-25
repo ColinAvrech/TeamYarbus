@@ -22,6 +22,7 @@ namespace Framework
 	    return;
 	
 	  b->velocity += (b->force * b->im + gravity) * (dt / 2.0f);
+    //std::cout << b->velocity.x << "\n";
 	  b->angularVelocity += b->torque * b->iI * (dt / 2.0f);
 	}
 	
@@ -35,7 +36,7 @@ namespace Framework
 	  b->SetOrient( b->orient );
     if (b->gameObject != nullptr)
     {
-      b->gameObject->Transform->Translate ((b->velocity.x * dt), (b->velocity.y * dt), 0.0f);
+      b->gameObject->Transform->SetPosition (b->position.x, b->position.y);
       b->gameObject->Transform->Rotate (b->angularVelocity * dt);
     }
 	  IntegrateForces( b, dt );

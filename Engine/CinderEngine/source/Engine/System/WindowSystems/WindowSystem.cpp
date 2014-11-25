@@ -24,6 +24,7 @@ function to handle windows Messages.
 #include "IGraphicsObject.h"
 #include "CinderEngine_UI.h"
 #include "Pipeline.h"
+#include "WindowFocusEvent.h"
 
 namespace Framework
 {
@@ -269,7 +270,7 @@ namespace Framework
 
     void GLFWMouseButtonFunction (GLFWwindow *, const int button, const int action, const int mod)
     {
-		WINDOWSYSTEM->IsMouseDown = action;
+		  WINDOWSYSTEM->IsMouseDown = action;
     }
     void GLFWMouseCursorMoved (GLFWwindow* window, const double xPos, const double yPos)
     {
@@ -280,6 +281,13 @@ namespace Framework
     void GLFWWindowClosed (GLFWwindow* window)
     {
       CORE->QuitGame ();
+    }
+
+    void GLFWWindowFocus(GLFWwindow* window, const int focus)
+    {
+      WindowFocusEvent e;
+      e.InFocus = focus;
+      EVENTSYSTEM->TriggerEvent(Events::WINDOWFOCUSEVENT, e);
     }
 
     void Create_Context(GLFWwindow** GLFWwindowptr, const int& ClientWidth, const int& ClientHeight, const bool& fullscreen)
@@ -334,6 +342,7 @@ namespace Framework
       glfwSetWindowSizeCallback (*GLFWwindowptr, GLFWResize);
       glfwSetFramebufferSizeCallback (*GLFWwindowptr, GLFWFrameBufferResize);
       glfwSetWindowCloseCallback (*GLFWwindowptr, GLFWWindowClosed);
+      glfwSetWindowFocusCallback(*GLFWwindowptr, GLFWWindowFocus);
     }
 
     void Init_Glew ()
@@ -353,12 +362,27 @@ namespace Framework
   }
 
 
+  static void OnKeyPressed (KeyEvent* key)
+  {
+    if (key->KeyDown)
+    {
+      switch (key->KeyValue)
+      {
+      case GLFW_KEY_ESCAPE:
+        CORE->QuitGame ();
+        break;
+      default:
+        break;
+      }
+    }
+  }
+
   bool WindowSystem::Initialize ()
   {
     std::cout << GetName () << " initialized\n";
 
     OPENGL = new Pipeline ();
-
+    EVENTSYSTEM->gConnect (Events::KEY_ANY, &OnKeyPressed);
     return true;
   }
 
@@ -373,6 +397,8 @@ namespace Framework
   {
     WindowsUpdate (dt);
     GraphicsUpdate (dt);
+
+    //std::cout << "{ " << Camera::GetWorldMousePosition ().x << ", " << Camera::GetWorldMousePosition ().y << " }\n";
   }
 
 

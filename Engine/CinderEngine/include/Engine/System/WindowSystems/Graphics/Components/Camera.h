@@ -13,6 +13,7 @@
 
 #include "ComponentInclude.h"
 #include "CinderMath.h"
+#include "ZilchCompiledLib.h"
 
 namespace Framework
 {
@@ -40,6 +41,7 @@ namespace Framework
 
     static glm::mat4 GetWorldToViewMatrix ();
     static glm::mat4 GetViewToProjectionMatrix ();
+    static glm::vec2 GetWorldMousePosition ();
     void OnKeyPressed (KeyEvent* key);
     float GetSize ();
     float GetFOV ();
@@ -47,10 +49,11 @@ namespace Framework
     static Camera* current;
     static Camera* main;
 
-    vec3 position;
-    vec3 viewDirection;
-    glm::mat4 worldToView;
-    glm::mat4 viewToProjection;
+    //////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
+    // ZILCH FUNCTIONS
+    static Zilch::Real2 GetCameraMousePosition ();
+    //////////////////////////////////////////////////////////////////////////
 
     // The non-base component usees DefineComponentName macro to name component
     const static string Name;
@@ -58,6 +61,11 @@ namespace Framework
     const vec3 up;
     glm:: vec2 oldPosition;
     bool matricesReady;
+
+    vec3 position;
+    vec3 viewDirection;
+    glm::mat4 worldToView;
+    glm::mat4 viewToProjection;
 
     bool mainCamera;
     float fov;

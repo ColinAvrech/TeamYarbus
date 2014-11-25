@@ -1,5 +1,5 @@
-#ifndef BODY_H
-#define BODY_H
+#ifndef _RIGID_BODY_2D_H
+#define _RIGID_BODY_2D_H
 
 #include "MathExtensionLibrary.h"
 #include "Component.h"
@@ -12,10 +12,11 @@ namespace Framework
 	{
 	public:
 	  const static std::string Name;
-	  RigidBody2D( ShapeCollider2D *shape_, float x, float y );
+	  RigidBody2D(ShapeCollider2D *shape_, float x, float y);
 	  RigidBody2D ();
 	
 	  virtual void Serialize (Framework::Serializer::DataNode* data);
+    void SerializeMaterial (const char* name);
 	  virtual void Initialize ();
 	
 	  void ApplyForce( const Vector2& f )
@@ -38,7 +39,7 @@ namespace Framework
 	  }
 	
 	  void SetOrient( float radians );
-	
+
 	  Vector2 position;
 	  Vector2 velocity;
 	
@@ -54,7 +55,6 @@ namespace Framework
 	  float m;  // mass
 	  float im; // inverse masee
 	
-	  // http://gamedev.tutsplus.com/tutorials/implementation/how-to-create-a-custom-2d-physics-engine-friction-scene-and-jump-table/
 	  float staticFriction;
 	  float dynamicFriction;
 	  float restitution;
@@ -68,4 +68,4 @@ namespace Framework
 }
 
 
-#endif // BODY_H
+#endif // _RIGID_BODY_2D_H

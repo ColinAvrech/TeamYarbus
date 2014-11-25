@@ -31,7 +31,7 @@ namespace Framework
   {
   public:
 	ZilchDeclareBaseType(WindowSystem, Zilch::TypeCopyMode::ReferenceType);
-	bool IsMouseDown;
+	  unsigned IsMouseDown;
     glm::dvec2 cursorPosition;
     WindowSystem(const char* WindowTitle, const int& ClientWidth = 1920, const int& ClientHeight = 1080, const bool& fullscreen = true);
     ~WindowSystem();
@@ -49,7 +49,8 @@ namespace Framework
     void GLFWMouseCursorMoved (GLFWwindow* window, const double xPos, const double yPos);
     void GLFWWindowClosed(GLFWwindow* window);
     void GLFWResize (GLFWwindow* window, const int w, const int h);
-    void GLFWFrameBufferResize (GLFWwindow* _window, const int w, const int h);
+    void GLFWFrameBufferResize(GLFWwindow* _window, const int w, const int h);
+    void GLFWWindowFocus(GLFWwindow* window, const int focus);
 
     int Get_Width ();
     int Get_Height ();
