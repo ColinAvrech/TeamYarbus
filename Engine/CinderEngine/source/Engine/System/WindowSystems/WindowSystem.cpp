@@ -24,6 +24,7 @@ function to handle windows Messages.
 #include "IGraphicsObject.h"
 #include "CinderEngine_UI.h"
 #include "Pipeline.h"
+#include "WindowFocusEvent.h"
 
 namespace Framework
 {
@@ -49,6 +50,13 @@ namespace Framework
 
     void GLFWFrameBufferResize (GLFWwindow* _window, const int w, const int h)
     {
+    }
+
+    void GLFWWindowFocus(GLFWwindow* window, const int focus)
+    {
+      WindowFocusEvent e;
+      e.InFocus = focus;
+      EVENTSYSTEM->TriggerEvent(Events::WINDOWFOCUSEVENT, e);
     }
 
 
