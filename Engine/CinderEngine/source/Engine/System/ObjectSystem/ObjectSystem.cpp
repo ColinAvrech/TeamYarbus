@@ -13,7 +13,7 @@ deleted.
 #include "ObjectSystem.h"
 #include "IncludeForAllCollision.h"
 #include "CharacterController.h"
-#include "FountainEffect.h"
+#include "PlayerEffect.h"
 #include "Terrain2D.h"
 #include "Terrain3D.h"
 #include "Tree2D.h"
@@ -110,7 +110,7 @@ namespace Framework
     RegisterComponent(Camera);
     RegisterComponent(CharacterController);
     RegisterComponent(RigidBody);
-    RegisterComponent(FountainEffect);
+    RegisterComponent(PlayerEffect);
     RegisterComponent(Terrain2D);
     RegisterComponent(Terrain3D);
     RegisterComponent(Tree2D);

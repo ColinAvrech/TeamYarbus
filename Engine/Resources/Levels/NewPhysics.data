@@ -175,7 +175,7 @@ Level =
 			string SpriteSource = "Circle.png",
 			bool FlipX = false,
 			bool FlipY = false,
-			Vec4 Color = [1, 0, 1, 1],
+			Vec4 Color = [1, 0, 1, 0.2],
 			bool Visible = true,
 			bool OnTop = false,
 			bool AnimationActive = true,
@@ -198,7 +198,7 @@ Level =
       Vec2 JumpVelocity = [0, 600],
       Vec2 MicrophoneMultiplier = [0, 75],
     },
-    FountainEffect = 
+    PlayerEffect = 
     {
       float ParticleSize = 100,
       float MaxSize = 10,
