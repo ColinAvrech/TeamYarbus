@@ -15,10 +15,13 @@ deleted.
 #include "CharacterController.h"
 #include "FountainEffect.h"
 #include "Terrain2D.h"
+#include "Terrain3D.h"
 #include "Tree2D.h"
 #include "FireStarter.h"
 #include "Microphone.h"
 #include "CinderEngine_UI.h"
+#include "GameEvent.h"
+#include "EventSystem.h"
 
 #include "Core.h"
 #include "PhysicsSystem.h"
@@ -109,6 +112,7 @@ namespace Framework
 		RegisterComponent(RigidBody);
 		RegisterComponent(FountainEffect);
 		RegisterComponent(Terrain2D);
+    RegisterComponent(Terrain3D);
 		RegisterComponent(Tree2D);
     RegisterComponent(EcoSystem);
 		RegisterComponent(FireStarter);
@@ -159,8 +163,11 @@ namespace Framework
 		data.CreateArchive();
 		Serializer::DataNode* Trunk = data.GetTrunk();
 		SerializeObject(Trunk);
+    GameEvent e;
+    EVENTSYSTEM->TriggerEvent(Events::GAME_ALLOBJECTSINITIALIZED, e);
 		//InitializeObject ();
-		LoadedLevel = level;
+    LoadedLevel = level;
+    EVENTSYSTEM->TriggerEvent(Events::GAME_LEVELSTARTED, e);
 	}
 
 
@@ -262,7 +269,7 @@ namespace Framework
 		for each (auto i in scripts)
 		{
 			//i.first->InitializeAndSerialize(i.second);
-			i.first->Initialize();
+			//i.first->Initialize();
 		}
 
 		//return objectlist;

@@ -121,8 +121,11 @@ namespace Framework
 		if (this->state == RigidBody::Static)
 			return;
 
+    vec3 acceleration = Physics::applyNetForce(accumulatedForce, invMass);
 		//determine acceleration
-		vec3 acceleration = Physics::applyNetForce(accumulatedForce, invMass) + vec3(0, -9.8f, 0);
+    if (!onGround)
+		  acceleration += vec3(0, -9.8f, 0);
+
 
 		//integrate velocity
 		vel = vel + acceleration * dt_;

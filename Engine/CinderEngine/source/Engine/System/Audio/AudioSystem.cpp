@@ -14,6 +14,7 @@
 #pragma region Includes
 
 #include "AudioSystem.h"
+#include "AudioEvents.h"
 #include "Console.h"
 #include "Core.h"
 
@@ -304,19 +305,7 @@ namespace Framework
     {
       return sfx2DMuted && sfx3DMuted;
     }
-  }
-
-  /***************************************************************************/
-  /*!
-  \brief  Value of Microphone Input
-
-  \return Returns value of Microphone Input between 0.0 and 1.0
-  */
-  /***************************************************************************/
-  float AudioSystem::GetMicrophoneValue ()
-  {
-    return input.peaklevel [0];
-  }
+  }  
 
   /***************************************************************************/
   /*!
@@ -501,4 +490,5 @@ namespace Framework
   #pragma endregion
 
 }
+
 //-----------------------------------------------------------------------------

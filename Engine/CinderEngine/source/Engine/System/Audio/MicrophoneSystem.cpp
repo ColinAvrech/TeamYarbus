@@ -297,6 +297,18 @@ namespace Framework
 
   /***************************************************************************/
   /*!
+  \brief  Value of Microphone Input
+
+  \return Returns value of Microphone Input between 0.0 and 1.0
+  */
+  /***************************************************************************/
+  float AudioSystem::GetMicrophoneValue()
+  {
+    return input.peaklevel[0];
+  }
+
+  /***************************************************************************/
+  /*!
   \brief  Prints out the color coded values of the RMS peaks from the mic
 
   \return Returns nothing

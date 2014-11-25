@@ -20,31 +20,62 @@ namespace Framework
       return glm::dot(vec2d, l.normalVec);
     }
 
-
-    BodyContact CirclevsLine(const glm::vec3& ps, const glm::vec3& pe, const CircleCollider& c, const LineCollider& l)
+    float Angle_from_Vertical(const glm::vec2& d_vec)
     {
-      float ps2l = DistancePoint2Line(ps, l);
-      float pe2l = DistancePoint2Line(pe, l);
-      float rad = c.radius;
+      glm::vec2 y_axis = { 0.0f, 1.0f };
+
+      float cos_t = glm::dot(y_axis, d_vec);
+
+      return glm::acos(cos_t);
+    }
+
+    glm::vec2 Closest_Point_on_Seg(glm::vec2 seg_a, glm::vec2 seg_b, glm::vec2 circ_pos)
+    {
+      //the segment vector, seg_v (from seg_a to seg_b)
+      glm::vec2 seg_v = seg_b - seg_a;
+      seg_v = glm::normalize(seg_v);
+      //the position of circ_pos relative to seg_a, pt_v.
+      glm::vec2 pt_v = circ_pos - seg_a;
+
+      // find the closest point to the circle's center on the segment.
+      // To do this, we must project pt_v onto seg_v:
+      float proj_s = glm::dot(pt_v, seg_v);
+
+      //If |proj_v| is less than 0 or greater than |seg_v|, 
+      //the closest point to circ_pos on the segment will be 
+      //one of the segment's endpoints.
+      if (proj_s < 0.0f)
+        return seg_a;
+      else if (proj_s > glm::length(seg_v))
+        return seg_b;
+
+      glm::vec2 proj_v = seg_v * proj_s;
+      glm::vec2 Closest = proj_v + seg_a;
+      return Closest;
+    }
+
+    BodyContact CirclevsLine(const glm::vec3& pos, const CircleCollider& c, const LineCollider& l)
+    {
       BodyContact res;
       res.t = -1.0f;
-      if ((ps2l <= 0 && pe2l >= 0) ||
-        (ps2l >= 0 && pe2l <= 0))
+      float circ_rad = c.radius;
+      
+      glm::vec2 circ_pos = { pos.x, pos.y };
+
+      glm::vec2 seg_a = { l.p1.x, l.p1.y };
+      glm::vec2 seg_b = { l.p2.x, l.p2.y };
+
+      glm::vec2 Closest = Closest_Point_on_Seg(seg_a, seg_b, circ_pos);
+
+      glm::vec2 dist_v = circ_pos - Closest;
+
+      float dist_l = glm::length(dist_v);
+      if (dist_l < circ_rad)
       {
-        glm::vec3 newps(ps);
-        glm::vec3 newpe(pe);
-        glm::vec3 norm = { l.normalVec.x, l.normalVec.y, 0.0f };
-        if (ps2l > 0)
-        {
-          newps -= norm * rad;
-          newpe -= norm * rad;
-        }
-        else
-        {
-          newps += norm * rad;
-          newpe += norm * rad;
-        }
-        res = PointvsLine(newps, newpe, l);
+        res.normal_angle = Angle_from_Vertical(l.normalVec);
+        res.t = 1.0f;
+        res.pi = glm::vec3(Closest, 0.0f);
+        res.Penetration = dist_v / dist_l * (circ_rad - dist_l);
       }
       return res;
     }
@@ -55,33 +86,9 @@ namespace Framework
       return rad >= Distance(cpos, ppos);
     }*/
 
-    BodyContact PointvsLine(const glm::vec3& ps, const glm::vec3& pe, const LineCollider& l)
-    {
-      glm::vec2 ps_ = { ps.x, ps.y };
-      glm::vec2 pe_ = { pe.x, pe.y };
-      float nDotps = glm::dot(ps_, l.normalVec);
-      glm::vec2 vVec = pe_ - ps_;
-      float tVel = glm::dot(vec2(vVec.x, vVec.y), l.normalVec);
-      BodyContact res;
-      res.t = -1.0f;
-      if (tVel == 0)
-        return res;
-
-      float t = (l.p1dotNormal - nDotps) / tVel;
-      std::cout << t << std::endl;
-      //if (t >= 0 && t <= 1)
-      //{
-        res.pi.x = ps_.x + (vVec.x * res.t);
-        res.pi.y = ps_.y + (vVec.y * res.t);
-        if (((res.pi.x > l.p2.x && res.pi.x > l.p1.x) ||
-          (res.pi.x < l.p2.x && res.pi.x < l.p1.x)) &&
-          ((res.pi.y > l.p2.y && res.pi.y > l.p1.y) ||
-          (res.pi.y < l.p2.y && res.pi.y < l.p1.y)))
-          return res;
-        res.t = t;
-        return res;
-      //}
-     // return res;
-    } //function pvsl
+    //BodyContact PointvsLine(const glm::vec3& pos, const LineCollider& l)
+    //{
+    //  
+    //} //function pvsl
   } //namespace physics
 }  //namespace framework

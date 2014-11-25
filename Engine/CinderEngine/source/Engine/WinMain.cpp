@@ -19,6 +19,7 @@ starts the game loop.
 #include "EventSystem.h"
 #include "SceneManager.h"
 #include "AudioSystem.h"
+#include "AudioEvents.h"
 #include "ZilchCompiledLib.h"
 #include "Core.h"
 #include "Physics/Thermodynamics.h"
@@ -59,16 +60,18 @@ int main (void)
   // TODO Make console accept input by pressing '`', if '`' is pressed again return to game
   
   //! Create the core engine which manages all systems.
-  CoreEngine * engine = new CoreEngine ();
-  Physics::ThermodynamicsSystem * thermo = new Physics::ThermodynamicsSystem ();
-  PhysicsSystemNew* physNew = new PhysicsSystemNew (1.0f / 60.0f, 10);
-  WindowSystem * windows = new WindowSystem (WindowTitle, ClientWidth, ClientHeight, launchFullScreen);
-  AudioSystem* audio = new AudioSystem ();
-  EventSystem * events = new EventSystem ();
-  ScriptSystem * zilch = new ScriptSystem();
+  CoreEngine                    * engine      = new CoreEngine ();
+  Physics::ThermodynamicsSystem * thermo      = new Physics::ThermodynamicsSystem ();
+  PhysicsSystemNew              * physNew     = new PhysicsSystemNew (1.0f / 60.0f, 10);
+  WindowSystem                  * windows     = new WindowSystem (WindowTitle, ClientWidth, ClientHeight, launchFullScreen);
+  AudioSystem                   * audio       = new AudioSystem ();
+  EventSystem                   * events      = new EventSystem ();
+  AudioEvents                   * audioEvents = new AudioEvents();  audioEvents->Initialize();
+  ScriptSystem                  * zilch       = new ScriptSystem();
+  ObjectSystem                  * objsys      = new ObjectSystem ();
+  UISystem                      * ui          = new UISystem ();
+
   //Physics::PhysicsSystem * phys = new Physics::PhysicsSystem ();
-  ObjectSystem* objsys = new ObjectSystem ();
-  UISystem* ui = new UISystem ();
   
   //Adding Pointer to ZilchInterface
   ZInterface::ObjectSys = objsys;
@@ -105,10 +108,8 @@ int main (void)
 
   audio->LoadMicData ();
 
-
   //! activate the window.
   OBJECTSYSTEM->LoadLevel("NewPhysics");
-
 
   // Connect example
   //MyClass _myclass;
@@ -131,6 +132,7 @@ int main (void)
 
   //! Delete engine
   delete engine;
+  delete audioEvents;
 
   //! Free console
   CinderConsole::Free_Cinder_Console ();
