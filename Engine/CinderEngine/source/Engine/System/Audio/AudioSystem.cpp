@@ -14,6 +14,8 @@
 #pragma region Includes
 
 #include "AudioSystem.h"
+#include "Console.h"
+#include "Core.h"
 
 #pragma endregion
 
@@ -33,10 +35,16 @@ namespace Framework
                                Group2DSFX(NULL), 
                                Group3DSFX(NULL)
   {
+#ifdef _DEBUG
     ErrorIf(AUDIOSYSTEM != NULL, "AudioSystem Audio System already created");
+#endif
     AUDIOSYSTEM = this;
-    //ErrorIf(CreateFMODSystem() == false, "AudioSystem not created");
-    CreateFMODSystem();
+
+#ifdef _DEBUG
+    ErrorIf(CreateFMODSystem() == false, "AudioSystem not created");
+#else
+    CreateFMODSystem ();
+#endif
   }
 
   #pragma endregion
