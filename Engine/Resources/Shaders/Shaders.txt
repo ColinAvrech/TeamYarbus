@@ -60,7 +60,7 @@ ColorCodeCell.frag.glsl
 ColorCodeCell
 >
 Terrain.vs.glsl
-Terrain.frag.glsl
+Lighting.frag.glsl
 0
 Terrain
 >

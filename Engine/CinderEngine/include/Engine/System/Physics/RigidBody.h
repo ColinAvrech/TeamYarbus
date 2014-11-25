@@ -33,6 +33,7 @@ namespace Framework
 
 		vec3 accumulatedForce;
 		bool allowSleep;
+    bool onGround;
 		bool rotationLocked;
 		DynamicState state;
 

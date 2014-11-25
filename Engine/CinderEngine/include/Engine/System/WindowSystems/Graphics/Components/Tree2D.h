@@ -29,6 +29,7 @@ namespace Framework
     TREE_4,
     GRASS,
     TREE_5,
+    OPEN,  //Keep this last
   };
 
 

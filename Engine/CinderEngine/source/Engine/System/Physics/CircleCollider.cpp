@@ -116,25 +116,22 @@ namespace Framework
 
   void CircleCollider::DetectCollision(LineCollider* l)
   {
-    glm::vec3 pos_s, pos_e;
-    pos_e.x = pos_s.x = gameObject->Transform->GetPosition().x;
-    pos_e.y = pos_s.y = gameObject->Transform->GetPosition().y;
-    pos_e.z = pos_s.z = 0.0f;
-    if (gameObject->RigidBody)
-    {
-      pos_e.x += gameObject->RigidBody->vel.x * 0.016f;
-      pos_e.y += gameObject->RigidBody->vel.y * 0.016f;
-    }
+    glm::vec3 pos_s = gameObject->Transform->GetPosition();
 
-    BodyContact contact = Physics::CirclevsLine(pos_s, pos_e, *this, *l);
+    BodyContact contact = Physics::CirclevsLine(pos_s, *this, *l);
     if (contact.t != -1.0f)
     {
       contact.Bodies[0] = gameObject;
       contact.Bodies[1] = l->gameObject;
       contact.ContactNormal = glm::vec3(l->normalVec, 0.0f);
-
+      contact.Restitution = 0.75f;
+      contact.FrictionCof = 0.3f;
       Physics::PHYSICSSYSTEM->addContact(&contact);
+      if (contact.normal_angle < 3.14f/3)
+        gameObject->RigidBody->onGround = true;
     }
+    else
+      gameObject->RigidBody->onGround = false;
   }
 
   void CircleCollider::Draw ()

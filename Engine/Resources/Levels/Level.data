@@ -149,6 +149,9 @@ Level =
       Vec4 Color = [0.2, 0.0, 0.01, 1],
       bool AddCollider = true,
 		},
+    EcoSystem = 
+    {
+    },
   },
   Cog = 
 	{

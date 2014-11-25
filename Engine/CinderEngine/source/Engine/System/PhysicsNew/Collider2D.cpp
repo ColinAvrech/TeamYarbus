@@ -17,6 +17,8 @@ namespace Framework
   ShapeCollider2D::~ShapeCollider2D ()
   {
     rigidBody = nullptr;
+    if (gameObject != nullptr)
+    gameObject->ShapeCollider2D = nullptr;
   }
 
   void ShapeCollider2D::SerializeMaterial (std::string name)
@@ -83,6 +85,7 @@ namespace Framework
 
   void CircleCollider2D::Initialize ()
   {
+    gameObject->ShapeCollider2D = this;
     RigidBody2D* b = PHYSICS->Add (this, gameObject->Transform->GetPosition ().x, gameObject->Transform->GetPosition ().y);
     rigidBody = b;
 
@@ -185,7 +188,7 @@ namespace Framework
 
   void PolygonCollider2D::Initialize ()
   {
-    //ComputeMass (1.0f);
+    gameObject->ShapeCollider2D = this;
     RigidBody2D* b = PHYSICS->Add (this, gameObject->Transform->GetPosition ().x, gameObject->Transform->GetPosition ().y);
 
     if (isStatic)

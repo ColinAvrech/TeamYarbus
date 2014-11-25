@@ -24,6 +24,7 @@ function to handle windows Messages.
 #include "IGraphicsObject.h"
 #include "CinderEngine_UI.h"
 #include "Pipeline.h"
+#include "WindowFocusEvent.h"
 
 namespace Framework
 {
@@ -284,6 +285,13 @@ namespace Framework
       CORE->QuitGame ();
     }
 
+    void GLFWWindowFocus(GLFWwindow* window, const int focus)
+    {
+      WindowFocusEvent e;
+      e.InFocus = focus;
+      EVENTSYSTEM->TriggerEvent(Events::WINDOWFOCUSEVENT, e);
+    }
+
     void Create_Context(GLFWwindow** GLFWwindowptr, const int& ClientWidth, const int& ClientHeight, const bool& fullscreen)
     {
       // Init GLFW Before Using Any Functionality
@@ -336,6 +344,7 @@ namespace Framework
       glfwSetWindowSizeCallback (*GLFWwindowptr, GLFWResize);
       glfwSetFramebufferSizeCallback (*GLFWwindowptr, GLFWFrameBufferResize);
       glfwSetWindowCloseCallback (*GLFWwindowptr, GLFWWindowClosed);
+      glfwSetWindowFocusCallback(*GLFWwindowptr, GLFWWindowFocus);
     }
 
     void Init_Glew ()

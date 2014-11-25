@@ -11,13 +11,8 @@ namespace Framework
   {
   public:
     const static string Name;
-    glm::vec2 accel;
-    float drag;
-    float maxXVel;
-    float jumpVel;
-    float currentforce;
-    glm::vec2 maxAcceleration;
-    CharacterController(GameObject * obj)
+
+    CharacterController (GameObject * obj)
     {
       gameObject = obj;
     }
@@ -34,5 +29,17 @@ namespace Framework
     void Update(UpdateEvent* e);
     void OnKeyPressed(KeyEvent* key);
     void OnCollisionEnter(CollisionEvent* collision);
+
+  private:
+    glm::vec2 accel;
+    glm::vec2 jumpVel;
+    glm::vec2 acceleration;
+    glm::vec2 microhponeMultiplier;
+
+    float drag;
+    float maxXVel;
+    float currentforce;
+    float density;
+    glm::vec2 maxAcceleration;
   };
 }
