@@ -122,7 +122,11 @@ namespace Framework
 	void Manifold::InfiniteMassCorrection( void )
 	{
 	  A->velocity.Set( 0, 0 );
+    if (!A->shape->isStatic)
+    A->gameObject->Transform->SetPosition (0, 0);
 	  B->velocity.Set( 0, 0 );
+    if (!B->shape->isStatic)
+    B->gameObject->Transform->SetPosition (0, 0);
 	}
 }
 

@@ -16,6 +16,7 @@
 #include "KeyEvent.h"
 #include "UpdateEvent.h"
 #include "RigidBody2D.h"
+#include "Collider2D.h"
 
 
 
@@ -36,18 +37,40 @@ namespace Framework
       //gameObject->RigidBody->vel.y = jumpVel;
       //Physics::applyAccel(accelV, 0.016);
       //gameObject->Transform->Translate(0, 1, 0);
-      gameObject->RigidBody2D->ApplyImpulse (Vector2 (0, 10), Vector2 (0, 0));
+      gameObject->RigidBody2D->ApplyImpulse
+      (
+        Vector2
+        (
+          jumpVel.x * density,
+          jumpVel.y * density
+        ),
+        Vector2 (0, 0)
+      );
       break;
 
     case GLFW_KEY_RIGHT:
-      gameObject->RigidBody2D->ApplyForce (Vector2 (50, 0));
+      gameObject->RigidBody2D->ApplyForce
+      (
+        Vector2
+        (
+          acceleration.x * density,
+          acceleration.y * density
+        )
+      );
       //if (gameObject->RigidBody->vel.x <= maxXVel)
       //  gameObject->RigidBody->vel.x += accel*0.016f;
       //gameObject->Transform->Translate(1, 0, 0);
       break;
 
     case GLFW_KEY_LEFT:
-      gameObject->RigidBody2D->ApplyForce (Vector2 (-50, 0));
+      gameObject->RigidBody2D->ApplyForce
+      (
+        Vector2
+        (
+          -acceleration.x * density,
+          acceleration.y * density
+        )
+      );
       //if (gameObject->RigidBody->vel.x >= -maxXVel)
       //  gameObject->RigidBody->vel.x -= accel*0.016f;
       //gameObject->Transform->Translate(-1, 0, 0);
@@ -92,6 +115,15 @@ namespace Framework
 
   void CharacterController::Update(UpdateEvent* e)
   {
+    float micValue = AUDIOSYSTEM->GetMicrophoneValue ();
+    gameObject->RigidBody2D->ApplyForce 
+    (
+      Vector2
+      (
+        micValue * microhponeMultiplier.x * density,
+        micValue * microhponeMultiplier.y * density
+      )
+    );
     ////how to get line collider
     ////gameObject->CircleCollider->DetectLine(gameObject->LineCollider);
     ////go1->CircleCollider->DetectCircle(go2->CircleCollider);
@@ -117,12 +149,13 @@ namespace Framework
   /*!Telegraph that the component is active*/
   void CharacterController::Initialize()
   {
-    jumpVel = 5.0f;
-    accel = { 0 , 0 };
-    maxAcceleration = { 50, 100 };
-    maxXVel = 2.0f;
-    drag = 5;
-    currentforce = 0;
+    //accel = { 0 , 0 };
+    //maxAcceleration = { 50, 100 };
+    //maxXVel = 2.0f;
+    //drag = 5;
+    //currentforce = 0;
+    density = gameObject->ShapeCollider2D->Density;
+
     EVENTSYSTEM->mConnect<KeyEvent, CharacterController>(Events::KEY_ANY, this, &CharacterController::OnKeyPressed);
     EVENTSYSTEM->mConnect<CollisionEvent, CharacterController>(Events::COLLISION, this, &CharacterController::OnCollisionEnter);
     EVENTSYSTEM->mConnect<UpdateEvent, CharacterController>(Events::UPDATEEVENT, this, &CharacterController::Update);
@@ -130,7 +163,14 @@ namespace Framework
 
   void CharacterController::Serialize(Serializer::DataNode* data)
   {
+    Serializer::DataNode* value = data->FindElement (data, "MicrophoneMultiplier");
+    value->GetValue (&microhponeMultiplier);
 
+    value = data->FindElement (data, "Acceleration");
+    value->GetValue (&acceleration);
+
+    value = data->FindElement (data, "JumpVelocity");
+    value->GetValue (&jumpVel);
   }
 
   DefineComponentName(CharacterController);

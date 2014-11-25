@@ -308,6 +308,18 @@ namespace Framework
 
   /***************************************************************************/
   /*!
+  \brief  Value of Microphone Input
+
+  \return Returns value of Microphone Input between 0.0 and 1.0
+  */
+  /***************************************************************************/
+  float AudioSystem::GetMicrophoneValue ()
+  {
+    return input.peaklevel [0];
+  }
+
+  /***************************************************************************/
+  /*!
   \brief  Pauses the sounds at its current state of playing
 
   \param  paused

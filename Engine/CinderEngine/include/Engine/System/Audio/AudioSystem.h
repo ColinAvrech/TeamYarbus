@@ -93,6 +93,7 @@ namespace Framework
       // Getters
       Sound*        GetSound(char* soundName);
       bool          GetMuted(int id);
+      float         GetMicrophoneValue ();
     
       // Setters
       void          SetPaused(bool paused, int id);    
