@@ -35,7 +35,8 @@ namespace Framework
   {
     ErrorIf(AUDIOSYSTEM != NULL, "AudioSystem Audio System already created");
     AUDIOSYSTEM = this;
-    ErrorIf(CreateFMODSystem() == false, "AudioSystem not created");
+    //ErrorIf(CreateFMODSystem() == false, "AudioSystem not created");
+    CreateFMODSystem();
   }
 
   #pragma endregion
