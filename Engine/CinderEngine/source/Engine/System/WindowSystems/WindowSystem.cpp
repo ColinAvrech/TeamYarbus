@@ -52,13 +52,6 @@ namespace Framework
     {
     }
 
-    void GLFWWindowFocus(GLFWwindow* window, const int focus)
-    {
-      WindowFocusEvent e;
-      e.InFocus = focus;
-      EVENTSYSTEM->TriggerEvent(Events::WINDOWFOCUSEVENT, e);
-    }
-
 
     /*Triggers a Key event if there are any listeners*/
     void TriggerKeyEvent (const string eventname, const int& key, const int& scanCode, const int& state, const int& mod)
@@ -290,6 +283,13 @@ namespace Framework
       CORE->QuitGame ();
     }
 
+    void GLFWWindowFocus(GLFWwindow* window, const int focus)
+    {
+      WindowFocusEvent e;
+      e.InFocus = focus;
+      EVENTSYSTEM->TriggerEvent(Events::WINDOWFOCUSEVENT, e);
+    }
+
     void Create_Context(GLFWwindow** GLFWwindowptr, const int& ClientWidth, const int& ClientHeight, const bool& fullscreen)
     {
       // Init GLFW Before Using Any Functionality
@@ -342,6 +342,7 @@ namespace Framework
       glfwSetWindowSizeCallback (*GLFWwindowptr, GLFWResize);
       glfwSetFramebufferSizeCallback (*GLFWwindowptr, GLFWFrameBufferResize);
       glfwSetWindowCloseCallback (*GLFWwindowptr, GLFWWindowClosed);
+      glfwSetWindowFocusCallback(*GLFWwindowptr, GLFWWindowFocus);
     }
 
     void Init_Glew ()
