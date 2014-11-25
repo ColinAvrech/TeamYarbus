@@ -99,9 +99,9 @@ int main (void)
 
   Sound *test = audio->LoadSound("Pads.ogg", "NOISE", Sound::SOUND_2D, 1.0f);
   test->Play();
-  test->GenerateNoise();
-  test->LowPassFilter();
-  test->SetLPF(0, 1.0);
+  //test->GenerateNoise();
+  //test->LowPassFilter();
+  //test->SetLPF(0, 1.0);
 
   audio->LoadMicData ();
 

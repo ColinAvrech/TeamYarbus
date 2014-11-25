@@ -280,7 +280,7 @@ namespace Framework
       i->Draw ();
     }
 
-    PHYSICS->Render ();
+    //PHYSICS->Render ();
   }
 
   void Pipeline::UpdateMatrices ()

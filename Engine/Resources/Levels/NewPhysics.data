@@ -63,7 +63,7 @@ Level =
 			float FieldOfView = 45,
 			float NearPlane = 0,
 			float FarPlane = 2000,
-			float Size = 10,
+			float Size = 20,
 		},
   },
   Cog = 
@@ -78,7 +78,7 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, 2, -4],
+			Vec3 Translation = [-15, 0.5, -4],
 			Vec3 Scale = [40, 4, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
@@ -106,7 +106,7 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, -3, -2],
+			Vec3 Translation = [-15, -4.5, -2],
 			Vec3 Scale = [20, 4, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
@@ -134,7 +134,7 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [-3.5, -3.5, 0],
+			Vec3 Translation = [-18.5, -5.0, 0],
 			Vec3 Scale = [5, 4, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
