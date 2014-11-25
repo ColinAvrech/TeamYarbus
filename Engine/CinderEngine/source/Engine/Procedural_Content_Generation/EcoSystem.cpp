@@ -65,7 +65,7 @@ namespace Framework
     unsigned int ID = OBJECTSYSTEM->GameObjects.size() + 1;
     for (int i = 0; i < MapWidth; ++i, ++ID)
     {
-      offsetY = (terrain[i]) * nY;
+      offsetY = (terrain[i]) * nY / 2.f;
       if (offsetY < 0)
         offsetY = 0.0f;
       offsetX += 4 * nX;

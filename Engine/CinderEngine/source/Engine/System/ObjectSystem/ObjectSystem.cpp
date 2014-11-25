@@ -253,7 +253,7 @@ namespace Framework
 
             
             scripts.push_back(std::pair<ZilchComponent*, Serializer::DynamicElement*>(zilchComp, ct->branch));
-            //newcomp->Initialize();
+            newcomp->Initialize();
           }
           objectlist.append(newobj);
           ct = ct->next;
