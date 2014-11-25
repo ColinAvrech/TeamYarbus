@@ -17,15 +17,13 @@
 #pragma region Includes
 
 #include "Common.h"
-#include "Component.h"
-#include "KeyEvent.h"
-#include "EventSystem.h"
-#include "UpdateEvent.h"
 
 #pragma endregion
 
 namespace Framework
 {
+  class WindowFocusEvent;
+
   /*---------------------------------------------------------------------------
   // Class
   ---------------------------------------------------------------------------*/
@@ -64,7 +62,7 @@ namespace Framework
       void Initialize();
 
 
-      void AudioEventsUpdate(KeyEvent* e);
+      void AudioEventsUpdate(WindowFocusEvent* e);
 
       #pragma endregion
 

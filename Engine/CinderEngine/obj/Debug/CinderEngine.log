@@ -1,65 +1,8 @@
-﻿Build started 11/24/2014 7:55:25 PM.
-     1>Project "C:\SandBox\TeamYarbus\Engine\CinderEngine\premake\CinderEngine.vcxproj" on node 2 (Build target(s)).
+﻿Build started 11/24/2014 8:08:20 PM.
+     1>Project "C:\Users\AnalogInArse\Desktop\TeamYarbus\Engine\CinderEngine\premake\CinderEngine.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I..\dependency\opengl\include /I..\dependency\opengl\include\freetype /I..\dependency\opengl\include\glew /I..\dependency\opengl\include\glfw /I..\dependency\opengl\include\glm /I..\dependency\opengl\include\soil /I..\dependency\opengl\include\freetype\freetype2 /I..\dependency\opengl\include\freetype\freetype2\freetype /I..\dependency\opengl\include\freetype\freetype2\freetype\config /I..\dependency\opengl\include\glm\detail /I..\dependency\opengl\include\glm\gtc /I..\dependency\opengl\include\glm\gtx /I..\dependency\zilch\include /I..\dependency\fmod\include /I..\dependency\AntTweakBar\include /I..\include\Engine /I..\include\Engine\Core /I..\include\Engine\Editor /I..\include\Engine\Gameplay /I..\include\Engine\Global /I..\include\Engine\Math /I..\include\Engine\Procedural_Content_Generation /I..\include\Engine\Serializer /I..\include\Engine\System /I..\include\Engine\Global\DataTypes /I..\include\Engine\System\Audio /I..\include\Engine\System\Events /I..\include\Engine\System\ObjectSystem /I..\include\Engine\System\Physics /I..\include\Engine\System\PhysicsNew /I..\include\Engine\System\SceneManager /I..\include\Engine\System\UISystem /I..\include\Engine\System\WindowSystems /I..\include\Engine\System\Zilch /I..\include\Engine\System\Events\Events /I..\include\Engine\System\Events\EventSystem /I..\include\Engine\System\Events\Event_Base /I..\include\Engine\System\SceneManager\Scenes /I..\include\Engine\System\WindowSystems\Graphics /I..\include\Engine\System\WindowSystems\Graphics\Components /I..\include\Engine\System\WindowSystems\Graphics\GraphicsSystems /I..\include\Engine\System\WindowSystems\Graphics\Objects /I..\include\Engine\System\WindowSystems\Graphics\ParticleSystem /I..\include\Engine\System\WindowSystems\Graphics\Primitives /I..\include\Engine\System\WindowSystems\Graphics\GraphicsSystems\FluidDynamics /I..\include\Engine\System\WindowSystems\Graphics\GraphicsSystems\Procedural /I..\include\Engine\System\WindowSystems\Graphics\GraphicsSystems\FluidDynamics\FluidPhysics /I..\include\Engine\System\WindowSystems\Graphics\GraphicsSystems\FluidDynamics\Gas /I..\include\Engine\System\WindowSystems\Graphics\GraphicsSystems\FluidDynamics\Solid_Liquid /I..\include\Engine\System\WindowSystems\Graphics\ParticleSystem\Effects /I..\source\Engine /I..\source\Engine\Core /I..\source\Engine\Gameplay /I..\source\Engine\Global /I..\source\Engine\Math /I..\source\Engine\Procedural_Content_Generation /I..\source\Engine\Serializer /I..\source\Engine\System /I..\source\Engine\System\Audio /I..\source\Engine\System\Events /I..\source\Engine\System\ObjectSystem /I..\source\Engine\System\Physics /I..\source\Engine\System\PhysicsNew /I..\source\Engine\System\SceneManager /I..\source\Engine\System\UISystem /I..\source\Engine\System\WindowSystems /I..\source\Engine\System\Zilch /I..\source\Engine\System\SceneManager\Scenes /I..\source\Engine\System\WindowSystems\Graphics /I..\source\Engine\System\WindowSystems\Graphics\Components /I..\source\Engine\System\WindowSystems\Graphics\GraphicsSystems /I..\source\Engine\System\WindowSystems\Graphics\Objects /I..\source\Engine\System\WindowSystems\Graphics\ParticleSystem /I..\source\Engine\System\WindowSystems\Graphics\Primitives /I..\source\Engine\System\WindowSystems\Graphics\GraphicsSystems\FluidDynamics /I..\source\Engine\System\WindowSystems\Graphics\GraphicsSystems\Procedural /I..\source\Engine\System\WindowSystems\Graphics\GraphicsSystems\FluidDynamics\FluidPhysics /I..\source\Engine\System\WindowSystems\Graphics\GraphicsSystems\FluidDynamics\Gas /I..\source\Engine\System\WindowSystems\Graphics\GraphicsSystems\FluidDynamics\Solid_Liquid /I..\source\Engine\System\WindowSystems\Graphics\ParticleSystem\Effects /ZI /nologo /W3 /WX- /Od /Oy- /D _USE_ANTWEAK /D _DEBUG /D _CRT_SECURE_NO_WARNINGS /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"..\obj\Debug\\" /Fd"..\bin\debug\CinderEngine.pdb" /Gd /TP /analyze- /errorReport:prompt ..\source\Engine\FireStarter.cpp ..\source\Engine\Gameplay\FirePointController.cpp ..\source\Engine\Gameplay\MicahPC.cpp ..\source\Engine\Global\ZInterface.cpp ..\source\Engine\Procedural_Content_Generation\EcoSystem.cpp ..\source\Engine\System\Audio\Microphone.cpp ..\source\Engine\System\Events\Delegates.cpp ..\source\Engine\System\Events\EventSystem.cpp ..\source\Engine\System\Events\Events.cpp ..\source\Engine\System\ObjectSystem\GameObject.cpp ..\source\Engine\System\ObjectSystem\ObjectSystem.cpp ..\source\Engine\System\PhysicsNew\Collider2D.cpp ..\source\Engine\System\PhysicsNew\Manifold.cpp ..\source\Engine\System\PhysicsNew\PhysicsSystemNew.cpp ..\source\Engine\System\PhysicsNew\RigidBody2D.cpp ..\source\Engine\System\Physics\BroadPhase.cpp ..\source\Engine\System\Physics\CharacterController.cpp ..\source\Engine\System\Physics\CircleCollider.cpp ..\source\Engine\System\Physics\CollisionRepeats.cpp ..\source\Engine\System\Physics\GravityEffect.cpp ..\source\Engine\System\Physics\LineCollider.cpp ..\source\Engine\System\Physics\PhysicsSystem.cpp ..\source\Engine\System\Physics\PointCollider.cpp ..\source\Engine\System\Physics\Resolution.cpp ..\source\Engine\System\Physics\RigidBody.cpp ..\source\Engine\System\Physics\ShapeCollider.cpp ..\source\Engine\System\Physics\SplineCollider.cpp ..\source\Engine\System\SceneManager\Scene.cpp ..\source\Engine\System\SceneManager\SceneManager.cpp ..\source\Engine\System\SceneManager\Scenes\ParticleEditor.cpp ..\source\Engine\System\SceneManager\Scenes\Scene_ComputeTest.cpp ..\source\Engine\System\UISystem\UISystem.cpp ..\source\Engine\System\WindowSystems\Graphics\Components\Camera.cpp ..\source\Engine\System\WindowSystems\Graphics\Components\CinderEngine_UI.cpp ..\source\Engine\System\WindowSystems\Graphics\Components\IGraphicsObject.cpp ..\source\Engine\System\WindowSystems\Graphics\Components\Renderer.cpp ..\source\Engine\System\WindowSystems\Graphics\Components\Sprite.cpp ..\source\Engine\System\WindowSystems\Graphics\Components\Terrain2D.cpp ..\source\Engine\System\WindowSystems\Graphics\Components\Transform.cpp ..\source\Engine\System\WindowSystems\Graphics\Components\Tree2D.cpp ..\source\Engine\System\WindowSystems\Graphics\GraphicsSystems\FluidDynamics\Gas\Smoke_Grid.cpp ..\source\Engine\System\WindowSystems\Graphics\GraphicsSystems\FluidDynamics\Solid_Liquid\Fluid_Engine.cpp ..\source\Engine\System\WindowSystems\Graphics\GraphicsSystems\Procedural\FractalGenerator.cpp ..\source\Engine\System\WindowSystems\Graphics\ParticleSystem\CLParticleRenderer.cpp ..\source\Engine\System\WindowSystems\Graphics\ParticleSystem\Effects\FountainEffect.cpp ..\source\Engine\System\WindowSystems\Graphics\Pipeline.cpp ..\source\Engine\System\WindowSystems\Graphics\Primitives\DebugRenderer.cpp ..\source\Engine\System\WindowSystems\MenuController.cpp ..\source\Engine\System\WindowSystems\WindowSystem.cpp ..\source\Engine\System\Zilch\ZilchComponent.cpp ..\source\Engine\WinMain.cpp
-         ObjectSystem.cpp
-         Generating Code...
-         Compiling...
-         WinMain.cpp
-         ZilchComponent.cpp
-         WindowSystem.cpp
-         MenuController.cpp
-         DebugRenderer.cpp
-         Pipeline.cpp
-         FountainEffect.cpp
-         CLParticleRenderer.cpp
-         FractalGenerator.cpp
-         Fluid_Engine.cpp
-         Smoke_Grid.cpp
-         Tree2D.cpp
-         Transform.cpp
-         Terrain2D.cpp
-         Sprite.cpp
-         Renderer.cpp
-         IGraphicsObject.cpp
-         CinderEngine_UI.cpp
-         Camera.cpp
-         UISystem.cpp
-         Generating Code...
-         Compiling...
-         Scene_ComputeTest.cpp
-         ParticleEditor.cpp
-         SceneManager.cpp
-         Scene.cpp
-         SplineCollider.cpp
-         ShapeCollider.cpp
-         RigidBody.cpp
-         Resolution.cpp
-         PointCollider.cpp
-         PhysicsSystem.cpp
-         LineCollider.cpp
-         GravityEffect.cpp
-         CollisionRepeats.cpp
-         CircleCollider.cpp
-         CharacterController.cpp
-         BroadPhase.cpp
-         RigidBody2D.cpp
-         PhysicsSystemNew.cpp
-         Manifold.cpp
-         Collider2D.cpp
-         Generating Code...
-         Compiling...
-         GameObject.cpp
-         Events.cpp
-         EventSystem.cpp
-         Delegates.cpp
-         Microphone.cpp
-         EcoSystem.cpp
-         ZInterface.cpp
-         MicahPC.cpp
-         FirePointController.cpp
-         FireStarter.cpp
-         Generating Code...
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I..\dependency\opengl\include /I..\dependency\opengl\include\freetype /I..\dependency\opengl\include\glew /I..\dependency\opengl\include\glfw /I..\dependency\opengl\include\glm /I..\dependency\opengl\include\soil /I..\dependency\opengl\include\freetype\freetype2 /I..\dependency\opengl\include\freetype\freetype2\freetype /I..\dependency\opengl\include\freetype\freetype2\freetype\config /I..\dependency\opengl\include\glm\detail /I..\dependency\opengl\include\glm\gtc /I..\dependency\opengl\include\glm\gtx /I..\dependency\zilch\include /I..\dependency\fmod\include /I..\dependency\AntTweakBar\include /I..\include\Engine /I..\include\Engine\Core /I..\include\Engine\Editor /I..\include\Engine\Gameplay /I..\include\Engine\Global /I..\include\Engine\Math /I..\include\Engine\Procedural_Content_Generation /I..\include\Engine\Serializer /I..\include\Engine\System /I..\include\Engine\Global\DataTypes /I..\include\Engine\System\Audio /I..\include\Engine\System\Events /I..\include\Engine\System\ObjectSystem /I..\include\Engine\System\Physics /I..\include\Engine\System\PhysicsNew /I..\include\Engine\System\SceneManager /I..\include\Engine\System\UISystem /I..\include\Engine\System\WindowSystems /I..\include\Engine\System\Zilch /I..\include\Engine\System\Events\Events /I..\include\Engine\System\Events\EventSystem /I..\include\Engine\System\Events\Event_Base /I..\include\Engine\System\SceneManager\Scenes /I..\include\Engine\System\WindowSystems\Graphics /I..\include\Engine\System\WindowSystems\Graphics\Components /I..\include\Engine\System\WindowSystems\Graphics\GraphicsSystems /I..\include\Engine\System\WindowSystems\Graphics\Objects /I..\include\Engine\System\WindowSystems\Graphics\ParticleSystem /I..\include\Engine\System\WindowSystems\Graphics\Primitives /I..\include\Engine\System\WindowSystems\Graphics\GraphicsSystems\FluidDynamics /I..\include\Engine\System\WindowSystems\Graphics\GraphicsSystems\Procedural /I..\include\Engine\System\WindowSystems\Graphics\GraphicsSystems\FluidDynamics\FluidPhysics /I..\include\Engine\System\WindowSystems\Graphics\GraphicsSystems\FluidDynamics\Gas /I..\include\Engine\System\WindowSystems\Graphics\GraphicsSystems\FluidDynamics\Solid_Liquid /I..\include\Engine\System\WindowSystems\Graphics\ParticleSystem\Effects /I..\source\Engine /I..\source\Engine\Core /I..\source\Engine\Gameplay /I..\source\Engine\Global /I..\source\Engine\Math /I..\source\Engine\Procedural_Content_Generation /I..\source\Engine\Serializer /I..\source\Engine\System /I..\source\Engine\System\Audio /I..\source\Engine\System\Events /I..\source\Engine\System\ObjectSystem /I..\source\Engine\System\Physics /I..\source\Engine\System\PhysicsNew /I..\source\Engine\System\SceneManager /I..\source\Engine\System\UISystem /I..\source\Engine\System\WindowSystems /I..\source\Engine\System\Zilch /I..\source\Engine\System\SceneManager\Scenes /I..\source\Engine\System\WindowSystems\Graphics /I..\source\Engine\System\WindowSystems\Graphics\Components /I..\source\Engine\System\WindowSystems\Graphics\GraphicsSystems /I..\source\Engine\System\WindowSystems\Graphics\Objects /I..\source\Engine\System\WindowSystems\Graphics\ParticleSystem /I..\source\Engine\System\WindowSystems\Graphics\Primitives /I..\source\Engine\System\WindowSystems\Graphics\GraphicsSystems\FluidDynamics /I..\source\Engine\System\WindowSystems\Graphics\GraphicsSystems\Procedural /I..\source\Engine\System\WindowSystems\Graphics\GraphicsSystems\FluidDynamics\FluidPhysics /I..\source\Engine\System\WindowSystems\Graphics\GraphicsSystems\FluidDynamics\Gas /I..\source\Engine\System\WindowSystems\Graphics\GraphicsSystems\FluidDynamics\Solid_Liquid /I..\source\Engine\System\WindowSystems\Graphics\ParticleSystem\Effects /ZI /nologo /W3 /WX- /Od /Oy- /D _USE_ANTWEAK /D _DEBUG /D _CRT_SECURE_NO_WARNINGS /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"..\obj\Debug\\" /Fd"..\bin\debug\CinderEngine.pdb" /Gd /TP /analyze- /errorReport:prompt ..\source\Engine\System\Audio\AudioEvents.cpp
+         AudioEvents.cpp
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"..\bin\debug\CinderEngine.exe" /INCREMENTAL /NOLOGO /LIBPATH:..\dependency\opengl\library /LIBPATH:..\dependency\zilch\library /LIBPATH:..\dependency\fmod\library /LIBPATH:..\dependency\AntTweakBar\library glfw3.lib glfw3dll.lib glew32.lib SOIL.lib glut32.lib opengl32.lib fmod_vc.lib Zilch.lib AntTweakBar.lib freetype.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"..\bin\debug\CinderEngine.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /ENTRY:"mainCRTStartup" /DYNAMICBASE /NXCOMPAT /IMPLIB:"..\bin\debug\CinderEngine.lib" /MACHINE:X86 ..\obj\Debug\Core.obj
          ..\obj\Debug\FireStarter.obj
@@ -81,6 +24,7 @@
          ..\obj\Debug\GetData.obj
          ..\obj\Debug\Serializer.obj
          ..\obj\Debug\TreeNavigation.obj
+         ..\obj\Debug\AudioEvents.obj
          ..\obj\Debug\AudioSystem.obj
          ..\obj\Debug\DSP_System.obj
          ..\obj\Debug\Microphone.obj
@@ -178,7 +122,7 @@
          ..\obj\Debug\ZilchComponent.obj
          ..\obj\Debug\WinMain.obj
          ..\obj\Debug\\glmOverloads1.obj
-         CinderEngine.vcxproj -> C:\SandBox\TeamYarbus\Engine\CinderEngine\premake\..\bin\debug\CinderEngine.exe
+         CinderEngine.vcxproj -> C:\Users\AnalogInArse\Desktop\TeamYarbus\Engine\CinderEngine\premake\..\bin\debug\CinderEngine.exe
        PostBuildEvent:
          copy ..\dependency\opengl\library\glfw3.dll ..\bin\debug\
          copy ..\dependency\opengl\library\glew32.dll ..\bin\debug\
@@ -191,8 +135,8 @@
                  1 file(s) copied.
                  1 file(s) copied.
                  1 file(s) copied.
-     1>Done Building Project "C:\SandBox\TeamYarbus\Engine\CinderEngine\premake\CinderEngine.vcxproj" (Build target(s)).
+     1>Done Building Project "C:\Users\AnalogInArse\Desktop\TeamYarbus\Engine\CinderEngine\premake\CinderEngine.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:01:07.94
+Time Elapsed 00:00:02.21

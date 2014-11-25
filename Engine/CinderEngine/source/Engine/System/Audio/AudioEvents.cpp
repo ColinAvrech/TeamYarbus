@@ -14,6 +14,10 @@
 #pragma region Includes
 
 #include "AudioEvents.h"
+#include "KeyEvent.h"
+#include "EventSystem.h"
+#include "WindowFocusEvent.h"
+#include "UpdateEvent.h"
 
 #pragma endregion
 
@@ -55,24 +59,19 @@ namespace Framework
 
   void AudioEvents::Initialize()
   {
-    EVENTSYSTEM->mConnect<KeyEvent, AudioEvents>(Events::KEY_TAB, this, &AudioEvents::AudioEventsUpdate);
+    EVENTSYSTEM->mConnect<WindowFocusEvent, AudioEvents>(Events::WINDOWFOCUSEVENT, this, &AudioEvents::AudioEventsUpdate);
   }
 
-  void AudioEvents::AudioEventsUpdate(KeyEvent* e)
+  void AudioEvents::AudioEventsUpdate(WindowFocusEvent* e)
   {
-    std::cout << "blah" << std::endl;
-
-    if (e->ALTPressed && e->KeyDown)
-    {
-      std::cout << "blah2.0" << std::endl;
-      AUDIOSYSTEM->SetPaused(true, Sound::SFX_ALL);
-    }
-
-    if (e->ALTPressed && !e->KeyDown)
-    {
+    if (e->InFocus)
+    {      
       AUDIOSYSTEM->SetPaused(false, Sound::SFX_ALL);
     }
-
+    else
+    {
+      AUDIOSYSTEM->SetPaused(true, Sound::SFX_ALL);
+    }
   }
 
   #pragma endregion

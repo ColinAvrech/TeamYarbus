@@ -60,17 +60,18 @@ int main (void)
   // TODO Make console accept input by pressing '`', if '`' is pressed again return to game
   
   //! Create the core engine which manages all systems.
-  CoreEngine * engine = new CoreEngine ();
-  Physics::ThermodynamicsSystem * thermo = new Physics::ThermodynamicsSystem ();
-  PhysicsSystemNew* physNew = new PhysicsSystemNew (1.0f / 60.0f, 10);
-  WindowSystem * windows = new WindowSystem (WindowTitle, ClientWidth, ClientHeight, launchFullScreen);
-  AudioSystem* audio = new AudioSystem ();
-  EventSystem * events = new EventSystem ();
-  AudioEvents* audioEvents = new AudioEvents();  audioEvents->Initialize();
-  ScriptSystem * zilch = new ScriptSystem();
+  CoreEngine                    * engine      = new CoreEngine ();
+  Physics::ThermodynamicsSystem * thermo      = new Physics::ThermodynamicsSystem ();
+  PhysicsSystemNew              * physNew     = new PhysicsSystemNew (1.0f / 60.0f, 10);
+  WindowSystem                  * windows     = new WindowSystem (WindowTitle, ClientWidth, ClientHeight, launchFullScreen);
+  AudioSystem                   * audio       = new AudioSystem ();
+  EventSystem                   * events      = new EventSystem ();
+  AudioEvents                   * audioEvents = new AudioEvents();  audioEvents->Initialize();
+  ScriptSystem                  * zilch       = new ScriptSystem();
+  ObjectSystem                  * objsys      = new ObjectSystem ();
+  UISystem                      * ui          = new UISystem ();
+
   //Physics::PhysicsSystem * phys = new Physics::PhysicsSystem ();
-  ObjectSystem* objsys = new ObjectSystem ();
-  UISystem* ui = new UISystem ();
   
   //Adding Pointer to ZilchInterface
   ZInterface::ObjectSys = objsys;
