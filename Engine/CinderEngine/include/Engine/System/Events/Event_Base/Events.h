@@ -118,6 +118,7 @@ namespace Framework
 
   // GameEvents
   DeclareEvent(GAME_LEVELSTARTED, GLEVELSTARTED)
+  DeclareEvent(GAME_ALLOBJECTSINITIALIZED, GALLOBJECTSINITIALIZED)
   DeclareEvent(GAME_MENUSTATECHANGE, GMENUSTATECHANGE)
 
   // Windows System Related Events
