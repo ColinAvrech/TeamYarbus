@@ -33,21 +33,22 @@ namespace Framework
     //vec3 force, accelH = { 1.0f, 0.0f, 0.0f }, accelV = { 0.0f, 1.0f, 0.0f };
     switch (_key->KeyValue)
     {
-    case GLFW_KEY_UP:
-      //gameObject->RigidBody->vel.y = jumpVel;
-      //Physics::applyAccel(accelV, 0.016);
-      //gameObject->Transform->Translate(0, 1, 0);
-      gameObject->RigidBody2D->ApplyForce
-        (
-        Vector2
-        (
-        jumpVel.x * density,
-        jumpVel.y * density
-        )
-        );
-      break;
+    //case GLFW_KEY_UP:
+    //  //gameObject->RigidBody->vel.y = jumpVel;
+    //  //Physics::applyAccel(accelV, 0.016);
+    //  //gameObject->Transform->Translate(0, 1, 0);
+    //  gameObject->RigidBody2D->ApplyForce
+    //    (
+    //    Vector2
+    //    (
+    //    jumpVel.x * density,
+    //    jumpVel.y * density
+    //    )
+    //    );
+    //  break;
 
     case GLFW_KEY_RIGHT:
+      if (gameObject->RigidBody2D->force.x < 0.4f && gameObject->RigidBody2D->force.x > -0.4f)
       gameObject->RigidBody2D->ApplyForce
         (
         Vector2
@@ -62,6 +63,7 @@ namespace Framework
       break;
 
     case GLFW_KEY_LEFT:
+      if (gameObject->RigidBody2D->force.x < 0.4f && gameObject->RigidBody2D->force.x > -0.4f)
       gameObject->RigidBody2D->ApplyForce
         (
         Vector2

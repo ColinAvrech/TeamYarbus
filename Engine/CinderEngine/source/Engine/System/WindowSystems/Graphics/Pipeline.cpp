@@ -278,6 +278,8 @@ namespace Framework
 #ifdef _DEBUG
     PHYSICS->Render ();
 #endif
+
+    PHYSICS->Render ();
   }
 
   void Pipeline::UpdateMatrices ()
