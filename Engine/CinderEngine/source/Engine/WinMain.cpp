@@ -60,17 +60,18 @@ int main (void)
   // TODO Make console accept input by pressing '`', if '`' is pressed again return to game
   
   //! Create the core engine which manages all systems.
-  CoreEngine * engine = new CoreEngine ();
-  Physics::ThermodynamicsSystem * thermo = new Physics::ThermodynamicsSystem ();
-  PhysicsSystemNew* physNew = new PhysicsSystemNew (1.0f / 60.0f, 10);
-  WindowSystem * windows = new WindowSystem (WindowTitle, ClientWidth, ClientHeight, launchFullScreen);
-  AudioSystem* audio = new AudioSystem ();
-  EventSystem * events = new EventSystem ();
-  AudioEvents* audioEvents = new AudioEvents();  audioEvents->Initialize();
-  ScriptSystem * zilch = new ScriptSystem();
+  CoreEngine                    * engine      = new CoreEngine ();
+  Physics::ThermodynamicsSystem * thermo      = new Physics::ThermodynamicsSystem ();
+  PhysicsSystemNew              * physNew     = new PhysicsSystemNew (1.0f / 60.0f, 10);
+  WindowSystem                  * windows     = new WindowSystem (WindowTitle, ClientWidth, ClientHeight, launchFullScreen);
+  AudioSystem                   * audio       = new AudioSystem ();
+  EventSystem                   * events      = new EventSystem ();
+  AudioEvents                   * audioEvents = new AudioEvents();  audioEvents->Initialize();
+  ScriptSystem                  * zilch       = new ScriptSystem();
+  ObjectSystem                  * objsys      = new ObjectSystem ();
+  UISystem                      * ui          = new UISystem ();
+
   //Physics::PhysicsSystem * phys = new Physics::PhysicsSystem ();
-  ObjectSystem* objsys = new ObjectSystem ();
-  UISystem* ui = new UISystem ();
   
   //Adding Pointer to ZilchInterface
   ZInterface::ObjectSys = objsys;
@@ -99,18 +100,16 @@ int main (void)
   //! Initialize all added Systems. DON'T INIT YOUR OWN
   engine->Initialize ();
 
-  Sound *test = audio->LoadSound("Pads.ogg", "NOISE", Sound::SOUND_2D, 1.0f);
-  test->Play();
+  //Sound *test = audio->LoadSound("Pads.ogg", "NOISE", Sound::SOUND_2D, 1.0f);
+  //test->Play();
   //test->GenerateNoise();
   //test->LowPassFilter();
   //test->SetLPF(0, 1.0);
 
   audio->LoadMicData ();
 
-
   //! activate the window.
-  OBJECTSYSTEM->LoadLevel("Level");
-
+  OBJECTSYSTEM->LoadLevel("NewPhysics");
 
   // Connect example
   //MyClass _myclass;

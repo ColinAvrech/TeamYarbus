@@ -81,21 +81,6 @@ namespace Framework
       //Physics::PHYSICSSYSTEM->SplineColliders.push_back (spline);
       //spline->AddLineCollider (edges);
     }
-
-    vao1 = new VAO ();
-    for (unsigned i = 0; i < height_points.size () - 1; ++i)
-    {
-      lineVertices.push_back (height_points [i].x);
-      lineVertices.push_back (height_points [i].y);
-      lineVertices.push_back (height_points [i + 1].x);
-      lineVertices.push_back (height_points [i + 1].y);
-    }
-
-    vbo1 = new VBO (lineVertices.size () * sizeof (float), lineVertices.data ());
-    GLint posAttrib = shader->attribLocation ("position");
-    shader->enableVertexAttribArray (posAttrib);
-    shader->vertexAttribPtr (posAttrib, 2, GL_FLOAT, GL_FALSE, 2 * sizeof (float), 0);
-    vao1->unbindVAO ();
   }
 
 
@@ -103,28 +88,26 @@ namespace Framework
   {
     shader->Use ();
     vao->bindVAO ();
-    //shader->uniMat4 ("mvp", glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix()));
     shader->uni4f ("color", color.r, color.g, color.b, color.a);
-    //shader->enableVertexAttribArray (shader->attribLocation ("position"));
 
-    glDrawArrays (GL_TRIANGLES, 0, vertices.size () / 2);
+    glDrawArrays (GL_TRIANGLES, 0, vertices.size () / 3);
 
     vao->unbindVAO ();
-
-    vao1->bindVAO ();
-    //shader->uniMat4 ("mvp", glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix ()));
-    shader->uni4f ("color", 1, 1, 1, 1.0f);
-    //glDrawArrays (GL_LINES, 0, lineVertices.size () / 2);
-    vao1->unbindVAO ();
     shader->Disable ();
   }
 
-  const float* Terrain2D::GetTerrain(){ return tc->GetRockMap(); }
-  const float* Terrain2D::GetWater(){ return tc->GetWaterMap(); }
-  int Terrain2D::GetWidth(){ return MapSize; }
+  const float* Terrain2D::GetTerrain()
+  {
+    return tc->GetRockMap();
+  }
+
+  int Terrain2D::GetWidth()
+  { 
+    return MapSize;
+  }
 
   std::vector <std::pair <vec2, vec2>>& Terrain2D::Get_Edges()
-{
+  {
     return edges;
   }
 
@@ -297,17 +280,23 @@ namespace Framework
       // Triangle 1
       vertices.push_back (height_points [i].x);
       vertices.push_back (y);
+      vertices.push_back (0);
       vertices.push_back (height_points [i + 1].x);
       vertices.push_back (y);
+      vertices.push_back (0);
       vertices.push_back (height_points [i].x);
       vertices.push_back (height_points [i].y);
+      vertices.push_back (0);
       // Triangle 2
       vertices.push_back (height_points [i + 1].x);
       vertices.push_back (height_points [i + 1].y);
+      vertices.push_back (0);
       vertices.push_back (height_points [i].x);
       vertices.push_back (height_points [i].y);
+      vertices.push_back (0);
       vertices.push_back (height_points [i + 1].x);
       vertices.push_back (y);
+      vertices.push_back (0);
     }
   }
 
@@ -320,7 +309,7 @@ namespace Framework
     vbo = new VBO (vertices.size () * sizeof (float), vertices.data ());
     GLuint posAttrib = shader->attribLocation ("position");
     shader->enableVertexAttribArray (posAttrib);
-    shader->vertexAttribPtr (posAttrib, 2, GL_FLOAT, GL_FALSE, 2 * sizeof (float), 0);
+    shader->vertexAttribPtr (posAttrib, 3, GL_FLOAT, GL_FALSE, 3 * sizeof (float), 0);
 
     vao->unbindVAO ();
   }
