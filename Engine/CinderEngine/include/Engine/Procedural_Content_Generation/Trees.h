@@ -13,18 +13,6 @@
 
 namespace Framework
 {
-
-  /*enum Flora
-  {
-    GRASS,
-    WEEDS,
-    AQUATIC,
-    SHORE_LARGE,
-    LAND_LARGE,
-    SHORE_SMALL,
-    LAND_SMALL
-  };*/
-
   ////////////////////////////////////////////////////////////
   //      ECO SYSTEM
   ////////////////////////////////////////////////////////////
@@ -103,6 +91,9 @@ namespace Framework
     -----------------------------------------------------------------------*/
 #pragma region Private Variables
     const float *terrain;
+    const float *water;
+    int *tree_list;
+    std::pair<int, int>Min_Space; //Implement later
     int MapWidth;
     glm::vec3 Translation;
     glm::vec3 Scale;
@@ -123,7 +114,9 @@ namespace Framework
 #pragma region Private Functions
     void GenerateVegetation();
 
-    void GenerateGrass();
+    void GenerateType(float x, float y, float z, int type, unsigned ID);
+
+    int Evaluate_Compatibility(int pos);
 #pragma endregion
 
 

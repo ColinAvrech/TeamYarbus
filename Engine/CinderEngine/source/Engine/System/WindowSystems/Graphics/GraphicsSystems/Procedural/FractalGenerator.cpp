@@ -110,7 +110,7 @@ namespace Framework
       p1 = glm::vec2 (OPENGL->GetModelMatrix () * glm::vec4 (0, 0, 0, 1));
       p2 = glm::vec2 (OPENGL->GetModelMatrix () * glm::vec4 (0, -sizes.at(i), 0, 1));
       OPENGL->PopMatrix ();
-      color = glm::vec4 (1.0f / (colors.at (i) * treeRed), 1.0f / (colors.at (i) * treeGreen), 0.0f, 1.0f);
+      color = glm::vec4 (0.5f / (colors.at (i) * treeRed), 0.5f / (colors.at (i) * treeGreen), 0.0f, 1.0f);
       mesh->push_back (p1.x);
       mesh->push_back (p1.y);
       mesh->push_back (color.r);

@@ -23,54 +23,55 @@
 namespace Framework
 {
 
-  CharacterController::~CharacterController()
+  CharacterController::~CharacterController ()
   {
 
   }
 
-  void CharacterController::OnKeyPressed(KeyEvent* _key)
+  void CharacterController::OnKeyPressed (KeyEvent* _key)
   {
     //vec3 force, accelH = { 1.0f, 0.0f, 0.0f }, accelV = { 0.0f, 1.0f, 0.0f };
     switch (_key->KeyValue)
     {
-    case GLFW_KEY_UP:
-      //gameObject->RigidBody->vel.y = jumpVel;
-      //Physics::applyAccel(accelV, 0.016);
-      //gameObject->Transform->Translate(0, 1, 0);
-      gameObject->RigidBody2D->ApplyImpulse
-      (
-        Vector2
-        (
-          jumpVel.x * density,
-          jumpVel.y * density
-        ),
-        Vector2 (0, 0)
-      );
-      break;
+    //case GLFW_KEY_UP:
+    //  //gameObject->RigidBody->vel.y = jumpVel;
+    //  //Physics::applyAccel(accelV, 0.016);
+    //  //gameObject->Transform->Translate(0, 1, 0);
+    //  gameObject->RigidBody2D->ApplyForce
+    //    (
+    //    Vector2
+    //    (
+    //    jumpVel.x * density,
+    //    jumpVel.y * density
+    //    )
+    //    );
+    //  break;
 
     case GLFW_KEY_RIGHT:
+      if (gameObject->RigidBody2D->force.x < 0.4f && gameObject->RigidBody2D->force.x > -0.4f)
       gameObject->RigidBody2D->ApplyForce
-      (
+        (
         Vector2
         (
-          acceleration.x * density,
-          acceleration.y * density
+        acceleration.x * density,
+        acceleration.y * density
         )
-      );
+        );
       //if (gameObject->RigidBody->vel.x <= maxXVel)
       //  gameObject->RigidBody->vel.x += accel*0.016f;
       //gameObject->Transform->Translate(1, 0, 0);
       break;
 
     case GLFW_KEY_LEFT:
+      if (gameObject->RigidBody2D->force.x < 0.4f && gameObject->RigidBody2D->force.x > -0.4f)
       gameObject->RigidBody2D->ApplyForce
-      (
+        (
         Vector2
         (
-          -acceleration.x * density,
-          acceleration.y * density
+        -acceleration.x * density,
+        acceleration.y * density
         )
-      );
+        );
       //if (gameObject->RigidBody->vel.x >= -maxXVel)
       //  gameObject->RigidBody->vel.x -= accel*0.016f;
       //gameObject->Transform->Translate(-1, 0, 0);
@@ -107,23 +108,23 @@ namespace Framework
     ////////////////////////////////////////////////////////////////////////
   }
 
-  void CharacterController::OnCollisionEnter(CollisionEvent* collision)
+  void CharacterController::OnCollisionEnter (CollisionEvent* collision)
   {
     //if (collision->OtherObject->LineCollider)
     //  collision->OtherObject->Transform->Translate(-collision->normal.x * 0.05f, -collision->normal.y * 0.05f, 0.0f);
   }
 
-  void CharacterController::Update(UpdateEvent* e)
+  void CharacterController::Update (UpdateEvent* e)
   {
     float micValue = AUDIOSYSTEM->GetMicrophoneValue ();
-    gameObject->RigidBody2D->ApplyForce 
-    (
+    gameObject->RigidBody2D->ApplyForce
+      (
       Vector2
       (
-        micValue * microhponeMultiplier.x * density,
-        micValue * microhponeMultiplier.y * density
+      micValue * microhponeMultiplier.x * density,
+      micValue * microhponeMultiplier.y * density
       )
-    );
+      );
     ////how to get line collider
     ////gameObject->CircleCollider->DetectLine(gameObject->LineCollider);
     ////go1->CircleCollider->DetectCircle(go2->CircleCollider);
@@ -147,7 +148,7 @@ namespace Framework
 
 
   /*!Telegraph that the component is active*/
-  void CharacterController::Initialize()
+  void CharacterController::Initialize ()
   {
     //accel = { 0 , 0 };
     //maxAcceleration = { 50, 100 };
@@ -156,12 +157,12 @@ namespace Framework
     //currentforce = 0;
     density = gameObject->ShapeCollider2D->Density;
 
-    EVENTSYSTEM->mConnect<KeyEvent, CharacterController>(Events::KEY_ANY, this, &CharacterController::OnKeyPressed);
-    EVENTSYSTEM->mConnect<CollisionEvent, CharacterController>(Events::COLLISION, this, &CharacterController::OnCollisionEnter);
-    EVENTSYSTEM->mConnect<UpdateEvent, CharacterController>(Events::UPDATEEVENT, this, &CharacterController::Update);
+    EVENTSYSTEM->mConnect<KeyEvent, CharacterController> (Events::KEY_ANY, this, &CharacterController::OnKeyPressed);
+    EVENTSYSTEM->mConnect<CollisionEvent, CharacterController> (Events::COLLISION, this, &CharacterController::OnCollisionEnter);
+    EVENTSYSTEM->mConnect<UpdateEvent, CharacterController> (Events::UPDATEEVENT, this, &CharacterController::Update);
   }
 
-  void CharacterController::Serialize(Serializer::DataNode* data)
+  void CharacterController::Serialize (Serializer::DataNode* data)
   {
     Serializer::DataNode* value = data->FindElement (data, "MicrophoneMultiplier");
     value->GetValue (&microhponeMultiplier);
@@ -173,5 +174,5 @@ namespace Framework
     value->GetValue (&jumpVel);
   }
 
-  DefineComponentName(CharacterController);
+  DefineComponentName (CharacterController);
 }

@@ -31,9 +31,10 @@ namespace Framework
     float DotProduct(const vec3& u, const vec3& v);
 	vec3 applyNetForce(const vec3& sumForce, double InvMass);
     vec3 applyAccel(const vec3& accel, double dt);
-    vec2 getNormal(const vec3& p1, const vec3& p2);
+    vec2 Normal(const vec3& p1, const vec3& p2);
     vec3 getAccel(const vec3& force, double mass);
     vec3 getReflection(const vec3& normal, const vec3& velocity);
+    vec3 Normal(const vec3& v1, const vec3& v2, const vec3& v3);
     //vec3 applyConstVelocity(GameObject * go, vec3 initial);
 
   } //Physics
