@@ -106,19 +106,20 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [-15, -4.5, -2],
+			Vec3 Translation = [-15, -3.0, -2],
 			Vec3 Scale = [20, 4, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Terrain2D = 
 		{
-      int MapSize = 128,
+      int MapSize = 64,
+      int MapDepth = 2,
       int BaseHeight = 32,
       int PeakHeight = 64,
       int Passes = 0,
       int Waves = 1,
       int Water = 0,
-      Vec4 Color = [0.2, 0.3, 0.2, 1],
+      Vec4 Color = [0, 0.2, 0.5, 1],
       bool AddCollider = false,
 		},
   },
@@ -191,7 +192,7 @@ Level =
     CharacterController = 
     {
       Vec2 Acceleration = [100, 0],
-      Vec2 JumpVelocity = [0, 10],
+      Vec2 JumpVelocity = [0, 600],
       Vec2 MicrophoneMultiplier = [0, 75],
     },
 	},
