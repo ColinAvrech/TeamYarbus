@@ -21,6 +21,7 @@
 #define MenuChangeEventPrefix 'm'
 #define KeyEventPrefix 'K'
 #define PingEventPrefix 'P'
+#define WindowFocusEventPrefix 'F'
 #define GameEventPrefix 'G'
 #define UIEventPrefix 'I'
 
@@ -120,6 +121,9 @@ namespace Framework
   DeclareEvent(GAME_MENUSTATECHANGE, GMENUSTATECHANGE)
 
   // Windows System Related Events
+
+  // WindowFocus
+  DeclareEvent(WINDOWFOCUSEVENT, FWindow)
 
   //DeclareEvent(GAME_WINDOW)
 
