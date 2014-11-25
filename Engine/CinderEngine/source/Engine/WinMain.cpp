@@ -110,7 +110,7 @@ int main (void)
 
 
   //! activate the window.
-  OBJECTSYSTEM->LoadLevel("NewPhysics");
+  OBJECTSYSTEM->LoadLevel("Level");
 
 
   // Connect example

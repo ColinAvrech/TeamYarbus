@@ -23,9 +23,10 @@ namespace Framework
     GameObject* Bodies[2];
     glm::vec3 Movement[2];
     glm::vec3 ContactNormal;
+    float normal_angle;
     float t;       //intersection time
     glm::vec3 pi;  //intersection point
-    float Penetration;
+    glm::vec2 Penetration;
     float Restitution;
     float FrictionCof;
 
