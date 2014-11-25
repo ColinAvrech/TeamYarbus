@@ -107,7 +107,7 @@ int main (void)
 
 
   //! activate the window.
-  OBJECTSYSTEM->LoadLevel("ZilchTestLevel");
+  OBJECTSYSTEM->LoadLevel("NewPhysics");
 
 
   // Connect example
