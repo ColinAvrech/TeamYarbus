@@ -360,7 +360,7 @@ namespace Framework
       switch (key->KeyValue)
       {
       case GLFW_KEY_ESCAPE:
-        CORE->QuitGame ();
+        CORE->TogglePaused();
         break;
       default:
         break;

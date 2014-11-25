@@ -3,6 +3,7 @@
 #include "Collider2D.h"
 #include "GameObject.h"
 #include "WindowSystem.h"
+#include "Core.h"
 
 
 namespace Framework
