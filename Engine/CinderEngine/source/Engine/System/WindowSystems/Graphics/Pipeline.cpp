@@ -275,12 +275,9 @@ namespace Framework
       i->UIDraw ();
     }
 
-    for (auto* i : debugColliders)
-    {
-      i->Draw ();
-    }
-
-    //PHYSICS->Render ();
+#ifdef _DEBUG
+    PHYSICS->Render ();
+#endif
   }
 
   void Pipeline::UpdateMatrices ()

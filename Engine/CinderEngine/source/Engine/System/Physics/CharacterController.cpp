@@ -37,14 +37,13 @@ namespace Framework
       //gameObject->RigidBody->vel.y = jumpVel;
       //Physics::applyAccel(accelV, 0.016);
       //gameObject->Transform->Translate(0, 1, 0);
-      gameObject->RigidBody2D->ApplyImpulse
+      gameObject->RigidBody2D->ApplyForce
       (
         Vector2
         (
           jumpVel.x * density,
           jumpVel.y * density
-        ),
-        Vector2 (0, 0)
+        )
       );
       break;
 
