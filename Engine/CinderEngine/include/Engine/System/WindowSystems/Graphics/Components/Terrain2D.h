@@ -35,6 +35,7 @@ namespace Framework
   void Generate_Vertices ();
   void Generate_Buffers ();
   const float* GetTerrain();
+  const float* GetWater();
   int GetWidth();
   const static string Name;
 

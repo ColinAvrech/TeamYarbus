@@ -103,7 +103,7 @@ namespace Framework
     {
       if (WaterDepth > 0)
       {
-        GenerateHeightMap(&HeightMapWater, 0, WaterDepth);
+        GenerateHeightMap(&HeightMapWater, 0, 1);
         SettleWater();
       }
     }

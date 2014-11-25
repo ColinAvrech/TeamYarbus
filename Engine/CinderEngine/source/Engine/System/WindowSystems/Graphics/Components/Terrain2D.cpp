@@ -120,6 +120,7 @@ namespace Framework
   }
 
   const float* Terrain2D::GetTerrain(){ return tc->GetRockMap(); }
+  const float* Terrain2D::GetWater(){ return tc->GetWaterMap(); }
   int Terrain2D::GetWidth(){ return MapSize; }
 
   std::vector <std::pair <vec2, vec2>>& Terrain2D::Get_Edges()
