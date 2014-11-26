@@ -1,0 +1,8 @@
+DPLogo.data
+YarbusLogo.data
+ControlPrompt.data
+MainMenu.data
+HowToPlay.data
+Options.data
+Level1.data
+Credits.data
