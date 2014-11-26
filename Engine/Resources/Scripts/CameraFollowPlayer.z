@@ -22,6 +22,6 @@ class CameraFollow : Component
 		
 		
 		Camera.Main.Owner.Transform.SetTranslation(newpos) ;
-		
-	}
+			
+	} 
 }

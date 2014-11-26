@@ -33,7 +33,7 @@ Level =
 			bool Active = true,
 			bool Blocking = true,
 			uint Renderer = 1,
-			uint Camera = 2,
+			uint Camera = 1,
 			ViewportScaling Scaling = Fill,
 			Vec2 Resolution = [1280, 720],
 			Vec4 MarginColor = [0, 0, 0, 1],
@@ -64,9 +64,9 @@ Level =
 			bool main = true,
 			Vec3 Facing = [0, 0, 1],
 			float FieldOfView = 120,
-			float NearPlane = 1,
+			float NearPlane = 0,
 			float FarPlane = 20,
-			float Size = 20,
+			float Size = 1,
 		},
   },
 	Cog = 
@@ -82,7 +82,7 @@ Level =
 		Transform = 
 		{
 			Vec3 Translation = [0, 0, 0],
-			Vec3 Scale = [1, 1, 0.1],
+			Vec3 Scale = [1, 1, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Sprite = 
@@ -93,55 +93,6 @@ Level =
 		},
 		Josh = 
 		{
-		},
-	},
-	Cog = 
-	{
-		LinkId = 
-		{
-			uint Id = 3,
-		},
-		Named = 
-		{
-			string Name = "Ground",
-		},
-		Transform = 
-		{
-			Vec3 Translation = [0, 0, 0],
-			Vec3 Scale = [5, 5, 1],
-			Quat Rotation = [0, 0, 0, 1],
-		},
-		UIBox = 
-		{
-		  Vec2 Dimension = [2, 1],
-			string SpriteSource = "UIExitWhite.png",
-			Vec4 NormalColor = [1, 1, 1, 1],
-		  Vec4 HoverColor = [1, 0, 0, 1],
-		  Vec4 DownColor = [0, 0, 1, 1],
-		  string Message = "Exit",
-		},
-	},
-	Cog = 
-	{
-		LinkId = 
-		{
-			uint Id = 2,
-		},
-		Named = 
-		{
-			string Name = "Ground",
-		},
-		Transform = 
-		{
-			Vec3 Translation = [1, 0, 10],
-			Vec3 Scale = [1, 1, 1],
-			Quat Rotation = [1, 0, 0, 1],
-		},
-		Sprite = 
-		{
-			string SpriteSource = "Default",
-			string Shader = "Default",
-			Vec4 Color = [1, 1,	1, 1],
 		},
 	},
 },

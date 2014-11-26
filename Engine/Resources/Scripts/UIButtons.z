@@ -26,9 +26,16 @@ class ExitButton : Component
 	
 	function OnMouseEvent(e: MouseEvent)
 	{
-		if (e.State == MouseState.MouseOutside)
+		if (e.State == MouseState.MouseInside)
 		{
-			//Console.WriteLine("Outside");
+			Console.WriteLine(InputManager.IsMouseTriggered(Mouse.LEFT));
+			
+			if (InputManager.IsMouseTriggered(Mouse.LEFT))
+			{
+				
+				Console.WriteLine("QUIT");
+			}
+			
 		}
 		else if (e.State == MouseState.MouseEnter)
 		{
