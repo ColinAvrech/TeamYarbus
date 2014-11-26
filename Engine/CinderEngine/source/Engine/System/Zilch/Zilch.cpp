@@ -6,10 +6,6 @@
 
 // Includes
 
-
-
-
-
 namespace Zilch
 {
   //***************************************************************************
@@ -28,7 +24,7 @@ namespace Zilch
     ZilchErrorIfNotStarted(Any);
 
     // Get how big the copyable size of the object is (size of a handle, or the entire value size)
-    ObjectSize copyableSize = type->GetCopyableSize();
+    size_t copyableSize = type->GetCopyableSize();
 
     // Allocate room to store this type (may store locally and not actually allocate)
     byte* destination = this->AllocateData(copyableSize);
@@ -44,7 +40,7 @@ namespace Zilch
     ZilchErrorIfNotStarted(Any);
     
     // Get how big the copyable size of the object is (size of a handle, or the entire value size)
-    ObjectSize copyableSize = type->GetCopyableSize();
+    size_t copyableSize = type->GetCopyableSize();
 
     // Allocate room to store this type (may store locally and not actually allocate)
     byte* destination = this->AllocateData(copyableSize);
@@ -64,7 +60,7 @@ namespace Zilch
     if (this->StoredType != nullptr)
     {
       // Get how big the copyable size of the object is (size of a handle, or the entire value size)
-      ObjectSize copyableSize = this->StoredType->GetCopyableSize();
+      size_t copyableSize = this->StoredType->GetCopyableSize();
 
       // Allocate room to store this type (may store locally and not actually allocate)
       byte* destination = this->AllocateData(copyableSize);
@@ -87,7 +83,7 @@ namespace Zilch
   }
 
   //***************************************************************************
-  byte* Any::AllocateData(ObjectSize size)
+  byte* Any::AllocateData(size_t size)
   {
     // We assume that the size of the object will fit within our data section
     byte* result = this->Data;
@@ -110,7 +106,7 @@ namespace Zilch
   const byte* Any::GetData() const
   {
     // Get the size of the handle, delegate, or entire value type (copyable size)
-    ObjectSize copyableSize = this->StoredType->GetCopyableSize();
+    size_t copyableSize = this->StoredType->GetCopyableSize();
 
     // If the type is bigger then we can store... (note than storing an 'any' inside an 'any' will always hit this case!)
     if (copyableSize > sizeof(this->Data))
@@ -130,7 +126,7 @@ namespace Zilch
     if (this->StoredType != nullptr)
     {
       // Get the size of the handle, delegate, or entire value type (copyable size)
-      ObjectSize copyableSize = this->StoredType->GetCopyableSize();
+      size_t copyableSize = this->StoredType->GetCopyableSize();
 
       // Memory that we need to free
       byte* toBeDeleted = nullptr;
@@ -179,7 +175,7 @@ namespace Zilch
     if (this->StoredType != nullptr)
     {
       // Get how big the copyable size of the object is (size of a handle, or the entire value size)
-      ObjectSize copyableSize = this->StoredType->GetCopyableSize();
+      size_t copyableSize = this->StoredType->GetCopyableSize();
 
       // Allocate room to store this type (may store locally and not actually allocate)
       byte* destination = this->AllocateData(copyableSize);
@@ -256,7 +252,7 @@ namespace Zilch
     this->Clear();
 
     // Get the copyable size (size of the handle, deleget, or value type, etc)
-    ObjectSize copyableSize = type->GetCopyableSize();
+    size_t copyableSize = type->GetCopyableSize();
 
     // Allocate room to store this type (may store locally and not actually allocate)
     byte* destination = this->AllocateData(copyableSize);
@@ -280,7 +276,7 @@ namespace Zilch
     this->StoredType = type;
 
     // Get the copyable size (size of the handle, deleget, or value type, etc)
-    ObjectSize copyableSize = type->GetCopyableSize();
+    size_t copyableSize = type->GetCopyableSize();
 
     // Allocate room to store this type (may store locally and not actually allocate)
     byte* destination = this->AllocateData(copyableSize);
@@ -296,7 +292,7 @@ namespace Zilch
     ErrorIf(this->StoredType == nullptr, "The any does not contain a type!");
 
     // Get the size of the handle, delegate, or entire value type (copyable size)
-    ObjectSize copyableSize = this->StoredType->GetCopyableSize();
+    size_t copyableSize = this->StoredType->GetCopyableSize();
 
     // Where we store the memory that needs to be copied from
     const byte* data = this->GetData();
@@ -331,10 +327,6 @@ namespace Zilch
 \**************************************************************/
 
 // Includes
-
-
-
-
 
 namespace Zilch
 {
@@ -946,7 +938,6 @@ namespace Zilch
       call.SetHandle(Call::Return, rangeHandle);
     }
 
-
     //***************************************************************************
     static void ArrayAll(Call& call, ExceptionReport& report)
     {
@@ -1377,10 +1368,6 @@ namespace Zilch
 
 // Includes
 
-
-
-
-
 namespace Zilch
 {
   //***************************************************************************
@@ -1524,7 +1511,7 @@ namespace Zilch
   BoundType* StaticLibrary::MakeType
   (
     StringParam         name,
-    ObjectSize          size,
+    size_t              size,
     TypeCopyMode::Enum  copyMode,
     BoundType*          parent,
     size_t              nativeVirtualCount
@@ -1751,31 +1738,33 @@ namespace Zilch
   }
 
   //***************************************************************************
-  ZilchDefineRedirectType(bool,               Core::GetInstance().BooleanType);
-  ZilchDefineRedirectType(Boolean2,           Core::GetInstance().Boolean2Type);
-  ZilchDefineRedirectType(Boolean3,           Core::GetInstance().Boolean3Type);
-  ZilchDefineRedirectType(Boolean4,           Core::GetInstance().Boolean4Type);
-  ZilchDefineRedirectType(char,               Core::GetInstance().IntegerType);
-  ZilchDefineRedirectType(signed   char,      Core::GetInstance().IntegerType);
-  ZilchDefineRedirectType(unsigned char,      Core::GetInstance().IntegerType);
-  ZilchDefineRedirectType(signed   short,     Core::GetInstance().IntegerType);
-  ZilchDefineRedirectType(unsigned short,     Core::GetInstance().IntegerType);
-  ZilchDefineRedirectType(signed   int,       Core::GetInstance().IntegerType);
-  ZilchDefineRedirectType(unsigned int,       Core::GetInstance().IntegerType);
-  ZilchDefineRedirectType(signed   long,      Core::GetInstance().IntegerType);
-  ZilchDefineRedirectType(unsigned long,      Core::GetInstance().IntegerType);
-  ZilchDefineRedirectType(Integer2,           Core::GetInstance().Integer2Type);
-  ZilchDefineRedirectType(Integer3,           Core::GetInstance().Integer3Type);
-  ZilchDefineRedirectType(Integer4,           Core::GetInstance().Integer4Type);
-  ZilchDefineRedirectType(float,              Core::GetInstance().RealType);
-  ZilchDefineRedirectType(Real2,              Core::GetInstance().Real2Type);
-  ZilchDefineRedirectType(Real3,              Core::GetInstance().Real3Type);
-  ZilchDefineRedirectType(Real4,              Core::GetInstance().Real4Type);
-  ZilchDefineRedirectType(Quaternion,         Core::GetInstance().QuaternionType);
-  ZilchDefineRedirectType(String,             Core::GetInstance().StringType);
-  ZilchDefineRedirectType(signed   long long, Core::GetInstance().DoubleIntegerType);
-  ZilchDefineRedirectType(unsigned long long, Core::GetInstance().DoubleIntegerType);
-  ZilchDefineRedirectType(double,             Core::GetInstance().DoubleRealType);
+  ZilchDefineSimpleExternalType(Boolean,        Core);
+  ZilchDefineSimpleExternalType(Boolean2,       Core);
+  ZilchDefineSimpleExternalType(Boolean3,       Core);
+  ZilchDefineSimpleExternalType(Boolean4,       Core);
+  ZilchDefineSimpleExternalType(Integer,        Core);
+  ZilchDefineSimpleExternalType(Integer2,       Core);
+  ZilchDefineSimpleExternalType(Integer3,       Core);
+  ZilchDefineSimpleExternalType(Integer4,       Core);
+  ZilchDefineSimpleExternalType(Real,           Core);
+  ZilchDefineSimpleExternalType(Real2,          Core);
+  ZilchDefineSimpleExternalType(Real3,          Core);
+  ZilchDefineSimpleExternalType(Real4,          Core);
+  ZilchDefineSimpleExternalType(Quaternion,     Core);
+  ZilchDefineSimpleExternalType(String,         Core);
+  ZilchDefineSimpleExternalType(DoubleReal,     Core);
+  ZilchDefineSimpleExternalType(DoubleInteger,  Core);
+
+  // All the redirection types
+  ZilchDefineSimpleRedirectType(         char     );
+  ZilchDefineSimpleRedirectType(signed   char     );
+  ZilchDefineSimpleRedirectType(unsigned char     );
+  ZilchDefineSimpleRedirectType(signed   short    );
+  ZilchDefineSimpleRedirectType(unsigned short    );
+  ZilchDefineSimpleRedirectType(unsigned int      );
+  ZilchDefineSimpleRedirectType(signed   long     );
+  ZilchDefineSimpleRedirectType(unsigned long     );
+  ZilchDefineSimpleRedirectType(unsigned long long);
 }
 /**************************************************************\
 * Author: Trevor Sundberg
@@ -1783,8 +1772,6 @@ namespace Zilch
 \**************************************************************/
 
 // Includes
-
-
 
 namespace Zilch
 {
@@ -1836,9 +1823,6 @@ cdecoder.c - c source to a base64 decoding algorithm implementation
 This is part of the libb64 project, and has been placed in the public domain.
 For details, see http://sourceforge.net/projects/libb64
 */
-
-
-
 
 int base64_decode_value(char value_in)
 {
@@ -1926,7 +1910,6 @@ This is part of the libb64 project, and has been placed in the public domain.
 For details, see http://sourceforge.net/projects/libb64
 */
 
-
 /*
 cencode.h - c header for a base64 encoding algorithm
 
@@ -1961,10 +1944,7 @@ size_t base64_encode_blockend(char* code_out, base64_encodestate* state_in);
 
 #endif /* BASE64_CENCODE_H */
 
-
-
 const int CHARS_PER_LINE = 72;
-
 
 int compute_base64_size(int length)
 {
@@ -2075,18 +2055,6 @@ size_t base64_encode_blockend(char* code_out, base64_encodestate* state_in)
 
 // Includes
 
-
-
-
-
-
-
-
-
-
-
-
-
 namespace Zilch
 {
   //***************************************************************************
@@ -2098,8 +2066,6 @@ namespace Zilch
     // Walk all any type of expression (often, expressions are nested within each other)
     this->FunctionWalker.Register(&CodeGenerator::GenerateFunction);
     this->FunctionWalker.Register(&CodeGenerator::GeneratePreConstructorAndPushClassContext);
-    this->FunctionWalker.RegisterDerived<ConstructorNode>(&CodeGenerator::GenerateConstructorAndDestructor);
-    this->FunctionWalker.RegisterDerived<DestructorNode>(&CodeGenerator::GenerateConstructorAndDestructor);
     this->FunctionWalker.Register(&CodeGenerator::GenerateEnumValueProperties);
     this->FunctionWalker.Register(&CodeGenerator::GenerateEventNameProperties);
 
@@ -2163,35 +2129,14 @@ namespace Zilch
   }
 
   //***************************************************************************
-  void CodeGenerator::SetupGenericFunction(GenericFunctionNode* node, BoundType* classType)
-  {
-    // Store the function for ease of use
-    CompiledFunction* function = node->Function;
-
-    // Set the bound function
-    function->BoundFunction = VirtualMachine::ExecuteNext;
-  }
-
-  //***************************************************************************
   void CodeGenerator::GenerateFunction(FunctionNode*& node, GeneratorContext* context)
   {
-    // Setup everything we need for this function node
-    this->SetupGenericFunction(node, context->ClassTypeStack.back());
-
     // Store the return type for ease of use
-    Type* returnType = node->Function->Type->Return;
-
+    Function* function = node->DefinedFunction;
+    Type* returnType = function->Type->Return;
+    
     // Reserve registers (in the front) for the function's return value (void is size 0)
-    node->Function->RequiredStackSpace += returnType->GetCopyableSize();
-  }
-
-  //***************************************************************************
-  void CodeGenerator::GenerateConstructorAndDestructor(GenericFunctionNode*& node, GeneratorContext* context)
-  {
-    // Setup everything we need for this constructor node
-    // Note that we have no return to worry about, so our stack
-    // size only consists of parameters and the this handle
-    this->SetupGenericFunction(node, context->ClassTypeStack.back());
+    function->RequiredStackSpace += returnType->GetCopyableSize();
   }
 
   //***************************************************************************
@@ -2212,10 +2157,7 @@ namespace Zilch
   void CodeGenerator::GeneratePreConstructorAndPushClassContext(ClassNode*& node, GeneratorContext* context)
   {
     // Store the pre-constructor for ease of use
-    CompiledFunction* preCtor = node->PreConstructor;
-
-    // Set the bound function
-    preCtor->BoundFunction = VirtualMachine::ExecuteNext;
+    Function* preCtor = node->PreConstructor;
 
     // Since the pre-constructor has no returns and parameters, we need no required stack space
     preCtor->RequiredStackSpace = 0;
@@ -2262,7 +2204,7 @@ namespace Zilch
   void CodeGenerator::ClassAndPreconstructorContext(ClassNode*& node, GeneratorContext* context)
   {
     // Store the pre-constructor for convenience
-    CompiledFunction* preCtor = node->PreConstructor;
+    Function* preCtor = node->PreConstructor;
 
     // We're about to generate code for the pre-constructor, push it onto the stack
     context->FunctionStack.push_back(preCtor);
@@ -2288,7 +2230,8 @@ namespace Zilch
   {
     // Push the function onto the stack so that children can access it
     // (the top of the stack will be the most relevant function to them)
-    context->FunctionStack.push_back(node->Function);
+    Function* function = node->DefinedFunction;
+    context->FunctionStack.push_back(function);
 
     // Loop through all the parameters
     // The parameters are supposed to occur before checking if the function is static
@@ -2303,13 +2246,13 @@ namespace Zilch
 
     // Because it hasn't been done yet, we need to generate a 'this' variable for the function
     // If the function is a member function (non static)...
-    if (node->Function->This != nullptr)
+    if (function->This != nullptr)
     {
       // Get the 'this' variable
-      Variable* thisVariable = node->Function->This;
+      Variable* thisVariable = function->This;
 
       // The variable's position will be after all the parameters
-      thisVariable->Local = node->Function->AllocateRegister(node->Function->This->ResultType->GetCopyableSize());
+      thisVariable->Local = function->AllocateRegister(function->This->ResultType->GetCopyableSize());
     }
 
     // Loop through all the statements
@@ -2323,10 +2266,10 @@ namespace Zilch
     Core& core = Core::GetInstance();
 
     // If the function has no return type and not all code paths return...
-    if (Type::IsSame(node->Function->Type->Return, core.VoidType) && node->AllPathsReturn == false)
+    if (Type::IsSame(function->Type->Return, core.VoidType) && node->AllPathsReturn == false)
     {
       // Generate an implicit return opcode at the end of the function
-      node->Function->AllocateArgumentFreeOpcode(Instruction::Return, DebugOrigin::FunctionContext, node->Location);
+      function->AllocateArgumentFreeOpcode(Instruction::Return, DebugOrigin::FunctionContext, node->Location.GetEndOnlyLocation());
     }
 
     // We are exiting this function, so pop it off
@@ -2354,7 +2297,7 @@ namespace Zilch
   void CodeGenerator::GenerateParameter(ParameterNode*& node, GeneratorContext* context)
   {
     // Get a reference to the current function that we're building
-    CompiledFunction* function = context->FunctionStack.back();
+    Function* function = context->FunctionStack.back();
 
     ZilchTodo("Default parameter values (expressions)");
     
@@ -2375,7 +2318,7 @@ namespace Zilch
   void CodeGenerator::GenerateLocalVariable(LocalVariableNode*& node, GeneratorContext* context)
   {
     // Get a reference to the current function that we're building
-    CompiledFunction* function = context->FunctionStack.back();
+    Function* function = context->FunctionStack.back();
 
     // Make sure we generate code for the initial value of the variable
     context->Walker->Walk(this, node->InitialValue, context);
@@ -2383,40 +2326,27 @@ namespace Zilch
     // Note: This node is not an expression, and therefore does not result in setting an Access/Operand on the node
     // Instead it uses an associated 'CreatedVariable' object to communicate where it's value is stored
 
-    // WARNING: We had an optimization in to avoid copying locals, however, this optimization does not know
-    // that a member of a local struct allocated on the stack is NOT a temporary, and therefore messes up
+    // This expression's result will be stored in the last created register
+    node->CreatedVariable->Local = function->AllocateRegister(node->CreatedVariable->ResultType->GetCopyableSize());
 
-    // If the initial value we're referecing is temporary (and not a variable reference itself...)
-    //if (TypeBinding::DynamicCast<LocalVariableReferenceNode*>(node->InitialValue) != nullptr ||
-    //    node->InitialValue->Access.Type != OperandType::Local)
-    //{
-      // This expression's result will be stored in the last created register
-      node->CreatedVariable->Local = function->AllocateRegister(node->CreatedVariable->ResultType->GetCopyableSize());
-
-      // Generate a copy to copy the initial value to the local register
-      // The register is not yet initialized, so this must be an init copy
-      GenerateCopyInitialize
-      (
-        *function,
-        node->CreatedVariable->ResultType,
-        node->InitialValue->Access,
-        Operand(node->CreatedVariable->Local),
-        DebugOrigin::LocalVariable,
-        node->Location
-      );
-    //}
-    //else
-    //{
-    //  // The value we're referencing is local, and not a reference to another variable (temporarily generated)
-    //  node->CreatedVariable->Local = node->InitialValue->Access.HandleConstantLocal;
-    //}
+    // Generate a copy to copy the initial value to the local register
+    // The register is not yet initialized, so this must be an init copy
+    GenerateCopyInitialize
+    (
+      function,
+      node->CreatedVariable->ResultType,
+      node->InitialValue->Access,
+      Operand(node->CreatedVariable->Local),
+      DebugOrigin::LocalVariable,
+      node->Location
+    );
   }
   
   //***************************************************************************
   void CodeGenerator::GenerateDebugBreak(DebugBreakNode*& node, GeneratorContext* context)
   {
     // Get a reference to the current function that we're building
-    CompiledFunction* function = context->FunctionStack.back();
+    Function* function = context->FunctionStack.back();
 
     // Generate the simple debug breakpoint opcode
     function->AllocateOpcode<Opcode>(Instruction::InternalDebugBreakpoint, DebugOrigin::DebugBreak, node->Location);
@@ -2426,7 +2356,7 @@ namespace Zilch
   void CodeGenerator::GenerateMemberVariablePreConstructor(MemberVariableNode*& node, GeneratorContext* context)
   {
     // Get a reference to the current function that we're building
-    CompiledFunction* function = context->FunctionStack.back();
+    Function* function = context->FunctionStack.back();
 
     // The function should always be the pre-constructor
     ErrorIf(function != context->ClassTypeStack.back()->PreConstructor,
@@ -2453,7 +2383,7 @@ namespace Zilch
       // Since this is copying over un-initialized memory, then this is a init copy
       GenerateCopyInitialize
       (
-        *function,
+        function,
         node->ResultType,
         node->InitialValue->Access,
         destination,
@@ -2491,7 +2421,7 @@ namespace Zilch
     Array<IfEndJump> jumpsAfterEveryElse;
 
     // Get a pointer to the current function that we're building
-    CompiledFunction* function = context->FunctionStack.back();
+    Function* function = context->FunctionStack.back();
 
     // Walk through all the parts of the if statement
     for (size_t i = 0; i < node->IfParts.size(); ++i)
@@ -2562,7 +2492,7 @@ namespace Zilch
   void CodeGenerator::GenerateStatements(GeneratorContext* context, ScopeNode* node)
   {
     // Get a pointer to the current function that we're building
-    CompiledFunction* function = context->FunctionStack.back();
+    Function* function = context->FunctionStack.back();
 
     // Loop through all the statements
     for (size_t i = 0; i < node->Statements.size(); ++i)
@@ -2576,7 +2506,7 @@ namespace Zilch
   void CodeGenerator::GenerateLoopStatementsAndContinues(GeneratorContext* context, LoopScopeNode* node)
   {
     // Get a pointer to the current function that we're building
-    CompiledFunction* function = context->FunctionStack.back();
+    Function* function = context->FunctionStack.back();
 
     // Generate all statements for the loop node
     this->GenerateStatements(context, node);
@@ -2603,7 +2533,7 @@ namespace Zilch
   void CodeGenerator::GenerateBackwardsLoopJump(GeneratorContext* context, size_t backwardsJumpInstructionIndex, const CodeLocation& debugLocation)
   {
     // Get a pointer to the current function that we're building
-    CompiledFunction* function = context->FunctionStack.back();
+    Function* function = context->FunctionStack.back();
 
     // Determine the jump offset that we'd like to jump
     ByteCodeOffset jumpOffset = (ByteCodeOffset)(backwardsJumpInstructionIndex - function->GetCurrentOpcodeIndex());
@@ -2617,7 +2547,7 @@ namespace Zilch
   void CodeGenerator::GenerateLoopBreaks(GeneratorContext* context, LoopScopeNode* node)
   {
     // Get a pointer to the current function that we're building
-    CompiledFunction* function = context->FunctionStack.back();
+    Function* function = context->FunctionStack.back();
 
     // By here, we should have collected any break statements
     // and finished the opcode that returns to the beginning of the loop
@@ -2642,7 +2572,7 @@ namespace Zilch
   void CodeGenerator::GenerateTimeout(TimeoutNode*& node, GeneratorContext* context)
   {
     // Get a pointer to the current function that we're building
-    CompiledFunction* function = context->FunctionStack.back();
+    Function* function = context->FunctionStack.back();
 
     // Generate the beginning of the scope
     function->AllocateOpcode<Opcode>(Instruction::BeginScope, DebugOrigin::Timeout, node->Location);
@@ -2665,7 +2595,7 @@ namespace Zilch
   void CodeGenerator::GenerateWhile(WhileNode*& node, GeneratorContext* context)
   {
     // Get a pointer to the current function that we're building
-    CompiledFunction* function = context->FunctionStack.back();
+    Function* function = context->FunctionStack.back();
 
     // Store the index that we'd like to jump back to at the end of the loop
     size_t backwardsJumpInstructionIndex = function->GetCurrentOpcodeIndex();
@@ -2706,7 +2636,7 @@ namespace Zilch
   void CodeGenerator::GenerateDoWhile(DoWhileNode*& node, GeneratorContext* context)
   {
     // Get a pointer to the current function that we're building
-    CompiledFunction* function = context->FunctionStack.back();
+    Function* function = context->FunctionStack.back();
 
     // Store the index that we'd like to jump back to at the end of the loop
     size_t backwardsJumpInstructionIndex = function->GetCurrentOpcodeIndex();
@@ -2760,7 +2690,7 @@ namespace Zilch
   void CodeGenerator::GenerateFor(ForNode*& node, GeneratorContext* context)
   {
     // Get a pointer to the current function that we're building
-    CompiledFunction* function = context->FunctionStack.back();
+    Function* function = context->FunctionStack.back();
 
     // If we have a range variable, generate it first
     if (node->RangeVariable != nullptr)
@@ -2826,7 +2756,7 @@ namespace Zilch
   void CodeGenerator::GenerateScope(ScopeNode*& node, GeneratorContext* context)
   {
     // Get a pointer to the current function that we're building
-    CompiledFunction* function = context->FunctionStack.back();
+    Function* function = context->FunctionStack.back();
 
     // Generate the beginning of the scope
     function->AllocateOpcode<Opcode>(Instruction::BeginScope, DebugOrigin::Scope, node->Location);
@@ -2842,7 +2772,7 @@ namespace Zilch
   void CodeGenerator::GenerateLoop(LoopNode*& node, GeneratorContext* context)
   {
     // Get a pointer to the current function that we're building
-    CompiledFunction* function = context->FunctionStack.back();
+    Function* function = context->FunctionStack.back();
 
     // Store the index that we'd like to jump back to at the end of the loop
     size_t backwardsJumpInstructionIndex = function->GetCurrentOpcodeIndex();
@@ -2868,7 +2798,7 @@ namespace Zilch
   void CodeGenerator::GenerateBreak(BreakNode*& node, GeneratorContext* context)
   {
     // Get a pointer to the current function that we're building
-    CompiledFunction* function = context->FunctionStack.back();
+    Function* function = context->FunctionStack.back();
 
     // Make an opcode that will jump to the end of the loop
     node->InstructionIndex = function->GetCurrentOpcodeIndex();
@@ -2879,7 +2809,7 @@ namespace Zilch
   void CodeGenerator::GenerateContinue(ContinueNode*& node, GeneratorContext* context)
   {
     // Get a pointer to the current function that we're building
-    CompiledFunction* function = context->FunctionStack.back();
+    Function* function = context->FunctionStack.back();
 
     // Make an opcode that will jump to the end of the loop
     node->InstructionIndex = function->GetCurrentOpcodeIndex();
@@ -2890,7 +2820,7 @@ namespace Zilch
   void CodeGenerator::GenerateBinaryOperation(BinaryOperatorNode*& node, GeneratorContext* context)
   {
     // Get a reference to the current function that we're building
-    CompiledFunction* function = context->FunctionStack.back();
+    Function* function = context->FunctionStack.back();
 
     // Create the opcode so that we can fill it in
     size_t opcodeStart = function->GetCurrentOpcodeIndex();
@@ -2933,12 +2863,12 @@ namespace Zilch
       {
         // We actually need to perform initialization, despite it being an assignment
         // because a strict property set just generates a temporary space to initialize
-        CreateCopyOpcode(*function, CopyMode::Initialize, type, source, destination, debug, node->Location);
+        CreateCopyOpcode(function, CopyMode::Initialize, type, source, destination, debug, node->Location);
       }
       else
       {
         // This is just a straight assignment copy
-        CreateCopyOpcode(*function, CopyMode::Assignment, type, source, destination, debug, node->Location);
+        CreateCopyOpcode(function, CopyMode::Assignment, type, source, destination, debug, node->Location);
       }
     }
     // If the operator results in an l-value...
@@ -2965,7 +2895,7 @@ namespace Zilch
     {
       // All r-value binary operations result in a value (temporary) on the stack
       // Therefore we need to allocate a register to store our result in
-      CreateLocal(*function, node->ResultType->GetCopyableSize(), node->Access);
+      CreateLocal(function, node->ResultType->GetCopyableSize(), node->Access);
 
       // Handle the short-circuit operators specially
       if (opToken == Grammar::LogicalAnd || opToken == Grammar::LogicalOr)
@@ -2992,7 +2922,7 @@ namespace Zilch
         // Copy the resulting value from the left to the output, even though it may not be the final result
         GenerateCopyInitialize
         (
-          *function,
+          function,
           node->ResultType,
           node->LeftOperand->Access,
           node->Access,
@@ -3016,7 +2946,7 @@ namespace Zilch
         // Not that it really matters for value types, but this copy is an 'Assignment', because technically the local will always be initialized above
         CreateCopyOpcode
         (
-          *function,
+          function,
           CopyMode::Assignment,
           node->ResultType,
           node->RightOperand->Access,
@@ -3066,7 +2996,7 @@ namespace Zilch
   void CodeGenerator::GeneratePropertyDelegateOperation(PropertyDelegateOperatorNode*& node, GeneratorContext* context)
   {
     // Get a reference to the current function that we're building
-    CompiledFunction* function = context->FunctionStack.back();
+    Function* function = context->FunctionStack.back();
 
     // Attempt to get the operand as a member access node...
     // This operator only works on properties and members
@@ -3091,7 +3021,7 @@ namespace Zilch
     // We'll save this new handle on the stack in the location that we allocated above
     GenerateHandleInitialize
     (
-      *function,
+      function,
       thisType,
       thisSource,
       Operand(thisHandle),
@@ -3099,66 +3029,36 @@ namespace Zilch
       node->Location
     );
 
-    // Get the opcode index for 'CreatePropertyDelegateOpcode'
-    size_t opcodeIndex = function->GetCurrentOpcodeIndex();
-
-    // Create a rebase so that we know what opcodes to update when we link everything together
-    {
-      CompilingTypeCreationRebase& rebase = function->CompilingTypeCreationRebases.push_back();
-      rebase.TypeIndexLocation = opcodeIndex + offsetof(CreatePropertyDelegateOpcode, TypeIndex);
-      rebase.RelatedType = node->ResultType;
-      rebase.Location = node->Location;
-    }
-
     // Make an opcode that will jump to the end of the loop
     CreatePropertyDelegateOpcode& opcode = function->AllocateOpcode<CreatePropertyDelegateOpcode>(Instruction::PropertyDelegate, DebugOrigin::PropertyDelegate, node->Location);
 
-    // We do not yet know where the type will exist in the
-    // executable state (rebasing will fix that for us)
-    opcode.TypeIndex = InvalidTypeIndex;
+    // Tell the opcode the type it will be creating (this cast should always be safe, because property delegates are always bound types)
+    opcode.CreatedType = (BoundType*)node->ResultType;
     
     // Setup the 'this' handle from where we get the properties
     opcode.ThisHandleLocal = thisHandle;
 
     // Setup the save handle where the property delegate goes
     // This expression's result will be stored in the last created register
-    CreateLocal(*function, sizeof(Handle), node->Access);
+    CreateLocal(function, sizeof(Handle), node->Access);
     opcode.SaveHandleLocal = node->Access.HandleConstantLocal;
 
-    // Set some defaults on the opcode just so we don't have garbage (these should be set by rebasing)
-    opcode.Get.OpcodeLocation = InvalidOpcodeLocation;
-    opcode.Set.OpcodeLocation = InvalidOpcodeLocation;
-
-    // Create a rebase so that we know what opcodes to update when we link everything together
-    if (node->AccessedProperty->Get != nullptr)
-    {
-      CompilingDelegateRebase& rebase = function->CompilingDelegateRebases.push_back();
-      rebase.DelegateInfoLocation = opcodeIndex + offsetof(CreatePropertyDelegateOpcode, Get);
-      rebase.RelatedFunction = node->AccessedProperty->Get;
-      rebase.Location = node->Location;
-    }
-
-    // Create a rebase so that we know what opcodes to update when we link everything together
-    if (node->AccessedProperty->Set != nullptr)
-    {
-      CompilingDelegateRebase& rebase = function->CompilingDelegateRebases.push_back();
-      rebase.DelegateInfoLocation = opcodeIndex + offsetof(CreatePropertyDelegateOpcode, Set);
-      rebase.RelatedFunction = node->AccessedProperty->Set;
-      rebase.Location = node->Location;
-    }
+    // Tell the opcode the getter and setter functions it will be using from the accessed property
+    opcode.Get = node->AccessedProperty->Get;
+    opcode.Set = node->AccessedProperty->Set;
   }
 
   //***************************************************************************
   void CodeGenerator::GenerateUnaryOperation(UnaryOperatorNode*& node, GeneratorContext* context)
   {
     // Get a reference to the current function that we're building
-    CompiledFunction* function = context->FunctionStack.back();
+    Function* function = context->FunctionStack.back();
 
     // Generate code for the only operand
     context->Walker->Walk(this, node->Operand, context);
 
     // Generate the binary operator instructions, and also make sure to set our register/secondary index and access modes
-    GenerateUnaryOp(*function, *node, DebugOrigin::UnaryOperation);
+    GenerateUnaryOp(function, *node, DebugOrigin::UnaryOperation);
 
     // We have to generate set functions for any properties that need it
     GeneratorContext propContext;
@@ -3196,7 +3096,7 @@ namespace Zilch
   void CodeGenerator::GenerateFieldAccess(MemberAccessNode*& node, GeneratorContext* context)
   {
     // Get a reference to the current function that we're building
-    CompiledFunction* function = context->FunctionStack.back();
+    Function* function = context->FunctionStack.back();
     
     // For the awkward reason that type refernces are post expressions, we need to check
     if (node->LeftOperand != nullptr)
@@ -3232,7 +3132,7 @@ namespace Zilch
         // this is a copy over uninitialized memory
         GenerateCopyInitialize
         (
-          *function,
+          function,
           type,
           node->LeftOperand->Access,
           Operand(handleIndex),
@@ -3289,7 +3189,7 @@ namespace Zilch
   void CodeGenerator::GenerateFunctionDelegateMemberAccess(MemberAccessNode*& node, GeneratorContext* context)
   {
     // Get a reference to the current function that we're building
-    CompiledFunction* function = context->FunctionStack.back();
+    Function* function = context->FunctionStack.back();
 
     // For the awkward reason that type refernces are post expressions, we need to check
     if (node->LeftOperand != nullptr)
@@ -3315,6 +3215,7 @@ namespace Zilch
         node->LeftOperand->ResultType, // Note that the left operand in a member access is the object ('this')
         node->LeftOperand->Access,
         node->Access,
+        (node->Operator->TokenId != Grammar::NonVirtualAccess),
         node->Location,
         DebugOrigin::FunctionMemberAccess
       );
@@ -3336,7 +3237,7 @@ namespace Zilch
   void CodeGenerator::GeneratePropertyGetMemberAccess(MemberAccessNode*& node, GeneratorContext* context)
   {
     // Get a reference to the current function that we're building
-    CompiledFunction* function = context->FunctionStack.back();
+    Function* function = context->FunctionStack.back();
     
     // For the awkward reason that type references are post expressions, we need to check
     if (node->LeftOperand != nullptr)
@@ -3370,6 +3271,7 @@ namespace Zilch
           node->LeftOperand->ResultType, // Note that the left operand in a member access is the object ('this')
           node->LeftOperand->Access,
           delegateLocal,
+          (node->Operator->TokenId != Grammar::NonVirtualAccess),
           node->Location,
           DebugOrigin::PropertyGetMemberAccess
         );
@@ -3401,7 +3303,7 @@ namespace Zilch
       node->IoUsage = (IoMode::Enum)(node->IoUsage | IoMode::StrictPropertySet);
 
       // Make space that any operator will write to
-      CreateLocal(*function, property->PropertyType->GetCopyableSize(), node->Access);
+      CreateLocal(function, property->PropertyType->GetCopyableSize(), node->Access);
     }
     else
     {
@@ -3409,7 +3311,6 @@ namespace Zilch
       ErrorIf(node->IoUsage != IoMode::Ignore, "Unexpected case");
     }
   }
-
 
   //***************************************************************************
   void CodeGenerator::GeneratePropertySetMemberAccess(MemberAccessNode*& node, GeneratorContext* context)
@@ -3421,7 +3322,7 @@ namespace Zilch
     }
 
     // Get a reference to the current function that we're building
-    CompiledFunction* function = context->FunctionStack.back();
+    Function* function = context->FunctionStack.back();
     
     // Note: We never need to walk the left operand (it was already done)
 
@@ -3445,6 +3346,7 @@ namespace Zilch
           node->LeftOperand->ResultType, // Note that the left operand in a member access is the object ('this')
           node->LeftOperand->Access,
           delegateLocal,
+          (node->Operator->TokenId != Grammar::NonVirtualAccess),
           node->Location,
           DebugOrigin::PropertySetMemberAccess
         );
@@ -3475,7 +3377,7 @@ namespace Zilch
         // Generate the opcode for copying a parameter in a function call
         GenerateCopyToParameter
         (
-          *function,
+          function,
           node->ResultType,
           node->Access,
           set->Type->Parameters.front().StackOffset,
@@ -3488,7 +3390,7 @@ namespace Zilch
         // Generate the opcode for copying a parameter in a function call
         GenerateCopyToParameter
         (
-          *function,
+          function,
           property->PropertyType,
           node->Access,
           set->Type->Parameters.front().StackOffset,
@@ -3502,12 +3404,11 @@ namespace Zilch
     }
   }
 
-
   //***************************************************************************
   void CodeGenerator::GenerateInitializer(InitializerNode*& node, GeneratorContext* context)
   {
     // Get a reference to the current function that we're building
-    CompiledFunction* function = context->FunctionStack.back();
+    Function* function = context->FunctionStack.back();
 
     // If the function we're calling is a member function (not a static function)
     if (node->InitializerFunction->This != nullptr)
@@ -3519,6 +3420,7 @@ namespace Zilch
         function->This->ResultType,     // The this type is the type we're compiling
         Operand(function->This->Local), // Get the 'this' handle from the local variable
         node->Access,
+        false,
         node->Location,
         DebugOrigin::FunctionMemberAccess
       );
@@ -3540,7 +3442,7 @@ namespace Zilch
   template <typename T>
   T& CodeGenerator::DelegateOpcode
   (
-    CompiledFunction*   caller,
+    Function*           caller,
     Function*           toCall,
     OperandIndex        delegateDest,
     const CodeLocation& location,
@@ -3548,17 +3450,9 @@ namespace Zilch
     DebugOrigin::Enum   debug
   )
   {
-    // Create a rebase so that we know what opcodes to update when we link everything together
-    CompilingDelegateRebase& rebase = caller->CompilingDelegateRebases.push_back();
-    rebase.DelegateInfoLocation = caller->GetCurrentOpcodeIndex() + offsetof(T, Info);
-    rebase.RelatedFunction = toCall;
-    rebase.Location = location;
-
     // Create an opcode that will create a delegate
     T& opcode = caller->AllocateOpcode<T>(instruction, debug, location);
-
-    // The function index is not yet known until we link all libraries together
-    opcode.Info.OpcodeLocation = InvalidOpcodeLocation;
+    opcode.BoundFunction = toCall;
 
     // We'll save the delegate at the location indicated by this node
     opcode.SaveLocal = delegateDest;
@@ -3570,11 +3464,12 @@ namespace Zilch
   //***************************************************************************
   void CodeGenerator::CreateInstanceDelegateAndThisHandle
   (
-    CompiledFunction*   caller,
+    Function*           caller,
     Function*           toCall,
     Type*               thisType,
     const Operand&      thisSource,
     Operand&            delegateDestOut,
+    bool                canBeVirtual,
     const CodeLocation& location,
     DebugOrigin::Enum   debug
   )
@@ -3595,7 +3490,7 @@ namespace Zilch
       // We'll save this new handle on the stack in the location that we allocated above
       GenerateHandleInitialize
       (
-        *caller,
+        caller,
         thisType,
         thisSource,
         Operand(thisHandleLocal),
@@ -3611,6 +3506,7 @@ namespace Zilch
       toCall,
       thisHandle,
       delegateDestOut,
+      canBeVirtual,
       location,
       debug
     );
@@ -3619,16 +3515,17 @@ namespace Zilch
   //***************************************************************************
   void CodeGenerator::CreateInstanceDelegateWithThisHandle
   (
-    CompiledFunction*   caller,
+    Function*           caller,
     Function*           toCall,
     const Operand&      thisHandle,
     Operand&            delegateDestOut,
+    bool                canBeVirtual,
     const CodeLocation& location,
     DebugOrigin::Enum   debug
   )
   {
     // This expression's result will be stored in the last created register
-    CreateLocal(*caller, toCall->Type->GetCopyableSize(), delegateDestOut);
+    CreateLocal(caller, toCall->Type->GetCopyableSize(), delegateDestOut);
 
     // Create an instance delegate opcode
     CreateInstanceDelegateOpcode& delegateOpcode = DelegateOpcode<CreateInstanceDelegateOpcode>
@@ -3641,6 +3538,9 @@ namespace Zilch
       debug
     );
 
+    // Mark whether or not this member can be virtual
+    delegateOpcode.CanBeVirtual = canBeVirtual;
+
     // Let the delegate know where to get it's 'this' handle from
     delegateOpcode.ThisHandle = thisHandle;
   }
@@ -3648,7 +3548,7 @@ namespace Zilch
   //***************************************************************************
   void CodeGenerator::CreateStaticDelegate
   (
-    CompiledFunction*   caller,
+    Function*           caller,
     Function*           toCall,
     Operand&            delegateDest,
     const CodeLocation& location,
@@ -3656,7 +3556,7 @@ namespace Zilch
   )
   {
     // This expression's result will be stored in the last created register
-    CreateLocal(*caller, toCall->Type->GetCopyableSize(), delegateDest);
+    CreateLocal(caller, toCall->Type->GetCopyableSize(), delegateDest);
 
     // Create a static delegate opcode
     DelegateOpcode<CreateStaticDelegateOpcode>
@@ -3674,21 +3574,21 @@ namespace Zilch
   void CodeGenerator::GenerateTypeCast(TypeCastNode*& node, GeneratorContext* context)
   {
     // Get a reference to the current function that we're building
-    CompiledFunction* function = context->FunctionStack.back();
+    Function* function = context->FunctionStack.back();
 
     // Generate the code for the operand of the type cast
     context->Walker->Walk(this, node->Operand, context);
 
     // Generate a copy opcode for the return type to the return value
     // (also puts the result in a register and sets this node's register index)
-    GenerateConversion(*function, *node, DebugOrigin::TypeCast);
+    GenerateConversion(function, *node, DebugOrigin::TypeCast);
   }
   
   //***************************************************************************
   void CodeGenerator::GenerateTypeId(TypeIdNode*& node, GeneratorContext* context)
   {
     // Get a reference to the current function that we're building
-    CompiledFunction* function = context->FunctionStack.back();
+    Function* function = context->FunctionStack.back();
 
     // If we have a value...
     if (node->Value != nullptr)
@@ -3732,7 +3632,7 @@ namespace Zilch
   void CodeGenerator::GenerateReturnValue(ReturnNode*& node, GeneratorContext* context)
   {
     // Get a reference to the current function that we're building
-    CompiledFunction* function = context->FunctionStack.back();
+    Function* function = context->FunctionStack.back();
 
     // Loop through all the return values
     if (node->ReturnValue != nullptr)
@@ -3748,7 +3648,7 @@ namespace Zilch
       // so this must be an initialized copy
       GenerateCopyToReturn
       (
-        *function,
+        function,
         returnValue->ResultType,
         returnValue->Access,
         Operand(0),
@@ -3765,7 +3665,7 @@ namespace Zilch
   void CodeGenerator::GenerateFunctionCall(FunctionCallNode*& node, GeneratorContext* context)
   {
     // Get a reference to the current function that we're building
-    CompiledFunction* function = context->FunctionStack.back();
+    Function* function = context->FunctionStack.back();
 
     // Generate the code for the left operand first
     context->Walker->Walk(this, node->LeftOperand, context);
@@ -3814,6 +3714,7 @@ namespace Zilch
         creationNode->ConstructorFunction,
         Operand(creationNode->ThisHandleLocal),
         delegateLocal,
+        false,
         node->Location,
         debugOrigin
       );
@@ -3847,7 +3748,7 @@ namespace Zilch
       // Generate the opcode for copying a parameter in a function call
       GenerateCopyToParameter
       (
-        *function,
+        function,
         currentArgument->ResultType,
         currentArgument->Access,
         delegateType->Parameters[i].StackOffset,
@@ -3860,9 +3761,15 @@ namespace Zilch
     GenerateCallOpcodePostArgs(function, delegateType, returnValueAccess, node->Location, debugOrigin);
   }
 
-
   //***************************************************************************
-  void CodeGenerator::GenerateCallOpcodePreArgs(CompiledFunction* caller, DelegateType* delegateTypeToCall, const Operand& delegateOperand, const CodeLocation& location, DebugOrigin::Enum debugOrigin)
+  void CodeGenerator::GenerateCallOpcodePreArgs
+  (
+    Function* caller,
+    DelegateType* delegateTypeToCall,
+    const Operand& delegateOperand,
+    const CodeLocation& location,
+    DebugOrigin::Enum debugOrigin
+  )
   {
     // Record the current offset in instructions (this is not where we will jump to)
     size_t opcodePosBeforeThisCopy = caller->GetCurrentOpcodeIndex();
@@ -3897,7 +3804,7 @@ namespace Zilch
       // Copy the handle from the delegate local into the first argument
       GenerateCopyToParameter
       (
-        *caller,
+        caller,
         core.NullType,
         handleOperand,
         delegateTypeToCall->ThisHandleStackOffset,
@@ -3910,9 +3817,15 @@ namespace Zilch
     prepOpcode.JumpOffsetIfStatic = (OperandIndex)(caller->GetCurrentOpcodeIndex() - opcodePosBeforeThisCopy);
   }
 
-
   //***************************************************************************
-  void CodeGenerator::GenerateCallOpcodePostArgs(CompiledFunction* caller, DelegateType* delegateTypeToCall, Operand* returnAccessOut, const CodeLocation& location, DebugOrigin::Enum debugOrigin)
+  void CodeGenerator::GenerateCallOpcodePostArgs
+  (
+    Function* caller,
+    DelegateType* delegateTypeToCall,
+    Operand* returnAccessOut,
+    const CodeLocation& location,
+    DebugOrigin::Enum debugOrigin
+  )
   {
     // Generate an opcode for a function call (the last parameter is where the return value will be stored)
     caller->AllocateArgumentFreeOpcode(Instruction::FunctionCall, debugOrigin, location);
@@ -3935,12 +3848,12 @@ namespace Zilch
       // A constructor call's delegateType will always be null (and for a function, it should be the same as node->ResultType)
 
       // This function call's result will be stored in the last created register
-      CreateLocal(*caller, delegateTypeToCall->Return->GetCopyableSize(), *returnAccessOut);
+      CreateLocal(caller, delegateTypeToCall->Return->GetCopyableSize(), *returnAccessOut);
 
       // Generate the opcode for copying a return in a function call
       GenerateCopyFromReturn
       (
-        *caller,
+        caller,
         delegateTypeToCall->Return,
         0,
         returnAccessOut->HandleConstantLocal,
@@ -3954,7 +3867,7 @@ namespace Zilch
   void CodeGenerator::GenerateStringInterpolants(StringInterpolantNode*& node, GeneratorContext* context)
   {
     // Get a reference to the current function that we're building
-    CompiledFunction* function = context->FunctionStack.back();
+    Function* function = context->FunctionStack.back();
 
     // We need to create a temporary string builder that we use to efficiently concatenate strings together
     function->AllocateOpcode<BeginStringBuilderOpcode>(Instruction::BeginStringBuilder, DebugOrigin::StringInterpolant, node->Location);
@@ -3975,7 +3888,7 @@ namespace Zilch
     }
 
     // Make space for the string local (the string should be the result type)
-    CreateLocal(*function, node->ResultType->GetCopyableSize(), node->Access);
+    CreateLocal(function, node->ResultType->GetCopyableSize(), node->Access);
 
     // Finish off the string builder (with all our additions to it) and store the resulting string on the stack
     EndStringBuilderOpcode& endOpcode = function->AllocateOpcode<EndStringBuilderOpcode>(Instruction::EndStringBuilder, DebugOrigin::StringInterpolant, node->Location);
@@ -3986,7 +3899,7 @@ namespace Zilch
   void CodeGenerator::CollectValue(ValueNode*& node, GeneratorContext* context)
   {
     // Get a reference to the current function that we're building
-    CompiledFunction* function = context->FunctionStack.back();
+    Function* function = context->FunctionStack.back();
 
     // A value is always a constant
     node->Access.Type = OperandType::Constant;
@@ -4102,7 +4015,7 @@ namespace Zilch
   void CodeGenerator::GenerateDelete(DeleteNode*& node, GeneratorContext* context)
   {
     // Get a reference to the current function that we're building
-    CompiledFunction* function = context->FunctionStack.back();
+    Function* function = context->FunctionStack.back();
 
     // Make sure we generate code for the deleted object expression (its most likely a variable reference)
     context->Walker->Walk(this, node->DeletedObject, context);
@@ -4116,7 +4029,7 @@ namespace Zilch
   void CodeGenerator::GenerateThrow(ThrowNode*& node, GeneratorContext* context)
   {
     // Get a reference to the current function that we're building
-    CompiledFunction* function = context->FunctionStack.back();
+    Function* function = context->FunctionStack.back();
 
     // Make sure we generate code for the exception expression
     context->Walker->Walk(this, node->Exception, context);
@@ -4155,16 +4068,10 @@ namespace Zilch
     // Constructors walk up and invoke their base constructors, via the InitializerNode
 
     // Get a reference to the current function that we're building
-    CompiledFunction* function = context->FunctionStack.back();
-    
+    Function* function = context->FunctionStack.back();
+
     // This expression's result will be stored in the last created register
-    CreateLocal(*function, node->ResultType->GetCopyableSize(), node->Access);
-    
-    // Create a rebase so that we know what opcodes to update when we link everything together
-    CompilingTypeCreationRebase& rebase = function->CompilingTypeCreationRebases.push_back();
-    rebase.TypeIndexLocation = function->GetCurrentOpcodeIndex() + offsetof(CreateTypeOpcode, TypeIndex);
-    rebase.RelatedType = node->CreatedType;
-    rebase.Location = node->Location;
+    CreateLocal(function, node->ResultType->GetCopyableSize(), node->Access);
 
     // If we're creating a heap object with 'new'
     if (node->Mode == CreationMode::New)
@@ -4172,10 +4079,7 @@ namespace Zilch
       // Set the register indices for the operands, and set the location that the result should be stored into
       CreateTypeOpcode& opcode = function->AllocateOpcode<CreateTypeOpcode>(Instruction::NewObject, DebugOrigin::NewObject, node->Location);
       opcode.SaveHandleLocal = node->Access.HandleConstantLocal;
-
-      // We do not yet know where the type will exist in the
-      // executable state (rebasing will fix that for us)
-      opcode.TypeIndex = InvalidTypeIndex;
+      opcode.CreatedType = node->CreatedType;
 
       // We want an object handle for other calls (such as the constructor)
       node->ThisHandleLocal = node->Access.HandleConstantLocal;
@@ -4185,6 +4089,7 @@ namespace Zilch
     {
       // Set the register indices for the operands, and set the location that the result should be stored into
       CreateLocalTypeOpcode& opcode = function->AllocateOpcode<CreateLocalTypeOpcode>(Instruction::LocalObject, DebugOrigin::LocalObject, node->Location);
+      opcode.CreatedType = node->CreatedType;
 
       // Error checking
       ErrorIf(node->CreatedType != node->ResultType,
@@ -4206,7 +4111,7 @@ namespace Zilch
   }
 
   //***************************************************************************
-  void CodeGenerator::GenerateHandleInitialize(CompiledFunction& function, Type* type, const Operand& source, const Operand& destination, DebugOrigin::Enum debugOrigin, const CodeLocation& location)
+  void CodeGenerator::GenerateHandleInitialize(Function* function, Type* type, const Operand& source, const Operand& destination, DebugOrigin::Enum debugOrigin, const CodeLocation& location)
   {
     // If the type is a handle...
     if (Type::IsHandleType(type))
@@ -4219,7 +4124,7 @@ namespace Zilch
     else if (BoundType* boundType = TypeBinding::DynamicCast<BoundType*>(type))
     {
       // Allocate an opcode for creating a handle from a local
-      ToHandleOpcode& opcode = function.AllocateOpcode<ToHandleOpcode>(Instruction::ToHandle, debugOrigin, location);
+      ToHandleOpcode& opcode = function->AllocateOpcode<ToHandleOpcode>(Instruction::ToHandle, debugOrigin, location);
 
       // Get the handle type
       Type* handleType = this->Builder->ReferenceOf(boundType);
@@ -4228,7 +4133,7 @@ namespace Zilch
       if (source.Type == OperandType::Constant)
       {
         // Generate a stack local to store the constant
-        Operand stackLocal(function.AllocateRegister(type->GetCopyableSize()));
+        Operand stackLocal(function->AllocateRegister(type->GetCopyableSize()));
 
         // Copy the constant to the stack
         this->GenerateCopyInitialize(function, type, source, stackLocal, debugOrigin, location);
@@ -4243,7 +4148,10 @@ namespace Zilch
       }
 
       // Save the handle in a newly allocated register
-      opcode.SaveLocal = function.AllocateRegister(handleType->GetCopyableSize());
+      opcode.SaveLocal = function->AllocateRegister(handleType->GetCopyableSize());
+
+      // We also need to know the type of this handle
+      opcode.Type = boundType;
 
       // Since the type of the expression is already a handle, just copy it to the location that the user wants it at
       // This handle is always initializing uninitialized memory on the stack
@@ -4258,9 +4166,6 @@ namespace Zilch
 
 // Includes
 
-
-
-
 namespace Zilch
 {
   //***************************************************************************
@@ -4273,9 +4178,47 @@ namespace Zilch
     EndCharacter(1),
     Origin(UnknownOrigin),
     CodeUserData(nullptr),
-    IsNative(false),
-    CodeEntryId(0)
+    IsNative(false)
   {
+  }
+
+  //***************************************************************************
+  CodeLocation CodeLocation::GetStartOnlyLocation()
+  {
+    // First copy the current code location, then just change the end and primary to point at the start
+    CodeLocation result;
+    result = *this;
+    result.EndCharacter     = result.StartCharacter;
+    result.EndLine          = result.StartLine;
+    result.PrimaryCharacter = result.StartCharacter;
+    result.PrimaryLine      = result.StartLine;
+    return result;
+  }
+  
+  //***************************************************************************
+  CodeLocation CodeLocation::GetEndOnlyLocation()
+  {
+    // First copy the current code location, then just change the start and primary to point at the end
+    CodeLocation result;
+    result = *this;
+    result.StartCharacter   = result.EndCharacter;
+    result.StartLine        = result.EndLine;
+    result.PrimaryCharacter = result.EndCharacter;
+    result.PrimaryLine      = result.EndLine;
+    return result;
+  }
+  
+  //***************************************************************************
+  size_t CodeLocation::GetHash()
+  {
+    return this->Code.hash() ^ this->Origin.hash() * 5689;
+  }
+
+  //***************************************************************************
+  bool CodeLocation::IsValid()
+  {
+    // As long as we have code, we consider this valid
+    return this->Code.empty() == false;
   }
 
   //***************************************************************************
@@ -4350,6 +4293,12 @@ namespace Zilch
   }
 
   //***************************************************************************
+  //bool CodeLocation::IsValid()
+  //{
+  //  return this->CodeEntryId != 0;
+  //}
+
+  //***************************************************************************
   String CodeLocation::GetFormattedStringWithMessage(MessageFormat::Enum format, StringParam message) const
   {
     // First, just get the formatted code location
@@ -4396,7 +4345,6 @@ namespace Zilch
 
 // Includes
 
-
 #ifdef __clang__
   // At the moment, these are missing from the clang libc (no idea what they are!)
   void* __gxx_personality_v0 = NULL;
@@ -4408,8 +4356,6 @@ namespace Zilch
 \**************************************************************/
 
 // Includes
-
-
 
 namespace Zilch
 {
@@ -4548,11 +4494,6 @@ namespace Zilch
 \**************************************************************/
 
 // Includes
-
-
-
-
-
 
 namespace Zilch
 {
@@ -5192,6 +5133,26 @@ namespace Zilch
     Real3 result = by.RotatedVector(value);
     call.Set(Call::Return, result);
   }
+
+  //***************************************************************************
+  void QuaternionMultiplyQuaternion(Call& call, ExceptionReport& report)
+  {
+    Quaternion& by = call.Get<Quaternion&>(0);
+    Quaternion& the = call.Get<Quaternion&>(1);
+
+    Quaternion result = by * the;
+    call.Set(Call::Return, result);
+  }
+
+  //***************************************************************************
+  void QuaternionMultiplyVector3(Call& call, ExceptionReport& report)
+  {
+    Quaternion& by = call.Get<Quaternion&>(0);
+    Real3& the = call.Get<Real3&>(1);
+
+    Real3 result = by.RotatedVector(the);
+    call.Set(Call::Return, result);
+  }
   
   //***************************************************************************
   bool EvolvePermutation(size_t indices[], size_t count, size_t upperBound)
@@ -5311,122 +5272,126 @@ namespace Zilch
     // Get a reference to the core so we can access all the vector/real types
     Core& core = Core::GetInstance();
 
-    // Loop through the number of components, down to one
-    for (size_t count = Core::MaxComponents; count > 0; --count)
+    char componentNamesSet[2][4] = {{'X', 'Y', 'Z', 'W'}, {'R', 'G', 'B', 'A'}};
+
+    // For now only bind the XYZW components (until code completion is better)
+    for (size_t namesIndex = 0; namesIndex < 1; ++namesIndex)
     {
-      // Indices into a specific component (x, y, z, w)
-      char componentNames[] =
+      // Loop through the number of components, down to one
+      for (size_t count = Core::MaxComponents; count > 0; --count)
       {
-        'X', 'Y', 'Z', 'W'
-      };
-      size_t componentIndex[Core::MaxComponents] = {0};
+        // Indices into a specific component (x, y, z, w)
+        char *componentNames = componentNamesSet[namesIndex];
+        size_t componentIndex[Core::MaxComponents] = {0};
 
-      Type* sizeType = componentTypes[count - 1];
+        Type* sizeType = componentTypes[count - 1];
 
-      // Loop through all the permutations
-      do
-      {
-        StringBuilder nameBuilder;
-
-        bool inOrder = true;
-        bool noDuplicateComponents = true;
-        bool usedComponent[Core::MaxComponents] = {0};
-        
-        for (size_t i = 0; i < count; ++i)
+        // Loop through all the permutations
+        do
         {
-          size_t index = componentIndex[i];
+          StringBuilder nameBuilder;
 
-          // Check if the components are in order
-          if (i > 0 && componentIndex[i - 1] != index - 1)
+          bool inOrder = true;
+          bool noDuplicateComponents = true;
+          bool usedComponent[Core::MaxComponents] = {0};
+
+          for (size_t i = 0; i < count; ++i)
           {
-            inOrder = false;
+            size_t index = componentIndex[i];
+
+            // Check if the components are in order
+            if (i > 0 && componentIndex[i - 1] != index - 1)
+            {
+              inOrder = false;
+            }
+
+            bool& used = usedComponent[index];
+
+            if (used)
+            {
+              noDuplicateComponents = false;
+            }
+
+            used = true;
+
+            nameBuilder.Append(componentNames[index]);
           }
 
-          bool& used = usedComponent[index];
+          String name = nameBuilder.ToString();
 
-          if (used)
+          // Store whatever property we make in here so we can set whether it's hidden afterwards
+          Property* property = nullptr;
+
+          // If the swizzle is a completely in order swizzle
+          // That means that we can directly access the memory of the structure (no properties needed)
+          if (inOrder)
           {
-            noDuplicateComponents = false;
+            // Compute the offset into the vector
+            // X is at the front, and therefore is 0, y should be 1 real in, etc
+            size_t offset = componentIndex[0] * sizeof(ComponentType);
+
+            // Add the swizzle field
+            property = builder.AddBoundField(type, name, sizeType, offset, MemberOptions::None);
           }
-
-          used = true;
-
-          nameBuilder.Append(componentNames[index]);
-        }
-
-        String name = nameBuilder.ToString();
-
-        // Store whatever property we make in here so we can set whether it's hidden afterwards
-        Property* property = nullptr;
-
-        // If the swizzle is a completely in order swizzle
-        // That means that we can directly access the memory of the structure (no properties needed)
-        if (inOrder)
-        {
-          // Compute the offset into the vector
-          // X is at the front, and therefore is 0, y should be 1 real in, etc
-          size_t offset = componentIndex[0] * sizeof(ComponentType);
-
-          // Add the swizzle field
-          property = builder.AddBoundField(type, name, sizeType, (ObjectOffset)offset, MemberOptions::None);
-        }
-        // It must be a property then
-        else
-        {
-          // Create a single integer to be used as userdata to describe the order of the swizzle
-          void* orderUserData = nullptr;
-
-          // Put the order into a series of bytes that we store directly as the user data pointer
-          size_t& order = *(size_t*)&orderUserData;
-
-          order = count |
-            (componentIndex[0] << 3)  |
-            (componentIndex[1] << 5)  |
-            (componentIndex[2] << 7)  |
-            (componentIndex[3] << 9);
-
-          // As long as we have no duplicate components, we
-          // can at least make it a read/write property (with a get/set)
-          if (noDuplicateComponents)
-          {
-            // Add the get/set property
-            property = builder.AddBoundProperty
-            (
-              type,
-              name,
-              sizeType,
-              VectorSwizzleSet<ComponentType>,
-              VectorSwizzleGet<ComponentType>,
-              MemberOptions::None
-            );
-
-            // Store the userdata on the property get/set functions
-            property->Get->UserData = orderUserData;
-            property->Set->UserData = orderUserData;
-          }
+          // It must be a property then
           else
           {
-            // Add the get (read only) property
-            property = builder.AddBoundProperty
-            (
-              type,
-              name,
-              sizeType,
-              nullptr,
-              VectorSwizzleGet<ComponentType>,
-              MemberOptions::None
-            );
+            // Create a single integer to be used as userdata to describe the order of the swizzle
+            void* orderUserData = nullptr;
 
-            // Store the userdata on the property get function
-            property->Get->UserData = orderUserData;
+            // Put the order into a series of bytes that we store directly as the user data pointer
+            size_t& order = *(size_t*)&orderUserData;
+
+            order = count |
+              (componentIndex[0] << 3)  |
+              (componentIndex[1] << 5)  |
+              (componentIndex[2] << 7)  |
+              (componentIndex[3] << 9);
+
+            // As long as we have no duplicate components, we
+            // can at least make it a read/write property (with a get/set)
+            if (noDuplicateComponents)
+            {
+              // Add the get/set property
+              property = builder.AddBoundProperty
+                (
+                type,
+                name,
+                sizeType,
+                VectorSwizzleSet<ComponentType>,
+                VectorSwizzleGet<ComponentType>,
+                MemberOptions::None
+                );
+
+              // Store the userdata on the property get/set functions
+              property->Get->UserData = orderUserData;
+              property->Set->UserData = orderUserData;
+            }
+            else
+            {
+              // Add the get (read only) property
+              property = builder.AddBoundProperty
+                (
+                type,
+                name,
+                sizeType,
+                nullptr,
+                VectorSwizzleGet<ComponentType>,
+                MemberOptions::None
+                );
+
+              // Store the userdata on the property get function
+              property->Get->UserData = orderUserData;
+            }
           }
-        }
 
-        // Hide all properties that aren't just .X, .Y, .Z, .W
-        if (sizeType != core.RealType)
-          property->IsHidden = true;
+          // Hide all properties that aren't just .X, .Y, .Z, .W
+          // Also hide .X on single values
+          if (count != 1 || type == componentTypes[0])
+            property->IsHidden = true;
+        }
+        while (EvolvePermutation(componentIndex, count, Components));
       }
-      while (EvolvePermutation(componentIndex, count, Components));
     }
   }
 
@@ -5485,7 +5450,7 @@ namespace Zilch
   template <typename ComponentType>
   BoundType* CreateVectorType(String name, size_t components)
   {
-    return new BoundType(name, TypeCopyMode::ValueType, (ObjectSize)(components * sizeof(ComponentType)), 0);
+    return new BoundType(name, TypeCopyMode::ValueType, components * sizeof(ComponentType), 0);
   }
   
   //***************************************************************************
@@ -6104,7 +6069,7 @@ namespace Zilch
               else if (Type::IsDelegateType(argumentType))
               {
                 // Just tell the user the location of the function
-                pointerValue = ((Delegate*)argumentData)->Info.BoundFunction;
+                pointerValue = ((Delegate*)argumentData)->BoundFunction;
                 isValidValue = true;
               }
 
@@ -6392,13 +6357,13 @@ namespace Zilch
   //***************************************************************************
   String VectorToString(Real* vector, size_t vectorSize)
   {
-    if(vectorSize == 1)
+    if (vectorSize == 1)
       return RealToString(*(Real*)vector);
-    else if(vectorSize == 2)
+    else if (vectorSize == 2)
       return Real2ToString(*(Real2*)vector);
-    else if(vectorSize == 3)
+    else if (vectorSize == 3)
       return Real3ToString(*(Real3*)vector);
-    else if(vectorSize == 4)
+    else if (vectorSize == 4)
       return Real4ToString(*(Real4*)vector);
 
     Error("Somehow we tried to turn a vector into a string that has a size greater than 4");
@@ -6428,7 +6393,7 @@ namespace Zilch
 
   //***************************************************************************
   // Splats a function of the type Scalar Fn(Scalar) to
-  // Vec(n) Fn(Vec(n), a, b) (vector could be of whatever scalar type is)
+  // Vec(n) Fn(Vec(n), a) (vector could be of whatever scalar type is)
   template <size_t Components, typename ScalarType, typename ExtraA, ScalarType (*Function)(ScalarType, ExtraA)>
   void SplatVecToVecOneExtra(Call& call, ExceptionReport& report)
   {
@@ -6498,7 +6463,7 @@ namespace Zilch
       success = Function(input[i], result[i]);
 
       // If the function failed for whatever reason then throw an exception
-      if(success == false)
+      if (success == false)
       {
         // The user data of this function should contain a format string with
         // one %s in it to display the input value that failed.
@@ -6642,26 +6607,364 @@ namespace Zilch
   ZilchBuilder.AddBoundFunction(ZilchType, Name, SplatTwoVecAndRealToVec<3, type, NamespaceAndClass::Method>, ThreeParameters(this->type##3Type, p1, this->type##3Type, p2, this->type##Type, p3), this->type##3Type, FunctionOptions::Static)->Description = ZilchDocString(BuildString(UserDescription, " Performed component-wise.")); \
   ZilchBuilder.AddBoundFunction(ZilchType, Name, SplatTwoVecAndRealToVec<4, type, NamespaceAndClass::Method>, ThreeParameters(this->type##4Type, p1, this->type##4Type, p2, this->type##Type, p3), this->type##4Type, FunctionOptions::Static)->Description = ZilchDocString(BuildString(UserDescription, " Performed component-wise."));
 
+  //***************************************************************************
+  // Splat a one parameter function across a vector/matrix.
+  template <typename ScalarType0, typename ResultType,
+    size_t ScalarType0Offset,
+    typename FunctionPointer, FunctionPointer Fn>
+    void FullOneParameterSplat(Call& call, ExceptionReport& report)
+  {
+    size_t size = (size_t)call.GetFunction()->UserData;
+
+    // Get pointers to our input data
+    ScalarType0* input0 = (ScalarType0*)call.GetParameterUnchecked(0);
+
+    // Get a pointer to our return/output vector
+    ResultType* result = (ResultType*)call.GetReturnUnchecked();
+    call.MarkReturnAsSet();
+
+    // Loop through all the components to apply the given function (splat)
+    for (size_t i = 0; i < size; ++i)
+    {
+      // Call the function bound function
+      // (the offset is used to generically control if an input should be only one scalar or another vector type)
+      result[i] = Fn(input0[i * ScalarType0Offset]);
+    }
+  }
+
+  //***************************************************************************
+  // This version of one parameter splatting allows the user to specify an overloaded function (by providing the types manually)
+  template <typename ScalarType0, typename ResultType,
+    typename FnScalarType0,
+    size_t ScalarType0Offset,
+    ResultType (*Function)(FnScalarType0)>
+    void FullOneParameterSplatAs(Call& call, ExceptionReport& report)
+  {
+    FullOneParameterSplat<ScalarType0, ResultType,
+      ScalarType0Offset,
+      TypeOfFunctionPointer(Function), Function>(call, report);
+  }
+
+  //***************************************************************************
+  // Splats a function of the type Result Fn(Scalar0, Scalar1).
+  // The offset numbers are used to generically control if an input is a scalar or a vector.
+  // ie. scalarOffsets of <1, 1> are used to splat Real3 Max(Real3, Real3) while
+  // scalarOffset of <1, 0> are used to splat Real3 Ceil(Real3, Real).
+
+  template <typename ScalarType0, typename ScalarType1, typename ResultType,
+    size_t ScalarType0Offset, size_t ScalarType1Offset,
+    typename FunctionPointer, FunctionPointer Fn>
+    void FullTwoParameterSplat(Call& call, ExceptionReport& report)
+  {
+    size_t size = (size_t)call.GetFunction()->UserData;
+
+    // Get pointers to our input data
+    ScalarType0* input0 = (ScalarType0*)call.GetParameterUnchecked(0);
+    ScalarType1* input1 = (ScalarType1*)call.GetParameterUnchecked(1);
+
+    // Get a pointer to our return/output vector
+    ResultType* result = (ResultType*)call.GetReturnUnchecked();
+    call.MarkReturnAsSet();
+
+    // Loop through all the components to apply the given function (splat)
+    for (size_t i = 0; i < size; ++i)
+    {
+      // Call the function bound function
+      // (the offset is used to generically control if an input should be only one scalar or another vector type)
+      result[i] = Fn(input0[i * ScalarType0Offset], input1[i * ScalarType1Offset]);
+    }
+  }
+
+  //***************************************************************************
+  // This version of two parameter splatting allows the user to specify an overloaded function (by providing the types manually)
+  template <typename ScalarType0, typename ScalarType1, typename ResultType,
+    typename FnScalarType0, typename FnScalarType1,
+    size_t ScalarType0Offset, size_t ScalarType1Offset,
+    ResultType (*Function)(ScalarType0, ScalarType1)>
+    void FullTwoParameterSplatAs(Call& call, ExceptionReport& report)
+  {
+    FullTwoParameterSplat<ScalarType0, ScalarType1, ResultType,
+      ScalarType0Offset, ScalarType1Offset,
+      TypeOfFunctionPointer(Function), Function>(call, report);
+  }
+
+  //***************************************************************************
+  // Splats a function of the type Result Fn(Scalar0, Scalar1, Scalar2).
+  // The offset numbers are used to generically control if an input is a scalar or a vector.
+  // ie. scalarOffsets of <1, 1, 1> are used to splat Real3 Clamp(Real3, Real3, Real3) while
+  // scalarOffset of <1, 1, 0> are used to splat Real3 Lerp(Real3, Real3, Real).
+  // This is the most general case splat so that the function parameters can be specified separately
+  // (mainly so the the ScalarType can be Real while the function can take const Real&)
+  template <typename ScalarType0, typename ScalarType1, typename ScalarType2, typename ResultType,
+    size_t ScalarType0Offset, size_t ScalarType1Offset, size_t ScalarType2Offset,
+    typename FunctionPointer, FunctionPointer Fn>
+    void FullThreeParameterSplat(Call& call, ExceptionReport& report)
+  {
+    size_t size = (size_t)call.GetFunction()->UserData;
+
+    // Get pointers to our input data
+    ScalarType0* input0 = (ScalarType0*)call.GetParameterUnchecked(0);
+    ScalarType1* input1 = (ScalarType1*)call.GetParameterUnchecked(1);
+    ScalarType2* input2 = (ScalarType2*)call.GetParameterUnchecked(2);
+
+    // Get a pointer to our return/output vector
+    ResultType* result = (ResultType*)call.GetReturnUnchecked();
+    call.MarkReturnAsSet();
+
+    // Loop through all the components to apply the given function (splat)
+    for (size_t i = 0; i < size; ++i)
+    {
+      // Call the function bound function
+      // (the offset is used to generically control if an input should be only one scalar or another vector type)
+      result[i] = Fn(input0[i * ScalarType0Offset], input1[i * ScalarType1Offset], input2[i * ScalarType2Offset]);
+    }
+  }
+
+  //***************************************************************************
+  // This version of two parameter splatting allows the user to specify an overloaded function (by providing the types manually)
+  template <typename ScalarType0, typename ScalarType1, typename ScalarType2, typename ResultType,
+    typename FnScalarType0, typename FnScalarType1, typename FnScalarType2,
+    size_t ScalarType0Offset, size_t ScalarType1Offset, size_t ScalarType2Offset,
+    ResultType (*Function)(FnScalarType0, FnScalarType1, FnScalarType2)>
+    void FullThreeParameterSplatAs(Call& call, ExceptionReport& report)
+  {
+    FullThreeParameterSplat<ScalarType0, ScalarType1, ScalarType2, ResultType,
+      ScalarType0Offset, ScalarType1Offset, ScalarType2Offset,
+      TypeOfFunctionPointer(Function), Function>(call, report);
+
+  }
+
+  //***************************************************************************
+  // User data for splatting a function with a custom error message. 
+  // Used by Sqrt to deal with negative numbers and a few other functions.
+  class SplatWithErrorUserData
+  {
+  public:
+
+    SplatWithErrorUserData(size_t size, cstr errorFormat, BoundType* boundType) :
+      Size(size),
+      ErrorFormat(errorFormat),
+      Type(boundType)
+    {
+
+    }
+
+    size_t Size;
+    cstr ErrorFormat;
+    BoundType* Type;
+  };
+
+  //***************************************************************************
+  void AllNonZero(Call& call, ExceptionReport& report)
+  {
+    SplatWithErrorUserData& userData = call.GetFunction()->ComplexUserData.ReadObject<SplatWithErrorUserData>(0);
+
+    size_t elementSize = userData.Type->Size / userData.Size;
+    
+    // This should always be a small allocation so just allocate it on the stack
+    byte* data = (byte*)alloca(elementSize);
+    memset(data, 0, elementSize);
+
+    byte* input = call.GetParameterUnchecked(0);
+
+    bool allTrue = true;
+    for (size_t i = 0; i < userData.Size; ++i)
+    {
+      if (memcmp(input + i * elementSize, data, elementSize) == 0)
+        allTrue = false;
+    }
+
+    call.Set(Call::Return, allTrue);
+  }
+  
+  //***************************************************************************
+  void AnyNonZero(Call& call, ExceptionReport& report)
+  {
+    SplatWithErrorUserData& userData = call.GetFunction()->ComplexUserData.ReadObject<SplatWithErrorUserData>(0);
+
+    size_t elementSize = userData.Type->Size / userData.Size;
+    
+    // This should always be a small allocation so just allocate it on the stack
+    byte* data = (byte*)alloca(elementSize);
+    memset(data, 0, elementSize);
+
+    byte* input = call.GetParameterUnchecked(0);
+
+    bool anyTrue = false;
+    for (size_t i = 0; i < userData.Size; ++i)
+    {
+      if (memcmp(input + i * elementSize, data, elementSize) != 0)
+      {
+        anyTrue = true;
+        break;
+      }
+    }
+
+    call.Set(Call::Return, anyTrue);
+  }
+
+  //***************************************************************************
+  // Splats a function of the type Boolean Fn(Scalar, Scalar&) to
+  // Vec(n) Fn(Vec(n)). The function being splatted is a Scalar Fn(Scalar)
+  // function that has been altered to return if it failed so an exception
+  // can be thrown.
+  template <typename ScalarType, bool (*Function)(ScalarType, ScalarType&)>
+  void SimpleSplatWithError(Call& call, ExceptionReport& report)
+  {
+    SplatWithErrorUserData& userData = call.GetFunction()->ComplexUserData.ReadObject<SplatWithErrorUserData>(0);
+    
+    // Get a pointer to our input vector
+    ScalarType* input = (ScalarType*)call.GetParameterUnchecked(0);
+
+    // Get a pointer to our return/output vector
+    ScalarType* result = (ScalarType*)call.GetReturnUnchecked();
+    call.MarkReturnAsSet();
+
+    bool success = true;
+    // Loop through all the components to apply the given function (splat)
+    for (size_t i = 0; i < userData.Size; ++i)
+    {
+      // Call the function on the single input (splat)
+      success = Function(input[i], result[i]);
+
+      // If the function failed for whatever reason then throw an exception
+      if (success == false)
+      {
+        // The user data of this function should contain a format string with
+        // one %s in it to display the input value that failed.
+        cstr errFormat = userData.ErrorFormat;
+        String inputAsString = userData.Type->GenericToString((byte*)input);
+        String msg = String::Format(errFormat, inputAsString.c_str());
+        call.GetState()->ThrowException(report, msg);
+        return;
+      }
+    }
+  }
+
+  //***************************************************************************
+  // Splats a function of the type Boolean Fn(Scalar, Scalar&) to
+  // Vec(n) Fn(Vec(n)). The function being splatted is a Scalar Fn(Scalar)
+  // function that has been altered to return if it failed so an exception
+  // can be thrown.
+  template <typename ScalarType0, typename ScalarType1, typename ResultType,
+    size_t ScalarType0Offset, size_t ScalarType1Offset,
+    bool (*Function)(ScalarType0, ScalarType1, ResultType&)>
+  void FullTwoParameterSplatWithError(Call& call, ExceptionReport& report)
+  {
+    SplatWithErrorUserData& userData = call.GetFunction()->ComplexUserData.ReadObject<SplatWithErrorUserData>(0);
+    
+    // Get a pointer to our input vector
+    ScalarType0* input0 = (ScalarType0*)call.GetParameterUnchecked(0);
+    ScalarType1* input1 = (ScalarType1*)call.GetParameterUnchecked(1);
+
+    // Get a pointer to our return/output vector
+    ResultType* result = (ResultType*)call.GetReturnUnchecked();
+    call.MarkReturnAsSet();
+
+    bool success = true;
+    // Loop through all the components to apply the given function (splat)
+    for (size_t i = 0; i < userData.Size; ++i)
+    {
+      // Call the function on the single input (splat)
+      success = Function(input0[i * ScalarType0Offset], input1[i * ScalarType0Offset], result[i]);
+
+      // If the function failed for whatever reason then throw an exception
+      if (success == false)
+      {
+        // The user data of this function should contain a format string with
+        // two %s in it to display the input value that failed.
+        cstr errFormat = userData.ErrorFormat;
+        String input0AsString = userData.Type->GenericToString((byte*)input0);
+        String input1AsString = userData.Type->GenericToString((byte*)input1);
+        String msg = String::Format(errFormat, input0AsString.c_str(), input1AsString.c_str());
+        call.GetState()->ThrowException(report, msg);
+        return;
+      }
+    }
+  }
+
+#define ZilchSetUserDataAndDescription(function, boundType, scalarBoundType, docString)    \
+  f->UserData = (void*)(boundType->Size / scalarBoundType->Size);                          \
+  if (boundType == scalarBoundType)                                                        \
+    f->Description = ZilchDocString(docString);                                            \
+  else                                                                                     \
+    f->Description = ZilchDocString(BuildString(docString, " Performed component-wise.")); 
+
+#define ZilchComplexOneParameterSplatBinder(scalarType0, returnType, offset0, function) \
+  FullOneParameterSplatAs<scalarType0, returnType, scalarType0, offset0, function>
+
+#define ZilchBindBasicSplat(builder, owner, scalarType, scalarBoundType, functionName, function, boundType, parameters, docString) \
+  {                                                                                                                                \
+    Zilch::BoundFn boundFn = ZilchComplexOneParameterSplatBinder(scalarType, scalarType, 1, function);                             \
+    Function* f = builder.AddBoundFunction(owner, functionName, boundFn, parameters, boundType, FunctionOptions::Static);          \
+    ZilchSetUserDataAndDescription(f, boundType, scalarBoundType, docString);                                                      \
+  }
+
+#define ZilchBindBasicSplatWithError(builder, owner, scalarType, scalarBoundType, functionName, function, boundType, parameters, docString, errorFormat)     \
+  {                                                                                                                                                          \
+    Function* f = builder.AddBoundFunction(owner, functionName, SimpleSplatWithError<scalarType, function>, parameters, boundType, FunctionOptions::Static); \
+    SplatWithErrorUserData userData(boundType->Size / scalarBoundType->Size, errorFormat, boundType);                                                        \
+    f->ComplexUserData.WriteObject(userData);                                                                                                                \
+    if (boundType == scalarBoundType)                                                                                                                        \
+      f->Description = ZilchDocString(docString);                                                                                                            \
+    else                                                                                                                                                     \
+      f->Description = ZilchDocString(BuildString(docString, " Performed component-wise."));                                                                 \
+  }
+
+#define ZilchComplexTwoParameterSplatBinder(scalarType0, scalarType1, returnType, offset0, offset1, function) \
+  FullTwoParameterSplatAs<scalarType0, scalarType1, returnType, scalarType0, scalarType1, offset0, offset1, function>
+
+#define ZilchBindBasicTwoParamSplat(builder, owner, scalarType, scalarBoundType, functionName, function, boundType, parameters, docString) \
+  {                                                                                                                                        \
+    Zilch::BoundFn boundFn = ZilchComplexTwoParameterSplatBinder(scalarType, scalarType, scalarType, 1, 1, function);                      \
+    Function* f = builder.AddBoundFunction(owner, functionName, boundFn, parameters, boundType, FunctionOptions::Static);                  \
+    ZilchSetUserDataAndDescription(f, boundType, scalarBoundType, docString);                                                              \
+  }
+
+#define ZilchBindBasicTwoParamSplatWithError(builder, owner, scalarType, scalarBoundType, functionName, function, boundType, parameters, docString, errorFormat) \
+  {                                                                                                                                                              \
+    Zilch::BoundFn boundFn = FullTwoParameterSplatWithError<scalarType, scalarType, scalarType, 1, 1, function>;                                                 \
+    Function* f = builder.AddBoundFunction(owner, functionName, boundFn, parameters, boundType, FunctionOptions::Static);                                        \
+    SplatWithErrorUserData userData(boundType->Size / scalarBoundType->Size, errorFormat, boundType);                                                            \
+    f->ComplexUserData.WriteObject(userData);                                                                                                                    \
+    if (boundType == scalarBoundType)                                                                                                                            \
+      f->Description = ZilchDocString(docString);                                                                                                                \
+    else                                                                                                                                                         \
+      f->Description = ZilchDocString(BuildString(docString, " Performed component-wise."));                                                                     \
+  }
+
+#define ZilchFullThreeParameterSplatBinder(Type0, Type1, Type2, ReturnType, Offset0, Offset1, Offset2, BoundFunction) \
+  FullThreeParameterSplat<Type0, Type1, Type2, ReturnType, Offset0, Offset1, Offset2, ZilchTypeOfFunctionPointer(BoundFunction) , BoundFunction>
+
+#define ZilchComplexThreeParameterSplatBinder(scalarType0, scalarType1, scalarType2, returnType, offset0, offset1, offset2, function) \
+  FullThreeParameterSplatAs<scalarType0, scalarType1, scalarType2, returnType, scalarType0, scalarType1, scalarType2, offset0, offset1, offset2, function>
+
+#define ZilchBindBasicThreeParamSplat(builder, owner, scalarType, scalarBoundType, functionName, function, boundType, parameters, docString) \
+  {                                                                                                                                          \
+    Zilch::BoundFn boundFn = ZilchComplexThreeParameterSplatBinder(scalarType, scalarType, scalarType, scalarType, 1, 1, 1, function);       \
+    Function* f = builder.AddBoundFunction(owner, functionName, boundFn, parameters, boundType, FunctionOptions::Static);                    \
+    ZilchSetUserDataAndDescription(f, boundType, scalarBoundType, docString);                                                                \
+  }
 
   //***************************************************************************
   void Core::PreSetupBinding(LibraryBuilder& builder)
   {
     // Setup all the primitive types
-    BoundType* doubleIntegerType      = new BoundType("DoubleInteger", TypeCopyMode::ValueType, sizeof(DoubleInteger), 0);
-    BoundType* doubleRealType         = new BoundType("DoubleReal", TypeCopyMode::ValueType, sizeof(DoubleReal), 0);
-    BoundType* booleanType            = CreateVectorType<Boolean>("Boolean",  1);
-    BoundType* boolean2Type           = CreateVectorType<Boolean>("Boolean2", 2);
-    BoundType* boolean3Type           = CreateVectorType<Boolean>("Boolean3", 3);
-    BoundType* boolean4Type           = CreateVectorType<Boolean>("Boolean4", 4);
-    BoundType* integerType            = CreateVectorType<Integer>("Integer",  1);
-    BoundType* integer2Type           = CreateVectorType<Integer>("Integer2", 2);
-    BoundType* integer3Type           = CreateVectorType<Integer>("Integer3", 3);
-    BoundType* integer4Type           = CreateVectorType<Integer>("Integer4", 4);
-    BoundType* realType               = CreateVectorType<Real>("Real",  1);
-    BoundType* real2Type              = CreateVectorType<Real>("Real2", 2);
-    BoundType* real3Type              = CreateVectorType<Real>("Real3", 3);
-    BoundType* real4Type              = CreateVectorType<Real>("Real4", 4);
-    BoundType* quaternionType         = CreateVectorType<Real>("Quaternion", 4);
+    BoundType* doubleIntegerType      = ZilchTypeId(DoubleInteger);
+    BoundType* doubleRealType         = ZilchTypeId(DoubleReal);
+    BoundType* booleanType            = ZilchTypeId(Boolean);
+    BoundType* boolean2Type           = ZilchTypeId(Boolean2);
+    BoundType* boolean3Type           = ZilchTypeId(Boolean3);
+    BoundType* boolean4Type           = ZilchTypeId(Boolean4);
+    BoundType* integerType            = ZilchTypeId(Integer);
+    BoundType* integer2Type           = ZilchTypeId(Integer2);
+    BoundType* integer3Type           = ZilchTypeId(Integer3);
+    BoundType* integer4Type           = ZilchTypeId(Integer4);
+    BoundType* realType               = ZilchTypeId(Real);
+    BoundType* real2Type              = ZilchTypeId(Real2);
+    BoundType* real3Type              = ZilchTypeId(Real3);
+    BoundType* real4Type              = ZilchTypeId(Real4);
+    BoundType* quaternionType         = ZilchTypeId(Quaternion);
     BoundType* nullType               = new BoundType("Null", TypeCopyMode::ReferenceType, 0, 0);
     BoundType* voidType               = new BoundType("Void", TypeCopyMode::ValueType, 0, 0);
     BoundType* errorType              = new BoundType("[ErrorType]", TypeCopyMode::ValueType, 0, 0);
@@ -6672,21 +6975,6 @@ namespace Zilch
     anyDelegateType->Return = voidType;
 
     // Add ourselves to the library
-    builder.AddRawBoundType(booleanType);
-    builder.AddRawBoundType(boolean2Type);
-    builder.AddRawBoundType(boolean3Type);
-    builder.AddRawBoundType(boolean4Type);
-    builder.AddRawBoundType(integerType);
-    builder.AddRawBoundType(integer2Type);
-    builder.AddRawBoundType(integer3Type);
-    builder.AddRawBoundType(integer4Type);
-    builder.AddRawBoundType(realType);
-    builder.AddRawBoundType(real2Type);
-    builder.AddRawBoundType(real3Type);
-    builder.AddRawBoundType(real4Type);
-    builder.AddRawBoundType(quaternionType);
-    builder.AddRawBoundType(doubleIntegerType);
-    builder.AddRawBoundType(doubleRealType);
     builder.AddRawBoundType(nullType);
     builder.AddRawBoundType(voidType);
     builder.AddRawBoundType(errorType);
@@ -6719,14 +7007,29 @@ namespace Zilch
     this->BooleanTypes[1] = boolean2Type;
     this->BooleanTypes[2] = boolean3Type;
     this->BooleanTypes[3] = boolean4Type;
+    this->AllBooleanTypes.push_back(booleanType);
+    this->AllBooleanTypes.push_back(boolean2Type);
+    this->AllBooleanTypes.push_back(boolean3Type);
+    this->AllBooleanTypes.push_back(boolean4Type);
     this->IntegerTypes[0] = integerType;
     this->IntegerTypes[1] = integer2Type;
     this->IntegerTypes[2] = integer3Type;
     this->IntegerTypes[3] = integer4Type;
+    this->AllIntegerTypes.push_back(integerType);
+    this->AllIntegerTypes.push_back(integer2Type);
+    this->AllIntegerTypes.push_back(integer3Type);
+    this->AllIntegerTypes.push_back(integer4Type);
     this->RealTypes[0] = realType;
     this->RealTypes[1] = real2Type;
     this->RealTypes[2] = real3Type;
     this->RealTypes[3] = real4Type;
+    this->AllRealTypes.push_back(realType);
+    this->AllRealTypes.push_back(real2Type);
+    this->AllRealTypes.push_back(real3Type);
+    this->AllRealTypes.push_back(real4Type);
+    this->MatrixElementTypes[0] = realType;
+    this->MatrixElementTypes[1] = integerType;
+    this->MatrixElementTypes[2] = booleanType;
 
     // Create the one special any type (there should only ever be one instantiation of this!)
     this->AnythingType = new AnyType();
@@ -6751,7 +7054,7 @@ namespace Zilch
     this->EventsType = events;
 
     // Create the string type as a reference type
-    BoundType* stringType = builder.AddBoundType("String", TypeCopyMode::ReferenceType, sizeof(String));
+    BoundType* stringType = ZilchTypeId(String);
     stringType->HandleManager = ZilchManagerId(StringManager);
     builder.AddBoundFunction(stringType, "SubString", SubString, TwoParameters(integerType, "start", "length"), stringType, FunctionOptions::None);
     builder.AddBoundFunction(stringType, "Get", StringGetChar, OneParameter(integerType, "index"), integerType, FunctionOptions::None);
@@ -6861,18 +7164,19 @@ namespace Zilch
     GenerateVectorSwizzles<4, Real    >(builder, quaternionType,  this->RealTypes);
 
     // Every vector gets a count which tells you how many elements there are, for generic programming
-    builder.AddBoundProperty(booleanType,  "Count", this->IntegerType, nullptr, VectorCount<1>, FunctionOptions::None);
-    builder.AddBoundProperty(boolean2Type, "Count", this->IntegerType, nullptr, VectorCount<2>, FunctionOptions::None);
-    builder.AddBoundProperty(boolean3Type, "Count", this->IntegerType, nullptr, VectorCount<3>, FunctionOptions::None);
-    builder.AddBoundProperty(boolean4Type, "Count", this->IntegerType, nullptr, VectorCount<4>, FunctionOptions::None);
-    builder.AddBoundProperty(integerType,  "Count", this->IntegerType, nullptr, VectorCount<1>, FunctionOptions::None);
-    builder.AddBoundProperty(integer2Type, "Count", this->IntegerType, nullptr, VectorCount<2>, FunctionOptions::None);
-    builder.AddBoundProperty(integer3Type, "Count", this->IntegerType, nullptr, VectorCount<3>, FunctionOptions::None);
-    builder.AddBoundProperty(integer4Type, "Count", this->IntegerType, nullptr, VectorCount<4>, FunctionOptions::None);
-    builder.AddBoundProperty(realType,     "Count", this->IntegerType, nullptr, VectorCount<1>, FunctionOptions::None);
-    builder.AddBoundProperty(real2Type,    "Count", this->IntegerType, nullptr, VectorCount<2>, FunctionOptions::None);
-    builder.AddBoundProperty(real3Type,    "Count", this->IntegerType, nullptr, VectorCount<3>, FunctionOptions::None);
-    builder.AddBoundProperty(real4Type,    "Count", this->IntegerType, nullptr, VectorCount<4>, FunctionOptions::None);
+    builder.AddBoundProperty(booleanType,    "Count", this->IntegerType, nullptr, VectorCount<1>, FunctionOptions::None)->IsHidden = true;
+    builder.AddBoundProperty(boolean2Type,   "Count", this->IntegerType, nullptr, VectorCount<2>, FunctionOptions::None)->IsHidden = true;
+    builder.AddBoundProperty(boolean3Type,   "Count", this->IntegerType, nullptr, VectorCount<3>, FunctionOptions::None)->IsHidden = true;
+    builder.AddBoundProperty(boolean4Type,   "Count", this->IntegerType, nullptr, VectorCount<4>, FunctionOptions::None)->IsHidden = true;
+    builder.AddBoundProperty(integerType,    "Count", this->IntegerType, nullptr, VectorCount<1>, FunctionOptions::None)->IsHidden = true;
+    builder.AddBoundProperty(integer2Type,   "Count", this->IntegerType, nullptr, VectorCount<2>, FunctionOptions::None)->IsHidden = true;
+    builder.AddBoundProperty(integer3Type,   "Count", this->IntegerType, nullptr, VectorCount<3>, FunctionOptions::None)->IsHidden = true;
+    builder.AddBoundProperty(integer4Type,   "Count", this->IntegerType, nullptr, VectorCount<4>, FunctionOptions::None)->IsHidden = true;
+    builder.AddBoundProperty(realType,       "Count", this->IntegerType, nullptr, VectorCount<1>, FunctionOptions::None)->IsHidden = true;
+    builder.AddBoundProperty(real2Type,      "Count", this->IntegerType, nullptr, VectorCount<2>, FunctionOptions::None)->IsHidden = true;
+    builder.AddBoundProperty(real3Type,      "Count", this->IntegerType, nullptr, VectorCount<3>, FunctionOptions::None)->IsHidden = true;
+    builder.AddBoundProperty(real4Type,      "Count", this->IntegerType, nullptr, VectorCount<4>, FunctionOptions::None)->IsHidden = true;
+    builder.AddBoundProperty(quaternionType, "Count", this->IntegerType, nullptr, VectorCount<4>, FunctionOptions::None)->IsHidden = true;
     
     // Bind the get functions for vectors (indexing)
     builder.AddBoundFunction(booleanType,     "Get", VectorGet<1, Boolean>, OneParameter(this->IntegerType), this->BooleanType, FunctionOptions::None);
@@ -6904,12 +7208,9 @@ namespace Zilch
     builder.AddBoundFunction(real4Type,       "Set", VectorSet<4, Real>,    TwoParameters(this->IntegerType, this->RealType),     this->VoidType, FunctionOptions::None);
     builder.AddBoundFunction(quaternionType,  "Set", VectorSet<4, Real>,    TwoParameters(this->IntegerType, this->RealType),     this->VoidType, FunctionOptions::None);
 
-
     FunctionOptions::Enum options = FunctionOptions::Static;
 
     ZilchBindCustomStaticNamedParameterMethodOverload(builder, math, Math, RotateVector, "vector axis radians", Real3, Math::Vec3Param, Math::Vec3Param, Math::real)->Description = ZilchDocString("Rotate a vector about an axis by the given radians.");
-    ZilchSplatNamedAllVectorOperationsAs(builder, math, Math, Real, DegToRad, "ToRadians", "degrees", ZilchDocString("Converts the given degrees to radians."));
-    ZilchSplatNamedAllVectorOperationsAs(builder, math, Math, Real, RadToDeg, "ToDegrees", "radians", ZilchDocString("Converts the given radians to degrees."));
 
     ZilchBindCustomStaticMethodOverloadAs(builder, math, Math, Angle, "AngleBetween", Real, Math::Vec2Param, Math::Vec2Param)->Description = ZilchDocString("Returns the angle between two Real2s in radians.");
     ZilchBindCustomStaticMethodOverloadAs(builder, math, Math, Angle, "AngleBetween", Real, Math::Vec3Param, Math::Vec3Param)->Description = ZilchDocString("Returns the angle between two Real3s in radians.");
@@ -6927,53 +7228,8 @@ namespace Zilch
     ZilchBindCustomStaticMethodOverloadAs(builder, math, Math, Angle2D, "Angle2D", Real, Math::Vec3Param)->Description = ZilchDocString("Computes the angle (in radians) about the z-axis between the vector and the x-axis.");
     ZilchBindCustomStaticNamedParameterMethodOverloadAs(builder, math, Math, Project, "Project", "vector axis", Real3, Math::Vec3Param, Math::Vec3Param)->Description = ZilchDocString("Projects the vector onto the axis.");
     ZilchBindCustomStaticNamedParameterMethodOverloadAs(builder, math, Math, Reflect, "Reflect", "vector axis", Real3, Math::Vec3Param, Math::Vec3Param)->Description = ZilchDocString("Reflects the vector across the axis.");
-    
-    ZilchBindCustomStaticMethodOverloadAs(builder, math, Math, Min<Integer>, "Min", Integer, Integer, Integer)->Description = ZilchDocString("Returns whichever value is smaller.");
-    ZilchBindCustomStaticMethodOverloadAs(builder, math, Math, Max<Integer>, "Max", Integer, Integer, Integer)->Description = ZilchDocString("Returns whichever value is larger.");
-
-
-    ZilchSplatAllTwoVecAndRealToVecAs(builder, math, Zilch, Real, Lerp<Real>, "Lerp", "start", "end", "t", "Linearly interpolates from start to end by the fraction t. T of 0 is start and t of 1 is end.");
-    
-    //splat all functions of Real(n) fn(Real(n), Real(n))
-    ZilchSplatNamedAllTwoVecToVecAs(builder, math, Math, Real, Pow, "Pow", "base", "exponent", "Returns base raised to the power of the exponent.");
-    ZilchSplatNamedAllTwoVecToVecAs(builder, math, Math, Real, FMod, "FMod", "numerator", "denominator", "Returns the floating-point remainder of numerator/denominator (rounded towards zero).");
-    ZilchSplatAllTwoVecToVecAs(builder, math, Math, Real, Min<Real>, "Min", "Returns whichever value is smaller.");
-    ZilchSplatAllTwoVecToVecAs(builder, math, Math, Real, Max<Real>, "Max", "Returns whichever value is larger.");
-    //Splat Real(n) fn(Real(n), Real(n), real)
-    ZilchSplatAllThreeVecToVecAs(builder, math, Math, Real, Clamp<Real>, "Clamp", "value", "min", "max", "Limits the value between the provided min and max.");
-      
-    //Splat Real(n) Fn(Real(n))
-    ZilchSplatNamedAllVectorOperationsAs(builder, math, Math, Real, Sin, "Sin", "radians", "The transcendental function sine.");
-    ZilchSplatNamedAllVectorOperationsAs(builder, math, Math, Real, Cos, "Cos", "radians", "The transcendental function cosine.");
-    ZilchSplatNamedAllVectorOperationsAs(builder, math, Math, Real, Tan, "Tan", "radians", "The transcendental function tangent.");
-    ZilchSplatNamedAllVectorOperationsWithErrorAs(builder, math, Math, Real, SafeArcCos, "ACos", "units", "ACos of '%s' is invalid. Values must be in the range [-1, 1].");
-    ZilchSplatNamedAllVectorOperationsWithErrorAs(builder, math, Math, Real, SafeArcSin, "ASin", "units", "ASin of '%s' is invalid. Values must be in the range [-1, 1].");    
-    ZilchSplatNamedAllVectorOperationsAs(builder, math, Math, Real, ArcTan, "ATan", "units", "The transcendental function arctangent. The return type is in radians.");
-    ZilchSplatNamedAllTwoVecToVecAs(builder, math, Math, Real, ArcTan2, "ATan2", "y", "x", "Performs the arctangent using the signs of x and y to determine what quadrant the angle lies in. Returns a value in the range of [-pi, pi]. The return type is in radians.");
 
     ZilchBindCustomStaticMethodOverloadAs(builder, math, , sqrt, "Sqrt", DoubleReal, DoubleReal);
-
-    ZilchSplatAllVectorOperationsWithErrorAs(builder, math, Math, Real, SafeSqrt, "Sqrt", "Sqrt of the negative number '%s' is invalid.");
-    ZilchSplatAllVectorOperationsAs(builder, math, Math, Real, Abs, "Abs", "Returns the absolute value of value.");
-    ZilchSplatAllVectorOperationsAs(builder, math, Math, Real, Truncate, "Truncate", "Rounds value towards zero.");
-    ZilchSplatAllVectorOperationsAs(builder, math, Math, Real, Floor, "Floor", "Rounds value downward.");
-    ZilchSplatAllVectorOperationsAs(builder, math, Math, Real, Ceil, "Ceil", "Rounds value upward.");
-    ZilchSplatAllVectorOperationsAs(builder, math, Math, Real, Round, "Round", "Returns the integer value closest to value.");
-    ZilchSplatAllVectorOperationsAs(builder, math, Math, Real, Rsqrt, "RSqrt", "Reciprocal square root approximation. Used for efficiency when higher accuracy is not need.");
-    ZilchSplatAllVectorOperationsAs(builder, math, Math, Real, Log, "Log", "Base e logorithm.");
-    ZilchSplatAllVectorOperationsAs(builder, math, Math, Real, Log10, "Log10", "Base 10 logorithm.");
-    ZilchSplatAllVectorOperationsAs(builder, math, Math, Real, Exp, "Exp", "Returns the base-e exponentation of value, which is e^value.");
-    ZilchSplatAllVectorOperationsAs(builder, math, Math, Real, Fractional, "Frac", "Returns the fractional part of value, a value between 0 and 1.");
-    
-    ZilchSplatNamedAllVectorOperationsOneExtraAs(builder, math, Math, Real, Integer, Truncate,  "Truncate", "value", "place", "Rounds value towards zero. The place represents where in the number we want to perform rounding (0 is the 1s place, 1 is the 10s place, -1 is the tenths place, etc).");
-    ZilchSplatNamedAllVectorOperationsOneExtraAs(builder, math, Math, Real, Integer, Floor,     "Floor"   , "value", "place", "Rounds value downward. The place represents where in the number we want to perform rounding (0 is the 1s place, 1 is the 10s place, -1 is the tenths place, etc).");
-    ZilchSplatNamedAllVectorOperationsOneExtraAs(builder, math, Math, Real, Integer, Ceil,      "Ceil"    , "value", "place", "Rounds value upward. The place represents where in the number we want to perform rounding (0 is the 1s place, 1 is the 10s place, -1 is the tenths place, etc).");
-    ZilchSplatNamedAllVectorOperationsOneExtraAs(builder, math, Math, Real, Integer, Round,     "Round"   , "value", "place", "Returns the integer value closest to value. The place represents where in the number we want to perform rounding (0 is the 1s place, 1 is the 10s place, -1 is the tenths place, etc).");
-    
-    ZilchSplatNamedAllVectorOperationsTwoExtraAs(builder, math, Math, Real, Integer, Integer, Truncate, "Truncate", "value", "place", "base", "Rounds value towards zero. The place represents where in the number we want to perform rounding (0 is the 1s place, 1 is the 10s place, -1 is the tenths place, etc).");
-    ZilchSplatNamedAllVectorOperationsTwoExtraAs(builder, math, Math, Real, Integer, Integer, Floor,    "Floor"   , "value", "place", "base", "Rounds value downward. The place represents where in the number we want to perform rounding (0 is the 1s place, 1 is the 10s place, -1 is the tenths place, etc).");
-    ZilchSplatNamedAllVectorOperationsTwoExtraAs(builder, math, Math, Real, Integer, Integer, Ceil,     "Ceil"    , "value", "place", "base", "Rounds value upward. The place represents where in the number we want to perform rounding (0 is the 1s place, 1 is the 10s place, -1 is the tenths place, etc).");
-    ZilchSplatNamedAllVectorOperationsTwoExtraAs(builder, math, Math, Real, Integer, Integer, Round,    "Round"   , "value", "place", "base", "Returns the integer value closest to value. The place represents where in the number we want to perform rounding (0 is the 1s place, 1 is the 10s place, -1 is the tenths place, etc).");
 
     //Lots of quaternion construction functions
     ZilchBindCustomStaticNamedParameterMethodOverload(builder, math, Math, ToQuaternion, "axis radians", Quaternion, Math::Vec3Param, Real)->Description = ZilchDocString("Generates the quaternion that rotates about the axis vector by the given radians.");
@@ -7020,9 +7276,145 @@ namespace Zilch
 
     builder.AddBoundFunction(math, "Transform", QuaternionTransformQuaternion, TwoParameters(this->QuaternionType, "the", this->QuaternionType, "by"), this->QuaternionType, FunctionOptions::Static)->Description = ZilchDocString("Creates a new rotation that represents rotating by parameter 1 and then parameter 2.");
     builder.AddBoundFunction(math, "Transform", QuaternionTransformVector3, TwoParameters(this->Real3Type, "the", this->QuaternionType, "by"), this->Real3Type, FunctionOptions::Static)->Description = ZilchDocString("Creates a new vector that represents parameter 1 being rotated by parameter 2.");
+    builder.AddBoundFunction(math, "Multiply", QuaternionMultiplyQuaternion, TwoParameters(this->QuaternionType, "by", this->QuaternionType, "the"), this->QuaternionType, FunctionOptions::Static)->Description = ZilchDocString("Creates a new rotation that represents rotating by parameter 2 and then parameter 1.");
+    builder.AddBoundFunction(math, "Multiply", QuaternionMultiplyVector3, TwoParameters(this->QuaternionType, "by", this->Real3Type, "the"), this->Real3Type, FunctionOptions::Static)->Description = ZilchDocString("Creates a new vector that represents parameter 2 being rotated by parameter 1.");
     builder.AddBoundFunction(math, "Invert", QuaternionInvert, OneParameter(this->QuaternionType), this->QuaternionType, options)->Description = ZilchDocString("Returns the inverse rotation.");
 
     builder.AddBoundProperty(quaternionType, "Identity", this->QuaternionType, nullptr, QuaternionIdentity, MemberOptions::Static);
+
+    CreateMatrixTypes(builder);
+
+    for (size_t i = 0; i < AllRealTypes.size(); ++i)
+    {
+      BoundType* boundType = AllRealTypes[i];
+      Function* f = nullptr;
+
+      ZilchBindBasicSplat(builder, math, Real, realType, "Abs", Math::Abs, boundType, OneParameter(boundType), "Returns the absolute value of value.");
+      ZilchBindBasicSplatWithError(builder, math, Real, realType, "ACos", Math::SafeArcCos, boundType, OneParameter(boundType, "units"),"The transcendental function arc-sine", "ACos of '%s' is invalid. Values must be in the range [-1, 1].");
+      f = builder.AddBoundFunction(math, "AllNonZero", AllNonZero, OneParameter(boundType), booleanType, FunctionOptions::Static);
+      f->ComplexUserData.WriteObject(SplatWithErrorUserData(boundType->Size / realType->Size, nullptr, boundType));
+      f = builder.AddBoundFunction(math, "AnyNonZero", AnyNonZero, OneParameter(boundType), booleanType, FunctionOptions::Static);
+      f->ComplexUserData.WriteObject(SplatWithErrorUserData(boundType->Size / realType->Size, nullptr, boundType));
+      ZilchBindBasicSplatWithError(builder, math, Real, realType, "ASin", Math::SafeArcSin, boundType, OneParameter(boundType, "units"), "The transcendental function arc-cosine", "ASin of '%s' is invalid. Values must be in the range [-1, 1].");    
+      ZilchBindBasicSplat(builder, math, Real, realType, "ATan", Math::ArcTan, boundType, OneParameter(boundType, "units"), "The transcendental function arc-tangent. The return type is in radians.");
+      ZilchBindBasicTwoParamSplat(builder, math, Real, realType, "ATan2", Math::ArcTan2, boundType, TwoParameters(boundType, "y", "x"), "Performs the arc-tangent using the signs of x and y to determine what quadrant the angle lies in. Returns a value in the range of [-pi, pi]. The return type is in radians.");
+      ZilchBindBasicSplat(builder, math, Real, realType, "Ceil", Math::Ceil, boundType, OneParameter(boundType), "Rounds value upward.");
+      f = builder.AddBoundFunction(math, "Ceil", ZilchComplexTwoParameterSplatBinder(Real, Integer, Real, 1, 0, Math::Ceil),
+        TwoParameters(boundType, "value", integerType, "places"), boundType, FunctionOptions::Static);
+      ZilchSetUserDataAndDescription(f, boundType, realType, "Rounds value upward. The place represents where in the number we want to perform rounding (0 is the 1s place, 1 is the 10s place, -1 is the tenths place, etc).");
+      f = builder.AddBoundFunction(math, "Ceil", ZilchComplexThreeParameterSplatBinder(Real, Integer, Integer, Real, 1, 0, 0, Math::Ceil),
+        ThreeParameters(boundType, "value", integerType, "places", integerType, "base"), boundType, FunctionOptions::Static);
+      ZilchSetUserDataAndDescription(f, boundType, realType, "Rounds value upward. The place represents where in the number we want to perform rounding (0 is the 1s place, 1 is the 10s place, -1 is the tenths place, etc).");
+      
+      ZilchBindBasicThreeParamSplat(builder, math, Real, realType, "Clamp", Math::Clamp<Real>, boundType, ThreeParameters(boundType, "value", "min", "max"), "Limits the value between the provided min and max.");
+      ZilchBindBasicSplat(builder, math, Real, realType, "Cos", Math::Cos, boundType, OneParameter(boundType, "radians"), "The transcendental function cosine.");
+      ZilchBindBasicSplat(builder, math, Real, realType, "Cosh", Math::Cosh, boundType, OneParameter(boundType, "radians"), "The hyperbolic cosine function.");
+      ZilchBindBasicSplat(builder, math, Real, realType, "Exp", Math::Exp, boundType, OneParameter(boundType), "Returns the base-e exponentiation of value, which is e^value.");
+      ZilchBindBasicSplat(builder, math, Real, realType, "Exp2", Math::Exp2, boundType, OneParameter(boundType), "Returns the base-2 exponentiation of value, which is 2^value.");
+      ZilchBindBasicSplat(builder, math, Real, realType, "Floor", Math::Floor, boundType, OneParameter(boundType), "Rounds value downward.");
+
+      f = builder.AddBoundFunction(math, "Floor", ZilchComplexTwoParameterSplatBinder(Real, Integer, Real, 1, 0, Math::Floor),
+        TwoParameters(boundType, "value", integerType, "places"), boundType, FunctionOptions::Static);
+      ZilchSetUserDataAndDescription(f, boundType, realType, "Rounds value downward. The place represents where in the number we want to perform rounding (0 is the 1s place, 1 is the 10s place, -1 is the tenths place, etc).");
+      f = builder.AddBoundFunction(math, "Floor", ZilchComplexThreeParameterSplatBinder(Real, Integer, Integer, Real, 1, 0, 0, Math::Floor),
+        ThreeParameters(boundType, "value", integerType, "places", integerType, "base"), boundType, FunctionOptions::Static);
+      ZilchSetUserDataAndDescription(f, boundType, realType, "Rounds value downward. The place represents where in the number we want to perform rounding (0 is the 1s place, 1 is the 10s place, -1 is the tenths place, etc).");
+
+      ZilchBindBasicTwoParamSplatWithError(builder, math, Real, realType, "FMod", Math::SafeFMod, boundType, TwoParameters(boundType, "numerator", "denominator"), "Returns the floating-point remainder of numerator/denominator (rounded towards zero).", "Fmod(%s, %s) is invalid because the denominator would produce a zero division");
+      ZilchBindBasicSplat(builder, math, Real, realType, "Frac", Math::Fractional, boundType, OneParameter(boundType), "Returns the fractional part of value, a value between 0 and 1.");
+
+      f = builder.AddBoundFunction(math, "Lerp", ZilchComplexThreeParameterSplatBinder(Real, Real, Real, Real, 1, 1, 1, Zilch::Lerp<Real>),
+        ThreeParameters(boundType, "start", boundType, "end", boundType, "t"), boundType, FunctionOptions::Static);
+      ZilchSetUserDataAndDescription(f, boundType, realType, "Linearly interpolates from start to end by the fraction t. T of 0 is start and t of 1 is end.");
+      // Add another version for lerp that is always of real type
+      if (boundType != realType)
+      {
+        f = builder.AddBoundFunction(math, "Lerp", ZilchComplexThreeParameterSplatBinder(Real, Real, Real, Real, 1, 1, 0, Zilch::Lerp<Real>),
+          ThreeParameters(boundType, "start", boundType, "end", realType, "t"), boundType, FunctionOptions::Static);
+        ZilchSetUserDataAndDescription(f, boundType, realType, "Linearly interpolates from start to end by the fraction t. T of 0 is start and t of 1 is end.");
+      }
+
+      ZilchBindBasicSplat(builder, math, Real, realType, "Log", Math::Log, boundType, OneParameter(boundType), "Base e logarithm.");
+      ZilchBindBasicSplat(builder, math, Real, realType, "Log10", Math::Log10, boundType, OneParameter(boundType), "Base 10 logarithm.");
+      ZilchBindBasicSplat(builder, math, Real, realType, "Log2", Math::Log2, boundType, OneParameter(boundType), "Base 2 logarithm.");
+      ZilchBindBasicTwoParamSplat(builder, math, Real, realType, "Max", Math::Max<Real>, boundType, TwoParameters(boundType), "Returns whichever value is larger.");
+      ZilchBindBasicTwoParamSplat(builder, math, Real, realType, "Min", Math::Min<Real>, boundType, TwoParameters(boundType), "Returns whichever value is smaller.");
+      ZilchBindBasicTwoParamSplat(builder, math, Real, realType, "Pow", Math::Pow, boundType, TwoParameters(boundType, "base", "exponent"), "Returns base raised to the power of the exponent.");
+
+      ZilchBindBasicSplat(builder, math, Real, realType, "Round", Math::Round, boundType, OneParameter(boundType), "Returns the integer value closest to value.");
+      f = builder.AddBoundFunction(math, "Round", ZilchComplexTwoParameterSplatBinder(Real, Integer, Real, 1, 0, Math::Round),
+        TwoParameters(boundType, "value", integerType, "places"), boundType, FunctionOptions::Static);
+      ZilchSetUserDataAndDescription(f, boundType, realType, "Returns the integer value closest to value. The place represents where in the number we want to perform rounding (0 is the 1s place, 1 is the 10s place, -1 is the tenths place, etc).");
+      f = builder.AddBoundFunction(math, "Round", ZilchComplexThreeParameterSplatBinder(Real, Integer, Integer, Real, 1, 0, 0, Math::Round),
+        ThreeParameters(boundType, "value", integerType, "places", integerType, "base"), boundType, FunctionOptions::Static);
+      ZilchSetUserDataAndDescription(f, boundType, realType, "Returns the integer value closest to value. The place represents where in the number we want to perform rounding (0 is the 1s place, 1 is the 10s place, -1 is the tenths place, etc).");
+      
+      ZilchBindBasicSplat(builder, math, Real, realType, "RSqrt", Math::Rsqrt, boundType, OneParameter(boundType), "Reciprocal square root approximation. Used for efficiency when higher accuracy is not need.");
+      ZilchBindBasicSplat(builder, math, Real, realType, "Saturate", Math::Clamp<Real>, boundType, OneParameter(boundType), "Limits the value between 0 and 1");
+      
+      f = builder.AddBoundFunction(math, "Sign", ZilchComplexOneParameterSplatBinder(Real, Integer, 1, Math::Sign),
+        OneParameter(boundType), boundType, FunctionOptions::Static);
+      ZilchSetUserDataAndDescription(f, boundType, realType, "Returns the sign of the value as either 1 or -1.");
+
+      ZilchBindBasicSplat(builder, math, Real, realType, "Sin", Math::Sin, boundType, OneParameter(boundType, "radians"), "The transcendental function sine.");
+      ZilchBindBasicSplat(builder, math, Real, realType, "Sinh", Math::Sinh, boundType, OneParameter(boundType, "radians"), "The hyperbolic sine function.");
+
+      f = builder.AddBoundFunction(math, "SmoothStep", ZilchFullThreeParameterSplatBinder(Real, Real, Real, Real, 1, 1, 1, Math::SmoothStep<Real>),
+        ThreeParameters(boundType, "min", boundType, "max", boundType, "x"), boundType, FunctionOptions::Static);
+      ZilchSetUserDataAndDescription(f, boundType, realType, "Returns a smooth Hermite interpolation between 0 and 1 if x is in-between min and max.");
+      // Add another version for smoothstep that is always of real type
+      if (boundType != realType)
+      {
+        f = builder.AddBoundFunction(math, "SmoothStep", ZilchFullThreeParameterSplatBinder(Real, Real, Real, Real, 1, 1, 0, Math::SmoothStep<Real>),
+          ThreeParameters(boundType, "min", boundType, "max", realType, "t"), boundType, FunctionOptions::Static);
+        ZilchSetUserDataAndDescription(f, boundType, realType, "Returns a smooth Hermite interpolation between 0 and 1 if t is in-between min and max.");
+      }
+
+      ZilchBindBasicSplatWithError(builder, math, Real, realType, "Sqrt", Math::SafeSqrt, boundType, OneParameter(boundType), "Computes the square root", "Sqrt of the negative number '%s' is invalid.");
+      ZilchBindBasicTwoParamSplat(builder, math, Real, realType, "Step", Math::Step, boundType, TwoParameters(boundType, "y", "x"), "If y < x then 0 is returned, otherwise 1 is returned.")
+      ZilchBindBasicSplat(builder, math, Real, realType, "Tan", Math::Tan, boundType, OneParameter(boundType, "radians"), "The transcendental function tangent.");
+      ZilchBindBasicSplat(builder, math, Real, realType, "Tanh", Math::Tanh, boundType, OneParameter(boundType,  "radians"), "The hyperbolic tangent function.");
+      ZilchBindBasicSplat(builder, math, Real, realType, "ToRadians", Math::DegToRad, boundType, OneParameter(boundType, "degrees"), "Converts the given degrees to radians.");
+      ZilchBindBasicSplat(builder, math, Real, realType, "ToDegrees", Math::RadToDeg, boundType, OneParameter(boundType, "radians"), "Converts the given radians to degrees.");
+
+      ZilchBindBasicSplat(builder, math, Real, realType, "Truncate", Math::Truncate, boundType, OneParameter(boundType), "Rounds value towards zero.");
+      f = builder.AddBoundFunction(math, "Truncate", ZilchComplexTwoParameterSplatBinder(Real, Integer, Real, 1, 0, Math::Truncate),
+        TwoParameters(boundType, "value", integerType, "places"), boundType, FunctionOptions::Static);
+      ZilchSetUserDataAndDescription(f, boundType, realType, "Rounds value towards zero. The place represents where in the number we want to perform rounding (0 is the 1s place, 1 is the 10s place, -1 is the tenths place, etc).");
+      f = builder.AddBoundFunction(math, "Truncate", ZilchComplexThreeParameterSplatBinder(Real, Integer, Integer, Real, 1, 0, 0, Math::Truncate),
+        ThreeParameters(boundType, "value", integerType, "places", integerType, "base"), boundType, FunctionOptions::Static);
+      ZilchSetUserDataAndDescription(f, boundType, realType, "Rounds value towards zero. The place represents where in the number we want to perform rounding (0 is the 1s place, 1 is the 10s place, -1 is the tenths place, etc).");
+    }
+
+    // Bind the integer functions separately (not many functions make sense to be splatted on integers)
+    for (size_t i = 0; i < AllIntegerTypes.size(); ++i)
+    {
+      BoundType* boundType = AllIntegerTypes[i];
+      Function* f = nullptr;
+      
+      ZilchBindBasicSplat(builder, math, Integer, integerType, "Abs", Math::Abs, boundType, OneParameter(boundType), "Returns the absolute value of value.");
+      f = builder.AddBoundFunction(math, "AllNonZero", AllNonZero, OneParameter(boundType), booleanType, FunctionOptions::Static);
+      f->ComplexUserData.WriteObject(SplatWithErrorUserData(boundType->Size / integerType->Size, nullptr, boundType));
+      f = builder.AddBoundFunction(math, "AnyNonZero", AnyNonZero, OneParameter(boundType), booleanType, FunctionOptions::Static);
+      f->ComplexUserData.WriteObject(SplatWithErrorUserData(boundType->Size / integerType->Size, nullptr, boundType));
+      ZilchBindBasicThreeParamSplat(builder, math, Integer, integerType, "Clamp", Math::Clamp<Integer>, boundType, ThreeParameters(boundType, "value", "min", "max"), "Limits the value between the provided min and max.");
+      ZilchBindBasicSplat(builder, math, Integer, integerType, "CountBits", Math::CountBits, boundType, OneParameter(boundType), "Counts the number of bits set on the input.");
+      ZilchBindBasicTwoParamSplat(builder, math, Integer, integerType, "Max", Math::Max<Integer>, boundType, TwoParameters(boundType), "Returns whichever value is larger.");
+      ZilchBindBasicTwoParamSplat(builder, math, Integer, integerType, "Min", Math::Min<Integer>, boundType, TwoParameters(boundType), "Returns whichever value is smaller.");
+      ZilchBindBasicSplat(builder, math, Integer, integerType, "Sign", Math::Sign, boundType, OneParameter(boundType), "Returns the sign of the value as either 1 or -1.");
+    }
+
+    // Bind the boolean functions
+    for (size_t i = 0; i < AllBooleanTypes.size(); ++i)
+    {
+      BoundType* boundType = AllBooleanTypes[i];
+      Function* f = nullptr;
+
+      f = builder.AddBoundFunction(math, "AllNonZero", AllNonZero, OneParameter(boundType), booleanType, FunctionOptions::Static);
+      f->ComplexUserData.WriteObject(SplatWithErrorUserData(boundType->Size / booleanType->Size, nullptr, boundType));
+      f = builder.AddBoundFunction(math, "AnyNonZero", AnyNonZero, OneParameter(boundType), booleanType, FunctionOptions::Static);
+      f->ComplexUserData.WriteObject(SplatWithErrorUserData(boundType->Size / booleanType->Size, nullptr, boundType));
+    }
   }
 
   //***************************************************************************
@@ -7147,17 +7539,156 @@ namespace Zilch
 * Copyright 2012-2014, DigiPen Institute of Technology
 \**************************************************************/
 
-
-
-
-
-
 // Redirection header based on the platform
-//#ifdef _MSC_VER
-//  include "DebuggingWindows.inl"
-//#else
-//  include "DebuggingGeneric.inl"
-//#endif
+#ifdef _MSC_VER
+/**************************************************************\
+* Author: Trevor Sundberg
+* Copyright 2012-2014, DigiPen Institute of Technology
+\**************************************************************/
+
+// Includes
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
+#include <Windows.h>
+
+namespace Zilch
+{
+  //***************************************************************************
+  String StripQuotes(cstr text)
+  {
+    // Use this to build a quote removed message
+    StringBuilder builder;
+
+    // Remove quotes from message
+    while ((*text) != '\0')
+    {
+      // Get the current character
+      char c = *text;
+
+      // If the character is a quote...
+      if (c == '"')
+      {
+        // Append a single quote
+        builder.Append('\'');
+      }
+      else
+      {
+        // Otherwise, append the character
+        builder.Append(*text);
+      }
+
+      // Increment our text iterator
+      ++text;
+    }
+
+    // Output the message
+    return builder.ToString();
+  }
+
+  //***************************************************************************
+  bool DebugErrorHandler(ErrorSignaler::ErrorData& errorData)
+  {
+    // Stores the resulting quote removed message from below
+    String message;
+    String expression = StripQuotes(errorData.Expression);
+
+    // Check if no message was provided
+    if (errorData.Message != nullptr)
+    {
+      message = StripQuotes(errorData.Message);
+    }
+    else
+    {
+      message = "No message";
+    }
+
+    // Output the command line
+    String commandLine = String::Format("ErrorDialog.exe \"%s\" \"%s\" \"%s:%d\" %s",
+      message.c_str(), expression.c_str(), errorData.File, errorData.Line, "Default");
+
+    // Create a structure to facilitating starting of a process
+    STARTUPINFO startUpInfo;
+    memset(&startUpInfo, 0, sizeof(startUpInfo));
+
+    // Create another structure to store process information
+    PROCESS_INFORMATION processInfo;
+    memset(&processInfo, 0, sizeof(processInfo));
+
+    // Start the child process.
+    BOOL result = CreateProcess
+    (
+      NULL,                         // No module name (use command line)
+      (LPTSTR)commandLine.c_str(),  // Command line
+      NULL,                         // Process handle not inheritable
+      NULL,                         // Thread handle not inheritable
+      FALSE,                        // Set handle inheritance to FALSE
+      CREATE_NO_WINDOW,             // Creation flags
+      NULL,                         // Use parent's environment block
+      NULL,                         // Use parent's starting directory
+      &startUpInfo,                 // Pointer to STARTUPINFO structure
+      &processInfo
+    );
+
+    // If we failed to start the process...
+    if (!result)
+    {
+      // Show a message box instead
+      message = BuildString(message, "\nWould you like to continue?");
+      int result = MessageBoxA(NULL, message.c_str(), "Error", MB_YESNO);
+      
+      // Trigger a break point
+      return result == IDNO;
+    }
+
+    // Now wait forever for the process to finish
+    WaitForSingleObject(processInfo.hProcess, INFINITE);
+
+    // Get the exit code of the process since it should have finished by now
+    DWORD exitCode = 0;
+    BOOL success = GetExitCodeProcess(processInfo.hProcess, &exitCode);
+
+    // Close unused thread handle
+    CloseHandle(processInfo.hThread);
+
+    // If we somehow failed to get the exit code, trigger a break point
+    if (!success)
+    {
+      return true;
+    }
+
+    // Special exit codes
+    const DWORD Continue = 0;
+    const DWORD DebugBreak = 1;
+    const DWORD ForceShutdown = 2;
+
+    // Based on the exit code...
+    switch (exitCode)
+    {
+    case Continue:
+      // No debug break, just continue
+      return false;
+
+    case DebugBreak:
+      // Returning true will cause a break point
+      return true;
+
+    case ForceShutdown:
+      // Immediately kill the application
+      exit(0);
+      break;
+
+    default:
+      // Force a break point, we have no idea what we got back
+      return true;
+    }
+  }
+}
+
+#else
 /**************************************************************\
 * Author: Trevor Sundberg
 * Copyright 2012-2014, DigiPen Institute of Technology
@@ -7176,6 +7707,7 @@ namespace Zilch
   }
 }
 
+#endif
 
 namespace Zilch
 {
@@ -7183,42 +7715,21 @@ namespace Zilch
   Debugger::Debugger() :
     Action(DebuggerAction::Resume),
     LastState(nullptr),
-    LastCallStackDepth(0)
+    LastCallStackDepth(0),
+    StepOutOverCallStackDepth(0),
+    StepOutOverState(nullptr),
+    Server(1),
+    AllProjectsHashCode(0)
   {
-  }
-
-  //***************************************************************************
-  Debugger::~Debugger()
-  {
-    // Clear out the messages to be sent
-    this->SendLock.Lock();
-    this->SendMessages.clear();
-    this->SendLock.Unlock();
-
-    // Signal the send event, if it gets signaled and there's no messages, it means we're closing
-    this->SendEvent.Signal();
-    this->SendThread.WaitForCompletion();
-
-    // Close the remote connection, which should signal that we're ending the connection
-    Status status;
-    this->Server.Close(status);
-    this->RemoteConnection.RemoteSocket.Close(status);
+    // We want to know when the console writes anything
+    EventConnect(&Console::Events, Events::ConsoleWrite, &Debugger::OnConsoleWrite, this);
     
-    // Wait until the receive thread ends...
-    this->ReceiveThread.WaitForCompletion();
+    // Connect all our event handlers up to the server
+    EventConnect(&this->Server, Events::WebSocketAcceptedConnection, &Debugger::OnAcceptedConnection, this);
+    EventConnect(&this->Server, Events::WebSocketDisconnected, &Debugger::OnDisconnected, this);
+    EventConnect(&this->Server, Events::WebSocketError, &Debugger::OnError, this);
+    EventConnect(&this->Server, Events::WebSocketReceivedData, &Debugger::OnReceivedData, this);
 
-    // Since we know the receive thread is dead here, we don't need to lock around the receive
-    for (size_t i = 0; i < this->ReceiveMessages.size(); ++i)
-    {
-      // Grab each of the json trees that were parsed... clear them out
-      JsonValue* root = this->ReceiveMessages[i];
-      delete root;
-    }
-  }
-
-  //***************************************************************************
-  void Debugger::Host(int port)
-  {
     // Register our message handlers
     this->AddMessageHandler("ChangeBreakpoint", OnChangeBreakpoint, this);
     this->AddMessageHandler("Resume", OnResume, this);
@@ -7226,24 +7737,59 @@ namespace Zilch
     this->AddMessageHandler("StepOver", OnStepOver, this);
     this->AddMessageHandler("StepIn", OnStepIn, this);
     this->AddMessageHandler("StepOut", OnStepOut, this);
+    this->AddMessageHandler("QueryExpression", OnQueryExpression, this);
+    this->AddMessageHandler("ViewExplorerItem", OnViewExplorerItem, this);
+  }
 
-    Status status;
-    this->SendEvent.Initialize();
+  //***************************************************************************
+  Debugger::~Debugger()
+  {
+  }
 
-    this->Server.Initialize(status);
-    StatusReturnIfFailed(status);
+  //***************************************************************************
+  void Debugger::Host(int port)
+  {
+    // If the server hasn't been initialized yet, then host the server on a given port
+    if (this->Server.IsValid() == false)
+      this->Server.Host(port);
+  }
+  
+  //***************************************************************************
+  bool Debugger::IsValid()
+  {
+    return this->Server.IsValid();
+  }
+  
+  //***************************************************************************
+  void Debugger::Update()
+  {
+    // Make sure we pump incoming messages
+    this->Server.Update();
 
-    this->Server.Host(status, port);
-    StatusReturnIfFailed(status);
+    // Loop through all the projects using a total hash to see if any project has changed (including files)
+    unsigned long long projectsHash = 0;
+    for (size_t i = 0; i < this->Projects.size(); ++i)
+    {
+      // Grab the current project
+      Project* project = this->Projects[i];
 
-    this->Server.Accept(status, this->RemoteConnection);
-    StatusReturnIfFailed(status);
+      // Loop through all the code entries in this project
+      for (size_t j = 0; j < project->Entries.size(); ++j)
+      {
+        // Grab the current code entry
+        CodeEntry& entry = project->Entries[j];
+        projectsHash ^= (unsigned long long)entry.GetHash();
+        projectsHash *= 5209;
+      }
+    }
 
-    this->ReceiveThread.Initialize(ReceiveEntryPoint, this, "Zilch Debugger Receive");
-    this->SendThread.Initialize(SendEntryPoint, this, "Zilch Debugger Send");
-
-    this->ReceiveThread.Resume();
-    this->SendThread.Resume();
+    // If the hash wasn't the same as the last time...
+    if (projectsHash != this->AllProjectsHashCode)
+    {
+      // Update the remote explorer view
+      this->UpdateExplorerView();
+      this->AllProjectsHashCode = projectsHash;
+    }
   }
 
   //***************************************************************************
@@ -7287,6 +7833,408 @@ namespace Zilch
     self->StepOutOverCallStackDepth = self->LastCallStackDepth;
     self->StepOutOverState = self->LastState;
   }
+  
+  //***************************************************************************
+  CodeEntry* Debugger::FindCodeEntry(size_t hash)
+  {
+    // Loop through all the projects
+    for (size_t i = 0; i < this->Projects.size(); ++i)
+    {
+      // Grab the current project
+      Project* project = this->Projects[i];
+
+      // Loop through all code entries in the project
+      for (size_t j = 0; j < project->Entries.size(); ++j)
+      {
+        // Grab the current code entry from the project
+        CodeEntry* entry = &project->Entries[j];
+        if (entry->GetHash() == hash)
+          return entry;
+      }
+    }
+
+    // Loop through all the states
+    for (size_t i = 0; i < this->States.size(); ++i)
+    {
+      // Grab the current executable state
+      ExecutableState* state = this->States[i];
+
+      // Look in the current state for the code entry...
+      CodeEntry* foundEntry = state->CodeHashToCodeEntry.findValue(hash, nullptr);
+      if (foundEntry != nullptr)
+        return foundEntry;
+    }
+
+    // We found nothing!
+    return nullptr;
+  }
+
+  //***************************************************************************
+  void Debugger::OnViewExplorerItem(const DebuggerMessage& message, void* userData)
+  {
+    Debugger* self = (Debugger*)userData;
+    
+    // With the breakpoint message comes a unqiue identifier object that describes exact paths to code entries
+    // This is the same as the object sent from 'AddState' with each code entry
+    JsonValue* codeData = message.JsonRoot->GetMember("CodeData");
+    if (codeData == nullptr)
+    {
+      Error("CodeData object was not specified in the 'AddBreakpoint' message");
+      return;
+    }
+    
+    // When looking for any code file that we put a breakpoint in, we can identify the code by an id
+    size_t codeHash = (size_t)codeData->MemberAsLongLong("CodeHash");
+    
+    // Look for the code entry in a map to all code files
+    CodeEntry* entry = self->FindCodeEntry(codeHash);
+    if (entry == nullptr)
+    {
+      Error("We couldn't find the code file for the given id");
+      return;
+    }
+    
+    JsonBuilder builder;
+    builder.Begin(JsonType::Object);
+    {
+      builder.Key("MessageType");
+      builder.Value("ShowCodeEntry");
+      builder.Key("Origin");
+      builder.Value(entry->Origin);
+      builder.Key("Code");
+      builder.Value(entry->Code);
+    
+      builder.Key("CodeData");
+      builder.Begin(JsonType::Object);
+      {
+        // All data sent within here is stored directly on the debugger side
+        // and is directly returned to us in messages such as 'AddBreakpoint'
+        builder.Key("CodeHash");
+        builder.Value(entry->GetHash());
+      }
+      builder.End();
+    }
+    builder.End();
+    
+    String toSend = builder.ToString();
+    self->SendPacket(toSend);
+  }
+
+  //***************************************************************************
+  void Debugger::OnQueryExpression(const DebuggerMessage& message, void* userData)
+  {
+    Debugger* self = (Debugger*)userData;
+    String expression = message.JsonRoot->MemberAsString("Expression");
+    
+    // The remote side gives every query and id, so that way when we respond to multiple it can distingquish which is which
+    int queryId = message.JsonRoot->MemberAsInteger("QueryId");
+
+    // Assume we're querying an expression for whatever state we're currently debugging
+    ExecutableState* state = self->LastState;
+
+    // If we're not debugging a state, return early
+    if (state == nullptr)
+      return;
+    
+    // Save away all the state callbacks (we don't want them to get called while we make calls)
+    OpcodeStepDelegate SavedOpcodePreStepCallback   = state->OpcodePreStepCallback;
+    OpcodeStepDelegate SavedOpcodePostStepCallback  = state->OpcodePostStepCallback;
+    FunctionStepDelegate SavedEnterFunctionCallback = state->EnterFunctionCallback;
+    FunctionStepDelegate SavedExitFunctionCallback  = state->ExitFunctionCallback;
+    FatalErrorDelegate SavedFatalCallback           = state->FatalCallback;
+    ExceptionDelegate SavedExceptionThrownCallback  = state->ExceptionThrownCallback;
+
+    // Restore all the state callbacks
+    state->OpcodePreStepCallback    = OpcodeStepDelegate();
+    state->OpcodePostStepCallback   = OpcodeStepDelegate();
+    state->EnterFunctionCallback    = FunctionStepDelegate();
+    state->ExitFunctionCallback     = FunctionStepDelegate();
+    state->FatalCallback            = FatalErrorDelegate();
+    state->ExceptionThrownCallback  = ExceptionDelegate();
+
+    // Temporary space used for traversing object paths and copying zilch objects (Delegate is the largest object)
+    byte tempSpace[sizeof(Delegate)];
+
+    // Send a message back to answer the expression query
+    JsonBuilder builder;
+    builder.Begin(JsonType::Object);
+    {
+      builder.Key("MessageType");
+      builder.Value("QueryResult");
+      builder.Key("QueryId");
+      builder.Value(queryId);
+      builder.Key("Expression");
+      builder.Value(expression);
+      builder.Key("Values");
+      builder.Begin(JsonType::ArrayMultiLine);
+      {
+        Zero::StringTokenRange splitter(expression, '.');
+        if (splitter.empty() == false)
+        {
+          // Grab just the variable name
+          String variableName = splitter.front();
+          splitter.popFront();
+
+          // Loop through the frames from top to bottom (backwards)
+          for (int i = state->StackFrames.size() - 1; i >= 0; --i)
+          {
+            // Grab the current frame
+            PerFrameData* frame = state->StackFrames[i];
+
+            // Skip any non-active frames (frames in the process of being called)
+            if (frame->ProgramCounter == ProgramCounterNotActive)
+              continue;
+
+            // Get the current function
+            Function* function = frame->CurrentFunction;
+
+            // Loop through all variables in the current function
+            for (size_t j = 0; j < function->Variables.size(); ++j)
+            {
+              // Grab the current variable
+              Variable* variable = function->Variables[j];
+
+              // If the variable's name matches our expression...
+              if (variable->Name == variableName)
+              {
+                // Get the memory that points directly at the variable on the stack
+                String valueName = variableName;
+                Type* type = variable->ResultType;
+
+                // If the frame is currently initialized
+                if (frame->IsVariableInitialized(variable) == false)
+                  continue;
+
+                // Get the stack location of the variable
+                byte* variableStackMemory = frame->Frame + variable->Local;
+                type->GenericCopyConstruct(tempSpace, variableStackMemory);
+
+                // If this is the first value, then write out its value (otherwise the parent would have written out our value)
+                if (splitter.empty())
+                {
+                  // Stringify the variable (gets its value)
+                  String value = type->GenericToString(tempSpace);
+                  builder.Begin(JsonType::Object);
+                  {
+                    builder.Key("Property");
+                    builder.Value(valueName);
+                    builder.Key("Value");
+                    builder.Value(value);
+                    builder.Key("Expandable");
+                    builder.Value(false);
+                  }
+                  builder.End();
+                }
+
+                // Until we run out of sub-strings...
+                while (splitter.empty() == false)
+                {
+                  // Get the most virtual version of that memory (dereferences handles, gets the most derived type, etc)
+                  byte* valueMemory = type->GenericGetMemory(tempSpace);
+                  type = type->GenericGetVirtualType(tempSpace);
+
+                  // Get the current property name
+                  String propertyName = splitter.front();
+                  splitter.popFront();
+                  
+                  // Grab the property or field by name
+                  Property* property = type->GetInstanceProperty(propertyName);
+                  if (property == nullptr)
+                    property = type->GetInstanceField(propertyName);
+
+                  // We allowe debugging of hidden properties, we just don't enumerate them
+                  if (property != nullptr && property->Get != nullptr)
+                  {
+                    type->GenericDestruct(tempSpace);
+
+                    valueName = propertyName;
+                    type = property->PropertyType;
+
+                    Call call(property->Get, state);
+
+                    // Set the this handle (just as a global pointer...)
+                    call.DisableThisChecks();
+                    Handle* thisHandle = new (call.GetThisUnchecked()) Handle();
+                    PointerManager* manager = state->GetHandleManager<PointerManager>();
+                    manager->ObjectToHandle(valueMemory, *thisHandle);
+                    thisHandle->Type = (BoundType*)type; // HACK DO NOT COMMIT
+                    thisHandle->Manager = state->GetHandleManager<PointerManager>();
+
+                    ExceptionReport report;
+                    call.Invoke(report);
+
+                    if (report.HasThrownExceptions())
+                      goto END;
+
+                    byte* returnValue = call.GetReturnUnchecked();
+                    type->GenericCopyConstruct(tempSpace, returnValue);
+                  }
+                  else
+                  {
+                    // WE FOUND NOTHING! NOOOOOOTHING!!!
+                    goto END;
+                  }
+                }
+
+                // We want to avoid showing duplicate properties (when they are the exact same value)
+                // We do want to however support showing hidden properties
+                HashMap<String, String> evaluatedProperties;
+
+                // Check to see if the type is a bound type
+                BoundType* boundType = TypeBinding::DynamicCast<BoundType*>(type);
+
+                // If the type is a bound type...
+                while (boundType != nullptr)
+                {
+                  // Either dereference the handle or get the memory for the value
+                  byte* memory = boundType->GenericGetMemory(tempSpace);
+
+                  // Loop through all the instance properties
+                  PropertyArray& properties = boundType->AllProperties;
+                  for (size_t i = 0; i < properties.size(); ++i)
+                  {
+                    // Grab the current property
+                    Property* property = properties[i];
+
+                    // If it's a static or hidden property, skip it
+                    if (property->IsStatic || property->IsHidden || property->Get == nullptr)
+                      continue;
+
+                    Call call(property->Get, state);
+
+                    // Set the this handle (just as a global pointer...)
+                    call.DisableThisChecks();
+                    Handle* thisHandle = new (call.GetThisUnchecked()) Handle();
+                    PointerManager* manager = state->GetHandleManager<PointerManager>();
+                    manager->ObjectToHandle(memory, *thisHandle);
+                    thisHandle->Type = boundType;
+                    thisHandle->Manager = state->GetHandleManager<PointerManager>();
+
+                    ExceptionReport report;
+                    call.Invoke(report);
+
+                    // The value we evaluated for this property (its return value stringified)
+                    String propertyValue;
+
+                    if (report.HasThrownExceptions())
+                    {
+                      // Just treat the property value as the concatenation of all the exceptions thrown
+                      propertyValue = report.GetConcatenatedMessages();
+                    }
+                    else
+                    {
+                      byte* returnValue = call.GetReturnUnchecked();
+
+                      // If the property should be hidden when null...
+                      if (property->IsHiddenWhenNull)
+                      {
+                        // If the dereferenced property is null, then skip it
+                        byte* returnValueDereferenced = property->PropertyType->GenericGetMemory(returnValue);
+                        if (returnValueDereferenced == nullptr)
+                          continue;
+                      }
+
+                      // Stringify the variable (gets its value)
+                      propertyValue = property->PropertyType->GenericToString(returnValue);
+                    }
+
+                    // If we haven't seen this EXACT property value before...
+                    String& evaluatedValue = evaluatedProperties[property->Name];
+                    if (evaluatedValue != propertyValue)
+                    {
+                      // Let the debugger know about this property / value
+                      builder.Begin(JsonType::Object);
+                      {
+                        builder.Key("Property");
+                        builder.Value(property->Name);
+                        builder.Key("Value");
+                        builder.Value(propertyValue);
+                        builder.Key("Expandable");
+                        builder.Value(HasDebuggableProperties(property->PropertyType));
+                      }
+                      builder.End();
+                    }
+
+                    // Update the value stored in the evaluated property map, so that next time we'll know if we've seen this
+                    evaluatedProperties[property->Name] = propertyValue;
+
+                    // TEMPORARY - Because we do not have the ExecutableState in bound C++ functions, we can only
+                    // print out fields (because we know their type and know where they exist in memory
+                    //if (Field* field = TypeBinding::DynamicCast<Field*>(property))
+                    //{
+                    //  byte* fieldData = memory + field->Offset;
+                    //  
+                    //  // Stringify the variable (gets its value)
+                    //  String fieldValue = field->PropertyType->GenericToString(fieldData);
+                    //
+                    //  // Let the debugger know about this property / value
+                    //  builder.Begin(JsonType::Object);
+                    //  {
+                    //    builder.Key("Property");
+                    //    builder.Value(field->Name);
+                    //    builder.Key("Value");
+                    //    builder.Value(fieldValue);
+                    //    builder.Key("Expandable");
+                    //    builder.Value(HasDebuggableProperties(field->PropertyType));
+                    //  }
+                    //  builder.End();
+                    //}
+                  }
+
+                  // Iterate up to the base class (because we want to access base class properties too)
+                  boundType = boundType->BaseType;
+                }
+                
+                type->GenericDestruct(tempSpace);
+
+                // We discovered a valid variable, time to break out of all loops
+                goto END;
+              }
+            }
+          }
+        }
+      }
+END:
+      builder.End();
+    }
+    builder.End();
+      
+    String toSend = builder.ToString();
+    self->SendPacket(toSend);
+
+    // Restore all the state callbacks
+    state->OpcodePreStepCallback    = SavedOpcodePreStepCallback;
+    state->OpcodePostStepCallback   = SavedOpcodePostStepCallback;
+    state->EnterFunctionCallback    = SavedEnterFunctionCallback;
+    state->ExitFunctionCallback     = SavedExitFunctionCallback;
+    state->FatalCallback            = SavedFatalCallback;
+    state->ExceptionThrownCallback  = SavedExceptionThrownCallback;
+  }
+
+  //***************************************************************************
+  bool Debugger::HasDebuggableProperties(Type* type)
+  {
+    // Grab the type as a bound type
+    BoundType* boundType = TypeBinding::DynamicCast<BoundType*>(type);
+
+    // If this is not a bound type, then it has no properties...
+    if (boundType == nullptr)
+      return false;
+    
+    // We have to walk through all properties and check for any non hidden properties
+    for (size_t i = 0; i < boundType->AllProperties.size(); ++i)
+    {
+      // Grab the current property
+      Property* property = boundType->AllProperties[i];
+
+      // As long as this property isn't hidden or marked static, then we can debug it!
+      if (property->IsHidden == false && property->IsStatic == false)
+        return true;
+    }
+
+    // We didn't find a single expandable property...
+    return false;
+  }
 
   //***************************************************************************
   void Debugger::OnChangeBreakpoint(const DebuggerMessage& message, void* userData)
@@ -7295,42 +8243,29 @@ namespace Zilch
 
     // With the breakpoint message comes a unqiue identifier object that describes exact paths to code entries
     // This is the same as the object sent from 'AddState' with each code entry
-    JsonValue* uniqueIdObject = message.JsonRoot->GetMember("UnqiueId");
-    if (uniqueIdObject == nullptr)
+    JsonValue* codeData = message.JsonRoot->GetMember("CodeData");
+    if (codeData == nullptr)
     {
-      Error("UniqueId object was not specified in the 'AddBreakpoint' message");
-      return;
-    }
-
-    // This is obviously unsafe to assume that the pointer the debugger is sending back is valid
-    ExecutableState* state = (ExecutableState*)uniqueIdObject->MemberAsLongLong("StateId");
-        
-    // If we don't actually find the state in our list...
-    if (self->States.findIndex(state) == Array<ExecutableState*>::InvalidIndex)
-    {
-      Error("The ExecutableState pointer specified in the 'AddBreakpoint' message was not being tracked by this debugger");
+      Error("CodeData object was not specified in the 'AddBreakpoint' message");
       return;
     }
 
     // When looking for any code file that we put a breakpoint in, we can identify the code by an id
-    int codeEntryId = (size_t)uniqueIdObject->MemberAsLongLong("CodeEntryId");
+    size_t codeHash = (size_t)codeData->MemberAsLongLong("CodeHash");
     
     // Look for the code entry in a map to all code files
-    CodeEntry* entry = state->IdToCodeEntries.findValue(codeEntryId, nullptr);
+    CodeEntry* entry = self->FindCodeEntry(codeHash);
     if (entry == nullptr)
     {
       Error("We couldn't find the code file for the given id");
       return;
     }
- 
+    
     // Get the line that this is associated with
     size_t line = (size_t)message.JsonRoot->MemberAsLongLong("Line");
 
     // Grab breakpointed lines by the state and code entry id
-    Pair<ExecutableState*, int> key;
-    key.first = state;
-    key.second = entry->Id;
-    HashSet<size_t>& breakpointedLines = self->Breakpoints[key];
+    HashSet<size_t>& breakpointedLines = self->Breakpoints[entry->GetHash()];
 
     // We need to know whether we're adding or removing a breakpoint
     if (message.JsonRoot->MemberAsString("Action") == "Add")
@@ -7340,154 +8275,71 @@ namespace Zilch
   }
 
   //***************************************************************************
-  OsInt Debugger::ReceiveEntryPoint(void* context)
+  void Debugger::SendPacket(const JsonBuilder& message)
   {
-    // The context we pass in is our 'this' pointer
-    Debugger* self = (Debugger*)context;
-    Status status;
+    this->SendPacket(message.ToString());
+  }
 
-    // Receive messages until the socket is closed or we disconnect
-    ZilchLoop
+  //***************************************************************************
+  void Debugger::SendPacket(StringParam message)
+  {
+    // Send the packet to 'all' (the only client we have connected, or drop the packet if nobody is connected)
+    this->Server.SendPacketToAll(message, WebSocketPacketType::Text);
+  }
+
+  //***************************************************************************
+  void Debugger::OnConsoleWrite(ConsoleEvent* event)
+  {
+    // The code location this is called from (may not be set if we're being called directly from C++, see below)
+    CodeLocation location;
+
+    // We want to know where this console write came from
+    // Obviously we need to skip the actual call to Write or WriteLine
+    // Warning: If the write was called from C++, it may not have a valid executable state
+    // Moreover, if the call was made from C++ which was being called from Zilch, we'll only show the Zilch location
+    if (event->State != nullptr)
     {
-      // Receive an entire packet of text, this text should be json data
-      Array<byte> receivedPacket;
-      WebSocketPacketType::Enum type = self->RemoteConnection.ReceiveFullPacket(status, receivedPacket);
+      // Grab the entire stack trace, possibly not the most efficient but it works
+      StackTrace trace;
+      event->State->GetStackTrace(trace);
+      StackEntry* zilchStackEntry = trace.GetMostRecentNonNativeStackEntry();
 
-      // If we failed to for any reason, exit out of the thread
-      // Don't report messages to the user about standard connection closing
-      if (Socket::IsReceiveCloseError(status.ExtendedErrorCode))
-        return 0;
-      else
-        StatusReturnIfFailed(status, 0);
+      // If there was indeed a some Zilch function calling this (or called C++ that called this)
+      if (zilchStackEntry != nullptr)
+        location = zilchStackEntry->Location;
+    }
 
-      // Make sure we only receive text data...
-      ErrorIf(type != WebSocketPacketType::Text, "We should only be receiving text packets in the debugger!");
+    // Send a message back that we hit a breakpoint
+    JsonBuilder builder;
+    builder.Begin(JsonType::Object);
+    {
+      builder.Key("MessageType");
+      builder.Value("Output");
+      builder.Key("Text");
+      builder.Value(event->Text);
 
-      // Turn the packet into a string
-      String jsonData = String((char*)receivedPacket.data(), receivedPacket.size());
-
-      // Now parse the string into a json tree
-      static const String Origin("Received Json");
-      CompilationErrors errors;
-      JsonValue* root = JsonReader::ReadIntoTreeFromString(errors, jsonData, Origin, nullptr);
-
-      // If we properly read a json tree...
-      if (root != nullptr)
+      // If the location was set to something (otherwise we don't know where the call came from)
+      if (location.IsValid())
       {
-        self->ReceiveLock.Lock();
-        self->ReceiveMessages.push_back(root);
-        self->ReceiveLock.Unlock();
-      }
-      else
-      {
-        Error("Failed to parse json string: '%s'", jsonData.c_str());
+        builder.Key("Origin");
+        builder.Value(location.Origin);
+        builder.Key("Line");
+        builder.Value(location.StartLine);
+        builder.Key("CodeData");
+        builder.Begin(JsonType::Object);
+        {
+          // This data allows the debugger to uniquely identify the
+          // file this came from (so they can click on it and such)
+          builder.Key("CodeHash");
+          builder.Value(location.GetHash());
+        }
+        builder.End();
       }
     }
-  }
-
-  //***************************************************************************
-  OsInt Debugger::SendEntryPoint(void* context)
-  {
-    // The context we pass in is our 'this' pointer
-    Debugger* self = (Debugger*)context;
-    Status status;
-
-    // We pull messages from the debugger's owning thread into our thread
-    Array<String> messageQueue;
-
-    ZilchLoop
-    {
-      // Wait for any messages to be put on the queue
-      self->SendEvent.Wait();
-
-      // Make sure OUR message queue is empty (this is safe to do outside the lock)
-      ErrorIf(messageQueue.empty() == false,
-        "We should have sent all messages before attempting to swap with the main thread");
-
-      // We got some messages, lock and swap with our own message buffer
-      self->SendLock.Lock();
-
-      // If we have no messages but the send event was signaled
-      if (self->SendMessages.empty())
-      {
-        // Make sure to unlock and early return out
-        self->SendLock.Unlock();
-        return 0;
-      }
-
-      // Very quickly swap our entire send messages array with theirs
-      // Note: This should always clear our their array because ours should be empty
-      messageQueue.swap(self->SendMessages);
-
-      // Due to a race condition that can happen where the main thread queues up
-      // a message between the Wait and the Lock, then we will have the event set in the next loop,
-      // yet we will have cleared all the messages (swapped)
-      self->SendEvent.Reset();
-
-      // We're done, that was fast!
-      self->SendLock.Unlock();
-
-      // Send every message we have
-      for (size_t i = 0; i < messageQueue.size(); ++i)
-      {
-        // Grab the current message
-        String message = messageQueue[i];
-
-        // Send the full json-packet over
-        self->RemoteConnection.SendFullPacket(status, (const byte*)message.data(), message.size(), WebSocketPacketType::Text);
-      }
-
-      // Clear out the queue
-      messageQueue.clear();
-    }
-  }
-
-  //***************************************************************************
-  void Debugger::Send(const JsonBuilder& message)
-  {
-    this->Send(message.ToString());
-  }
-
-  //***************************************************************************
-  void Debugger::Send(StringParam message)
-  {
-    // First initiale the lock around the send messages queue, append the message
-    // then unlock it so the 'SendThread' can resume its work
-    this->SendLock.Lock();
-    this->SendMessages.push_back(message);
-
-    // We need to tell the send thread that it now has data to send (unblocks it)
-    // This MUST happen inside the locks, otherwise it's possibly to consume
-    // all messages in the send thread before the singal, and cause the send thread to exit
-    this->SendEvent.Signal();
-    this->SendLock.Unlock();
-
-    //OutputDebugStringA(message.c_str());
-  }
-
-  //***************************************************************************
-  void Debugger::SendBatch(const Array<String>& messages)
-  {
-    // If we have no messages, early out
-    // This is VERY important, because signaling the SendEvent when the queue is empty means we're disconnecting
-    if (messages.empty())
-      return;
-
-    // First initiale the lock around the send messages queue, append the messages
-    // then unlock it so the 'SendThread' can resume its work
-    this->SendLock.Lock();
-    this->SendMessages.append(messages.all());
+    builder.End();
     
-    // We need to tell the send thread that it now has data to send (unblocks it)
-    // This MUST happen inside the locks, otherwise it's possibly to consume
-    // all messages in the send thread before the singal, and cause the send thread to exit
-    this->SendEvent.Signal();
-    this->SendLock.Unlock();
-    
-    //for (size_t i = 0; i < messages.size(); ++i)
-    //{
-    //  OutputDebugStringA(messages[i].c_str());
-    //}
+    String message = builder.ToString();
+    this->SendPacket(message);
   }
 
   //***************************************************************************
@@ -7496,7 +8348,7 @@ namespace Zilch
     Debugger* self = (Debugger*)userData;
 
     // Make sure we pump incoming messages
-    self->ProcessReceivedMessages();
+    self->Server.Update();
 
     if (location == nullptr)
       return;
@@ -7510,11 +8362,23 @@ namespace Zilch
     Debugger* self = (Debugger*)userData;
 
     // Make sure we pump incoming messages
-    self->ProcessReceivedMessages();
+    self->Server.Update();
 
     if (location == nullptr)
       return;
+  }
+  
+  //***************************************************************************
+  void Debugger::OnException(ExecutableState* state, Exception* exception, const void* userData)
+  {
+    Debugger* self = (Debugger*)userData;
+    CodeLocation location = exception->Trace.GetMostRecentNonNativeLocation();
 
+    ConsoleEvent exceptionEvent;
+    exceptionEvent.Text = String::Format("Exception: %s\n", exception->Message.c_str());
+    exceptionEvent.State = state;
+    self->OnConsoleWrite(&exceptionEvent);
+    self->PauseExecution(&location, state);
   }
 
   //***************************************************************************
@@ -7523,39 +8387,58 @@ namespace Zilch
     Debugger* self = (Debugger*)userData;
 
     // Make sure we pump incoming messages
-    self->ProcessReceivedMessages();
+    self->Server.Update();
 
     // If we didn't get a code location, just skip this (something invalid must have happened)
     if (location == nullptr)
       return;
 
+    // If we have a timeout, just basically disable it... we're in the debugger!
+    if (state->Timeouts.empty() == false)
+    {
+      // Just set the timeout to the max time
+      state->Timeouts.back().LengthTicks = 0x7FFFFFFFFFFFE;
+    }
+
     // Figure out if we changed to a new line by entering this opcode
-    bool isNewLineOrFileFromLastLocation = location->StartLine != self->LastLocation.StartLine || location->CodeEntryId != self->LastLocation.CodeEntryId || state != self->LastState;
-    bool isNewLineOrFileFromStepLocation = location->StartLine != self->StepLocation.StartLine || location->CodeEntryId != self->StepLocation.CodeEntryId;
+    bool isNewLineOrFileFromLastLocation = location->StartLine != self->LastLocation.StartLine || location->Code != self->LastLocation.Code || state != self->LastState;
+    bool isNewLineOrFileFromStepLocation = location->StartLine != self->StepLocation.StartLine || location->Code != self->StepLocation.Code;
 
     // Store the last code location so we can step by single lines
     self->LastLocation = *location;
     self->LastState = state;
     self->LastCallStackDepth = state->StackFrames.size();
+
+    // Lets us know whether the action was handled (so we don't need to check for breakpoints)
+    bool actionPausedExecution = false;
     
     // Based on the action that was last set by the remote client
     switch (self->Action)
     {
       // The user wanted to pause, just pause immediately on the current opcode
       case DebuggerAction::Pause:
+      {
         self->PauseExecution(location, state);
-        break;
+        actionPausedExecution = true;
+      }
+      break;
 
       // The user wanted to step into the next function it sees
       // Basically we just break on every new line of opcode
       case DebuggerAction::StepIn:
+      {
         // If we changed lines or code entry ids (files), then we want to pause
         if (isNewLineOrFileFromLastLocation)
+        {
           self->PauseExecution(location, state);
-        break;
+          actionPausedExecution = true;
+        }
+      }
+      break;
 
       // If we're stepping out of a function...
       case DebuggerAction::StepOut:
+      {
         // If we're in the same state that we wanted to step out, and the call stack depth is less than what we started at
         if (isNewLineOrFileFromStepLocation && state == self->StepOutOverState && state->StackFrames.size() < self->StepOutOverCallStackDepth)
         {
@@ -7565,11 +8448,14 @@ namespace Zilch
 
           // We stepped out of a function!
           self->PauseExecution(location, state);
+          actionPausedExecution = true;
         }
         break;
+      }
 
       // The user wanted to pause on the next line (or next file, etc)...
       case DebuggerAction::StepOver:
+      {
         // If we're in the same state that we wanted to step over, and the call stack depth is the same as what we started at
         if (isNewLineOrFileFromStepLocation && state == self->StepOutOverState && state->StackFrames.size() <= self->StepOutOverCallStackDepth)
         {
@@ -7579,28 +8465,23 @@ namespace Zilch
 
           // We stepped out of a function!
           self->PauseExecution(location, state);
+          actionPausedExecution = true;
         }
-        break;
-        
-      // Run through normal execution, but we need to check for breakpoints!
-      case DebuggerAction::Resume:
-      {
-        // Even when testing for breakpoints, there may be many opcode associated with one line
-        // We only want to break upon the first opcode for that line
-        if (isNewLineOrFileFromLastLocation)
-        {
-          // Grab the breakpoint line list by code location/id and state
-          Pair<ExecutableState*, int> key;
-          key.first = state;
-          key.second = location->CodeEntryId;
-          HashSet<size_t>& breakpointedLines = self->Breakpoints[key];
-          
-          // If the breakpoints has the current line we're hitting
-          if (breakpointedLines.contains(location->StartLine))
-            self->PauseExecution(location, state);
-        }
-        break;
       }
+      break;
+    }
+
+    // Note: We always test for breakpoints (when resumed, when stepping in, when stepping out, etc)
+    // Even when testing for breakpoints, there may be many opcode associated with one line
+    // We only want to break upon the first opcode for that line
+    if (isNewLineOrFileFromLastLocation && actionPausedExecution == false)
+    {
+      // Grab the breakpoint line list by code location/id and state
+      HashSet<size_t>& breakpointedLines = self->Breakpoints[location->GetHash()];
+          
+      // If the breakpoints has the current line we're hitting
+      if (breakpointedLines.contains(location->StartLine))
+        self->PauseExecution(location, state);
     }
   }
   
@@ -7610,25 +8491,67 @@ namespace Zilch
     // Send a message back that we hit a breakpoint
     JsonBuilder builder;
     builder.Begin(JsonType::Object);
+    {
       builder.Key("MessageType");
       builder.Value("SetExecutionPoint");
       builder.Key("Line");
       builder.Value(codeLocation->StartLine);
-      builder.Key("UniqueId");
+      builder.Key("CodeData");
       builder.Begin(JsonType::Object);
-
+      {
         // All data sent within here is stored directly on the debugger side
         // and is directly returned to us in messages such as 'AddBreakpoint'
-        builder.Key("StateId");
-        builder.Value((long long)state);
-        builder.Key("CodeEntryId");
-        builder.Value(codeLocation->CodeEntryId);
-
+        builder.Key("CodeHash");
+        builder.Value(codeLocation->GetHash());
+      }
       builder.End();
+
+      builder.Key("CallStack");
+      builder.Begin(JsonType::ArrayMultiLine);
+      {
+        // Perform a stack trace so we can grab the entire stack
+        StackTrace trace;
+        state->GetStackTrace(trace);
+
+        // Loop through the entire stack trace and send it in a message
+        // Note: We loop backwards so that the most recent entries appear at the top (typical for debuggers)
+        for (int i = trace.Stack.size() - 1; i >= 0; --i)
+        {
+          builder.Begin(JsonType::Object);
+          {
+            // Grab the current stack entry and emit a message to the debugger
+            StackEntry& entry = trace.Stack[i];
+            builder.Key("Text");
+            builder.Value(entry.ExecutingFunction->ToString());
+            builder.Key("Language");
+            if (codeLocation->IsNative)
+            {
+              builder.Value("Native");
+            }
+            else
+            {
+              builder.Value("Zilch");
+              builder.Key("Line");
+              builder.Value(entry.Location.StartLine);
+              builder.Key("CodeData");
+              builder.Begin(JsonType::Object);
+              {
+                // This data allows the debugger to identify exactly which file is being shown
+                builder.Key("CodeHash");
+                builder.Value(entry.Location.GetHash());
+              }
+              builder.End();
+            }
+          }
+          builder.End();
+        }
+      }
+      builder.End();
+    }
     builder.End();
       
     String message = builder.ToString();
-    this->Send(message);
+    this->SendPacket(message);
   }
 
   //***************************************************************************
@@ -7642,72 +8565,177 @@ namespace Zilch
     builder.End();
       
     String message = builder.ToString();
-    this->Send(message);
+    this->SendPacket(message);
+  }
+  
+  //***************************************************************************
+  void AddCodeEntryToExplorerviewUpdate(HashSet<size_t>& processedCodeHashes, JsonBuilder& builder, CodeEntry& entry)
+  {
+    // We want to skip any code entries we've already seen
+    size_t entryHash = entry.GetHash();
+    if (processedCodeHashes.contains(entryHash))
+      return;
+
+    // Next time we see this hash, we'll know to skip it
+    processedCodeHashes.insert(entryHash);
+              
+    // Write out this code entry (the id is the index combined with the state id)
+    builder.Begin(JsonType::Object);
+    {
+      builder.Key("Id");
+      builder.Value(entryHash);
+      builder.Key("Name");
+      builder.Value(entry.Origin);
+      builder.Key("CodeData");
+      builder.Begin(JsonType::Object);
+      {
+        // All data sent within here is stored directly on the debugger side
+        // and is directly returned to us in messages such as 'ViewExplorerItem'
+        builder.Key("CodeHash");
+        builder.Value(entry.GetHash());
+      }
+      builder.End();
+    }
+    builder.End();
+  }
+
+  //***************************************************************************
+  void Debugger::UpdateExplorerView()
+  {
+    JsonBuilder builder;
+    builder.Begin(JsonType::Object);
+    {
+      builder.Key("MessageType");
+      builder.Value("UpdateExplorer");
+
+      // A simple set to see if we've already processed a code entry
+      HashSet<size_t> processedCodeHashes;
+      
+      builder.Key("Roots");
+      builder.Begin(JsonType::ArrayMultiLine);
+      {
+        // Loop through all the projects
+        for (size_t i = 0; i < this->Projects.size(); ++i)
+        {
+          // Grab the current project
+          Project* project = this->Projects[i];
+
+          // Loop through all code entries in the project
+          for (size_t j = 0; j < project->Entries.size(); ++j)
+          {
+            // Grab the current code entry from the project
+            CodeEntry& entry = project->Entries[j];
+            AddCodeEntryToExplorerviewUpdate(processedCodeHashes, builder, entry);
+          }
+        }
+
+        // Loop through all the states
+        for (size_t i = 0; i < this->States.size(); ++i)
+        {
+          // Grab the current executable state
+          ExecutableState* state = this->States[i];
+
+          // Loop through all dependent libraries so we can get the original source code files
+          for (size_t j = 0; j < state->Dependencies.size(); ++j)
+          {
+            // Get the current dependent library
+            LibraryRef& library = state->Dependencies[j];
+                
+            // We only process this library if it has any entries (otheriwse we would always show core!)
+            if (library->Entries.empty())
+              continue;
+
+            // Loop through the original source code entries that built this library
+            // Note: The entries may be empty if it was a generated library
+            for (size_t k = 0; k < library->Entries.size(); ++k)
+            {
+              // Grab the current code entry
+              CodeEntry& entry = library->Entries[k];
+              AddCodeEntryToExplorerviewUpdate(processedCodeHashes, builder, entry);
+            }
+          }
+        }
+      }
+      builder.End();
+    }
+    builder.End();
+
+    String message = builder.ToString();
+    this->SendPacket(message);
+  }
+
+  
+  //***************************************************************************
+  void Debugger::AddProject(Project* project)
+  {
+    // If the project already exists within the project array, then don't add it again
+    if (this->Projects.findIndex(project) != Array<Project*>::InvalidIndex)
+      return;
+
+    this->Projects.push_back(project);
+    this->UpdateExplorerView();
+  }
+  
+  //***************************************************************************
+  void Debugger::RemoveProject(Project* project)
+  {
+    // Attempt to find the project in the array of all project we're viewing
+    size_t index = this->Projects.findIndex(project);
+
+    // If it didn't exist in the array, then there's nothing for us to do!
+    if (index == Array<Project*>::InvalidIndex)
+      return;
+
+    // Remove the project from the array
+    this->Projects.eraseAt(index);
+
+    // Lastly, if any client is connected then update the explorer view they have because the project is now gone
+    this->UpdateExplorerView();
   }
 
   //***************************************************************************
   void Debugger::AddState(ExecutableState* state)
   {
+    // If the state already exists within the state array, then don't add it again
+    if (this->States.findIndex(state) != Array<ExecutableState*>::InvalidIndex)
+      return;
+
     this->States.push_back(state);
 
     state->SetOpcodePreStepCallback(OnOpcodePreStep, this);
     state->SetEnterFunctionCallback(OnEnterFunction, this);
     state->SetExitFunctionCallback(OnExitFunction, this);
-
-    // Loop through all dependent libraries so we can get the original source code files
-    for (size_t i = 0; i < state->DependentLibraries.size(); ++i)
-    {
-      // Get the current dependent library
-      LibraryRef& library = state->DependentLibraries[i];
-
-      // Loop through the original source code entries that built this library
-      // Note: The entries may be empty if it was a generated library
-      for (size_t j = 0; j < library->Entries.size(); ++j)
-      {
-        CodeEntry& entry = library->Entries[j];
-        JsonBuilder builder;
-        builder.Begin(JsonType::Object);
-          builder.Key("MessageType");
-          builder.Value("AddCodeEntry");
-          builder.Key("Origin");
-          builder.Value(entry.Origin);
-          builder.Key("Code");
-          builder.Value(entry.Code);
-
-          builder.Key("UniqueId");
-          builder.Begin(JsonType::Object);
-
-            // All data sent within here is stored directly on the debugger side
-            // and is directly returned to us in messages such as 'AddBreakpoint'
-            builder.Key("StateId");
-            builder.Value((long long)state);
-            builder.Key("CodeEntryId");
-            builder.Value(entry.Id);
-
-          builder.End();
-        builder.End();
-
-        String message = builder.ToString();
-        this->Send(message);
-      }
-    }
+    state->SetExceptionCallback(OnException, this);
+    
+    this->UpdateExplorerView();
   }
   
   //***************************************************************************
   void Debugger::RemoveState(ExecutableState* state)
   {
-    this->States.erase_value(state);
+    // Attempt to find the state in the array of all states we're debugging
+    size_t index = this->States.findIndex(state);
 
+    // If it didn't exist in the array, then there's nothing for us to do!
+    if (index == Array<ExecutableState*>::InvalidIndex)
+      return;
+
+    // Remove the state from the array
+    this->States.eraseAt(index);
+
+    // If the last state we were stepping out of was this state, then clear the step out info
     if (this->StepOutOverState == state)
     {
       this->StepOutOverState = nullptr;
       this->StepOutOverCallStackDepth = 0;
     }
 
+    // If the last state we were debugging was this state, then clear it
     if (this->LastState == state)
-    {
       this->LastState = nullptr;
-    }
+
+    // Lastly, if any client is connected then update the explorer view they have because the state is now gone
+    this->UpdateExplorerView();
   }
 
   //***************************************************************************
@@ -7729,6 +8757,15 @@ namespace Zilch
     // Inform the client where we stopped in code execution
     this->SetExecutionPoint(codeLocation, state);
 
+    // Just create a single empty event that we send just once
+    DebuggerEvent toSend;
+    toSend.RunningDebugger = this;
+    toSend.State = state;
+    toSend.Location = codeLocation;
+
+    // Let the user know that we just paused...
+    this->Send(Events::DebuggerPause, &toSend);
+
     // Loop until we hit an again that causes us to resume
     while (this->Action == DebuggerAction::Pause)
     {
@@ -7737,52 +8774,76 @@ namespace Zilch
       // For now, sleep just to prevent this from using all the cpu
       Zero::Os::Sleep(1);
 
+      // Send out an event that lets the hosting application update its visuals (it's being debugged!)
+      this->Send(Events::DebuggerPauseUpdate, &toSend);
+
       // While we're paused just pump messages (could be a breakpoint, after a step, or a true pause)
-      this->ProcessReceivedMessages();
+      this->Server.Update();
     }
     
     // Since we're resuming, clear execution
     this->ClearExecutionPoint();
+
+    // Let the user know that we just resumed...
+    this->Send(Events::DebuggerResume, &toSend);
   }
 
   //***************************************************************************
-  void Debugger::ProcessReceivedMessages()
+  void Debugger::OnAcceptedConnection(WebSocketEvent* event)
   {
-    // Swap with our own local message queue
-    Array<JsonValue*> receivedMessages;
+    // Update the explorer view for the newly connected client
+    this->UpdateExplorerView();
+  }
+  
+  //***************************************************************************
+  void Debugger::OnError(WebSocketEvent* event)
+  {
+    Error("Debugger Error: %s", event->ErrorStatus.Message.c_str());
+  }
+  
+  //***************************************************************************
+  void Debugger::OnDisconnected(WebSocketEvent* event)
+  {
+    // Make sure we clear out all the data so the program can continue
+    this->Action = DebuggerAction::Resume;
+    this->Breakpoints.clear();
+    this->LastLocation = CodeLocation();
+    this->LastCallStackDepth = 0;
+    this->LastState = nullptr;
+    this->StepLocation = CodeLocation();
+    this->StepOutOverState = nullptr;
+  }
+
+  //***************************************************************************
+  void Debugger::OnReceivedData(WebSocketEvent* event)
+  {
+    // Now parse the string into a json tree
+    static const String Origin("Received Json");
+    CompilationErrors errors;
+    JsonValue* root = JsonReader::ReadIntoTreeFromString(errors, event->Data, Origin, nullptr);
+
+    // Read the message type from the json message
+    String messageType = root->MemberAsString("MessageType");
+
+    // Grab the current handler by message type
+    DebuggerMessageDelegate* delegate = this->MessageHandlers.findPointer(messageType);
     
-    // Swapping should clear out the array. We need to lock around it though
-    // just in case the other thread is in the middle of adding messages
-    this->ReceiveLock.Lock();
-    receivedMessages.swap(this->ReceiveMessages);
-    this->ReceiveLock.Unlock();
-
-    // Loop through all received messages
-    for (size_t i = 0; i < receivedMessages.size(); ++i)
+    // As long as we registered a delegate to handle this message...
+    if (delegate != nullptr)
     {
-      // Grab the current message (json tree)
-      JsonValue* receivedMessage = receivedMessages[i];
-      
-      // Make sure that all code exit paths (breaks, returns, continues, etc) will delete the json tree
-      UniquePointer<JsonValue> deleteOnExit(receivedMessage);
-
-      String messageType = receivedMessage->MemberAsString("MessageType");
-
-      DebuggerMessageDelegate* delegate = this->MessageHandlers.findPointer(messageType);
-      
-      // If we didn't register a message handler for this type of message...
-      if (delegate == nullptr)
-      {
-        Error("Unknown message type '%s'", messageType.c_str());
-        continue;
-      }
-
       // Invoke the debugger message callback
       DebuggerMessage message;
       message.Type = messageType;
-      message.JsonRoot = receivedMessage;
+      message.JsonRoot = root;
       delegate->MessageCallback(message, delegate->UserData);
     }
+    else
+    {
+      Error("Unknown message type '%s'", messageType.c_str());
+    }
+
+    // Get rid of the json tree
+    delete root;
   }
 }
 /**************************************************************\
@@ -7792,22 +8853,11 @@ namespace Zilch
 
 // Includes
 
-
-
-
-
 namespace Zilch
 {
   //***************************************************************************
-  DelegateInfo::DelegateInfo() :
-    BoundFunction(nullptr),
-    OpcodeLocation(0)
-  {
-    ZilchErrorIfNotStarted(DelegateInfo);
-  }
-
-  //***************************************************************************
-  Delegate::Delegate()
+  Delegate::Delegate() :
+    BoundFunction(nullptr)
   {
     ZilchErrorIfNotStarted(Handle);
   }
@@ -7816,7 +8866,7 @@ namespace Zilch
   bool Delegate::operator==(const Delegate& rhs) const
   {
     // First start by making sure the function indices are the same
-    if (this->Info.BoundFunction != rhs.Info.BoundFunction)
+    if (this->BoundFunction != rhs.BoundFunction)
       return false;
     
     // We also need to compare the handles
@@ -7833,7 +8883,7 @@ namespace Zilch
   int Delegate::Hash() const
   {
     // Hash the function first
-    int hash = (int)(this->Info.BoundFunction->Hash() * 735977940532462813);
+    int hash = (int)(this->BoundFunction->Hash() * 735977940532462813);
 
     // Combine that hash with the handle hash
     return hash ^ this->ThisHandle.Hash();
@@ -7845,8 +8895,6 @@ namespace Zilch
 \**************************************************************/
 
 // Includes
-
-
 
 namespace Zilch
 {
@@ -8000,11 +9048,6 @@ namespace Zilch
 \**************************************************************/
 
 // Includes
-
-
-
-
-
 
 namespace Zilch
 {
@@ -8701,6 +9744,10 @@ namespace Zilch
       // Based on the character type...
       switch (c)
       {
+      case '\\':
+        // Escape the escape character
+        escapedString.Append("\\\\");
+        break;
       case '\n':
         // Escape the newline character
         escapedString.Append("\\n");
@@ -8912,8 +9959,6 @@ namespace Zilch
 \**************************************************************/
 
 // Includes
-
-
 
 namespace Zilch
 {
@@ -9202,6 +10247,15 @@ namespace Zilch
   ErrorInfo& error = this->Errors.push_back();
   error.Error = "Creation initializer is not properly closed with a ']'.";
   error.Name = "CreationInitializerNotComplete";
+  error.Reason = "";
+
+}
+
+// CustomError
+{
+  ErrorInfo& error = this->Errors.push_back();
+  error.Error = "An error occurred: '%s'";
+  error.Name = "CustomError";
   error.Reason = "";
 
 }
@@ -9680,11 +10734,11 @@ namespace Zilch
 
 }
 
-// LinkerLibraryNotFound
+// AttributeArgumentMustBeLiteral
 {
   ErrorInfo& error = this->Errors.push_back();
-  error.Error = "A library that was marked as a dependence was not found.";
-  error.Name = "LinkerLibraryNotFound";
+  error.Error = "All arguments given to an attribute must be literals (numbers, strings, true/false, or null).";
+  error.Name = "AttributeArgumentMustBeLiteral";
   error.Reason = "";
 
 }
@@ -10346,7 +11400,6 @@ namespace Zilch
 
 }
 
-
   }
 
   //***************************************************************************
@@ -10397,21 +11450,240 @@ namespace Zilch
 
 // Includes
 
-
-
-
-
-
-
 namespace Zilch
 {
   //***************************************************************************
-  FunctionLocation::FunctionLocation() :
-    CompactedOpcodeBase(0),
-    Function(nullptr)
+  // Definition of static members
+  EventHandler EventHandler::Global;
+
+  //***************************************************************************
+  ZilchDefineSimpleType(EventData, Core);
+
+  //***************************************************************************
+  EventData::~EventData()
   {
   }
+  
+  //***************************************************************************
+  EventDelegate::EventDelegate() :
+    Type(nullptr)
+  {
+  }
+  
+  //***************************************************************************
+  EventDelegate::~EventDelegate()
+  {
+    // Event delegates are always responsible for unlinking themselves from the intrusive lists
+    if (this->IncomingLink.Next != nullptr)
+      IncomingList::Unlink(this);
+    if (this->OutgoingLink.Next != nullptr)
+      OutgoingList::Unlink(this);
+  }
 
+  //***************************************************************************
+  EventDelegateList::~EventDelegateList()
+  {
+    // Delete all outgoing connections (using safe iteration)
+    OnlyDeleteObjectIn(this->Outgoing);
+  }
+  
+  //***************************************************************************
+  void EventDelegateList::Send(EventData* event)
+  {
+    // If we have no connections then don't do anything
+    if (this->Outgoing.empty())
+      return;
+
+    // Store the old event name, in case this event is being forwarded
+    String lastEventName = event->EventName;
+    event->EventName = this->EventName;
+
+    // Get the type of event we're sending
+    BoundType* sentEventType = event->ZilchGetDerivedType();
+
+    // Because we want to ensure complete event safety, we have to make an entire copy of
+    // all event delegates (and the container that holds them all)
+    // That way if the user destroy objects, disconnect or reconnect new events, etc we won't
+    // have issues referencing the original list / connections
+    size_t totalOutgoing = 0;
+    forRange(EventDelegate& delegate, this->Outgoing.all())
+    {
+      // Count how many outgoing event delegates we have
+      ++totalOutgoing;
+    }
+
+    // Allocate on the stack an array of pointers to the delegates
+    byte* delegatesList = (byte*)alloca(EventDelegate::MaxEventDelegateSize * totalOutgoing);
+    
+    // Now copy all the event delegates into our stack local list (before we invoke any user code!)
+    size_t i = 0;
+    forRange(EventDelegate& delegate, this->Outgoing.all())
+    {
+      // Get the memory for the current delegate
+      byte* currentDelegate = delegatesList + EventDelegate::MaxEventDelegateSize * i;
+      
+      // Copy construct (clone) the current delegate into the memory
+      delegate.CopyInto(currentDelegate);
+      ++i;
+    }
+
+    // Now that we've made a copy of all delegates, go through and invoke them, erasing them as we go
+    for (size_t j = 0; j < totalOutgoing; ++j)
+    {
+      // Get the memory for the current delegate
+      EventDelegate* delegate = (EventDelegate*)(delegatesList + EventDelegate::MaxEventDelegateSize * j);
+
+      // If the event is not of the correct type, then don't deliver it
+      // We allow the delegate to accept a more base version of the event too
+      if (TypeBinding::IsA(sentEventType, delegate->Type))
+      {
+        // Invoke the delegate with the event
+        delegate->Invoke(event);
+      }
+
+      // Because the delegate is a temporary copy, we can destruct it using the virtual destructor
+      delegate->~EventDelegate();
+    }
+
+    // Restore the last event name
+    event->EventName = lastEventName;
+  }
+
+  //***************************************************************************
+  EventDelegateList* EventHandler::GetOrCreateOutgoingDelegateList(StringParam eventName)
+  {
+    // Get the current list from the map, or insert a new entry (will be null)
+    EventDelegateList*& list = this->OutgoingPerEventName[eventName];
+
+    // If the list was null (just inserted) then allocate it right now
+    // Because the list is grabbed as a reference, this will automatically update the list in the map
+    if (list == nullptr)
+    {
+      // Create the new list and set its name
+      list = new EventDelegateList();
+      list->EventName = eventName;
+    }
+    
+    // Return the list that we found or created
+    return list;
+  }
+
+  //***************************************************************************
+  EventHandler::~EventHandler()
+  {
+    // Destroy all incoming delegates
+    OnlyDeleteObjectIn(this->Incoming);
+
+    // Destroy all outgoing delegate lists (which in turn destroys those delegates)
+    DeleteObjectsInContainer(this->OutgoingPerEventName);
+  }
+  
+  //***************************************************************************
+  void EventHandler::Send(StringParam eventName, EventData* event)
+  {
+    // We don't allow dispatching of null events
+    if (event == nullptr)
+    {
+      Error("Cannot send a null event");
+      return;
+    }
+
+    // Get the event delegate list for the given event name and send the event to all of them
+    EventDelegateList* delegates = this->OutgoingPerEventName.findValue(eventName, nullptr);
+    if (delegates != nullptr)
+    {
+      delegates->Send(event);
+    }
+  }
+
+  //***************************************************************************
+  void EventHandler::Connect(EventHandler* sender, StringParam eventName, EventDelegate* delegate, EventHandler* receiver)
+  {
+    // The receiver doesn't need to do anything special, it just directly stores a reference to the delegate
+    receiver->Incoming.push_back(delegate);
+
+    // Grab the list of outgoing delegates from the sender by this event name
+    EventDelegateList* outgoingDelegates = sender->GetOrCreateOutgoingDelegateList(eventName);
+
+    // Link in the delegate to this outgoing connection
+    outgoingDelegates->Outgoing.push_back(delegate);
+  }
+  
+  //***************************************************************************
+  size_t EventHandler::Disconnect(EventHandler* sender, EventHandler* receiver, StringParam eventName, void* thisPointerOrUniqueId)
+  {
+    // Grab the list of outgoing delegates from the sender by this event name
+    EventDelegateList* outgoingDelegates = sender->OutgoingPerEventName.findValue(eventName, nullptr);
+
+    // If nobody signed up for this event, then early out (nothing to disconnect)
+    if (outgoingDelegates == nullptr)
+      return 0;
+
+    // Loop through all the event delegates and remove anyone that has the same unique id/this pointer
+    size_t removeCount = 0;
+    EventDelegate* delegate = &outgoingDelegates->Outgoing.front();
+    while (delegate != outgoingDelegates->Outgoing.end())
+    {
+      // List is intrusive so the pointer must be moved
+      // before erasing the current connection.
+      EventDelegate* currentDelegate = delegate;
+      delegate = OutgoingList::Next(delegate);
+
+      // If the delegate returns a matching this pointer...
+      if (currentDelegate->GetThisPointerOrUniqueId() == thisPointerOrUniqueId)
+      {
+        // We can directly remove the delegate since we do safe iteration here, and we also
+        // perform copying when dispatching
+        // Note: Technically due to reference counting, if the delegate is keeping an object alive
+        // and then we destroy it, that can cause user code to run, which could then delete the 'Next' delegate
+        delete currentDelegate;
+        ++removeCount;
+      }
+    }
+
+    // Return how many connections were deleted
+    return removeCount;
+  }
+
+  //***************************************************************************
+  ForwardingEventDelegate::ForwardingEventDelegate(EventHandler* forwardTo) :
+    ForwardTo(forwardTo)
+  {
+    this->Type = ZilchTypeId(EventData);
+  }
+
+  //***************************************************************************
+  void ForwardingEventDelegate::Invoke(EventData* event)
+  {
+    // Directly forward the event to the other handler
+    this->ForwardTo->Send(event->EventName, event);
+  }
+
+  //***************************************************************************
+  void* ForwardingEventDelegate::GetThisPointerOrUniqueId()
+  {
+    return this->ForwardTo;
+  }
+
+  //***************************************************************************
+  void EventForward(EventHandler* sender, StringParam eventName, EventHandler* receiver)
+  {
+    // Create a member function delegate
+    ForwardingEventDelegate* eventDelegate = new ForwardingEventDelegate(receiver);
+    
+    // Connect the event handler up to this newly created member delegate
+    EventHandler::Connect(sender, eventName, eventDelegate, receiver);
+  }
+}
+/**************************************************************\
+* Author: Trevor Sundberg
+* Copyright 2012-2014, DigiPen Institute of Technology
+\**************************************************************/
+
+// Includes
+
+namespace Zilch
+{
   //***************************************************************************
   void PerScopeData::PerformCleanup()
   {
@@ -10452,7 +11724,6 @@ namespace Zilch
     Frame(nullptr),
     NextFrame(nullptr),
     CurrentFunction(nullptr),
-    ProgramCounterStart((size_t)-1),
     ProgramCounter(ProgramCounterNotActive),
     State(state),
     Debug(CallDebug::None),
@@ -10490,6 +11761,73 @@ namespace Zilch
       "We should not be queuing the same address twice for cleanup!");
 
     this->Scopes.back()->DelegatesToBeCleaned.push_back(delegate);
+  }
+  
+  //***************************************************************************
+  bool PerFrameData::IsVariableInitialized(Variable* variable)
+  {
+    // Get the stack location of the variable
+    byte* variableStackMemory = this->Frame + variable->Local;
+
+    // If this is a value type...
+    if (variable->ResultType->IsCopyComplex() == false)
+    {
+      // Consider it initialized... for now
+      return true;
+    }
+    else
+    {
+      // Grab the curren't function's type, because we keep reusing it
+      DelegateType* delegateType = this->CurrentFunction->Type;
+
+      // If the variable is the this handle...
+      byte* thisLocation = delegateType->ThisHandleStackOffset + this->Frame;
+      if (thisLocation == variableStackMemory)
+        return true;
+
+      // If the pointer is any of the parameters...
+      ParameterArray& parameters = delegateType->Parameters;
+      for (size_t k = 0; k < parameters.size(); ++k)
+      {
+        // Get the current offset of the parameter...
+        byte* parameterLocation = parameters[k].StackOffset + this->Frame;
+                    
+        // If the parameter is the current variable we're looking at...
+        if (parameterLocation == variableStackMemory)
+          return true;
+      }
+
+      // Walk through all scopes
+      for (size_t k = 0; k < this->Scopes.size(); ++k)
+      {
+        // Grab the current scope
+        PerScopeData* scope = this->Scopes[k];
+                    
+        // Loop through all handles, see if this pointer matches...
+        for (size_t m = 0; m < scope->HandlesToBeCleaned.size(); ++m)
+        {
+          if (scope->HandlesToBeCleaned[m] == (Handle*)variableStackMemory)
+            return true;
+        }
+                    
+        // Loop through all delegates, see if this pointer matches...
+        for (size_t m = 0; m < scope->DelegatesToBeCleaned.size(); ++m)
+        {
+          if (scope->DelegatesToBeCleaned[m] == (Delegate*)variableStackMemory)
+            return true;
+        }
+                    
+        // Loop through all any objects, see if this pointer matches...
+        for (size_t m = 0; m < scope->AnysToBeCleaned.size(); ++m)
+        {
+          if (scope->AnysToBeCleaned[m] == (Any*)variableStackMemory)
+            return true;
+        }
+      }
+    }
+
+    // We didn't find that it was initialized... it must not be
+    return false;
   }
 
   //***************************************************************************
@@ -10541,6 +11879,31 @@ namespace Zilch
   {
     return !this->Exceptions.empty();
   }
+  
+  //***************************************************************************
+  String ExceptionReport::GetConcatenatedMessages()
+  {
+    // Walk through all the exceptions and concatenate them
+    StringBuilderExtended builder;
+    for (size_t i = 0; i < this->Exceptions.size(); ++i)
+    {
+      // Read each of the exceptions from the handle
+      Exception* exception = (Exception*)this->Exceptions[i].Dereference();
+
+      // Write out the exception message
+      builder.Write(exception->Message);
+
+      // If this isn't the last exception...
+      if (i != (this->Exceptions.size() - 1))
+      {
+        // Write out something that joins them together
+        builder.Write(" / ");
+      }
+    }
+    
+    // Output the concatenated exceptions
+    return builder.ToString();
+  }
 
   //***************************************************************************
   void DefaultExceptionCallback(ExecutableState* state, Exception* exception, void* userData)
@@ -10550,7 +11913,9 @@ namespace Zilch
   }
 
   //***************************************************************************
-  const size_t DefaultStackSize = 2097152;
+  static const size_t DefaultStackSize = 2097152;
+  static const String DefaultName("ExecutableState");
+  ZilchThreadLocal ExecutableState* ExecutableState::CallingState = nullptr_constant;
 
   //***************************************************************************
   ExecutableState::ExecutableState() :
@@ -10560,7 +11925,8 @@ namespace Zilch
     UserData(nullptr),
     MaxRecursionDepth(40),
     HitStackOverflow(false),
-    TimeoutSeconds(0)
+    TimeoutSeconds(0),
+    Name(DefaultName)
   {
     ZilchErrorIfNotStarted(ExecutableState);
 
@@ -10592,7 +11958,6 @@ namespace Zilch
     baseFrame->CurrentFunction = emptyFunction;
     baseFrame->Frame = this->Stack;
     baseFrame->NextFrame = this->Stack;
-    baseFrame->ProgramCounterStart = (size_t)-1;
     baseFrame->ProgramCounter = ProgramCounterNotActive;
     baseFrame->State = this;
     baseFrame->Debug = CallDebug::None;
@@ -10657,17 +12022,17 @@ namespace Zilch
   }
 
   //***************************************************************************
-  PerFrameData* ExecutableState::PushFrame(Function* function, size_t opcodeLocation)
+  PerFrameData* ExecutableState::PushFrame(Function* function)
   {
     // Get the next frame before we push our own frame data
     byte* frame = this->GetNextStackFrame();
 
     // Call the internal function
-    return this->PushFrame(frame, function, opcodeLocation);
+    return this->PushFrame(frame, function);
   }
 
   //***************************************************************************
-  PerFrameData* ExecutableState::PushFrame(byte* frame, Function* function, size_t opcodeLocation)
+  PerFrameData* ExecutableState::PushFrame(byte* frame, Function* function)
   {
     // Store a pointer to the newly created stack frame
     PerFrameData* newFrame = nullptr;
@@ -10740,7 +12105,6 @@ namespace Zilch
     newFrame->Frame = frame;
     newFrame->NextFrame = nextFrame;
     newFrame->CurrentFunction = function;
-    newFrame->ProgramCounterStart = opcodeLocation;
     newFrame->ProgramCounter = ProgramCounterNotActive;
     newFrame->Debug = CallDebug::None;
 
@@ -10812,10 +12176,13 @@ namespace Zilch
   }
 
   //***************************************************************************
-  void ExecutableState::InitializeStackHandle(Handle& handle, byte* location)
+  void ExecutableState::InitializeStackHandle(Handle& handle, byte* location, BoundType* type)
   {
     // Set the handle's manager
     handle.Manager = this->StackObjects;
+
+    // Set the type of this handle
+    handle.Type = type;
 
     // We are always guaranteed that the handle data is cleared before we get the user data portion
     StackHandleData& data = *(StackHandleData*)handle.Data;
@@ -11022,7 +12389,7 @@ namespace Zilch
             BoundType* parentZilchType = derivedType;
             Function* mostDerived = nullptr;
 
-            while (parentZilchType != cppBaseType)
+            do
             {
               const FunctionArray* functionArray = parentZilchType->GetOverloadedInstanceFunctions(function->Name);
 
@@ -11047,6 +12414,7 @@ namespace Zilch
                 break;
               }
             }
+            while (parentZilchType != cppBaseType);
             
             // If we found that the user overwrote the vtable entry...
             if (mostDerived != nullptr)
@@ -11106,8 +12474,7 @@ namespace Zilch
 
     // Create a stack handle to point at the given location
     Handle handle;
-    handle.Type = type;
-    this->InitializeStackHandle(handle, stackLocation);
+    this->InitializeStackHandle(handle, stackLocation, type);
 
     // Pre-construct the handle (initialize memory) or clear it to null if we fail
     this->InvokePreConstructorOrRelease(handle, report);
@@ -11184,12 +12551,6 @@ namespace Zilch
   }
 
   //***************************************************************************
-  Function* ExecutableState::GetCurrentFunction()
-  {
-    return this->StackFrames.back()->CurrentFunction;
-  }
-
-  //***************************************************************************
   bool ExecutableState::ThrowExceptionOnTimeout(ExceptionReport& report)
   {
     // Get the ticks since last check (this also updates the timer to now)
@@ -11255,8 +12616,12 @@ namespace Zilch
     Core& core = Core::GetInstance();
 
     // Allocate a default constructed base exception
+    // Note: We only allocate the exception and DO NOT default construct it
+    // This is because we know the exception will be fully initialized, and moreover if we run out of allocation space
+    // then returning a null handle is considered ok!
+    // The StackTrace allocator originally did not support memset to zero, but we made a special one called MemsetZeroDefaultAllocator
     ExceptionReport defaultExceptionReport;
-    Handle handle = this->AllocateDefaultConstructedHeapObject(core.ExceptionType, defaultExceptionReport, HeapFlags::ReferenceCounted);
+    Handle handle = this->AllocateHeapObject(core.ExceptionType, defaultExceptionReport, HeapFlags::ReferenceCounted);
 
     // Error testing
     ReturnIf(defaultExceptionReport.HasThrownExceptions(),,
@@ -11264,10 +12629,16 @@ namespace Zilch
 
     // Dereference a handle and grab a pointer to the exception object
     byte* memory = handle.Dereference();
-    Exception& exception = *(Exception*)memory;
 
-    // Set the friendly and exact error messages of the exception
-    exception.Message = message;
+    // Because an exception can be null if we truly run out of memory, then just skip this portion
+    if (memory != nullptr)
+    {
+      // Grab a reference to the exception memory
+      Exception& exception = *(Exception*)memory;
+
+      // Set the friendly and exact error messages of the exception
+      exception.Message = message;
+    }
     
     // Forward this to the normal function that throws exceptions
     this->ThrowException(report, handle);
@@ -11320,64 +12691,29 @@ namespace Zilch
         Function* function = frame->CurrentFunction;
         stackEntry.ExecutingFunction = function;
 
-        // Attempt to grab the function as a compiled function
-        CompiledFunction* compiledFunction = TypeBinding::DynamicCast<CompiledFunction*>(function);
-
-        // Get some sort of valid program counter (it may not be started if this is the last stack frame)
-        size_t programCounter = frame->ProgramCounter;
-        if (programCounter == ProgramCounterNotActive)
-        {
-          // For right now, since we don't have better location information about where the
-          // function is (using the first opcode is WRONG and points at the wrong location)
-          // We just opt to print the function out as if it's native, the user can search for it...
-          programCounter = ProgramCounterNative;
-        }
-
         // If this is a frame that we're managing (so we can get more call stack information)
-        if (programCounter != ProgramCounterNative)
+        // (Non-Active-Functions): For right now, since we don't have better location information about where the
+        // function is (using the first opcode is WRONG and points at the wrong location)
+        // We just opt to print the function out as if it's native, the user can search for it...
+        size_t programCounter = frame->ProgramCounter;
+        if (programCounter != ProgramCounterNative && programCounter != ProgramCounterNotActive)
         {
-          // Error checking
-          ErrorIf(compiledFunction == nullptr,
-            "We should not be running a native/internal function with an active program counter");
+          // Get the code location (or null if for some reason we can't find it...)
+          CodeLocation* codeLocation = function->OpcodeLocationToCodeLocation.findPointer(programCounter);
 
-          // Grab the function that we're in from the program counter (as well as the base opcode location)
-          FunctionLocation* functionLocation = this->GetFunctionFromOpcodeLocation(programCounter);
-
-          // Make sure we got a valid function location...
-          if (functionLocation != nullptr)
+          // If we found the code location
+          if (codeLocation != nullptr)
           {
-            // Make sure the function we got is the same as the compiled function from above
-            ErrorIf(compiledFunction != functionLocation->Function,
-              "Somehow we got a different function given the opcode location than the one on the stack frame");
-
-            // Determine the opcode offset into the function's own opcode
-            size_t opcodeOffsetInFunction = programCounter - functionLocation->CompactedOpcodeBase;
-
-            // Get the code location (or null if for some reason we can't find it...)
-            CodeLocation* codeLocation = compiledFunction->OpcodeLocationToCodeLocation.findPointer(opcodeOffsetInFunction);
-
-            // If we found the code location
-            if (codeLocation != nullptr)
-            {
-              // Set the code location on the stack entry
-              stackEntry.Location = *codeLocation;
-            }
-            else
-            {
-              Error("Unable to find code location for an opcode that belongs to a function (invalid opcode offset?)");
-            }
+            // Set the code location on the stack entry
+            stackEntry.Location = *codeLocation;
           }
           else
           {
-            Error("Unable to find a function location for a stack trace");
+            Error("Unable to find code location for an opcode that belongs to a function (invalid opcode offset?)");
           }
         }
         else
         {
-          // Error checking
-          ErrorIf(compiledFunction != nullptr,
-            "We should not be running a compiled function without an active program counter");
-
           // Initialize the location to the bound function
           stackEntry.Location.Origin = function->SourceLibrary->Name;
           stackEntry.Location.Library = function->SourceLibrary->Name;
@@ -11387,27 +12723,6 @@ namespace Zilch
         }
       }
     }
-  }
-
-  //***************************************************************************
-  Function* ExecutableState::FindFirstFunctionByName(String name)
-  {
-    // Loop through all the functions
-    for (size_t i = 0; i < this->Functions.size(); ++i)
-    {
-      // Get the current function
-      Function* function = this->Functions[i];
-
-      // If we found a matching name...
-      if (function->Name == name)
-      {
-        // Return the found function
-        return function;
-      }
-    }
-
-    // Otherwise, return null since we found nothing
-    return nullptr;
   }
 
   //***************************************************************************
@@ -11501,103 +12816,9 @@ namespace Zilch
   }
 
   //***************************************************************************
-  OperandLocation ExecutableState::EvaluateOperandLocation(size_t programCounter, size_t operandOffset)
-  {
-    //// Get a reference to the opcode so we can read the instruction
-    //Opcode opcode = *(Opcode*)(this->CompactedOpcode.data() + programCounter);
-
-    //// Get a reference to the opcode's operand
-    //Operand operand = *(Operand*)(this->CompactedOpcode.data() + programCounter + operandOffset);
-
-    return OperandLocation();
-  }
-
-  //***************************************************************************
-  FunctionLocation* ExecutableState::GetFunctionFromOpcodeLocation(size_t opcodeLocation)
-  {
-    // Get how many function bases we have
-    size_t count = this->OpcodeOffsetToFunction.size();
-
-    // We're going to attempt to find the index right before the opcode location
-    size_t i = 0;
-
-    // Loop through all the function locations
-    for (; i < count; ++i)
-    {
-      // Grab the current function location
-      FunctionLocation& functionLocation = this->OpcodeOffsetToFunction[i];
-
-      // If we found the index after the opcode location...
-      if (functionLocation.CompactedOpcodeBase > opcodeLocation)
-      {
-        break;
-      }
-    }
-
-    // Error checking
-    ReturnIf(i == 0, nullptr,
-      "The first base location could not have been greater than the input location!");
-
-    // Back the index off by 1 since we're after...
-    size_t index = i - 1;
-
-    // The function at the base opcode before our opcode location is our function (or we're off the end...)
-    FunctionLocation& functionLocation = this->OpcodeOffsetToFunction[index];
-
-    // Determine if the offset goes outside the function...
-    ReturnIf((opcodeLocation - functionLocation.CompactedOpcodeBase) > functionLocation.Function->OpcodeBuilder.RelativeSize(),
-      nullptr,
-      "The function we found for the given opcode location says that the "
-      "opcode location is outside the function's own generated opcode");
-
-    // Otherwise, we found the function so return it!
-    return &functionLocation;
-  }
-
-  //***************************************************************************
-  PodArray<byte>::range ExecutableState::GetOpcode()
-  {
-    return this->CompactedOpcode.all();
-  }
-
-  //***************************************************************************
-  PodArray<ByteCodeAbsolute>::range ExecutableState::GetOpcodeIndices()
-  {
-    return this->OpcodeIndices.all();
-  }
-
-  //***************************************************************************
   const byte* ExecutableState::GetRawStack()
   {
     return this->Stack;
-  }
-  
-  //***************************************************************************
-  CodeLocation* ExecutableState::GetCodeLocationFromProgramCounter(size_t programCounter)
-  {
-    if (programCounter == ProgramCounterNative || programCounter == ProgramCounterNotActive)
-      return nullptr;
-
-    // First, get the function location
-    FunctionLocation* functionLocation = this->GetFunctionFromOpcodeLocation(programCounter);
-    if (functionLocation == nullptr)
-    {
-      Error("Somehow we hit an opcode that didn't map to a function!");
-      return nullptr;
-    }
-
-    // This is the base of the compacted opcode where the function lives
-    size_t localProgramCounter = (programCounter - functionLocation->CompactedOpcodeBase);
-
-    // Now get the code location for the given opcode inside the function
-    CodeLocation* codeLocation = functionLocation->Function->OpcodeLocationToCodeLocation.findPointer(localProgramCounter);
-    if (codeLocation == nullptr)
-    {
-      Error("We found the function we were in, but the opcode index did not map back to the internal opcode for the function itself");
-      return nullptr;
-    }
-
-    return codeLocation;
   }
 
   //***************************************************************************
@@ -11829,7 +13050,7 @@ namespace Zilch
   void Call::SetDelegate(size_t index, const Delegate& value)
   {
     // Get the exact function we're referencing
-    Function* function = value.Info.BoundFunction;
+    Function* function = value.BoundFunction;
 
     // Get the stack location and perform checks
     byte* stack = this->GetChecked(index, sizeof(Delegate), function->Type, CheckPrimitive::Delegate, Direction::Set);
@@ -12027,42 +13248,19 @@ namespace Zilch
     // The virtual machine will do these steps for us when it's performing the call
     ErrorIf(function == nullptr, "Attempting to invoke a null function in Call");
 
-    // Find the function's delegate information
-    FunctionDelegateRange foundInfo = state->FunctionToDelegateInfo.find(function);
-    
-    // If we don't find the opcode information
-    ByteCodeAbsolute opcodeLocation = InvalidOpcodeLocation;
-
-    // If we did not find the 
-    if (foundInfo.empty() == false)
-    {
-      // Grab a reference to the delegate information
-      DelegateInfo& delegateInfo = foundInfo.front().second;
-      opcodeLocation = delegateInfo.OpcodeLocation;
-    }
-    else
-    {
-      // Error checking
-      ErrorIf
-      (
-        function->BoundFunction == VirtualMachine::ExecuteNext,
-        "When the function is a virtual machine function (compiled in Zilch) it should have an opcode location!"
-      );
-    }
-
     // Push a new stack frame for the function we want to invoke
-    this->Data = state->PushFrame(function, opcodeLocation);
+    this->Data = state->PushFrame(function);
   }
 
   //***************************************************************************
   Call::Call(const Delegate& delegate, ExecutableState* state)
   {
     // The delegate directly stores the function to be executed on it
-    Function* function = delegate.Info.BoundFunction;
+    Function* function = delegate.BoundFunction;
     ErrorIf(function == nullptr, "Attempting to invoke a null delegate in Call");
 
     // Push a new stack frame for the function we want to invoke
-    this->Data = state->PushFrame(function, delegate.Info.OpcodeLocation);
+    this->Data = state->PushFrame(function);
 
     // If this is a non-static delegate
     if (function->This != nullptr)
@@ -12165,7 +13363,7 @@ namespace Zilch
       if (outCallback.Callback != nullptr)
       {
         // Get the location of this opcode
-        CodeLocation* location = state->GetCodeLocationFromProgramCounter(this->Data->ProgramCounter);
+        CodeLocation* location = function->GetCodeLocationFromProgramCounter(this->Data->ProgramCounter);
 
         // Invoke the callback
         outCallback.Callback(state, function, stackOffset, location, outCallback.UserData);
@@ -12231,9 +13429,6 @@ namespace Zilch
       allParameters != (topFrame->Debug & allParameters),
       "Not all of the parameters were set");
 
-    // Set the flag that says we've invoked the function
-    topFrame->Debug = (CallDebug::Enum)(topFrame->Debug | CallDebug::Invoked);
-
     // Set the exception reporter on the top frame
     topFrame->Report = &report;
 
@@ -12251,7 +13446,7 @@ namespace Zilch
       // Technically this is slower and maybe we should only do it for functions that are not the VM function
       // It does make it a lot safer (so people writing external functions can always assume 'this' is valid)
       Handle& thisHandle = *(Handle*)(topFrame->Frame + function->This->Local);
-
+      
       // Dereference the handle and get a pointer back (may be null)
       byte* thisData = thisHandle.Dereference();
 
@@ -12260,6 +13455,9 @@ namespace Zilch
       {
         // Throw the null reference exception and jump out
         state->ThrowNullReferenceException(report, "Attempted to call a member function on a null object");
+
+        // We didn't even invoke the function, don't destruct the return type
+        this->DisableReturnDestruction();
         return;
       }
     }
@@ -12269,11 +13467,14 @@ namespace Zilch
     if (inCallback.Callback != nullptr)
     {
       // Get the location of this opcode
-      CodeLocation* location = state->GetCodeLocationFromProgramCounter(topFrame->ProgramCounterStart);
+      CodeLocation* location = function->GetCodeLocationFromProgramCounter(0);
 
       // Invoke the callback
       inCallback.Callback(state, function, stackOffset, location, inCallback.UserData);
     }
+
+    // Set the flag that says we've invoked the function
+    topFrame->Debug = (CallDebug::Enum)(topFrame->Debug | CallDebug::Invoked);
     
     // Get the bound function we're going to run
     BoundFn boundFunction = function->BoundFunction;
@@ -12286,8 +13487,23 @@ namespace Zilch
       topFrame->ProgramCounter = ProgramCounterNative;
     }
 
+    // Set the thread local calling state to the current state invoking
+    // this function (so the function always knows the caller!)
+    ExecutableState* lastCallingState = ExecutableState::CallingState;
+    ExecutableState::CallingState = state;
+
     // Actually execute the function
     boundFunction(*this, report);
+
+    // Get whether the return value was set
+    bool returnWasSet = (this->Data->Debug & CallDebug::SetReturn) != 0;
+
+    // If we threw any exceptions and the return value was not set, we will want to disable return destruction
+    if (report.HasThrownExceptions() && returnWasSet == false)
+      this->DisableReturnDestruction();
+    
+    // Reset the calling state back to the last one
+    ExecutableState::CallingState = lastCallingState;
 
     // Get a reference to the core library
     Core& core = Core::GetInstance();
@@ -12310,7 +13526,7 @@ namespace Zilch
     // Write the value to the stack
     new (stack) Any(value);
   }
-    
+  
   //***************************************************************************
   template <>
   Any* Call::Get<Any*>(size_t index)
@@ -12327,6 +13543,32 @@ namespace Zilch
   template <>       Any& Call::Get<      Any&>(size_t index) { return *Get<Any*>(index); }
   template <> const Any* Call::Get<const Any*>(size_t index) { return  Get<Any*>(index); }
   template <> const Any& Call::Get<const Any&>(size_t index) { return *Get<Any*>(index); }
+  
+  //***************************************************************************
+  template <>
+  Handle* Call::Get<Handle*>(size_t index)
+  {
+    return &this->GetHandle(index);
+  }
+  
+  //***************************************************************************
+  template <>       Handle  Call::Get<      Handle >(size_t index) { return *Get<Handle*>(index); }
+  template <>       Handle& Call::Get<      Handle&>(size_t index) { return *Get<Handle*>(index); }
+  template <> const Handle* Call::Get<const Handle*>(size_t index) { return  Get<Handle*>(index); }
+  template <> const Handle& Call::Get<const Handle&>(size_t index) { return *Get<Handle*>(index); }
+  
+  //***************************************************************************
+  template <>
+  Delegate* Call::Get<Delegate*>(size_t index)
+  {
+    return &this->GetDelegate(index);
+  }
+  
+  //***************************************************************************
+  template <>       Delegate  Call::Get<      Delegate >(size_t index) { return *Get<Delegate*>(index); }
+  template <>       Delegate& Call::Get<      Delegate&>(size_t index) { return *Get<Delegate*>(index); }
+  template <> const Delegate* Call::Get<const Delegate*>(size_t index) { return  Get<Delegate*>(index); }
+  template <> const Delegate& Call::Get<const Delegate&>(size_t index) { return *Get<Delegate*>(index); }
 }
 /**************************************************************\
 * Author: Trevor Sundberg
@@ -12334,10 +13576,6 @@ namespace Zilch
 \**************************************************************/
 
 // Includes
-
-
-
-
 
 namespace Zilch
 {
@@ -12875,7 +14113,6 @@ namespace Zilch
       foundScope->LastNode = node;
     }
 
-
     //if (TypeBinding::DynamicCast<ClassNode*>(node->Parent) != nullptr)
     //{
     //  
@@ -12898,8 +14135,6 @@ namespace Zilch
     //    lineDifference = node->Location.StartLine - context->LastStatement->Location.EndLine;
     //  }
     //}
-
-
 
     for (size_t i = 0; i < node->Comments.size(); ++i)
     {
@@ -13317,7 +14552,9 @@ namespace Zilch
     SpaceStyle::Enum globalOperatorSpaceStyle = SpaceStyle::BeforeAndAfter;
 
     // HACK, maybe every operator needs it's own spacing, or access operators have a special mode
-    if (node->Operator->TokenId == Grammar::Access || node->Operator->TokenId == Grammar::ExplicitAccess)
+    if (node->Operator->TokenId == Grammar::Access          ||
+        node->Operator->TokenId == Grammar::DynamicAccess   ||
+        node->Operator->TokenId == Grammar::NonVirtualAccess)
     {
       globalOperatorSpaceStyle = SpaceStyle::None;
     }
@@ -13851,17 +15088,10 @@ namespace Zilch
 
 // Includes
 
-
-
-
-
-
-
 namespace Zilch
 {
   //***************************************************************************
-  ZilchDefineSimpleType(Function,         Core);
-  ZilchDefineSimpleType(CompiledFunction, Core);
+  ZilchDefineSimpleType(Function, Core);
 
   //***************************************************************************
   NativeVirtualInfo::NativeVirtualInfo() :
@@ -13901,7 +15131,6 @@ namespace Zilch
     Type(nullptr),
     RequiredStackSpace(0),
     This(nullptr),
-    Owner(nullptr),
     SourceLibrary(nullptr),
     UserData(nullptr),
     IsPropertyGetOrSet(false),
@@ -13968,43 +15197,29 @@ namespace Zilch
   }
 
   //***************************************************************************
-  CompilingDelegateRebase::CompilingDelegateRebase() :
-    DelegateInfoLocation(0),
-    RelatedFunction(nullptr)
+  CodeLocation* Function::GetCodeLocationFromProgramCounter(size_t programCounter)
   {
+    // We don't know the location of native and non-active program counters
+    if (programCounter == ProgramCounterNative || programCounter == ProgramCounterNotActive)
+      return nullptr;
+
+    // Now get the code location for the given opcode inside the function
+    CodeLocation* codeLocation = this->OpcodeLocationToCodeLocation.findPointer(programCounter);
+    if (codeLocation == nullptr)
+      return nullptr;
+
+    // Return the code location we found
+    return codeLocation;
   }
 
   //***************************************************************************
-  CompiledDelegateRebase::CompiledDelegateRebase() :
-    DelegateInfoLocation(0),
-    Library(0),
-    Function(0)
-  {
-  }
-
-  //***************************************************************************
-  CompilingTypeCreationRebase::CompilingTypeCreationRebase() :
-    TypeIndexLocation(0),
-    RelatedType(nullptr)
-  {
-  }
-
-  //***************************************************************************
-  CompiledTypeCreationRebase::CompiledTypeCreationRebase() :
-    TypeIndexLocation(0),
-    Library(0),
-    Type(0)
-  {
-  }
-  
-  //***************************************************************************
-  Opcode& CompiledFunction::AllocateArgumentFreeOpcode(Instruction::Enum instruction, DebugOrigin::Enum debugOrigin, const CodeLocation& debugLocation)
+  Opcode& Function::AllocateArgumentFreeOpcode(Instruction::Enum instruction, DebugOrigin::Enum debugOrigin, const CodeLocation& debugLocation)
   {
     return AllocateOpcode<Opcode>(instruction, debugOrigin, debugLocation);
   }
 
   //***************************************************************************
-  OperandIndex CompiledFunction::AllocateRegister(ObjectSize size)
+  OperandIndex Function::AllocateRegister(size_t size)
   {
     // Get the last index of the registers array
     size_t index = this->RequiredStackSpace;
@@ -14017,7 +15232,7 @@ namespace Zilch
   }
 
   //***************************************************************************
-  size_t CompiledFunction::GetCurrentOpcodeIndex()
+  size_t Function::GetCurrentOpcodeIndex()
   {
     return this->OpcodeBuilder.RelativeSize();
   }
@@ -14026,8 +15241,6 @@ namespace Zilch
 \**************************************************************/
 
 // Includes
-
-
 
 namespace Zilch
 {
@@ -14154,6 +15367,7 @@ namespace Zilch
     "while",
     ".",
     "->",
+    "~>",
     ":",
     ",",
     "=>",
@@ -14327,7 +15541,8 @@ namespace Zilch
     "Variable",
     "While",
     "Access",
-    "ExplicitAccess",
+    "DynamicAccess",
+    "NonVirtualAccess",
     "TypeSpecifier / NameSpecifier / Inheritance / InitializerList",
     "ArgumentSeparator",
     "RefersTo",
@@ -14536,11 +15751,6 @@ namespace Zilch
 
 // Includes
 
-
-
-
-
-
 namespace Zilch
 {
 
@@ -14623,7 +15833,6 @@ namespace Zilch
     memset(&this->Flags, 0xCD, sizeof(this->Flags));
 #endif
   }
-
 
 #ifdef ZILCH_HANDLE_DEBUG
   //***************************************************************************
@@ -15044,10 +16253,6 @@ namespace Zilch
 
 // Includes
 
-
-
-
-
 namespace Zilch
 {
   //***************************************************************************
@@ -15294,11 +16499,12 @@ namespace Zilch
     // Create a buffer that's the size of the object we'd like to allocate
     // At the beginning of the buffer, we put the object slot pointer so that
     // 'ObjectToHandle' can recreate a handle via the slot data pointer
-    ObjectSize size = type->GetAllocatedSize();
-    byte* memory = new byte[sizeof(ObjectSlot*) + size];
+    size_t objectSize = type->GetAllocatedSize();
+    size_t fullSize = sizeof(ObjectSlot*) + objectSize;
+    byte* memory = new byte[fullSize];
 
     // All primitives should support being zeroed out
-    memset(memory, 0x00, size);
+    memset(memory, 0x00, fullSize);
 
     // Store a pointer back to the slot on the memory itself
     *(ObjectSlot**)memory = slot;
@@ -15552,10 +16758,6 @@ namespace Zilch
 \**************************************************************/
 
 // Includes
-
-
-
-
 
 namespace Zilch
 {
@@ -16031,15 +17233,6 @@ namespace Zilch
 
 // Includes
 
-
-
-
-
-
-
-
-
-
 namespace Zilch
 {
   //***************************************************************************
@@ -16297,6 +17490,14 @@ namespace Zilch
     {
       // Add the property to the bound type
       owner->AddRawProperty(property);
+
+      // Make sure to add the getter function to the bound functions list
+      if (property->Get != nullptr)
+        owner->AddRawFunction(property->Get);
+
+      // Make sure to add the setter function to the bound functions list
+      if (property->Set != nullptr)
+        owner->AddRawFunction(property->Set);
     }
 
     // Return the property that was created
@@ -16393,15 +17594,21 @@ namespace Zilch
 
       // Store the extension map (could be static or instance)
       PropertyMap* propertiesByName = nullptr;
+
+      // We also need to get the function extension map so we can add the getter and setter functions
+      // Technically these functions aren't referencable, except if native code looks them up (just to be proper!)
+      FunctionMultiMap* functionsByName = nullptr;
       
       // Add the property to the library extension map
       if (options & FunctionOptions::Static)
       {
         propertiesByName = &this->BuiltLibrary->StaticExtensionProperties[guid];
+        functionsByName = &this->BuiltLibrary->StaticExtensionFunctions[guid];
       }
       else
       {
         propertiesByName = &this->BuiltLibrary->InstanceExtensionProperties[guid];
+        functionsByName = &this->BuiltLibrary->InstanceExtensionFunctions[guid];
       }
 
       // Add the property to the named map
@@ -16409,6 +17616,14 @@ namespace Zilch
         String::Format("Another property with the same name (%s) was added to the extension methods map for type (%s), "
                        "or two types came out with the same guid (which would be bad)",
                        name.c_str(), forType->Name.c_str()).c_str());
+
+      // Make sure to add the getter function to the bound functions list
+      if (property->Get != nullptr)
+        (*functionsByName)[property->Get->Name].push_back(property->Get);
+
+      // Make sure to add the setter function to the bound functions list
+      if (property->Set != nullptr)
+        (*functionsByName)[property->Set->Name].push_back(property->Set);
     }
 
     // Return the property that was created
@@ -16416,10 +17631,10 @@ namespace Zilch
   }
 
   //***************************************************************************
-  Field* LibraryBuilder::AddBoundField(BoundType* owner, String name, Type* type, ObjectOffset offset, MemberOptions::Flags options)
+  Field* LibraryBuilder::AddBoundField(BoundType* owner, String name, Type* type, size_t offset, MemberOptions::Flags options)
   {
     // First add a raw field to the library
-    Field* field = this->CreateRawField(name, type, offset, options);
+    Field* field = this->CreateRawField(owner, name, type, offset, options);
 
     // If the field is valid...
     if (field != nullptr)
@@ -16445,7 +17660,7 @@ namespace Zilch
   )
   {
     // Verify that the name is correct
-    CheckIdentifier(name, TokenCheck::IsUpper | TokenCheck::Asserts);
+    //CheckIdentifier(name, TokenCheck::IsUpper | TokenCheck::Asserts);
 
     // Error checking for our owner type
     ReturnIf(owner == nullptr, nullptr, "The owner must never be null");
@@ -16497,11 +17712,11 @@ namespace Zilch
     else
     {
       // Create a variable for the this pointer
-      Variable* thisVariable = this->CreateRawVariable(ThisKeyword);
+      Variable* thisVariable = this->CreateRawVariable(function, ThisKeyword);
       thisVariable->ResultType = this->ToHandleType(owner);
       function->This = thisVariable;
     }
-
+    
     // For how we give parameter positions, check CodeGenerator.cpp around line 233
     // Returns go at the beginning, parameters go after returns, and the
     // this handle (if it exists) goes after the parameters
@@ -16570,6 +17785,7 @@ namespace Zilch
 
     // Create the property
     Property* property = new Property();
+    property->Owner = owner;
 
     // Pass it to the library so it can delete the property
     this->BuiltLibrary->OwnedProperties.push_back(property);
@@ -16598,13 +17814,17 @@ namespace Zilch
       if (get != nullptr && get != DoNotGenerate)
       {
         // Generate the get function
-        property->Get = this->CreateRawFunction(
+        property->Get = this->CreateRawFunction
+        (
           owner,
           BuildGetterName(name),
           get,
           ParameterArray(),
           type,
-          functionOptions);
+          functionOptions
+        );
+        property->Get->IsHidden = true;
+        property->Get->IsPropertyGetOrSet = true;
       }
 
       // Check if we were given a set function
@@ -16620,13 +17840,17 @@ namespace Zilch
         Core& core = Core::GetInstance();
 
         // Generate the set function
-        property->Set = this->CreateRawFunction(
+        property->Set = this->CreateRawFunction
+        (
           owner,
           BuildSetterName(name),
           set,
           parameters,
           core.VoidType,
-          functionOptions);
+          functionOptions
+        );
+        property->Set->IsHidden = true;
+        property->Set->IsPropertyGetOrSet = true;
       }
     }
     else
@@ -16660,13 +17884,58 @@ namespace Zilch
   }
 
   //***************************************************************************
-  Field* LibraryBuilder::CreateRawField(String name, Type* type, ObjectOffset offset, MemberOptions::Flags options)
+  void FieldSetter(Call& call, ExceptionReport& report)
+  {
+    // Get the field and its offset
+    Field* field = (Field*)call.GetFunction()->UserData;
+
+    // Grab a handle to the this object and dereference it
+    Handle& handle = call.GetHandle(Call::This);
+    byte* memory = handle.Dereference();
+
+    // Get the memory offsetted to the field
+    byte* fieldMemory = memory + field->Offset;
+
+    // Get a direct pointer to the parameter (could be a primitive, such as a handle)
+    byte* parameterMemory = call.GetParameterUnchecked(0);
+
+    // Generically destruct the existing field (release reference, etc) the current parameter's memory
+    field->PropertyType->GenericDestruct(fieldMemory);
+
+    // Now copy construct the parameter they are trying to set over the field memory
+    field->PropertyType->GenericCopyConstruct(fieldMemory, parameterMemory);
+  }
+
+  //***************************************************************************
+  void FieldGetter(Call& call, ExceptionReport& report)
+  {
+    // Get the field and its offset
+    Field* field = (Field*)call.GetFunction()->UserData;
+
+    // Grab a handle to the this object and dereference it
+    Handle& handle = call.GetHandle(Call::This);
+    byte* memory = handle.Dereference();
+
+    // Get the memory offsetted to the field
+    byte* fieldMemory = memory + field->Offset;
+
+    // Get a direct pointer to the return (not initialized yet!)
+    byte* returnMemory = call.GetReturnUnchecked();
+    call.DisableReturnChecks();
+
+    // Now copy construct the parameter they are trying to set over the field memory
+    field->PropertyType->GenericCopyConstruct(returnMemory, fieldMemory);
+  }
+
+  //***************************************************************************
+  Field* LibraryBuilder::CreateRawField(BoundType* owner, String name, Type* type, size_t offset, MemberOptions::Flags options)
   {
     // Verify that the name is correct
     CheckIdentifier(name, TokenCheck::IsUpper | TokenCheck::Asserts);
 
     // Create the member
     Field* field = new Field();
+    field->Owner = owner;
 
     // Pass it to the library so it can delete the member
     this->BuiltLibrary->OwnedProperties.push_back(field);
@@ -16688,7 +17957,7 @@ namespace Zilch
   }
 
   //***************************************************************************
-  Variable* LibraryBuilder::CreateRawVariable(String name)
+  Variable* LibraryBuilder::CreateRawVariable(Function* function, String name)
   {
     // Create the variable and set it's name
     Variable* variable = new Variable();
@@ -16696,6 +17965,9 @@ namespace Zilch
 
     // Pass it to the library so it can delete the member
     this->BuiltLibrary->OwnedVariables.push_back(variable);
+
+    // Also add it to the function (so it can be debugged easily)
+    function->Variables.push_back(variable);
 
     // Return the created variable
     return variable;
@@ -16718,7 +17990,7 @@ namespace Zilch
   }
 
   //***************************************************************************
-  BoundType* LibraryBuilder::AddBoundType(String name, TypeCopyMode::Enum copyMode, ObjectSize size, size_t nativeVirtualCount)
+  BoundType* LibraryBuilder::AddBoundType(String name, TypeCopyMode::Enum copyMode, size_t size, size_t nativeVirtualCount)
   {
     // Create a new bound type with the given name / size
     BoundType* type = new BoundType(name, copyMode, size, nativeVirtualCount);
@@ -16749,30 +18021,73 @@ namespace Zilch
   }
 
   //***************************************************************************
-  void LibraryBuilder::AddCompiledFunction(CompiledFunction* function, BoundType* owner)
+  void LibraryBuilder::GenerateGetSetFields()
   {
-    this->BuiltLibrary->CompiledFunctions.push_back(function);
-    function->Owner = owner;
-  }
+    // Grab a reference to the library for convenience
+    LibraryRef library = this->BuiltLibrary;
 
-  //***************************************************************************
-  void LibraryBuilder::AddFunctionToLibrary(Function* function, LibraryRef library)
-  {
-    // Make sure we set the source library for every function we just created
-    function->SourceLibrary = library.Object;
+    // Loop through all the fields
+    for (size_t i = 0; i < library->OwnedProperties.size(); ++i)
+    {
+      // If the current property is a field...
+      Field* field = TypeBinding::DynamicCast<Field*>(library->OwnedProperties[i]);
+      if (field == nullptr)
+        continue;
 
-    // Get the function hash (the key of the function)
-    GuidType key = function->Hash();
+      // Function options for the getter and setter
+      // In the future, this may be virtual too
+      FunctionOptions::Enum functionOptions = FunctionOptions::None;
 
-    // Map the function's guid to itself
-    library->FunctionsByGuid.insertOrError(key, function,
-      String::Format("Another function with the same guid (%s) was added to the LibraryBuilder. "
-      "This could be caused by the user inserting the same function twice, or by an internal compiler error",
-      function->Name.c_str()).c_str());
+      // If the member is static, then the getter and setter are static too
+      if (field->IsStatic)
+        functionOptions = FunctionOptions::Static;
 
-    // Add the function's hash to the library (which should take into account the signature)
-    // We know by this point that everything to hash the function should be there and should produce the same hash
-    library->Guid ^= function->Hash();
+      // If we don't have a get function yet...
+      if (field->Get == nullptr)
+      {
+        // Generate the get function
+        field->Get = this->CreateRawFunction
+        (
+          field->Owner,
+          BuildGetterName(field->Name),
+          FieldGetter,
+          ParameterArray(),
+          field->PropertyType,
+          functionOptions
+        );
+        field->Get->IsHidden = true;
+        field->Get->IsPropertyGetOrSet = true;
+
+        // The userdata for the getter and setter is just the original field
+        // This works out well because in the Syntaxer, we defer the computation of offset
+        // This way, we don't need to know the offset (the field will be updated!)
+        field->Get->UserData = field;
+        field->Owner->AddRawFunction(field->Get);
+      }
+      
+      // If we don't have a get function yet...
+      if (field->Set == nullptr)
+      {
+        // Generate the set function
+        field->Set = this->CreateRawFunction
+        (
+          field->Owner,
+          BuildSetterName(field->Name),
+          FieldSetter,
+          OneParameter(field->PropertyType, ValueKeyword),
+          ZilchTypeId(void),
+          functionOptions
+        );
+        field->Set->IsHidden = true;
+        field->Set->IsPropertyGetOrSet = true;
+
+        // The userdata for the getter and setter is just the original field
+        // This works out well because in the Syntaxer, we defer the computation of offset
+        // This way, we don't need to know the offset (the field will be updated!)
+        field->Set->UserData = field;
+        field->Owner->AddRawFunction(field->Set);
+      }
+    }
   }
 
   //***************************************************************************
@@ -16857,18 +18172,8 @@ namespace Zilch
     // Grab a reference to the library for convenience
     LibraryRef library = this->BuiltLibrary;
 
-    // Loop through all compiled functions
-    for (size_t i = 0; i < library->CompiledFunctions.size(); ++i)
-    {
-      // Get the current compiled function
-      CompiledFunction* function = library->CompiledFunctions[i];
-
-      // Add to the total opcode size
-      library->TotalOpcodeSize += function->OpcodeBuilder.RelativeSize();
-
-      // Add the function to the library so it can be looked up
-      AddFunctionToLibrary(function, library);
-    }
+    // Generate getters and setters for any field that hasn't already been generated
+    this->GenerateGetSetFields();
 
     // We need to create all the bound functions
     for (size_t i = 0; i < library->OwnedFunctions.size(); ++i)
@@ -16876,8 +18181,12 @@ namespace Zilch
       // Get the current bound function
       Function* function = this->BuiltLibrary->OwnedFunctions[i];
 
+      // Compact the byte code into a single byte buffer (may be no opcode!)
+      function->CompactedOpcode.resize(function->OpcodeBuilder.RelativeSize());
+      function->OpcodeBuilder.RelativeCompact(function->CompactedOpcode.data());
+
       // Add the function to the library so it can be looked up
-      AddFunctionToLibrary(function, library);
+      function->SourceLibrary = library.Object;
     }
 
     // Create a range to iterate through all the named types
@@ -16891,17 +18200,8 @@ namespace Zilch
       BoundType* boundType = pair.second;
       boundTypes.popFront();
 
-      // Add the type's hash to the library
-      library->Guid ^= boundType->Hash();
-
       // Insert all the named types into the map
       library->BoundTypes.insertOrError(pair.first, boundType);
-
-      // Insert the named type into the types by guid
-      // Note that 'TypesByGuid' is actually general to any type
-      library->TypesByGuid.insertOrError(boundType->Hash(), boundType,
-          "Internal error, two named type guids matched (which is "
-          "either a collision, or the same type was inserted twice)");
 
       // Set the type's source library to the current library
       boundType->SourceLibrary = library.Object;
@@ -16916,15 +18216,6 @@ namespace Zilch
       // Get the qualified type
       IndirectionType* indirectionType = indirectionTypes.front();
       indirectionTypes.popFront();
-        
-      // Add the type's hash to the library
-      library->Guid ^= indirectionType->Hash();
-
-      // Insert the qualified type into the types by guid
-      // Note that 'TypesByGuid' is actually general to any type
-      library->TypesByGuid.insertOrError(indirectionType->Hash(), indirectionType,
-          "Internal error, two indirection type guids matched (which is "
-          "either a collision, or the same type was inserted twice)");
 
       // Set the type's source library to the current library
       indirectionType->SourceLibrary = library.Object;
@@ -16940,59 +18231,8 @@ namespace Zilch
       DelegateType* delegateType = delegateTypes.front();
       delegateTypes.popFront();
 
-      // Add the type's hash to the library
-      library->Guid ^= delegateType->Hash();
-
-      // Insert the delegate type into the types by guid
-      // Note that 'TypesByGuid' is actually general to any type
-      library->TypesByGuid.insertOrError(delegateType->Hash(), delegateType,
-          "Internal error, two named type guids matched (which is "
-          "either a collision, or the same type was inserted twice)");
-      
       // Set the type's source library to the current library
       delegateType->SourceLibrary = library.Object;
-    }
-
-    // Lastly, we need to do all the rebasing. This must come after both the first compiled
-    // and bound function passes up above, because it uses 'RelatedFunction' guids, which need
-    // to be valid by the time we get down here
-    // Loop through all the fully generated functions
-    for (size_t i = 0; i < library->CompiledFunctions.size(); ++i)
-    {
-      // Get the current compiled function
-      CompiledFunction* function = library->CompiledFunctions[i];
-
-      // Loop through all the delegate rebases
-      for (size_t j = 0; j < function->CompilingDelegateRebases.size(); ++j)
-      {
-        // Grab the compiling rebase, and we're going to convert it into a compiled rebase
-        CompilingDelegateRebase& compilingRebase = function->CompilingDelegateRebases[j];
-        CompiledDelegateRebase& compiledRebase = function->CompiledDelegateRebases.push_back();
-
-        // The compiled version doesn't store a direct link to the function, but rather a hash (for serialization)
-        compiledRebase.Function = compilingRebase.RelatedFunction->Hash();
-        compiledRebase.Library = compilingRebase.RelatedFunction->SourceLibrary->Guid;
-
-        // The locations will however be the same
-        compiledRebase.DelegateInfoLocation = compilingRebase.DelegateInfoLocation;
-        compiledRebase.Location = compilingRebase.Location;
-      }
-
-      // Loop through all the created type rebases
-      for (size_t j = 0; j < function->CompilingTypeCreationRebases.size(); ++j)
-      {
-        // Grab the compiling rebase, and we're going to convert it into a compiled rebase
-        CompilingTypeCreationRebase& compilingRebase = function->CompilingTypeCreationRebases[j];
-        CompiledTypeCreationRebase& compiledRebase = function->CompiledTypeCreationRebases.push_back();
-
-        // The compiled version doesn't store a direct link to the function, but rather a hash (for serialization)
-        compiledRebase.Type = compilingRebase.RelatedType->Hash();
-        compiledRebase.Library = compilingRebase.RelatedType->SourceLibrary->Guid;
-
-        // The locations will however be the same
-        compiledRebase.TypeIndexLocation = compilingRebase.TypeIndexLocation;
-        compiledRebase.Location = compilingRebase.Location;
-      }
     }
 
     // Clear out our built library so we don't use the this builder anymore
@@ -17134,19 +18374,19 @@ namespace Zilch
   }
 
   //***************************************************************************
-  int CodeEntry::IdCounter = 1;
-
-  //***************************************************************************
   CodeEntry::CodeEntry() :
     CodeUserData(nullptr)
   {
-    this->Id = Zero::AtomicIncrement(&IdCounter);
+  }
+  
+  //***************************************************************************
+  size_t CodeEntry::GetHash()
+  {
+    return this->Code.hash() ^ this->Origin.hash() * 5689;
   }
 
   //***************************************************************************
   Library::Library() :
-    Guid(0),
-    TotalOpcodeSize(0),
     UserData(nullptr)
   {
   }
@@ -17166,12 +18406,6 @@ namespace Zilch
       delete function;
     }
 
-    for (size_t i = 0; i < this->CompiledFunctions.size(); ++i)
-    {
-      Function* function = this->CompiledFunctions[i];
-      delete function;
-    }
-
     for (size_t i = 0; i < this->OwnedProperties.size(); ++i)
     {
       Property* property = this->OwnedProperties[i];
@@ -17186,38 +18420,31 @@ namespace Zilch
   }
 
   //***************************************************************************
-  Module::Module(CompilationErrors& errors) :
-    TotalOpcodeSize(0),
-    Errors(errors),
-    UserData(nullptr)
+  Module::Module()
   {
     // Always add the core library (both for the linker, and as a compiler dependence)
-    AddLibrary(Core::GetInstance().GetLibrary());
+    this->push_back(Core::GetInstance().GetLibrary());
   }
 
   //***************************************************************************
-  void Module::AddLibrary(LibraryRef library)
+  BoundType* Module::FindType(StringParam name)
   {
-    library.SetOwner(this);
+    // Loop through all libraries
+    for (size_t i = 0; i < this->size(); ++i)
+    {
+      // Grab the current library
+      LibraryRef& library = (*this)[i];
 
-    // Add the libraries to our containers
-    this->Libraries.push_back(library);
-    this->LibrariesByGuid.insertOrError(library->Guid, library,
-      String::Format("Another library with the same guid (%s) was added to the Module. "
-      "This could be caused by the user inserting the same library twice, or by an internal compiler error",
-      library->Name.c_str()).c_str());
+      // Attempt to find the type in this library
+      BoundType* type = library->BoundTypes.findValue(name, nullptr);
+      
+      // If we found the type...
+      if (type != nullptr)
+        return type;
+    }
 
-    // Total up the opcode size
-    this->TotalOpcodeSize += library->TotalOpcodeSize;
-
-    // Add all the compiled functions to the array
-    this->CompiledFunctions.insert(this->CompiledFunctions.end(), library->CompiledFunctions.all());
-  }
-
-  //***************************************************************************
-  LibraryRange Module::GetLibraries()
-  {
-    return this->Libraries.all();
+    // Otherwise we found nothing
+    return nullptr;
   }
 
   //***************************************************************************
@@ -17227,13 +18454,13 @@ namespace Zilch
     ExecutableState* state = new ExecutableState();
 
     // Store references to the dependent libraries we were compiled from
-    state->DependentLibraries = this->Libraries;
+    state->Dependencies = *this;
 
     // Loop through all dependent libraries
-    for (size_t i = 0; i < state->DependentLibraries.size(); ++i)
+    for (size_t i = 0; i < this->size(); ++i)
     {
       // Grab the current library
-      LibraryRef library = state->DependentLibraries[i];
+      const LibraryRef& library = (*this)[i];
 
       // Loop through all code entries
       for (size_t j = 0; j < library->Entries.size(); ++j)
@@ -17242,221 +18469,8 @@ namespace Zilch
         CodeEntry* entry = &library->Entries[j];
 
         // Map the code entry id to the entry itself on the state (we should never collide here!)
-        state->IdToCodeEntries.insertOrError(entry->Id, entry);
+        state->CodeHashToCodeEntry.insertNoOverwrite(entry->GetHash(), entry);
       }
-    }
-
-    // Resize the opcode to fit all of the opcode
-    state->CompactedOpcode.resize(this->TotalOpcodeSize);
-
-    // Get a pointer directly to the whole opcode buffer
-    byte* opcode = state->CompactedOpcode.data();
-
-    // An index to each section of opcode data that we write oute
-    size_t opcodeBaseIndex = 0;
-
-    // Loop through all the fully generated functions
-    // (we need to basically output the opcode, and rebase any opcode that needs it)
-    for (size_t i = 0; i < this->CompiledFunctions.size(); ++i)
-    {
-      // Get the current compiled function
-      CompiledFunction* function = this->CompiledFunctions[i];
-
-      // Compact the byte code into a single byte buffer
-      function->OpcodeBuilder.RelativeCompact(opcode + opcodeBaseIndex);
-
-      // Insert all the indices for the opcodes into a single array
-      PodArray<size_t>& indices = function->OpcodeCompactedIndices;
-      for (size_t i = 0; i < indices.size(); ++i)
-      {
-        // Get the current index
-        size_t index = indices[i];
-
-        // Push the index into the combined array, but make sure we add the current opcode index to it
-        state->OpcodeIndices.push_back((ByteCodeAbsolute)(index + opcodeBaseIndex));
-      }
-
-      // Add the function to the list of functions, and point the delegate information directly at the function
-      DelegateInfo delegateInfo;
-      delegateInfo.BoundFunction = function;
-      state->Functions.push_back(function);
-
-      // Set the delegate info's opcode location to the current location
-      delegateInfo.OpcodeLocation = (ByteCodeAbsolute)opcodeBaseIndex;
-
-      // Add our delegate info to the map (this should never collide)
-      state->FunctionToDelegateInfo.insertOrError(function, delegateInfo);
-
-      // For debugging we need to be able to map backwards from
-      // any opcode position to the function it belongs to
-      FunctionLocation& functionLocation = state->OpcodeOffsetToFunction.push_back();
-      functionLocation.CompactedOpcodeBase = (ByteCodeAbsolute)opcodeBaseIndex;
-      functionLocation.Function = function;
-
-      // Move the opcode index forward
-      opcodeBaseIndex += function->OpcodeBuilder.RelativeSize();
-    }
-
-    // Move the back to the start of the data
-    opcode = state->CompactedOpcode.data();
-
-    // Loop through all the fully generated functions
-    // (we need to basically output the opcode, and rebase any opcode that needs it)
-    for (size_t i = 0; i < this->CompiledFunctions.size(); ++i)
-    {
-      // Get the current compiled function
-      CompiledFunction* function = this->CompiledFunctions[i];
-
-      //----------------- Delegate Rebases -----------------//
-      // Loop through all the delegate rebases (these should have been generated at the end of compile time)
-      for (size_t j = 0; j < function->CompiledDelegateRebases.size(); ++j)
-      {
-        // Get the current rebase
-        CompiledDelegateRebase& rebase = function->CompiledDelegateRebases[j];
-
-        // Attempt to find the library by guid
-        LibraryRef foundLibrary = this->LibrariesByGuid.findValue(rebase.Library, nullptr);
-
-        // If we found a library with the same guid...
-        if (foundLibrary != nullptr)
-        {
-          // Look for a function by the given guid in the library
-          Function* foundFunction = foundLibrary->FunctionsByGuid.findValue(rebase.Function, nullptr);
-
-          // If we found the function
-          if (foundFunction != nullptr)
-          {
-            // Look in the map to see if we've already added the found function into the executable state array
-            FunctionDelegateRange delegateRange = state->FunctionToDelegateInfo.find(foundFunction);
-
-            // This will store the index of the function into the executable state array
-            DelegateInfo delegateInfo;
-
-            // If we did not add it... (that probably means it's a bound function and not a compiled one)
-            if (delegateRange.empty())
-            {
-              // Add the function to the list of functions, and point the delegate information directly at the function
-              delegateInfo.BoundFunction = foundFunction;
-              state->Functions.push_back(foundFunction);
-
-              // If we got here, then obviously we have no opcode location
-              // This is because above, we should have already inserted function delegate infos for
-              // all compiled functions (since we hit here, that implies it's not a compiled function)
-              delegateInfo.OpcodeLocation = InvalidOpcodeLocation;
-
-              // Add our delegate info to the map
-              state->FunctionToDelegateInfo.insertOrError(foundFunction, delegateInfo);
-            }
-            else
-            {
-              // Get the index from the value we found in the map
-              delegateInfo = delegateRange.front().second;
-            }
-
-            ZilchTodo("It seems like the below place where we set the opcode on the actual function is just plain wrong (maybe for debug?)");
-
-            // Get the create delegate opcode using the rebase location (and the fact that we just compacted/output the byte code)
-            DelegateInfo* info = (DelegateInfo*)(opcode + rebase.DelegateInfoLocation);
-              
-            // Set the opcode's function index
-            *info = delegateInfo;
-
-            // Get the create delegate opcode using the rebase location (and the fact that we just compacted/output the byte code)
-            info = (DelegateInfo*)(function->OpcodeBuilder.GetRelativeElement(rebase.DelegateInfoLocation));
-            
-            // Set the opcode's function index
-            *info = delegateInfo;
-          }
-          else
-          {
-            // Ok, this is really bad
-            // We somehow found the library (which means its guid matched), yet the function was not found!
-            this->Errors.Raise(rebase.Location, ErrorCode::InternalError,
-              "Unable to find a function in a library whose Guid matched the compiled/rebase Guid");
-          }
-        }
-        else
-        {
-          // Show an error since we couldn't find the referenced library
-          this->Errors.Raise(rebase.Location, ErrorCode::LinkerLibraryNotFound);
-        }
-      }
-
-      //----------------- Type Rebases -----------------//
-      // Loop through all the type rebases (these should have been generated at the end of compile time)
-      for (size_t j = 0; j < function->CompiledTypeCreationRebases.size(); ++j)
-      {
-        // Get the current rebase
-        CompiledTypeCreationRebase& rebase = function->CompiledTypeCreationRebases[j];
-
-        // Attempt to find the library by guid
-        LibraryRef foundLibrary = this->LibrariesByGuid.findValue(rebase.Library, nullptr);
-
-        // If we found a library with the same guid...
-        if (foundLibrary != nullptr)
-        {
-          // Look for a function by the given guid in the library
-          Type* foundType = foundLibrary->TypesByGuid.findValue(rebase.Type, nullptr);
-
-          // If we found the type
-          if (foundType != nullptr)
-          {
-            // We can only create bound types...
-            BoundType* foundBoundType = TypeBinding::DynamicCast<BoundType*>(foundType);
-
-            // Make sure this is a bound type!
-            if (foundBoundType != nullptr)
-            {
-              // Look in the map to see if we've already added the found type into the executable state array
-              BoundTypeIndexRange typeIndexRange = state->CreatedTypeToIndicies.find(foundBoundType);
-
-              // This will store the index of the function into the executable state array
-              ArrayIndex typeIndex;
-
-              // If we did not add it... (that probably means it's a bound function and not a compiled one)
-              if (typeIndexRange.empty())
-              {
-                // The index will be the next value in the list of types
-                typeIndex = (ArrayIndex)state->CreatedTypes.size();
-                state->CreatedTypes.push_back(foundBoundType);
-
-                // Add our delegate info to the map
-                state->CreatedTypeToIndicies.insertOrError(foundBoundType, typeIndex);
-              }
-              else
-              {
-                // Get the index from the value we found in the map
-                typeIndex = typeIndexRange.front().second;
-              }
-
-              // Get the create delegate opcode using the rebase location (and the fact that we just compacted/output the byte code)
-              ArrayIndex* index = (ArrayIndex*)(opcode + rebase.TypeIndexLocation);
-              
-              // Set the opcode's function index
-              *index = typeIndex;
-            }
-            else
-            {
-              Error("The type involved in a type creation rebase was not a BoundType");
-            }
-          }
-          else
-          {
-            // Ok, this is really bad
-            // We somehow found the library (which means its guid matched), yet the function was not found!
-            this->Errors.Raise(rebase.Location, ErrorCode::InternalError,
-              "Unable to find a type in a library whose Guid matched the compiled/rebase Guid");
-          }
-        }
-        else
-        {
-          // Show an error since we couldn't find the referenced library
-          this->Errors.Raise(rebase.Location, ErrorCode::LinkerLibraryNotFound);
-        }
-      }
-
-      // Move the opcode forward (instead of just the index)
-      opcode += function->OpcodeBuilder.RelativeSize();
     }
 
     return state;
@@ -17663,10 +18677,10 @@ namespace Zilch
     DocumentationModule* docs = new DocumentationModule();
 
     // Loop through all the libraries
-    for (size_t i = 0; i < this->Libraries.size(); ++i)
+    for (size_t i = 0; i < this->size(); ++i)
     {
       // Grab the current library
-      LibraryRef& library = this->Libraries[i];
+      LibraryRef& library = (*this)[i];
       
       // Create a documentation object that represents a library
       DocumentationLibrary* docLibrary = new DocumentationLibrary();
@@ -17719,7 +18733,7 @@ namespace Zilch
           arguments.push_back(fakeType);
         }
 
-        InstantiatedTemplate finalTemplate = builder.InstantiateTemplate(templateInfo.BaseName, arguments, this->Libraries);
+        InstantiatedTemplate finalTemplate = builder.InstantiateTemplate(templateInfo.BaseName, arguments, *this);
 
         if (finalTemplate.Result == TemplateResult::Success)
         {
@@ -18109,7 +19123,6 @@ namespace Zilch
               json.End();
             }
 
-
             json.End();
           }
 
@@ -18238,6 +19251,26 @@ namespace Zilch
   }
 
   //***************************************************************************
+  ParameterArray ThreeParameters(Type* type, StringParam name1, StringParam name2, StringParam name3)
+  {
+    ParameterArray parameters;
+
+    DelegateParameter& a = parameters.push_back();
+    a.Name = name1;
+    a.ParameterType = type;
+
+    DelegateParameter& b = parameters.push_back();
+    b.Name = name2;
+    b.ParameterType = type;
+
+    DelegateParameter& c = parameters.push_back();
+    c.Name = name3;
+    c.ParameterType = type;
+
+    return parameters;
+  }
+
+  //***************************************************************************
   ParameterArray ThreeParameters(Type* type1, Type* type2, Type* type3)
   {
     ParameterArray parameters;
@@ -18301,7 +19334,6 @@ namespace Zilch
   //    while (baseIterator != nullptr)
   //    {
 
-
   //      
   //        
   //      // Iterate to the next type
@@ -18310,20 +19342,614 @@ namespace Zilch
   //}
 }
 /**************************************************************\
+* Author: Joshua Davis
+* Copyright 2014, DigiPen Institute of Technology
+\**************************************************************/
+
+// Includes
+
+namespace Zilch
+{
+  //***************************************************************************
+  // Helper functions to Index into a matrix while allowing them to be row or column basis
+  byte* IndexIntoMatrix(byte* memory, size_t indexX, size_t indexY, size_t sizeX, size_t sizeY, size_t elementSize)
+  {
+#if ColumnBasis == 1
+    return memory + (indexX + indexY * sizeX) * elementSize;
+#else
+    return memory + (indexY + indexX * sizeY) * elementSize;
+#endif
+  }
+  
+  const byte* IndexIntoMatrix(const byte* memory, size_t indexX, size_t indexY, size_t sizeX, size_t sizeY, size_t elementSize)
+  {
+#if ColumnBasis == 1
+    return memory + (indexX + indexY * sizeX) * elementSize;
+#else
+    return memory + (indexY + indexX * sizeY) * elementSize;
+#endif
+  }
+  
+  //***************************************************************************
+  bool ValidateMatrixIndices(size_t x, size_t y, size_t sizeX, size_t sizeY, Call& call, ExceptionReport& report)
+  {
+    // Make sure the indices are within range
+    if (y >= sizeY)
+    {
+      call.GetState()->ThrowException(report, String::Format("The y index used to access a component of a matrix was out of range [0-%d]", sizeY - 1));
+      return false;
+    }
+    if (x >= sizeX)
+    {
+      call.GetState()->ThrowException(report, String::Format("The x index used to access a component of a matrix was out of range [0-%d]", sizeX - 1));
+      return false;
+    }
+
+    return true;
+  }
+  
+  //***************************************************************************
+  void MultiplyAddReal(byte* outData, byte* inputA, byte* inputB)
+  {
+    Real& out = *(Real*)outData;
+    Real& a = *(Real*)inputA;
+    Real& b = *(Real*)inputB;
+    out += a * b;
+  }
+  
+  //***************************************************************************
+  void MultiplyAddInteger(byte* outData, byte* inputA, byte* inputB)
+  {
+    Integer& out = *(Integer*)outData;
+    Integer& a = *(Integer*)inputA;
+    Integer& b = *(Integer*)inputB;
+    out += a * b;
+  }
+  
+  //***************************************************************************
+  void MultiplyAddBoolean(byte* outData, byte* inputA, byte* inputB)
+  {
+    Boolean& out = *(Boolean*)outData;
+    Boolean& a = *(Boolean*)inputA;
+    Boolean& b = *(Boolean*)inputB;
+    out = out || (a && b);
+  }
+  
+  //***************************************************************************
+  String MatrixToString(const BoundType* type, const byte* data)
+  {
+    MatrixUserData& userData = type->ComplexUserData.ReadObject<MatrixUserData>(0);
+    Core& core = Core::GetInstance();
+    //get the type of the matrix (Real, etc...)
+    BoundType* elementType = core.MatrixElementTypes[userData.ElementTypeIndex];
+
+    StringBuilder builder;
+    builder.Append("[");
+    for (size_t y = 0; y < userData.SizeY; ++y)
+    {
+      builder.Append("(");
+      for (size_t x = 0; x < userData.SizeX; ++x)
+      {
+        const byte* item = IndexIntoMatrix(data, x, y, userData.SizeX, userData.SizeY, elementType->Size);
+
+        builder.Append(elementType->GenericToString(item));
+
+        //don't add a comma after the last item
+        if (x != userData.SizeX - 1)
+          builder.Append(", ");
+      }
+
+      builder.Append(")");
+      //don't add a comma after the last item
+      if (y != userData.SizeY - 1)
+        builder.Append(", ");
+    }
+    builder.Append("]");
+    return builder.ToString();
+  }
+  
+  //***************************************************************************
+  void MatrixDefaultConstructor(Call& call, ExceptionReport& report)
+  {
+    MatrixUserData& userData = call.GetFunction()->ComplexUserData.ReadObject<MatrixUserData>(0);
+    Core& core = Core::GetInstance();
+    BoundType* elementType = core.MatrixElementTypes[userData.ElementTypeIndex];
+
+    // Get ourselves (the matrix)
+    byte* memory = call.GetHandle(Call::This).Dereference();
+    // Zero out the matrix memory
+    memset(memory, 0, userData.SizeX * userData.SizeY * elementType->Size);
+  }
+  
+  //***************************************************************************
+  void MatrixConstructor(Call& call, ExceptionReport& report)
+  {
+    MatrixUserData& userData = call.GetFunction()->ComplexUserData.ReadObject<MatrixUserData>(0);
+    Core& core = Core::GetInstance();
+    BoundType* elementType = core.MatrixElementTypes[userData.ElementTypeIndex];
+
+    // Get ourselves (the matrix)
+    byte* matrixData = call.GetHandle(Call::This).Dereference();
+    byte* parameters = call.GetParametersUnchecked();
+    for (size_t y = 0; y < userData.SizeY; ++y)
+    {
+      for (size_t x = 0; x < userData.SizeX; ++x)
+      {
+        byte* matrixItem = IndexIntoMatrix(matrixData, x, y, userData.SizeX, userData.SizeY, elementType->Size);
+        byte* parameterItem = parameters + (x + y * userData.SizeX) * elementType->Size;
+        
+        memcpy(matrixItem, parameterItem, elementType->Size);
+      }
+    }
+  }
+  
+  //***************************************************************************
+  void MatrixGet(Call& call, ExceptionReport& report)
+  {
+    call.DisableReturnChecks();
+    MatrixUserData& userData = call.GetFunction()->ComplexUserData.ReadObject<MatrixUserData>(0);
+
+    // Read the index off the stack
+    Integer indexY = call.Get<Integer>(0);
+    Integer indexX = call.Get<Integer>(1);
+
+    // Make sure the indices are correct
+    if (ValidateMatrixIndices(indexX, indexY, userData.SizeX, userData.SizeY, call, report) == false)
+      return;
+
+    Core& core = Core::GetInstance();
+    BoundType* elementType = core.MatrixElementTypes[userData.ElementTypeIndex];
+
+    // Get ourselves (the matrix)
+    byte* memory = call.GetHandle(Call::This).Dereference();
+
+    // Index to the item we are getting and set the return to that
+    byte* item = IndexIntoMatrix(memory, indexX, indexY, userData.SizeX, userData.SizeY, elementType->Size);
+    byte* returnData = call.GetReturnUnchecked();
+    elementType->GenericCopyConstruct(returnData, item);
+  }
+  
+  //***************************************************************************
+  void MatrixSet(Call& call, ExceptionReport& report)
+  {
+    MatrixUserData& userData = call.GetFunction()->ComplexUserData.ReadObject<MatrixUserData>(0);
+
+    // Read the index off the stack
+    Integer indexY = call.Get<Integer>(0);
+    Integer indexX = call.Get<Integer>(1);
+
+    // Make sure the indices are correct
+    if (ValidateMatrixIndices(indexX, indexY, userData.SizeX, userData.SizeY, call, report) == false)
+      return;
+
+    Core& core = Core::GetInstance();
+    BoundType* elementType = core.MatrixElementTypes[userData.ElementTypeIndex];
+
+    // Get ourselves (the matrix)
+    byte* memory = call.GetHandle(Call::This).Dereference();
+
+    // Index to the item in the matrix and set it to the passed in value
+    byte* setData = call.GetParameterUnchecked(2);
+    byte* item = IndexIntoMatrix(memory, indexX, indexY, userData.SizeX, userData.SizeY, elementType->Size);
+    elementType->GenericCopyConstruct(item, setData);
+  }
+  
+  //***************************************************************************
+  void MatrixGetVector(Call& call, ExceptionReport& report)
+  {
+    call.DisableReturnChecks();
+    MatrixUserData& userData = call.GetFunction()->ComplexUserData.ReadObject<MatrixUserData>(0);
+
+    // Read the index off the stack
+    Integer indexY = call.Get<Integer>(0);
+
+    if (indexY < 0 || indexY >= (Integer)userData.SizeY)
+    {
+      call.GetState()->ThrowException(report, String::Format("The y index used to access a component of a matrix was out of range [0-%d]", userData.SizeY - 1));
+      return;
+    }
+
+    Core& core = Core::GetInstance();
+    BoundType* elementType = core.MatrixElementTypes[userData.ElementTypeIndex];
+
+    // Get ourselves (the matrix)
+    byte* memory = call.GetHandle(Call::This).Dereference();
+    byte* returnData = call.GetReturnUnchecked();
+
+    for (size_t indexX = 0; indexX < userData.SizeX; ++indexX)
+    {
+      // Index to the item we are getting and set the return to that
+      byte* matrixItem = IndexIntoMatrix(memory, indexX, indexY, userData.SizeX, userData.SizeY, elementType->Size);
+      byte* returnItem = returnData + indexX * elementType->Size;
+
+      memcpy(returnItem, matrixItem, elementType->Size);
+    }
+  }
+  
+  //***************************************************************************
+  void MatrixSetVector(Call& call, ExceptionReport& report)
+  {
+    call.DisableReturnChecks();
+    MatrixUserData& userData = call.GetFunction()->ComplexUserData.ReadObject<MatrixUserData>(0);
+
+    // Read the index off the stack
+    Integer indexY = call.Get<Integer>(0);
+
+    if (indexY < 0 || indexY >= (Integer)userData.SizeY)
+    {
+      call.GetState()->ThrowException(report, String::Format("The y index used to access a component of a matrix was out of range [0-%d]", userData.SizeY - 1));
+      return;
+    }
+
+    Core& core = Core::GetInstance();
+    BoundType* elementType = core.MatrixElementTypes[userData.ElementTypeIndex];
+
+    // Get ourselves (the matrix)
+    byte* memory = call.GetHandle(Call::This).Dereference();
+    byte* vectorData = call.GetParameterUnchecked(1);
+
+    for (size_t indexX = 0; indexX < userData.SizeX; ++indexX)
+    {
+      // Index to the item we are getting and set the return to that
+      byte* vectorItem = vectorData + indexX * elementType->Size;
+      byte* matrixItem = IndexIntoMatrix(memory, indexX, indexY, userData.SizeX, userData.SizeY, elementType->Size);
+      
+      memcpy(matrixItem, vectorItem, elementType->Size);
+    }
+  }
+  
+  //***************************************************************************
+  void MatrixCountX(Call& call, ExceptionReport& report)
+  {
+    MatrixUserData& userData = call.GetFunction()->ComplexUserData.ReadObject<MatrixUserData>(0);
+    call.Set(Call::Return, (Integer)userData.SizeX);
+  }
+  
+  //***************************************************************************
+  void MatrixCountY(Call& call, ExceptionReport& report)
+  {
+    MatrixUserData& userData = call.GetFunction()->ComplexUserData.ReadObject<MatrixUserData>(0);
+    call.Set(Call::Return, (Integer)userData.SizeY);
+  }
+  
+  //***************************************************************************
+  void MatrixTranspose(Call& call, ExceptionReport& report)
+  {
+    call.DisableReturnChecks();
+    MatrixUserData& userData = call.GetFunction()->ComplexUserData.ReadObject<MatrixUserData>(0);
+    Core& core = Core::GetInstance();
+    BoundType* elementType = core.MatrixElementTypes[userData.ElementTypeIndex];
+    
+    byte* inMatrix = call.GetParameterUnchecked(0);
+    byte* outMatrix = call.GetReturnUnchecked();
+
+    // Swap the x and y elements
+    for (size_t y = 0; y < userData.SizeY; ++y)
+    {
+      for (size_t x = 0; x < userData.SizeX; ++x)
+      {
+        byte* inputElement = IndexIntoMatrix(inMatrix, x, y, userData.SizeX, userData.SizeY, elementType->Size);
+        byte* outputElement = IndexIntoMatrix(outMatrix, y, x, userData.SizeY, userData.SizeX, elementType->Size);
+
+        elementType->GenericCopyConstruct(outputElement, inputElement);
+      }
+    }
+  }
+  
+  //***************************************************************************
+  // Only doing the determinant for RealNxN matrices
+  // (by just calling the math library's matrix functions)
+  template <typename MatrixType>
+  void RealMatrixDeterminant(Call& call, ExceptionReport& report)
+  {
+    call.DisableReturnChecks();
+
+    byte* inMatrix = call.GetParameterUnchecked(0);
+    Real* output = (Real*)call.GetReturnUnchecked();
+
+    MatrixType mat((Real*)inMatrix);
+    *output = mat.Determinant();
+  }
+  
+  //***************************************************************************
+  void MatrixEqual(Call& call, ExceptionReport& report)
+  {
+    // This should eventually be the innards of operator== and return a bool matrix,
+    // but for usage in unit tests this is implemented to verify results
+    MatrixUserData& userData = call.GetFunction()->ComplexUserData.ReadObject<MatrixUserData>(0);
+    Core& core = Core::GetInstance();
+    BoundType* elementType = core.MatrixElementTypes[userData.ElementTypeIndex];
+
+    Handle& selfHandle = call.GetHandle(Call::This);
+    byte* matrixA = (byte*)selfHandle.Dereference();
+    byte* matrixB = call.GetParameterUnchecked(0);
+
+    // See if all the elements in the matrices are equal
+    bool IsEqual = true;
+    for (size_t y = 0; y < userData.SizeY; ++y)
+    {
+      for (size_t x = 0; x < userData.SizeX; ++x)
+      {
+        byte* elementA = IndexIntoMatrix(matrixA, x, y, userData.SizeX, userData.SizeY, elementType->Size);
+        byte* elementB = IndexIntoMatrix(matrixB, x, y, userData.SizeX, userData.SizeY, elementType->Size);
+
+        bool result = memcmp(elementA, elementB, elementType->Size) == 0;
+        IsEqual &= result;
+      }
+    }
+
+    call.Set(Call::Return, IsEqual);
+  }
+  
+  //***************************************************************************
+  // Special user data for the transform function. This needs the
+  // dimensionality of both matrices as well as the data type.
+  class MatrixTransformUserData
+  {
+  public:
+    MatrixTransformUserData(size_t matrix0SizeX, size_t matrix0SizeY,
+                            size_t matrix1SizeX, size_t matrix1SizeY,
+                            size_t elementTypeIndex) :
+      Matrix0SizeX(matrix0SizeX),
+      Matrix0SizeY(matrix0SizeY), 
+      Matrix1SizeX(matrix1SizeX),
+      Matrix1SizeY(matrix1SizeY), 
+      ElementTypeIndex(elementTypeIndex)
+    {
+    }
+
+    size_t Matrix0SizeX;
+    size_t Matrix0SizeY;
+    size_t Matrix1SizeX;
+    size_t Matrix1SizeY;
+    size_t ElementTypeIndex;
+  };
+  
+  //***************************************************************************
+  void MatrixTransform(Call& call, ExceptionReport& report)
+  {
+    call.DisableReturnChecks();
+    MatrixTransformUserData& userData = call.GetFunction()->ComplexUserData.ReadObject<MatrixTransformUserData>(0);
+    Core& core = Core::GetInstance();
+    BoundType* elementType = core.MatrixElementTypes[userData.ElementTypeIndex];
+
+    // We flip the matrix order in the function so it reads nicer (Transform(the, by))
+    // but to do the math we need to flip them back to the right order
+    byte* matrix0 = call.GetParameterUnchecked(0);
+    byte* matrix1 = call.GetParameterUnchecked(1);
+    byte* returnMatrix = call.GetReturnUnchecked();
+    
+    for (size_t matrix0Y = 0; matrix0Y < userData.Matrix0SizeY; ++matrix0Y)
+    {
+      for (size_t matrix1X = 0; matrix1X < userData.Matrix1SizeX; ++matrix1X)
+      {
+        byte* returnElement = IndexIntoMatrix(returnMatrix, matrix1X, matrix0Y, userData.Matrix1SizeX, userData.Matrix1SizeY, elementType->Size);
+        // To properly accumulate the multiplications the initial value first needs to be zeroed out
+        memset(returnElement, 0, elementType->Size);
+
+        for (size_t matrix1Y = 0; matrix1Y < userData.Matrix1SizeY; ++matrix1Y)
+        {
+          // The x of matrix 0 and the y of matrix 1 are the
+          // same (just make this variable for clarity)
+          size_t matrix0X = matrix1Y;
+
+          byte* matrix0Element = IndexIntoMatrix(matrix0, matrix0X, matrix0Y, userData.Matrix0SizeX, userData.Matrix0SizeY, elementType->Size);
+          byte* matrix1Element = IndexIntoMatrix(matrix1, matrix1X, matrix1Y, userData.Matrix1SizeX, userData.Matrix1SizeY, elementType->Size);
+
+          // We need to accumulate the multiplications of matrix0 and matrix1 but
+          // we don't know what the inner type is or how to perform add or multiply,
+          // so call a function that knows how to add our current type
+          core.TypeMultiplyAddFunctions[userData.ElementTypeIndex](returnElement, matrix0Element, matrix1Element);
+        }
+      }
+    }
+  }
+  
+  //***************************************************************************
+  void GenerateMatrixMembers(LibraryBuilder& builder, BoundType* type, MatrixUserData& matrixUserData)
+  {
+    Core& core = Core::GetInstance();
+    BoundType* elementType = core.MatrixElementTypes[matrixUserData.ElementTypeIndex];
+
+    char componentNames[] = {'0', '1', '2', '3'};
+
+    for (size_t sizeY = 0; sizeY < matrixUserData.SizeY; ++sizeY)
+    {
+      for (size_t sizeX = 0; sizeX < matrixUserData.SizeX; ++sizeX)
+      {
+        StringBuilder nameBuilder;
+        nameBuilder.Append("M");
+        nameBuilder.Append(componentNames[sizeY]);
+        nameBuilder.Append(componentNames[sizeX]);
+
+        // Get the offset into the matrix structure for the current member (by offsetting from 0)
+        size_t offset = (size_t)IndexIntoMatrix((byte*)nullptr, sizeX, sizeY, matrixUserData.SizeX, matrixUserData.SizeY, elementType->Size);
+        builder.AddBoundField(type, nameBuilder.ToString(), elementType, offset, MemberOptions::None);
+      }
+    }
+  }
+  
+  //***************************************************************************
+  void CreateMatrixTypes(LibraryBuilder& builder)
+  {
+    Core& core = Core::GetInstance();
+    // For now don't make 1xN or Nx1 matrices
+
+    // Setup functions needed for Transform that'll tell us
+    // how to perform the madd intrinsic on a matrix element
+    core.TypeMultiplyAddFunctions[0] = MultiplyAddReal;
+    core.TypeMultiplyAddFunctions[1] = MultiplyAddInteger;
+    core.TypeMultiplyAddFunctions[2] = MultiplyAddBoolean;
+
+    // Some later operations need to operate on different dimensions/typed
+    // matrices so store them all locally here for a second pass
+    BoundType* matrixTypes[Core::MaxMatrixElementTypes][Core::MaxMatrixComponents][Core::MaxMatrixComponents];
+
+    for (size_t typeIndex = 0; typeIndex < Core::MaxMatrixElementTypes; ++typeIndex)
+    {
+      for (size_t sizeY = Core::MinMatrixComponents; sizeY <= Core::MaxMatrixComponents; ++sizeY)
+      {
+        for (size_t sizeX = Core::MinMatrixComponents; sizeX <= Core::MaxMatrixComponents; ++sizeX)
+        {
+          // The indices into the matrix types 3d array
+          size_t indexX = sizeX - 1;
+          size_t indexY = sizeY - 1;
+
+          BoundType* elementType = core.MatrixElementTypes[typeIndex];
+
+          // Build up the matrices's names (Real3x3, Integer3x3, etc...)
+          StringBuilder typeNameBuilder;
+          typeNameBuilder.Append(elementType->ToString());
+          typeNameBuilder << sizeY;
+          typeNameBuilder.Append('x');
+          typeNameBuilder << sizeX;
+
+          // Add the bound type for the matrix and store it for later use
+          String fullyQualifiedName = typeNameBuilder.ToString();
+          size_t matrixSize = elementType->Size * sizeX * sizeY;
+          BoundType* matrixType = builder.AddBoundType(fullyQualifiedName, TypeCopyMode::ValueType, matrixSize);
+          matrixTypes[typeIndex][indexY][indexX] = matrixType;
+
+          // Create complex user data to store information needed to
+          // generically handle matrix operations independently of size and type
+          MatrixUserData matrixUserData(sizeX, sizeY, typeIndex);
+          matrixType->ComplexUserData.WriteObject(matrixUserData);
+
+          matrixType->ToStringFunction = MatrixToString;
+
+          // Bind all of the functions that are only for the matrix with its own type
+          Function* f = builder.AddBoundDefaultConstructor(matrixType, MatrixDefaultConstructor);
+          f->ComplexUserData.WriteObject(matrixUserData);
+          ParameterArray constructorParameters;
+          for (size_t y = 0; y < sizeY; ++y)
+          {
+            for (size_t x = 0; x < sizeX; ++x)
+            {
+              DelegateParameter& param = constructorParameters.push_back();
+              param.Name = String::Format("m%d%d", y, x);
+              param.ParameterType = elementType;
+            }
+          }
+          f = builder.AddBoundConstructor(matrixType, MatrixConstructor, constructorParameters);
+          f->ComplexUserData.WriteObject(matrixUserData);
+
+          f = builder.AddBoundFunction(matrixType, "Get", MatrixGet, TwoParameters(core.IntegerType, "y", "x"), elementType, FunctionOptions::None);
+          f->ComplexUserData.WriteObject(matrixUserData);
+          f = builder.AddBoundFunction(matrixType, "Set", MatrixSet, ThreeParameters(core.IntegerType, "y", core.IntegerType, "x", elementType, "value"), core.VoidType, FunctionOptions::None);
+          f->ComplexUserData.WriteObject(matrixUserData);
+          f = builder.AddBoundFunction(matrixType, "Get", MatrixGetVector, OneParameter(core.IntegerType, "y"), core.RealTypes[indexX], FunctionOptions::None);
+          f->ComplexUserData.WriteObject(matrixUserData);
+          f = builder.AddBoundFunction(matrixType, "Set", MatrixSetVector, TwoParameters(core.IntegerType, "y", core.RealTypes[indexX], "value"), core.VoidType, FunctionOptions::None);
+          f->ComplexUserData.WriteObject(matrixUserData);
+          // Don't actually want to have this equal function bound, but for unit testing it can be nice
+          //f = builder.AddBoundFunction(matrixType, "Equal", MatrixEqual, OneParameter(matrixType), core.BooleanType, FunctionOptions::None);
+          //f->ComplexUserData.WriteObject(matrixUserData);
+
+          // Bind properties
+          Property* p = builder.AddBoundProperty(matrixType, "CountX", core.IntegerType, nullptr, MatrixCountX, FunctionOptions::None);
+          p->Get->ComplexUserData.WriteObject(matrixUserData);
+          p = builder.AddBoundProperty(matrixType, "CountY", core.IntegerType, nullptr, MatrixCountY, FunctionOptions::None);
+          p->Get->ComplexUserData.WriteObject(matrixUserData);
+
+          // Generate all of the M00, M01, etc... members
+          GenerateMatrixMembers(builder, matrixType, matrixUserData);
+        }
+      }
+    }
+
+    // Add the Real and Integer matrix types to an array of all of those types
+    for (size_t sizeY = Core::MinMatrixComponents; sizeY <= Core::MaxMatrixComponents; ++sizeY)
+    {
+      for (size_t sizeX = Core::MinMatrixComponents; sizeX <= Core::MaxMatrixComponents; ++sizeX)
+      {
+        // Get the two matrix types (as a transpose can have different dimensions)
+        BoundType* realMatrixType = matrixTypes[0][sizeY - 1][sizeX - 1];
+        BoundType* integerMatrixType = matrixTypes[1][sizeY - 1][sizeX - 1];
+        BoundType* booleanMatrixType = matrixTypes[2][sizeY - 1][sizeX - 1];
+
+        core.AllRealTypes.push_back(realMatrixType);
+        core.AllIntegerTypes.push_back(integerMatrixType);
+        core.AllBooleanTypes.push_back(booleanMatrixType);
+      }
+    }
+
+    // Add the determinant functions (only for real because that's all hlsl has)
+    Function* fn = builder.AddBoundFunction(core.MathType, "Determinant", RealMatrixDeterminant<Math::Matrix2>, OneParameter(matrixTypes[0][1][1]), core.RealType, FunctionOptions::Static);
+    fn = builder.AddBoundFunction(core.MathType, "Determinant", RealMatrixDeterminant<Math::Matrix3>, OneParameter(matrixTypes[0][2][2]), core.RealType, FunctionOptions::Static);
+    fn = builder.AddBoundFunction(core.MathType, "Determinant", RealMatrixDeterminant<Math::Matrix4>, OneParameter(matrixTypes[0][3][3]), core.RealType, FunctionOptions::Static);
+
+    // Operations on one matrix that need to reference different matrix
+    // types (only need a loop over x and y dimensions plus types)
+    for (size_t typeIndex = 0; typeIndex < Core::MaxMatrixElementTypes; ++typeIndex)
+    {
+      for (size_t sizeY = Core::MinMatrixComponents; sizeY <= Core::MaxMatrixComponents; ++sizeY)
+      {
+        for (size_t sizeX = Core::MinMatrixComponents; sizeX <= Core::MaxMatrixComponents; ++sizeX)
+        {
+          // Get the two matrix types (as a transpose can have different dimensions)
+          BoundType* matrixType = matrixTypes[typeIndex][sizeY - 1][sizeX - 1];
+          BoundType* resultType = matrixTypes[typeIndex][sizeX - 1][sizeY - 1];
+
+          MatrixUserData matrixUserData(sizeX, sizeY, typeIndex);
+          Function* f = builder.AddBoundFunction(core.MathType, "Transpose", MatrixTranspose, OneParameter(matrixType), resultType, FunctionOptions::Static);
+          f->ComplexUserData.WriteObject(matrixUserData);
+        }
+      }
+    }
+
+    // Iterate over matrices that share one common dimension for multiplication
+    // (but skip bools because boolean matrix multiplication is weird...)
+    for (size_t typeIndex = 0; typeIndex < Core::MaxMatrixElementTypes - 1; ++typeIndex)
+    {
+      for (size_t matrixASizeY = Core::MinMatrixComponents; matrixASizeY <= Core::MaxMatrixComponents; ++matrixASizeY)
+      {
+        for (size_t matrixASizeX = Core::MinMatrixComponents; matrixASizeX <= Core::MaxMatrixComponents; ++matrixASizeX)
+        {
+          BoundType* matrixA = matrixTypes[typeIndex][matrixASizeY - 1][matrixASizeX - 1];
+
+          for (size_t matrixBSizeX = Core::MinMatrixComponents; matrixBSizeX <= Core::MaxMatrixComponents; ++matrixBSizeX)
+          {
+            size_t matrixBSizeY = matrixASizeX;
+            BoundType* matrixB = matrixTypes[typeIndex][matrixBSizeY - 1][matrixBSizeX - 1];
+            BoundType* resultMatrix = matrixTypes[typeIndex][matrixASizeY - 1][matrixBSizeX - 1];
+
+            MatrixTransformUserData transformUserData(matrixASizeX, matrixASizeY, matrixBSizeX, matrixBSizeY, typeIndex);
+            Function* f = builder.AddBoundFunction(core.MathType, "Multiply", MatrixTransform, TwoParameters(matrixA, "by", matrixB, "the"), resultMatrix, FunctionOptions::Static);
+            f->ComplexUserData.WriteObject(transformUserData);
+          }
+
+          // Also generate the matrix * vector versions
+          MatrixTransformUserData transformUserData(matrixASizeX, matrixASizeY, 1, matrixASizeX, typeIndex);
+          BoundType* inVectorType = core.RealTypes[matrixASizeX - 1];
+          BoundType* resultVectorType = core.RealTypes[matrixASizeY - 1];
+          Function* f = builder.AddBoundFunction(core.MathType, "Multiply", MatrixTransform, TwoParameters(matrixA, "by", inVectorType, "the"), resultVectorType, FunctionOptions::Static);
+          f->ComplexUserData.WriteObject(transformUserData);
+        }
+      }
+    }
+  }
+
+}//namespace Zilch
+/**************************************************************\
 * Author: Trevor Sundberg
 * Copyright 2012-2014, DigiPen Institute of Technology
 \**************************************************************/
 
 // Includes
 
-
-
-
 namespace Zilch
 {
   //***************************************************************************
   ZilchDefineSimpleType(Property, Core);
   ZilchDefineSimpleType(Field,    Core);
+
+  //***************************************************************************
+  AttributeParameter::AttributeParameter() :
+    Type(AttributeType::Null),
+    NumberValue(0.0),
+    BooleanValue(false)
+  {
+  }
 
   //***************************************************************************
   DocumentedObject::DocumentedObject() :
@@ -18338,7 +19964,7 @@ namespace Zilch
     for (size_t i = 0; i < this->Attributes.size(); ++i)
     {
       // If we found a matching name, then we do have that attribue
-      if (this->Attributes[i] == name)
+      if (this->Attributes[i].Name == name)
         return true;
     }
 
@@ -18347,11 +19973,18 @@ namespace Zilch
   }
 
   //***************************************************************************
+  Member::Member() :
+    Owner(nullptr)
+  {
+  }
+
+  //***************************************************************************
   Property::Property() :
     PropertyType(nullptr),
     IsStatic(false),
     Get(nullptr),
-    Set(nullptr)
+    Set(nullptr),
+    IsHiddenWhenNull(false)
   {
   }
 
@@ -18398,8 +20031,6 @@ namespace Zilch
 \**************************************************************/
 
 // Includes
-
-
 
 namespace Zilch
 {
@@ -18482,7 +20113,6 @@ namespace Zilch
   ZilchEnumValue(AssignmentBitwiseOr##Type)       \
   ZilchEnumValue(AssignmentBitwiseXor##Type)      \
   ZilchEnumValue(AssignmentBitwiseAnd##Type)
-
 
 // Core instructions
 ZilchEnumValue(InvalidInstruction)
@@ -18603,7 +20233,7 @@ ZilchEnumValue(AnyDynamicMemberSet)
   }
 
   //***************************************************************************
-  Operand::Operand(OperandIndex handleConstantLocal, ObjectOffset field, OperandType::Enum type) :
+  Operand::Operand(OperandIndex handleConstantLocal, size_t field, OperandType::Enum type) :
     HandleConstantLocal(handleConstantLocal),
     Field(field),
     Type(type)
@@ -18636,8 +20266,6 @@ ZilchEnumValue(AnyDynamicMemberSet)
 #define ZilchOperand(array, type, member, primitive, isLocal) \
   array.push_back(DebugOperand(offsetof(type, member), primitive, isLocal, #member));
 
-
-
   //***************************************************************************
   void GenerateDebugInstructionInfo(Array<DebugInstruction>& debugOut)
   {
@@ -18653,14 +20281,14 @@ ZilchEnumValue(AnyDynamicMemberSet)
     // CreateStaticDelegate
     {
       DebugInstruction& info = debugOut[Instruction::CreateStaticDelegate];
-      info.DelegateInfos.push_back(offsetof(CreateStaticDelegateOpcode, Info));
+      info.FunctionPointers.push_back(offsetof(CreateStaticDelegateOpcode, BoundFunction));
       ZilchOperand(info.WriteOperands, CreateStaticDelegateOpcode, SaveLocal, DebugPrimitive::Delegate, true);
     }
 
     // CreateInstanceDelegate
     {
       DebugInstruction& info = debugOut[Instruction::CreateInstanceDelegate];
-      info.DelegateInfos.push_back(offsetof(CreateInstanceDelegateOpcode, Info));
+      info.FunctionPointers.push_back(offsetof(CreateInstanceDelegateOpcode, BoundFunction));
       ZilchOperand(info.ReadOperands, CreateInstanceDelegateOpcode, ThisHandle, DebugPrimitive::Handle, false);
       ZilchOperand(info.WriteOperands, CreateInstanceDelegateOpcode, SaveLocal, DebugPrimitive::Delegate, true);
     }
@@ -18707,14 +20335,14 @@ ZilchEnumValue(AnyDynamicMemberSet)
     // NewObject
     {
       DebugInstruction& info = debugOut[Instruction::NewObject];
-      info.TypeIndices.push_back(offsetof(CreateTypeOpcode, TypeIndex));
+      info.TypePointers.push_back(offsetof(CreateTypeOpcode, CreatedType));
       ZilchOperand(info.WriteOperands, CreateTypeOpcode, SaveHandleLocal, DebugPrimitive::Handle, true);
     }
 
     // LocalObject
     {
       DebugInstruction& info = debugOut[Instruction::LocalObject];
-      info.TypeIndices.push_back(offsetof(CreateLocalTypeOpcode, TypeIndex));
+      info.TypePointers.push_back(offsetof(CreateLocalTypeOpcode, CreatedType));
       ZilchOperand(info.WriteOperands, CreateLocalTypeOpcode, SaveHandleLocal, DebugPrimitive::Handle, true);
       ZilchOperand(info.WriteOperands, CreateLocalTypeOpcode, StackLocal, DebugPrimitive::Memory, true);
     }
@@ -19217,13 +20845,6 @@ ZilchEnumValue(AnyDynamicMemberSet)
 
 // Includes
 
-
-
-
-
-
-
-
 namespace Zilch
 {
   //***************************************************************************
@@ -19538,13 +21159,6 @@ namespace Zilch
 \**************************************************************/
 
 // Includes
-
-
-
-
-
-
-
 
 // Defines
 #define ZilchSaveAndVerifyTokenPosition()                   \
@@ -20815,10 +22429,6 @@ namespace Zilch
               // Attempt to read the statement separator
               if (this->Expect(Grammar::StatementSeparator, ErrorCode::VariableInitializationNotComplete, node->Name.c_str()))
               {
-                // We need to generate the get and set, since this is just a standard member
-                node->Get = this->GenerateStandardGet(node);
-                node->Set = this->GenerateStandardSet(node);
-
                 // Accept the token position, and return the variable node
                 this->SetNodeLocationEndHere(node);
                 this->AcceptTokenPosition();
@@ -20876,6 +22486,18 @@ namespace Zilch
 
         // Save the type name on the node
         node->TypeName = typeName;
+
+        // Read an optional function call after the attribute node
+        node->AttributeCall = this->FunctionCall();
+
+        // If there was any sort of error, bail out
+        if (this->Errors.WasError)
+        {
+          // We didn't successfully parse the function call, so just recall the token position and return false
+          delete node;
+          RecallTokenPosition();
+          return false;
+        }
 
         // Look for the ending of the attribute
         if (Expect(Grammar::EndIndex, ErrorCode::AttributeNotComplete, typeName->Token.c_str()))
@@ -21311,7 +22933,7 @@ namespace Zilch
     if (Expect(Grammar::BeginFunctionParameters, ErrorCode::FunctionArgumentListNotFound, functionName.c_str()))
     {
       // Store the parameter index
-      ArrayIndex parameterIndex = 0;
+      size_t parameterIndex = 0;
 
       // Get all the arguments for the function
       do
@@ -21526,65 +23148,6 @@ namespace Zilch
     RecallTokenPosition();
     delete node;
     return nullptr;
-  }
-
-  //***************************************************************************
-  FunctionNode* Parser::GenerateStandardGet(MemberVariableNode* variable)
-  {
-    // Create a local reference to this
-    LocalVariableReferenceNode* thisNode = new LocalVariableReferenceNode();
-    thisNode->Location = variable->Location;
-    thisNode->Value = *Tokenizer::GetThisToken();
-
-    // Now access the member variable directly on the this pointer
-    MemberAccessNode* memberNode = new MemberAccessNode();
-    memberNode->Location = variable->Location;
-    memberNode->Name = variable->Name;
-    memberNode->Operator = Tokenizer::GetAccessToken();
-    memberNode->LeftOperand = thisNode;
-
-    // Finally, return the member's value
-    ReturnNode* returnNode = new ReturnNode();
-    returnNode->Location = variable->Location;
-    returnNode->ReturnValue = memberNode;
-
-    // Generate the function node for this getter and add the return statement
-    FunctionNode* node = GenerateGetSetFunctionNode(variable, true);
-    node->Statements.Add(returnNode);
-    return node;
-  }
-
-  //***************************************************************************
-  FunctionNode* Parser::GenerateStandardSet(MemberVariableNode* variable)
-  {
-    // Create a local reference to this
-    LocalVariableReferenceNode* thisNode = new LocalVariableReferenceNode();
-    thisNode->Location = variable->Location;
-    thisNode->Value = *Tokenizer::GetThisToken();
-
-    // Now access the member variable directly on the this pointer
-    MemberAccessNode* memberNode = new MemberAccessNode();
-    memberNode->Location = variable->Location;
-    memberNode->Name = variable->Name;
-    memberNode->LeftOperand = thisNode;
-    memberNode->Operator = Tokenizer::GetAccessToken();
-
-    // Create a local variable reference to the 'value'
-    LocalVariableReferenceNode* valueNode = new LocalVariableReferenceNode();
-    valueNode->Location = variable->Location;
-    valueNode->Value = *Tokenizer::GetValueToken();
-
-    // We need to apply an assignment operator
-    BinaryOperatorNode* assignNode = new BinaryOperatorNode();
-    assignNode->Location = variable->Location;
-    assignNode->LeftOperand = memberNode;
-    assignNode->RightOperand = valueNode;
-    assignNode->Operator = Tokenizer::GetAssignmentToken();
-
-    // Generate the function node for this setter and add the assignment statement
-    FunctionNode* node = GenerateGetSetFunctionNode(variable, false);
-    node->Statements.Add(assignNode);
-    return node;
   }
 
   //***************************************************************************
@@ -22624,7 +24187,7 @@ namespace Zilch
     const UserToken* accessOperator;
 
     // Check to see if we're starting a member access
-    if (AcceptAny(2, &accessOperator, Grammar::Access, Grammar::ExplicitAccess))
+    if (AcceptAny(2, &accessOperator, Grammar::Access, Grammar::NonVirtualAccess))
     {
       // Hold the member we attempted to access
       const UserToken* member;
@@ -23725,7 +25288,6 @@ namespace Zilch
         // Parse all the statements inside the if-statement
         while (node->Statements.Add(Statement()));
 
-
         // Now look for the end scope
         bool foundEndScope = Expect(Grammar::EndScope, ErrorCode::DoWhileBodyNotComplete);
 
@@ -23851,7 +25413,7 @@ namespace Zilch
       const UserToken* accessOperator;
 
       // Check to see if we're starting a member access
-      if (this->AcceptAny(2, &accessOperator, Grammar::Access, Grammar::ExplicitAccess))
+      if (this->AcceptAny(1, &accessOperator, Grammar::Access))
       {
         // Hold the member we attempted to access
         const UserToken* member;
@@ -24434,18 +25996,6 @@ namespace Zilch
 \**************************************************************/
 
 // Includes
-
-
-
-
-
-
-
-
-
-
-
-
 
 namespace Zilch
 {
@@ -25117,11 +26667,6 @@ namespace Zilch
 * Copyright 2012-2014, DigiPen Institute of Technology
 \**************************************************************/
 
-
-
-
-
-
 namespace Zilch
 {
   // Seeds the the random number generator
@@ -25382,8 +26927,6 @@ A million repetitions of "a"
 
 /* #define SHA1HANDSOFF  */
 
-
-
 #include <stdio.h>
 #include <string.h>
 
@@ -25392,9 +26935,6 @@ A million repetitions of "a"
 
 #ifndef __SHA1_H
 #define __SHA1_H
-
-
-
 
 typedef u32 uint32_t;
 typedef u8 uint8_t;
@@ -25421,7 +26961,6 @@ void SHA1_Final(SHA1_CTX* context, uint8_t digest[SHA1_DIGEST_SIZE]);
 
 #endif /* __SHA1_H */
 
-
 void SHA1_Transform(uint32_t state[5], const uint8_t buffer[64]);
 
 #define rol(value, bits) (((value) << (bits)) | ((value) >> (32 - (bits))))
@@ -25444,7 +26983,6 @@ void SHA1_Transform(uint32_t state[5], const uint8_t buffer[64]);
 #define R2(v,w,x,y,z,i) z+=(w^x^y)+blk(i)+0x6ED9EBA1+rol(v,5);w=rol(w,30);
 #define R3(v,w,x,y,z,i) z+=(((w|x)&y)|(w&x))+blk(i)+0x8F1BBCDC+rol(v,5);w=rol(w,30);
 #define R4(v,w,x,y,z,i) z+=(w^x^y)+blk(i)+0xCA62C1D6+rol(v,5);w=rol(w,30);
-
 
 #ifdef VERBOSE  /* SAK */
 void SHAPrintContext(SHA1_CTX *context, char *msg){
@@ -25517,7 +27055,6 @@ void SHA1_Transform(uint32_t state[5], const uint8_t buffer[64])
     a = b = c = d = e = 0;
 }
 
-
 /* SHA1Init - Initialize new context */
 void SHA1_Init(SHA1_CTX* context)
 {
@@ -25529,7 +27066,6 @@ void SHA1_Init(SHA1_CTX* context)
     context->state[4] = 0xC3D2E1F0;
     context->count[0] = context->count[1] = 0;
 }
-
 
 /* Run your data through this. */
 void SHA1_Update(SHA1_CTX* context, const uint8_t* data, const size_t len)
@@ -25558,7 +27094,6 @@ void SHA1_Update(SHA1_CTX* context, const uint8_t* data, const size_t len)
     SHAPrintContext(context, "after ");
 #endif
 }
-
 
 /* Add padding and return the message digest. */
 void SHA1_Final(SHA1_CTX* context, uint8_t digest[SHA1_DIGEST_SIZE])
@@ -25648,7 +27183,6 @@ static char *test_results[] = {
     "84983E44 1C3BD26E BAAE4AA1 F95129E5 E54670F1",
     "34AA973C D4C4DAA4 F61EEB2B DBAD2731 6534016F"};
 
-
 void digest_to_hex(const uint8_t digest[SHA1_DIGEST_SIZE], char *output)
 {
     int i,j;
@@ -25713,11 +27247,6 @@ int main(int argc, char** argv)
 \**************************************************************/
 
 // Includes
-
-
-
-
-
 
 namespace Zilch
 {
@@ -25812,7 +27341,6 @@ namespace Zilch
     // Compare the left and right operands
     return (this->Lhs == rhs.Lhs) && (this->Rhs == rhs.Rhs);
   }
-
 
   //***************************************************************************
   UnaryOperator::UnaryOperator() :
@@ -26766,33 +28294,27 @@ namespace Zilch
 
 // Includes
 
-
-
-
-
-
 namespace Zilch
 {
   //***************************************************************************
   // Initialize static variables
-  PodArray<Console::CallbackEntry> Console::Callbacks;
-  ReadTextFn Console::ReadTextCallback = nullptr;
-  void* Console::ReadTextUserData = nullptr;
+  EventHandler Console::Events;
   static String ConsoleSeparator(", ");
+  static String NewLine("\n");
 
   //***************************************************************************
-  void DefaultWriteText(StringParam text, void* /*userData*/)
+  void DefaultWriteText(ConsoleEvent* event)
   {
     // Print the text to the console
-    printf("%s", text.c_str());
+    printf("%s", event->Text.c_str());
   }
 
   //***************************************************************************
-  String DefaultReadText(void* /*userData*/)
+  void DefaultReadText(ConsoleEvent* event)
   {
     // Attempt to read a string from the console
     const size_t BufferSize = 1024;
-    char buffer[BufferSize] = {0};
+    char buffer[BufferSize + 1] = {0};
 
     // Read data into the buffer
     fgets(buffer, BufferSize, stdin);
@@ -26807,9 +28329,9 @@ namespace Zilch
         buffer[i] = '\0';
       }
     }
-
+    
     // Return the read in data
-    return buffer;
+    event->Text = String(buffer);
   }
 
   //***************************************************************************
@@ -26836,370 +28358,362 @@ namespace Zilch
   }
   
   //***************************************************************************
-  void Console::RunCallbacks(StringParam text)
+  void Console::WriteData(StringParam text)
   {
-    // Loop through all callbacks
-    for (size_t i = 0; i < Callbacks.size(); ++i)
-    {
-      // Get the current callback
-      CallbackEntry& entry = Callbacks[i];
-
-      // Invoke the callback
-      entry.Callback(text, entry.UserData);
-    }
-  }
-
-  //***************************************************************************
-  void Console::AddWriteTextCallback(WriteTextFn callback, void* userData)
-  {
-    CallbackEntry& entry = Callbacks.push_back();
-    entry.Callback = callback;
-    entry.UserData = userData;
+    // Send out the event with the given text data
+    ConsoleEvent toSend;
+    toSend.State = ExecutableState::CallingState;
+    toSend.Text = text;
+    Events.Send(Events::ConsoleWrite, &toSend);
   }
   
   //***************************************************************************
-  void Console::SetReadTextCallback(ReadTextFn callback, void* userData)
+  String Console::ReadData()
   {
-    ReadTextCallback = callback;
-    ReadTextUserData = userData;
+    // Send out the event (the user must fill out the text field)
+    ConsoleEvent toSend;
+    toSend.State = ExecutableState::CallingState;
+    Events.Send(Events::ConsoleRead, &toSend);
+    return toSend.Text;
   }
 
   //***************************************************************************
   void Console::Write(AnyParam value0)
   {
-    RunCallbacks(value0.ToString());
+    WriteData(value0.ToString());
   }
 
   //***************************************************************************
   void Console::Write(AnyParam value0, AnyParam value1)
   {
-    RunCallbacks(value0.ToString());
-    RunCallbacks(ConsoleSeparator);
-    RunCallbacks(value1.ToString());
+    WriteData(BuildString(value0.ToString(), ConsoleSeparator, value1.ToString()));
   }
 
   //***************************************************************************
   void Console::Write(AnyParam value0, AnyParam value1, AnyParam value2)
   {
-    RunCallbacks(value0.ToString());
-    RunCallbacks(ConsoleSeparator);
-    RunCallbacks(value1.ToString());
-    RunCallbacks(ConsoleSeparator);
-    RunCallbacks(value2.ToString());
+    WriteData(BuildString(value0.ToString(), ConsoleSeparator, value1.ToString(), ConsoleSeparator, value2.ToString()));
   }
 
   //***************************************************************************
   void Console::Write(AnyParam value0, AnyParam value1, AnyParam value2, AnyParam value3)
   {
-    RunCallbacks(value0.ToString());
-    RunCallbacks(ConsoleSeparator);
-    RunCallbacks(value1.ToString());
-    RunCallbacks(ConsoleSeparator);
-    RunCallbacks(value2.ToString());
-    RunCallbacks(ConsoleSeparator);
-    RunCallbacks(value3.ToString());
+    StringBuilder builder;
+    builder.Append(value0.ToString());
+    builder.Append(ConsoleSeparator);
+    builder.Append(value1.ToString());
+    builder.Append(ConsoleSeparator);
+    builder.Append(value2.ToString());
+    builder.Append(ConsoleSeparator);
+    builder.Append(value3.ToString());
+    WriteData(builder.ToString());
   }
 
   //***************************************************************************
   void Console::Write(AnyParam value0, AnyParam value1, AnyParam value2, AnyParam value3, AnyParam value4)
   {
-    RunCallbacks(value0.ToString());
-    RunCallbacks(ConsoleSeparator);
-    RunCallbacks(value1.ToString());
-    RunCallbacks(ConsoleSeparator);
-    RunCallbacks(value2.ToString());
-    RunCallbacks(ConsoleSeparator);
-    RunCallbacks(value3.ToString());
-    RunCallbacks(ConsoleSeparator);
-    RunCallbacks(value4.ToString());
+    StringBuilder builder;
+    builder.Append(value0.ToString());
+    builder.Append(ConsoleSeparator);
+    builder.Append(value1.ToString());
+    builder.Append(ConsoleSeparator);
+    builder.Append(value2.ToString());
+    builder.Append(ConsoleSeparator);
+    builder.Append(value3.ToString());
+    builder.Append(ConsoleSeparator);
+    builder.Append(value4.ToString());
+    WriteData(builder.ToString());
   }
 
   //***************************************************************************
   void Console::Write(StringParam value)
   {
-    RunCallbacks(value);
+    WriteData(value);
   }
   
   //***************************************************************************
   void Console::Write(StringRange value)
   {
-    RunCallbacks(value);
+    WriteData(value);
   }
 
   //***************************************************************************
   void Console::Write(cstr value)
   {
-    RunCallbacks(String(value));
+    WriteData(String(value));
   }
 
   //***************************************************************************
   void Console::Write(char value)
   {
-    RunCallbacks(String(value));
+    WriteData(String(value));
   }
 
   //***************************************************************************
   void Console::Write(Integer value)
   {
-    RunCallbacks(IntegerToString(value));
+    WriteData(IntegerToString(value));
   }
 
   //***************************************************************************
   void Console::Write(Integer2Param value)
   {
-    RunCallbacks(Integer2ToString(value));
+    WriteData(Integer2ToString(value));
   }
 
   //***************************************************************************
   void Console::Write(Integer3Param value)
   {
-    RunCallbacks(Integer3ToString(value));
+    WriteData(Integer3ToString(value));
   }
 
   //***************************************************************************
   void Console::Write(Integer4Param value)
   {
-    RunCallbacks(Integer4ToString(value));
+    WriteData(Integer4ToString(value));
   }
 
   //***************************************************************************
   void Console::Write(DoubleInteger value)
   {
-    RunCallbacks(DoubleIntegerToString(value));
+    WriteData(DoubleIntegerToString(value));
   }
 
   //***************************************************************************
   void Console::Write(Boolean value)
   {
-    RunCallbacks(BooleanToString(value));
+    WriteData(BooleanToString(value));
   }
 
   //***************************************************************************
   void Console::Write(Boolean2Param value)
   {
-    RunCallbacks(Boolean2ToString(value));
+    WriteData(Boolean2ToString(value));
   }
 
   //***************************************************************************
   void Console::Write(Boolean3Param value)
   {
-    RunCallbacks(Boolean3ToString(value));
+    WriteData(Boolean3ToString(value));
   }
 
   //***************************************************************************
   void Console::Write(Boolean4Param value)
   {
-    RunCallbacks(Boolean4ToString(value));
+    WriteData(Boolean4ToString(value));
   }
 
   //***************************************************************************
   void Console::Write(Real value)
   {
-    RunCallbacks(RealToString(value));
+    WriteData(RealToString(value));
   }
 
   //***************************************************************************
   void Console::Write(DoubleReal value)
   {
-    RunCallbacks(DoubleRealToString(value));
+    WriteData(DoubleRealToString(value));
   }
 
   //***************************************************************************
   void Console::Write(Real2Param value)
   {
-    RunCallbacks(Real2ToString(value));
+    WriteData(Real2ToString(value));
   }
 
   //***************************************************************************
   void Console::Write(Real3Param value)
   {
-    RunCallbacks(Real3ToString(value));
+    WriteData(Real3ToString(value));
   }
 
   //***************************************************************************
   void Console::Write(Real4Param value)
   {
-    RunCallbacks(Real4ToString(value));
+    WriteData(Real4ToString(value));
   }
 
   //***************************************************************************
   void Console::Write(QuaternionParam value)
   {
-    RunCallbacks(QuaternionToString(value));
+    WriteData(QuaternionToString(value));
   }
 
   //***************************************************************************
   void Console::WriteLine()
   {
-    RunCallbacks("\n");
+    WriteData(NewLine);
   }
 
   //***************************************************************************
   void Console::WriteLine(AnyParam value0)
   {
-    Write(value0);
-    WriteLine();
+    WriteData(BuildString(value0.ToString(), NewLine));
   }
 
   //***************************************************************************
   void Console::WriteLine(AnyParam value0, AnyParam value1)
   {
-    Write(value0, value1);
-    WriteLine();
+    WriteData(BuildString(value0.ToString(), ConsoleSeparator, value1.ToString(), NewLine));
   }
   
   //***************************************************************************
   void Console::WriteLine(AnyParam value0, AnyParam value1, AnyParam value2)
   {
-    Write(value0, value1, value2);
-    WriteLine();
+    StringBuilder builder;
+    builder.Append(value0.ToString());
+    builder.Append(ConsoleSeparator);
+    builder.Append(value1.ToString());
+    builder.Append(ConsoleSeparator);
+    builder.Append(value2.ToString());
+    builder.Append(NewLine);
+    WriteData(builder.ToString());
   }
   
   //***************************************************************************
   void Console::WriteLine(AnyParam value0, AnyParam value1, AnyParam value2, AnyParam value3)
   {
-    Write(value0, value1, value2, value3);
-    WriteLine();
+    StringBuilder builder;
+    builder.Append(value0.ToString());
+    builder.Append(ConsoleSeparator);
+    builder.Append(value1.ToString());
+    builder.Append(ConsoleSeparator);
+    builder.Append(value2.ToString());
+    builder.Append(ConsoleSeparator);
+    builder.Append(value3.ToString());
+    builder.Append(NewLine);
+    WriteData(builder.ToString());
   }
   
   //***************************************************************************
   void Console::WriteLine(AnyParam value0, AnyParam value1, AnyParam value2, AnyParam value3, AnyParam value4)
   {
-    Write(value0, value1, value2, value3, value4);
-    WriteLine();
+    StringBuilder builder;
+    builder.Append(value0.ToString());
+    builder.Append(ConsoleSeparator);
+    builder.Append(value1.ToString());
+    builder.Append(ConsoleSeparator);
+    builder.Append(value2.ToString());
+    builder.Append(ConsoleSeparator);
+    builder.Append(value3.ToString());
+    builder.Append(ConsoleSeparator);
+    builder.Append(value4.ToString());
+    builder.Append(NewLine);
+    WriteData(builder.ToString());
   }
-
+  
   //***************************************************************************
   void Console::WriteLine(StringParam value)
   {
-    Write(value);
-    WriteLine();
+    WriteData(BuildString(value, NewLine));
   }
-
+  
   //***************************************************************************
   void Console::WriteLine(StringRange value)
   {
-    Write(value);
-    WriteLine();
+    WriteData(BuildString(value, NewLine));
   }
 
   //***************************************************************************
   void Console::WriteLine(cstr value)
   {
-    Write(value);
-    WriteLine();
+    WriteData(BuildString(String(value), NewLine));
   }
 
   //***************************************************************************
   void Console::WriteLine(char value)
   {
-    Write(value);
-    WriteLine();
+    WriteData(BuildString(String(value), NewLine));
   }
 
   //***************************************************************************
   void Console::WriteLine(Integer value)
   {
-    Write(value);
-    WriteLine();
+    WriteData(BuildString(IntegerToString(value), NewLine));
   }
 
   //***************************************************************************
   void Console::WriteLine(Integer2Param value)
   {
-    Write(value);
-    WriteLine();
+    WriteData(BuildString(Integer2ToString(value), NewLine));
   }
 
   //***************************************************************************
   void Console::WriteLine(Integer3Param value)
   {
-    Write(value);
-    WriteLine();
+    WriteData(BuildString(Integer3ToString(value), NewLine));
   }
 
   //***************************************************************************
   void Console::WriteLine(Integer4Param value)
   {
-    Write(value);
-    WriteLine();
+    WriteData(BuildString(Integer4ToString(value), NewLine));
   }
 
   //***************************************************************************
   void Console::WriteLine(DoubleInteger value)
   {
-    Write(value);
-    WriteLine();
+    WriteData(BuildString(DoubleIntegerToString(value), NewLine));
   }
 
   //***************************************************************************
   void Console::WriteLine(Boolean value)
   {
-    Write(value);
-    WriteLine();
+    WriteData(BuildString(BooleanToString(value), NewLine));
   }
 
   //***************************************************************************
   void Console::WriteLine(Boolean2Param value)
   {
-    Write(value);
-    WriteLine();
+    WriteData(BuildString(Boolean2ToString(value), NewLine));
   }
 
   //***************************************************************************
   void Console::WriteLine(Boolean3Param value)
   {
-    Write(value);
-    WriteLine();
+    WriteData(BuildString(Boolean3ToString(value), NewLine));
   }
 
   //***************************************************************************
   void Console::WriteLine(Boolean4Param value)
   {
-    Write(value);
-    WriteLine();
+    WriteData(BuildString(Boolean4ToString(value), NewLine));
   }
 
   //***************************************************************************
   void Console::WriteLine(Real value)
   {
-    Write(value);
-    WriteLine();
+    WriteData(BuildString(RealToString(value), NewLine));
   }
 
   //***************************************************************************
   void Console::WriteLine(DoubleReal value)
   {
-    Write(value);
-    WriteLine();
+    WriteData(BuildString(DoubleRealToString(value), NewLine));
   }
 
   //***************************************************************************
   void Console::WriteLine(Real2Param value)
   {
-    Write(value);
-    WriteLine();
+    WriteData(BuildString(Real2ToString(value), NewLine));
   }
 
   //***************************************************************************
   void Console::WriteLine(Real3Param value)
   {
-    Write(value);
-    WriteLine();
+    WriteData(BuildString(Real3ToString(value), NewLine));
   }
 
   //***************************************************************************
   void Console::WriteLine(Real4Param value)
   {
-    Write(value);
-    WriteLine();
+    WriteData(BuildString(Real4ToString(value), NewLine));
   }
 
   //***************************************************************************
   void Console::WriteLine(QuaternionParam value)
   {
-    Write(value);
-    WriteLine();
+    WriteData(BuildString(QuaternionToString(value), NewLine));
   }
 
   //***************************************************************************
@@ -27217,7 +28731,7 @@ namespace Zilch
     BoundType* boundType = TypeBinding::DynamicCast<BoundType*>(type);
     if (boundType != nullptr)
     {
-      byte* instanceData = boundType->GetAllocatedMemory(value);
+      byte* instanceData = boundType->GenericGetMemory(value);
       if (instanceData)
       {
         // Loop through all the instance properties
@@ -27276,35 +28790,19 @@ namespace Zilch
   //***************************************************************************
   String Console::ReadString()
   {
-    // Initialize the result to an empty string
-    String returnValue;
-
-    // If we have the read text callback...
-    if (ReadTextCallback != nullptr)
-    {
-      // Run the callback with the user-data and get back the result
-      returnValue = ReadTextCallback(ReadTextUserData);
-    }
-    
-    // Return the resulting read value, or a default if we had no callback
-    return returnValue;
+    // Just read the string directly (no interpreting, may be empty)
+    return ReadData();
   }
   
   //***************************************************************************
   Integer Console::ReadInteger()
   {
-    // Initialize the result
+    // Just read the string directly (may be empty)
+    String readText = ReadData();
+
+    // Convert the text to the value type
     Integer returnValue = 0;
-
-    // If we have the read text callback...
-    if (ReadTextCallback != nullptr)
-    {
-      // Run the callback with the user-data and get back the result
-      String readText = ReadTextCallback(ReadTextUserData);
-
-      // Convert the text to the value type
-      ToValue(readText, returnValue);
-    }
+    ToValue(readText, returnValue);
 
     // Return the resulting read value, or a default if we had no callback
     return returnValue;
@@ -27313,18 +28811,12 @@ namespace Zilch
   //***************************************************************************
   Boolean Console::ReadBoolean()
   {
-    // Initialize the result
+    // Just read the string directly (may be empty)
+    String readText = ReadData();
+
+    // Convert the text to the value type
     Boolean returnValue = false;
-
-    // If we have the read text callback...
-    if (ReadTextCallback != nullptr)
-    {
-      // Run the callback with the user-data and get back the result
-      String readText = ReadTextCallback(ReadTextUserData);
-
-      // Convert the text to the value type
-      ToValue(readText, returnValue);
-    }
+    ToValue(readText, returnValue);
 
     // Return the resulting read value, or a default if we had no callback
     return returnValue;
@@ -27333,24 +28825,16 @@ namespace Zilch
   //***************************************************************************
   Real Console::ReadReal()
   {
-    // Initialize the result
+    // Just read the string directly (may be empty)
+    String readText = ReadData();
+
+    // Convert the text to the value type
     Real returnValue = 0.0f;
-
-    // If we have the read text callback...
-    if (ReadTextCallback != nullptr)
-    {
-      // Run the callback with the user-data and get back the result
-      String readText = ReadTextCallback(ReadTextUserData);
-
-      // Convert the text to the value type
-      ToValue(readText, returnValue);
-    }
+    ToValue(readText, returnValue);
 
     // Return the resulting read value, or a default if we had no callback
     return returnValue;
   }
-
-
 
   //***************************************************************************
   ZilchDefineTypeAs(StringBuilderExtended, Core, "StringBuilder")
@@ -27644,8 +29128,6 @@ namespace Zilch
 
 // Includes
 
-
-
 namespace Zilch
 {
   //***************************************************************************
@@ -27774,7 +29256,7 @@ namespace Zilch
   //***************************************************************************
   String ToLowerCamelCase(StringRange input)
   {
-    if(input.empty())
+    if (input.empty())
       return String();
 
     int firstCharacter = input[0];
@@ -27785,7 +29267,7 @@ namespace Zilch
   //***************************************************************************
   String ToUpperCamelCase(StringRange input)
   {
-    if(input.empty())
+    if (input.empty())
       return String();
 
     int firstCharacter = input[0];
@@ -27799,20 +29281,6 @@ namespace Zilch
 \**************************************************************/
 
 // Includes
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 namespace Zilch
 {
@@ -27975,10 +29443,10 @@ namespace Zilch
     this->ExternalBoundTypes.clear();
 
     // Loop through all the passed in libraries
-    for (size_t i = 0; i < this->Dependencies->Libraries.size(); ++i)
+    for (size_t i = 0; i < this->Dependencies->size(); ++i)
     {
       // Get the current library
-      ConstLibraryRef library = this->Dependencies->Libraries[i];
+      ConstLibraryRef library = (*this->Dependencies)[i];
 
       // Get a range of all bound types in the library
       BoundTypeRange libraryBoundTypes = library->BoundTypes.all();
@@ -28027,7 +29495,7 @@ namespace Zilch
     this->AllLibraries.push_back(builder.BuiltLibrary);
 
     // Copy over all the dependencies into our library array
-    this->AllLibraries.insert(this->AllLibraries.end(), this->Dependencies->Libraries.all());
+    this->AllLibraries.insert(this->AllLibraries.end(), this->Dependencies->all());
 
     // Note: Technically with single expression mode, we should only have to evaluate
     // the types of just the expression (no class/member gathering, etc)
@@ -28134,6 +29602,9 @@ namespace Zilch
     if (this->Errors.WasError)
       return;
 
+    // Generate field properties here (after the sizing has been computed)
+    builder.GenerateGetSetFields();
+
     // Clear the typing context after every use (not necessary, except in tolerant mode)
     typingContext.Clear(this->Errors.TolerantMode);
 
@@ -28193,7 +29664,7 @@ namespace Zilch
           }
 
           // Add the base type's size to the size of our object
-          type->Size += (ObjectSize)AlignToBusWidth(type->BaseType->GetAllocatedSize());
+          type->Size += AlignToBusWidth(type->BaseType->GetAllocatedSize());
         }
 
         // Loop through all the members
@@ -28223,16 +29694,16 @@ namespace Zilch
           // If this type is a handle type...
           else if (Type::IsHandleType(field.PropertyType))
           {
-            type->Handles.push_back((ObjectOffset)type->Size);
+            type->Handles.push_back(type->Size);
           }
           // Otherwise, if it's a delegate type
           else if (TypeBinding::DynamicCast<DelegateType*>(field.PropertyType) != nullptr)
           {
-            type->Delegates.push_back((ObjectOffset)type->Size);
+            type->Delegates.push_back(type->Size);
           }
 
           // Add to the size of the object
-          type->Size += (ObjectSize)AlignToBusWidth(field.PropertyType->GetCopyableSize());
+          type->Size += AlignToBusWidth(field.PropertyType->GetCopyableSize());
         }
 
         // Set the state as "being determined"
@@ -28481,6 +29952,104 @@ namespace Zilch
     // We return a special error type because it makes it so we crash less on null pointers
     return core.ErrorType;
   }
+  
+  //***************************************************************************
+  void Syntaxer::ReadAttributes(SyntaxNode* parentNode, NodeList<AttributeNode>& nodes, Array<Attribute>& attributesOut)
+  {
+    // Go through all attributes and attach them to the class type
+    for (size_t i = 0; i < nodes.size(); ++i)
+    {
+      // Add each attribute string to the class attributes
+      AttributeNode* attributeNode = nodes[i];
+      Attribute& attribute = attributesOut.push_back();
+      attribute.Name = attributeNode->TypeName->Token;
+      
+      // If the attribute node has a function call...
+      FunctionCallNode* attributeCall = attributeNode->AttributeCall;
+      if (attributeCall != nullptr)
+      {
+        // To avoid later errors, set the io modes of the function call
+        attributeCall->Io = IoMode::ReadRValue;
+        attributeCall->IoUsage = IoMode::Ignore;
+
+        // Loop through all the arguments to the function call
+        for (size_t i = 0; i < attributeCall->Arguments.size(); ++i)
+        {
+          // Grab the current argument value
+          ExpressionNode* argument = attributeCall->Arguments[i];
+
+          // We only support literals in the attribute arguments
+          ValueNode* literalArgument = TypeBinding::DynamicCast<ValueNode*>(argument);
+          
+          // If this isn't a literal argument, give an error
+          if (literalArgument == nullptr)
+            // The number of arguments -must- be the same
+            return this->ErrorAt(argument, ErrorCode::AttributeArgumentMustBeLiteral);
+          
+          // Just so we don't get any errors complaining later, give this things an io mode
+          literalArgument->Io = IoMode::ReadRValue;
+          literalArgument->IoUsage = IoMode::Ignore;
+
+          // Add the parameter to the attribute
+          AttributeParameter& parameter = attribute.Parameters.push_back();
+
+          // If this argument has a name...
+          if (i < attributeCall->ArgumentNames.size())
+            parameter.Name = attributeCall->ArgumentNames[i];
+
+          // Store the original token text, just in case the user wants it
+          parameter.Token = literalArgument->Value.Token;
+
+          // Check to see what type of literal we have here
+          switch (literalArgument->Value.TokenId)
+          {
+            // The value is an number
+            case Grammar::IntegerLiteral:
+            case Grammar::DoubleIntegerLiteral:
+            case Grammar::RealLiteral:
+            case Grammar::DoubleRealLiteral:
+            {
+              parameter.Type = AttributeType::Number;
+              parameter.NumberValue = atof(parameter.Token.c_str());
+              break;
+            }
+
+            // The value is a String
+            case Grammar::StringLiteral:
+            {
+              parameter.Type = AttributeType::String;
+              parameter.StringValue = ReplaceStringEscapesAndStripQuotes(parameter.Token);
+              break;
+            }
+
+            // The value is a Bool
+            case Grammar::True:
+            case Grammar::False:
+            {
+              parameter.Type = AttributeType::Boolean;
+              parameter.BooleanValue = (literalArgument->Value.TokenId == Grammar::True);
+              break;
+            }
+
+            // The value is a null (which means that the type is unknown)
+            case Grammar::Null:
+            {
+              parameter.Type = AttributeType::Null;
+              break;
+            }
+
+            default:
+            {
+              // We don't know what type it is???
+              // This especially should not be an identifier, since identifiers are caught as VariableReferences
+              return ErrorAt(parentNode, ErrorCode::InternalError,
+                "The literal in an attribute's argument list was of an unknown token type.");
+            }
+          }
+        }
+      }
+    }
+  }
 
   //***************************************************************************
   void Syntaxer::SetupClassInstance(ClassNode* node, ClassContext* context)
@@ -28506,21 +30075,14 @@ namespace Zilch
     this->Builder->AddRawBoundType(node->Type);
 
     // Go through all attributes and attach them to the class type
-    for (size_t i = 0; i < node->Attributes.size(); ++i)
-    {
-      // Add each attribute string to the class attributes
-      node->Type->Attributes.push_back(node->Attributes[i]->TypeName->Token);
-    }
+    this->ReadAttributes(node, node->Attributes, node->Type->Attributes);
 
     // Set whether we're hidden or not (hides us from documentation, auto-complete, etc)
     node->Type->IsHidden =  node->Type->HasAttribute(HiddenAttribute);
 
     // Create a new function for the pre-constructor
-    node->PreConstructor = new CompiledFunction();
-    node->PreConstructor->Name = String::Format("%s%s", PreConstructorName.c_str(), node->Type->Name.c_str());
-
-    // Push the function also into a function array, which will not be cleared out
-    this->Builder->AddCompiledFunction(node->PreConstructor, node->Type);
+    String preConstructorName = String::Format("%s%s", PreConstructorName.c_str(), node->Type->Name.c_str());
+    node->PreConstructor = this->Builder->CreateRawFunction(node->Type, preConstructorName, VirtualMachine::ExecuteNext, ParameterArray(), core.VoidType, FunctionOptions::None);
 
     // Only generate a post-destructor if our class is a reference type
     if (node->Type->GetCopyMode() == TypeCopyMode::ReferenceType)
@@ -28528,22 +30090,6 @@ namespace Zilch
       // Create the post-destructor for this class
       node->Type->PostDestructor = VirtualMachine::PostDestructor;
     }
-
-    // Create a function type (basically a signature)
-    DelegateType* preConstructorType = this->Builder->GetDelegateType(ParameterArray(), core.VoidType);
-
-    // Add the variable to the current function that we're working on (we'll initialize the primary index in code generation)
-    Variable* thisVariable = this->Builder->CreateRawVariable(ThisKeyword);
-    thisVariable->ResultType = this->Builder->ToHandleType(node->Type);
-    node->PreConstructor->This = thisVariable;
-
-    // We happen to know that in a pre-constructor, there are no returns, and the only argument is the 'this' handle
-    // Therefore, the 'this' handle will reside at position 0 (relative to the stack frame)
-    thisVariable->Local = 0;
-
-
-    // Store the type on the function definition
-    node->PreConstructor->Type = preConstructorType;
 
     // Add the function to the type's list of functions
     node->Type->PreConstructor = node->PreConstructor;
@@ -28675,7 +30221,7 @@ namespace Zilch
               }
 
               // Attempt to instantiate the template
-              InstantiatedTemplate instantiatedTemplate = this->Builder->InstantiateTemplate(baseName, templateInstanceArguments, this->Dependencies->Libraries);
+              InstantiatedTemplate instantiatedTemplate = this->Builder->InstantiateTemplate(baseName, templateInstanceArguments, *this->Dependencies);
 
               // If we failed to instantiate the 
               if (instantiatedTemplate.Result == TemplateResult::FailedNameNotFound)
@@ -28777,12 +30323,11 @@ namespace Zilch
     
     // Make sure we don't have a function of the same name as this member
     FunctionMultiMap& functionMap = type->GetFunctionMap(isStatic);
-    FunctionArray& foundFunctions = functionMap[memberName];
-    if (foundFunctions.empty() == false)
+    FunctionArray* foundFunctions = functionMap.findPointer(memberName);
+    if (foundFunctions != nullptr && foundFunctions->empty() == false)
     {
       // We only really want to show the location of the first function we find (it's really not necessary to show all of them...)
       return this->Errors.Raise(location, ErrorCode::DuplicateMemberName, memberName.c_str());
-      //return this->Errors.Raise(location, String(), foundFunctions[0]->Location, ErrorCode::DuplicateMemberName, memberName.c_str());
     }
   }
 
@@ -28946,12 +30491,8 @@ namespace Zilch
     // Add the type to the list of types
     this->Builder->AddRawBoundType(node->Type);
 
-    // Go through all attributes and attach them to the class type
-    for (size_t i = 0; i < node->Attributes.size(); ++i)
-    {
-      // Add each attribute string to the class attributes
-      node->Type->Attributes.push_back(node->Attributes[i]->TypeName->Token);
-    }
+    // Go through all attributes and attach them to the enum type
+    this->ReadAttributes(node, node->Attributes, node->Type->Attributes);
 
     // Assume this type is just a regular enum (if it's a 'flags', we will set that below)
     node->Type->SpecialType = SpecialType::Enumeration;
@@ -29169,47 +30710,66 @@ namespace Zilch
   }
 
   //***************************************************************************
-  void Syntaxer::SetupGenericFunction(GenericFunctionNode* node, TypingContext* context, String name, bool isStatic, bool isVirtual, Type* returnType)
+  void Syntaxer::SetupGenericFunction(GenericFunctionNode* node, TypingContext* context, String name, FunctionOptions::Enum options, Type* returnType)
   {
-    // Set the function on the node
-    node->Function = new CompiledFunction();
-    node->Function->Name = name;
+    // Get a pointer to the current class type that this function is being implemented in
+    BoundType* classType = context->ClassTypeStack.back();
 
-    ErrorIf(isStatic && isVirtual,
-      "Cannot be static and virtual at the same time");
+    // Store all the delegate parameters
+    ParameterArray delegateParameters;
+
+    // If an error occurred, exit out
+    if (this->Errors.WasError)
+      return;
+
+    // Walk through parameters
+    NodeList<ParameterNode>::range parameters = node->Parameters.all();
+    for (; parameters.empty() == false; parameters.popFront())
+    {
+      // Get the current parameter
+      ParameterNode* parameter = parameters.front();
+
+      // Add the parameter type to the signature (get the type from the parameter node)
+      DelegateParameter& delegateParameter = delegateParameters.push_back();
+      delegateParameter.Name = parameter->Name;
+      
+      // Get the variable's type from the syntax type
+      delegateParameter.ParameterType = this->RetrieveType(parameter->ResultSyntaxType, node->Location);
+    }
+
+    // Set the function on the node
+    node->DefinedFunction = this->Builder->CreateRawFunction(classType, name, VirtualMachine::ExecuteNext, delegateParameters, returnType, options);
+    Function* function = node->DefinedFunction;
     
+    // Clear any required stack space (code generator currently re-figures all this out)
+    function->RequiredStackSpace = 0;
+
+    // Push the function onto the stack so that children can access it
+    // (the top of the stack will be the most relevant function to them)
+    context->FunctionStack.push_back(function);
+    
+    // Walk all the parameters (which should give them types and generate variables)
+    context->Walker->Walk(this, node->Parameters, context);
+
     // Mark the node as virtual if it is
-    node->Function->IsVirtual = isVirtual;
+    function->IsVirtual = (options == FunctionOptions::Virtual);
 
     // Use the comments as the class description
     String description = node->GetMergedComments();
-    node->Function->Description = description;
+    function->Description = description;
 
     // Go through all attributes and attach them to the function
-    for (size_t i = 0; i < node->Attributes.size(); ++i)
-    {
-      // Add each attribute string to the function attributes
-      node->Function->Attributes.push_back(node->Attributes[i]->TypeName->Token);
-    }
+    this->ReadAttributes(node, node->Attributes, function->Attributes);
 
     // Set whether we're hidden or not (hides us from documentation, auto-complete, etc)
-     node->Function->IsHidden =  node->Function->HasAttribute(HiddenAttribute);
+    function->IsHidden =  function->HasAttribute(HiddenAttribute);
 
     // Note that we don't actually bother pushing or popping the function onto a context
     // The reason is because nobody uses it (we don't even traverse children here)
     // The only possiblity is parameter checking, but that still doesn't use the context or parent function
-
-    // Get a pointer to the current class type that this function is being implemented in
-    BoundType* classType = context->ClassTypeStack.back();
-
-    // Push the function also into a function array, which will not be cleared out
-    this->Builder->AddCompiledFunction(node->Function, classType);
-
-    // Get the total size of all the parameters
-    size_t totalParameterSize = 0;
-
-    // If the function is a member function (not a static function)...
-    if (isStatic == false)
+    
+     // If the function is a member function (not a static function)...
+    if (options != FunctionOptions::Static)
     {
       // Get the scoped variable from the map
       // Note that it should probably be null (we're just getting a reference to the pointer)
@@ -29220,55 +30780,15 @@ namespace Zilch
         return ErrorAt(node, ErrorCode::InternalError,
         "The variable 'this' was already defined.");
 
-      // Add the variable to the current function that we're working on
-      thisVariable = this->Builder->CreateRawVariable(ThisKeyword);
-      thisVariable->ResultType = this->Builder->ToHandleType(classType);
-      node->Function->This = thisVariable;
+      // Adding the function should have created a this variable (since we're not static)
+      thisVariable = function->This;
     }
 
-    // Store all the delegate parameters
-    ParameterArray delegateParameters;
-
-    // Loop through all the parameters
-    NodeList<ParameterNode>::range parameters = node->Parameters.all();
-    for (; parameters.empty() == false; parameters.popFront())
-    {
-      // Get the current parameter
-      ParameterNode* parameter = parameters.front();
-
-      // Walk the parameter (which should give it the type)
-      context->Walker->Walk(this, parameter, context);
-
-      // If an error occurred, exit out
-      if (this->Errors.WasError)
-        return;
-
-      // Add the parameter type to the signature (get the type from the parameter node)
-      DelegateParameter& delegateParameter = delegateParameters.push_back();
-      delegateParameter.Name = parameter->Name;
-
-      // As long as we properly created a variable (in tolerant mode, this may fail!)
-      if (parameter->CreatedVariable != nullptr)
-      {
-        // The type of the parameter in the constructor is the type we found for the variable
-        delegateParameter.ParameterType = parameter->CreatedVariable->ResultType;
-      }
-      else
-      {
-        // We must have failed to parse the parameter fully, use the error type so nothing crashes
-        ErrorIf(this->Errors.TolerantMode == false, "We shouldn't have gotten here if we failed to parse the parameter");
-        delegateParameter.ParameterType = Core::GetInstance().ErrorType;
-      }
-
-      // Accumulate the parameter sizes
-      totalParameterSize += delegateParameter.ParameterType->GetCopyableSize();
-    }
-
-    // Store the type on the function definition
-    node->Function->Type = this->Builder->GetDelegateType(delegateParameters, returnType);
+    // Pop the function from the stack
+    context->FunctionStack.pop_back();
 
     // Finally, set the node type so that we'll know it later
-    node->Type = node->Function->Type;
+    node->Type = node->DefinedFunction->Type;
   }
 
   //***************************************************************************
@@ -29278,13 +30798,13 @@ namespace Zilch
     Core& core = Core::GetInstance();
 
     // Setup the function generically (this actually creates the compiled function object)
-    this->SetupGenericFunction(node, context, ConstructorName, false, false, core.VoidType);
+    this->SetupGenericFunction(node, context, ConstructorName, FunctionOptions::None, core.VoidType);
 
     // Grab the class type
     BoundType* classType = context->ClassTypeStack.back();
 
     // Add the constructor function to the class list of constructors
-    classType->Constructors.push_back(node->Function);
+    classType->Constructors.push_back(node->DefinedFunction);
 
     // If we have a base class type but we aren't initializing it...
     BoundType* baseType = classType->BaseType;
@@ -29302,10 +30822,10 @@ namespace Zilch
     Core& core = Core::GetInstance();
 
     // Setup the function generically (this actually creates the compiled function object)
-    this->SetupGenericFunction(node, context, DestructorName, false, false, core.VoidType);
+    this->SetupGenericFunction(node, context, DestructorName, FunctionOptions::None, core.VoidType);
 
     // Add the constructor function to the class list of constructors
-    context->ClassTypeStack.back()->Destructor = node->Function;
+    context->ClassTypeStack.back()->Destructor = node->DefinedFunction;
   }
 
   //***************************************************************************
@@ -29334,8 +30854,19 @@ namespace Zilch
       delegateReturn = core.VoidType;
     }
 
+    // Assume no options are on this function
+    FunctionOptions::Enum options = FunctionOptions::None;
+    ErrorIf(node->IsStatic && node->Virtualized != VirtualMode::NonVirtual,
+      "A function cannot be both static and virtual");
+
+    // Static and virtual are mutually exclusive
+    if (node->IsStatic)
+      options = FunctionOptions::Static;
+    else if (node->Virtualized != VirtualMode::NonVirtual)
+      options = FunctionOptions::Virtual;
+
     // Setup the function generically (this actually creates the compiled function object)
-    this->SetupGenericFunction(node, context, node->Name, node->IsStatic, node->Virtualized != VirtualMode::NonVirtual, delegateReturn);
+    this->SetupGenericFunction(node, context, node->Name, options, delegateReturn);
 
     // If we had an error, return out early
     if (this->Errors.WasError)
@@ -29345,13 +30876,14 @@ namespace Zilch
     
     // Add the function to the type's list of functions (checks for static or instance methods)
     BoundType* classType = context->ClassTypeStack.back();
-    AddMemberResult::Enum addResult = classType->AddRawFunction(node->Function);
+    Function* function = node->DefinedFunction;
+    AddMemberResult::Enum addResult = classType->AddRawFunction(function);
 
     // If an overload of the function already existed with the exact same signature (and name)
     if (addResult == AddMemberResult::AlreadyExists)
     {
       // It is an error to not initialize our base class
-      return ErrorAt(node, ErrorCode::OverloadsCannotBeTheSame, node->Function->Name.c_str());
+      return ErrorAt(node, ErrorCode::OverloadsCannotBeTheSame, function->Name.c_str());
     }
   }
 
@@ -29423,6 +30955,7 @@ namespace Zilch
       }
 
       // Create the member using the builder
+      // The given offset is zero for now (we'll initialize it later when collecting sizes of objects)
       Field* field = this->Builder->AddBoundField(classType, node->Name, node->ResultType, 0, options);
       property = field;
 
@@ -29433,13 +30966,9 @@ namespace Zilch
     // Use the comments as the class description
     String description = node->GetMergedComments();
     property->Description = description;
-
+    
     // Go through all attributes and attach them to the property
-    for (size_t i = 0; i < node->Attributes.size(); ++i)
-    {
-      // Add each attribute string to the property attributes
-      property->Attributes.push_back(node->Attributes[i]->TypeName->Token);
-    }
+    this->ReadAttributes(node, node->Attributes, property->Attributes);
 
     // Set whether we're hidden or not (hides us from documentation, auto-complete, etc)
     property->IsHidden = property->HasAttribute(HiddenAttribute);
@@ -29465,7 +30994,8 @@ namespace Zilch
         return;
 
       // Mark this function as special
-      node->Get->Function->IsPropertyGetOrSet = true;
+      node->Get->DefinedFunction->IsPropertyGetOrSet = true;
+      node->Get->DefinedFunction->IsHidden = true;
     }
 
     // If the member has a set
@@ -29479,7 +31009,8 @@ namespace Zilch
         return;
 
       // Mark this function as special
-      node->Set->Function->IsPropertyGetOrSet = true;
+      node->Set->DefinedFunction->IsPropertyGetOrSet = true;
+      node->Set->DefinedFunction->IsHidden = true;
     }
     
     // If this node is a property...
@@ -29493,7 +31024,7 @@ namespace Zilch
           "The property getter should not be set yet (we're generating it)");
 
         // Point the property's getter at the compiled function
-        node->CreatedProperty->Get = node->Get->Function;
+        node->CreatedProperty->Get = node->Get->DefinedFunction;
       }
       
       // Store the set function on the property
@@ -29504,14 +31035,8 @@ namespace Zilch
           "The property setter should not be set yet (we're generating it)");
 
         // Point the property's setter at the compiled function
-        node->CreatedProperty->Set = node->Set->Function;
+        node->CreatedProperty->Set = node->Set->DefinedFunction;
       }
-    }
-    else
-    {
-      // Store the member variable on the node
-      node->CreatedField->Get = node->Get->Function;
-      node->CreatedField->Set = node->Set->Function;
     }
   }
 
@@ -29540,7 +31065,7 @@ namespace Zilch
   {
     // Push the function onto the stack so that children can access it
     // (the top of the stack will be the most relevant function to them)
-    context->FunctionStack.push_back(node->Function);
+    context->FunctionStack.push_back(node->DefinedFunction);
 
     // Loop through all the parameters
     for (size_t i = 0; i < node->Parameters.size(); ++i)
@@ -29759,6 +31284,12 @@ namespace Zilch
     
     // Walk the statements that generate the 'Add' and member initializations
     context->Walker->Walk(this, node->InitializerStatements, context);
+
+    // Even though the code generator won't use these (and our own syntaxer doesn't care)
+    // we still traverse the Add and Member initializer nodes for anyone using the tree
+    // Technically if there was any error, we should have already seen it in walking 'InitializerStatements'
+    context->Walker->Walk(this, node->AddValues, context);
+    context->Walker->Walk(this, node->InitailizeMembers, context);
   }
 
   //***************************************************************************
@@ -29777,7 +31308,6 @@ namespace Zilch
       // Let the user know that this type can't be created (even if it has a constructor!)
       return ErrorAt(node, ErrorCode::CannotCreateType, node->CreatedType->ToString().c_str());
     }
-
 
     // If we had an error, return out early
     if (this->Errors.WasError)
@@ -29981,7 +31511,7 @@ namespace Zilch
     SyntaxNode* currentParent = scope;
 
     // Loop through our scope parents until we hit the root
-    while (currentParent != nullptr)
+    do
     {
       // Grab the current scope
       ScopeNode* currentScope = TypeBinding::DynamicCast<ScopeNode*>(currentParent);
@@ -29997,9 +31527,11 @@ namespace Zilch
       // Get our parent's parent as a scope node
       currentParent = currentParent->Parent;
     }
+    while (currentParent != nullptr);
 
     // Add the variable to the current function that we're working on
-    Variable* variable = this->Builder->CreateRawVariable(node->Name);
+    Function* function = context->FunctionStack.back();
+    Variable* variable = this->Builder->CreateRawVariable(function, node->Name);
     
     // Try to insert the variable into the scope, but if we fail...
     // There should NEVER be an error here since we checked above (or something really bad happened)
@@ -30049,7 +31581,7 @@ namespace Zilch
             {
               // Otherwise, we have nothing better to assume this type is
               // Just make it void so it won't crash later
-              variable->ResultType = core.VoidType;
+              variable->ResultType = core.ErrorType;
             }
           }
 
@@ -30984,8 +32516,8 @@ namespace Zilch
         // Report an error since we attempted to use the property delegate operator on a non-property
         return ErrorAt(node, ErrorCode::PropertyDelegateOperatorRequiresProperty);
       }
-      
-      // Make sure the property has either the get or set functions (or both)
+
+      // Make sure the property has the get and set functions
       if (property->Get == nullptr && property->Set == nullptr)
       {
         // Report an error since we can't form a property delegate to an object that has neither a get or set
@@ -31003,7 +32535,7 @@ namespace Zilch
       templateArguments.push_back(property->PropertyType);
 
       // Instantiate the property object
-      InstantiatedTemplate propertyTemplate = this->Builder->InstantiateTemplate(PropertyDelegateName, templateArguments, this->Dependencies->Libraries);
+      InstantiatedTemplate propertyTemplate = this->Builder->InstantiateTemplate(PropertyDelegateName, templateArguments, *this->Dependencies);
 
       // Make sure we instantiated the template
       ErrorIf(propertyTemplate.Result != TemplateResult::Success,
@@ -31073,7 +32605,7 @@ namespace Zilch
     {
       // Push the function onto the stack so that children can access it
       // (the top of the stack will be the most relevant function to them)
-      context->FunctionStack.push_back(functionNode->Function);
+      context->FunctionStack.push_back(functionNode->DefinedFunction);
     }
 
     // The library is the name of our library builder
@@ -31216,7 +32748,7 @@ namespace Zilch
       {
         // We need to look up the entire heirarchy (the property could be on any base classes)
         Type* baseIterator = type;
-        while (baseIterator != nullptr && property == nullptr)
+        do
         {
           // Grab the current library
           LibraryRef& library = this->AllLibraries[i];
@@ -31241,13 +32773,16 @@ namespace Zilch
           if (properties != nullptr)
           {
             // Attempt to find the property by name
-            // If we find it, the loop will properly terminate
+            // If we find it, the loop will terminate because we don't need to keep looking
             property = properties->findValue(node->Name, nullptr);
+            if (property != nullptr)
+              break;
           }
           
           // Iterate to the next type
           baseIterator = Type::GetBaseType(baseIterator);
         }
+        while (baseIterator != nullptr);
       }
     }
 
@@ -31414,12 +32949,6 @@ namespace Zilch
 \**************************************************************/
 
 // Includes
-
-
-
-
-
-
 
 namespace Zilch
 {
@@ -31944,6 +33473,20 @@ namespace Zilch
     return (TypeBinding::DynamicCast<StatementNode*>(node) != nullptr);
   }
 
+  
+  //***************************************************************************
+  AttributeNode::AttributeNode() :
+    AttributeCall(nullptr),
+    TypeName(nullptr)
+  {
+  }
+  
+  //***************************************************************************
+  void AttributeNode::PopulateChildren(NodeChildren& childrenOut)
+  {
+    childrenOut.Add(this->AttributeCall);
+  }
+
   //***************************************************************************
   ExpressionNode::ExpressionNode() :
     Io(IoMode::NotSet),
@@ -32017,6 +33560,8 @@ namespace Zilch
   //***************************************************************************
   String TypeCastNode::ToString() const
   {
+    if (this->Type == nullptr)
+      return "Implicit cast";
     return BuildString("Cast to ", this->Type->ToString());
   }
 
@@ -32465,7 +34010,7 @@ namespace Zilch
   //***************************************************************************
   GenericFunctionNode::GenericFunctionNode() :
     Type(nullptr),
-    Function(nullptr)
+    DefinedFunction(nullptr)
   {
   }
   
@@ -32635,10 +34180,6 @@ namespace Zilch
 
 // Includes
 
-
-
-
-
 int gPublicSymbol = 1;
 
 namespace Zilch
@@ -32650,8 +34191,6 @@ namespace Zilch
 \**************************************************************/
 
 // Includes
-
-
 
 namespace Zilch
 {
@@ -32733,24 +34272,14 @@ namespace Zilch
 
 // Includes
 
-
-
-
-
-
-
-
-
-
-
 namespace Zilch
 {
   //***************************************************************************
-  void CodeGenerator::CreateLocal(CompiledFunction& function, ObjectSize size, Operand& accessOut)
+  void CodeGenerator::CreateLocal(Function* function, size_t size, Operand& accessOut)
   {
     // All r-value binary operations result in a value on the stack
     // Therefore we need to allocate a register to store our result in
-    accessOut.HandleConstantLocal = function.AllocateRegister(size);
+    accessOut.HandleConstantLocal = function->AllocateRegister(size);
     
     // We don't use the secondary index (we aren't writing to a member or anything) so just ignore it
     accessOut.Field = 0;
@@ -32760,10 +34289,10 @@ namespace Zilch
   }
 
   //***************************************************************************
-  void CodeGenerator::CreateRValueUnaryOpcode(CompiledFunction& function, UnaryOperatorNode& node, Instruction::Enum instruction, DebugOrigin::Enum debugOrigin)
+  void CodeGenerator::CreateRValueUnaryOpcode(Function* function, UnaryOperatorNode& node, Instruction::Enum instruction, DebugOrigin::Enum debugOrigin)
   {
     // Create the opcode
-    UnaryRValueOpcode& opcode = function.AllocateOpcode<UnaryRValueOpcode>(instruction, debugOrigin, node.Location);
+    UnaryRValueOpcode& opcode = function->AllocateOpcode<UnaryRValueOpcode>(instruction, debugOrigin, node.Location);
 
     // All r-value binary operations result in a value on the stack
     // Therefore we need to allocate a register to store our result in
@@ -32777,10 +34306,10 @@ namespace Zilch
   }
 
   //***************************************************************************
-  void CodeGenerator::CreateLValueUnaryOpcode(CompiledFunction& function, UnaryOperatorNode& node, Instruction::Enum instruction, DebugOrigin::Enum debugOrigin)
+  void CodeGenerator::CreateLValueUnaryOpcode(Function* function, UnaryOperatorNode& node, Instruction::Enum instruction, DebugOrigin::Enum debugOrigin)
   {
     // Create the opcode
-    UnaryLValueOpcode& opcode = function.AllocateOpcode<UnaryLValueOpcode>(instruction, debugOrigin, node.Location);
+    UnaryLValueOpcode& opcode = function->AllocateOpcode<UnaryLValueOpcode>(instruction, debugOrigin, node.Location);
 
     // All l-value binary operations result in a chained left hand value,
     // therefore we use the same primary and secondary index as the left operand
@@ -32792,10 +34321,10 @@ namespace Zilch
   }
 
   //***************************************************************************
-  void CodeGenerator::CreateConversionOpcode(CompiledFunction& function, TypeCastNode& node, Instruction::Enum instruction, DebugOrigin::Enum debugOrigin)
+  void CodeGenerator::CreateConversionOpcode(Function* function, TypeCastNode& node, Instruction::Enum instruction, DebugOrigin::Enum debugOrigin)
   {
     // Create the opcode
-    ConversionOpcode& opcode = function.AllocateOpcode<ConversionOpcode>(instruction, debugOrigin, node.Location);
+    ConversionOpcode& opcode = function->AllocateOpcode<ConversionOpcode>(instruction, debugOrigin, node.Location);
 
     // This expression's result will be stored in the last created register
     CreateLocal(function, node.ResultType->GetCopyableSize(), node.Access);
@@ -32809,10 +34338,10 @@ namespace Zilch
   }
 
   //***************************************************************************
-  void CodeGenerator::GenerateUnaryOp(CompiledFunction& function, UnaryOperatorNode& node, DebugOrigin::Enum debugOrigin)
+  void CodeGenerator::GenerateUnaryOp(Function* function, UnaryOperatorNode& node, DebugOrigin::Enum debugOrigin)
   {
     // Create the opcode so that we can fill it in
-    size_t opcodeStart = function.GetCurrentOpcodeIndex();
+    size_t opcodeStart = function->GetCurrentOpcodeIndex();
 
     // Get the instance of the type database
     Core& core = Core::GetInstance();
@@ -32844,14 +34373,14 @@ namespace Zilch
     }
 
     // Error checking
-    ErrorIf(opcodeStart == function.GetCurrentOpcodeIndex(), "No instructions were written!");
+    ErrorIf(opcodeStart == function->GetCurrentOpcodeIndex(), "No instructions were written!");
   }
 
   //***************************************************************************
-  void CodeGenerator::GenerateConversion(CompiledFunction& function, TypeCastNode& node, DebugOrigin::Enum debugOrigin)
+  void CodeGenerator::GenerateConversion(Function* function, TypeCastNode& node, DebugOrigin::Enum debugOrigin)
   {
     // Create the opcode so that we can fill it in
-    size_t opcodeStart = function.GetCurrentOpcodeIndex();
+    size_t opcodeStart = function->GetCurrentOpcodeIndex();
     
     // Get the instance of the type database
     Core& core = Core::GetInstance();
@@ -32866,7 +34395,7 @@ namespace Zilch
       CreateConversionOpcode(function, node, node.OperatorInfo.PrimitiveInstruction, debugOrigin);
 
       // Error checking
-      ErrorIf(opcodeStart == function.GetCurrentOpcodeIndex(), "No instructions were written!");
+      ErrorIf(opcodeStart == function->GetCurrentOpcodeIndex(), "No instructions were written!");
     }
     // If it's an up cast, we pretty much don't do anything (just forward the access, type should be changed already)
     // Note: Dynamic down is currently NOT SAFE at all
@@ -32882,10 +34411,10 @@ namespace Zilch
     else if (castOperation == CastOperation::ToAny)
     {
       // Create the opcode
-      AnyConversionOpcode& opcode = function.AllocateOpcode<AnyConversionOpcode>(Instruction::ConvertToAny, debugOrigin, node.Location);
+      AnyConversionOpcode& opcode = function->AllocateOpcode<AnyConversionOpcode>(Instruction::ConvertToAny, debugOrigin, node.Location);
       
       // This expression's result will be stored in the last created register
-      ObjectSize anySize = node.ResultType->GetCopyableSize();
+      size_t anySize = node.ResultType->GetCopyableSize();
       ErrorIf(anySize != sizeof(Any), "The only way we should hit the 'ToAny' case is if we're casting to an Any type");
       CreateLocal(function, anySize, node.Access);
 
@@ -32904,7 +34433,7 @@ namespace Zilch
     else if (castOperation == CastOperation::FromAny)
     {
       // Create the opcode
-      AnyConversionOpcode& opcode = function.AllocateOpcode<AnyConversionOpcode>(Instruction::ConvertFromAny, debugOrigin, node.Location);
+      AnyConversionOpcode& opcode = function->AllocateOpcode<AnyConversionOpcode>(Instruction::ConvertFromAny, debugOrigin, node.Location);
       
       // This expression's result will be stored in the last created register
       CreateLocal(function, node.ResultType->GetCopyableSize(), node.Access);
@@ -32924,7 +34453,7 @@ namespace Zilch
     else if (castOperation == CastOperation::DynamicDown)
     {
       // Create the opcode
-      DowncastConversionOpcode& opcode = function.AllocateOpcode<DowncastConversionOpcode>(Instruction::ConvertDowncast, debugOrigin, node.Location);
+      DowncastConversionOpcode& opcode = function->AllocateOpcode<DowncastConversionOpcode>(Instruction::ConvertDowncast, debugOrigin, node.Location);
       
       // This expression's result will be stored in the last created register
       ErrorIf(node.ResultType->GetCopyableSize() != sizeof(Handle),
@@ -32954,7 +34483,7 @@ namespace Zilch
   }
 
   //***************************************************************************
-  void CodeGenerator::CreateCopyOpcode(CompiledFunction& function, CopyMode::Enum mode, Type* type, const Operand& source, const Operand& destination, DebugOrigin::Enum debugOrigin, const CodeLocation& location)
+  void CodeGenerator::CreateCopyOpcode(Function* function, CopyMode::Enum mode, Type* type, const Operand& source, const Operand& destination, DebugOrigin::Enum debugOrigin, const CodeLocation& location)
   {
     // The instruction that we will end up using
     Instruction::Enum instruction = Instruction::InvalidInstruction;
@@ -32996,7 +34525,7 @@ namespace Zilch
     }
 
     // Create the opcode
-    CopyOpcode& opcode = function.AllocateOpcode<CopyOpcode>(instruction, debugOrigin, location);
+    CopyOpcode& opcode = function->AllocateOpcode<CopyOpcode>(instruction, debugOrigin, location);
 
     // Initialize the source and destination of the opcode
     opcode.Source = source;
@@ -33010,25 +34539,25 @@ namespace Zilch
   }
 
   //***************************************************************************
-  void CodeGenerator::GenerateCopyToReturn(CompiledFunction& function, Type* type, const Operand& source, const Operand& destination, DebugOrigin::Enum debugOrigin, const CodeLocation& location)
+  void CodeGenerator::GenerateCopyToReturn(Function* function, Type* type, const Operand& source, const Operand& destination, DebugOrigin::Enum debugOrigin, const CodeLocation& location)
   {
     return CreateCopyOpcode(function, CopyMode::ToReturn, type, source, destination, debugOrigin, location);
   }
 
   //***************************************************************************
-  void CodeGenerator::GenerateCopyInitialize(CompiledFunction& function, Type* type, const Operand& source, const Operand& destination, DebugOrigin::Enum debugOrigin, const CodeLocation& location)
+  void CodeGenerator::GenerateCopyInitialize(Function* function, Type* type, const Operand& source, const Operand& destination, DebugOrigin::Enum debugOrigin, const CodeLocation& location)
   {
     return CreateCopyOpcode(function, CopyMode::Initialize, type, source, destination, debugOrigin, location);
   }
 
   //***************************************************************************
-  void CodeGenerator::GenerateCopyToParameter(CompiledFunction& function, Type* type, const Operand& source, OperandIndex destRegister, DebugOrigin::Enum debugOrigin, const CodeLocation& location)
+  void CodeGenerator::GenerateCopyToParameter(Function* function, Type* type, const Operand& source, OperandIndex destRegister, DebugOrigin::Enum debugOrigin, const CodeLocation& location)
   {
     return CreateCopyOpcode(function, CopyMode::ToParameter, type, source, Operand(destRegister), debugOrigin, location);
   }
 
   //***************************************************************************
-  void CodeGenerator::GenerateCopyFromReturn(CompiledFunction& function, Type* type, OperandIndex sourceRegister, OperandIndex destRegister, DebugOrigin::Enum debugOrigin, const CodeLocation& location)
+  void CodeGenerator::GenerateCopyFromReturn(Function* function, Type* type, OperandIndex sourceRegister, OperandIndex destRegister, DebugOrigin::Enum debugOrigin, const CodeLocation& location)
   {
     // Side note, copying returns always copies to an uninitialized
     // place in memory so it must always be an initializing copy
@@ -33041,8 +34570,6 @@ namespace Zilch
 \**************************************************************/
 
 // Includes
-
-
 
 namespace Zilch
 {
@@ -33075,8 +34602,9 @@ namespace Zilch
       // We'll basically throw an assert/warning if the user only calls this once an hour or longer
       const long long SecondsPerMinute = 60;
       const long long MinutesPerHour = 60;
-      ErrorIf(difference > Timer::TicksPerSecond * SecondsPerMinute * MinutesPerHour,
-        "The timer should be called at least once an hour to prevent wrap around issues");
+      const long long HoursPerDay = 24;
+      ErrorIf(difference > Timer::TicksPerSecond * SecondsPerMinute * MinutesPerHour * HoursPerDay,
+        "The timer should be called at least once a day to prevent wrap around issues");
     }
     else
     {
@@ -33109,11 +34637,6 @@ namespace Zilch
 \**************************************************************/
 
 // Includes
-
-
-
-
-
 
 namespace Zilch
 {
@@ -33203,7 +34726,7 @@ namespace Zilch
     this->Location = CodeLocation();
     this->Location.Origin = entry.Origin;
     this->Location.CodeUserData = entry.CodeUserData;
-    this->Location.CodeEntryId = entry.Id;
+    this->Location.Code = entry.Code;
     this->Line = 1;
     this->Character = 1;
 
@@ -35364,7 +36887,7 @@ switch (character)
       case '>':
       {
         lastAcceptedPos = this->Position;
-        outToken->TokenId = Grammar::ExplicitAccess /* ExplicitAccess */;
+        outToken->TokenId = Grammar::DynamicAccess /* DynamicAccess */;
         acceptedToken = true;
 
         character = ReadCharacter();
@@ -35428,6 +36951,33 @@ switch (character)
       {
         lastAcceptedPos = this->Position;
         outToken->TokenId = Grammar::GreaterThanOrEqualTo /* GreaterThanOrEqualTo */;
+        acceptedToken = true;
+
+        character = ReadCharacter();
+
+        break;
+      }
+
+    }
+    break;
+  }
+
+  case '~':
+  {
+    tokenType = TokenCategory::Symbol;
+
+    lastAcceptedPos = this->Position;
+    outToken->TokenId = Grammar::BitwiseNot /* BitwiseNot */;
+    acceptedToken = true;
+
+    character = ReadCharacter();
+
+    switch (character)
+    {
+      case '>':
+      {
+        lastAcceptedPos = this->Position;
+        outToken->TokenId = Grammar::NonVirtualAccess /* NonVirtualAccess */;
         acceptedToken = true;
 
         character = ReadCharacter();
@@ -35864,19 +37414,6 @@ switch (character)
     break;
   }
 
-  case '~':
-  {
-    tokenType = TokenCategory::Symbol;
-
-    lastAcceptedPos = this->Position;
-    outToken->TokenId = Grammar::BitwiseNot /* BitwiseNot */;
-    acceptedToken = true;
-
-    character = ReadCharacter();
-
-    break;
-  }
-
   case '@':
   {
     tokenType = TokenCategory::Symbol;
@@ -35983,7 +37520,6 @@ switch (character)
 
 }
 
-
     // If we accepted a token...
     if (acceptedToken)
     {
@@ -35991,7 +37527,7 @@ switch (character)
       if (tokenType == TokenCategory::Keyword)
       {
         // As long as the last character read was not an alpha-numeric character...
-        if (CharacterUtilities::IsAlphaNumeric(character) == false)
+        if (CharacterUtilities::IsAlphaNumeric(character) == false && character != '_')
         {
           // Backup the last read character
           --this->Position;
@@ -36429,7 +37965,6 @@ switch (character)
     return true;
   }
 
-
   //***************************************************************************
   void Tokenizer::UpdateLineAndCharacterNumber(char character)
   {
@@ -36571,16 +38106,6 @@ switch (character)
 
 // Includes
 
-
-
-
-
-
-
-
-
-
-
 namespace Zilch
 {
   //***************************************************************************
@@ -36632,9 +38157,15 @@ namespace Zilch
   }
 
   //***************************************************************************
-  ObjectSize Type::GetCopyableSize() const
+  size_t Type::GetCopyableSize() const
   {
     return this->GetAllocatedSize();
+  }
+
+  //***************************************************************************
+  byte* Type::GenericGetMemory(const byte* value) const
+  {
+    return const_cast<byte*>(value);
   }
 
   //***************************************************************************
@@ -36901,7 +38432,7 @@ namespace Zilch
   }
 
   //***************************************************************************
-  ObjectSize IndirectionType::GetAllocatedSize() const
+  size_t IndirectionType::GetAllocatedSize() const
   {
     return sizeof(Handle);
   }
@@ -36959,9 +38490,25 @@ namespace Zilch
   //***************************************************************************
   String IndirectionType::GenericToString(const byte* value) const
   {
-    // Get the handle value
-    Handle& handle = *(Handle*)value;
-    return this->ToString();
+    // Grab the handle primitive
+    Handle* handle = (Handle*)value;
+
+    // By default, we know at least a base class type of what we're referencing
+    const BoundType* type = this->ReferencedType;
+
+    // The handle may store a more derived type inside it, if so, we should use that to print instead (virtual)
+    if (handle->Type != nullptr)
+      type = handle->Type;
+    
+    // Get a pointer to the data of the object
+    byte* data = handle->Dereference();
+
+    // If converting a null handle to a string... let the user know it's null, and what type it is
+    if (data == nullptr)
+      return BuildString("(null) ", type->ToString());
+
+    // Run the user provided to-string function
+    return type->ToStringFunction(type, data);
   }
 
   //***************************************************************************
@@ -36971,6 +38518,27 @@ namespace Zilch
     Handle& lHandle = *((Handle*)lhs);
     Handle& rHandle = *((Handle*)rhs);
     return lHandle == rHandle;
+  }
+  
+  //***************************************************************************
+  byte* IndirectionType::GenericGetMemory(const byte* value) const
+  {
+    // Get a pointer to the data of the object (indirect types are always handles)
+    return ((Handle*)value)->Dereference();
+  }
+
+  //***************************************************************************
+  Type* IndirectionType::GenericGetVirtualType(const byte* value) const
+  {
+    // Grab the handle
+    Handle* handle = ((Handle*)value);
+    
+    // If it has no type, then return our own type
+    if (handle->Type == nullptr)
+      return (Type*)(this);
+
+    // Otherwise return the type stored on the handle
+    return handle->Type;
   }
 
   //***************************************************************************
@@ -36986,7 +38554,7 @@ namespace Zilch
   }
 
   //***************************************************************************
-  ObjectSize AnyType::GetAllocatedSize() const
+  size_t AnyType::GetAllocatedSize() const
   {
     return sizeof(Any);
   }
@@ -37046,13 +38614,46 @@ namespace Zilch
   }
 
   //***************************************************************************
+  byte* AnyType::GenericGetMemory(const byte* value) const
+  {
+    // Get access to the any primitive
+    Any* any = ((Any*)value);
+
+    // Get the data pointed at by the any
+    const byte* storedValue = any->GetData();
+
+    // If we have a valid stored type... recursively get its memory
+    if (any->StoredType != nullptr)
+      return any->StoredType->GenericGetMemory(storedValue);
+
+    // Otherwise we had nothing stored... just return ourselves
+    // This MUST match the 'GenericGetVirtualType' behavior!
+    return (byte*)value;
+  }
+  
+  //***************************************************************************
+  Type* AnyType::GenericGetVirtualType(const byte* value) const
+  {
+    // Get access to the any primitive
+    Any* any = ((Any*)value);
+
+    // If we have a valid stored type... recursively get its memory
+    if (any->StoredType != nullptr)
+      return any->StoredType->GenericGetVirtualType(value);
+
+    // Otherwise we had nothing stored... just return ourselves
+    // This MUST match the 'GenericGetMemory' behavior!
+    return (Type*)this;
+  }
+
+  //***************************************************************************
   String BoundType::DefaultTypeToString(const BoundType* type, const byte* data)
   {
     return type->Name;
   }
 
   //***************************************************************************
-  BoundType::BoundType(const String& name, TypeCopyMode::Enum copyMode, ObjectSize size, size_t nativeVirtualCount) : 
+  BoundType::BoundType(const String& name, TypeCopyMode::Enum copyMode, size_t size, size_t nativeVirtualCount) : 
     Name(name),
     CopyMode(copyMode),
     BaseType(nullptr),
@@ -37065,10 +38666,9 @@ namespace Zilch
     Destructor(nullptr),
     SizeState(SizeState::Determined),
     SpecialType(SpecialType::Standard),
-    CreatableInScript(true)
+    CreatableInScript(true),
+    Size(size)
   {
-    // Make sure the size is always aligned
-    this->Size = (ObjectSize)size;
   }
 
   //***************************************************************************
@@ -37090,7 +38690,7 @@ namespace Zilch
   }
 
   //***************************************************************************
-  ObjectSize BoundType::GetCopyableSize() const
+  size_t BoundType::GetCopyableSize() const
   {
     if (this->GetCopyMode() == TypeCopyMode::ReferenceType)
     {
@@ -37103,7 +38703,7 @@ namespace Zilch
   }
 
   //***************************************************************************
-  ObjectSize BoundType::GetAllocatedSize() const
+  size_t BoundType::GetAllocatedSize() const
   {
     // Return the size of the class since it's already been computed
     ErrorIf(this->SizeState == SizeState::Undetermined,
@@ -37115,22 +38715,6 @@ namespace Zilch
   String BoundType::ToString() const
   {
     return this->Name;
-  }
-
-  //***************************************************************************
-  byte* BoundType::GetAllocatedMemory(const byte* value) const
-  {
-    // If this is a reference type, it means it's a handle
-    if (this->GetCopyMode() == TypeCopyMode::ReferenceType)
-    {
-      // Hash the handle and return that value
-      return ((Handle*)value)->Dereference();
-    }
-    else
-    {
-      // Otherwise this is a value type, so we just directly return the memory
-      return const_cast<byte*>(value);
-    }
   }
 
   //***************************************************************************
@@ -37194,31 +38778,33 @@ namespace Zilch
   //***************************************************************************
   String BoundType::GenericToString(const byte* value) const
   {
-    // Since the input could be either a handle or a value,
-    // we will guarantee that this actually points directly at the contents
-    const byte* data = nullptr;
+    // By default, we know at least a base class type of what we're referencing
+    // For value types, this is always the case
+    const BoundType* type = this;
 
-    // If this is a reference type, it means it's a handle
+    // For value types, we assume that the type is just the data we get (not for reference types!)
+    byte* data = (byte*)value;
+
+    // If this is a reference type (it may be virtual)
     if (this->GetCopyMode() == TypeCopyMode::ReferenceType)
     {
-      // Get a pointer to the data of the object
-      data = ((Handle*)value)->Dereference();
+      // Grab the handle primitive
+      Handle* handle = (Handle*)value;
 
-      // If converting a null handle to a string...
+      // The handle may store a more derived type inside it, if so, we should use that to print instead (virtual)
+      if (handle->Type != nullptr)
+        type = handle->Type;
+    
+      // Get a pointer to the data of the object
+      data = handle->Dereference();
+
+      // If converting a null handle to a string... let the user know it's null, and what type it is
       if (data == nullptr)
-      {
-        // Let the user know it's null, and what type it is
-        return BuildString("(null) ", this->ToString());
-      }
-    }
-    else
-    {
-      // The data of the object is just the value itself
-      data = value;
+        return BuildString("(null) ", type->ToString());
     }
 
     // Run the user provided to-string function
-    return this->ToStringFunction(this, data);
+    return type->ToStringFunction(type, data);
   }
 
   //***************************************************************************
@@ -37240,9 +38826,98 @@ namespace Zilch
   }
 
   //***************************************************************************
+  byte* BoundType::GenericGetMemory(const byte* value) const
+  {
+    // If this is a reference type, it means it's a handle
+    if (this->GetCopyMode() == TypeCopyMode::ReferenceType)
+    {
+      // Hash the handle and return that value
+      return ((Handle*)value)->Dereference();
+    }
+    else
+    {
+      // Otherwise this is a value type, so we just directly return the memory
+      return const_cast<byte*>(value);
+    }
+  }
+  
+  //***************************************************************************
+  Type* BoundType::GenericGetVirtualType(const byte* value) const
+  {
+    // If this is a reference type, it means it's a handle
+    if (this->GetCopyMode() == TypeCopyMode::ReferenceType)
+    {
+      // Grab the handle (this behavior matches indirect type!)
+      Handle* handle = ((Handle*)value);
+    
+      // If it has no type, then return our own type
+      if (handle->Type == nullptr)
+        return (Type*)(this);
+
+      // Otherwise return the type stored on the handle
+      return handle->Type;
+    }
+    else
+    {
+      // Otherwise this is a value type, so we the type is always the same
+      return (Type*)this;
+    }
+  }
+
+  //***************************************************************************
   TypeCopyMode::Enum BoundType::GetCopyMode() const
   {
     return this->CopyMode;
+  }
+
+  //***************************************************************************
+  Function* BoundType::FindFunction(StringParam name, DelegateType* type, FindMemberOptions::Flags options) const
+  {
+    // The map of functions we'll look in (either static or instance)
+    const FunctionMultiMap* functions = nullptr;
+
+    // If we're looking for static functions...
+    if (options & FindMemberOptions::Static)
+      functions = &this->StaticFunctions;
+    else
+      functions = &this->InstanceFunctions;
+
+    // Attempt to find the array
+    const FunctionArray* foundFunctions = functions->findPointer(name);
+
+    // Check if we found any functions by that name at this level
+    if (foundFunctions != nullptr)
+    {
+      // Get a range so we can walk through all these functions
+      FunctionArray::range foundRange = foundFunctions->all();
+
+      // Loop through all the functions by the same name
+      while (foundRange.empty() == false)
+      {
+        // Grab the current function and iterate to the next
+        Function* function = foundRange.front();
+        foundRange.popFront();
+        
+        // If the signature matches...
+        if (Type::IsSame(function->Type, type))
+        {
+          // Return the function we found
+          return function;
+        }
+      }
+    }
+    // If we found nothing...
+    else
+    {
+      // If we're not searching base classes, just return out
+      if (options & FindMemberOptions::DoNotIncludeBaseClasses || this->BaseType == nullptr)
+        return nullptr;
+      else
+        // Walk up the base class looking for that same function
+        return this->BaseType->FindFunction(name, type, options);
+    }
+
+    return nullptr;
   }
 
   //***************************************************************************
@@ -37253,13 +38928,9 @@ namespace Zilch
 
     // If we're looking for static functions...
     if (options & FindMemberOptions::Static)
-    {
       functions = &this->StaticFunctions;
-    }
     else
-    {
       functions = &this->InstanceFunctions;
-    }
 
     // Attempt to find the array
     const FunctionArray* foundFunctions = functions->findPointer(name);
@@ -37307,18 +38978,9 @@ namespace Zilch
     {
       // If we're not searching base classes, just return out
       if (options & FindMemberOptions::DoNotIncludeBaseClasses || this->BaseType == nullptr)
-      {
-        //if (errors != nullptr)
-        //{
-        //  //errors->Write(
-        //}
-
         return nullptr;
-      }
       else
-      {
         return this->BaseType->FindFunction(name, parameters, returnType, options);
-      }
     }
 
     return nullptr;
@@ -37883,7 +39545,10 @@ namespace Zilch
 
   //***************************************************************************
   DelegateType::DelegateType() :
-    Return(nullptr)
+    Return(nullptr),
+    ReturnStackOffset(0),
+    ThisHandleStackOffset(0),
+    TotalStackSizeExcludingThisHandle(0)
   {
   }
 
@@ -38014,7 +39679,7 @@ namespace Zilch
   }
 
   //***************************************************************************
-  ObjectSize DelegateType::GetAllocatedSize() const
+  size_t DelegateType::GetAllocatedSize() const
   {
     // Functions take up the size of a function index
     return sizeof(Delegate);
@@ -38052,7 +39717,7 @@ namespace Zilch
   {
     // Get the delegate value and write it's function out as a string
     Delegate& delegate = *(Delegate*)value;
-    return delegate.Info.BoundFunction->ToString();
+    return delegate.BoundFunction->ToString();
   }
 
   //***************************************************************************
@@ -38063,14 +39728,23 @@ namespace Zilch
     Delegate& rDelegate = *((Delegate*)rhs);
     return lDelegate == rDelegate;
   }
+
+  //***************************************************************************
+  Type* DelegateType::GenericGetVirtualType(const byte* value) const
+  {
+    Delegate* delegate = (Delegate*)value;
+    Function* function = delegate->BoundFunction;
+    if (function == nullptr)
+      return (Type*)this;
+
+    return function->Type;
+  }
 }/**************************************************************\
 * Author: Trevor Sundberg
 * Copyright 2012-2014, DigiPen Institute of Technology
 \**************************************************************/
 
 // Includes
-
-
 
 namespace Zilch
 {
@@ -38082,16 +39756,6 @@ namespace Zilch
 \**************************************************************/
 
 // Includes
-
-
-
-
-
-
-
-
-
-
 
 //*****************************************************************************
 #define ZilchCaseBinaryRValue2(argType1, argType2, resultType, operation, expression)                   \
@@ -38550,7 +40214,7 @@ namespace Zilch
   //***************************************************************************
   // Get a reference to a member variable (field), given the place in the registers that the handle exists, and the member index...
   template <typename T>
-  ZilchForceInline T& GetField(PerFrameData* stackFrame, PerFrameData* reportFrame, OperandIndex handleOperand, ObjectOffset memberOperand)
+  ZilchForceInline T& GetField(PerFrameData* stackFrame, PerFrameData* reportFrame, OperandIndex handleOperand, size_t memberOperand)
   {
     // Grab the handle to the object
     Handle& handle = *(Handle*)(stackFrame->Frame + handleOperand);
@@ -38575,7 +40239,7 @@ namespace Zilch
   //***************************************************************************
   // Get a particular constant from a function
   template <typename T>
-  ZilchForceInline T& GetConstant(CompiledFunction* function, OperandIndex constantOperand)
+  ZilchForceInline T& GetConstant(Function* function, OperandIndex constantOperand)
   {
     // Make sure the value we're grabbing is inside the constant buffer (error checking)
     ErrorIf(constantOperand < 0 || constantOperand + sizeof(T) > function->Constants.GetSize(),
@@ -38605,7 +40269,7 @@ namespace Zilch
       return GetField<T>(stackFrame, reportFrame, operand.HandleConstantLocal, operand.Field);
 
     case OperandType::Constant:
-      return GetConstant<T>((CompiledFunction*)stackFrame->CurrentFunction, operand.HandleConstantLocal);
+      return GetConstant<T>(stackFrame->CurrentFunction, operand.HandleConstantLocal);
 
     case OperandType::Local:
       return GetLocal<T>(stackFrame->Frame, operand.HandleConstantLocal);
@@ -38757,7 +40421,7 @@ namespace Zilch
     PerFrameData* ourFrame = state->StackFrames.back();
 
     // The program counter increments with each instruction (instructions can also be variable width, and this number is measured in bytes)
-    ourFrame->ProgramCounter = ourFrame->ProgramCounterStart;
+    ourFrame->ProgramCounter = 0;
     size_t& programCounter = ourFrame->ProgramCounter;
 
     // Setup where we jump to if an exception occurs
@@ -38772,9 +40436,10 @@ ExceptionJump:
 
     // Store the compacted opcode as an attempt to bring the opcode into crash reports / mini-dumps
     // Also save it into a non-thread safe global pointer (hopefully it will be pulled in)
-    byte* compactedOpcode = state->CompactedOpcode.data();
+    byte* compactedOpcode = ourFrame->CurrentFunction->CompactedOpcode.data();
     ZilchLastRunningOpcode = compactedOpcode;
-    ZilchLastRunningOpcodeLength = state->CompactedOpcode.size();
+    ZilchLastRunningFunction = ourFrame->CurrentFunction;
+    ZilchLastRunningOpcodeLength = ourFrame->CurrentFunction->CompactedOpcode.size();
 
     // Loop through all the opcodes in the function
     // We don't need to check for the end since the return opcode will exit this function
@@ -38787,7 +40452,7 @@ ExceptionJump:
       if (state->OpcodePreStepCallback.Callback != nullptr)
       {
         // Get the location of this opcode
-        CodeLocation* location = state->GetCodeLocationFromProgramCounter(programCounter);
+        CodeLocation* location = ourFrame->CurrentFunction->GetCodeLocationFromProgramCounter(programCounter);
 
         // Invoke the callback
         state->OpcodePreStepCallback.Callback(state, programCounter, location, state->OpcodePreStepCallback.UserData);
@@ -38886,7 +40551,7 @@ ExceptionJump:
             ourFrame->QueueHandleCleanup(&handle);
 
             // Initialize the stack handle to point at the given location
-            state->InitializeStackHandle(handle, ourFrame->Frame + op.ToHandle.HandleConstantLocal);
+            state->InitializeStackHandle(handle, ourFrame->Frame + op.ToHandle.HandleConstantLocal, op.Type);
           }
           else
           {
@@ -38906,6 +40571,9 @@ ExceptionJump:
 
             // Add the offset to the handle
             handle.Offset += op.ToHandle.Field;
+
+            // The type we're now referring to is whatever the field is at that offset
+            handle.Type = op.Type;
           }
 
           // Move the instruction counter past this opcode
@@ -38924,7 +40592,7 @@ ExceptionJump:
           Delegate& delegate = *new (ourFrame->Frame + op.SaveLocal) Delegate();
 
           // Set the delegate's function index to the opcode's index
-          delegate.Info = op.Info;
+          delegate.BoundFunction = op.BoundFunction;
 
           // Even though the 'this' handle is null, we still need to clean it up
           // just to be proper, but also because someone could theoretically assign to it
@@ -38945,10 +40613,21 @@ ExceptionJump:
           Delegate& delegate = *new (ourFrame->Frame + op.SaveLocal) Delegate();
 
           // Set the delegate's function index to the opcode's index
-          delegate.Info = op.Info;
+          delegate.BoundFunction = op.BoundFunction;
 
           // Set the handle that will basically act as the 'this' pointer for the delegate
           delegate.ThisHandle = GetOperand<Handle>(ourFrame, ourFrame, op.ThisHandle);
+
+          // If the function we're binding is virtual and we're not calling this function 'non-virtually'
+          if (op.BoundFunction->IsVirtual && op.CanBeVirtual)
+          {
+            // Find the function on our derived type that matches the signature / name
+            Function* function = delegate.ThisHandle.Type->FindFunction(op.BoundFunction->Name, op.BoundFunction->Type, FindMemberOptions::None);
+            if (function != nullptr)
+              delegate.BoundFunction = function;
+            else
+              Error("Unable to find the most derived virtual function, we can continue but this should not happen");
+          }
 
           // We need to make sure we cleanup this handle
           ourFrame->QueueDelegateCleanup(&delegate);
@@ -39010,7 +40689,7 @@ ExceptionJump:
           const Delegate& delegate = GetOperand<Delegate>(ourFrame, ourFrame, op.Delegate);
 
           // Lookup the function in the function array
-          Function* functionToInvoke = delegate.Info.BoundFunction;
+          Function* functionToInvoke = delegate.BoundFunction;
 
           // If we attempted to invoke a null delegate then throw an exception
           if (functionToInvoke == nullptr)
@@ -39024,7 +40703,7 @@ ExceptionJump:
           PerFrameData* topFrame = state->StackFrames.back();
 
           // Create a new stack frame for our function
-          PerFrameData* newFrame = state->PushFrame(topFrame->NextFrame, functionToInvoke, delegate.Info.OpcodeLocation);
+          PerFrameData* newFrame = state->PushFrame(topFrame->NextFrame, functionToInvoke);
 
           // If the stack frame was created in an error state, then attempt to throw exceptions
           // If this returns true (meaning exceptions were thrown) then we'll jump out
@@ -39076,7 +40755,7 @@ ExceptionJump:
           const CreateLocalTypeOpcode& op = (const CreateLocalTypeOpcode&) opcode;
 
           // Get the type that we're creating
-          BoundType* createdType = state->CreatedTypes[op.TypeIndex];
+          BoundType* createdType = op.CreatedType;
 
           // Allocate the object
           Handle handle = state->AllocateStackObject(ourFrame->Frame + op.StackLocal, createdType, report);
@@ -39104,7 +40783,7 @@ ExceptionJump:
           const CreateTypeOpcode& op = (const CreateTypeOpcode&) opcode;
 
           // Get the type that we're creating
-          BoundType* createdType = state->CreatedTypes[op.TypeIndex];
+          BoundType* createdType = op.CreatedType;
 
           // Allocate the object
           Handle handle = state->AllocateHeapObject(createdType, report, HeapFlags::ReferenceCounted);
@@ -39132,7 +40811,7 @@ ExceptionJump:
           const CreatePropertyDelegateOpcode& op = (const CreatePropertyDelegateOpcode&) opcode;
 
           // Get the type that we're creating
-          BoundType* createdType = state->CreatedTypes[op.TypeIndex];
+          BoundType* createdType = op.CreatedType;
 
           // Allocate the object
           Handle handle = state->AllocateDefaultConstructedHeapObject(createdType, report, HeapFlags::ReferenceCounted);
@@ -39156,8 +40835,8 @@ ExceptionJump:
           Handle& thisHandle = *(Handle*)(ourFrame->Frame + op.ThisHandleLocal);
 
           // Set the delegate's function index to the opcode's index
-          propertyDelegate->Get.Info = op.Get;
-          propertyDelegate->Set.Info = op.Set;
+          propertyDelegate->Get.BoundFunction = op.Get;
+          propertyDelegate->Set.BoundFunction = op.Set;
           propertyDelegate->Get.ThisHandle = thisHandle;
           propertyDelegate->Set.ThisHandle = thisHandle;
 
@@ -39580,7 +41259,7 @@ ExceptionJump:
       if (state->OpcodePostStepCallback.Callback != nullptr)
       {
         // Get the location of this opcode
-        CodeLocation* location = state->GetCodeLocationFromProgramCounter(programCounter);
+        CodeLocation* location = ourFrame->CurrentFunction->GetCodeLocationFromProgramCounter(programCounter);
 
         // Invoke the callback
         state->OpcodePostStepCallback.Callback(state, programCounter, location, state->OpcodePostStepCallback.UserData);
@@ -39595,7 +41274,7 @@ ExceptionJump:
     for (size_t i = 0; i < boundType->Handles.size(); ++i)
     {
       // Get the index that the primitive is at
-      ObjectOffset index = boundType->Handles[i];
+      size_t index = boundType->Handles[i];
 
       // Destroy the primitive (which may decrement a reference)
       Handle& toDestroy = *(Handle*)(objectData + index);
@@ -39606,7 +41285,7 @@ ExceptionJump:
     for (size_t i = 0; i < boundType->Delegates.size(); ++i)
     {
       // Get the index that the primitive is at
-      ObjectOffset index = boundType->Delegates[i];
+      size_t index = boundType->Delegates[i];
 
       // Destroy the primitive (which may decrement a reference)
       Delegate& toDestroy = *(Delegate*)(objectData + index);
@@ -39618,6 +41297,7 @@ ExceptionJump:
 //***************************************************************************
 // ONLY FOR DEBUGGING
 byte* ZilchLastRunningOpcode = nullptr;
+Zilch::Function* ZilchLastRunningFunction = nullptr;
 size_t ZilchLastRunningOpcodeLength = 0;
 /**************************************************************\
 * Author: Trevor Sundberg
@@ -39625,7 +41305,6 @@ size_t ZilchLastRunningOpcodeLength = 0;
 \**************************************************************/
 
 // Includes
-
 
 /*
 cencode.h - c header for a base64 encoding algorithm
@@ -39661,16 +41340,11 @@ size_t base64_encode_blockend(char* code_out, base64_encodestate* state_in);
 
 #endif /* BASE64_CENCODE_H */
 
-
-
 /* public api for steve reid's public domain SHA-1 implementation */
 /* this file is in the public domain */
 
 #ifndef __SHA1_H
 #define __SHA1_H
-
-
-
 
 typedef u32 uint32_t;
 typedef u8 uint8_t;
@@ -39697,7 +41371,6 @@ void SHA1_Final(SHA1_CTX* context, uint8_t digest[SHA1_DIGEST_SIZE]);
 
 #endif /* __SHA1_H */
 
-
 // Using directives
 using namespace Zero;
 
@@ -39707,12 +41380,22 @@ using namespace Zero;
 namespace Zilch
 {
   //***************************************************************************
-  WebSocketConnection::WebSocketConnection()
+  ZilchDefineSimpleType(WebSocketEvent, WebSockets);
+  
+  //***************************************************************************
+  WebSocketEvent::WebSocketEvent() :
+    Connection(nullptr),
+    PacketType(WebSocketPacketType::Invalid)
+  {
+  }
+
+  //***************************************************************************
+  BlockingWebSocketConnection::BlockingWebSocketConnection()
   {
   }
   
   //***************************************************************************
-  void WebSocketConnection::SendFullPacket(Status& status, const byte* data, size_t length, WebSocketPacketType::Enum packetType)
+  void BlockingWebSocketConnection::SendFullPacket(Status& status, const byte* data, size_t length, WebSocketPacketType::Enum packetType)
   {
     // The header has a maximum size without the mask, lets build that header
     byte header[10] = {0};
@@ -39722,13 +41405,8 @@ namespace Zilch
     // Since we're always sending a full packet (not truncated or fragments) then this is always a FIN packet
     header[0] |= 0x80;
 
-    // Set the opcode bit depending on if we're in text or binary
-    if (packetType == WebSocketPacketType::Text)
-      header[0] |= 0x01;
-    else if (packetType == WebSocketPacketType::Binary)
-      header[0] |= 0x02;
-    else
-      Error("Unkown packet type being sent in WebSocketConnection");
+    // Set the opcode bit depending on if we're in text or binary or some other control opcode
+    header[0] |= (byte)packetType;
 
     // We don't bother to set the mask bit, so just set the second byte as the size (and onward if we need it)
     if (length < 126)
@@ -39754,19 +41432,25 @@ namespace Zilch
 
     // Send the header off first (this will block until it sends the entire thing!)
     int sentSizeHeader = this->RemoteSocket.Send(status, header, (int)headerSize, SocketFlags::None);
-    ErrorIf(sentSizeHeader != (int)headerSize, "We should always send the entire header, send should block until its all sent!");
+    ErrorIf(sentSizeHeader != 0 && sentSizeHeader != (int)headerSize, "We should always send the entire header, send should block until its all sent!");
     if (status.Failed())
       return;
 
     // Now send the rest of the payload data (could be done in one send, no problem though!)
     int sentSizeData = this->RemoteSocket.Send(status, data, (int)length, SocketFlags::None);
-    ErrorIf(sentSizeData != (int)length, "We should always send the entire data, send should block until its all sent!");
+    ErrorIf(sentSizeData != 0 && sentSizeData != (int)length, "We should always send the entire data, send should block until its all sent!");
     if (status.Failed())
       return;
   }
+  
+  //***************************************************************************
+  bool BlockingWebSocketConnection::IsValid()
+  {
+    return this->RemoteSocket.IsValid();
+  }
 
   //***************************************************************************
-  WebSocketPacketType::Enum WebSocketConnection::ReceiveFullPacket(Status& status, Array<byte>& dataOut)
+  WebSocketPacketType::Enum BlockingWebSocketConnection::ReceiveFullPacket(Status& status, String& dataOut)
   {
     // All the information we need for a web-socket header
     bool readHeader = false;
@@ -39776,7 +41460,7 @@ namespace Zilch
     bool rsv1 = false;
     bool rsv2 = false;
     bool rsv3 = false;
-    int opcode = -1;
+    WebSocketPacketType::Enum opcode = WebSocketPacketType::Invalid;
 
     // Clear the data, just so that if the user is reusing a buffer, they don't get confused
     dataOut.clear();
@@ -39791,15 +41475,17 @@ namespace Zilch
       byte buffer[ReceiveBufferSize];
       int amountReceived = this->RemoteSocket.Receive(status, buffer, ReceiveBufferSize, SocketFlags::None);
       
-      if (status.Failed())
+      // If the receive call failed, or we gracefully disconnected...
+      if (status.Failed() || amountReceived == 0)
         return WebSocketPacketType::Invalid;
 
       // Add the data to a remaining buffer
       this->ReadData.insert(this->ReadData.end(), buffer, buffer + amountReceived);
       byte* data = this->ReadData.data();
 
-      // If we have the minimum amount of data for a header (technically could be smaller...)
-      if (this->ReadData.size() >= 14)
+      // The minimum amount of data a packet can be is 6, but the header can be larger because of extended sizes
+      // This includes the opcode/starting bits (1), the payload length (1), and the mask (4)
+      if (readHeader == false && this->ReadData.size() >= 6)
       {
         // First, read the header byte which tells us all the options
         byte headerByte = data[0];
@@ -39807,7 +41493,7 @@ namespace Zilch
         rsv1 = (headerByte & 0x40) != 0;
         rsv2 = (headerByte & 0x20) != 0;
         rsv3 = (headerByte & 0x10) != 0;
-        opcode = (headerByte & 0x0F);
+        opcode = (WebSocketPacketType::Enum)(headerByte & 0x0F);
         
         // Read the size of our packet
         byte sizeByte = data[1];
@@ -39816,31 +41502,54 @@ namespace Zilch
         bool masking = (sizeByte & 0x80) != 0;
         sizeByte &= 0x7F;
         
+        // We read the opcode/bits and the payload length, which is 2 bytes
         size_t position = 2;
         payloadSize = sizeByte;
+
+        // Assume right now that we successfully read the header (we may still fail below if we don't have enough header data)
+        readHeader = true;
         
-        // If the size is 126, then it means we have an extra 16 bits of data
+        // If the size is 126, then it means we have an extra 16 bits of data (2 bytes)
         if (sizeByte == 126)
         {
-          payloadSize = Socket::NetworkByteOrderSwap((unsigned short)(data[2] + (data[3] << 8)));
-          position = 4;
+          // We're reading an extended payload size of 2 bytes, which means we must have at least 8 bytes (6 + 2) of data in total for the whole header
+          if (this->ReadData.size() >= 8)
+          {
+            payloadSize = Socket::NetworkByteOrderSwap((unsigned short)(data[2] + (data[3] << 8)));
+            position = 4;
+          }
+          else
+          {
+            // We couldn't read the extended payload, because we didn't have enough data read for it
+            readHeader = false;
+          }
         }
-        // If the size is 127, then we have an extra 64 bits of data
+        // If the size is 127, then we have an extra 64 bits of data (8 bytes)
         else if (sizeByte == 127)
         {
-          payloadSize = (size_t)Socket::NetworkByteOrderSwap((unsigned long long)(data[2] + (data[3] << 8) + (data[4] << 16) + (data[5] << 24) + ((unsigned long long)data[6] << 32) + ((unsigned long long)data[7] << 40) + ((unsigned long long)data[8] << 48) + ((unsigned long long)data[9] << 56)));
-          position = 10;
+          // We're reading an extended payload size of 8 bytes, which means we must have at least 14 bytes (6 + 8) of data in total for the whole header
+          if (this->ReadData.size() >= 14)
+          {
+            payloadSize = (size_t)Socket::NetworkByteOrderSwap((unsigned long long)(data[2] + (data[3] << 8) + (data[4] << 16) + (data[5] << 24) + ((unsigned long long)data[6] << 32) + ((unsigned long long)data[7] << 40) + ((unsigned long long)data[8] << 48) + ((unsigned long long)data[9] << 56)));
+            position = 10;
+          }
+          else
+          {
+            // We couldn't read the extended payload, because we didn't have enough data read for it
+            readHeader = false;
+          }
         }
 
-        // Last but not least, read the mask!
-        memcpy(mask, data + position, 4);
-        position += 4;
+        // If we successfully read in all the header data...
+        if (readHeader)
+        {
+          // Last but not least, read the mask!
+          memcpy(mask, data + position, 4);
+          position += 4;
 
-        // Remove the header from the data
-        this->ReadData.erase(Array<byte>::range(data, data + position));
-
-        // We successfully read the header!
-        readHeader = true;
+          // Remove the header from the data
+          this->ReadData.erase(Array<byte>::range(data, data + position));
+        }
       }
 
       // If we already read the header and we have enough data to read the entire packet...
@@ -39849,8 +41558,12 @@ namespace Zilch
         // Get a pointer to the data (for convenience)
         byte* data = this->ReadData.data();
 
-        // Resize the user's buffer to fit the entire payload size
-        dataOut.resize(payloadSize);
+        // Directly create a string node that we'll assign to a string (where we copy our data into)
+        String::StringNode* node = String::allocateNode(payloadSize);
+
+        // Clear the reference count to 0, since assigning the node to the String actuall increments the reference count
+        // Note: This behavior may change in the future!
+        node->RefCount = 0;
 
         // Loop through the payload and apply the mask to it
         for (size_t i = 0; i < payloadSize; ++i)
@@ -39858,47 +41571,34 @@ namespace Zilch
           // Grab the current mask character (rotates by 4 over and over)
           // Apply this mask to the current byte we're reading, and put it into the user output
           char maskChar = mask[i % 4];
-          dataOut[i] = data[i] ^ maskChar;
+          node->Data[i] = data[i] ^ maskChar;
         }
+
+        // Because we could be treating the payload data as a string, and we want to play nice with the String class
+        // set the last byte in the output buffer to be a null terminator (binary data does not use this, but just to be safe!)
+        node->Data[payloadSize] = '\0';
+
+        // Now output the string from the node we just created
+        dataOut = String(node);
 
         // We're done, we read a full packet, remove the data we read so that the next packet can be processed
         this->ReadData.erase(Array<byte>::range(data, data + payloadSize));
-
-        // If the packet type is a text packet
-        if (opcode == 0x01)
-        {
-          return WebSocketPacketType::Text;
-        }
-        // If the packet type is a binary packet
-        else if (opcode == 0x02)
-        {
-          return WebSocketPacketType::Binary;
-        }
-        // Otherwise, it's some unknown kind of packet...
-        else
-        {
-          status.SetFailed("Unsupported message type (opcode) received in WebSocketConnection");
-          return WebSocketPacketType::Invalid;
-        }
+        return opcode;
       }
     }
   }
 
   //***************************************************************************
-  WebSocketServer::WebSocketServer()
+  BlockingWebSocketListener::BlockingWebSocketListener()
   {
   }
   
   //***************************************************************************
-  void WebSocketServer::Initialize(Status& status)
+  void BlockingWebSocketListener::Initialize(Status& status, int port)
   {
     // Web sockets are strictly TCP
-    this->Listener.Initialize(status, SocketAddressFamily::InterNetworkV4, SocketType::Stream, SocketProtocolType::Tcp);
-  }
+    this->ListenerSocket.Initialize(status, SocketAddressFamily::InterNetworkV4, SocketType::Stream, SocketProtocolType::Tcp);
 
-  //***************************************************************************
-  void WebSocketServer::Host(Status& status, int port)
-  {
     // First create a local socket address, bound to any network adapter (let the OS choose)
     // Use the port that the user passed in
     SocketAddress localAddress;
@@ -39908,26 +41608,32 @@ namespace Zilch
       return;
 
     // Next, bind our listener socket to that address
-    this->Listener.Bind(status, localAddress);
+    this->ListenerSocket.Bind(status, localAddress);
 
     if (status.Failed())
       return;
 
     // Now listen on the socket, which should allow incoming connections to be accepted
-    this->Listener.Listen(status, Socket::GetMaxConnectionBacklog());
+    this->ListenerSocket.Listen(status, Socket::GetMaxConnectionBacklog());
   }
   
   //***************************************************************************
-  void WebSocketServer::Close(Status& status)
+  void BlockingWebSocketListener::Close(Status& status)
   {
-    this->Listener.Close(status);
+    this->ListenerSocket.Close(status);
+  }
+
+  //***************************************************************************
+  bool BlockingWebSocketListener::IsValid()
+  {
+    return this->ListenerSocket.IsValid();
   }
   
   //***************************************************************************
-  void WebSocketServer::Accept(Status& status, WebSocketConnection& connectionOut)
+  void BlockingWebSocketListener::Accept(Status& status, BlockingWebSocketConnection& connectionOut)
   {
     // Attempt to accept a connection
-    this->Listener.Accept(status, &connectionOut.RemoteSocket, &connectionOut.RemoteAddress);
+    this->ListenerSocket.Accept(status, &connectionOut.RemoteSocket, &connectionOut.RemoteAddress);
 
     if (status.Failed())
       return;
@@ -39951,7 +41657,8 @@ namespace Zilch
       byte buffer[ReceiveBufferSize];
       int amountReceived = connectionOut.RemoteSocket.Receive(status, buffer, ReceiveBufferSize, SocketFlags::None);
       
-      if (status.Failed())
+      // If the receive call failed, or we gracefully disconnected...
+      if (status.Failed() || amountReceived == 0)
         return;
 
       // Add the data to a remaining buffer
@@ -40052,7 +41759,6 @@ namespace Zilch
     // Loop until we read the full header
     while (readFullHttpHeader == false);
 
-
     // A special guid appended to the 'accept' message that the server sends back (just to identify web sockets)
     static const String ServerGuid("258EAFA5-E914-47DA-95CA-C5AB0DC85B11");
     static const String SecWebSocketKey("Sec-WebSocket-Key");
@@ -40098,6 +41804,558 @@ namespace Zilch
     // This should be the last thing we have to send!
     connectionOut.RemoteSocket.Send(status, (byte*)response.data(), (int)response.size(), SocketFlags::None);
   }
+  
+  //***************************************************************************
+  void ThreadedWebSocketConnection::SendPacket(StringParam message, WebSocketPacketType::Enum packetType)
+  {
+    // First initiale the lock around the send messages queue, append the message
+    // then unlock it so the 'SendThread' can resume its work
+    this->SendLock.Lock();
+
+    // We just use the event structure because it has all the data we need
+    WebSocketEvent& toSend = this->SendMessages.push_back();
+    toSend.Data = message;
+    toSend.PacketType = packetType;
+
+    // We need to tell the send thread that it now has data to send (unblocks it)
+    // This MUST happen inside the locks, otherwise it's possibly to consume
+    // all messages in the send thread before the singal, and cause the send thread to exit
+    this->SendEvent.Signal();
+    this->SendLock.Unlock();
+  }
+
+  //***************************************************************************
+  ThreadedWebSocketConnection::ThreadedWebSocketConnection()
+  {
+  }
+
+  //***************************************************************************
+  ThreadedWebSocketConnection::~ThreadedWebSocketConnection()
+  {
+    // Closing automatically terminates threads and the socket
+    // It's also safe to call more than once
+    this->Close();
+  }
+
+  //***************************************************************************
+  bool ThreadedWebSocketConnection::IsValid()
+  {
+    return this->BlockingConnection.IsValid();
+  }
+  
+  //***************************************************************************
+  void ThreadedWebSocketConnection::Close()
+  {
+    // If the connection is already closed... early out
+    if (this->IsValid() == false)
+      return;
+
+    // Shutdown the remote connection, which should signal that we're ending the connection
+    WebSocketEvent shutdownEvent;
+    shutdownEvent.Connection = this;
+    this->BlockingConnection.RemoteSocket.Shutdown(shutdownEvent.ErrorStatus, SocketIo::Both);
+
+    // Close the remote connection
+    WebSocketEvent closeEvent;
+    closeEvent.Connection = this;
+    this->BlockingConnection.RemoteSocket.Close(closeEvent.ErrorStatus);
+
+    // Clear out the messages to be sent
+    this->SendLock.Lock();
+    this->SendMessages.clear();
+    this->SendLock.Unlock();
+
+    // Signal the send event, if it gets signaled and there's no messages, it means we're closing
+    this->SendEvent.Signal();
+    this->SendThread.WaitForCompletion();
+    
+    // Wait until the receive thread ends...
+    this->ReceiveThread.WaitForCompletion();
+
+    // If the shutdown status failed for any reason, dispatch an event out
+    if (shutdownEvent.ErrorStatus.Failed())
+      this->Send(Events::WebSocketError, &shutdownEvent);
+
+    // If the close status failed for any reason, dispatch an event out
+    if (closeEvent.ErrorStatus.Failed())
+      this->Send(Events::WebSocketError, &closeEvent);
+
+    // After the entire closure of the socket, send out a disconnected event
+    WebSocketEvent disconnectEvent;
+    disconnectEvent.Connection = this;
+    this->Send(Events::WebSocketDisconnected, &disconnectEvent);
+  }
+
+  //***************************************************************************
+  void ThreadedWebSocketConnection::Update()
+  {
+    // Lock the recieve buffer and bring all messages to the owning recieve message array
+    this->IncomingLock.Lock();
+    this->OwnerIncomingEvents.swap(this->ThreadIncomingEvents);
+    this->IncomingLock.Unlock();
+    
+    // Walk through all messages and deliver them to the user
+    for (size_t i = 0; i < this->OwnerIncomingEvents.size(); ++i)
+    {
+      // Grab the current message and send out a recieved event
+      WebSocketEvent* event = &this->OwnerIncomingEvents[i];
+
+      // Depending on what happened, send out either an error message or a received data message
+      // Note: Errors can originate both from the send and receive thread
+      if (event->ErrorStatus.Failed())
+      {
+        // Only send out the error if its a real error (we don't consider receive/close errors as bad errors)
+        if (Socket::IsReceiveCloseError(event->ErrorStatus.ExtendedErrorCode) == false)
+          this->Send(Events::WebSocketError, event);
+      }
+      else
+      {
+        // Based on the packet type..
+        // Note: We don't currently handle pong because we don't care (nor do we send out pings)
+        switch (event->PacketType)
+        {
+          // If we received either text or binary data, let the user know
+          case WebSocketPacketType::Binary:
+          case WebSocketPacketType::Text:
+            this->Send(Events::WebSocketReceivedData, event);
+            break;
+
+          // A continuation of a packet is a partial packet...
+          case WebSocketPacketType::Continuation:
+            Error("WebSocket Continuation packets are not currently handled");
+            break;
+
+          // We must respond with a pong
+          case WebSocketPacketType::Ping:
+            this->SendPacket(event->Data, WebSocketPacketType::Pong);
+            break;
+
+          // When the socket is closed, we must send a close response and close our own socket
+          case WebSocketPacketType::Close:
+            this->SendPacket(event->Data, WebSocketPacketType::Close);
+            break;
+        }
+      }
+    }
+
+    // Clear out the owning messages
+    this->OwnerIncomingEvents.clear();
+
+    // Now, if we ever experienced a disconnect, either via a non-writable socket or a thread terminates
+    // then we'll attempt to close the socket
+    // The receive thread can terminate on any error or upon a gracefull disconnect (receives 0 data)
+    // The send thread can terminate on any error or upon sending the final web-socket close packet
+    if (this->ReceiveThread.IsCompleted() || this->SendThread.IsCompleted())
+      this->Close();
+  }
+
+  //***************************************************************************
+  void ThreadedWebSocketConnection::Initialize()
+  {
+    // The send event will be used to signal the send thread that we have data outgoing
+    this->SendEvent.Initialize();
+    
+    // Initialize all of our threads
+    this->ReceiveThread.Initialize(ReceiveEntryPoint, this, "WebSocketReceive");
+    this->SendThread.Initialize(SendEntryPoint, this, "WebSocketSend");
+
+    // Start the send and recieve threads
+    this->SendThread.Resume();
+    this->ReceiveThread.Resume();
+  }
+
+  //***************************************************************************
+  OsInt ThreadedWebSocketConnection::ReceiveEntryPoint(void* context)
+  {
+    // The context we pass in is our 'this' pointer
+    ThreadedWebSocketConnection* self = (ThreadedWebSocketConnection*)context;
+
+    // Receive messages until the socket is closed or we disconnect
+    ZilchLoop
+    {
+      // Create an event that we'll queue up for the owning thread to receive
+      WebSocketEvent receivedEvent;
+      receivedEvent.Connection = self;
+
+      // Receive an entire packet of text, this text should be json data
+      receivedEvent.PacketType = self->BlockingConnection.ReceiveFullPacket(receivedEvent.ErrorStatus, receivedEvent.Data);
+      
+      // Lock the recieve buffer and push the message into it
+      // The message may be an actual packet, or an error message
+      self->IncomingLock.Lock();
+      self->ThreadIncomingEvents.push_back(receivedEvent);
+      self->IncomingLock.Unlock();
+
+      // If we failed to for any reason (or disconnected gracefully), exit out of the thread
+      if (receivedEvent.PacketType == WebSocketPacketType::Invalid)
+        return 0;
+    }
+  }
+
+  //***************************************************************************
+  OsInt ThreadedWebSocketConnection::SendEntryPoint(void* context)
+  {
+    // The context we pass in is our 'this' pointer
+    ThreadedWebSocketConnection* self = (ThreadedWebSocketConnection*)context;
+
+    // We pull messages from the debugger's owning thread into our thread
+    Array<WebSocketEvent> messageQueue;
+
+    ZilchLoop
+    {
+      // Wait for any messages to be put on the queue
+      self->SendEvent.Wait();
+
+      // Make sure OUR message queue is empty (this is safe to do outside the lock)
+      ErrorIf(messageQueue.empty() == false,
+        "We should have sent all messages before attempting to swap with the main thread");
+
+      // We got some messages, lock and swap with our own message buffer
+      self->SendLock.Lock();
+
+      // If we have no messages but the send event was signaled
+      if (self->SendMessages.empty())
+      {
+        // Make sure to unlock and early return out
+        self->SendLock.Unlock();
+        return 0;
+      }
+
+      // Very quickly swap our entire send messages array with theirs
+      // Note: This should always clear our their array because ours should be empty
+      messageQueue.swap(self->SendMessages);
+
+      // Due to a race condition that can happen where the main thread queues up
+      // a message between the Wait and the Lock, then we will have the event set in the next loop,
+      // yet we will have cleared all the messages (swapped)
+      self->SendEvent.Reset();
+
+      // We're done, that was fast!
+      self->SendLock.Unlock();
+
+      // Send every message we have
+      for (size_t i = 0; i < messageQueue.size(); ++i)
+      {
+        // Grab the current message
+        WebSocketEvent& message = messageQueue[i];
+
+        // This is only queued up in the case that an error occurs
+        WebSocketEvent errorEvent;
+        errorEvent.Connection = self;
+
+        // Send the full packet over
+        self->BlockingConnection.SendFullPacket(errorEvent.ErrorStatus, (const byte*)message.Data.data(), message.Data.size(), message.PacketType);
+
+        // If we encountered an error when sending...
+        if (errorEvent.ErrorStatus.Failed())
+        {
+          // Lock the recieve buffer and push the error into it
+          self->IncomingLock.Lock();
+          self->ThreadIncomingEvents.push_back(errorEvent);
+          self->IncomingLock.Unlock();
+
+          // We always exit the send thread in the event of an error
+          return 0;
+        }
+
+        // If the last packet was a close packet, we must not send any more data, as per the web-socket RFC
+        if (message.PacketType == WebSocketPacketType::Close)
+          return 0;
+      }
+
+      // Clear out the queue
+      messageQueue.clear();
+    }
+  }
+
+  
+  //***************************************************************************
+  ThreadedWebSocketListener::ThreadedWebSocketListener() :
+    AcceptingConnection(nullptr)
+  {
+  }
+  
+  //***************************************************************************
+  ThreadedWebSocketListener::~ThreadedWebSocketListener()
+  {
+    this->Close();
+  }
+  
+  //***************************************************************************
+  void ThreadedWebSocketListener::Initialize(int port)
+  {
+    // Starts listening on the given port
+    WebSocketEvent hostEvent;
+    this->BlockingListener.Initialize(hostEvent.ErrorStatus, port);
+
+    // If the hosting status failed for any reason, dispatch an event out
+    if (hostEvent.ErrorStatus.Failed())
+      this->Send(Events::WebSocketError, &hostEvent);
+
+    // Create the web socket accepting thread
+    this->AcceptThread.Initialize(AcceptEntryPoint, this, "WebSocketAccept");
+
+    // Start the accepting thread
+    this->AcceptThread.Resume();
+  }
+
+  //***************************************************************************
+  bool ThreadedWebSocketListener::IsValid()
+  {
+    return this->BlockingListener.IsValid();
+  }
+
+  //***************************************************************************
+  void ThreadedWebSocketListener::Close()
+  {
+    // If the connection is already closed... early out
+    if (this->BlockingListener.ListenerSocket.IsValid() == false)
+      return;
+
+    // We only want to terminate the accepting listener socket while inside the lock, to prevent a race condition
+    // We also want to terminate the socket for any connection that is currently being accepted (if it exists)
+    this->AcceptingConnectionLock.Lock();
+    
+    // Close the remote connection, which should signal that we're ending the connection
+    WebSocketEvent listenerCloseEvent;
+    this->BlockingListener.ListenerSocket.Close(listenerCloseEvent.ErrorStatus);
+    
+    // Blocking connection close event
+    WebSocketEvent acceptingCloseEvent;
+
+    // If the accepting connection is valid (we have one that is currently being accepted
+    if (this->AcceptingConnection != nullptr && this->AcceptingConnection->BlockingConnection.IsValid())
+      this->AcceptingConnection->BlockingConnection.RemoteSocket.Close(acceptingCloseEvent.ErrorStatus);
+
+    // Let the accepting thread resume
+    this->AcceptingConnectionLock.Unlock();
+
+    // The accept thread should encounter an error (accept will unblock)
+    // and then because the listener descriptor was closed and made invalid by calling 'Close', the thread should terminate
+    // Wait until the accept thread ends...
+    this->AcceptThread.WaitForCompletion();
+
+    // If the listener close status failed for any reason, dispatch an event out
+    if (listenerCloseEvent.ErrorStatus.Failed())
+      this->Send(Events::WebSocketError, &listenerCloseEvent);
+
+    // If the accepting connection's close status failed for any reason, dispatch an event out
+    if (acceptingCloseEvent.ErrorStatus.Failed())
+      this->Send(Events::WebSocketError, &acceptingCloseEvent);
+  }
+  
+  //***************************************************************************
+  void ThreadedWebSocketListener::Update()
+  {
+    // Lock the recieve buffer and bring all messages to the owning recieve message array
+    this->IncomingLock.Lock();
+    this->OwnerIncomingEvents.swap(this->ThreadIncomingEvents);
+    this->IncomingLock.Unlock();
+    
+    // Walk through all messages and deliver them to the user
+    for (size_t i = 0; i < this->OwnerIncomingEvents.size(); ++i)
+    {
+      // Grab the current message and send out a recieved event
+      WebSocketEvent* event = &this->OwnerIncomingEvents[i];
+
+      // Depending on what happened, send out either an error message or a accepted connection message
+      if (event->Connection != nullptr)
+        this->Send(Events::WebSocketAcceptedConnection, event);
+      else
+        this->Send(Events::WebSocketError, event);
+    }
+
+    // Clear out the owning messages
+    this->OwnerIncomingEvents.clear();
+
+    // Now, if we ever experienced a disconnect, either via a non-writable socket or a thread terminates
+    // Then we'll attempt to close the socket
+    if (this->AcceptThread.IsCompleted())
+      this->Close();
+  }
+
+  //***************************************************************************
+  OsInt ThreadedWebSocketListener::AcceptEntryPoint(void* context)
+  {
+    // The context we pass in is our 'this' pointer
+    ThreadedWebSocketListener* self = (ThreadedWebSocketListener*)context;
+
+    ZilchLoop
+    {
+      // An event we send out if an error occurs
+      WebSocketEvent acceptEvent;
+
+      // Before accepting any connections, we need to check if we're terminating, and also let the owning
+      // thread know the current connection we're accepting (so if the owning thread destructs this object, it
+      // can also close the accepting connection)
+      self->AcceptingConnectionLock.Lock();
+
+      // If we no longer have a valid blocking listener, just exit out
+      if (self->BlockingListener.IsValid() == false)
+      {
+        // Make sure to unlock, and terminate this thread
+        self->AcceptingConnectionLock.Unlock();
+        return 0;
+      }
+      
+      // Create a new connection that can be accepted, and let the owning thread know what it is
+      // Again, this is so the owning thread can cancel both the listening and accepting sockets so we don't deadlock on receieve
+      ThreadedWebSocketConnection* connection = new ThreadedWebSocketConnection();
+      self->AcceptingConnection = connection;
+
+      // Let the owning thread resume
+      self->AcceptingConnectionLock.Unlock();
+
+      // Accept an incoming connection (blocks until the connection is fully acked according to web-sockets)
+      // Will unblock if the sockets are terminated by the owning thread
+      self->BlockingListener.Accept(acceptEvent.ErrorStatus, connection->BlockingConnection);
+      
+      // Now that we've finished accepting (could have failed, or could be a valid connection)
+      // we are no longer accepting this 'connection'
+      self->AcceptingConnectionLock.Lock();
+
+      // Clear out the accepting connection so the owning thread won't try and close it
+      self->AcceptingConnection = nullptr;
+
+      // Let the owning thread resume
+      self->AcceptingConnectionLock.Unlock();
+
+      // If we didn't fail to accept a connection, then tell the main thread about the connection
+      if (acceptEvent.ErrorStatus.Succeeded())
+      {
+        // This is an accepted connection with no errors!
+        acceptEvent.Connection = connection;
+
+        // Initialize the connection, which generally spins up the send/receive threads
+        connection->Initialize();
+      
+        // Lock the recieve buffer and push the connection into it
+        self->IncomingLock.Lock();
+        self->ThreadIncomingEvents.push_back(acceptEvent);
+        self->IncomingLock.Unlock();
+      }
+      else
+      {
+        // Any failure to connect should destroy the connection
+        delete connection;
+
+        // If the extended error code was set, it means we ran into a true socket error (or the socket was closed) so terminate the connection
+        if (acceptEvent.ErrorStatus.ExtendedErrorCode != 0 && Socket::IsAcceptRemoteError(acceptEvent.ErrorStatus.ExtendedErrorCode) == false)
+        {
+          // We only dispatch the error message if it's not a close event
+          if (Socket::IsReceiveCloseError(acceptEvent.ErrorStatus.ExtendedErrorCode) == false)
+          {
+            // Lock the recieve buffer and push the error into it
+            self->IncomingLock.Lock();
+            self->ThreadIncomingEvents.push_back(acceptEvent);
+            self->IncomingLock.Unlock();
+          }
+
+          // We always exit the send thread in the event of an error
+          return 0;
+        }
+      }
+    }
+  }
+
+  //***************************************************************************
+  ThreadedWebSocketServer::ThreadedWebSocketServer(size_t maxConnections) :
+    MaximumConnections(maxConnections)
+  {
+    // We want to know when connections are accepted, and when errors occur with the listener
+    EventConnect(&this->Listener, Events::WebSocketAcceptedConnection, &ThreadedWebSocketServer::OnAcceptedConnection, this);
+    EventForward(&this->Listener, Events::WebSocketError, this);
+  }
+
+  //***************************************************************************
+  ThreadedWebSocketServer::~ThreadedWebSocketServer()
+  {
+    // Loop through all the connections we have and update them
+    for (size_t i = 0; i < this->Connections.size(); ++i)
+    {
+      // Grab the current connection
+      ThreadedWebSocketConnection* connection = this->Connections[i];
+      delete connection;
+    }
+  }
+
+  //***************************************************************************
+  void ThreadedWebSocketServer::Host(int port)
+  {
+    this->Listener.Initialize(port);
+  }
+  
+  //***************************************************************************
+  bool ThreadedWebSocketServer::IsValid()
+  {
+    return this->Listener.IsValid();
+  }
+
+  //***************************************************************************
+  void ThreadedWebSocketServer::Update()
+  {
+    // Update the listener, which will dispatch events
+    this->Listener.Update();
+
+    // Loop through all the connections we have and update them
+    for (size_t i = 0; i < this->Connections.size();)
+    {
+      // Grab the current connection
+      ThreadedWebSocketConnection* connection = this->Connections[i];
+
+      // Update the connection, which could actually close the socket
+      connection->Update();
+
+      // If the connection is closed, we should remove it!
+      if (connection->IsValid() == false)
+      {
+        // Swap with the last connection and then pop the back
+        this->Connections[i] = this->Connections.back();
+        this->Connections.pop_back();
+      }
+      else
+      {
+        // Otherwise, the connection was fine so just walk to the next one
+        ++i;
+      }
+    }
+  }
+
+  //***************************************************************************
+  void ThreadedWebSocketServer::SendPacketToAll(StringParam message, WebSocketPacketType::Enum packetType)
+  {
+    // Loop through all the connections and send the message to each
+    for (size_t i = 0; i < this->Connections.size(); ++i)
+    {
+      // Grab the current connection and send the message
+      ThreadedWebSocketConnection* connection = this->Connections[i];
+      connection->SendPacket(message, packetType);
+    }
+  }
+  
+  //***************************************************************************
+  void ThreadedWebSocketServer::OnAcceptedConnection(WebSocketEvent* event)
+  {
+    // If we're already at (or exceeded) our max connections...
+    if (this->Connections.size() >= this->MaximumConnections)
+    {
+      // Terminate the accepted connection immediately (don't add it to our list)
+      delete event->Connection;
+      event->Connection = nullptr;
+      return;
+    }
+
+    // Add the connection to our own tracked list
+    this->Connections.push_back(event->Connection);
+
+    // Forward the event on us, so anyone listening can see we got a new connection
+    this->Send(event->EventName, event);
+
+    // Forward all the errors, disconnect, and receive data events
+    EventForward(event->Connection, Events::WebSocketError, this);
+    EventForward(event->Connection, Events::WebSocketDisconnected, this);
+    EventForward(event->Connection, Events::WebSocketReceivedData, this);
+  }
 }
 /**************************************************************\
 * Author: Trevor Sundberg
@@ -40105,10 +42363,6 @@ namespace Zilch
 \**************************************************************/
 
 // Includes
-
-
-
-
 
 namespace Zilch
 {
@@ -40157,7 +42411,6 @@ namespace Zilch
 /// Copyright 2010-2011, DigiPen Institute of Technology
 ///
 ///////////////////////////////////////////////////////////////////////////////
-
 
 namespace Zero
 {
@@ -40449,11 +42702,8 @@ String ByteBuffer::ToString() const
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
-
 #include <stdio.h>
 #include <stdarg.h>
-
-
 
 namespace Zero
 {
@@ -40523,7 +42773,6 @@ void Console::Remove(ConsoleListener* listener)
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
-
 #include <stdio.h>
 #include <stdarg.h>
 
@@ -40584,9 +42833,6 @@ bool ErrorSignaler::SignalError(SignalErrorType signalType, cstr exp,
 /// Copyright 2010-2011, DigiPen Institute of Technology
 ///
 ///////////////////////////////////////////////////////////////////////////////
-
-
-
 
 namespace Zero
 {
@@ -40724,9 +42970,6 @@ void Block::CleanUp()
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
-
-
-
 #include <stdlib.h>
 
 #ifdef UseMemoryDebugger
@@ -40754,7 +42997,7 @@ void zDeallocate(void* ptr)
 #endif
 }
 
-const uint cStaticMemoryBufferSize = 3000;
+const uint cStaticMemoryBufferSize = 5000;
 byte StaticMemoryGraphBuffer[cStaticMemoryBufferSize];
 byte* BufferLocation = StaticMemoryGraphBuffer;
 
@@ -40814,7 +43057,6 @@ void Stats::Accumulate(const Stats& right)
   BytesDedicated += right.BytesDedicated;
   PeakAllocated += right.PeakAllocated;
 }
-
 
 Root* Root::RootGraph = NULL;
 Heap* Root::GloblHeap = NULL;
@@ -41028,8 +43270,6 @@ Heap* GetNamedHeap(cstr name)
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
-
-
 namespace Zero
 {
 namespace Memory
@@ -41071,9 +43311,6 @@ void Heap::Print(size_t tabs, size_t flags)
 /// Copyright 2010-2011, DigiPen Institute of Technology
 ///
 ///////////////////////////////////////////////////////////////////////////////
-
-
-
 
 namespace Zero
 {
@@ -41169,8 +43406,6 @@ void Pool::Print(size_t tabs, size_t flags)
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
-
-
 namespace Zero
 {
 namespace Memory
@@ -41260,8 +43495,6 @@ void Stack::CleanUp()
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
-
-
 namespace Zero
 {
 
@@ -41329,7 +43562,6 @@ String Regex::Escape(StringRange input, EscapeMode::Enum mode, RegexFlavor::Enum
 /// Copyright 2010-2011, DigiPen Institute of Technology
 ///
 ///////////////////////////////////////////////////////////////////////////////
-
 
 #include <ctype.h>
 
@@ -41408,10 +43640,6 @@ int ToUpper(int c){ return toupper(c); }
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
-
-
-
-
 namespace Zero
 {
 
@@ -41435,7 +43663,6 @@ bool CaseInsensitiveCompare(char a, char b)
 {
   return tolower(a) == tolower(b);
 }
-
 
 String::String()
 {
@@ -41463,7 +43690,6 @@ void String::assign(StringNode* node)
   mNode = node;
   addRef();
 }
-
 
 void String::StringNode::addRef()
 {
@@ -41702,8 +43928,6 @@ String WordWrap(StringRange input, size_t maxLineLength)
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
-
-
 #include <stdio.h>
 #include <stdarg.h>
 
@@ -41787,7 +44011,6 @@ String StringJoin(Array<String>& strings, StringParam joinToken)
   return builder.ToString();
 }
 
-
 void StringBuilder::Append(StringRange range)
 {
   ByteBuffer::Append((byteType*)range.data(), range.size());
@@ -41828,8 +44051,6 @@ void StringBuilder::Repeat(size_t count, StringParam str)
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
-
-
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -41856,7 +44077,7 @@ u64 ReadHexString(StringRange range)
   return result;
 }
 
-uint WriteToHexSize(uint places, char* buffer, uint bufferSize, u64 integerValue)
+uint WriteToHexSize(char* buffer, uint bufferSize, uint places, u64 integerValue)
 {
   if(bufferSize < places+1)
     return 0;
@@ -41878,14 +44099,13 @@ uint WriteToHexSize(uint places, char* buffer, uint bufferSize, u64 integerValue
 
 uint WriteToHex(char* buffer, uint bufferSize, u64 integerValue)
 {
-  return WriteToHexSize(16, buffer, bufferSize, integerValue);
+  return WriteToHexSize(buffer, bufferSize, 16, integerValue);
 }
 
 uint WriteToHex(char* buffer, uint bufferSize, u32 integerValue)
 {
-  return WriteToHexSize(8, buffer, bufferSize, integerValue);
+  return WriteToHexSize(buffer, bufferSize, 8, (u64)integerValue);
 }
-
 
 //Max 4294967295
 const uint cMaxIntSize = 12;
@@ -41986,6 +44206,11 @@ void ToValue(StringRange range, s64& value)
 #endif
 }
 
+void ToValue(StringRange range, String& value)
+{
+  value = range;
+}
+
 void ToValue(StringRange token, StringRange& range)
 {
   range = token;
@@ -42011,33 +44236,31 @@ void ToValue(StringRange token, bool& value)
     value = false;
 }
 
-uint ToBuffer(char* buffer, uint bufferSize, const u64& value)
+uint ToBuffer(char* buffer, uint bufferSize, u64 value)
 {
   ErrorIf(bufferSize < 16, "Buffer is not large enought for hex value.");
   if(bufferSize > 16)
-  {
-    return WriteToHex(buffer, bufferSize, value);;
-  }
+    return WriteToHex(buffer, bufferSize, value);
   else
     return 0;
 }
 
-uint ToBuffer(char* buffer, uint bufferSize, const int& value)
+uint ToBuffer(char* buffer, uint bufferSize, int value)
 {
   return ToString(buffer, bufferSize, value);
 }
 
-uint ToBuffer(char* buffer, uint bufferSize, const unsigned int& value)
+uint ToBuffer(char* buffer, uint bufferSize, unsigned int value)
 {
   return ToString(buffer, bufferSize, value);
 }
 
-uint ToBuffer(char* buffer, uint bufferSize, const float& value)
+uint ToBuffer(char* buffer, uint bufferSize, float value)
 {
   return SPrintf(buffer, bufferSize, "%g", value);
 }
 
-uint ToBuffer(char* buffer, uint bufferSize, const double& value)
+uint ToBuffer(char* buffer, uint bufferSize, double value)
 {
   return SPrintf(buffer, bufferSize, "%f", value);
 }
@@ -42045,7 +44268,7 @@ uint ToBuffer(char* buffer, uint bufferSize, const double& value)
 #define TextTrue "true"
 #define  TextFalse  "false"
 
-uint ToBuffer(char* buffer, uint bufferSize, const bool& value)
+uint ToBuffer(char* buffer, uint bufferSize, bool value)
 {
   if(value)
   {
@@ -42058,17 +44281,6 @@ uint ToBuffer(char* buffer, uint bufferSize, const bool& value)
     return sizeof(TextFalse) - 1;
   }
 }
-
-uint ConvertNameToIndex(cstr source, cstr nameArray[])
-{
-  for(uint i = 0; nameArray[i] != NULL; ++i)
-  {
-    if(strcmp(source, nameArray[i]) == 0)
-      return i;
-  }
-  return 0;
-}
-
 
 //Basic conversion function (input must be UTF-16/2) DestAscii must be unicodeLength +1
 void ConvertUnicodeToAscii(char* destAscii, uint bufferSize, 
@@ -42109,8 +44321,6 @@ void ConvertUnicodeToAscii(char* destAscii, uint bufferSize,
 ///
 ///////////////////////////////////////////////////////////////////////////////
 #include <ctype.h>
-
-
 
 namespace Zero
 {
@@ -42213,7 +44423,6 @@ char OnlyAlphaNumeric(char c)
     return c;
 }
 
-
 }//namespace Zero
 ///////////////////////////////////////////////////////////////////////////////
 ///
@@ -42224,9 +44433,6 @@ char OnlyAlphaNumeric(char c)
 /// Copyright 2010-2011, DigiPen Institute of Technology
 ///
 ///////////////////////////////////////////////////////////////////////////////
-
-
-
 
 namespace Zero
 {
@@ -42239,7 +44445,7 @@ String ToString(const int& value)
   return buffer;
 }
 
-String ToString(const unsigned int& value)
+String ToString(const uint& value)
 {
   char buffer[cBufferSize];
   ToBuffer(buffer, cBufferSize, value);
@@ -42284,8 +44490,6 @@ String ToString(const u64& value)
 /// Copyright 2010-2012, DigiPen Institute of Technology
 ///
 ///////////////////////////////////////////////////////////////////////////////
-
-
 
 #ifdef _MSC_VER
 
@@ -42348,44 +44552,29 @@ bool AtomicCompareExchange64(volatile s64* number, s64 exchange, s64 comparison)
 namespace Zero
 {
 
-//Reference version not safe
-
-#pragma message("Atomic functions not safe!")
-
 s32 AtomicIncrement(volatile s32* number)
 {
-  return ++(*number);
+  return __sync_add_and_fetch(number, 1);
 }
 
 s32 AtomicDecrement(volatile s32* number)
 {
-  return --(*number);
+  return __sync_sub_and_fetch(number, 1);
 }
 
 s32 AtomicAdd(volatile s32* number, s32 valueToAdd)
 {
-  *number += valueToAdd;
-  return *number;
+  return __sync_add_and_fetch(number, valueToAdd);
 }
 
 bool AtomicCompareExchange(volatile s32* number, s32 exchange, s32 comparison)
 {
-  if(*number == comparison)
-  {
-    *number = exchange;
-    return true;
-  }
-  return false;
+  return __sync_bool_compare_and_swap(number, comparison, exchange);
 }
 
 bool AtomicCompareExchange64(volatile s64* number, s64 exchange, s64 comparison)
 {
-  if(*number == comparison)
-  {
-    *number = exchange;
-    return true;
-  }
-  return false;
+  return __sync_bool_compare_and_swap(number, comparison, exchange);
 }
 
 }
@@ -42399,7 +44588,6 @@ bool AtomicCompareExchange64(volatile s64* number, s64 exchange, s64 comparison)
 /// Copyright 2010-2011, DigiPen Institute of Technology
 ///
 ///////////////////////////////////////////////////////////////////////////////
-
 
 namespace Zero
 {
@@ -42469,9 +44657,6 @@ bool IsBigEndian()
 
 // Used for counting printf statement lengths
 char gDiscardBuffer[2] = {0};
-
-
-
 
 namespace Math
 {
@@ -42662,15 +44847,12 @@ void BlockMatrix3::Transform(const BlockVector3& rhs, BlockVector3& out) const
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
-
-
 namespace Math
 {
 
 const BoolVector2 BoolVector2::cZero(false, false);
 const BoolVector2 BoolVector2::cXAxis(true, false);
 const BoolVector2 BoolVector2::cYAxis(false, true);
-
 
 BoolVector2::BoolVector2(bool x_, bool y_)
 {
@@ -42694,7 +44876,6 @@ BoolVector2 BoolVector2::operator!(void) const
 {
   return BoolVector2(!x, !y);
 }
-
 
 bool BoolVector2::operator==(BoolVec2Param rhs) const
 {
@@ -42723,8 +44904,6 @@ void BoolVector2::Set(bool x_, bool y_)
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
-
-
 namespace Math
 {
 
@@ -42732,7 +44911,6 @@ const BoolVector3 BoolVector3::cZero(false, false, false);
 const BoolVector3 BoolVector3::cXAxis(true, false, false);
 const BoolVector3 BoolVector3::cYAxis(false, true, false);
 const BoolVector3 BoolVector3::cZAxis(false, false, true);
-
 
 BoolVector3::BoolVector3(bool x_, bool y_, bool z_)
 {
@@ -42757,7 +44935,6 @@ BoolVector3 BoolVector3::operator!(void) const
 {
   return BoolVector3(!x, !y, !z);
 }
-
 
 bool BoolVector3::operator==(BoolVec3Param rhs) const
 {
@@ -42787,8 +44964,6 @@ void BoolVector3::Set(bool x_, bool y_, bool z_)
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
-
-
 namespace Math
 {
 
@@ -42797,7 +44972,6 @@ const BoolVector4 BoolVector4::cXAxis(true, false, false, false);
 const BoolVector4 BoolVector4::cYAxis(false, true, false, false);
 const BoolVector4 BoolVector4::cZAxis(false, false, true, false);
 const BoolVector4 BoolVector4::cWAxis(false, false, false, true);
-
 
 BoolVector4::BoolVector4(bool x_, bool y_, bool z_, bool w_)
 {
@@ -42823,7 +44997,6 @@ BoolVector4 BoolVector4::operator!(void) const
 {
   return BoolVector4(!x, !y, !z, !w);
 }
-
 
 bool BoolVector4::operator==(BoolVec4Param rhs) const
 {
@@ -42853,9 +45026,6 @@ void BoolVector4::Set(bool x_, bool y_, bool z_, bool w_)
 /// Copyright 2010-2013, DigiPen Institute of Technology
 ///
 ///////////////////////////////////////////////////////////////////////////////
-
-
-
 
 namespace Math
 {
@@ -42971,6 +45141,43 @@ uint SplineCurve::GetCurveType()
 void SplineCurve::SetCurveType(uint curveType)
 {
   mCurveType = curveType;
+}
+
+bool SplineCurve::DistanceSq(Vec3 point, uint resolution, real& distSq) const
+{
+  Vec3Array points;
+  GetPoints(points, resolution);
+
+  if (points.size() < 2)
+    return false;
+
+  real minDistSq1 = Math::PositiveMax(); // smallest distance
+  real minDistSq2 = Math::PositiveMax(); // second smallest distance
+  int idx1 = 0; // index of the point with the smallest distance
+  int idx2 = 0; // index of the point with the second smallest distance
+
+  for (uint i = 0; i < points.size(); ++i)
+  {
+    float distSq = (points[i] - point).LengthSq();
+    if (distSq < minDistSq2)
+    {
+      minDistSq2 = distSq;
+      idx2 = i;
+    }
+    if (distSq < minDistSq1)
+    {
+      minDistSq2 = minDistSq1;
+      idx2 = idx1;
+      minDistSq1 = distSq;
+      idx1 = i;
+    }
+  }
+
+  if (idx1 == 0 && idx2 == 0)
+    return false;
+
+  distSq = Math::DistanceToLineSq(points[idx1], points[idx2], point);
+  return true;
 }
 
 void SplineCurve::GetSmoothPoints(Vec3Array& pts) const
@@ -43100,7 +45307,8 @@ void SplineCurve::GetPoints(const Vec3Array& points, Vec3Array& results, real er
 
       PointData data0 = stack[size - 1];
       PointData data1 = stack[size - 2];
-      
+
+      Vec3 movement = data1.Point - data0.Point;
       //calculate the point half-way in-between the two points on the stack
       real midT = (data0.T + data1.T) * real(0.5);
       PointData midData = ComputePointData<Policy>(midT, cp0, cp1, cp2, cp3);
@@ -43109,7 +45317,8 @@ void SplineCurve::GetPoints(const Vec3Array& points, Vec3Array& results, real er
       //calculate the distance of this point from the line
       //(aka, calculate the height of the triangle)
       real doubleArea = (Math::Cross(midPoint - data0.Point, midPoint - data1.Point)).Length();
-      real base = (data1.Point - data0.Point).Length();
+
+      real base = movement.Length();
       real height = doubleArea / base;
 
       //if the height of the triangle is too large then we need to
@@ -43513,13 +45722,6 @@ bool PiecewiseFunction::empty()
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
-
-
-
-
-
-
-
 namespace Math
 {
 
@@ -43552,6 +45754,18 @@ Vector3 DecomposedMatrix4::InverseTransformNormal(Vec3Param normal)
   return result / Scale;
 }
 
+Vector3 DecomposedMatrix4::TransformSurfaceNormal(Vec3Param direction)
+{
+  Vector3 result = Math::Transform(Rotation, direction);
+  return result / Scale;
+}
+
+Vector3 DecomposedMatrix4::InverseTransformSurfaceNormal(Vec3Param direction)
+{
+  Vector3 result = Math::TransposedTransform(Rotation, direction);
+  return result * Scale;
+}
+
 Vector3 DecomposedMatrix4::TransformPoint(Vec3Param point)
 {
   Vector3 result = point * Scale;
@@ -43577,9 +45791,6 @@ Vector3 DecomposedMatrix4::InverseTransformPoint(Vec3Param point)
 ///  Copyright 2010-2012, DigiPen Institute of Technology
 ///
 ///////////////////////////////////////////////////////////////////////////////
-
-
-
 
 namespace Math
 {
@@ -43687,8 +45898,6 @@ void EulerAngles::Reorder(EulerOrderParam newOrder)
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
-
-
 namespace Math
 {
 
@@ -43782,9 +45991,6 @@ void EulerOrder::GetOrder(EulerOrder order, uint& i, uint& j, uint& k, uint& h,
 ///
 //////////////////////////////////////////////////////////////////////////////
 
-
-
-
 namespace Math
 {
 
@@ -43839,15 +46045,12 @@ real ExtendableMatrix::operator()(uint y, uint x) const
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
-
-
 namespace Math
 {
 
 const IntVector2 IntVector2::cZero(0, 0);
 const IntVector2 IntVector2::cXAxis(1, 0);
 const IntVector2 IntVector2::cYAxis(0, 1);
-
 
 IntVector2::IntVector2(int x_, int y_)
 {
@@ -43867,14 +46070,12 @@ int IntVector2::operator[](uint index) const
   return array[index];
 }
 
-
 ////////// Unary Operators /////////////////////////////////////////////////////
 
 IntVector2 IntVector2::operator-(void) const
 {
   return IntVector2(-x, -y);
 }
-
 
 ////////// Binary Assignment Operators (reals) /////////////////////////////////
 
@@ -43891,7 +46092,6 @@ void IntVector2::operator/=(int rhs)
   y /= rhs;
 }
 
-
 ////////// Binary Operators (reals) ////////////////////////////////////////////
 
 IntVector2 IntVector2::operator*(int rhs) const
@@ -43904,7 +46104,6 @@ IntVector2 IntVector2::operator/(int rhs) const
   ErrorIf(rhs == 0, "Math::IntVector2 - Division by zero.");
   return IntVector2(x / rhs, y / rhs);
 }
-
 
 IntVector2 IntVector2::operator%(int rhs) const
 {
@@ -43925,7 +46124,6 @@ IntVector2& IntVector2::operator--()
   --y;
   return *this;
 }
-
 
 ////////// Binary Assignment Operators (Vectors) ///////////////////////////////
 
@@ -43955,7 +46153,6 @@ void IntVector2::operator/=(IntVec2Param rhs)
   y /= rhs.y;
 }
 
-
 ////////// Binary Operators (Vectors) //////////////////////////////////////////
 
 IntVector2 IntVector2::operator+(IntVec2Param rhs) const
@@ -43967,7 +46164,6 @@ IntVector2 IntVector2::operator-(IntVec2Param rhs) const
 {
   return IntVector2(x - rhs.x, y - rhs.y);
 }
-
 
 ////////// Binary Vector Comparisons ///////////////////////////////////////////
 
@@ -44005,7 +46201,6 @@ BoolVec2 IntVector2::operator>=(IntVec2Param rhs) const
                   y >= rhs.y);
 }
 
-
 void IntVector2::Set(int x_, int y_)
 {
   x = x_;
@@ -44017,7 +46212,6 @@ void IntVector2::ZeroOut(void)
   x = 0;
   y = 0;
 }
-
 
 IntVector2 IntVector2::operator/(IntVec2Param rhs) const
 {
@@ -44142,8 +46336,6 @@ IntVector2& IntVector2::operator&= (IntVec2Param rhs)
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
-
-
 namespace Math
 {
 
@@ -44151,7 +46343,6 @@ const IntVector3 IntVector3::cZero(0, 0, 0);
 const IntVector3 IntVector3::cXAxis(1, 0, 0);
 const IntVector3 IntVector3::cYAxis(0, 1, 0);
 const IntVector3 IntVector3::cZAxis(0, 0, 1);
-
 
 IntVector3::IntVector3(int x_, int y_, int z_)
 {
@@ -44172,14 +46363,12 @@ int IntVector3::operator[](uint index) const
   return array[index];
 }
 
-
 ////////// Unary Operators /////////////////////////////////////////////////////
 
 IntVector3 IntVector3::operator-(void) const
 {
   return IntVector3(-x, -y, -z);
 }
-
 
 ////////// Binary Assignment Operators (reals) /////////////////////////////////
 
@@ -44197,7 +46386,6 @@ void IntVector3::operator/=(int rhs)
   y /= rhs;
   z /= rhs;
 }
-
 
 ////////// Binary Operators (reals) ////////////////////////////////////////////
 
@@ -44266,7 +46454,6 @@ void IntVector3::operator/=(IntVec3Param rhs)
   z /= rhs.z;
 }
 
-
 ////////// Binary Operators (Vectors) //////////////////////////////////////////
 
 IntVector3 IntVector3::operator+(IntVec3Param rhs) const
@@ -44279,7 +46466,6 @@ IntVector3 IntVector3::operator-(IntVec3Param rhs) const
   return IntVector3(x - rhs.x, y - rhs.y, z - rhs.z);
 }
 
-
 ////////// Binary Vector Comparisons ///////////////////////////////////////////
 
 bool IntVector3::operator==(IntVec3Param rhs) const
@@ -44291,7 +46477,6 @@ bool IntVector3::operator!=(IntVec3Param rhs) const
 {
   return !(*this == rhs);
 }
-
 
 BoolVec3 IntVector3::operator< (IntVec3Param rhs) const
 {
@@ -44334,7 +46519,6 @@ void IntVector3::ZeroOut(void)
   y = 0;
   z = 0;
 }
-
 
 IntVector3 IntVector3::operator/(IntVec3Param rhs) const
 {
@@ -44472,8 +46656,6 @@ IntVector3& IntVector3::operator&= (IntVec3Param rhs)
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
-
-
 namespace Math
 {
 
@@ -44482,7 +46664,6 @@ const IntVector4 IntVector4::cXAxis(1, 0, 0, 0);
 const IntVector4 IntVector4::cYAxis(0, 1, 0, 0);
 const IntVector4 IntVector4::cZAxis(0, 0, 1, 0);
 const IntVector4 IntVector4::cWAxis(0, 0, 0, 1);
-
 
 IntVector4::IntVector4(int x_, int y_, int z_, int w_)
 {
@@ -44504,14 +46685,12 @@ int IntVector4::operator[](uint index) const
   return array[index];
 }
 
-
 ////////// Unary Operators /////////////////////////////////////////////////////
 
 IntVector4 IntVector4::operator-(void) const
 {
   return IntVector4(-x, -y, -z, -w);
 }
-
 
 ////////// Binary Assignment Operators (reals) /////////////////////////////////
 
@@ -44531,7 +46710,6 @@ void IntVector4::operator/=(int rhs)
   z /= rhs;
   w /= rhs;
 }
-
 
 ////////// Binary Operators (reals) ////////////////////////////////////////////
 
@@ -44606,7 +46784,6 @@ void IntVector4::operator/=(IntVec4Param rhs)
   w /= rhs.w;
 }
 
-
 ////////// Binary Operators (Vectors) //////////////////////////////////////////
 
 IntVector4 IntVector4::operator+(IntVec4Param rhs) const
@@ -44619,7 +46796,6 @@ IntVector4 IntVector4::operator-(IntVec4Param rhs) const
   return IntVector4(x - rhs.x, y - rhs.y, z - rhs.z, w - rhs.w);
 }
 
-
 ////////// Binary Vector Comparisons ///////////////////////////////////////////
 
 bool IntVector4::operator==(IntVec4Param rhs) const
@@ -44631,7 +46807,6 @@ bool IntVector4::operator!=(IntVec4Param rhs) const
 {
   return !(*this == rhs);
 }
-
 
 BoolVec4 IntVector4::operator< (IntVec4Param rhs) const
 {
@@ -44680,7 +46855,6 @@ void IntVector4::ZeroOut(void)
   z = 0;
   w = 0;
 }
-
 
 IntVector4 IntVector4::operator/(IntVec4Param rhs) const
 {
@@ -44830,8 +47004,6 @@ IntVector4& IntVector4::operator&= (IntVec4Param rhs)
 /// Copyright 2010-2012, DigiPen Institute of Technology
 ///
 ///////////////////////////////////////////////////////////////////////////////
-
-
 
 #include <cfloat>
 
@@ -46340,10 +48512,7 @@ Vector3 QuatToEulerDegrees(QuatParam rotation)
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
-
-
 #include <cmath>
-
 
 namespace Math
 {
@@ -46496,7 +48665,6 @@ real& Matrix2::operator()(uint r, uint c)
 {
   return array[c + r * 2];
 }
-
 
 Matrix2 Matrix2::Transposed() const
 {
@@ -46664,10 +48832,7 @@ Vector2 Transform(Mat2Param mat, Vec2Param vector)
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
-
-
 #include <cmath>
-
 
 namespace Math
 {
@@ -46787,7 +48952,7 @@ real Matrix3::operator()(uint r, uint c) const
   ErrorIf(r > 2, "Matrix3 - Index out of range.");
   ErrorIf(c > 2, "Matrix3 - Index out of range.");
 
-#ifdef ColumnBasis
+#if ColumnBasis == 1
   return array[c + r * 3];
 #else
   return array[r + c * 3];
@@ -46799,7 +48964,7 @@ real& Matrix3::operator()(uint r, uint c)
   ErrorIf(r > 2, "Matrix3 - Index out of range.");
   ErrorIf(c > 2, "Matrix3 - Index out of range.");
 
-#ifdef ColumnBasis
+#if ColumnBasis == 1
   return array[c + r * 3];
 #else
   return array[r + c * 3];
@@ -47081,7 +49246,7 @@ Mat3Ref Matrix3::Orthonormalize(void)
 Matrix3::BasisVector Matrix3::Basis(uint index) const
 {
   ErrorIf(index > 2, "Matrix3 - Index out of range.");
-#ifdef ColumnBasis
+#if ColumnBasis == 1
   return Vector3(array[index], array[3 + index], array[6 + index]);
 #else
   const Matrix3& self = *this;
@@ -47091,7 +49256,7 @@ Matrix3::BasisVector Matrix3::Basis(uint index) const
 
 Matrix3::BasisVector Matrix3::BasisX(void) const
 {
-#ifdef ColumnBasis
+#if ColumnBasis == 1
   return Vector3(array[0], array[3], array[6]);
 #else
   const Matrix3& self = *this;
@@ -47101,7 +49266,7 @@ Matrix3::BasisVector Matrix3::BasisX(void) const
 
 Matrix3::BasisVector Matrix3::BasisY(void) const
 {
-#ifdef ColumnBasis
+#if ColumnBasis == 1
   return Vector3(array[1], array[4], array[7]);
 #else
   const Matrix3& self = *this;
@@ -47111,7 +49276,7 @@ Matrix3::BasisVector Matrix3::BasisY(void) const
 
 Matrix3::BasisVector Matrix3::BasisZ(void) const
 {
-#ifdef ColumnBasis
+#if ColumnBasis == 1
   return Vector3(array[2], array[5], array[8]);
 #else
   const Matrix3& self = *this;
@@ -47122,7 +49287,7 @@ Matrix3::BasisVector Matrix3::BasisZ(void) const
 Matrix3::CrossVector Matrix3::Cross(uint index) const
 {
   ErrorIf(index > 2, "Matrix3 - Index out of range.");
-#ifdef ColumnBasis
+#if ColumnBasis == 1
   Mat3Param self = *this;
   return self[index];
 #else
@@ -47138,7 +49303,7 @@ void Matrix3::SetBasis(uint index, Vec3Param basisVector)
 void Matrix3::SetBasis(uint index, real x, real y, real z)
 {
   ErrorIf(index > 2, "Matrix3 - Index out of range.");
-#ifdef ColumnBasis
+#if ColumnBasis == 1
   array[index] = x;
   array[3 + index] = y;
   array[6 + index] = z;
@@ -47156,7 +49321,7 @@ void Matrix3::SetCross(uint index, Vec3Param crossVector)
 void Matrix3::SetCross(uint index, real x, real y, real z)
 {
   ErrorIf(index > 2, "Matrix3 - Index out of range.");
-#ifdef ColumnBasis
+#if ColumnBasis == 1
   Matrix3& self = *this;
   self[index].Set(x, y, z);
 #else
@@ -47308,9 +49473,6 @@ Matrix3 Inverted(Mat3Param matrix)
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
-
-
-
 namespace Math
 {
 
@@ -47446,7 +49608,7 @@ real Matrix4::operator()(uint r, uint c) const
   ErrorIf(r > 3, "Matrix4 - Index out of range.");
   ErrorIf(c > 3, "Matrix4 - Index out of range.");
 
-#ifdef ColumnBasis
+#if ColumnBasis == 1
   return array[c + r * 4];
 #else
   return array[r + c * 4];
@@ -47458,13 +49620,12 @@ real& Matrix4::operator()(uint r, uint c)
   ErrorIf(r > 3, "Matrix4 - Index out of range.");
   ErrorIf(c > 3, "Matrix4 - Index out of range.");
 
-#ifdef ColumnBasis
+#if ColumnBasis == 1
   return array[c + r * 4];
 #else
   return array[r + c * 4];
 #endif
 }
-
 
 Matrix4 Matrix4::Transposed(void) const
 {
@@ -47890,7 +50051,7 @@ void Matrix4::Decompose(Vec3Ptr scale, Vec3Ptr shear, Mat3Ptr rotate,
 Matrix4::BasisVector Matrix4::Basis(uint index) const
 {
   ErrorIf(index > 3, "Matrix4 - Index out of range.");
-#ifdef ColumnBasis
+#if ColumnBasis == 1
   return Vector4(array[index],     array[4 + index], 
                  array[8 + index], array[12 + index]);
 #else
@@ -47901,7 +50062,7 @@ Matrix4::BasisVector Matrix4::Basis(uint index) const
 
 Matrix4::BasisVector Matrix4::BasisX(void) const
 {
-#ifdef ColumnBasis
+#if ColumnBasis == 1
   return Vector4(array[0], array[4], array[8], array[12]);
 #else
   Mat4Param self = *this;
@@ -47911,7 +50072,7 @@ Matrix4::BasisVector Matrix4::BasisX(void) const
 
 Matrix4::BasisVector Matrix4::BasisY(void) const
 {
-#ifdef ColumnBasis
+#if ColumnBasis == 1
   return Vector4(array[1], array[5], array[9], array[13]);
 #else
   Mat4Param self = *this;
@@ -47921,7 +50082,7 @@ Matrix4::BasisVector Matrix4::BasisY(void) const
 
 Matrix4::BasisVector Matrix4::BasisZ(void) const
 {
-#ifdef ColumnBasis
+#if ColumnBasis == 1
   return Vector4(array[2], array[6], array[10], array[14]);
 #else
   Mat4Param self = *this;
@@ -47931,7 +50092,7 @@ Matrix4::BasisVector Matrix4::BasisZ(void) const
 
 Matrix4::BasisVector Matrix4::BasisW(void) const
 {
-#ifdef ColumnBasis
+#if ColumnBasis == 1
   return Vector4(array[3], array[7], array[11], array[15]);
 #else
   Mat4Param self = *this;
@@ -47942,7 +50103,7 @@ Matrix4::BasisVector Matrix4::BasisW(void) const
 Matrix4::CrossVector Matrix4::Cross(uint index) const
 {
   ErrorIf(index > 3, "Matrix4 - Index out of range.");
-#ifdef ColumnBasis
+#if ColumnBasis == 1
   Mat4Param self = *this;
   return self[index];
 #else
@@ -47969,7 +50130,7 @@ void Matrix4::SetBasis(uint index, real x, Vec3Param basisVector3)
 void Matrix4::SetBasis(uint index, real x, real y, real z, real w)
 {
   ErrorIf(index > 3, "Matrix4 - Index out of range.");
-#ifdef ColumnBasis
+#if ColumnBasis == 1
   array[index] = x;
   array[4 + index] = y;
   array[8 + index] = z;
@@ -47993,7 +50154,7 @@ void Matrix4::SetCross(uint index, Vec3Param crossVector3, real w)
 void Matrix4::SetCross(uint index, real x, real y, real z, real w)
 {
   ErrorIf(index > 3, "Matrix4 - Index out of range.");
-#ifdef ColumnBasis
+#if ColumnBasis == 1
   Mat4Ref self = *this;
   self[index].Set(x, y, z, w);
 #else
@@ -48007,7 +50168,7 @@ void Matrix4::SetCross(uint index, real x, real y, real z, real w)
 Vector3 Matrix4::Basis3(uint index) const
 {
   ErrorIf(index > 3, "Matrix4 - Index out of range.");
-#ifdef ColumnBasis
+#if ColumnBasis == 1
   return Vector3(array[index], array[4 + index], array[8 + index]);
 #else
   Mat4Param self = *this;
@@ -48017,7 +50178,7 @@ Vector3 Matrix4::Basis3(uint index) const
 
 Vector3 Matrix4::Basis3X(void) const
 {
-#ifdef ColumnBasis
+#if ColumnBasis == 1
   return Vector3(array[0], array[4], array[8]);
 #else
   Mat4Param self = *this;
@@ -48027,7 +50188,7 @@ Vector3 Matrix4::Basis3X(void) const
 
 Vector3 Matrix4::Basis3Y(void) const
 {
-#ifdef ColumnBasis
+#if ColumnBasis == 1
   return Vector3(array[1], array[5], array[9]);
 #else
   Mat4Param self = *this;
@@ -48037,7 +50198,7 @@ Vector3 Matrix4::Basis3Y(void) const
 
 Vector3 Matrix4::Basis3Z(void) const
 {
-#ifdef ColumnBasis
+#if ColumnBasis == 1
   return Vector3(array[2], array[6], array[10]);
 #else
   Mat4Param self = *this;
@@ -48047,7 +50208,7 @@ Vector3 Matrix4::Basis3Z(void) const
 
 Vector3 Matrix4::Basis3W(void) const
 {
-#ifdef ColumnBasis
+#if ColumnBasis == 1
   return Vector3(array[3], array[7], array[11]);
 #else
   Mat4Param self = *this;
@@ -48058,7 +50219,7 @@ Vector3 Matrix4::Basis3W(void) const
 Vector3 Matrix4::Cross3(uint index) const
 {
   ErrorIf(index > 3, "Matrix4 - Index out of range.");
-#ifdef ColumnBasis
+#if ColumnBasis == 1
   Mat4Param self = *this;
   return Vector3(self[index].x, self[index].y, self[index].z);
 #else
@@ -48186,8 +50347,6 @@ real Trace(Mat4Param matrix)
 ///  Copyright 2010-2012, DigiPen Institute of Technology
 ///
 ///////////////////////////////////////////////////////////////////////////////
-
-
 
 namespace Math
 {
@@ -48491,7 +50650,6 @@ uint SolveQuartic(real a0, real a1, real a2, real a3, real a4, real* roots)
   real r = real(-3.0 / 256.0) * Math::Sq(a3) * Math::Sq(a3) + 
            (Math::Sq(a3) * a2) / real(16.0) - (a3 * a1) / real(4.0) + a0;
 
-
   uint rootCount = 0;
   //Find solution to: y^3 - p/2 * y^2 - r * y + (4 * r * p - q^2)/8 = 0
   real c = (real(4.0) * r * p - (q * q)) / real(8.0);
@@ -48600,9 +50758,6 @@ uint SolveQuartic(real a0, real a1, real a2, real a3, real a4, real* roots)
 /// Copyright 2010-2012, DigiPen Institute of Technology
 ///
 ///////////////////////////////////////////////////////////////////////////////
-
-
-
 
 namespace Math
 {
@@ -49129,14 +51284,10 @@ Quaternion CreateDiagonalizer(Mat3Param matrix)
    NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-
    Any feedback is very welcome.
    http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/emt.html
    email: m-mat @ math.sci.hiroshima-u.ac.jp (remove space)
 */
-
-
-
 
 #include <ctime>
 
@@ -49594,8 +51745,6 @@ float MersenneTwister::Float(void)
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
-
-
 #include <cmath>
 #include <limits>
 #include <cstdio>
@@ -49727,9 +51876,21 @@ real Log10(real val)
   return std::log10(val);
 }
 
+real Log2(real val)
+{
+  //log(2) is a constant (and actually calling log(2.0) caused a linker crash so use the constant)
+  real log2 = real(0.30102999566);
+  return Log(val) / log2;
+}
+
 real Exp(real val)
 {
   return std::exp(val);
+}
+
+real Exp2(real val)
+{
+  return Pow(2, val);
 }
 
 real Abs(real val)
@@ -49747,11 +51908,34 @@ real FMod(real dividend, real divisor)
   return std::fmod(dividend, divisor);
 }
 
+bool SafeFMod(real dividend, real divisor, real& result)
+{
+  if(divisor == 0)
+    return false;
+
+  result = FMod(dividend, divisor);
+  return true;
+}
+
 real GetSign(real val) 
 {
   return (*reinterpret_cast<uint*>(&val) & cSignBit) != 0 ? cNegative 
                                                           : cPositive;
   //return lhs >= real(0.0) ? real(1.0) : real(-1.0);
+}
+
+int Sign(real val)
+{
+  if(val < 0)
+    return -1;
+  return 1;
+}
+
+int Sign(int val)
+{
+  if(val < 0)
+    return -1;
+  return 1;
 }
 
 real Cos(real val)
@@ -49767,6 +51951,21 @@ real Sin(real val)
 real Tan(real angle)
 {
   return std::tan(angle);
+}
+
+real Cosh(real val)
+{
+  return std::cosh(val);
+}
+
+real Sinh(real val)
+{
+  return std::sinh(val);
+}
+
+real Tanh(real angle)
+{
+  return std::tanh(angle);
 }
 
 real ArcCos(real angle)
@@ -49896,6 +52095,23 @@ real Floor(real value, int places, int base)
   return Floor(value / scale) * scale;
 }
 
+real Step(real y, real x)
+{
+  return (x >= y) ? real(1.0) : real(0.0);
+}
+
+int CountBits(int value)
+{
+  uint count = 0;
+  //trick that is O(k) where k is the number of bits set
+  while(value != 0)
+  {
+    value = (value - 1) & value;
+    ++count;
+  }
+  return count;
+}
+
 }// namespace Math
 
 ///
@@ -49907,8 +52123,6 @@ real Floor(real value, int places, int base)
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
-
-
 namespace Math
 {
 
@@ -49917,11 +52131,16 @@ const Vector2 Vector2::cXAxis(real(1.0), real(0.0));
 const Vector2 Vector2::cYAxis(real(0.0), real(1.0));
 const Vector2 Vector2::Axes[] = {Vector2::cXAxis, Vector2::cYAxis};
 
-
 Vector2::Vector2(real x_, real y_)
 {
   x = x_;
   y = y_;
+}
+
+Vector2::Vector2(real xy)
+{
+  x = xy;
+  y = xy;
 }
 
 Vector2::Vector2(ConstRealPointer data)
@@ -49942,14 +52161,12 @@ real Vector2::operator[](uint index) const
   return array[index];
 }
 
-
 ////////// Unary Operators /////////////////////////////////////////////////////
 
 Vector2 Vector2::operator-(void) const
 {
   return Vector2(-x, -y);
 }
-
 
 ////////// Binary Assignment Operators (reals) /////////////////////////////////
 
@@ -49966,7 +52183,6 @@ void Vector2::operator/=(real rhs)
   y /= rhs;
 }
 
-
 ////////// Binary Operators (reals) ////////////////////////////////////////////
 
 Vector2 Vector2::operator*(real rhs) const
@@ -49979,7 +52195,6 @@ Vector2 Vector2::operator/(real rhs) const
   ErrorIf(Math::IsZero(rhs), "Math::Vector2 - Division by zero.");
   return Vector2(x / rhs, y / rhs);
 }
-
 
 ////////// Binary Assignment Operators (Vectors) ///////////////////////////////
 
@@ -49995,7 +52210,6 @@ void Vector2::operator-=(Vec2Param rhs)
   y -= rhs.y;
 }
 
-
 ////////// Binary Operators (Vectors) //////////////////////////////////////////
 
 Vector2 Vector2::operator+(Vec2Param rhs) const
@@ -50007,7 +52221,6 @@ Vector2 Vector2::operator-(Vec2Param rhs) const
 {
   return Vector2(x - rhs.x, y - rhs.y);
 }
-
 
 ////////// Binary Vector Comparisons ///////////////////////////////////////////
 
@@ -50282,8 +52495,6 @@ Vector2 GetPerpendicular(Vec2Param vec)
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
-
-
 namespace Math
 {
 
@@ -50373,7 +52584,6 @@ BoolVec3 Vector3::operator>=(Vec3Param rhs) const
                   y >= rhs.y,
                   z >= rhs.z);
 }
-
 
 void Vector3::Set(real x_, real y_, real z_)
 {
@@ -50689,6 +52899,31 @@ bool AnyGreater(Vec3Param lhs, Vec3Param rhs)
   return (lhs.x > rhs.x || lhs.y > rhs.y || lhs.z > rhs.z);
 }
 
+real DistanceToLineSq(Vec3Param start, Vec3Param end, Vec3Param point)
+{
+  // describes the line segment
+  Vec3 d = end - start;
+  Vec3 n = d.Normalized();
+  // vector from the point to the start of the line
+  Vec3 ptoa = start - point;
+  // project the point onto the line segment d
+  Vec3 proj = ptoa.Dot(n) * n;
+  // check to see if the projected point is before start on the line
+  if (n.Dot(proj) > 0)
+  {
+    return ptoa.LengthSq();
+  }
+  // check to see if the projected point is after end on the line
+  if (proj.LengthSq() > d.LengthSq())
+  {
+    // proj is passed the end so we subtract the length of d
+    // since proj is relative to start
+    return ptoa.LengthSq() - d.LengthSq();
+  }
+  // otherwise the projected point is within the line segment d
+  return (ptoa - proj).Length();
+}
+
 }// namespace Math
 ///////////////////////////////////////////////////////////////////////////////
 ///
@@ -50700,8 +52935,6 @@ bool AnyGreater(Vec3Param lhs, Vec3Param rhs)
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
-
-
 namespace Math
 {
 
@@ -50711,7 +52944,6 @@ const Vector4 Vector4::cYAxis(real(0.0), real(1.0), real(0.0), real(0.0));
 const Vector4 Vector4::cZAxis(real(0.0), real(0.0), real(1.0), real(0.0));
 const Vector4 Vector4::cWAxis(real(0.0), real(0.0), real(0.0), real(1.0));
 const Vector4 Vector4::Axes[] = {Vector4::cXAxis, Vector4::cYAxis, Vector4::cZAxis, Vector4::cWAxis};
-
 
 Vector4::Vector4(real x_, real y_, real z_, real w_)
 {
@@ -50746,14 +52978,12 @@ real Vector4::operator[](uint index) const
   return array[index];
 }
 
-
 ////////// Unary Operators /////////////////////////////////////////////////////
 
 Vector4 Vector4::operator-(void) const
 {
   return Vector4(-x, -y, -z, -w);
 }
-
 
 ////////// Binary Assignment Operators (reals) /////////////////////////////////
 
@@ -50774,7 +53004,6 @@ void Vector4::operator/=(real rhs)
   w /= rhs;
 }
 
-
 ////////// Binary Operators (reals) ////////////////////////////////////////////
 
 Vector4 Vector4::operator*(real rhs) const
@@ -50787,7 +53016,6 @@ Vector4 Vector4::operator/(real rhs) const
   ErrorIf(Math::IsZero(rhs), "Math::Vector4 - Division by zero.");
   return Vector4(x / rhs, y / rhs, z / rhs, w / rhs);
 }
-
 
 ////////// Binary Assignment Operator (Vectors) ////////////////////////////////
 
@@ -50835,7 +53063,6 @@ Vector4 Vector4::operator-(Vec4Param rhs) const
   return Vector4(x - rhs.x, y - rhs.y, z - rhs.z, w - rhs.w);
 }
 
-
 ///////// Binary Vector Comparisons ////////////////////////////////////////////
 
 bool Vector4::operator==(Vec4Param rhs) const
@@ -50850,7 +53077,6 @@ bool Vector4::operator!=(Vec4Param rhs) const
 {
   return !(*this == rhs);
 }
-
 
 BoolVec4 Vector4::operator< (Vec4Param rhs) const
 {
@@ -50883,7 +53109,6 @@ BoolVec4 Vector4::operator>=(Vec4Param rhs) const
                   z >= rhs.z,
                   w >= rhs.w);
 }
-
 
 void Vector4::Set(real x_, real y_, real z_, real w_)
 {
@@ -50921,7 +53146,6 @@ Vector4 Vector4::operator/(Vec4Param rhs) const
           "Vector4 - Division by Zero.");
   return Vector4(x / rhs.x, y / rhs.y, z / rhs.z, w / rhs.w);
 }
-
 
 void Vector4::ZeroOut(void)
 {
@@ -51102,10 +53326,6 @@ Vector4 Lerp(Vec4Param start, Vec4Param end, real tValue)
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
-
-
-
-
 #ifdef _MSC_VER
 #define CStringCopy(dest, destSize, source, sourceSize) strncpy_s(dest, (destSize), source, sourceSize);
 #else 
@@ -51125,13 +53345,13 @@ Vector4 Lerp(Vec4Param start, Vec4Param end, real tValue)
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
-
-#pragma message("Including Windows...")
-
-#define STRICT
-
-#ifdef _WINDOWS_
-#error Windows has already been included!
+#ifdef ZERO
+  #pragma message("Including Windows...")
+  #ifdef _WINDOWS_
+  #error Windows has already been included!
+  #else
+  #define STRICT
+  #endif
 #endif
 
 //Prevent including winsock1.
@@ -51172,7 +53392,6 @@ Vector4 Lerp(Vec4Param start, Vec4Param end, real tValue)
 
 #endif
 
-
 #if defined(PLATFORM_WINDOWS)
 ///////////////////////////////////////////////////////////////////////////////
 ///
@@ -51183,9 +53402,6 @@ Vector4 Lerp(Vec4Param start, Vec4Param end, real tValue)
 /// Copyright 2010-2012, DigiPen Institute of Technology
 ///
 ///////////////////////////////////////////////////////////////////////////////
-
-
-
 
 const uint cMaxErrorMessageSize = 1024;
 // Convert a windows error code to a human readable string. If the errorCode
@@ -51203,9 +53419,7 @@ cstr GetWindowsExceptionCode(int exceptionCode);
 #define WinReturnIf(command, ...) \
 { uint success = command;  if(!success) { VerifyWin(success, ## __VA_ARGS__  ); return (uint)-1; } }
 
-
 #endif
-
 
 #include <new>
 #include <cstdlib>
@@ -51217,11 +53431,6 @@ cstr GetWindowsExceptionCode(int exceptionCode);
 
 // Only compile this on the MSVC compiler (not supported by other compilers on Windows)
 #ifdef _MSC_VER
-
-
-
-
-
 
 #define _NO_CVCONST_H
 #include <dbghelp.h>
@@ -51362,7 +53571,6 @@ struct ClassStorage
     DeleteObjectsInContainer(Classes);
   }
 } gClassStorage;
-
 
 ClassMap* BuildMap(TypeModule& types, uint typeIndex)
 {
@@ -51553,8 +53761,6 @@ void CheckClassMemory(cstr className, byte* classMemory)
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
-
-
 #if defined(PLATFORM_WINDOWS)
 ///////////////////////////////////////////////////////////////////////////////
 ///
@@ -51565,7 +53771,6 @@ void CheckClassMemory(cstr className, byte* classMemory)
 /// Copyright 2010, DigiPen Institute of Technology
 ///
 ///////////////////////////////////////////////////////////////////////////////
-
 
 namespace Zero
 {
@@ -51619,7 +53824,6 @@ inline OsInt WaitForIoCompletion(IoControl& ioControl)
 }//namespace Zero
 
 #endif
-
 
 namespace Zero
 {
@@ -51758,8 +53962,6 @@ OsInt DirectoryWatcher::RunThreadEntryPoint()
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
-
-
 namespace Zero
 {
 
@@ -51812,10 +54014,6 @@ void* ExternalLibrary::GetFunctionByName(cstr name)
 /// Copyright 2010-2012, DigiPen Institute of Technology
 ///
 ///////////////////////////////////////////////////////////////////////////////
-
-
-
-
 
 namespace Zero
 {
@@ -52080,18 +54278,12 @@ void File::Flush()
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
-
-
-
 #include <direct.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <shlobj.h>
 
-
 #include <shellapi.h>
-
-
 
 #pragma comment(lib, "Shell32.lib")
 
@@ -52250,6 +54442,25 @@ bool DeleteFile(StringRef file)
   return success!=0;
 }
 
+bool DeleteDirectory(StringRef directory)
+{
+  FileRange range(directory);
+  for(; !range.empty(); range.popFront())
+  {
+    String name = range.front();
+    String fullName = BuildString(directory, cDirectorySeparatorCstr, name);
+    if(IsDirectory(fullName))
+      DeleteDirectory(fullName);
+    else
+      DeleteFile(fullName);
+  }
+
+  //this is the only part that needs to be updated platform specific
+  BOOL success = ::RemoveDirectoryA(directory.c_str());
+  VerifyWin(success, "Failed to delete directory %s.", directory.c_str());
+  return success != 0;
+}
+
 TimeType SystemTimeToTimeType(SYSTEMTIME& systemTime)
 {
   //Build a TimeType using mktime and systemTime
@@ -52337,14 +54548,12 @@ int CheckFileTime(StringRef dest, StringRef source)
   return result;
 }
 
-
 struct FileRangePrivateData
 {
   cstr mCurrent;
   HANDLE mHandle;
   WIN32_FIND_DATA mFindData;
 };
-
 
 FileRange::FileRange(StringRef stringPath)
 {
@@ -52463,8 +54672,6 @@ String UniqueFileId(StringRef fullpath)
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
-
-
 #include <float.h>
 
 namespace Zero
@@ -52579,9 +54786,6 @@ ScopeFpuExceptionsDisabler::~ScopeFpuExceptionsDisabler()
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
-
-
-
 namespace Zero
 {
 
@@ -52593,7 +54797,6 @@ void StackHandle::Close()
 }
 
 }
-
 
 #endif
 
@@ -52608,7 +54811,6 @@ void StackHandle::Close()
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
-
 #endif
 
 #if defined(PLATFORM_WINDOWS)
@@ -52621,9 +54823,6 @@ void StackHandle::Close()
 /// Copyright 2010-2012, DigiPen Institute of Technology
 ///
 ///////////////////////////////////////////////////////////////////////////////
-
-
-
 
 namespace Zero
 {
@@ -52943,10 +55142,6 @@ OsInt Process::ReadThreadEntryPoint()
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
-
-
-
-
 namespace Zero
 {
 
@@ -52990,7 +55185,6 @@ void Enumerate(Array<Resolution>& resolutions, uint bitDepth, Resolution aspect)
   sort(resolutions.all());
 }
 
-
 }//namespace Zero
 
 #endif
@@ -53005,8 +55199,6 @@ void Enumerate(Array<Resolution>& resolutions, uint bitDepth, Resolution aspect)
 /// Copyright 2010-2014, DigiPen Institute of Technology
 ///
 ///////////////////////////////////////////////////////////////////////////////
-
-
 
 #pragma comment(lib, "ws2_32.lib")
 
@@ -53024,15 +55216,13 @@ SocketAddress::~SocketAddress()
 
 void FailOnError(Status& status, int errorCode)
 {
-  status.ExtendedErrorCode = errorCode;
-
   char* errorString = NULL;
   FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, 
                 NULL, WSAGetLastError(),
                 MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
                 (LPSTR)&errorString, 0, NULL);
   
-  status.SetFailed(errorString);
+  status.SetFailed(errorString, errorCode);
   LocalFree(errorString);
 }
 
@@ -53111,6 +55301,7 @@ Socket::~Socket()
   if(mHandle != (OsHandle)INVALID_SOCKET)
   {
     Status status;
+    Shutdown(status, SocketIo::Both);
     Close(status);
 
     if(status.Failed())
@@ -53137,6 +55328,11 @@ bool Socket::IsReceiveCloseError(int extendedErrorCode)
   }
 
   return false;
+}
+
+bool Socket::IsAcceptRemoteError(int extendedErrorCode)
+{
+  return (extendedErrorCode == WSAECONNRESET);
 }
 
 void Socket::NetworkByteOrderSwap(const byte* input, size_t size, byte* output)
@@ -53298,9 +55494,6 @@ bool Socket::Select(Status& status, SocketSelect::Enum selectMode, float timeout
   timeout.tv_sec = (long)timeoutSeconds;
   timeout.tv_usec = (long)((timeoutSeconds - timeout.tv_sec) * 1000000L);
 
-  int writeCount = 0;
-  int errorCount = 0;
-
   fd_set set;
   set.fd_count = 1;
   set.fd_array[0] = (SOCKET)mHandle;
@@ -53342,8 +55535,6 @@ bool Socket::Select(Status& status, SocketSelect::Enum selectMode, float timeout
 /// Copyright 2010, DigiPen Institute of Technology
 ///
 ///////////////////////////////////////////////////////////////////////////////
-
-
 
 #ifdef _MSC_VER
 
@@ -53514,7 +55705,6 @@ bool Thread::IsCompleted()
   return !threadActive;
 }
 
-
 }//namespace Zero
 
 #endif
@@ -53529,8 +55719,6 @@ bool Thread::IsCompleted()
 /// Copyright 2010, DigiPen Institute of Technology
 ///
 ///////////////////////////////////////////////////////////////////////////////
-
-
 
 namespace Zero
 {
@@ -53652,8 +55840,6 @@ void Semaphore::WaitAndDecrement()
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
-
-
 namespace Zero
 {
 struct TimerPrivateData
@@ -53720,7 +55906,6 @@ double Timer::TimeNoUpdate() const
   return (double)(TempTicks / self->mFrequency);
 }
 
-
 Timer::TickType Timer::GetTickTime() const
 {
   ZeroGetPrivateData(TimerPrivateData);
@@ -53766,12 +55951,6 @@ double Timer::TimeDelta() const
 /// Copyright 2011, DigiPen Institute of Technology
 ///
 ///////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
 
 #include <Lmcons.h>
 #include <shellapi.h>
@@ -53850,7 +56029,6 @@ u64 GetMacAddress()
 
   return macAddress;
 }
-
 
 // Debug break (only if a debugger is attached)
 void DebugBreak()
@@ -53931,7 +56109,6 @@ void GetMemoryStatus(MemoryInfo& data)
   }
 }
 
-
 String TranslateErrorCode(int errorCode)
 {
   //Try exception codes
@@ -53956,7 +56133,13 @@ String GetVersionString()
   ZeroMemory(&osvi, sizeof(OSVERSIONINFOEX));
 
   osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
+
+  // The function 'GetVersionEx' still works on Windows 8.1 but is deprecated, so if the build
+  // is made on windows 8.1 this can often cause errors
+#pragma warning(push)
+#pragma warning(disable: 4996)
   BOOL bOsVersionInfoEx = GetVersionEx((OSVERSIONINFO*) &osvi);
+#pragma warning(pop)
 
   StringBuilder builder;
 
@@ -54107,7 +56290,6 @@ u64 GenerateUniqueId64()
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
-
 #include <stdio.h>
 #pragma comment(lib, "user32.lib")
 
@@ -54164,7 +56346,6 @@ uint CheckWindowsErrorCode(uint success, cstr format, ...)
   return success;
 }
 
-
 cstr GetWindowsExceptionCode(int exceptionCode)
 {
   //take from Bruce Dawson's article http://www.altdevblogaday.com/2012/04/20/exceptional-floating-point/
@@ -54220,12 +56401,6 @@ cstr GetWindowsExceptionCode(int exceptionCode)
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
-
-
-
-
-
-
 #ifdef __APPLE__
 #include <CoreServices/CoreServices.h>
 #include <mach/mach.h>
@@ -54242,8 +56417,6 @@ cstr GetWindowsExceptionCode(int exceptionCode)
 using namespace std;
 
 #endif
-
-
 
 namespace Zero
 {
@@ -54284,8 +56457,6 @@ OsInt DirectoryWatcher::RunThreadEntryPoint()
 /// Copyright 2010-2011, DigiPen Institute of Technology
 ///
 ///////////////////////////////////////////////////////////////////////////////
-
-
 
 #pragma warning(disable: 4996)
 
@@ -54485,9 +56656,6 @@ void File::Flush()
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
-
-
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
@@ -54502,7 +56670,6 @@ namespace Zero
 
 const char  cDirectorySeparatorChar = '/';
 const char* cDirectorySeparatorCstr = "/";
-
 
 void InitFileSystem()
 {
@@ -54608,7 +56775,6 @@ void CreateDirectoryAndParents(StringRef directory)
   // Finally create the directory
   CreateDirectory(directoryPath);
 }
-
 
 int CheckFileTime(StringRef dest, StringRef source)
 {
@@ -54796,10 +56962,7 @@ void FileRange::popFront()
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
-
-
 #include <float.h>
-
 
 namespace Zero
 {
@@ -54825,7 +56988,6 @@ ScopeFpuExceptionsDisabler::~ScopeFpuExceptionsDisabler()
 {
 }
 
-
 }//namespace Zero
 
 #endif
@@ -54841,7 +57003,6 @@ ScopeFpuExceptionsDisabler::~ScopeFpuExceptionsDisabler()
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
-
 #endif
 
 #if defined(PLATFORM_POSIX)
@@ -54854,8 +57015,6 @@ ScopeFpuExceptionsDisabler::~ScopeFpuExceptionsDisabler()
 /// Copyright 2010-2012, DigiPen Institute of Technology
 ///
 ///////////////////////////////////////////////////////////////////////////////
-
-
 
 namespace Zero
 {
@@ -54916,11 +57075,8 @@ OsInt Process::ReadThreadEntryPoint()
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
-
-
 namespace Zero
 {
-
 
 Resolution GetDesktopResolution()
 {
@@ -54935,13 +57091,11 @@ void Enumerate(Array<Resolution>& resolutions, int bitDepth, Resolution aspect)
 
 }
 
-
 }//namespace Zero
 
 #endif
 
 #if defined(PLATFORM_POSIX)
-
 
 namespace Zero
 {
@@ -55046,7 +57200,6 @@ int Socket::ReceiveFrom(Status& status, byte* dataOut, int length, SocketFlags::
   return 0;
 }
 
-
 bool Socket::Select(Status& status, SocketSelect::Enum selectMode, float timeoutSeconds)
 {
   return false;
@@ -55067,8 +57220,6 @@ bool Socket::Select(Status& status, SocketSelect::Enum selectMode, float timeout
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
-
-
 namespace Zero
 {
 
@@ -55081,7 +57232,6 @@ Thread::Thread()
 Thread::~Thread()
 {
 }
-
 
 bool Thread::IsValid()
 {
@@ -55097,17 +57247,14 @@ void Thread::Resume()
 {
 }
 
-
 void Thread::Suspend()
 {
 }
-
 
 void Thread::Close()
 {
 
 }
-
 
 OsInt Thread::WaitForCompletion()
 {
@@ -55128,8 +57275,6 @@ OsInt Thread::WaitForCompletion()
 /// Copyright 2010, DigiPen Institute of Technology
 ///
 ///////////////////////////////////////////////////////////////////////////////
-
-
 
 namespace Zero
 {
@@ -55232,8 +57377,6 @@ void Semaphore::WaitAndDecrement()
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
-
-
 namespace Zero
 {
 
@@ -55271,7 +57414,6 @@ struct TimerPrivateData
   Timer::TickType mLast;
   Timer::TickType mCurrent;
 };
-
 
 void Timer::Reset()
 {
@@ -55338,11 +57480,6 @@ double Timer::TicksToSeconds(TickType ticks) const
 /// Copyright 2010-2011, DigiPen Institute of Technology
 ///
 ///////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
 
 #include <unistd.h>
 #include <pwd.h>
@@ -55422,7 +57559,6 @@ u64 GenerateUniqueId64()
   ++idGen;
   return idGen + rand();
 }
-
 
 void CheckClassMemory(cstr className, byte* classMemory)
 {

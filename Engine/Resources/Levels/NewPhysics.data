@@ -204,6 +204,9 @@ Level =
 		  float MaxSize = 10,
 		  float MinSize = 10,
 		},
+		CameraFollow = 
+		{
+		},
 	},
 	Cog = 
 	{

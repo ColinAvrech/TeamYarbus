@@ -18,6 +18,7 @@ namespace Framework
 	class PointCollider : public ShapeCollider
 	{
 	public:
+		//ZilchDeclareDerivedType(PointCollider, ShapeCollider);
 		const static string Name;
     PointCollider () {}
 		~PointCollider(){}

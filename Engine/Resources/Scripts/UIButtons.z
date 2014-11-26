@@ -1,8 +1,6 @@
 class ExitButton : Component
 {
 	var Detector: MouseDetector = null;
-	
-	var SpawnedObject:GameObject = null;
   
 	constructor() : base()
 	{
@@ -13,15 +11,17 @@ class ExitButton : Component
 	{
 		this.Owner = owner;
 		this.Detector = new MouseDetector(this.Owner, this.OnMouseEvent);
-		this.Detector.Offset = Real2(0, 0.21);
+		this.Detector.Rect.Width = 1;
+		this.Detector.Rect.Height = 0.22;
+		this.Detector.Offset = Real2(0, 0.02);
 		EventSystem.Connect(Events.UpdateEvent, this.LogicUpdate);
 	}
 	
 	function LogicUpdate(e: UpdateEvent)
 	{
-		var dimensions = this.Owner.Transform.GetScreenPosition(Real2(1, 0.21));
-		this.Detector.Rect.Width = dimensions.X;
-		this.Detector.Rect.Height = dimensions.Y;
+		//var dimensions = this.Owner.Transform.GetScreenPosition(Real2(1, 0.21));
+		//this.Detector.Rect.Width = dimensions.X;
+		//this.Detector.Rect.Height = dimensions.Y;
 	}
 	
 	function OnMouseEvent(e: MouseEvent)
@@ -48,3 +48,54 @@ class ExitButton : Component
 	}
 }
 
+class EnterButton : Component
+{
+	var Detector: MouseDetector = null;
+	
+	var SpawnedObject:GameObject = null;
+  
+	constructor() : base()
+	{
+
+	}
+
+	function Initialize(owner:GameObject)
+	{
+		this.Owner = owner;
+		this.Detector = new MouseDetector(this.Owner, this.OnMouseEvent);
+		this.Detector.Rect.Width = 1;
+		this.Detector.Rect.Height = 0.22;
+		this.Detector.Offset = Real2(0, 0.02);
+		EventSystem.Connect(Events.UpdateEvent, this.LogicUpdate);
+	}
+	
+	function LogicUpdate(e: UpdateEvent)
+	{
+		//var dimensions = this.Owner.Transform.GetScreenPosition(Real2(1, 0.21));
+		//this.Detector.Rect.Width = dimensions.X;
+		//this.Detector.Rect.Height = dimensions.Y;
+	}
+	
+	function OnMouseEvent(e: MouseEvent)
+	{
+		if (e.State == MouseState.MouseOutside)
+		{
+			//Console.WriteLine("Outside");
+		}
+		else if (e.State == MouseState.MouseEnter)
+		{
+			Console.WriteLine("Enter");
+			this.Owner.Sprite.ChangeTexture("UIExitWhite.png");
+		}
+		else if (e.State == MouseState.MouseExit)
+		{
+			Console.WriteLine("Exit");
+			this.Owner.Sprite.ChangeTexture("UIExitBlack.png");
+		}
+		else
+		{
+			
+		}
+		//Console.WriteLine("MOUSE!");
+	}
+}

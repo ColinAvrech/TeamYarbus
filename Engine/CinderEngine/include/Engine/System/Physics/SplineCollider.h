@@ -17,6 +17,7 @@ namespace Framework
 	class SplineCollider : public ShapeCollider
 	{
 	public:
+		//ZilchDeclareDerivedType(SplineCollider, ShapeCollider);
 		const static string Name;
 		float p1dotNormal;
 		vec3 normalVec;

@@ -56,7 +56,7 @@ namespace Framework
     if (force.y < 0.1f)
       force += f;
 
-    std::cout << force.y << "\n";
+    //std::cout << force.y << "\n";
   }
 
 }

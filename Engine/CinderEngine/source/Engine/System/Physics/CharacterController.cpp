@@ -33,19 +33,19 @@ namespace Framework
     //vec3 force, accelH = { 1.0f, 0.0f, 0.0f }, accelV = { 0.0f, 1.0f, 0.0f };
     switch (_key->KeyValue)
     {
-    //case GLFW_KEY_UP:
-    //  //gameObject->RigidBody->vel.y = jumpVel;
-    //  //Physics::applyAccel(accelV, 0.016);
-    //  //gameObject->Transform->Translate(0, 1, 0);
-    //  gameObject->RigidBody2D->ApplyForce
-    //    (
-    //    Vector2
-    //    (
-    //    jumpVel.x * density,
-    //    jumpVel.y * density
-    //    )
-    //    );
-    //  break;
+    case GLFW_KEY_UP:
+      //gameObject->RigidBody->vel.y = jumpVel;
+      //Physics::applyAccel(accelV, 0.016);
+      //gameObject->Transform->Translate(0, 1, 0);
+      gameObject->RigidBody2D->ApplyForce
+        (
+        Vector2
+        (
+        jumpVel.x * density,
+        jumpVel.y * density
+        )
+        );
+      break;
 
     case GLFW_KEY_RIGHT:
       if (gameObject->RigidBody2D->force.x < 0.4f && gameObject->RigidBody2D->force.x > -0.4f)
@@ -72,6 +72,14 @@ namespace Framework
         acceleration.y * density
         )
         );
+      break;
+
+    case GLFW_KEY_R:
+      gameObject->RigidBody2D->position = Vector2 (0, 4);
+      gameObject->RigidBody2D->angularVelocity = 0.0f;
+      gameObject->RigidBody2D->velocity = Vector2 (0, 0);
+      gameObject->RigidBody2D->force = Vector2 (0, 0);
+      Camera::main->gameObject->Transform->SetPosition (0, 0);
       //if (gameObject->RigidBody->vel.x >= -maxXVel)
       //  gameObject->RigidBody->vel.x -= accel*0.016f;
       //gameObject->Transform->Translate(-1, 0, 0);
@@ -114,6 +122,8 @@ namespace Framework
     //  collision->OtherObject->Transform->Translate(-collision->normal.x * 0.05f, -collision->normal.y * 0.05f, 0.0f);
   }
 
+  static float t = 1;
+
   void CharacterController::Update (UpdateEvent* e)
   {
     float micValue = AUDIOSYSTEM->GetMicrophoneValue ();
@@ -125,6 +135,7 @@ namespace Framework
       micValue * microhponeMultiplier.y * density
       )
       );
+
     ////how to get line collider
     ////gameObject->CircleCollider->DetectLine(gameObject->LineCollider);
     ////go1->CircleCollider->DetectCircle(go2->CircleCollider);

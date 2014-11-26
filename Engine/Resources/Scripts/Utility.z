@@ -1,0 +1,202 @@
+class Utility
+{
+    // This is a basic String->Integer converter. 
+    // Do not pass the in negative signs, commas, spaces or decimals, etc. 
+
+    // Sample Usage
+    // ------------
+    //
+    // var number = Utility.ToInteger("1234"); // 'number' will be the Integer value 1234
+    //
+    //  ...
+    // var sum = 0;
+    // foreach (var string in list) 
+    // { 
+    //    sum += Utility.ToInteger(string);
+    // }
+    // Console.WriteLine(sum);
+    //  ...
+    
+    
+    [Static]
+    function Linear(currenttime:Real, startvalue:Real, endvalue:Real, duration:Real):Real
+    {
+        var change = endvalue - startvalue;
+        
+        return change * currenttime/duration + startvalue;
+    }
+    
+    [Static]
+    function QuadIn (currenttime:Real, startvalue:Real, endvalue:Real, duration:Real):Real
+    {
+        var change = endvalue - startvalue;
+        
+        currenttime /= duration;
+        
+        return change * currenttime * currenttime + startvalue;
+    }
+    
+    [Static]
+    function QuadOut (currenttime:Real, startvalue:Real, endvalue:Real, duration:Real):Real
+    {
+        var change = endvalue - startvalue;
+        
+        currenttime /= duration;
+        return -change * currenttime * (currenttime - 2) + startvalue;
+    }
+    
+    [Static]
+    function QuadInOut (currenttime:Real, startvalue:Real, endvalue:Real, duration:Real):Real
+    {
+        var change = endvalue - startvalue;
+        
+        currenttime /= duration/2;
+        if(currenttime < 1)
+        {
+            return change/2 * currenttime * currenttime + startvalue;
+        }
+        
+        currenttime -= 1;
+        return -change/2 * (currenttime * (currenttime - 2) - 1) + startvalue;
+    }
+    
+    [Static]
+    function CubicIn (currenttime:Real, startvalue:Real, endvalue:Real, duration:Real):Real
+    {
+        var change = endvalue - startvalue;
+        
+        currenttime /= duration;
+        return change * currenttime * currenttime * currenttime + startvalue;
+    }
+    
+    [Static]
+    function CubicOut (currenttime:Real, startvalue:Real, endvalue:Real, duration:Real):Real
+    {
+        var change = endvalue - startvalue;
+        
+        currenttime /= duration;
+        currenttime -= 1;
+        return change * (currenttime * currenttime * currenttime + 1) + startvalue;
+    }
+    
+    [Static]
+    function CubicInOut (currenttime:Real, startvalue:Real, endvalue:Real, duration:Real):Real
+    {
+        var change = endvalue - startvalue;
+        
+        currenttime /= duration/2;
+        if(currenttime < 1)
+        {
+            return change/2 * currenttime * currenttime * currenttime + startvalue;
+        }
+        
+        currenttime -= 2;
+        return change/2 * (currenttime * currenttime * currenttime + 2) + startvalue;
+    }
+    
+    [Static]
+    function QuarticIn (currenttime:Real, startvalue:Real, endvalue:Real, duration:Real):Real
+    {
+        var change = endvalue - startvalue;
+        
+        currenttime /= duration;
+        return change * currenttime * currenttime * currenttime * currenttime + startvalue;
+        
+    }
+    
+    [Static]
+    function QuarticOut (currenttime:Real, startvalue:Real, endvalue:Real, duration:Real):Real
+    {
+        var change = endvalue - startvalue;
+        
+        currenttime /= duration;
+        currenttime -= 1;
+        return -change * (currenttime * currenttime * currenttime * currenttime - 1)+ startvalue;
+    }
+    
+    [Static]
+    function QuarticInOut (currenttime:Real, startvalue:Real, endvalue:Real, duration:Real):Real
+    {
+        var change = endvalue - startvalue;
+        
+        currenttime /= duration/2;
+        if(currenttime < 1)
+        {
+            return change/2 * currenttime * currenttime * currenttime * currenttime + startvalue;
+        }
+        
+        currenttime -= 2;
+        return -change/2 * (currenttime * currenttime * currenttime * currenttime - 2)+ startvalue;
+    }
+    
+    [Static]
+    function QuinticIn (currenttime:Real, startvalue:Real, endvalue:Real, duration:Real):Real
+    {
+        var change = endvalue - startvalue;
+        
+        currenttime /= duration;
+        return change * currenttime * currenttime * currenttime * currenttime * currenttime + startvalue;
+        
+    }
+    
+    [Static]
+    function QuinticOut (currenttime:Real, startvalue:Real, endvalue:Real, duration:Real):Real
+    {
+        var change = endvalue - startvalue;
+        
+        currenttime /= duration;
+        currenttime -= 1;
+        return change * (currenttime * currenttime * currenttime * currenttime * currenttime + 1) + startvalue;
+    }
+    
+    [Static]
+    function QuinticInOut (currenttime:Real, startvalue:Real, endvalue:Real, duration:Real):Real
+    {
+        var change = endvalue - startvalue;
+        
+        currenttime /= duration/2;
+        if(currenttime < 1)
+        {
+            return change/2 * currenttime * currenttime * currenttime * currenttime * currenttime + startvalue;
+        }
+        
+        currenttime -= 2;
+        return change/2 * (currenttime * currenttime * currenttime * currenttime + 2) + startvalue;
+    }
+    
+    
+    
+    [Static]
+    function ToInteger(value : String) : Integer
+    {
+        // The ascii value of 0
+        var asciiZero = 48;
+        
+        // Stores our resulting value
+        var finalValue = 0;
+        
+        // Read through each character
+        for (var i = 0; i < value.Count; ++i)
+        {
+            // Figure out what place this is (the 1s, 10s, etc)
+            var place = (value.Count - i) - 1;
+            
+            // Get the character as a single numeric digit (by subtracting off ascii of 0)
+            var character = value.Get(i);
+            var digit = character - asciiZero;
+            
+            // If the digit is out of range [0-9], then it's not a valid number
+            if (digit < 0 || digit > 9)
+            {
+                throw new Exception("The string passed in was not a valid number: `value`");
+            }
+            
+            // Take the place and turn it into a number, eg 1, 10, 100, etc
+            // Multiply the digit by the place
+            finalValue += (10 ^ place) * digit;
+        }
+        
+        return finalValue;
+    }
+    
+}

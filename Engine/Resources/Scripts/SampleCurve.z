@@ -1,0 +1,141 @@
+class SampleCurve
+{
+    var Sample:delegate(currenttime:Real, startvalue:Real, endvalue:Real, duration:Real):Real = null;
+    
+    
+    constructor(ease:Ease)
+    {
+        if (ease == Ease.Linear)
+        {
+            this.Sample = this.Linear;
+        }
+        else if (ease == Ease.QuadOut)
+        {
+            this.Sample = this.QuadOut;
+        }
+        else if (ease == Ease.QuadIn)
+        {
+            this.Sample = this.QuadIn;
+        }
+        else if (ease == Ease.QuadInOut)
+        {
+            this.Sample = this.QuadInOut;
+        }
+        else if (ease == Ease.CubicIn)
+        {
+            this.Sample = this.CubicIn;
+        }
+        else if (ease == Ease.CubicOut)
+        {
+            this.Sample = this.CubicOut;
+        }
+        else if (ease == Ease.CubicInOut)
+        {
+            this.Sample = this.CubicInOut;
+        }
+        else if (ease == Ease.QuarticIn)
+        {
+            this.Sample = this.QuarticIn;
+        }
+        else if (ease == Ease.QuarticOut)
+        {
+            this.Sample = this.QuarticOut;
+        }
+        else if (ease == Ease.QuarticInOut)
+        {
+            this.Sample = this.QuarticInOut;
+        }
+        
+    }
+    
+    function Linear(currenttime:Real, startvalue:Real, endvalue:Real, duration:Real):Real
+    {
+        return Utility.Linear(currenttime, startvalue, endvalue, duration);
+    }
+    
+    function QuadOut(currenttime:Real, startvalue:Real, endvalue:Real, duration:Real):Real
+    {
+        return Utility.QuadOut(currenttime, startvalue, endvalue, duration);
+    }
+    
+    function QuadIn(currenttime:Real, startvalue:Real, endvalue:Real, duration:Real):Real
+    {
+        return Utility.QuadIn(currenttime, startvalue, endvalue, duration);
+    }
+    
+    function QuadInOut(currenttime:Real, startvalue:Real, endvalue:Real, duration:Real):Real
+    {
+        return Utility.QuadInOut(currenttime, startvalue, endvalue, duration);
+    }
+    
+    function CubicIn(currenttime:Real, startvalue:Real, endvalue:Real, duration:Real):Real
+    {
+        return Utility.CubicIn(currenttime, startvalue, endvalue, duration);
+    }
+    
+    function CubicOut(currenttime:Real, startvalue:Real, endvalue:Real, duration:Real):Real
+    {
+        return Utility.CubicOut(currenttime, startvalue, endvalue, duration);
+    }
+    
+    function CubicInOut(currenttime:Real, startvalue:Real, endvalue:Real, duration:Real):Real
+    {
+        return Utility.CubicInOut(currenttime, startvalue, endvalue, duration);
+    }
+    
+    function QuarticIn(currenttime:Real, startvalue:Real, endvalue:Real, duration:Real):Real
+    {
+        return Utility.QuarticIn(currenttime, startvalue, endvalue, duration);
+    }
+    
+    function QuarticOut(currenttime:Real, startvalue:Real, endvalue:Real, duration:Real):Real
+    {
+        return Utility.QuarticOut(currenttime, startvalue, endvalue, duration);
+    }
+    
+    function QuarticInOut(currenttime:Real, startvalue:Real, endvalue:Real, duration:Real):Real
+    {
+        return Utility.QuarticInOut(currenttime, startvalue, endvalue, duration);
+    }
+    
+    function QuinticIn(currenttime:Real, startvalue:Real, endvalue:Real, duration:Real):Real
+    {
+        return Utility.QuarticIn(currenttime, startvalue, endvalue, duration);
+    }
+    
+    function QuinticOut(currenttime:Real, startvalue:Real, endvalue:Real, duration:Real):Real
+    {
+        return Utility.QuarticOut(currenttime, startvalue, endvalue, duration);
+    }
+    
+    function QuinticInOut(currenttime:Real, startvalue:Real, endvalue:Real, duration:Real):Real
+    {
+        return Utility.QuarticInOut(currenttime, startvalue, endvalue, duration);
+    }
+}
+
+enum Ease
+{
+    Linear,
+    QuadIn,
+    QuadInOut,
+    QuadOut,
+    SinIn,
+    SinInOut,
+    SinOut,
+    ExpoIn,
+    ExpoInOut,
+    ExpoOut,
+    CircIn,
+    CircInOut,
+    CircOut,
+    CubicIn,
+    CubicInOut,
+    CubicOut,
+    QuarticIn,
+    QuarticInOut,
+    QuarticOut,
+    QntIn,
+    QntInOut,
+    QntOut
+}

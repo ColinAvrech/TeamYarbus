@@ -20,7 +20,7 @@ namespace Framework
 	class CircleCollider : public ShapeCollider
 	{
 	public:
-		ZilchDeclareBaseType(CircleCollider, Zilch::TypeCopyMode::ReferenceType);
+		//ZilchDeclareDerivedType(CircleCollider, ShapeCollider);
 		const static string Name;
 		float radius;
 		CircleCollider(){}

@@ -111,7 +111,7 @@ namespace Framework
     Specify_Attributes ();
     vao->unbindVAO ();
 
-    box.Min.x = gameObject->Transform->GetPosition().x - box.Dimension.x * gameObject->Transform->GetScale().x * 0.5f;
+    box.Min.x = gameObject->Transform->GetPosition ().x - box.Dimension.x * gameObject->Transform->GetScale ().x * 0.5f;
     box.Min.y = gameObject->Transform->GetPosition ().y - box.Dimension.y * gameObject->Transform->GetScale ().y * 0.5f;
     box.Max.x = gameObject->Transform->GetPosition ().x + box.Dimension.x * gameObject->Transform->GetScale ().x * 0.5f;
     box.Max.y = gameObject->Transform->GetPosition ().y + box.Dimension.y * gameObject->Transform->GetScale ().y * 0.5f;
@@ -126,9 +126,11 @@ namespace Framework
 
   void UIBox::UIUpdate (UpdateEvent* update)
   {
-    glm::vec2 normPos = WINDOWSYSTEM->Get_Normalized_Mouse_Position ();
+	glm::vec2 normPos = WINDOWSYSTEM->Get_Normalized_Mouse_Position();
     box.S_Min = gameObject->Transform->GetScreenPosition (box.Min);
     box.S_Max = gameObject->Transform->GetScreenPosition (box.Max);
+	std::cout << "MIN " << box.S_Min.x << ", " << box.S_Min.y << "\n";
+	std::cout << "MAX " << box.S_Max.x << ", " << box.S_Max.y << "\n";
 
     if (box.Intersects(normPos))
     {
@@ -165,6 +167,57 @@ namespace Framework
     texture->Unbind ();
     shader->Disable ();
     vao->unbindVAO ();
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(Camera::main->GetFOV(), (float)WINDOWSYSTEM->Get_Width() / WINDOWSYSTEM->Get_Height(), 0, 100.0f);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+
+	glm::vec3 eye = glm::vec3(0, 0, 1) * Camera::main->GetSize() + glm::vec3(Camera::main->gameObject->Transform->GetPosition().x, Camera::main->gameObject->Transform->GetPosition().y, 0);
+	glm::vec3 center = Camera::main->gameObject->Transform->GetPosition();
+	glm::vec3 up = glm::vec3(0, 1, 0);
+
+	gluLookAt(eye.x, eye.y, eye.z, center.x, center.y, center.z, up.x, up.y, up.z);
+	glColor3f(1, 0, 0);
+	glBegin(GL_LINES);
+	{
+		glVertex2f(box.Max.x, box.Max.y);
+		glVertex2f(box.Min.x, box.Max.y);
+
+		glVertex2f(box.Min.x, box.Max.y);
+		glVertex2f(box.Min.x, box.Min.y);
+
+		glVertex2f(box.Min.x, box.Min.y);
+		glVertex2f(box.Max.x, box.Min.y);
+
+		glVertex2f(box.Max.x, box.Min.y);
+		glVertex2f(box.Max.x, box.Max.y);
+	}
+	glEnd();
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	//gluOrtho2D(0, WINDOWSYSTEM->Get_Width(), WINDOWSYSTEM->Get_Height(), 0);
+	gluOrtho2D(-1, 1, -1, 1);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	glColor3f(1, 0, 0);
+	glBegin(GL_LINES);
+	{
+		glVertex2f(box.S_Max.x, box.S_Max.y);
+		glVertex2f(box.S_Min.x, box.S_Max.y);
+
+		glVertex2f(box.S_Min.x, box.S_Max.y);
+		glVertex2f(box.S_Min.x, box.S_Min.y);
+
+		glVertex2f(box.S_Min.x, box.S_Min.y);
+		glVertex2f(box.S_Max.x, box.S_Min.y);
+
+		glVertex2f(box.S_Max.x, box.S_Min.y);
+		glVertex2f(box.S_Max.x, box.S_Max.y);
+	}
+	glEnd();
   }
 
   void UIBox::Specify_Attributes ()

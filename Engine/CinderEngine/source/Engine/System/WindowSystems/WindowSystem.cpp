@@ -37,14 +37,28 @@ namespace Framework
 	  ZilchBindMethodAs(ZGet_Mouse_Position, "GetMousePosition");
 	  ZilchBindMethodAs(ZGet_Normalized_Mouse_Position, "GetNormalMousePosition");
 	  ZilchBindFieldGet(IsMouseDown);
+	  ZilchBindMethodAs(Get_Width, "GetWidth");
+	  ZilchBindMethodAs(Get_Height, "GetHeight");
 
   }
+
+  static glm::vec2 mouseOffset;
 
   namespace WindowNameSpace
   {
     void GLFWResize (GLFWwindow* window, const int w, const int h)
     {
-      WINDOWSYSTEM->Set_W_H (w, (int)(w / (1.6f / 0.9f)));
+		int aspectHeight = (int)(w / (1.6f / 0.9f));
+		WINDOWSYSTEM->Set_W_H(w, aspectHeight);
+		if (h < aspectHeight)
+		{
+			mouseOffset.y = aspectHeight - h;
+		}
+    else
+    {
+      mouseOffset.y = 0.0f;
+    }
+
       glfwSetWindowSize (window, WINDOWSYSTEM->Get_Width (), WINDOWSYSTEM->Get_Height ());
     }
 
@@ -113,6 +127,8 @@ namespace Framework
     void GLFWMessageHandler (GLFWwindow* window, const int key, const int scanCode, const int state, const int mod)
     {
       //A Key has been pressed
+	  //SetKeyLog(key, scanCode, state, mod);
+
       TriggerKeyEvent (Events::KEY_ANY, key, scanCode, state, mod);
 
       switch (key)
@@ -274,8 +290,8 @@ namespace Framework
     }
     void GLFWMouseCursorMoved (GLFWwindow* window, const double xPos, const double yPos)
     {
-      WINDOWSYSTEM->cursorPosition.x = xPos;
-      WINDOWSYSTEM->cursorPosition.y = yPos;
+      WINDOWSYSTEM->cursorPosition.x = xPos + mouseOffset.x;
+      WINDOWSYSTEM->cursorPosition.y = yPos + mouseOffset.y;
     }
 
     void GLFWWindowClosed (GLFWwindow* window)
@@ -433,7 +449,7 @@ namespace Framework
 
   glm::vec2 WindowSystem::Get_Mouse_Position ()
   {
-    return glm::vec2 (cursorPosition);
+    return glm::vec2 (cursorPosition.x, cursorPosition.y);
   }
 
   Zilch::Real2 WindowSystem::ZGet_Mouse_Position()
@@ -452,6 +468,9 @@ namespace Framework
 
   Zilch::Real2 WindowSystem::ZGet_Normalized_Mouse_Position()
   {
+	  
+
+	  
 	  glm::vec2 normPos;
 	  normPos.x = (float)(cursorPosition.x / (WindowWidth)-0.5f) * 2.0f;
 	  normPos.y = (float)((WindowHeight - cursorPosition.y) / WindowHeight - 0.5f) * 2.0f;

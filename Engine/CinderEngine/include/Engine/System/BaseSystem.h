@@ -25,6 +25,7 @@ namespace Framework
   class BaseSystem
   {
   public:
+	ZilchDeclareBaseType(BaseSystem, Zilch::TypeCopyMode::ReferenceType);
 
     //!All systems are updated every frame.
     virtual void Update(const double& dt) = 0;

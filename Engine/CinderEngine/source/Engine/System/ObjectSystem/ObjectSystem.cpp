@@ -11,6 +11,7 @@ deleted.
 /******************************************************************************/
 
 #include "ObjectSystem.h"
+#include "BaseSystem.h"
 #include "IncludeForAllCollision.h"
 #include "CharacterController.h"
 #include "PlayerEffect.h"
@@ -38,7 +39,10 @@ namespace Framework
   //!Set first object's id to zero
   unsigned ObjectSystem::LastGameObjectId = 0;
   int ObjectSystem::currentLevel = 0;
+	ZilchDefineType(BaseSystem, CinderZilch)
+	{
 
+	}
   ZilchDefineType(ObjectSystem, CinderZilch)
   {
     type->HandleManager = ZilchManagerId(Zilch::PointerManager);
@@ -46,7 +50,9 @@ namespace Framework
     ZilchBindMethod(CreateObject);
     ZilchBindMethod(DestroyAllObjects);
     ZilchBindMethod(LoadLevelAdditive);
-    ZilchBindMethod(ZilchLoadLevel);
+		ZilchBindMethodAs(ZilchLoadLevel, "LoadLevel");
+		ZilchBindMethod(FindObjectByName);
+		ZilchBindMethod(FindObjectByID);
     //ZilchBindMethod(LoadLevel);
     //ZilchBindConstructor(Transform);
     //ZilchBindMethodOverload(LoadLevel, void, Zilch::String);
@@ -99,11 +105,6 @@ namespace Framework
     GameObjects[LastGameObjectId] = obj;
     ++LastGameObjectId;
     return obj;
-  }
-
-  GameObject* ObjectSystem::FindObjectByName(Zilch::String obj)
-  {
-    return nullptr;
   }
 
   /*
@@ -231,6 +232,28 @@ namespace Framework
     StartLevel();
   }
 
+	GameObject* ObjectSystem::FindObjectByName(Zilch::String name)
+	{
+		for each (auto i in GameObjects)
+		{
+			if (name == Zilch::String(i.second->Name.c_str()))
+			{
+				return i.second;
+			}
+		}
+
+		return NULL;
+
+		//return Zilch::Array<GameObject*>();
+	}
+
+	GameObject* ObjectSystem::FindObjectByID(Zilch::Integer id)
+	{
+		return GameObjects[unsigned(id)];
+
+		//return Zilch::Array<GameObject*>();
+	}
+
   void ObjectSystem::FindAllObjectsByName(Zilch::String name)
   {
     //return Zilch::Array<GameObject*>();
@@ -280,7 +303,7 @@ namespace Framework
     go->Name = data->objectName;
     GameObjects[go->GameObjectID] = go;
     */
-
+	std::cout << "SERIALIZING" << std::endl;
     //Create and Serilize Objects
     while (it)
     {
@@ -289,6 +312,7 @@ namespace Framework
       {
         GameObject* newobj = new GameObject(it->branch->branch->value_.UInt_);
         newobj->Name = *it->branch->next->branch->value_.String_;
+				
         GameObjects[newobj->GameObjectID] = newobj;
         auto ct = it->branch->next->next;
         while (ct)
@@ -297,13 +321,12 @@ namespace Framework
           if (newcomp)
           {
             newcomp->gameObject = newobj;
-
+			std::cout << newobj->Name << std::endl;
             newcomp->Serialize(ct->branch);
             newcomp->Initialize(); //Set pointer to GameObject, Setup Component
           }
           else
           {
-            newcomp = newobj->AddZilchComponent(ct->objectName);
             ZilchComponent* zilchComp = newobj->AddZilchComponent(ct->objectName);
             newcomp = zilchComp;
             newcomp->gameObject = newobj;

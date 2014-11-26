@@ -29,10 +29,10 @@ namespace Framework
 
 
 	// Setup the console so that when we call 'Console.WriteLine' it outputs to stdio
-	Zilch::Console::AddWriteTextCallback(Zilch::DefaultWriteText, nullptr);
+	Zilch::EventConnect(&Console::Events, Events::ConsoleWrite, DefaultWriteText);
 
 	// We can also setup the console so that any 'Read' functions will attempt to read from stdin
-	Zilch::Console::SetReadTextCallback(Zilch::DefaultReadText, nullptr);
+	Zilch::EventConnect(&Console::Events, Events::ConsoleRead, DefaultReadText);
 
     // This class encompasses all compilation errors that can occur when compiling Zilch code
     // Its responsibility is to provide friendly error messages, error codes, and callbacks to the user
@@ -50,8 +50,8 @@ namespace Framework
     // Create a list of dependent libraries, in our case we're really not adding anything to this
     // A side note: the Core library in Zilch is always added as a dependency, because Core includes
     // things like Integer, Boolean, Real, the basic vector types, String, etc
-    Module dependencies(Errors);
-    dependencies.AddLibrary(CinderZilch::GetInstance().GetLibrary());
+    Module dependencies;
+    dependencies.push_back(CinderZilch::GetInstance().GetLibrary());
     CompileScripts(project, dependencies);
 
     LinkedLibs = dependencies.Link();
@@ -119,7 +119,7 @@ namespace Framework
     ErrorIf(lib == nullptr, "Failed to compiler library");
 
     // We want to link together all the libraries that we depended upon, along with our own library
-    dependencies.AddLibrary(lib);
+    dependencies.push_back(lib);
   }
 
   Zilch::LibraryRef *ScriptSystem::GetZilchLib(const char *ScriptName)

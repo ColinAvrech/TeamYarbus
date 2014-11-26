@@ -27,8 +27,11 @@ class MouseDetector
 	var CollidingThis: Boolean = false;
 	var Offset: Real2 = Real2();
 	
+	var Dot1:Dot = null;
+	var Dot2:Dot = null;
+	var Dot3:Dot = null;
+	var Dot4:Dot = null;
 	
-  
 	constructor(gameObject:GameObject, funct: delegate(e: MouseEvent))
 	{
 		if(gameObject.Sprite == null)
@@ -44,6 +47,7 @@ class MouseDetector
 		this.Funct = funct;
 		this.Initialize();
 		
+		
 	}
 
 	function Initialize()
@@ -54,11 +58,15 @@ class MouseDetector
 		var dimensions = Real2(sprite.Width * scale.X, sprite.Height * scale.Y);
 		this.Rect.Width = dimensions.X;
 		this.Rect.Height = dimensions.Y;
-		var position = transform.GetScreenPosition(Real2(transform.GetTranslation().X + this.Offset.X, 
-													transform.GetTranslation().Y + this.Offset.Y));
-		this.Rect.X = position.X;
-		this.Rect.Y = position.Y;
 		
+		var position = transform.GetTranslation();
+		this.Rect.X = position.X + this.Offset.X;
+		this.Rect.Y = position.Y + this.Offset.Y;
+		
+		this.Dot1 = new Dot();
+		this.Dot2 = new Dot();
+		this.Dot3 = new Dot();
+		this.Dot4 = new Dot();
 		
 		EventSystem.Connect(Events.UpdateEvent, this.LogicUpdate);
 	}
@@ -67,14 +75,17 @@ class MouseDetector
 	function LogicUpdate(e: UpdateEvent)
 	{
 		var transform = this.Target.Transform;
-		var position = transform.GetScreenPosition(Real2(transform.GetTranslation().X + this.Offset.X, 
-													transform.GetTranslation().Y + this.Offset.Y));
-		this.Rect.X = position.X;
-		this.Rect.Y = position.Y;
-		var mousePos = ZInterface.WindowSystem.GetNormalMousePosition();
+		var position = transform.GetTranslation();
+		this.Rect.X = position.X + this.Offset.X;
+		this.Rect.Y = position.Y + this.Offset.Y;
+		var mousePos = Cinder.MouseToWorldZPlane();
+		
 		var collision = this.Rect.Contains(mousePos);
 		
-		
+		this.Dot1.Object.Transform.SetTranslation(Real3(this.Rect.TopLeft().X,this.Rect.TopLeft().Y,0));
+		this.Dot2.Object.Transform.SetTranslation(Real3(this.Rect.TopRight().X,this.Rect.TopRight().Y,0));
+		this.Dot3.Object.Transform.SetTranslation(Real3(this.Rect.BottomLeft().X,this.Rect.BottomLeft().Y,0));
+		this.Dot4.Object.Transform.SetTranslation(Real3(this.Rect.BottomRight().X,this.Rect.BottomRight().Y,0));
 		
 		
 		this.CollidingThis = collision;
