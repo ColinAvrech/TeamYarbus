@@ -228,6 +228,7 @@ namespace Framework
   void ObjectSystem::ChangeLevel(const int& iNewLevel)
   {
     currentLevel = iNewLevel;
+    StartLevel();
   }
 
   void ObjectSystem::FindAllObjectsByName(Zilch::String name)
