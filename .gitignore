@@ -1,6 +1,7 @@
 *.sdf
 *.idb
 *.tlog
+*.log
 *.sln
 *.vcxproj
 *.vcxproj
