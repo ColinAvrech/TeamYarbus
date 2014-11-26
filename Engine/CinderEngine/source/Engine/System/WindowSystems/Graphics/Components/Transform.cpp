@@ -12,6 +12,7 @@
 #include "GameObject.h"
 #include "WindowSystem.h"
 #include "Pipeline.h"
+#include "Collider2D.h"
 
 
 using namespace Zilch;
@@ -148,6 +149,11 @@ namespace Framework
   void Transform::Scale (float v)
   {
     scale = vec3 (v);
+
+    if (gameObject->RigidBody2D != nullptr)
+    {
+      gameObject->RigidBody2D->shape->radius = std::abs (scale.x);
+    }
     matricesReady = false;
   }
 

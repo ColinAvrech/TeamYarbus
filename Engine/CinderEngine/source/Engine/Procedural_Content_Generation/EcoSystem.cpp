@@ -92,6 +92,7 @@ namespace Framework
     if (c)
     {
       static_cast<Transform*>(c)->Translate(x, y, z);
+      static_cast<Transform*>(c)->Scale (5, 5, 1);
       c->Initialize();
     }
     c = grass->AddComponent("Tree2D");
