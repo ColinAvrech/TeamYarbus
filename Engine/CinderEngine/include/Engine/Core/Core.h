@@ -37,6 +37,9 @@ namespace Framework
 
     //! Add a system to be updated every frame.
     void AddSystem(BaseSystem* system);
+
+    void TogglePaused(){ GamePaused = !GamePaused; }
+    bool IsPaused(){ return GamePaused; }
    
     //! Stops the game for whatever reason
     void QuitGame();
@@ -50,6 +53,7 @@ namespace Framework
     std::vector<BaseSystem*> Systems;
     //!Is the game running (true) or not (false, shut down)
     bool GameActive;
+    bool GamePaused;
 
     /*!dt for each frame
     A const reference is used for systems

@@ -260,7 +260,9 @@ namespace Framework
     {
       i->UpdateMatrices ();
     }
-    camera->UpdateCamera (this);
+
+    if (camera)
+      camera->UpdateCamera (this);
 
     Draw_Quad ();
 

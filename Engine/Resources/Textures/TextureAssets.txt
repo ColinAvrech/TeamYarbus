@@ -27,6 +27,7 @@ UIConfirmationTitle.png
 UIPauseTitle.png
 UIExitBlack.png
 UIExitWhite.png
+UIHowToPlayWhite.png
 UIResumeBlack.png
 UIResumeWhite.png
 UIYesBlack.png

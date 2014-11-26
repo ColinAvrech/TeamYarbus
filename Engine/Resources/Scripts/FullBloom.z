@@ -78,7 +78,7 @@ class Josh : Component
 		var pos11 = transform1.GetScreenPosition(Real2(0,0));
 		var pos2 = this.Detector.Dot2.Object.Transform.GetTranslation();
 		var pos22 = transform2.GetScreenPosition(Real2(0,1));
-		Console.WriteLine(Camera.Main.Aspect);
+		//Console.WriteLine(Camera.Main.Aspect);
 		if (e.State == MouseState.MouseOutside)
 		{
 			//Console.WriteLine("Outside");
@@ -109,7 +109,7 @@ class Josh : Component
 		//Console.WriteLine(ZInterface.WindowSystem.GetNormalMousePosition());
 		//this.Detector.Rect.Width = this.Owner.Transform.GetScreenPosition(Real2(1, 1)).X;
 		//this.Detector.Rect.Height = this.Owner.Transform.GetScreenPosition(Real2(1, 1)).Y;
-	Console.WriteLine(Camera.GetWorldMousePosition());
+	//Console.WriteLine(Camera.GetWorldMousePosition());
 	}
 
 	function KeyIsPressed(e: KeyEvent)
@@ -131,7 +131,7 @@ class Dot
 		
 		this.Object.AddComponent("Transform");
 		this.Object.Transform.SetTranslation(Real3(0,0,-1));
-		Console.WriteLine(this.Object.Transform.GetTranslation());
+		//Console.WriteLine(this.Object.Transform.GetTranslation());
 		this.Object.Transform.Scale(0.05, 0.05, 0.05);
 		
 		this.Object.AddComponent("Sprite");
@@ -166,7 +166,7 @@ class Cinder
 		var cameraPos = Camera.Main.Owner.Transform.GetTranslation();
 		position.X += cameraPos.X;
 		position.Y += cameraPos.Y;
-		Console.WriteLine(position);
+		//Console.WriteLine(position);
 		
 		return position;
 	}

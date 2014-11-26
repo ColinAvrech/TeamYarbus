@@ -116,7 +116,7 @@ namespace Framework
     float nY = 2.0f / (MapSize - 1);
     float nZ = 2.0f / (MapDepth - 1);
     float previousHeight = -1.0f;
-    float MaxHeight = BaseHeight + PeakHeight;
+    float MaxHeight = (float)(BaseHeight + PeakHeight);
 
     for (int i = 0; i < MapSize; ++i)
     {

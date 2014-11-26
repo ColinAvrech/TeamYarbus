@@ -92,11 +92,11 @@ namespace Framework
 
       // Getters
       Sound*        GetSound(char* soundName);
-      bool          GetMuted(int id);
+      bool          GetMuted(int id = Sound::SFX_ALL);
       float         GetMicrophoneValue ();
     
       // Setters
-      void          SetPaused(bool paused, int id);    
+      void          SetPaused(bool paused = true, int id = Sound::SFX_ALL);    
 
       #pragma endregion
 
