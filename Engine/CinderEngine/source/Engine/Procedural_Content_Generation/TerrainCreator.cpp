@@ -8,8 +8,6 @@
 */
 /*****************************************************************************/
 
-//This is only for testing thermo
-
 #include "TerrainCreator.h"
 #include <stdlib.h>
 #include <iostream>

@@ -65,20 +65,19 @@ namespace Framework
     unsigned int ID = OBJECTSYSTEM->GameObjects.size() + 1;
     for (int i = 0; i < MapWidth; ++i, ++ID)
     {
-      offsetY = (terrain[i]) * nY / 2.f;
+      offsetY = (terrain[i] * nY) / 2.f;
       if (offsetY < 0)
         offsetY = 0.0f;
       offsetX += 4 * nX;
 
       tree_list[i] = Evaluate_Compatibility(i);
       //Hack!!
-      //if (tree_list[i] == TREE_5)
-      if (i % ((rand() % 10) + 1) == 0)
+      if (tree_list[i] != OPEN)
         GenerateType(
           offsetX + Translation.x,
           offsetY + Translation.y,
           Translation.z,
-          TREE_5, ID
+          tree_list[i], ID
           );
       }
     }
@@ -86,20 +85,19 @@ namespace Framework
   void EcoSystem::GenerateType(float x, float y, float z, int type, unsigned ID)
   {
     GameObject* grass = new GameObject(ID);
-    grass->Name = "Grass";
+    grass->Name = "Plant";
     OBJECTSYSTEM->GameObjects[ID] = grass;
 
     Component* c = grass->AddComponent("Transform");
     if (c)
     {
       static_cast<Transform*>(c)->Translate(x, y, z);
-      static_cast<Transform*>(c)->Scale (7, 4, z);
       c->Initialize();
     }
     c = grass->AddComponent("Tree2D");
     if (c)
     {
-      glm::vec4 color = { 0.2f, 0.0f, 0.01f, 1.f };
+      glm::vec4 color = { 1.f, 1.f, 1.f, 1.f };
       static_cast<Tree2D*>(c)->Set(color, Tree_Type(type));
       c->Initialize();
     }

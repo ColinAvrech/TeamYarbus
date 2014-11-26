@@ -170,17 +170,17 @@ namespace Framework
       vertices.push_back(height_points[i + MapDepth].z);
       //Triangle 2
       //pt1
-      vertices.push_back(height_points[i + 1].x);
-      vertices.push_back(height_points[i + 1].y);
-      vertices.push_back(height_points[i + 1].z);
+      vertices.push_back(height_points[i + MapDepth + 1].x);
+      vertices.push_back(height_points[i + MapDepth + 1].y);
+      vertices.push_back(height_points[i + MapDepth + 1].z);
       //pt2
       vertices.push_back(height_points[i + MapDepth].x);
       vertices.push_back(height_points[i + MapDepth].y);
       vertices.push_back(height_points[i + MapDepth].z);
       //pt3
-      vertices.push_back(height_points[i + MapDepth + 1].x);
-      vertices.push_back(height_points[i + MapDepth + 1].y);
-      vertices.push_back(height_points[i + MapDepth + 1].z);
+      vertices.push_back(height_points[i + 1].x);
+      vertices.push_back(height_points[i + 1].y);
+      vertices.push_back(height_points[i + 1].z);
     }
   }
 

@@ -45,7 +45,7 @@ namespace Framework
         + (pos2.y - pos1.y) * (pos2.y - pos1.y));
     }
 
-    glm::vec2 getNormal(const glm::vec3& p1, const glm::vec3& p2)
+    glm::vec2 Normal(const glm::vec3& p1, const glm::vec3& p2)
     {
       glm::vec2 norm;
       glm::vec3 line = p2 - p1;
@@ -54,6 +54,14 @@ namespace Framework
       norm = glm::normalize(norm);
 
       return norm;
+    }
+
+    glm::vec3 Normal(const glm::vec3& v1, const glm::vec3& v2, const glm::vec3& v3)
+    {
+      glm::vec3 edge_A = v2 - v1;
+      glm::vec3 edge_B = v3 - v1;
+      glm::vec3 x_product = glm::cross(edge_B, edge_A);
+      return x_product;
     }
 
     float DotProduct(const glm::vec3& u, const glm::vec3& v)
