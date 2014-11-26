@@ -198,6 +198,13 @@ Level =
 		  Vec2 JumpVelocity = [0, 600],
 		  Vec2 MicrophoneMultiplier = [0, 75],
 		},
+    Health = 
+    {
+      float maxRadius = 1,
+      float minRadius = .1,
+      bool alive = true,
+      bool reFueling = false,
+    },
 		PlayerEffect = 
 		{
 		  float ParticleSize = 100,

@@ -30,6 +30,15 @@ namespace Framework
 	{
 	  if(b->im == 0.0f)
 	    return;
+
+	  if (b->velocity.x > b->maxVelocity.x)
+		  b->velocity.x = b->maxVelocity.x;
+	  if (b->velocity.x < -b->maxVelocity.x)
+		  b->velocity.x = -b->maxVelocity.x;
+	  if (b->velocity.y > b->maxVelocity.y)
+		  b->velocity.y = b->maxVelocity.y;
+	  if (b->velocity.y < -b->maxVelocity.y)
+		  b->velocity.y = -b->maxVelocity.y;
 	
 	  b->position += b->velocity * dt;
 	  b->orient += b->angularVelocity * dt;

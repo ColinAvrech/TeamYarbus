@@ -39,6 +39,7 @@ namespace Framework
 
 	  Vector2 position;
 	  Vector2 velocity;
+	  Vector2 maxVelocity;
 	
 	  float angularVelocity;
 	  float torque;
