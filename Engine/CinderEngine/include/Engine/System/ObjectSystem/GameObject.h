@@ -53,6 +53,7 @@ namespace Framework
   class Terrain3D;
   class ShapeCollider2D;
   class RigidBody2D;
+  class Health;
 
   class GameObject
   {
@@ -84,6 +85,7 @@ namespace Framework
     //Components
     ComponentPointer(Transform);
     ComponentPointer(Sprite);
+	ComponentPointer(Health);
     ComponentPointer (ShapeCollider2D);
     ComponentPointer (RigidBody2D);
 	  ComponentPointer(ShapeCollider);

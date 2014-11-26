@@ -19,6 +19,7 @@ deleted.
 #include "Terrain3D.h"
 #include "Tree2D.h"
 #include "FireStarter.h"
+#include "Health.h"
 #include "Microphone.h"
 #include "CinderEngine_UI.h"
 #include "GameEvent.h"
@@ -116,6 +117,7 @@ namespace Framework
     RegisterComponent(Sprite);
     RegisterComponent(Camera);
     RegisterComponent(CharacterController);
+	RegisterComponent(Health);
     RegisterComponent(RigidBody);
     RegisterComponent(PlayerEffect);
     RegisterComponent(Terrain2D);

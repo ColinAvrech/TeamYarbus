@@ -17,6 +17,7 @@ namespace Framework
 	  shape->rigidBody = this;
 	  position.Set( (float)x, (float)y );
 	  velocity.Set( 0, 0 );
+	  maxVelocity.Set(10, 10);
 	  angularVelocity = 0;
 	  torque = 0;
 	  orient = MyRandom( -PI, PI );
