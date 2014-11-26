@@ -1,0 +1,27 @@
+class CameraFollow : Component
+{
+  
+	constructor() : base()
+	{
+
+	}
+
+	function Initialize(owner:GameObject)
+	{
+		this.Owner = owner;
+		
+		EventSystem.Connect(Events.UpdateEvent, this.LogicUpdate);
+	}
+	
+	function LogicUpdate(e: UpdateEvent)
+	{
+		var pos1 = Camera.Main.Owner.Transform.GetTranslation();
+		var pos2 = this.Owner.Transform.GetTranslation();
+		var distance = Math.LengthSq(Real2(pos2.X - pos1.X, pos2.Y - pos2.Y));
+		var newpos = Math.Lerp(pos1, pos2, distance * e.Dt/4);
+		
+		
+		Camera.Main.Owner.Transform.SetTranslation(newpos) ;
+		
+	}
+}
