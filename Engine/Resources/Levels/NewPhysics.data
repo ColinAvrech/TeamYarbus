@@ -170,7 +170,7 @@ Level =
 			Vec3 Scale = [0.5, 0.5, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
-    Sprite = 
+		Sprite = 
 		{
 			string SpriteSource = "Circle.png",
 			bool FlipX = false,
@@ -186,26 +186,26 @@ Level =
 			string SpriteLayer = "52ad5fa30d7fcd50:DefaultSpriteLayer",
 			string Shader = "Default",
 		},
-    CircleCollider2D = 
-    {
-      float Radius = 1,
-      bool Static = false,
-      string Material = "4de020863e872da8:DefaultPhysicsMaterial",
-    },
-    CharacterController = 
-    {
-      Vec2 Acceleration = [100, 0],
-      Vec2 JumpVelocity = [0, 600],
-      Vec2 MicrophoneMultiplier = [0, 75],
-    },
-    PlayerEffect = 
-    {
-      float ParticleSize = 100,
-      float MaxSize = 10,
-      float MinSize = 10,
-    },
+		CircleCollider2D = 
+		{
+		  float Radius = 1,
+		  bool Static = false,
+		  string Material = "4de020863e872da8:DefaultPhysicsMaterial",
+		},
+		CharacterController = 
+		{
+		  Vec2 Acceleration = [100, 0],
+		  Vec2 JumpVelocity = [0, 600],
+		  Vec2 MicrophoneMultiplier = [0, 75],
+		},
+		PlayerEffect = 
+		{
+		  float ParticleSize = 100,
+		  float MaxSize = 10,
+		  float MinSize = 10,
+		},
 	},
-  Cog = 
+	Cog = 
 	{
 		LinkId = 
 		{

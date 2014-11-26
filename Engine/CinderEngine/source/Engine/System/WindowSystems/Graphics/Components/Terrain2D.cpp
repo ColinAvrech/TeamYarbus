@@ -157,6 +157,8 @@ namespace Framework
       float nY = 2.f / (t.Get_Width () - 1);
       float previousHeight = -1.f;
 
+      bool endcreated = false;
+
       for (int i = 0; i < t.Get_Width (); ++i)
       {
         /*height_points.push_back ({ offsetX, offsetY });
@@ -171,6 +173,14 @@ namespace Framework
         offsetY = (Map [i] * nY) / 2.0f;
         if (offsetY < 0)
           offsetY = 0.0f;
+
+        if(offsetX > 0.95 && !endcreated)
+        {
+          //TODO: Create end object
+          endcreated = true;
+        }
+
+
         offsetX += 4 * nX;
       }
     }
