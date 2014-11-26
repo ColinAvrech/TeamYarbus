@@ -184,6 +184,16 @@ namespace Framework
     glm::mat4 mvp = (modelViewProjectionMatrix / modelMatrix) * matrix;
 
     return glm::vec2 (mvp [3][0] / mvp [3][3], mvp [3][1] / mvp [3][3]);
+
+	  //glm::vec3 screenPos = glm::project
+		 // (
+		 // glm::vec3(v, 0.0f),
+		 // Camera::GetWorldToViewMatrix() * modelMatrix,
+		 // Camera::GetViewToProjectionMatrix(),
+		 // glm::vec4(0, 0, WINDOWSYSTEM->Get_Width(), WINDOWSYSTEM->Get_Height())
+		 // );
+
+	  //return glm::vec2(screenPos);
   }
 
   Zilch::Real2 Transform::ZGetScreenPosition(Zilch::Real2 pos)

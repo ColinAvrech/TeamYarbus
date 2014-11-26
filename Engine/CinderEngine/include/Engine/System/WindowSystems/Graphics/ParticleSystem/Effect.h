@@ -27,7 +27,7 @@ namespace Framework
   public:
     IEffect () { }
     virtual ~IEffect () { }
-    Shader* shader;
+
     virtual void Initialize () {}
     virtual void Serialize (Serializer::DataNode* data) {}
 

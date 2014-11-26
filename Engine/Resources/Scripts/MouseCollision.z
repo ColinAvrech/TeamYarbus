@@ -60,8 +60,8 @@ class MouseDetector
 		this.Rect.Height = dimensions.Y;
 		
 		var position = transform.GetTranslation();
-		this.Rect.X = position.X;
-		this.Rect.Y = position.Y;
+		this.Rect.X = position.X + this.Offset.X;
+		this.Rect.Y = position.Y + this.Offset.Y;
 		
 		this.Dot1 = new Dot();
 		this.Dot2 = new Dot();
@@ -76,8 +76,8 @@ class MouseDetector
 	{
 		var transform = this.Target.Transform;
 		var position = transform.GetTranslation();
-		this.Rect.X = position.X;
-		this.Rect.Y = position.Y;
+		this.Rect.X = position.X + this.Offset.X;
+		this.Rect.Y = position.Y + this.Offset.Y;
 		var mousePos = Cinder.MouseToWorldZPlane();
 		
 		var collision = this.Rect.Contains(mousePos);

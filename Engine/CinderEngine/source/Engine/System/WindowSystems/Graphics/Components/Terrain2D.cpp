@@ -101,6 +101,11 @@ namespace Framework
     return tc->GetRockMap();
   }
 
+  const float* Terrain2D::GetWater()
+  {
+    return tc->GetWaterMap();
+  }
+
   int Terrain2D::GetWidth()
   { 
     return MapSize;

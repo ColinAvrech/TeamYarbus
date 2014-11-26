@@ -64,9 +64,9 @@ Level =
 			bool main = true,
 			Vec3 Facing = [0, 0, 1],
 			float FieldOfView = 120,
-			float NearPlane = 0,
+			float NearPlane = 1,
 			float FarPlane = 20,
-			float Size = 1,
+			float Size = 20,
 		},
   },
 	Cog = 
@@ -82,7 +82,7 @@ Level =
 		Transform = 
 		{
 			Vec3 Translation = [0, 0, 0],
-			Vec3 Scale = [0.1, 0.005, 0.1],
+			Vec3 Scale = [1, 1, 0.1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Sprite = 
@@ -95,7 +95,32 @@ Level =
 		{
 		},
 	},
-	
+	Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 3,
+		},
+		Named = 
+		{
+			string Name = "Ground",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0, 0, 0],
+			Vec3 Scale = [5, 5, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		UIBox = 
+		{
+		  Vec2 Dimension = [2, 1],
+			string SpriteSource = "UIExitWhite.png",
+			Vec4 NormalColor = [1, 1, 1, 1],
+		  Vec4 HoverColor = [1, 0, 0, 1],
+		  Vec4 DownColor = [0, 0, 1, 1],
+		  string Message = "Exit",
+		},
+	},
 	Cog = 
 	{
 		LinkId = 

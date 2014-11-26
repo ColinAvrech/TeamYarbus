@@ -136,7 +136,7 @@ Level =
 		Transform = 
 		{
 			Vec3 Translation = [-18.5, -5.0, 0],
-			Vec3 Scale = [5, 4, 1],
+			Vec3 Scale = [20, 4, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Terrain2D = 
@@ -147,9 +147,12 @@ Level =
       int Passes = 1,
       int Waves = 5,
       int Water = 5,
-      Vec4 Color = [0.2, 0.0, 0.01, 1],
+      Vec4 Color = [0, 0.5, 0.01, 1],
       bool AddCollider = true,
 		},
+    EcoSystem = 
+    {
+    },
   },
   Cog = 
 	{
@@ -172,7 +175,7 @@ Level =
 			string SpriteSource = "Circle.png",
 			bool FlipX = false,
 			bool FlipY = false,
-			Vec4 Color = [1, 0, 1, 1],
+			Vec4 Color = [1, 0, 1, 0.2],
 			bool Visible = true,
 			bool OnTop = false,
 			bool AnimationActive = true,
@@ -183,17 +186,43 @@ Level =
 			string SpriteLayer = "52ad5fa30d7fcd50:DefaultSpriteLayer",
 			string Shader = "Default",
 		},
-    CircleCollider2D = 
-    {
-      float Radius = 1,
-      bool Static = false,
-      string Material = "4de020863e872da8:DefaultPhysicsMaterial",
-    },
-    CharacterController = 
-    {
-      Vec2 Acceleration = [100, 0],
-      Vec2 JumpVelocity = [0, 600],
-      Vec2 MicrophoneMultiplier = [0, 75],
-    },
+		CircleCollider2D = 
+		{
+		  float Radius = 1,
+		  bool Static = false,
+		  string Material = "4de020863e872da8:DefaultPhysicsMaterial",
+		},
+		CharacterController = 
+		{
+		  Vec2 Acceleration = [100, 0],
+		  Vec2 JumpVelocity = [0, 600],
+		  Vec2 MicrophoneMultiplier = [0, 75],
+		},
+		PlayerEffect = 
+		{
+		  float ParticleSize = 100,
+		  float MaxSize = 10,
+		  float MinSize = 10,
+		},
+		CameraFollow = 
+		{
+		},
+	},
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 4,
+		},
+		Named = 
+		{
+			string Name = "Player",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [3, 0, 0],
+			Vec3 Scale = [1, 1, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
 	},
 },
