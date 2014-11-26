@@ -25,6 +25,7 @@ function to handle windows Messages.
 #include "CinderEngine_UI.h"
 #include "Pipeline.h"
 #include "WindowFocusEvent.h"
+#include "InputManager.h"
 
 namespace Framework
 {
@@ -54,6 +55,10 @@ namespace Framework
 		{
 			mouseOffset.y = aspectHeight - h;
 		}
+		else
+		{
+			mouseOffset.y = 0.0f;
+		}
 
       glfwSetWindowSize (window, WINDOWSYSTEM->Get_Width (), WINDOWSYSTEM->Get_Height ());
     }
@@ -66,6 +71,7 @@ namespace Framework
     /*Triggers a Key event if there are any listeners*/
     void TriggerKeyEvent (const string eventname, const int& key, const int& scanCode, const int& state, const int& mod)
     {
+		InputManager::KeyChange(key, scanCode, state, mod);
       KeyEvent triggered_key_event;
       SetupKeyEvent (&triggered_key_event, key, scanCode, state, mod);
       EVENTSYSTEM->TriggerEvent (eventname, triggered_key_event);
@@ -283,6 +289,7 @@ namespace Framework
     void GLFWMouseButtonFunction (GLFWwindow *, const int button, const int action, const int mod)
     {
 		  WINDOWSYSTEM->IsMouseDown = action;
+		  InputManager::MouseChange(button, action, mod);
     }
     void GLFWMouseCursorMoved (GLFWwindow* window, const double xPos, const double yPos)
     {
@@ -409,7 +416,7 @@ namespace Framework
   {
     WindowsUpdate (dt);
     GraphicsUpdate (dt);
-
+	InputManager::Update();
     //std::cout << "{ " << Camera::GetWorldMousePosition ().x << ", " << Camera::GetWorldMousePosition ().y << " }\n";
   }
 

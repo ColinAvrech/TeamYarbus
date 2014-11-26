@@ -116,7 +116,7 @@ namespace Framework
     // Be careful! If the code fails to compile, this function will return null
     //not sure what "Test" is?!?
     lib = project.Compile("Test", dependencies, EvaluationMode::Project);
-    ErrorIf(lib == nullptr, "Failed to compiler library");
+	    ErrorIf(lib == nullptr, "Failed to compiler library");
 
     // We want to link together all the libraries that we depended upon, along with our own library
     dependencies.push_back(lib);
