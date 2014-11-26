@@ -416,7 +416,7 @@ namespace Framework
   {
     WindowsUpdate (dt);
     GraphicsUpdate (dt);
-	InputManager::Update();
+	
     //std::cout << "{ " << Camera::GetWorldMousePosition ().x << ", " << Camera::GetWorldMousePosition ().y << " }\n";
   }
 
