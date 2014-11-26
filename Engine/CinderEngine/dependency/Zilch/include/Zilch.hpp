@@ -41,6 +41,10 @@
 // End header protection
 #endif
 
+#ifdef _DEBUG
+#pragma warning( disable : 4005 4244 )
+#endif
+
 namespace Zilch
 {
   // Defines
