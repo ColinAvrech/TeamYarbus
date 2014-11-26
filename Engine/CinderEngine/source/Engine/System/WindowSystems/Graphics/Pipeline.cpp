@@ -279,7 +279,7 @@ namespace Framework
     PHYSICS->Render ();
 #endif
 
-    //PHYSICS->Render ();
+    PHYSICS->Render ();
   }
 
   void Pipeline::UpdateMatrices ()

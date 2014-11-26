@@ -109,7 +109,7 @@ int main (void)
   audio->LoadMicData ();
 
   //! activate the window.
-  OBJECTSYSTEM->LoadLevel("ZilchTestLevel");
+  OBJECTSYSTEM->LoadLevel("NewPhysics");
 
   // Connect example
   //MyClass _myclass;

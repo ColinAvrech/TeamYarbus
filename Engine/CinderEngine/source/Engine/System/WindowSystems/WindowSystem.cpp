@@ -55,10 +55,10 @@ namespace Framework
 		{
 			mouseOffset.y = aspectHeight - h;
 		}
-		else
-		{
-			mouseOffset.y = 0.0f;
-		}
+    else
+    {
+      mouseOffset.y = 0.0f;
+    }
 
       glfwSetWindowSize (window, WINDOWSYSTEM->Get_Width (), WINDOWSYSTEM->Get_Height ());
     }

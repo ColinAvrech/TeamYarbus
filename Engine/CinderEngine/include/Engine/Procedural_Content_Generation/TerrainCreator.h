@@ -28,6 +28,11 @@ namespace Framework
       float * const GetSoilMapl(){ return HeightMapSoil;  }
       float * const GetWaterMap(){ return HeightMapWater; }
 
+      float GetPeakHeight () const
+      {
+        return BaseHeight + PeakHeight;
+      }
+
       inline int Get_Width ();
 
       void Generate();
