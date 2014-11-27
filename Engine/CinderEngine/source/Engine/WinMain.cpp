@@ -100,7 +100,13 @@ int main (void)
   //! Initialize all added Systems. DON'T INIT YOUR OWN
   engine->Initialize ();
 
-  //Sound *test = audio->LoadSound("Pads.ogg", "NOISE", Sound::SOUND_2D, 1.0f);
+  //Sound *test = audio->LoadSound("FireA.ogg", "NOISE", Sound::SOUND_2D, 1.0f);
+  //test->Play();
+  //
+  //Sound *test2 = audio->LoadSound("Pads.ogg", "NOISE", Sound::SOUND_2D, 1.0f);
+  //test2->Play();
+
+  //Sound *test3 = audio->LoadSound("test.mp3", "NOISE", Sound::SOUND_2D, 1.0f);
   //test->Play();
   //test->GenerateNoise();
   //test->LowPassFilter();

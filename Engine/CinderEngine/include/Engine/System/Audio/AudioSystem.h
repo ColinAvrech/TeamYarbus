@@ -71,6 +71,11 @@ namespace Framework
                               Sound::SoundID type,  float volume);      
       void          StopSounds(int id);
 
+      // Pause Menu Effect
+      void          InitPauseMenuEffect();
+      void          SetPauseMenuEffect(float cutoff, float resonance, float time);
+      void          UpdatePauseMenuEffect(const double dt);
+
       // Microphone Functions
       void          InitMicData();
       void          LoadMicData();
@@ -140,6 +145,7 @@ namespace Framework
       FMOD::DSP                         *fft;
       FMOD::DSP                         *meter;
       FMOD::DSP                         *filter;
+      FMOD::DSP                         *lowPassEffect;
       FMOD::Sound                       *micSound = 0;
       FMOD::Channel                     *micChannel = 0;
       Sound                             *_newSound;
@@ -157,7 +163,12 @@ namespace Framework
       int                               _recordchannels;
       int                               _recordnumdrivers;
       float                             _smootheddelta;  
+      float                             _cutoffVal;
+      float                             _resonanceVal;
+      float                             _fadeValA;
+      float                             _fadeValB;
       bool                              _check;
+      bool                              _lpfstate = false;
 
       #pragma endregion
 

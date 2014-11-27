@@ -66,11 +66,13 @@ namespace Framework
   {
     if (e->InFocus)
     {      
-      AUDIOSYSTEM->SetPaused(false, Sound::SFX_ALL);
+      //AUDIOSYSTEM->SetPaused(false, Sound::SFX_ALL);
+      //AUDIOSYSTEM->SetPauseMenuEffect(22000.0f, 0.0f, 5.0f);
     }
     else
     {
-      AUDIOSYSTEM->SetPaused(true, Sound::SFX_ALL);
+      //AUDIOSYSTEM->SetPaused(true, Sound::SFX_ALL);
+      //AUDIOSYSTEM->SetPauseMenuEffect(1000.0f, 1.5f, 3.0f);
     }
   }
 
