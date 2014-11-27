@@ -72,16 +72,18 @@ namespace Framework
     void DestroyGameObjectsToBeDestroyed();
 
     void LoadAllLevels(const string &levellist);
-    void LoadLevel(const string &levelName, const string &fn_level);
+    void LoadLevel(const string &fn_level = "", const string &levelName = "");
+    void ChangeLevel(const string& name);
     void ChangeLevel(const int& iNewLevel);
     void StartLevel();
     void RestartLevel ();
 	  void ZilchLoadLevel(Zilch::String level);
 	  void LoadLevelAdditive(Zilch::String level);
 
-	GameObject* ObjectSystem::FindObjectByName(Zilch::String name);
-	GameObject* ObjectSystem::FindObjectByID(Zilch::Integer id);
-	void ObjectSystem::FindAllObjectsByName(Zilch::String name);
+	  GameObject* FindObjectByName(Zilch::String name);
+	  GameObject* FindObjectByID(Zilch::Integer id);
+	  void FindAllObjectsByName(Zilch::String name);
+    
     /*!Used to generator unique GOCIds*/
     static unsigned LastGameObjectId;
     static int currentLevel;

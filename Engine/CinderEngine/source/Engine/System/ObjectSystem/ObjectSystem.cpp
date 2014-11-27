@@ -19,7 +19,7 @@ deleted.
 #include "Terrain3D.h"
 #include "Tree2D.h"
 #include "FireStarter.h"
-#include "Health.h"
+//#include "Health.h"
 #include "Microphone.h"
 #include "CinderEngine_UI.h"
 #include "GameEvent.h"
@@ -117,7 +117,7 @@ namespace Framework
     RegisterComponent(Sprite);
     RegisterComponent(Camera);
     RegisterComponent(CharacterController);
-	RegisterComponent(Health);
+	  //RegisterComponent(Health);
     RegisterComponent(RigidBody);
     RegisterComponent(PlayerEffect);
     RegisterComponent(Terrain2D);
@@ -199,24 +199,24 @@ namespace Framework
 
   void ObjectSystem::LoadLevel(const string &levelName, const string &fn_level)
   {
-    DestroyAllObjects();
-
-    bool levelExists = false;
     for (auto level : levelList)
     {
-      if (level->GetName() == levelName)
+      if (levelName != "" && levelName == level->GetName())
       {
-        levelExists = true;
+        return;
+      }
+      else if (fn_level != "" && fn_level == level->GetName())
+      {
+        return;
       }
     }
 
-    if (!levelExists)
-    {
-      Level* newLevel = new Level(levelName, fn_level);
-      Serializer::DataNode* Trunk = newLevel->GetData()->GetTrunk();
-      SerializeObject(Trunk);
-      levelList.push_back(newLevel);
-    }
+    DestroyAllObjects();
+
+    Level* newLevel = new Level(levelName, fn_level);
+    Serializer::DataNode* Trunk = newLevel->GetData()->GetTrunk();
+    SerializeObject(Trunk);
+    levelList.push_back(newLevel);
   }
 
   void ObjectSystem::StartLevel()
@@ -226,6 +226,18 @@ namespace Framework
     EVENTSYSTEM->TriggerEvent(Events::GAME_ALLOBJECTSINITIALIZED, e);
     //InitializeObject ();
     EVENTSYSTEM->TriggerEvent(Events::GAME_LEVELSTARTED, e);
+  }
+
+  void ObjectSystem::ChangeLevel(const string& name)
+  {
+    for (unsigned i = 0; i < levelList.size(); ++i)
+    {
+      if (name == levelList[i]->GetName())
+      {
+        ChangeLevel(i);
+        return;
+      }
+    }
   }
 
   void ObjectSystem::ChangeLevel(const int& iNewLevel)
