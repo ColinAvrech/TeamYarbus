@@ -35,6 +35,7 @@ namespace Framework
 
   void Terrain3D::Serialize(Serializer::DataNode* data)
   {
+    Component::Get_Enabled (data);
     Serializer::DataNode* value = data->FindElement(data, "MapSize");
     value->GetValue(&MapSize);
 

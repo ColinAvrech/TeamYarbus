@@ -58,6 +58,7 @@ Level =
 	  },
     Camera = 
 		{
+      bool Enabled = true,
       bool main = true,
       Vec3 Facing = [0, 0, 1],
 			float FieldOfView = 45,
@@ -84,6 +85,7 @@ Level =
 		},
 		Terrain2D = 
 		{
+      bool Enabled = true,
       int MapSize = 512,
       int BaseHeight = 128,
       int PeakHeight = 256,
@@ -112,6 +114,7 @@ Level =
 		},
 		Terrain2D = 
 		{
+      bool Enabled = true,
       int MapSize = 64,
       int MapDepth = 2,
       int BaseHeight = 32,
@@ -141,6 +144,7 @@ Level =
 		},
 		Terrain2D = 
 		{
+      bool Enabled = true,
       int MapSize = 128,
       int BaseHeight = 32,
       int PeakHeight = 96,
@@ -175,7 +179,7 @@ Level =
 			string SpriteSource = "Circle.png",
 			bool FlipX = false,
 			bool FlipY = false,
-			Vec4 Color = [1, 0, 1, 0.2],
+			Vec4 Color = [1, 0, 1, 1],
 			bool Visible = true,
 			bool OnTop = false,
 			bool AnimationActive = true,
@@ -188,24 +192,28 @@ Level =
 		},
 		CircleCollider2D = 
 		{
+      bool Enabled = true,
 		  float Radius = 1,
 		  bool Static = true,
 		  string Material = "4de020863e872da8:DefaultPhysicsMaterial",
 		},
 		CharacterController = 
 		{
+      bool Enabled = true,
 		  Vec2 Acceleration = [100, 0],
 		  Vec2 JumpVelocity = [0, 600],
 		  Vec2 MicrophoneMultiplier = [0, 75],
 		},
 		PlayerEffect = 
 		{
+      bool Enabled = true,
 		  float ParticleSize = 100,
 		  float MaxSize = 10,
 		  float MinSize = 10,
 		},
     PointLight = 
     {
+      bool Enabled = true,
       float Radius = 2,
       float Intensity = 5,
       Vec4 Color = [0.4, 0.7, 0.4, 1],

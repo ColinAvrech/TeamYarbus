@@ -33,6 +33,7 @@ namespace Framework
 
   void PlayerEffect::Serialize (Serializer::DataNode* data)
   {
+    Component::Get_Enabled (data);
     Serializer::DataNode* value = data->FindElement (data, "ParticleSize");
     value->GetValue (&size);
 
@@ -181,9 +182,12 @@ namespace Framework
 
   void PlayerEffect::Draw ()
   {
-    cpuUpdate (0.016);
-    gpuUpdate (0.016);
-    render ();
+    if (enabled)
+    {
+      cpuUpdate (0.016);
+      gpuUpdate (0.016);
+      render ();
+    }
   }
 
   void PlayerEffect::render ()

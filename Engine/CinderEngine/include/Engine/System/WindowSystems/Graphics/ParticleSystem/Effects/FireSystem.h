@@ -24,31 +24,31 @@ namespace Framework
   class FireSystem : public IEffect
   {
   public:
-  FireSystem ();
-  virtual ~FireSystem ();
+    FireSystem ();
+    virtual ~FireSystem ();
 
-  virtual void Initialize ();
-  virtual void Serialize (Serializer::DataNode* data);
+    virtual void Initialize ();
+    virtual void Serialize (Serializer::DataNode* data);
 
-  virtual bool initialize (size_t numParticles);
-  virtual bool initializeRenderer ();
-  virtual void reset ();
-  virtual void clean ();
-  virtual void addUI (CTwBar*);
-  virtual void removeUI (CTwBar*);
-  virtual void update (double dt);
-  virtual void cpuUpdate (double dt);
-  virtual void gpuUpdate (double dt);
-  virtual void render ();
-  virtual int numAllParticles ();
-  virtual int numAliveParticles ();
-  virtual void Draw ();
-  virtual BoundType* ZilchGetDerivedType () const;
+    virtual bool initialize (size_t numParticles);
+    virtual bool initializeRenderer ();
+    virtual void reset ();
+    virtual void clean ();
+    virtual void addUI (CTwBar*);
+    virtual void removeUI (CTwBar*);
+    virtual void update (double dt);
+    virtual void cpuUpdate (double dt);
+    virtual void gpuUpdate (double dt);
+    virtual void render ();
+    virtual int numAllParticles ();
+    virtual int numAliveParticles ();
+    virtual void Draw ();
+    virtual BoundType* ZilchGetDerivedType () const;
 
-  void OnKeyPressed (KeyEvent* key);
-  void AddFire (float x, float y, float emitRate);
+    void OnKeyPressed (KeyEvent* key);
+    void AddFire (float x, float y, float emitRate);
 
-  const static std::string Name;
+    const static std::string Name;
   private:
     std::shared_ptr<ParticleSystem> m_system;
     std::shared_ptr<IParticleRenderer> m_renderer;

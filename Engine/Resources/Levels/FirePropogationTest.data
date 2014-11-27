@@ -58,6 +58,7 @@ Level =
 	  },
     Camera = 
 		{
+      bool Enabled = true,
       bool main = true,
       Vec3 Facing = [0, 0, 1],
 			float FieldOfView = 45,
@@ -84,6 +85,7 @@ Level =
 	  },
     FireSystem = 
     {
+      bool Enabled = true,
       float ParticleSize = 100,
     },
   },

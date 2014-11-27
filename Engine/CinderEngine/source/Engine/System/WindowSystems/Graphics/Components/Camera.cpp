@@ -163,7 +163,7 @@ namespace Framework
 
   void Camera::UpdateCamera (Pipeline* p)
   {
-    if (!matricesReady)
+    if (!matricesReady && enabled)
     {
       OPENGL->Perspective (fov, aspect, nearPlane, farPlane);
       OPENGL->LookAt

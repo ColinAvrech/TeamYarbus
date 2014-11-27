@@ -18,6 +18,7 @@ Level =
 		},
 		Sprite = 
 		{
+      bool Visible = true,
 			string SpriteSource = "UIBackground.png",
 			string Shader = "Default",
 			Vec4 Color = [1, 1, 1, 1],
@@ -41,6 +42,7 @@ Level =
 		},
 		Sprite = 
 		{
+      bool Visible = true,
 			string SpriteSource = "UIPauseTitle.png",
 			string Shader = "Default",
 			Vec4 Color = [1, 1, 1, 1],
@@ -64,6 +66,7 @@ Level =
 		},
 		Sprite = 
 		{
+      bool Visible = true,
 			string SpriteSource = "UIResumeBlack.png",
 			string Shader = "Default",
 			Vec4 Color = [1, 1, 1, 1],
@@ -90,6 +93,7 @@ Level =
 		},
 		Sprite = 
 		{
+      bool Visible = true,
 			string SpriteSource = "UIHowToPlayBlack.png",
 			string Shader = "Default",
 			Vec4 Color = [1, 1, 1, 1],
@@ -116,6 +120,7 @@ Level =
 		},
 		Sprite = 
 		{
+      bool Visible = true,
 			string SpriteSource = "UIExitBlack.png",
 			string Shader = "Default",
 			Vec4 Color = [1, 1, 1, 1],

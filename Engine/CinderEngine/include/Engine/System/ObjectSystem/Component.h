@@ -39,7 +39,10 @@ namespace Framework
     ZilchDeclareBaseType(Component, Zilch::TypeCopyMode::ReferenceType);
     // Zilch Definition in GameObject.cpp
 
-    Component() {}
+    Component()
+    {
+      enabled = true;
+    }
     virtual ~Component() {}
 
     /*!Telegraph that the component is active*/
@@ -59,6 +62,14 @@ namespace Framework
 
     //Variables that all components have
     GameObject* gameObject;
+    bool enabled;
+
+  protected:
+    void Get_Enabled (Serializer::DataNode* data, std::string enableKey = "Enabled")
+    {
+      Serializer::DataNode* value = data->FindElement (data, enableKey.c_str());
+      value->GetValue (&enabled);
+    }
   };
 
 }

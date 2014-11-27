@@ -42,7 +42,7 @@ namespace Framework
 
     Texture* texture;
   public:
-    PlayerEffect () { }
+    PlayerEffect (){}
     virtual ~PlayerEffect ();
 
     bool initialize (size_t numParticles) override;
