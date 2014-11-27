@@ -71,7 +71,7 @@ namespace Framework
     /*Triggers a Key event if there are any listeners*/
     void TriggerKeyEvent (const string eventname, const int& key, const int& scanCode, const int& state, const int& mod)
     {
-		InputManager::KeyChange(key, scanCode, state, mod);
+		  InputManager::KeyChange(key, scanCode, state, mod);
       KeyEvent triggered_key_event;
       SetupKeyEvent (&triggered_key_event, key, scanCode, state, mod);
       EVENTSYSTEM->TriggerEvent (eventname, triggered_key_event);

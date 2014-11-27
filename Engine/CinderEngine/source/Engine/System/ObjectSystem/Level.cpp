@@ -10,6 +10,11 @@ namespace Framework
     }
     if (newfile != "")
     {
+      if (name == "")
+      {
+        name = newfile;
+      }
+
       SetFile(newfile);
     }
   }

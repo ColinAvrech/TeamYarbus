@@ -16,3 +16,4 @@ Engine/CinderEngine/premake/CinderEngine.vcxproj.filters
 Engine/CinderEngine/include/Engine/System/Physics/ShapeCollider.h
 /Engine/CinderEngine/bin/debug/cinderengine.pdb
 /Engine/CinderEngine/obj
+/Engine/CinderEngine/bin
