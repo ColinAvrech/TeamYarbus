@@ -21,11 +21,13 @@
 #include <unordered_map>
 #include "Grid2D.h"
 #include "FluidSolver.h"
+#include "FireSystem.h"
 
 #pragma endregion
 
 namespace Framework
 {
+
   namespace Physics
   {
     typedef void* ThreadHandle;
@@ -164,6 +166,7 @@ namespace Framework
 #pragma endregion
 
       friend class Smoke_Grid;
+      friend class FireSystem;
 
     private:
 
@@ -193,6 +196,7 @@ namespace Framework
       Grid2D<float> WaterMap;
       //Fire Map. Stores intensity of flame on a scale of 0 - 10.
       Grid2D<float> FireMap;
+      static FireSystem* FIRE;
       //Amount of fuel in the cell
       Grid2D<float> FuelMap;
 

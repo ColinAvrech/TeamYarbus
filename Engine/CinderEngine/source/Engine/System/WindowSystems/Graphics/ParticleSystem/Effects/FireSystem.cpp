@@ -8,11 +8,12 @@
 */
 /******************************************************************************/
 
-#include "FireEffect.h"
+#include "FireSystem.h"
 #include "ResourceManager.h"
 #include "GameObject.h"
 #include "EventSystem.h"
 #include "KeyEvent.h"
+#include "Thermodynamics.h"
 #include "glfw3.h"
 
 namespace Framework
@@ -25,7 +26,12 @@ namespace Framework
   
   // Destructor
   FireSystem::~FireSystem ()
-  {}
+  {
+    if (Physics::ThermodynamicsSystem::FIRE == this)
+    {
+      Physics::ThermodynamicsSystem::FIRE = nullptr;
+    }
+  }
 
   void FireSystem::Serialize (Serializer::DataNode* data)
   {
@@ -37,6 +43,11 @@ namespace Framework
   {
     initialize (0);
     initializeRenderer ();
+
+    if (Physics::ThermodynamicsSystem::FIRE == nullptr)
+    {
+      Physics::ThermodynamicsSystem::FIRE = this;
+    }
   }
 
   void FireSystem::OnKeyPressed (KeyEvent* key)

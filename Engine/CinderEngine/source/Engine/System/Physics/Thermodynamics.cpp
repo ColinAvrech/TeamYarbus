@@ -13,6 +13,7 @@ namespace Framework
   namespace Physics
   {
     glm::ivec2 ThermodynamicsSystem::MapSize;
+    FireSystem* ThermodynamicsSystem::FIRE = nullptr;
 
     //!Null untill the ObjectSystem has been created
     ThermodynamicsSystem * THERMODYNAMICS = NULL;
