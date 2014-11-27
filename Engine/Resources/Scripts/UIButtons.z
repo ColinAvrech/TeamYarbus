@@ -28,23 +28,23 @@ class ExitButton : Component
 	{
 		if (e.State == MouseState.MouseInside)
 		{
-			Console.WriteLine(InputManager.IsMouseTriggered(Mouse.LEFT));
+			//Console.WriteLine(InputManager.IsMouseTriggered(Mouse.LEFT));
 			
 			if (InputManager.IsMouseTriggered(Mouse.LEFT))
 			{
 				
-				Console.WriteLine("QUIT");
+				ZInterface.QuitGame();
 			}
 			
 		}
 		else if (e.State == MouseState.MouseEnter)
 		{
-			Console.WriteLine("Enter");
+			//Console.WriteLine("Enter");
 			this.Owner.Sprite.ChangeTexture("UIExitWhite.png");
 		}
 		else if (e.State == MouseState.MouseExit)
 		{
-			Console.WriteLine("Exit");
+			//Console.WriteLine("Exit");
 			this.Owner.Sprite.ChangeTexture("UIExitBlack.png");
 		}
 		else
@@ -55,7 +55,63 @@ class ExitButton : Component
 	}
 }
 
-class EnterButton : Component
+class ResumeButton : Component
+{
+	var Detector: MouseDetector = null;
+	
+	var SpawnedObject:GameObject = null;
+  
+	constructor() : base()
+	{
+
+	}
+
+	function Initialize(owner:GameObject)
+	{
+		this.Owner = owner;
+		this.Detector = new MouseDetector(this.Owner, this.OnMouseEvent);
+		this.Detector.Rect.Width = 1;
+		this.Detector.Rect.Height = 0.22;
+		this.Detector.Offset = Real2(0, 0.02);
+		EventSystem.Connect(Events.UpdateEvent, this.LogicUpdate);
+	}
+	
+	function LogicUpdate(e: UpdateEvent)
+	{
+		//var dimensions = this.Owner.Transform.GetScreenPosition(Real2(1, 0.21));
+		//this.Detector.Rect.Width = dimensions.X;
+		//this.Detector.Rect.Height = dimensions.Y;
+	}
+	
+	function OnMouseEvent(e: MouseEvent)
+	{
+		if (e.State == MouseState.MouseInside)
+		{
+			if (InputManager.IsMouseTriggered(Mouse.LEFT))
+			{
+				
+				this.Owner.Sprite.ChangeColor(1,1,1,0);
+			}
+		}
+		else if (e.State == MouseState.MouseEnter)
+		{
+			//Console.WriteLine("Enter");
+			this.Owner.Sprite.ChangeTexture("UIResumeWhite.png");
+		}
+		else if (e.State == MouseState.MouseExit)
+		{
+			//Console.WriteLine("Exit");
+			this.Owner.Sprite.ChangeTexture("UIResumeBlack.png");
+		}
+		else
+		{
+			
+		}
+		//Console.WriteLine("MOUSE!");
+	}
+}
+
+class HowToPlayButton : Component
 {
 	var Detector: MouseDetector = null;
 	
@@ -91,13 +147,13 @@ class EnterButton : Component
 		}
 		else if (e.State == MouseState.MouseEnter)
 		{
-			Console.WriteLine("Enter");
-			this.Owner.Sprite.ChangeTexture("UIExitWhite.png");
+			//Console.WriteLine("Enter");
+			this.Owner.Sprite.ChangeTexture("UIHowToPlayWhite.png");
 		}
 		else if (e.State == MouseState.MouseExit)
 		{
-			Console.WriteLine("Exit");
-			this.Owner.Sprite.ChangeTexture("UIExitBlack.png");
+			//Console.WriteLine("Exit");
+			this.Owner.Sprite.ChangeTexture("UIHowToPlayBlack.png");
 		}
 		else
 		{

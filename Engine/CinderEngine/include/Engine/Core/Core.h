@@ -17,6 +17,7 @@
 
 #include "Common.h"
 #include "BaseSystem.h"
+#include "ZilchCompiledLib.h"
 
 using namespace std::chrono;
 
@@ -28,7 +29,7 @@ namespace Framework
   public:
     CoreEngine();
     ~CoreEngine();
-
+	ZilchDeclareBaseType(CoreEngine, Zilch::TypeCopyMode::ReferenceType);
     //!Update all the systems
     void GameLoop();
 

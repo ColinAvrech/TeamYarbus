@@ -58,6 +58,58 @@ Level =
 		},
 		Transform = 
 		{
+			Vec3 Translation = [0, 0.3, 0],
+			Vec3 Scale = [0.5, 0.5, 0.5],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Sprite = 
+		{
+			string SpriteSource = "UIResumeBlack.png",
+			string Shader = "Default",
+			Vec4 Color = [1, 1, 1, 1],
+		},
+		ResumeButton = 
+		{
+		},
+	},
+	Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 13,
+		},
+		Named = 
+		{
+			string Name = "HowToPlay",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0, -0.1, 0],
+			Vec3 Scale = [0.5, 0.5, 0.5],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Sprite = 
+		{
+			string SpriteSource = "UIHowToPlayBlack.png",
+			string Shader = "Default",
+			Vec4 Color = [1, 1, 1, 1],
+		},
+		HowToPlayButton = 
+		{
+		},
+	},
+	Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 14,
+		},
+		Named = 
+		{
+			string Name = "QuitGame",
+		},
+		Transform = 
+		{
 			Vec3 Translation = [0, -0.5, 0],
 			Vec3 Scale = [0.5, 0.5, 0.5],
 			Quat Rotation = [0, 0, 0, 1],

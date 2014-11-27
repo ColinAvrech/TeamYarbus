@@ -84,6 +84,8 @@ namespace Framework
 	  GameObject* FindObjectByID(Zilch::Integer id);
 	  void FindAllObjectsByName(Zilch::String name);
     
+	  void DestroyObject(GameObject* obj);
+	  
     /*!Used to generator unique GOCIds*/
     static unsigned LastGameObjectId;
     static int currentLevel;

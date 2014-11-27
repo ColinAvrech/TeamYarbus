@@ -15,6 +15,7 @@
 #include "Component.h"
 #include "Zilch.hpp"
 
+
 namespace Framework
 {
   GameObject* Component::GetOwner() { return gameObject; }
