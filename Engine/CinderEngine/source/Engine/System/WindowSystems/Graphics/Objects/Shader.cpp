@@ -110,6 +110,18 @@ namespace Framework
     return program;
   }
 
+  GLuint Shader::Create_Program (string name, GLuint _fragmentShader)
+  {
+    GLuint program = glCreateProgram ();
+    glAttachShader (program, _fragmentShader);
+    glLinkProgram (program);
+    char log [1000];
+    glGetProgramInfoLog (program, 1000, NULL, log);
+    std::cout << CinderConsole::yellow << "\n" << name << "\nLink Status...\n" << CinderConsole::red << log << CinderConsole::gray << "\n--------------" << std::endl;
+
+    return program;
+  }
+
   GLuint Shader::Create_Shader_From_String (string& vs, string& fs)
   {
     // Create and compile the vertex shader

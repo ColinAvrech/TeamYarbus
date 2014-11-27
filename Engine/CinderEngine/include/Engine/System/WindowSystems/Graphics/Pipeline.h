@@ -24,6 +24,7 @@ namespace Framework
   class UIComponent;
   class ShapeCollider;
   class Shader;
+  class PointLight;
 
   enum MATRIX_MODE
   {
@@ -68,8 +69,9 @@ namespace Framework
     static std::list <Transform*> transforms;
     static std::list <IGraphicsObject*> graphicsObjects;
     static std::list <UIComponent*> uiObjects;
-    static Camera* camera;
+    static std::list <Camera*> cameras;
     static std::list <ShapeCollider*> debugColliders;
+    static std::list <PointLight*> pointLights;
 
   private:
     std::vector <glm::mat4> modelMatrix;

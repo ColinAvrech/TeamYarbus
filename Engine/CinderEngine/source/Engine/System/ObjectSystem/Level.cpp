@@ -4,7 +4,7 @@ namespace Framework
 {
   Level::Level(const string& newname, const string& newfile)
   {
-    if (name != "")
+    if (newname != "")
     {
       SetName(newname);
     }

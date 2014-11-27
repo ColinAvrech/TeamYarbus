@@ -88,19 +88,17 @@ namespace Framework
     gameObject->ShapeCollider2D = this;
     RigidBody2D* b = PHYSICS->Add (this, gameObject->Transform->GetPosition ().x, gameObject->Transform->GetPosition ().y);
     rigidBody = b;
-
-    if (isStatic)
-    {
-      b->SetStatic ();
-    }
-
+    b->gameObject = this->gameObject;
+    gameObject->RigidBody2D = b;
     b->restitution = Bounciness;
     b->dynamicFriction = DynamicFriction;
     b->staticFriction = StaticFriction;
     ComputeMass (Density);
 
-    b->gameObject = this->gameObject;
-    gameObject->RigidBody2D = b;
+    if (isStatic)
+    {
+      b->SetStatic ();
+    }
   }
 
   void CircleCollider2D::Draw (void) const
@@ -191,15 +189,15 @@ namespace Framework
     gameObject->ShapeCollider2D = this;
     RigidBody2D* b = PHYSICS->Add (this, gameObject->Transform->GetPosition ().x, gameObject->Transform->GetPosition ().y);
 
-    if (isStatic)
-    {
-      b->SetStatic ();
-    }
-
     b->restitution = Bounciness;
     b->dynamicFriction = DynamicFriction;
     b->staticFriction = StaticFriction;
     ComputeMass (Density);
+
+    if (isStatic)
+    {
+      b->SetStatic ();
+    }
 
     b->gameObject = this->gameObject;
     gameObject->RigidBody2D = b;

@@ -37,7 +37,7 @@ namespace Framework
     // Transformations
     void Load_Identity ();
     void Translate (const float x, const float y, const float z);
-	void Translate(const vec3 &v);
+	  void Translate(const vec3 &v);
     void Scale (const float x, const float y, const float z);
     void Scale (const float v);
     void Rotate (const float angle);
@@ -51,8 +51,9 @@ namespace Framework
     /*inline*/ vec3 GetPosition ();
     /*inline*/ vec3 GetScale ();
     /*inline*/ float GetRotation ();
-    vec2 GetScreenPosition ();
-    glm::vec2 GetScreenPosition (const glm::vec2& v);
+    vec2 GetNDCPosition ();
+    glm::vec2 GetNDCPosition (const glm::vec2& v);
+    glm::vec2 GetScreenPosition ();
 
     void SetPosition (float x, float y);
 

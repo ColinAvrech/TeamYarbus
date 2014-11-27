@@ -38,7 +38,7 @@ namespace Framework
   {
     allCameras.remove (this);
     gameObject->Camera = nullptr;
-    OPENGL->camera = nullptr;
+    OPENGL->cameras.remove (this);
   }
 
 
@@ -94,7 +94,7 @@ namespace Framework
     }
     Camera::current = this;
 
-    OPENGL->camera = this;
+    OPENGL->cameras.push_back(this);
     OPENGL->Perspective (fov, aspect, nearPlane, farPlane);
     OPENGL->MatrixMode (MODEL);
     OPENGL->Translatefv (const_cast <float*>(glm::value_ptr (gameObject->Transform->GetPosition ())));

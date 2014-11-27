@@ -176,13 +176,13 @@ namespace Framework
   }
 
 
-  vec2 Transform::GetScreenPosition ()
+  vec2 Transform::GetNDCPosition ()
   {
     return vec2 (GetModelViewProjectionMatrix () [3][0] / GetModelViewProjectionMatrix () [3][3],
       GetModelViewProjectionMatrix () [3][1] / GetModelViewProjectionMatrix () [3][3]);
   }
 
-  glm::vec2 Transform::GetScreenPosition (const glm::vec2& v)
+  glm::vec2 Transform::GetNDCPosition (const glm::vec2& v)
   {
     glm::mat4 matrix = modelMatrix;
     matrix [3][0] = v.x;
@@ -190,16 +190,27 @@ namespace Framework
     glm::mat4 mvp = (modelViewProjectionMatrix / modelMatrix) * matrix;
 
     return glm::vec2 (mvp [3][0] / mvp [3][3], mvp [3][1] / mvp [3][3]);
+  }
 
-	  //glm::vec3 screenPos = glm::project
-		 // (
-		 // glm::vec3(v, 0.0f),
-		 // Camera::GetWorldToViewMatrix() * modelMatrix,
-		 // Camera::GetViewToProjectionMatrix(),
-		 // glm::vec4(0, 0, WINDOWSYSTEM->Get_Width(), WINDOWSYSTEM->Get_Height())
-		 // );
+  glm::vec2 Transform::GetScreenPosition ()
+  {
+    //glm::vec2 screenPos;
+    glm::vec3 screenPos = glm::project
+     (
+     position,
+     Camera::GetWorldToViewMatrix() * modelMatrix,
+     Camera::GetViewToProjectionMatrix(),
+     glm::vec4(0, 0, WINDOWSYSTEM->Get_Width(), WINDOWSYSTEM->Get_Height())
+     );
 
-	  //return glm::vec2(screenPos);
+    //destPosX = (float) (cursorX / (windowWidth) -0.5f) * 2.0f;
+    //destPosY = (float) ((windowHeight - cursorY) / windowHeight - 0.5f) * 2.0f;
+
+    screenPos.x = (float) (screenPos.x / (WINDOWSYSTEM->Get_Width ())) * 2.0f;
+    screenPos.y = (float) (screenPos.y / (WINDOWSYSTEM->Get_Height ())) * 2.0f;
+    //screenPos.x = (position.x / Camera::main->GetSize () - 0.5f) * 2.0f;
+    //screenPos.y = position.y / (Camera::main->GetSize() * ((float)WINDOWSYSTEM->Get_Width() / WINDOWSYSTEM->Get_Height()))
+    return glm::vec2 (screenPos);
   }
 
   Zilch::Real2 Transform::ZGetScreenPosition(Zilch::Real2 pos)

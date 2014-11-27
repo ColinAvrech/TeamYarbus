@@ -7,3 +7,4 @@ DebugDraw.vs.glsl
 ColorCodeCell.vs.glsl
 Terrain.vs.glsl
 Tree.vs.glsl
+PointLight.vs.glsl

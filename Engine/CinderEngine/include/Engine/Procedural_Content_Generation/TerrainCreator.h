@@ -31,7 +31,7 @@ namespace Framework
 
       float GetPeakHeight () const
       {
-        return BaseHeight + PeakHeight;
+        return float(BaseHeight + PeakHeight);
       }
 
       inline int Get_Width ();
@@ -44,7 +44,7 @@ namespace Framework
       //Terrain settings
       int passes;
       int waves;
-      int MapWidth;
+      unsigned MapWidth;
       int BaseHeight; //Must be a number between 0 and height.
       float *HeightMapRock;
       float *HeightMapSoil;
@@ -55,6 +55,7 @@ namespace Framework
       //Private Enum
       enum FlowDirection
       {
+        NONE,
         FLOW_LEFT,
         FLOW_RIGHT,
         PEAK,

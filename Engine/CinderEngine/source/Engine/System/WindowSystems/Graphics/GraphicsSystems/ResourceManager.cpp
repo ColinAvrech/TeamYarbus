@@ -175,13 +175,20 @@ namespace Framework
         shaderComposition >> name;
         if (gs == "0")
         {
-          // Link The Corresponding Vertex And Fragment Shaders in the Shader Program Document
+          // Link The Corresponding Vertex And Fragment Shaders in the Shader Program File
           shaders [name] = new Shader ();
-          shaders [name]->shaderProgram = shaders [name]->Create_Program (name, vSource [vs], fSource [fs]);
+          if (vs == "0")
+          {
+            shaders [name]->shaderProgram = shaders [name]->Create_Program (name, fSource [fs]);
+          }
+          else
+          {
+            shaders [name]->shaderProgram = shaders [name]->Create_Program (name, vSource [vs], fSource [fs]);
+          }
         }
         else
         {
-          // Link The Corresponding Vertex And Fragment Shaders in the Shader Program Document
+          // Link The Corresponding Vertex And Fragment Shaders in the Shader Program File
           shaders [name] = new Shader ();
           shaders [name]->shaderProgram = shaders [name]->Create_Program (name, vSource [vs], fSource [fs], gSource[gs]);
         }

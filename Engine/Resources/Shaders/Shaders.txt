@@ -68,3 +68,8 @@ Tree.vs.glsl
 Tree.frag.glsl
 0
 Tree
+>
+PointLight.vs.glsl
+PointLight.frag.glsl
+0
+PointLight

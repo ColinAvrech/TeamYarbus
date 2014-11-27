@@ -39,7 +39,7 @@ namespace Framework
     void TerrainCreator::GenerateHeightMap(float **Array, int base, int height)
     {
       *Array = new float[MapWidth];
-      for (int i = 0; i < MapWidth; ++i)
+      for (unsigned i = 0; i < MapWidth; ++i)
         (*Array)[i] = 0.0f;
 
       int* WaveBuffer = new int[ 2 * waves];
@@ -48,24 +48,24 @@ namespace Framework
 
       int *x1/*[100]*/, *x2/*[50]*/, *x4/*[25]*/, *x8/*[12]*/;
       x1 = new int[MapWidth];
-      for (int i = 0; i < MapWidth; ++i)
+      for (unsigned i = 0; i < MapWidth; ++i)
         x1[i] = rand() % 2;
       x2 = new int[MapWidth / 2];
-      for (int i = 0; i < MapWidth / 2; ++i)
+      for (unsigned i = 0; i < MapWidth / 2; ++i)
         x2[i] = rand() % 2;
       x4 = new int[MapWidth / 4];
-      for (int i = 0; i < MapWidth / 4; ++i)
+      for (unsigned i = 0; i < MapWidth / 4; ++i)
         x4[i] = rand() % 2;
       x8 = new int[MapWidth / 8];
-      for (int i = 0; i < MapWidth / 8; ++i)
+      for (unsigned i = 0; i < MapWidth / 8; ++i)
         x8[i] = rand() % 2;
 
-      for (int i = 0; i < MapWidth; ++i)
+      for (unsigned i = 0; i < MapWidth; ++i)
         (*Array)[i] = base + height * (0.03125f * x1[i] + 0.0625f * x2[i / 2] + 0.125f * x4[i / 4] + 0.25f * x8[i / 8] + 0.5f * WaveBuffer[(i * 2 * waves) / MapWidth]);
 
       for (int i = 0; i < passes; ++i)
       {
-        for (int j = 0; j < MapWidth - 2; ++j)
+        for (unsigned j = 0; j < MapWidth - 2; ++j)
         {
           float dH = (*Array)[j] - (*Array)[j + 1];
           (*Array)[j] -= dH / 3;
@@ -111,7 +111,7 @@ namespace Framework
       for (unsigned i = 0; i < MapWidth; ++i)
         Res_Water_Map[i] = 0.0f;
       //Iterate through water map and drop water into terrain
-      for (int i = 0; i < MapWidth; ++i)
+      for (unsigned i = 0; i < MapWidth; ++i)
       {
         //drop whole units of water into terrain and settle them at
         //the lowest possible point.
@@ -238,8 +238,10 @@ namespace Framework
         return FLOW_LEFT;
       if (HeightMapRock[pos] < HeightMapRock[pos - 1] && HeightMapRock[pos] > HeightMapRock[pos + 1])
         return FLOW_RIGHT;
-      if (HeightMapRock[pos] < HeightMapRock[pos - 1] && HeightMapRock[pos] < HeightMapRock[pos + 1])
+      if (HeightMapRock [pos] < HeightMapRock [pos - 1] && HeightMapRock [pos] < HeightMapRock [pos + 1])
         return TROUGH;
+      else
+        return NONE;
     }
   } //Procedural
 } //Framework

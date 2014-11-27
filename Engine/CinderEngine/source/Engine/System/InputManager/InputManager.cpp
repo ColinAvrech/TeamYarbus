@@ -48,7 +48,7 @@ namespace Framework
 
 	bool InputManager::IsKeyDown(unsigned key)
 	{
-		return KeyPressed[key];
+		return KeyPressed[key] == 1;
 	}
 
 	bool InputManager::IsKeyTriggered(unsigned key)
@@ -65,7 +65,7 @@ namespace Framework
 	{
 		if (key < GLFW_KEY_LAST)
 		{
-			KeyPressed[key] = bool(state);
+			KeyPressed[key] = true ? (state == 1) : false;
 		}
 		
 	}
@@ -74,7 +74,7 @@ namespace Framework
 	{
 		if (button < GLFW_KEY_LAST)
 		{
-			MouseDown[button] = bool(action);
+			MouseDown[button] = true ? (action == 1) : false;
 			
 		}
 		

@@ -11,26 +11,45 @@ deleted.
 /******************************************************************************/
 
 #include "ObjectSystem.h"
+#include "Core.h"
 #include "BaseSystem.h"
 #include "IncludeForAllCollision.h"
+#include "GameEvent.h"
+#include "EventSystem.h"
+#include "PhysicsSystem.h"
+#include "ZInterface.h"
+
+//////////////////////////////////////////////////////////////////////////
+// COMPONENTS
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+// PHYSICS
+//////////////////////////////////////////////////////////////////////////
+#include "Collider2D.h"
 #include "CharacterController.h"
+//////////////////////////////////////////////////////////////////////////
+// GRAPHICS
+//////////////////////////////////////////////////////////////////////////
 #include "PlayerEffect.h"
 #include "Terrain2D.h"
 #include "Terrain3D.h"
 #include "Tree2D.h"
-#include "FireStarter.h"
-//#include "Health.h"
-#include "Microphone.h"
-#include "CinderEngine_UI.h"
-#include "GameEvent.h"
-#include "EventSystem.h"
-
-#include "Core.h"
-#include "PhysicsSystem.h"
-#include "ZInterface.h"
-#include "ScriptComponent.h"
 #include "Trees.h"
-#include "Collider2D.h"
+#include "PointLight.h"
+#include "CinderEngine_UI.h"
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+// GAMEPLAY
+//////////////////////////////////////////////////////////////////////////
+#include "ScriptComponent.h"
+#include "FireStarter.h"
+#include "Health.h"
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+// AUDIO
+//////////////////////////////////////////////////////////////////////////
+#include "Microphone.h"
+//////////////////////////////////////////////////////////////////////////
 
 
 namespace Framework
@@ -113,28 +132,41 @@ namespace Framework
   */
   void ObjectSystem::RegisterComponents(void)
   {
-    RegisterComponent(Transform);
-    RegisterComponent(Sprite);
-    RegisterComponent(Camera);
-    RegisterComponent(CharacterController);
-	  //RegisterComponent(Health);
-    RegisterComponent(RigidBody);
-    RegisterComponent(PlayerEffect);
-    RegisterComponent(Terrain2D);
-    RegisterComponent(Terrain3D);
-    RegisterComponent(Tree2D);
-    RegisterComponent(EcoSystem);
-    RegisterComponent(FireStarter);
-    RegisterComponent(Microphone);
-    RegisterComponent(UIBox);
+    //////////////////////////////////////////////////////////////////////////
+    // GRAPHICS
+    //////////////////////////////////////////////////////////////////////////
+    RegisterComponent (Transform);
+    RegisterComponent (Sprite);
+    RegisterComponent (Camera);
+    RegisterComponent (PlayerEffect);
+    RegisterComponent (Terrain2D);
+    RegisterComponent (Terrain3D);
+    RegisterComponent (Tree2D);
+    RegisterComponent (EcoSystem);
+    RegisterComponent (UIBox);
+    RegisterComponent (PointLight);
+    //////////////////////////////////////////////////////////////////////////
+    // PHYSICS
+    //////////////////////////////////////////////////////////////////////////
+    RegisterComponent (CharacterController);
     RegisterComponent (RigidBody2D);
     RegisterComponent (ShapeCollider2D);
     RegisterComponent (CircleCollider2D);
     RegisterComponent (PolygonCollider2D);
-    //RegisterComponent (SplineCollider);
-    AddComponentCreator("SplineCollider", new ComponentCreatorType<SplineCollider>("SplineCollider"));
-    AddComponentCreator("SphereCollider", new ComponentCreatorType<CircleCollider>("SphereCollider"));
-    AddComponentCreator("BoxCollider", new ComponentCreatorType<LineCollider>("BoxCollider"));
+    RegisterComponent (RigidBody);
+    AddComponentCreator ("SplineCollider", new ComponentCreatorType<SplineCollider> ("SplineCollider"));
+    AddComponentCreator ("SphereCollider", new ComponentCreatorType<CircleCollider> ("SphereCollider"));
+    AddComponentCreator ("BoxCollider", new ComponentCreatorType<LineCollider> ("BoxCollider"));
+    //////////////////////////////////////////////////////////////////////////
+    // AUDIO
+    //////////////////////////////////////////////////////////////////////////
+    RegisterComponent (Microphone);
+    //////////////////////////////////////////////////////////////////////////
+    // GAMEPLAY
+    //////////////////////////////////////////////////////////////////////////
+    RegisterComponent (Health);
+    RegisterComponent (FireStarter);
+    //////////////////////////////////////////////////////////////////////////
   }
 
   void ObjectSystem::AddComponentCreator(string name, ComponentCreator* creator)
@@ -164,11 +196,11 @@ namespace Framework
 
   void ObjectSystem::LoadAllLevels(const string& p_levellist)
   {
-    Level* defaultLevel = new Level();
-    defaultLevel->SetName("Default");
-    defaultLevel->SetFile("ZilchTests");
+    Level* defaultLevel = new Level ("Default", "ZilchTests");
+    //defaultLevel->SetName();
+    //defaultLevel->SetFile();
 
-    std::cout << CinderConsole::cyan << "--------------------------------\nLoading Textures...\n" << CinderConsole::gray;
+    std::cout << CinderConsole::cyan << "--------------------------------\nLoading Levels...\n" << CinderConsole::gray;
 
     std::ifstream levelFile(p_levellist);
 
@@ -199,24 +231,38 @@ namespace Framework
 
   void ObjectSystem::LoadLevel(const string &levelName, const string &fn_level)
   {
-    for (auto level : levelList)
-    {
-      if (levelName != "" && levelName == level->GetName())
-      {
-        return;
-      }
-      else if (fn_level != "" && fn_level == level->GetName())
-      {
-        return;
-      }
-    }
+    //for (auto level : levelList)
+    //{
+    //  if (levelName != "" && levelName == level->GetName())
+    //  {
+    //    break;
+    //  }
+    //  else if (fn_level != "" && fn_level == level->GetName())
+    //  {
+    //    break;
+    //  }
+    //}
 
-    DestroyAllObjects();
+    //DestroyAllObjects();
 
-    Level* newLevel = new Level(levelName, fn_level);
-    Serializer::DataNode* Trunk = newLevel->GetData()->GetTrunk();
-    SerializeObject(Trunk);
-    levelList.push_back(newLevel);
+    //Level* newLevel = new Level(levelName, fn_level);
+    //Serializer::DataNode* Trunk = newLevel->GetData()->GetTrunk();
+    //SerializeObject(Trunk);
+    //levelList.push_back(newLevel);
+
+    DestroyAllObjects ();
+
+    Serializer::ZeroSerializer data;
+
+    data.open (levelName.c_str ());
+    data.CreateArchive ();
+    Serializer::DataNode* Trunk = data.GetTrunk ();
+    SerializeObject (Trunk);
+    GameEvent e;
+    EVENTSYSTEM->TriggerEvent (Events::GAME_ALLOBJECTSINITIALIZED, e);
+    //InitializeObject ();
+    //LoadedLevel = level;
+    EVENTSYSTEM->TriggerEvent (Events::GAME_LEVELSTARTED, e);
   }
 
   void ObjectSystem::StartLevel()
