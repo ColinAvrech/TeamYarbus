@@ -39,6 +39,7 @@ factory in the next loop.
 #include "CharacterController.h"
 #include "Zilch.hpp"
 #include "ScriptComponent.h"
+#include "Health.h"
 //#include "FireStarter.h"
 //#include "Microphone.h"
 
@@ -85,7 +86,7 @@ namespace Framework
     //Components
     ComponentPointer(Transform);
     ComponentPointer(Sprite);
-	  //ComponentPointer(Health);
+	  ComponentPointer(Health);
     ComponentPointer (ShapeCollider2D);
     ComponentPointer (RigidBody2D);
 	  ComponentPointer(ShapeCollider);
