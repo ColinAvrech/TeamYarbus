@@ -26,6 +26,7 @@ namespace Framework
 #include "GameObject.h"
 #include "JSONSerializer.h"
 #include "Level.h"
+#include "ZInterface.h"
 
 
 namespace Framework
@@ -48,7 +49,7 @@ namespace Framework
 	//ZilchDeclareBaseType(Zilch::Array<GameObject*>, Zilch::TypeCopyMode::ReferenceType);
 	//ZilchDeclareBaseType(Zilch::Array<GameObject*>, Zilch::TypeCopyMode::ReferenceType);
 	
-	
+	friend class ZArray;
     friend class GameObject;
     friend class Component;
 
@@ -77,14 +78,14 @@ namespace Framework
     void ChangeLevel(const int& iNewLevel);
     void StartLevel();
     void RestartLevel ();
-	  void ZilchLoadLevel(Zilch::String level);
-	  void LoadLevelAdditive(Zilch::String level);
+	void ZilchLoadLevel(Zilch::String level);
+	ZArray* LoadLevelAdditive(Zilch::String level);
 
-	  GameObject* FindObjectByName(Zilch::String name);
-	  GameObject* FindObjectByID(Zilch::Integer id);
-	  void FindAllObjectsByName(Zilch::String name);
+	GameObject* FindObjectByName(Zilch::String name);
+	GameObject* FindObjectByID(Zilch::Integer id);
+	void FindAllObjectsByName(Zilch::String name);
     
-	  void DestroyObject(GameObject* obj);
+	void DestroyObject(GameObject* obj);
 	  
     /*!Used to generator unique GOCIds*/
     static unsigned LastGameObjectId;
@@ -99,7 +100,7 @@ namespace Framework
 
   private:
 
-	  void ObjectSystem::SerializeObject(Serializer::DataNode* data);
+	Zilch::Array<GameObject*>* ObjectSystem::SerializeObject(Serializer::DataNode* data);
     void ObjectSystem::SerializeComponent(string ComponentName, Serializer::DataNode* data);
 
     void RegisterComponents(void);
@@ -111,4 +112,8 @@ namespace Framework
     ObjectsToBeDestroyed GameObjectsToBeDestroyed;
   };
 
+
+
 }
+
+

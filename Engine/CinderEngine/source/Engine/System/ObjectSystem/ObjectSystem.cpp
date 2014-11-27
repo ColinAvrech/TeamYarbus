@@ -118,7 +118,7 @@ namespace Framework
     RegisterComponent(Sprite);
     RegisterComponent(Camera);
     RegisterComponent(CharacterController);
-	  //RegisterComponent(Health);
+	RegisterComponent(Health);
     RegisterComponent(RigidBody);
     RegisterComponent(PlayerEffect);
     RegisterComponent(Terrain2D);
@@ -256,7 +256,7 @@ namespace Framework
 	{
 		for each (auto i in GameObjects)
 		{
-			if (name == Zilch::String(i.second->Name.c_str()))
+			if (name.c_str() == i.second->GetName().c_str())
 			{
 				return i.second;
 			}
@@ -299,25 +299,24 @@ namespace Framework
     //InitializeObject ();
   }
 
-  void ObjectSystem::LoadLevelAdditive(Zilch::String level)
+  ZArray* ObjectSystem::LoadLevelAdditive(Zilch::String level)
   {
     Serializer::ZeroSerializer data;
-
+	
     data.open(level.c_str());
     data.CreateArchive();
     Serializer::DataNode* Trunk = data.GetTrunk();
-    SerializeObject(Trunk);
-    // return objects;
+	return new ZArray(SerializeObject(Trunk));
     //InitializeObject ();
   }
 
   //Private function to create and serilize an object
-  void ObjectSystem::SerializeObject(Serializer::DataNode* data)
+  Zilch::Array<GameObject*>* ObjectSystem::SerializeObject(Serializer::DataNode* data)
   {
     //GameObject* go = new GameObject(data->branch->value_.UInt_);
     auto it = data->branch;
     
-    Zilch::Array<GameObject*> objectlist;
+	Zilch::Array<GameObject*>* objectlist = new Zilch::Array<GameObject*>();
     vector<std::pair<ZilchComponent*, Serializer::DynamicElement*> > scripts;
     /*
     go->Name = data->objectName;
@@ -356,9 +355,9 @@ namespace Framework
             scripts.push_back(std::pair<ZilchComponent*, Serializer::DynamicElement*>(zilchComp, ct->branch));
             //newcomp->Initialize();
           }
-          objectlist.append(newobj);
           ct = ct->next;
         }
+		objectlist->append(newobj);
 
         ErrorIf(newobj->Transform == nullptr, (string("Transform component missing on GameObject ") + newobj->Name).c_str());
         GameObjects[newobj->GameObjectID] = newobj;
@@ -373,7 +372,7 @@ namespace Framework
       i.first->Initialize();
     }
 
-    //return objectlist;
+    return objectlist;
   }
 
   //Private function to create and serilize a component

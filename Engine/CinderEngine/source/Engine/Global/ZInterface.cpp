@@ -19,12 +19,15 @@ namespace Framework
 	ZilchDefineType(ZilchFile, CinderZilch)
 	{
 		type->HandleManager = ZilchManagerId(Zilch::PointerManager);
-		
-		
 		ZilchBindMethod(ReadLine);
-
 	}
-
+	ZilchDefineType(ZArray, CinderZilch)
+	{
+		type->HandleManager = ZilchManagerId(Zilch::PointerManager);
+		ZilchBindMethod(Get);
+		ZilchBindFieldGet(Length);
+		//ZilchBindFieldGet(Objects);
+	}
 
 
 	ZilchDefineType(ZInterface, CinderZilch)
@@ -95,5 +98,21 @@ namespace Framework
 	void ZInterface::QuitGame()
 	{
 		CORE->QuitGame();
+	}
+
+	ZArray::ZArray(Zilch::Array<GameObject*>* arr)
+	{
+		Objects = *arr;
+		Length = Objects.size();
+	}
+
+	GameObject* ZArray::Get(unsigned index)
+	{
+		return Objects[index];
+	}
+
+	ZArray::~ZArray()
+	{
+		Objects.deallocate();
 	}
 }

@@ -7,7 +7,8 @@ class Josh : Component
 	var Detector: MouseDetector = null;
 
 	var SpawnedObject:GameObject = null;
-  
+	var MenuObjects:ZArray = null;
+	
 	constructor() : base()
 	{
 
@@ -23,7 +24,17 @@ class Josh : Component
 	
 	//this.ObjectSys
 	Console.WriteLine(ZInterface.WindowSystem);
-	ZInterface.ObjectSystem.LoadLevelAdditive("MainMenu");
+	this.MenuObjects = ZInterface.ObjectSystem.LoadLevelAdditive("MainMenu");
+	/*
+	for (var i = 0; i < list.Length; i += 1)
+	{
+		if(list.Get(i).GetName());
+	}
+	*/
+	
+	//Console.WriteLine(ZInterface.ObjectSystem.FindObjectByName("ExitGame"));
+	
+	//list.Get(11).Transform.Translate(1,1,0);
 	Console.WriteLine(ZInterface.ObjectSystem);
 	//this.Detector = new MouseDetector(this.Owner, this.OnMouseEvent);
 	//this.Detector.Rect.Width = 6.15839389087326;
@@ -37,7 +48,7 @@ class Josh : Component
 	//Console.Writeline(obj);
 	//Console.WriteLine(new Player());
 	//Console.WriteLine(this.Owner);
-	//EventSystem.Connect(Events.UpdateEvent, this.LogicUpdate);
+	EventSystem.Connect("KESCAPE", this.EscapePressed);
 	//Console.WriteLine(this);
 	//Console.WriteLine("hello");
 	//var gameobject = this.ObjectSys.CreateObject();
@@ -112,11 +123,29 @@ class Josh : Component
 	//Console.WriteLine(Camera.GetWorldMousePosition());
 	}
 
-	function KeyIsPressed(e: KeyEvent)
+	function EscapePressed(e: KeyEvent)
 	{
-	//Console.WriteLine(e);
-	//this.Owner.Transform.Translate(0.0,0.1,0);
-	this.Owner.RigidBody.ApplyForce(Real3(0,100,0));
+		if(InputManager.IsKeyTriggered(Keys.ESCAPE))
+		{
+			if(this.MenuObjects.Get(0).Sprite.GetColor().W == 0)
+			{
+				this.ChangeMenuAlpha(1);
+			}
+			else
+			{
+				this.ChangeMenuAlpha(0);
+			}
+		}
+	}
+	
+	function ChangeMenuAlpha(alpha:Integer)
+	{
+		
+		var len = this.MenuObjects.Length;
+		for (var i:Integer = 0; i < len; i += 1)
+		{
+			this.MenuObjects.Get(i).Sprite.ChangeColor(1,1,1,alpha);
+		}
 	}
 
 }

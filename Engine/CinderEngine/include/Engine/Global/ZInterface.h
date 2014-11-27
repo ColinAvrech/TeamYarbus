@@ -49,5 +49,20 @@ namespace Framework
 		
 	};
 
+	class ZArray
+	{
+	public:
+		ZilchDeclareBaseType(ZArray, Zilch::TypeCopyMode::ReferenceType);
+		ZArray(Zilch::Array<GameObject*>* arr);
+		~ZArray();
+		unsigned Length;
+
+		GameObject* Get(unsigned index);
+
+		Zilch::Array<GameObject*> Objects;
+	private:
+
+	};
+
 	
 }// namespace Framework

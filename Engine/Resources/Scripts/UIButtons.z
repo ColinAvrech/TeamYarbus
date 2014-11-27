@@ -11,8 +11,8 @@ class ExitButton : Component
 	{
 		this.Owner = owner;
 		this.Detector = new MouseDetector(this.Owner, this.OnMouseEvent);
-		this.Detector.Rect.Width = 1;
-		this.Detector.Rect.Height = 0.22;
+		this.Detector.Rect.Width = 1.5;
+		this.Detector.Rect.Height = 0.33;
 		this.Detector.Offset = Real2(0, 0.02);
 		EventSystem.Connect(Events.UpdateEvent, this.LogicUpdate);
 	}
@@ -59,7 +59,7 @@ class ResumeButton : Component
 {
 	var Detector: MouseDetector = null;
 	
-	var SpawnedObject:GameObject = null;
+	var MenuObjects:Array[GameObject] = new Array[GameObject]();
   
 	constructor() : base()
 	{
@@ -70,9 +70,16 @@ class ResumeButton : Component
 	{
 		this.Owner = owner;
 		this.Detector = new MouseDetector(this.Owner, this.OnMouseEvent);
-		this.Detector.Rect.Width = 1;
-		this.Detector.Rect.Height = 0.22;
+		this.Detector.Rect.Width = 1.5;
+		this.Detector.Rect.Height = 0.33;
 		this.Detector.Offset = Real2(0, 0.02);
+		
+		this.MenuObjects.Add(ZInterface.ObjectSystem.FindObjectByID(10));
+		this.MenuObjects.Add(ZInterface.ObjectSystem.FindObjectByID(11));
+		this.MenuObjects.Add(ZInterface.ObjectSystem.FindObjectByID(12));
+		this.MenuObjects.Add(ZInterface.ObjectSystem.FindObjectByID(13));
+		this.MenuObjects.Add(ZInterface.ObjectSystem.FindObjectByID(14));
+		
 		EventSystem.Connect(Events.UpdateEvent, this.LogicUpdate);
 	}
 	
@@ -89,8 +96,10 @@ class ResumeButton : Component
 		{
 			if (InputManager.IsMouseTriggered(Mouse.LEFT))
 			{
-				
-				this.Owner.Sprite.ChangeColor(1,1,1,0);
+				foreach(var obj in this.MenuObjects)
+				{
+					obj.Sprite.ChangeColor(1,1,1,0);
+				}
 			}
 		}
 		else if (e.State == MouseState.MouseEnter)
@@ -126,8 +135,8 @@ class HowToPlayButton : Component
 	{
 		this.Owner = owner;
 		this.Detector = new MouseDetector(this.Owner, this.OnMouseEvent);
-		this.Detector.Rect.Width = 1;
-		this.Detector.Rect.Height = 0.22;
+		this.Detector.Rect.Width = 1.5;
+		this.Detector.Rect.Height = 0.33;
 		this.Detector.Offset = Real2(0, 0.02);
 		EventSystem.Connect(Events.UpdateEvent, this.LogicUpdate);
 	}

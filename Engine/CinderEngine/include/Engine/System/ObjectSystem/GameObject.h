@@ -79,6 +79,7 @@ namespace Framework
 
     //Public Variables
     string Name;
+	String GetName();
     GameObject* Parent;
     const unsigned GameObjectID;
 
