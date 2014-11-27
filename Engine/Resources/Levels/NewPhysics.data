@@ -190,7 +190,7 @@ Level =
 		CircleCollider2D = 
 		{
 		  float Radius = 1,
-		  bool Static = false,
+		  bool Static = true,
 		  string Material = "4de020863e872da8:DefaultPhysicsMaterial",
 		},
 		CharacterController = 

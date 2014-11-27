@@ -13,24 +13,44 @@ deleted.
 #include "ObjectSystem.h"
 #include "BaseSystem.h"
 #include "IncludeForAllCollision.h"
-#include "CharacterController.h"
+#include "GameEvent.h"
+#include "EventSystem.h"
+#include "Core.h"
+#include "PhysicsSystem.h"
+#include "ZInterface.h"
+
+//////////////////////////////////////////////////////////////////////////
+// COMPONENTS
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+// PHYSICS
+//////////////////////////////////////////////////////////////////////////
+#include "Collider2D.h"
+//////////////////////////////////////////////////////////////////////////
+// GRAPHICS
+//////////////////////////////////////////////////////////////////////////
 #include "PlayerEffect.h"
 #include "Terrain2D.h"
 #include "Terrain3D.h"
 #include "Tree2D.h"
+#include "CinderEngine_UI.h"
+#include "Trees.h"
+#include "PointLight.h"
+//////////////////////////////////////////////////////////////////////////
+// AUDIO
+//////////////////////////////////////////////////////////////////////////
+#include "Microphone.h"
+//////////////////////////////////////////////////////////////////////////
+// GAMEPLAY
+//////////////////////////////////////////////////////////////////////////
+#include "CharacterController.h"
+#include "ScriptComponent.h"
 #include "FireStarter.h"
 #include "Health.h"
-#include "Microphone.h"
-#include "CinderEngine_UI.h"
-#include "GameEvent.h"
-#include "EventSystem.h"
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
 
-#include "Core.h"
-#include "PhysicsSystem.h"
-#include "ZInterface.h"
-#include "ScriptComponent.h"
-#include "Trees.h"
-#include "Collider2D.h"
+
 
 
 namespace Framework
@@ -51,10 +71,10 @@ namespace Framework
     ZilchBindMethod(CreateObject);
     ZilchBindMethod(DestroyAllObjects);
     ZilchBindMethod(LoadLevelAdditive);
-	ZilchBindMethodAs(ZilchLoadLevel, "LoadLevel");
-	ZilchBindMethod(FindObjectByName);
-	ZilchBindMethod(FindObjectByID);
-	ZilchBindMethod(DestroyObject);
+	  ZilchBindMethodAs(ZilchLoadLevel, "LoadLevel");
+	  ZilchBindMethod(FindObjectByName);
+	  ZilchBindMethod(FindObjectByID);
+	  ZilchBindMethod(DestroyObject);
     //ZilchBindMethod(LoadLevel);
     //ZilchBindConstructor(Transform);
     //ZilchBindMethodOverload(LoadLevel, void, Zilch::String);
@@ -114,28 +134,42 @@ namespace Framework
   */
   void ObjectSystem::RegisterComponents(void)
   {
-    RegisterComponent(Transform);
-    RegisterComponent(Sprite);
-    RegisterComponent(Camera);
-    RegisterComponent(CharacterController);
-	RegisterComponent(Health);
-    RegisterComponent(RigidBody);
-    RegisterComponent(PlayerEffect);
-    RegisterComponent(Terrain2D);
-    RegisterComponent(Terrain3D);
-    RegisterComponent(Tree2D);
-    RegisterComponent(EcoSystem);
-    RegisterComponent(FireStarter);
-    RegisterComponent(Microphone);
-    RegisterComponent(UIBox);
+    //////////////////////////////////////////////////////////////////////////
+    // PHYSICS
+    //////////////////////////////////////////////////////////////////////////
+    RegisterComponent (RigidBody);
     RegisterComponent (RigidBody2D);
     RegisterComponent (ShapeCollider2D);
     RegisterComponent (CircleCollider2D);
     RegisterComponent (PolygonCollider2D);
     //RegisterComponent (SplineCollider);
-    AddComponentCreator("SplineCollider", new ComponentCreatorType<SplineCollider>("SplineCollider"));
-    AddComponentCreator("SphereCollider", new ComponentCreatorType<CircleCollider>("SphereCollider"));
-    AddComponentCreator("BoxCollider", new ComponentCreatorType<LineCollider>("BoxCollider"));
+    AddComponentCreator ("SplineCollider", new ComponentCreatorType<SplineCollider> ("SplineCollider"));
+    AddComponentCreator ("SphereCollider", new ComponentCreatorType<CircleCollider> ("SphereCollider"));
+    AddComponentCreator ("BoxCollider", new ComponentCreatorType<LineCollider> ("BoxCollider"));
+    //////////////////////////////////////////////////////////////////////////
+    // GRAPHICS
+    //////////////////////////////////////////////////////////////////////////
+    RegisterComponent (Transform);
+    RegisterComponent (Sprite);
+    RegisterComponent (Camera);
+    RegisterComponent (PlayerEffect);
+    RegisterComponent (Terrain2D);
+    RegisterComponent (Terrain3D);
+    RegisterComponent (Tree2D);
+    RegisterComponent (EcoSystem);
+    RegisterComponent (UIBox);
+    RegisterComponent (PointLight);
+    //////////////////////////////////////////////////////////////////////////
+    // AUDIO
+    //////////////////////////////////////////////////////////////////////////
+    RegisterComponent (Microphone);
+    //////////////////////////////////////////////////////////////////////////
+    // GAMEPLAY
+    //////////////////////////////////////////////////////////////////////////
+    RegisterComponent (CharacterController);
+    RegisterComponent (Health);
+    RegisterComponent (FireStarter);
+    //////////////////////////////////////////////////////////////////////////
   }
 
   void ObjectSystem::AddComponentCreator(string name, ComponentCreator* creator)
