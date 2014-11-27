@@ -29,13 +29,14 @@ deleted.
 //////////////////////////////////////////////////////////////////////////
 // GRAPHICS
 //////////////////////////////////////////////////////////////////////////
-#include "PlayerEffect.h"
 #include "Terrain2D.h"
 #include "Terrain3D.h"
 #include "Tree2D.h"
 #include "CinderEngine_UI.h"
 #include "Trees.h"
 #include "PointLight.h"
+#include "PlayerEffect.h"
+#include "FireEffect.h"
 //////////////////////////////////////////////////////////////////////////
 // AUDIO
 //////////////////////////////////////////////////////////////////////////
@@ -152,13 +153,14 @@ namespace Framework
     RegisterComponent (Transform);
     RegisterComponent (Sprite);
     RegisterComponent (Camera);
-    RegisterComponent (PlayerEffect);
     RegisterComponent (Terrain2D);
     RegisterComponent (Terrain3D);
     RegisterComponent (Tree2D);
     RegisterComponent (EcoSystem);
     RegisterComponent (UIBox);
     RegisterComponent (PointLight);
+    RegisterComponent (PlayerEffect);
+    RegisterComponent (FireSystem);
     //////////////////////////////////////////////////////////////////////////
     // AUDIO
     //////////////////////////////////////////////////////////////////////////

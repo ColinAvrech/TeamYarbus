@@ -1,6 +1,6 @@
 /******************************************************************************/
 /*!
-\file   FountainEffect.cpp
+\file   PlayerEffect.cpp
 \author Manas Sudhir Kulkarni
 \par    Course: GAM200
 \par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
@@ -133,12 +133,10 @@ namespace Framework
     //Editor::RemoveVar (tw, "bounce");
   }
 
-  static float getmic() { return AUDIOSYSTEM->input.peaklevel[0]; }
-
   void PlayerEffect::update (double dt)
   {
-    static double time = 0.0;
-    time += dt;
+    //static double time = 0.0;
+    //time += dt;
 	//std::cout << particleEmitter->m_emitRate << "\n";
 	/*if (getmic() > 0.1f)
 	{
