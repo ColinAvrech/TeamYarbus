@@ -17,6 +17,7 @@ namespace Framework
 		ZilchBindMethodOverloadAs(Change_Shader,"ChangeShader", void, Zilch::String);
 		ZilchBindMethodOverloadAs(Change_Texture,"ChangeTexture", void, Zilch::String);
 		ZilchBindMethodAs(Change_Color, "ChangeColor");
+		ZilchBindMethod(GetColor);
 		ZilchBindMethod(GetCurrentFrame);
 		ZilchBindMethod(GetAnimationSpeed);
 		ZilchBindMethod(Initialize);
@@ -66,6 +67,7 @@ namespace Framework
 
 		value = data->FindElement(data, "Color");
 		value->GetValue(&color);
+		
 
 		animated = false;
 
@@ -86,6 +88,11 @@ namespace Framework
 		Width = Zilch::Real(texture->width / (WINDOWSYSTEM->Get_Width() - 0.5f) * 2.0f);
 		Height = Zilch::Real(texture->height / (WINDOWSYSTEM->Get_Height() - 0.5f) * 2.0f);
 
+	}
+
+	Zilch::Real4 Sprite::GetColor()
+	{
+		return Real4(Real(color.x), Real(color.y), Real(color.z), Real(color.w));
 	}
 
 

@@ -13,7 +13,7 @@ Level =
 		Transform = 
 		{
 			Vec3 Translation = [0, 0, 0],
-			Vec3 Scale = [1, 1, 1],
+			Vec3 Scale = [1.5, 1.5, 1.5],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Sprite = 
@@ -35,8 +35,8 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, 0.585, 0],
-			Vec3 Scale = [0.5, 0.5, 0.5],
+			Vec3 Translation = [0, 0.8775, 0],
+			Vec3 Scale = [0.75, 0.75, 0.75],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Sprite = 
@@ -58,8 +58,8 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, 0.3, 0],
-			Vec3 Scale = [0.5, 0.5, 0.5],
+			Vec3 Translation = [0, 0.45, 0],
+			Vec3 Scale = [0.75, 0.75, 0.75],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Sprite = 
@@ -84,8 +84,8 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, -0.1, 0],
-			Vec3 Scale = [0.5, 0.5, 0.5],
+			Vec3 Translation = [0, -0.15, 0],
+			Vec3 Scale = [0.75, 0.75, 0.75],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Sprite = 
@@ -110,8 +110,8 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, -0.5, 0],
-			Vec3 Scale = [0.5, 0.5, 0.5],
+			Vec3 Translation = [0, -0.75, 0],
+			Vec3 Scale = [0.75, 0.75, 0.75],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Sprite = 

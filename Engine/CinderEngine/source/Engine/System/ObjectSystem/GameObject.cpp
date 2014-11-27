@@ -37,7 +37,7 @@ namespace Framework
 
     ZilchBindFieldGet(Transform);
     ZilchBindFieldGet(Sprite);
-	  //ZilchBindFieldGet(Name);
+	  ZilchBindMethod(GetName);
 	  ZilchBindMethodOverloadAs(ZGetComponent, "GetComponent", Component*, Zilch::String);
     
 	//ZilchBindFieldGetSet(ShapeCollider);
@@ -63,7 +63,12 @@ namespace Framework
       delete comp.second;
     }
   }
+	
 
+  Zilch::String GameObject::GetName()
+  {
+	  return String(Name.c_str());
+  }
   // Zilch method for adding components to GameObjects
   Component* GameObject::ZAddComponent(Zilch::String name)
   {
