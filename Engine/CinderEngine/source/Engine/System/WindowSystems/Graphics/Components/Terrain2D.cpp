@@ -123,6 +123,7 @@ namespace Framework
     Procedural::TerrainCreator& t = *tc;
     float* Map = t.GetRockMap ();
     float* W_Map = t.GetWaterMap();
+    float peak = t.GetPeakHeight () / t.Get_Width();
 
     {
       float offsetX = -1.0f;
@@ -131,32 +132,7 @@ namespace Framework
       float nY = 2.f / (t.Get_Width () - 1);
       float previousHeight = -1.f;
 
-      for (int i = 0; i < t.Get_Width (); ++i)
-      {
-        /*height_points.push_back ({ offsetX, offsetY });
-        offsetY = -1.0f;
-        break;*/
-        if (previousHeight != offsetY || i == t.Get_Width () - 1)
-        {
-          heights.push_back ({ offsetY });
-          previousHeight = offsetY;
-        }
-
-        offsetY = (Map [i] * nY) / 2.0f;
-        if (offsetY < 0)
-          offsetY = 0.0f;
-        offsetX += 4 * nX;
-      }
-    }
-
-    float peak = *std::max_element (heights.begin (), heights.end ());
-
-    {
-      float offsetX = -1.0f;
-      float offsetY = -1.0f;
-      float nX = 2.f / (t.Get_Width () - 1);
-      float nY = 2.f / (t.Get_Width () - 1);
-      float previousHeight = -1.f;
+      bool endcreated = false;
 
       for (int i = 0; i < t.Get_Width (); ++i)
       {
@@ -172,6 +148,14 @@ namespace Framework
         offsetY = (Map [i] * nY) / 2.0f;
         if (offsetY < 0)
           offsetY = 0.0f;
+
+        if(offsetX > 0.95 && !endcreated)
+        {
+          //TODO: Create end object
+          endcreated = true;
+        }
+
+
         offsetX += 4 * nX;
       }
     }

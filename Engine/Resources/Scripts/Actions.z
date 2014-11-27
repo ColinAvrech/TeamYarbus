@@ -1,0 +1,104 @@
+class Actions
+{
+    //Private Variables
+    var StartVal:any = null; 
+    var CurrentVal:any = null;
+    var EndVal:any = null;
+    var Time:Real = 0;
+    var TimePassed:Real = 0;
+    var Curve:SampleCurve = null;
+    
+    
+    //Templates for each data type
+    //Real
+    constructor(startval:Property[Real], endval:Real, time:Real, ease:Ease)
+    {
+        this.SetValues(startval.Get() as any, startval as any, endval as any, time, ease);
+        this.Update = this.UpdateReal;
+    }
+    //Integer
+	/*
+    constructor(startval:Property[Integer], endval:Integer, time:Real, ease:Ease)
+    {
+        this.SetValues(startval.Get() as Real as any, startval as any, endval as Real as any, time, ease);
+        this.Update = this.UpdateInt;
+    }
+    //Boolean
+    constructor(startval:Property[Boolean], endval:Boolean, time:Real, ease:Ease)
+    {
+        this.SetValues(startval.Get() as Real as any, startval as any, endval as Real as any, time, ease);
+        this.Update = this.UpdateBool;
+    }
+    */
+    //Public Variables
+    var Update:delegate(dt:Real) = null;
+    
+    var Active:Boolean = false;
+    
+    var Completed:Boolean = false;
+    
+    var Started:Boolean = false;
+    
+    function Start()
+    {
+        if (this.Completed)
+        {
+            return;
+        }
+        this.Active = true;
+        this.Started = true;
+        
+    }
+    
+    function Stop()
+    {
+        this.Active = false;
+    }
+    
+    function SetValues(startval:any, currentval:any, endval:any, time:Real, ease:Ease)
+    {
+        this.StartVal = startval;
+        this.CurrentVal = currentval;
+        this.EndVal = endval;
+        this.Time = time;
+        this.Curve = new SampleCurve(ease);
+        this.Start();
+    }
+    
+    function UpdateReal(dt:Real)
+    {
+        
+        if (!this.Active)
+        {
+            return;
+        }
+        var prop = this.CurrentVal as Property[Real];
+        var currentval:Real = prop.Get();
+        var timenormal = this.TimePassed/this.Time;
+        
+        
+        var newval = this.Curve.Sample(this.TimePassed, this.StartVal, this.EndVal, this.Time);
+        
+        //Console.WriteLine(this.TimePassed);
+        
+        
+        this.TimePassed += dt;
+        
+        
+        if (newval < this.EndVal)
+        {
+            prop.Set(newval);
+        }
+        
+        if (this.TimePassed >= this.Time)
+        {
+            this.Completed = true;
+            this.Active = false;
+            this.TimePassed = this.Time;
+            prop.Set(this.EndVal);
+        }
+        
+    }
+	
+
+}

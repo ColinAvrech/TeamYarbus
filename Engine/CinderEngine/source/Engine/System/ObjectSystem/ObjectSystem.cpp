@@ -11,6 +11,7 @@ deleted.
 /******************************************************************************/
 
 #include "ObjectSystem.h"
+#include "BaseSystem.h"
 #include "IncludeForAllCollision.h"
 #include "CharacterController.h"
 #include "PlayerEffect.h"
@@ -18,6 +19,7 @@ deleted.
 #include "Terrain3D.h"
 #include "Tree2D.h"
 #include "FireStarter.h"
+#include "Health.h"
 #include "Microphone.h"
 #include "CinderEngine_UI.h"
 #include "GameEvent.h"
@@ -37,8 +39,11 @@ namespace Framework
   ObjectSystem * OBJECTSYSTEM = NULL;
   //!Set first object's id to zero
   unsigned ObjectSystem::LastGameObjectId = 0;
-  string ObjectSystem::LoadedLevel;
+  int ObjectSystem::currentLevel = 0;
+	ZilchDefineType(BaseSystem, CinderZilch)
+	{
 
+	}
   ZilchDefineType(ObjectSystem, CinderZilch)
   {
     type->HandleManager = ZilchManagerId(Zilch::PointerManager);
@@ -46,7 +51,9 @@ namespace Framework
     ZilchBindMethod(CreateObject);
     ZilchBindMethod(DestroyAllObjects);
     ZilchBindMethod(LoadLevelAdditive);
-    ZilchBindMethod(ZilchLoadLevel);
+		ZilchBindMethodAs(ZilchLoadLevel, "LoadLevel");
+		ZilchBindMethod(FindObjectByName);
+		ZilchBindMethod(FindObjectByID);
     //ZilchBindMethod(LoadLevel);
     //ZilchBindConstructor(Transform);
     //ZilchBindMethodOverload(LoadLevel, void, Zilch::String);
@@ -70,6 +77,12 @@ namespace Framework
     {
       DestroyAllObjects();
     }
+
+    for (auto level : levelList)
+    {
+      delete level;
+    }
+    levelList.clear();
   }
 
 
@@ -95,11 +108,6 @@ namespace Framework
     return obj;
   }
 
-  GameObject* ObjectSystem::FindObjectByName(Zilch::String obj)
-  {
-    return nullptr;
-  }
-
   /*
   Called When the ObjectSystem is created
   */
@@ -109,6 +117,7 @@ namespace Framework
     RegisterComponent(Sprite);
     RegisterComponent(Camera);
     RegisterComponent(CharacterController);
+	RegisterComponent(Health);
     RegisterComponent(RigidBody);
     RegisterComponent(PlayerEffect);
     RegisterComponent(Terrain2D);
@@ -153,23 +162,99 @@ namespace Framework
 
   }
 
-  void ObjectSystem::LoadLevel(string level)
+  void ObjectSystem::LoadAllLevels(const string& p_levellist)
+  {
+    Level* defaultLevel = new Level();
+    defaultLevel->SetName("Default");
+    defaultLevel->SetFile("ZilchTests");
+
+    std::cout << CinderConsole::cyan << "--------------------------------\nLoading Textures...\n" << CinderConsole::gray;
+
+    std::ifstream levelFile(p_levellist);
+
+    if (!levelFile.good())
+    {
+      std::cout << CinderConsole::red << "Failed to Load Levels...\n" << CinderConsole::gray;
+      return;
+    }
+    else
+    {
+      string str;
+      Level* newLevel;
+      while (!levelFile.eof())
+      {
+        levelFile >> str;
+        newLevel = new Level(str.c_str());
+        levelList.push_back(newLevel);
+        std::cout << CinderConsole::green << str << std::endl << CinderConsole::gray;
+      }
+    }
+    std::cout << CinderConsole::cyan << "--------------------------------\n" << CinderConsole::gray;
+
+    if (levelList.size() == 0)
+    {
+      levelList.push_back(defaultLevel);
+    }
+  }
+
+  void ObjectSystem::LoadLevel(const string &levelName, const string &fn_level)
   {
     DestroyAllObjects();
 
-    Serializer::ZeroSerializer data;
+    bool levelExists = false;
+    for (auto level : levelList)
+    {
+      if (level->GetName() == levelName)
+      {
+        levelExists = true;
+      }
+    }
 
-    data.open(level.c_str());
-    data.CreateArchive();
-    Serializer::DataNode* Trunk = data.GetTrunk();
-    SerializeObject(Trunk);
+    if (!levelExists)
+    {
+      Level* newLevel = new Level(levelName, fn_level);
+      Serializer::DataNode* Trunk = newLevel->GetData()->GetTrunk();
+      SerializeObject(Trunk);
+      levelList.push_back(newLevel);
+    }
+  }
+
+  void ObjectSystem::StartLevel()
+  {
+    DestroyAllObjects();
     GameEvent e;
     EVENTSYSTEM->TriggerEvent(Events::GAME_ALLOBJECTSINITIALIZED, e);
     //InitializeObject ();
-    LoadedLevel = level;
     EVENTSYSTEM->TriggerEvent(Events::GAME_LEVELSTARTED, e);
   }
 
+  void ObjectSystem::ChangeLevel(const int& iNewLevel)
+  {
+    currentLevel = iNewLevel;
+    StartLevel();
+  }
+
+	GameObject* ObjectSystem::FindObjectByName(Zilch::String name)
+	{
+		for each (auto i in GameObjects)
+		{
+			if (name == Zilch::String(i.second->Name.c_str()))
+			{
+				return i.second;
+			}
+		}
+
+		return NULL;
+
+		//return Zilch::Array<GameObject*>();
+	}
+
+	GameObject* ObjectSystem::FindObjectByID(Zilch::Integer id)
+	{
+		return GameObjects[unsigned(id)];
+
+		//return Zilch::Array<GameObject*>();
+	}
 
   void ObjectSystem::FindAllObjectsByName(Zilch::String name)
   {
@@ -178,10 +263,8 @@ namespace Framework
 
   void ObjectSystem::RestartLevel()
   {
-    //if (LoadedLevel != "")
-    //{
-    //  LoadLevel (LoadedLevel);
-    //}
+    DestroyAllObjects();
+    StartLevel();
   }
 
   void ObjectSystem::ZilchLoadLevel(Zilch::String level)
@@ -222,7 +305,7 @@ namespace Framework
     go->Name = data->objectName;
     GameObjects[go->GameObjectID] = go;
     */
-
+	std::cout << "SERIALIZING" << std::endl;
     //Create and Serilize Objects
     while (it)
     {
@@ -231,6 +314,7 @@ namespace Framework
       {
         GameObject* newobj = new GameObject(it->branch->branch->value_.UInt_);
         newobj->Name = *it->branch->next->branch->value_.String_;
+				
         GameObjects[newobj->GameObjectID] = newobj;
         auto ct = it->branch->next->next;
         while (ct)
@@ -239,13 +323,12 @@ namespace Framework
           if (newcomp)
           {
             newcomp->gameObject = newobj;
-
+			std::cout << newobj->Name << std::endl;
             newcomp->Serialize(ct->branch);
             newcomp->Initialize(); //Set pointer to GameObject, Setup Component
           }
           else
           {
-            newcomp = newobj->AddZilchComponent(ct->objectName);
             ZilchComponent* zilchComp = newobj->AddZilchComponent(ct->objectName);
             newcomp = zilchComp;
             newcomp->gameObject = newobj;

@@ -12,6 +12,7 @@
 #include "GameObject.h"
 #include "WindowSystem.h"
 #include "Pipeline.h"
+#include "Collider2D.h"
 
 
 using namespace Zilch;
@@ -116,11 +117,13 @@ namespace Framework
   void Transform::ZSetTranslation(Zilch::Real3 newpos)
   {
 	  position = vec3(newpos.x, newpos.y, newpos.z);
+	  matricesReady = false;
   }
 
   void Transform::ZSetScale(Zilch::Real3 newscale)
   {
 	  scale = vec3(newscale.x, newscale.y, newscale.z);
+	  matricesReady = false;
   }
 
   void Transform::Translate (float x, float y, float z)
@@ -146,6 +149,11 @@ namespace Framework
   void Transform::Scale (float v)
   {
     scale = vec3 (v);
+
+    if (gameObject->RigidBody2D != nullptr)
+    {
+      gameObject->RigidBody2D->shape->radius = std::abs (scale.x);
+    }
     matricesReady = false;
   }
 
@@ -182,6 +190,16 @@ namespace Framework
     glm::mat4 mvp = (modelViewProjectionMatrix / modelMatrix) * matrix;
 
     return glm::vec2 (mvp [3][0] / mvp [3][3], mvp [3][1] / mvp [3][3]);
+
+	  //glm::vec3 screenPos = glm::project
+		 // (
+		 // glm::vec3(v, 0.0f),
+		 // Camera::GetWorldToViewMatrix() * modelMatrix,
+		 // Camera::GetViewToProjectionMatrix(),
+		 // glm::vec4(0, 0, WINDOWSYSTEM->Get_Width(), WINDOWSYSTEM->Get_Height())
+		 // );
+
+	  //return glm::vec2(screenPos);
   }
 
   Zilch::Real2 Transform::ZGetScreenPosition(Zilch::Real2 pos)

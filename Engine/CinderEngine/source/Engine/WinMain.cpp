@@ -109,7 +109,7 @@ int main (void)
   audio->LoadMicData ();
 
   //! activate the window.
-  OBJECTSYSTEM->LoadLevel("NewPhysics");
+  OBJECTSYSTEM->LoadAllLevels("MasterLevelFile.txt");
 
   // Connect example
   //MyClass _myclass;

@@ -17,6 +17,7 @@ namespace Framework
 	  shape->rigidBody = this;
 	  position.Set( (float)x, (float)y );
 	  velocity.Set( 0, 0 );
+	  maxVelocity.Set(10, 10);
 	  angularVelocity = 0;
 	  torque = 0;
 	  orient = MyRandom( -PI, PI );
@@ -56,7 +57,7 @@ namespace Framework
     if (force.y < 0.1f)
       force += f;
 
-    std::cout << force.y << "\n";
+    //std::cout << force.y << "\n";
   }
 
 }

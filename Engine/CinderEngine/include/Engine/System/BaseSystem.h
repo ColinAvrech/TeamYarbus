@@ -25,18 +25,24 @@ namespace Framework
   class BaseSystem
   {
   public:
+	ZilchDeclareBaseType(BaseSystem, Zilch::TypeCopyMode::ReferenceType);
 
     //!All systems are updated every frame.
     virtual void Update(const double& dt) = 0;
+
+    virtual bool UpdatesOnPaused() { return m_ShouldUpdateOnPaused; }
 
     //!All systems need a name.
     virtual const string GetName() = 0;
 
     //!Initialize the system.
-    virtual bool Initialize(){ return false; };
+    virtual bool Initialize(){ return false; }
 
     //!All systems need a virtual destrutor to have their distructor Called
     virtual ~BaseSystem(){}
+
+  private:
+    bool m_ShouldUpdateOnPaused = true;
 
 #ifdef _DEBUG
   private:

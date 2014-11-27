@@ -260,7 +260,9 @@ namespace Framework
     {
       i->UpdateMatrices ();
     }
-    camera->UpdateCamera (this);
+
+    if (camera)
+      camera->UpdateCamera (this);
 
     Draw_Quad ();
 
@@ -279,7 +281,7 @@ namespace Framework
     PHYSICS->Render ();
 #endif
 
-    //PHYSICS->Render ();
+    PHYSICS->Render ();
   }
 
   void Pipeline::UpdateMatrices ()

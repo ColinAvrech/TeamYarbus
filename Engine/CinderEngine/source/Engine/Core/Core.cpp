@@ -26,6 +26,7 @@ namespace Framework
   {
     CORE = this;
     GameActive = true;
+    GamePaused = false;
   }
 
   CoreEngine::~CoreEngine()
@@ -49,7 +50,9 @@ namespace Framework
       
     for (unsigned i = 0; i < Systems.size(); ++i)
     {
-      Systems[i]->Update(_dt);
+      if (!GamePaused || GamePaused && Systems[i]->UpdatesOnPaused())
+        Systems[i]->Update(_dt);
+
     }
 
       //!FPS limiter, FPS define can be found in Core.h

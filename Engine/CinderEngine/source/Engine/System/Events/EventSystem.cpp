@@ -21,6 +21,7 @@
 #include "ZilchCompiledLib.h"
 #include "Zilch.hpp"
 
+#include "InputManager.h"
 #include "Delegates.h"
 
 namespace Framework
@@ -161,6 +162,7 @@ namespace Framework
     TriggerEvent(Events::UPDATEEVENT, updateEvent);
     TriggerEvent("UpdateEvent", updateEvent);
 
+	InputManager::Update();
   }
 
 }

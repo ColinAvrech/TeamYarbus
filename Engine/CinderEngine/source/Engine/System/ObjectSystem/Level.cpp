@@ -1,0 +1,40 @@
+#include "Level.h"
+
+namespace Framework
+{
+  Level::Level(const string& newname, const string& newfile)
+  {
+    if (name != "")
+    {
+      SetName(newname);
+    }
+    if (newfile != "")
+    {
+      SetFile(newfile);
+    }
+  }
+
+  string Level::GetName() const
+  {
+    return name;
+  }
+
+  void Level::SetName(const string& newname)
+  {
+    name = newname;
+  }
+
+  void Level::SetFile(const string& filename)
+  {
+    fn_level = filename;
+    data.open(fn_level.c_str());
+    data.CreateArchive();
+  }
+
+  Serializer::ZeroSerializer* Level::GetData()
+  {
+    return &data;
+  }
+}
+
+

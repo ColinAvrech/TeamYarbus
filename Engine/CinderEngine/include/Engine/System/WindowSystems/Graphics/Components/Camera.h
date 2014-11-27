@@ -23,6 +23,7 @@ namespace Framework
   class Camera : public Component
   {
   public:
+	ZilchDeclareDerivedType(Camera, Component);
     Camera () : up (0, 1, 0) {}
     Camera (GameObject* go);
     virtual ~Camera ();
@@ -38,6 +39,7 @@ namespace Framework
 
     glm::mat4 WorldToViewMatrix ();
     glm::mat4 ViewToProjectionMatrix ();
+	
 
     static glm::mat4 GetWorldToViewMatrix ();
     static glm::mat4 GetViewToProjectionMatrix ();
@@ -52,9 +54,9 @@ namespace Framework
     //////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////
     // ZILCH FUNCTIONS
-    static Zilch::Real2 GetCameraMousePosition ();
+	static Zilch::Real2 ZGetWorldMousePosition();
     //////////////////////////////////////////////////////////////////////////
-
+	float aspect;
     // The non-base component usees DefineComponentName macro to name component
     const static string Name;
   private:
@@ -70,7 +72,7 @@ namespace Framework
     bool mainCamera;
     float fov;
     float size;
-    float aspect;
+    //ApectMovedUp
     float nearPlane;
     float farPlane;
 

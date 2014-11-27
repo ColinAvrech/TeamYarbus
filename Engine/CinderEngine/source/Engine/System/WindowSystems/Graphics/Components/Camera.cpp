@@ -19,6 +19,15 @@
 
 namespace Framework
 {
+
+	ZilchDefineType(Camera, CinderZilch)
+	{
+		type->HandleManager = ZilchManagerId(Zilch::PointerManager);
+		ZilchBindStaticMethodAs(ZGetWorldMousePosition, "GetWorldMousePosition");
+		ZilchBindStaticFieldGetAs(main, "Main");
+		ZilchBindFieldGetAs(aspect, "Aspect");
+		//ZilchBindStaticMethodAs(ZGetCameraMousePosition, "GetCameraMousePosition");
+	}
   DefineComponentName(Camera);
 
   std::list<Camera*> Camera::allCameras;
@@ -237,22 +246,19 @@ namespace Framework
       );
   }
 
-  Zilch::Real2 Camera::GetCameraMousePosition ()
+  Zilch::Real2 Camera::ZGetWorldMousePosition()
   {
-    glm::vec2 ndc = { (WINDOWSYSTEM->Get_Mouse_Position ().x / WINDOWSYSTEM->Get_Width () - 0.5f) * 2.0f,
-      ((WINDOWSYSTEM->Get_Height () - WINDOWSYSTEM->Get_Mouse_Position ().y) / WINDOWSYSTEM->Get_Height () - 0.5f) * 2.0f };
-    
-    //
-    /*
-    destPosX = (float) (cursorX / (windowWidth) -0.5f) * 2.0f;
-    destPosY = (float) ((windowHeight - cursorY) / windowHeight - 0.5f) * 2.0f;
-    */
-    //
+	  glm::vec2 ndc = Camera::GetWorldMousePosition();
 
-    return Zilch::Real2
-      (
-      ndc.x * Camera::main->size, ndc.y * Camera::main->size / Camera::main->aspect
-      );
+	  //
+	  /*
+	  destPosX = (float) (cursorX / (windowWidth) -0.5f) * 2.0f;
+	  destPosY = (float) ((windowHeight - cursorY) / windowHeight - 0.5f) * 2.0f;
+	  */
+	  //
+	  return Zilch::Real2(Zilch::Real(ndc.x), Zilch::Real(ndc.y));
+		  
   }
+
 
 }
