@@ -112,41 +112,41 @@ namespace Framework
     //b->dynamicFriction = 0.0f;
     //b->staticFriction = 0.0f;
 
-    GLfloat vertices [] =
-    {
-      -1.0f, 1.0f, 0.0f, 1.0f,
-        1.0f, 1.0f, 1.0f, 1.0f,
-        1.0f, -1.0f, 1.0f, 0.0f,
+    //GLfloat vertices [] =
+    //{
+    //  -1.0f, 1.0f, 0.0f, 1.0f,
+    //    1.0f, 1.0f, 1.0f, 1.0f,
+    //    1.0f, -1.0f, 1.0f, 0.0f,
 
-        1.0f, -1.0f, 1.0f, 0.0f,
-        -1.0f, -1.0f, 0.0f, 0.0f,
-        -1.0f, 1.0f, 0.0f, 1.0f
-    };
+    //    1.0f, -1.0f, 1.0f, 0.0f,
+    //    -1.0f, -1.0f, 0.0f, 0.0f,
+    //    -1.0f, 1.0f, 0.0f, 1.0f
+    //};
 
-    sceneShader = Resources::RS->Get_Shader ("PointLight");
+    //sceneShader = Resources::RS->Get_Shader ("PointLight");
 
-    vao = new VAO ();
-    vbo = new VBO (sizeof(vertices), vertices);
+    //vao = new VAO ();
+    //vbo = new VBO (sizeof(vertices), vertices);
 
-    sceneShader->Use ();
-    GLint posAttrib = sceneShader->attribLocation ("position");
-    sceneShader->enableVertexAttribArray (posAttrib);
-    sceneShader->vertexAttribPtr (posAttrib, 2, GL_FLOAT, GL_FALSE, 4 * sizeof GLfloat, 0);
-    GLint texAttrib = sceneShader->attribLocation ("texcoord");
-    sceneShader->enableVertexAttribArray (texAttrib);
-    sceneShader->vertexAttribPtr (texAttrib, 2, GL_FLOAT, GL_FALSE, 4 * sizeof GLfloat, 2 * sizeof GLfloat);
-    sceneShader->Disable ();
-    vao->unbindVAO ();
+    //sceneShader->Use ();
+    //GLint posAttrib = sceneShader->attribLocation ("position");
+    //sceneShader->enableVertexAttribArray (posAttrib);
+    //sceneShader->vertexAttribPtr (posAttrib, 2, GL_FLOAT, GL_FALSE, 4 * sizeof GLfloat, 0);
+    //GLint texAttrib = sceneShader->attribLocation ("texcoord");
+    //sceneShader->enableVertexAttribArray (texAttrib);
+    //sceneShader->vertexAttribPtr (texAttrib, 2, GL_FLOAT, GL_FALSE, 4 * sizeof GLfloat, 2 * sizeof GLfloat);
+    //sceneShader->Disable ();
+    //vao->unbindVAO ();
 
-    fbo = new FBO ();
-    glGenTextures (1, &renderTexture);
-    glBindTexture (GL_TEXTURE_2D, renderTexture);
-    glTexImage2D (GL_TEXTURE_2D, 0, GL_RGB, WINDOWSYSTEM->Get_Width(), WINDOWSYSTEM->Get_Height(), 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
-    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glFramebufferTexture2D (GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderTexture, 0);
-    glBindTexture (GL_TEXTURE_2D, 0);
-    fbo->unBind ();
+    //fbo = new FBO ();
+    //glGenTextures (1, &renderTexture);
+    //glBindTexture (GL_TEXTURE_2D, renderTexture);
+    //glTexImage2D (GL_TEXTURE_2D, 0, GL_RGB, WINDOWSYSTEM->Get_Width(), WINDOWSYSTEM->Get_Height(), 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
+    //glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    //glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    //glFramebufferTexture2D (GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderTexture, 0);
+    //glBindTexture (GL_TEXTURE_2D, 0);
+    //fbo->unBind ();
   }
 
   Pipeline::~Pipeline ()
@@ -296,9 +296,9 @@ namespace Framework
 
   void Pipeline::Update ()
   {
-    glBindTexture (GL_TEXTURE_2D, renderTexture);
-    glTexImage2D (GL_TEXTURE_2D, 0, GL_RGB, WINDOWSYSTEM->Get_Width (), WINDOWSYSTEM->Get_Height (), 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
-    fbo->bind ();
+    //glBindTexture (GL_TEXTURE_2D, renderTexture);
+    //glTexImage2D (GL_TEXTURE_2D, 0, GL_RGB, WINDOWSYSTEM->Get_Width (), WINDOWSYSTEM->Get_Height (), 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
+    //fbo->bind ();
 
 //    Interpolate_Background ();
 //
@@ -332,23 +332,23 @@ namespace Framework
       i->UIDraw ();
     }
 
-    sFactor = GL_ONE;
-    dFactor = GL_ONE;
-    glBlendFunc (sFactor, dFactor);
+    //sFactor = GL_ONE;
+    //dFactor = GL_ONE;
+    //glBlendFunc (sFactor, dFactor);
 
-    vao->bindVAO ();
-    fbo->unBind ();
-    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    sceneShader->Use ();
-    glBindTexture (GL_TEXTURE_2D, renderTexture);
+    //vao->bindVAO ();
+    //fbo->unBind ();
+    //glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    //sceneShader->Use ();
+    //glBindTexture (GL_TEXTURE_2D, renderTexture);
 
-    for (auto& it : pointLights)
-    {
-      it->Draw ();
-      glDrawArrays (GL_TRIANGLES, 0, 6);
-    }
-    sceneShader->Disable ();
-    glBindTexture (GL_TEXTURE_2D, 0);
+    //for (auto& it : pointLights)
+    //{
+    //  it->Draw ();
+    //  glDrawArrays (GL_TRIANGLES, 0, 6);
+    //}
+    //sceneShader->Disable ();
+    //glBindTexture (GL_TEXTURE_2D, 0);
 
 #ifdef _DEBUG
     //PHYSICS->Render ();
