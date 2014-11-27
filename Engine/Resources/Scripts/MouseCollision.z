@@ -62,12 +62,12 @@ class MouseDetector
 		var position = transform.GetTranslation();
 		this.Rect.X = position.X + this.Offset.X;
 		this.Rect.Y = position.Y + this.Offset.Y;
-		
+		/*
 		this.Dot1 = new Dot();
 		this.Dot2 = new Dot();
 		this.Dot3 = new Dot();
 		this.Dot4 = new Dot();
-		
+		*/
 		EventSystem.Connect(Events.UpdateEvent, this.LogicUpdate);
 	}
 
@@ -81,12 +81,12 @@ class MouseDetector
 		var mousePos = Cinder.MouseToWorldZPlane();
 		
 		var collision = this.Rect.Contains(mousePos);
-		
+		/*
 		this.Dot1.Object.Transform.SetTranslation(Real3(this.Rect.TopLeft().X,this.Rect.TopLeft().Y,0));
 		this.Dot2.Object.Transform.SetTranslation(Real3(this.Rect.TopRight().X,this.Rect.TopRight().Y,0));
 		this.Dot3.Object.Transform.SetTranslation(Real3(this.Rect.BottomLeft().X,this.Rect.BottomLeft().Y,0));
 		this.Dot4.Object.Transform.SetTranslation(Real3(this.Rect.BottomRight().X,this.Rect.BottomRight().Y,0));
-		
+		*/
 		
 		this.CollidingThis = collision;
 		

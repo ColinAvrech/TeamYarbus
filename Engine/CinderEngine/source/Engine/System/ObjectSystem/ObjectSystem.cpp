@@ -51,9 +51,10 @@ namespace Framework
     ZilchBindMethod(CreateObject);
     ZilchBindMethod(DestroyAllObjects);
     ZilchBindMethod(LoadLevelAdditive);
-		ZilchBindMethodAs(ZilchLoadLevel, "LoadLevel");
-		ZilchBindMethod(FindObjectByName);
-		ZilchBindMethod(FindObjectByID);
+	ZilchBindMethodAs(ZilchLoadLevel, "LoadLevel");
+	ZilchBindMethod(FindObjectByName);
+	ZilchBindMethod(FindObjectByID);
+	ZilchBindMethod(DestroyObject);
     //ZilchBindMethod(LoadLevel);
     //ZilchBindConstructor(Transform);
     //ZilchBindMethodOverload(LoadLevel, void, Zilch::String);
@@ -142,6 +143,8 @@ namespace Framework
     SerialMap[name] = creator;
   }
 
+  
+
   void ObjectSystem::DestroyAllObjects()
   {
     for each(auto obj in GameObjects)
@@ -156,9 +159,10 @@ namespace Framework
   {
     for each(auto obj in GameObjectsToBeDestroyed)
     {
-      delete obj;
+	  delete obj;
       obj = NULL;
     }
+	
 
   }
 
@@ -166,7 +170,7 @@ namespace Framework
   {
     Level* defaultLevel = new Level();
     defaultLevel->SetName("Default");
-    defaultLevel->SetFile("ZilchTests");
+    defaultLevel->SetFile("ZilchTestLevel");
 
     std::cout << CinderConsole::cyan << "--------------------------------\nLoading Textures...\n" << CinderConsole::gray;
 
@@ -195,6 +199,8 @@ namespace Framework
     {
       levelList.push_back(defaultLevel);
     }
+
+	
   }
 
   void ObjectSystem::LoadLevel(const string &levelName, const string &fn_level)
@@ -221,7 +227,7 @@ namespace Framework
 
   void ObjectSystem::StartLevel()
   {
-    DestroyAllObjects();
+    //DestroyAllObjects();
     GameEvent e;
     EVENTSYSTEM->TriggerEvent(Events::GAME_ALLOBJECTSINITIALIZED, e);
     //InitializeObject ();
@@ -348,7 +354,7 @@ namespace Framework
 
             
             scripts.push_back(std::pair<ZilchComponent*, Serializer::DynamicElement*>(zilchComp, ct->branch));
-            newcomp->Initialize();
+            //newcomp->Initialize();
           }
           objectlist.append(newobj);
           ct = ct->next;
@@ -364,7 +370,7 @@ namespace Framework
     for each (auto i in scripts)
     {
       //i.first->InitializeAndSerialize(i.second);
-      //i.first->Initialize();
+      i.first->Initialize();
     }
 
     //return objectlist;
@@ -385,6 +391,22 @@ namespace Framework
       i.second->Transform->Initialize();
       i.second->Sprite->Initialize();
     }
+  }
+
+  void ObjectSystem::DestroyObject(GameObject* obj )
+  {
+	  /*
+	  for each(auto object in GameObjects)
+	  {
+		  if (object.second == obj)
+		  {
+			  delete object.second;
+			  object.second = NULL;
+		  }
+	  }*/
+	  //GameObjectsToBeDestroyed.push_back(obj);
+
+
   }
 
 }

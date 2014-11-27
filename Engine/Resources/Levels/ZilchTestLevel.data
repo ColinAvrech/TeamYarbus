@@ -85,12 +85,6 @@ Level =
 			Vec3 Scale = [1, 1, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
-		Sprite = 
-		{
-			string SpriteSource = "Default",
-			string Shader = "Default",
-			Vec4 Color = [1, 1,	1, 1],
-		},
 		Josh = 
 		{
 		},

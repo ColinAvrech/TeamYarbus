@@ -109,7 +109,9 @@ int main (void)
   audio->LoadMicData ();
 
   //! activate the window.
-  OBJECTSYSTEM->LoadAllLevels("MasterLevelFile.txt");
+  //Currently broken;
+  //OBJECTSYSTEM->LoadAllLevels("..//..//Resources//Levels//MasterLevelFile.txt");
+  OBJECTSYSTEM->ZilchLoadLevel(Zilch::String("ZilchTestLevel"));
 
   // Connect example
   //MyClass _myclass;

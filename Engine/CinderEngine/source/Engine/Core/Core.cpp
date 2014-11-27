@@ -21,7 +21,10 @@ namespace Framework
 {
   //! Global pointer to the Engine Core
   CoreEngine* CORE;
-
+  ZilchDefineType(CoreEngine, CinderZilch)
+  {
+	  ZilchBindMethod(QuitGame);
+  }
   CoreEngine::CoreEngine()
   {
     CORE = this;

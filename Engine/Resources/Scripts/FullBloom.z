@@ -25,9 +25,9 @@ class Josh : Component
 	Console.WriteLine(ZInterface.WindowSystem);
 	ZInterface.ObjectSystem.LoadLevelAdditive("MainMenu");
 	Console.WriteLine(ZInterface.ObjectSystem);
-	this.Detector = new MouseDetector(this.Owner, this.OnMouseEvent);
-	this.Detector.Rect.Width = 6.15839389087326;
-	this.Detector.Rect.Height = 6.15839389087326;
+	//this.Detector = new MouseDetector(this.Owner, this.OnMouseEvent);
+	//this.Detector.Rect.Width = 6.15839389087326;
+	//this.Detector.Rect.Height = 6.15839389087326;
 	
 	
 	//Cinder.Connect(this, Events.UpdateEvent, this.LogicUpdate);
@@ -37,7 +37,7 @@ class Josh : Component
 	//Console.Writeline(obj);
 	//Console.WriteLine(new Player());
 	//Console.WriteLine(this.Owner);
-	EventSystem.Connect(Events.UpdateEvent, this.LogicUpdate);
+	//EventSystem.Connect(Events.UpdateEvent, this.LogicUpdate);
 	//Console.WriteLine(this);
 	//Console.WriteLine("hello");
 	//var gameobject = this.ObjectSys.CreateObject();
