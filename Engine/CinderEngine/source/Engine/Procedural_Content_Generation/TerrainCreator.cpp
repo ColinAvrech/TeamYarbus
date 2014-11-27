@@ -84,7 +84,6 @@ namespace Framework
       AddRock();
       AddSoil();
       AddWater();
-      AddLife();
     }
 
     void TerrainCreator::AddSoil()
@@ -101,21 +100,146 @@ namespace Framework
     {
       if (WaterDepth > 0)
       {
-        GenerateHeightMap(&HeightMapWater, 0, 1);
+        GenerateHeightMap(&HeightMapWater, 0, WaterDepth);
         SettleWater();
       }
     }
 
     void TerrainCreator::SettleWater()
     {
-      int MaxHeight = BaseHeight + PeakHeight;
+      float * Res_Water_Map = new float[MapWidth];
+      for (unsigned i = 0; i < MapWidth; ++i)
+        Res_Water_Map[i] = 0.0f;
+      //Iterate through water map and drop water into terrain
+      for (int i = 0; i < MapWidth; ++i)
+      {
+        //drop whole units of water into terrain and settle them at
+        //the lowest possible point.
+        for (; HeightMapWater[i] >= 1.f;)
+        {
+          Make_Rain(Res_Water_Map, i);
+        }
+      }
+      for (unsigned i = 0; i < MapWidth; ++i)
+        Res_Water_Map[i] += HeightMapWater[i];
 
+      delete[] HeightMapWater;
+      HeightMapWater = Res_Water_Map;
     }
 
-    void TerrainCreator::AddLife()
+    void TerrainCreator::FlowLeft(float *&map, unsigned int start_pos)
     {
-
+      unsigned int it = start_pos;
+      for (; map[it] == 0.0f; --it)
+      {
+        if (it == 0)
+          return;
+        if (it > 0 && HeightMapRock[it - 1] + map[it - 1] >= HeightMapRock[it])
+          break;
+      }
+      int spread;
+      unsigned l_pos;
+      std::make_pair(spread, l_pos) = EvaluateSpread(map, it);
+      for (unsigned i = l_pos; i <= l_pos + spread; ++i)
+        map[i] += 1.f / spread;
     }
 
+    void TerrainCreator::FlowRight(float *&map, unsigned int start_pos)
+    {
+      unsigned int it = start_pos;
+      for (; map[it] == 0.0f; ++it)
+      {
+        if (it == MapWidth - 1)
+          return;
+        if (it < MapWidth - 1 && HeightMapRock[it + 1] + map[it + 1] >= HeightMapRock[it])
+          break;
+      }
+
+      std::pair<int, unsigned> res = EvaluateSpread(map, it);
+      for (unsigned i = res.second; i <= res.second + res.first + 1; ++i)
+        map[i] += 1.f / res.first;
+    }
+
+    std::pair<int, unsigned> TerrainCreator::EvaluateSpread(const float *map, unsigned pos)
+    {
+      unsigned int left = 0, right = MapWidth - 1;
+      for (unsigned i = pos; i >= 0; --i)
+      {
+        if (HeightMapRock[i] + map[i] > HeightMapRock[i + 1] + map[i + 1]){
+          left = i + 1;
+          break;
+        }
+      }
+      for (unsigned i = pos; i < MapWidth; ++i)
+      {
+        if (HeightMapRock[i] + map[i] > HeightMapRock[i - 1] + map[i - 1]){
+          right = i - 1;
+          break;
+        }
+      }
+      return std::make_pair(right - left + 1, left);
+    }
+
+    void TerrainCreator::Make_Rain(float *&map, unsigned int pos)
+    {
+      HeightMapWater[pos] -= 1.f;
+      FlowDirection dir = EvaluateSlope(map, pos);
+
+      if (dir == FLOW_LEFT)
+        FlowLeft(map, pos);
+      else if (dir == FLOW_RIGHT)
+        FlowRight(map, pos);
+      else if (dir == PEAK || dir == TROUGH || dir == WATER_BODY)
+        Evaluate_Flat(map, pos);
+    }
+
+    void TerrainCreator::Evaluate_Flat(float *&map, unsigned int pos)
+    {
+      unsigned int left = 0, right = MapWidth - 1;
+      for (unsigned i = pos; i >= 0; --i)
+      {
+        if (map[i] > 0.0f){
+          left = i;
+          break;
+        }
+        if (HeightMapRock[i] > HeightMapRock[i + 1]){
+          left = i + 1;
+          break;
+        }
+      }
+      for (unsigned i = pos; i < MapWidth; ++i)
+      {
+        if (map[i] > 0.0f){
+          right = i;
+          break;
+        }
+        if (HeightMapRock[i] > HeightMapRock[i - 1]){
+          right = i - 1;
+          break;
+        }
+      }
+      for (unsigned i = left; i < right; ++i)
+      {
+        map[i] += (1.f / (right - left));
+      }
+    }
+
+    TerrainCreator::FlowDirection TerrainCreator::EvaluateSlope(const float *map, unsigned int pos)
+    {
+      if (map[pos] >= 1.f)
+        return WATER_BODY;
+      if (pos == 0 && HeightMapRock[pos] > HeightMapRock[pos + 1])
+        return FLOW_RIGHT;
+      if (pos == 0 && HeightMapRock[pos] <= HeightMapRock[pos + 1])
+        return FLOW_LEFT;
+      if (HeightMapRock[pos] >= HeightMapRock[pos - 1] && HeightMapRock[pos] >= HeightMapRock[pos + 1])
+        return PEAK;
+      if (HeightMapRock[pos] > HeightMapRock[pos - 1] && HeightMapRock[pos] < HeightMapRock[pos + 1])
+        return FLOW_LEFT;
+      if (HeightMapRock[pos] < HeightMapRock[pos - 1] && HeightMapRock[pos] > HeightMapRock[pos + 1])
+        return FLOW_RIGHT;
+      if (HeightMapRock[pos] < HeightMapRock[pos - 1] && HeightMapRock[pos] < HeightMapRock[pos + 1])
+        return TROUGH;
+    }
   } //Procedural
 } //Framework

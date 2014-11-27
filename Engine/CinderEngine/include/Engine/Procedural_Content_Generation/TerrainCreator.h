@@ -10,6 +10,7 @@
 
 //This is only for testing thermo
 #pragma once
+#include <utility>
 
 namespace Framework
 {
@@ -46,9 +47,18 @@ namespace Framework
       int PeakHeight;
       int WaterDepth;
 
+      //Private Enum
+      enum FlowDirection
+      {
+        FLOW_LEFT,
+        FLOW_RIGHT,
+        PEAK,
+        TROUGH,
+        WATER_BODY
+      };
+
       //Private Member Functions
       //Layering
-      void AddLife();
       void AddSoil();
       void AddRock();
       void AddWater();
@@ -56,6 +66,12 @@ namespace Framework
       //Helper functions
       void GenerateHeightMap(float **Array, int base, int height);
       void SettleWater();
+      FlowDirection EvaluateSlope(const float *map, unsigned int pos);
+      std::pair<int, unsigned> EvaluateSpread(const float *map, unsigned int pos);
+      void Evaluate_Flat(float *&map, unsigned int pos);
+      void FlowLeft(float *&map, unsigned int start_pos);
+      void FlowRight(float *&map, unsigned int start_pos);
+      void Make_Rain(float *&map, unsigned int pos);
     }; //class terrain
 
     inline int TerrainCreator::Get_Width ()

@@ -35,8 +35,8 @@ namespace Framework
 
   void Camera::OnKeyPressed (KeyEvent* key)
   {
-    float camSpeed = 0.25f;
-    float zoomSpeed = 0.1f;
+    float camSpeed = 1.f;
+    float zoomSpeed = 5.f;
     if (key->KeyDown)
       switch (key->KeyValue)
     {
