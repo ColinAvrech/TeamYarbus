@@ -272,16 +272,16 @@ namespace Framework
   {
     float x = -1.0f;
     float y = 1.0f;
-    for (int i = 0; i < 101; ++i)
+    for (int i = 0; i < 129; ++i)
     {
-      for (int j = 0; j < 101; ++j)
+      for (int j = 0; j < 129; ++j)
       {
         //std::cout << x << ", " << y << "\n";
         temperatures [i][j] = Physics::THERMODYNAMICS->GetCellTemperature (x, y);
-        x += 1.f / 50;
+        x += 1.f / 64;
       }
 
-      y -= 1.f / 50;
+      y -= 1.f / 64;
       x = -1.0f;
     }
 

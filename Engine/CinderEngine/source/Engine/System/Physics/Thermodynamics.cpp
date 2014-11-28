@@ -4,6 +4,8 @@
 #include "TerrainCreator.h"
 #include "FractalNoise.h"
 #include "ThreadFunctions.h"
+#include "WindowSystem.h"
+#include "Camera.h"
 #include "solver.c"
 
 #define SIZE 10
@@ -90,23 +92,23 @@ namespace Framework
     void ThermodynamicsSystem::Update (const double& dt)
     {
       UpdateMultiThreaded ();
-      solver.vel_step
-        (
-        MapSize.x,
-        VelocityMapX.GetArray(), VelocityMapY.GetArray(),
-        VelocityMap_PrevX.GetArray(), VelocityMap_PrevY.GetArray(),
-        0.0f,
-        0.1f
-        );
+      //solver.vel_step
+      //  (
+      //  MapSize.x,
+      //  VelocityMapX.GetArray(), VelocityMapY.GetArray(),
+      //  VelocityMap_PrevX.GetArray(), VelocityMap_PrevY.GetArray(),
+      //  0.0f,
+      //  0.1f
+      //  );
 
-      solver.dens_step
-        (
-        MapSize.x,
-        DensityMap.GetArray(), DensityMap_Prev.GetArray(),
-        VelocityMapX.GetArray(), VelocityMapY.GetArray(),
-        0.0f,
-        0.1f
-        );
+      //solver.dens_step
+      //  (
+      //  MapSize.x,
+      //  DensityMap.GetArray(), DensityMap_Prev.GetArray(),
+      //  VelocityMapX.GetArray(), VelocityMapY.GetArray(),
+      //  0.0f,
+      //  0.1f
+      //  );
     }
 
     // Getters
@@ -198,10 +200,10 @@ namespace Framework
               {
                 if (x < MapSize.x && x >= 0 && y < MapSize.y && y >= 0)
                 {
-                  float dQ = ConductiveHeatTransfer (Const::K_Air, TemperatureMap.Get (i, j), TemperatureMap.Get (x, y), dt, 0.1f);
+                  float dQ = ConductiveHeatTransfer (Const::K_Air, TemperatureMap.Get (i, j), TemperatureMap.Get (x, y), dt, 1.0f);
                   netdQ += dQ;
                   float oTemp = TemperatureMap.Get (x, y);
-                  TemperatureMap.Set (x, y, TemperatureMap.Get (x, y) - dTemp (dQ, DensityMap.Get (x, y) * 0.001f, Const::c_Air));
+                  TemperatureMap.Set (x, y, TemperatureMap.Get (x, y) - dTemp (dQ, DensityMap.Get (x, y) * 1.0f, Const::c_Air));
 
                   float factor = TemperatureMap.Get (x, y) / oTemp;
                   //DensityMap.Set (x, y, DensityMap.Get (x, y) / factor);
@@ -221,7 +223,7 @@ namespace Framework
               float dQConv = ConvectiveHeatTransfer (Const::Hc_Air, TemperatureMap.Get(i, j), TemperatureMap.Get(i, j + 1), dt);
               float oTempConv = TemperatureMap.Get(i, j + 1);
               netdQ += dQConv;
-              TemperatureMap.Set(i, j + 1, TemperatureMap.Get(i, j + 1) - dTemp (dQConv, DensityMap.Get(i, j + 1) * 0.001f, Const::c_Air));
+              TemperatureMap.Set(i, j + 1, TemperatureMap.Get(i, j + 1) - dTemp (dQConv, DensityMap.Get(i, j + 1) * 1.0f, Const::c_Air));
               float factor2 = TemperatureMap.Get(i, j + 1) / oTempConv;
               //DensityMap.Set(i, j + 1, DensityMap.Get(i, j) / factor2);
             }
@@ -234,7 +236,7 @@ namespace Framework
               netdQ += dQConv;
             }
           }
-          TemperatureMap.Set(i, j, TemperatureMap.Get(i, j) + dTemp (netdQ, DensityMap.Get(i, j) * 0.001f, Const::c_Air));
+          TemperatureMap.Set(i, j, TemperatureMap.Get(i, j) + dTemp (netdQ, DensityMap.Get(i, j) * 1.0f, Const::c_Air));
           float factor1 = TemperatureMap.Get(i, j) / oTemp;
           //DensityMap.Set(i, j, DensityMap.Get(i, j) / factor1);
         }//for
@@ -454,6 +456,66 @@ namespace Framework
       {
         ResetEvent (eventEndFire [i]);
       }
+    }
+
+    void ThermodynamicsSystem::Draw ()
+    {
+      glMatrixMode (GL_PROJECTION);
+      glLoadIdentity ();
+      glOrtho (0, 128, 0, 128, -1, 1);
+      glMatrixMode (GL_MODELVIEW);
+      glLoadIdentity ();
+      glColor3f (1, 1, 1);
+      glBegin (GL_QUADS);
+      {
+        for (int i = 0; i < Terrain.getSize ().y; ++i)
+        {
+          for (int j = 0; j < Terrain.getSize ().x; ++j)
+          {
+            glColor4f (TemperatureMap.Get (j, i) / Constant::BT_Organics,
+              TemperatureMap.Get (j, i) / Constant::BT_Organics,
+              TemperatureMap.Get (j, i) / Constant::BT_Organics,
+              TemperatureMap.Get (j, i) / Constant::BT_Organics);
+            glVertex2f (j, i);
+            glVertex2f (j - 1, i);
+            glVertex2f (j - 1, i - 1);
+            glVertex2f (j, i - 1);
+          }
+        }
+      }
+      glEnd ();
+
+      glBegin (GL_QUADS);
+      {
+        for (int i = 0; i < Terrain.getSize ().y; ++i)
+        {
+          for (int j = 0; j < Terrain.getSize ().x; ++j)
+          {
+            glColor4f ((float)Terrain.Get (j, i) / STONE, 0, 0, (float)Terrain.Get (j, i) / STONE);
+            glVertex2f (j, i);
+            glVertex2f (j - 1, i);
+            glVertex2f (j - 1, i - 1);
+            glVertex2f (j, i - 1);
+          }
+        }
+      }
+      glEnd ();
+
+      //glBegin (GL_QUADS);
+      //{
+      //  for (int i = 0; i < FireMap.getSize ().y; ++i)
+      //  {
+      //    for (int j = 0; j < FireMap.getSize ().x; ++j)
+      //    {
+      //      glColor4f (0, FireMap.Get (j, i), 0, FireMap.Get (j, i));
+      //      glVertex2f (j, i);
+      //      glVertex2f (j - 1, i);
+      //      glVertex2f (j - 1, i - 1);
+      //      glVertex2f (j, i - 1);
+      //    }
+      //  }
+      //}
+      //glEnd ();
     }
 
   }//namespace Physics

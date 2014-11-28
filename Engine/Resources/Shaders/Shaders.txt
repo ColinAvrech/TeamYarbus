@@ -64,6 +64,11 @@ Terrain.frag.glsl
 0
 Terrain
 >
+Terrain3D.vs.glsl
+Lighting.frag.glsl
+0
+Terrain3D
+>
 Tree.vs.glsl
 Tree.frag.glsl
 0

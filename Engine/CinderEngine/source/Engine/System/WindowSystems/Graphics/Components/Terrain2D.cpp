@@ -18,9 +18,12 @@
 #include "PhysicsSystemNew.h"
 #include "Collider2D.h"
 #include "RigidBody2D.h"
+#include "Thermodynamics.h"
+#include "TDLib.h"
 
 namespace Framework
 {
+  using namespace Physics;
   static std::vector <float> lineVertices;
   static VAO* vao1;
   static VBO* vbo1;
@@ -85,7 +88,7 @@ namespace Framework
 
 
   void Terrain2D::Draw ()
-  {
+  { 
     shader->Use ();
     vao->bindVAO ();
     shader->uni4f ("color", color.r, color.g, color.b, color.a);
@@ -139,7 +142,7 @@ namespace Framework
         /*height_points.push_back ({ offsetX, offsetY });
         offsetY = -1.0f;
         break;*/
-        if (previousHeight != offsetY || i == t.Get_Width () - 1)
+        //if (previousHeight != offsetY || i == t.Get_Width () - 1)
         {
           height_points.push_back ({ offsetX, offsetY / peak });
           previousHeight = offsetY;
@@ -159,6 +162,27 @@ namespace Framework
         offsetX += 4 * nX;
       }
     }
+
+    //for (int y = 0; y < THERMODYNAMICS->MapSize.y; ++y)
+    //{
+    //  for (int x = 0; x < THERMODYNAMICS->MapSize.x; ++x)
+    //  {
+    //    THERMODYNAMICS->Terrain.Set (x, y, STONE);
+    //  }
+    //}
+
+    for (int x = 0; x < THERMODYNAMICS->MapSize.x; ++x)
+    {
+      for (int y = height_points [x].y * 64; y >= 0; --y)
+      {
+        THERMODYNAMICS->Terrain.Set (x, y, WOOD);
+      }
+    }
+
+    ////THERMODYNAMICS->Terrain.Set (64, 64, WOOD);
+    //THERMODYNAMICS->TemperatureMap.Set (64, 64, 1000000000000000.0f);
+    //THERMODYNAMICS->TemperatureMap.Set (68, 64, 1000000000000000.0f);
+    //THERMODYNAMICS->TemperatureMap.Set (72, 64, 1000000000000000.0f);
   }
 
 

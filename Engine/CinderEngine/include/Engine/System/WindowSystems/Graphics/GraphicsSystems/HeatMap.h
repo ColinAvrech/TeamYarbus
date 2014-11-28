@@ -35,9 +35,9 @@ namespace Framework
   private:
     vec2 Size;
     GLbyte graph [256][256];
-    vec2 vertices [101][101];
-    GLushort indices [100 * 101 * 6];
-    float temperatures [101][101];
+    vec2 vertices [129][129];
+    GLushort indices [128 * 129 * 6];
+    float temperatures [129][129];
 
     VAO* vao;
     GLuint vbo [4];

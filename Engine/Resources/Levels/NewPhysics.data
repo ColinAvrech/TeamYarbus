@@ -139,7 +139,7 @@ Level =
 		Transform = 
 		{
 			Vec3 Translation = [-18.5, -5.0, 0],
-			Vec3 Scale = [20, 4, 1],
+			Vec3 Scale = [20, 20, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Terrain2D = 

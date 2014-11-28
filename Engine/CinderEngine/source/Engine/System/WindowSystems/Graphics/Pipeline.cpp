@@ -23,10 +23,13 @@
 #include "FrameBufferObject.h"
 #include "ResourceManager.h"
 #include "glut.h"
+#include "Thermodynamics.h"
+#include "HeatMap.h"
 
 namespace Framework
 {
-
+  HeatMap* heatMap;
+  using namespace Physics;
   enum COLOR_STATE
   {
     IDLE,
@@ -147,6 +150,9 @@ namespace Framework
     //glFramebufferTexture2D (GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderTexture, 0);
     //glBindTexture (GL_TEXTURE_2D, 0);
     //fbo->unBind ();
+
+    heatMap = new HeatMap (128, 128);
+    heatMap->Initialize ();
   }
 
   Pipeline::~Pipeline ()
@@ -320,7 +326,9 @@ namespace Framework
     }
 
     //Draw_Quad ();
-
+    heatMap->Update (0.016);
+    heatMap->Draw ();
+    //THERMODYNAMICS->Draw ();
     for (auto* i : graphicsObjects)
     {
       i->Update ();
@@ -351,7 +359,7 @@ namespace Framework
     //glBindTexture (GL_TEXTURE_2D, 0);
 
 #ifdef _DEBUG
-    //PHYSICS->Render ();
+    PHYSICS->Render ();
 #endif
   }
 

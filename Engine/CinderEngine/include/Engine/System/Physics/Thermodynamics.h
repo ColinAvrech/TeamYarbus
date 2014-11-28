@@ -22,6 +22,7 @@
 #include "Grid2D.h"
 #include "FluidSolver.h"
 #include "FireSystem.h"
+#include "Terrain2D.h"
 
 #pragma endregion
 
@@ -135,7 +136,7 @@ namespace Framework
       void ToggleAutoDissipation();
       float SetCellTemperature(const float& x, const float& y, const float& temp, const double& dt);
       void SetCellVelocity (const int x, const int y, vec2 v);
-
+      void Draw ();
 #pragma endregion
 
 
@@ -167,6 +168,7 @@ namespace Framework
 
       friend class Smoke_Grid;
       friend class FireSystem;
+      friend class Terrain2D;
 
     private:
 
