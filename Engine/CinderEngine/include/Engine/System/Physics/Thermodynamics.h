@@ -23,8 +23,11 @@
 #include "FluidSolver.h"
 #include "FireSystem.h"
 #include "Terrain2D.h"
+#include "TDLib.h"
 
 #pragma endregion
+
+class FireStarter;
 
 namespace Framework
 {
@@ -33,23 +36,6 @@ namespace Framework
   {
     typedef void* ThreadHandle;
 
-    //Possible materials used in terrain
-    enum Material
-    {
-      AIR,
-      WATER,
-      WOOD,
-      SOIL,
-      GRASS,
-      STONE,
-      IRON,
-      LEAD,
-      STEEL,
-      COTTON,
-      CEMENT,
-      CARBON,
-      FUEL,
-    };//enum material
     /*---------------------------------------------------------------------------
     // Class
     ---------------------------------------------------------------------------*/
@@ -136,6 +122,7 @@ namespace Framework
       void ToggleAutoDissipation();
       float SetCellTemperature(const float& x, const float& y, const float& temp, const double& dt);
       void SetCellVelocity (const int x, const int y, vec2 v);
+      void Add_Object(const float x, const float y, FireStarter *obj);
       void Draw ();
 #pragma endregion
 
@@ -196,11 +183,9 @@ namespace Framework
       Grid2D<Material> Terrain;
       //Water and moisture content
       Grid2D<float> WaterMap;
-      //Fire Map. Stores intensity of flame on a scale of 0 - 10.
-      Grid2D<float> FireMap;
+      
+      std::vector<std::pair<glm::ivec2, FireStarter*>> FireMap;
       static FireSystem* FIRE;
-      //Amount of fuel in the cell
-      Grid2D<float> FuelMap;
 
       FluidSolver solver;
 #pragma endregion
@@ -217,11 +202,13 @@ namespace Framework
         bool  isFluid;  //Is the material a fluid
         bool  Volatile; //Can this material catch fire
         float Hc;       //Heat transfer coefficient
-        float Mass;     //Mass of 1 block of material
+        float Density;  //Mass of 1 block of material
         float c;        //Specific heat
+        float K;        //Thermal conductivity
+        float IT;       //Ignition temperature
       };
 
-      std::unordered_map<string, conductionProperties*> materialList;
+      std::vector <conductionProperties> materialList;
 #pragma endregion
 
       /*-----------------------------------------------------------------------
@@ -229,7 +216,8 @@ namespace Framework
       -----------------------------------------------------------------------*/
 #pragma region Private Functions
       //Determine subscript from position
-      vec2 GetSubscript(const float& x, const float& y);
+      glm::ivec2 GetSubscript(const float& x, const float& y);
+      void Init_Materials();
 #pragma endregion
 
 

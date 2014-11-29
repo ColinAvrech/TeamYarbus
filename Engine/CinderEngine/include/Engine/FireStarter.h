@@ -9,6 +9,7 @@
 /******************************************************************************/
 #include "Component.h"
 #include "DataNode.h"
+#include "TDLib.h"
 
 namespace Framework
 {
@@ -20,6 +21,7 @@ namespace Framework
 		void lightOnFire();
 		void Serialize(Serializer::DataNode* data);
 		void Initialize();
+    Physics::Material material_type;
 
 		const static std::string Name;
 		bool onFire;		

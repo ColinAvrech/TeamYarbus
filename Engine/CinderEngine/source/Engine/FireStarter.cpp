@@ -10,23 +10,27 @@
 #include "FireStarter.h"
 #include "GameObject.h"
 #include "ComponentInclude.h"
+#include "Thermodynamics.h"
 
 namespace Framework
 { 
-	void FireStarter::Serialize(Serializer::DataNode* data)
-	{
-		
-	}
+  void FireStarter::Serialize(Serializer::DataNode* data)
+  {
+    
+  }
 
-	void FireStarter::Initialize()
-	{
-		gameObject->FireStarter = this;
-	}
+  void FireStarter::Initialize()
+  {
+    gameObject->FireStarter = this;
+    float x = this->gameObject->Transform->GetPosition().x;
+    float y = this->gameObject->Transform->GetPosition().y;
+    Physics::THERMODYNAMICS->Add_Object(x, y, this);
+  }
 
-	void FireStarter::lightOnFire(void)
-	{
-		onFire = true;
-	}
+  void FireStarter::lightOnFire(void)
+  {
+    onFire = true;
+  }
 
-	DefineComponentName(FireStarter);
+  DefineComponentName(FireStarter);
 }

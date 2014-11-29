@@ -7,6 +7,7 @@
 #include "WindowSystem.h"
 #include "Camera.h"
 #include "solver.c"
+#include "FireStarter.h"
 
 #define SIZE 10
 
@@ -41,8 +42,8 @@ namespace Framework
 
     bool ThermodynamicsSystem::Initialize ()
     {
-      std::cout << "Thermodynamics Initialized." << std::endl;
-
+      //Initialize material list
+      Init_Materials();
       //Scan level
       MapSize = { 128, 128 };
       std::cout << "Grid " << MapSize.x << "x " << MapSize.y << std::endl;
@@ -75,17 +76,17 @@ namespace Framework
       WaterMap.allocate(MapSize.x, MapSize.y);
       WaterMap.fill(0.0f);
 
-      //Allocate Fire map
-      FireMap.allocate(MapSize.x, MapSize.y);
-      FireMap.fill(0.0f);
-
-      //Allocate Fuel map
-      FuelMap.allocate(MapSize.x, MapSize.y);
-      FuelMap.fill(0.0f);
-
       SpawnThreads ();
 
+      std::cout << "Thermodynamics Initialized." << std::endl;
       return true;
+    }
+
+    void ThermodynamicsSystem::Add_Object(const float x, const float y, FireStarter *obj)
+    {
+      glm::ivec2 sub = GetSubscript(x, y);
+      FireMap.push_back(std::make_pair(sub, obj));
+      Terrain.Set(sub.x, sub.y, obj->material_type);
     }
 
     // Called every frame
@@ -115,7 +116,7 @@ namespace Framework
     //Get cell temperature
     float ThermodynamicsSystem::GetCellTemperature (const float& x, const float& y)
     {
-      vec2 sub = GetSubscript(x, y);
+      glm::ivec2 sub = GetSubscript(x, y);
       int sub_x = int (sub.x);
       int sub_y = int (sub.y);
       if (sub_x < 0 || sub_x >= MapSize.x || sub_y < 0 || sub_y >= MapSize.y)
@@ -126,7 +127,7 @@ namespace Framework
     //Get cell oxygen content
     float ThermodynamicsSystem::GetCellOxygen (const float& x, const float& y)
     {
-      vec2 sub = GetSubscript(x, y);
+      glm::ivec2 sub = GetSubscript(x, y);
       int sub_x = int(sub.x);
       int sub_y = int(sub.y);
       if (sub_x < 0 || sub_x > MapSize.x || sub_y < 0 || sub_y > MapSize.y)
@@ -136,7 +137,7 @@ namespace Framework
     //Get cell velocity
     vec2 ThermodynamicsSystem::GetCellVelocity(const float& x, const float& y)
     {
-      vec2 sub = GetSubscript(x, y);
+      glm::ivec2 sub = GetSubscript(x, y);
       int sub_x = int(sub.x);
       int sub_y = int(sub.y);
       if (sub_x < 0 || sub_x > MapSize.x || sub_y < 0 || sub_y > MapSize.y)
@@ -154,7 +155,7 @@ namespace Framework
 
     float ThermodynamicsSystem::SetCellTemperature(const float& x, const float& y, const float& temp, const double& dt)
     {
-      vec2 sub = GetSubscript(x, y);
+      glm::ivec2 sub = GetSubscript(x, y);
       int sub_x = int(sub.x);
       int sub_y = int(sub.y);
       float dQ;
@@ -181,6 +182,60 @@ namespace Framework
     // Private Functions
     -----------------------------------------------------------------------*/
 
+    //Initialize material list
+    void ThermodynamicsSystem::Init_Materials()
+    {
+      using namespace Const;
+      conductionProperties new_p;
+      //air
+      new_p.c = c_Air;
+      new_p.Density = p_Air;
+      new_p.Hc = Hc_Air;
+      new_p.isFluid = true;
+      new_p.K = K_Air;
+      new_p.Volatile = false;
+      materialList.push_back(new_p);
+      //water
+      new_p.c = c_Water;
+      new_p.Density = p_Water;
+      new_p.Hc = Hc_Water;
+      new_p.isFluid = true;
+      new_p.K = K_Water;
+      new_p.Volatile = false;
+      materialList.push_back(new_p);
+      //wood
+      new_p.c = c_Wood;
+      new_p.Density = p_Wood;
+      new_p.isFluid = false;
+      new_p.IT = IT_Wood;
+      new_p.K = K_Wood;
+      new_p.Volatile = true;
+      materialList.push_back(new_p);
+      //soil
+      new_p.c = c_Soil;
+      new_p.Density = p_Soil;
+      new_p.isFluid = false;
+      new_p.K = K_drySoil;
+      new_p.Volatile = false;
+      materialList.push_back(new_p);
+      //grass
+      new_p.c = c_Wood;
+      new_p.Density = p_Wood;
+      new_p.isFluid = false;
+      new_p.IT = IT_Grass;
+      new_p.K = K_Wood;
+      new_p.Volatile = true;
+      materialList.push_back(new_p);
+      //stone
+      new_p.c = c_Stone;
+      new_p.Density = p_Rock;
+      new_p.isFluid = false;
+      new_p.K = K_Stone;
+      new_p.Volatile = false;
+      materialList.push_back(new_p);
+      //append more materials in the right order
+    }
+
     //Update temperatures
     void ThermodynamicsSystem::UpdateTemp(const int& start_index, const int& end_index, const double& dt)
     {
@@ -200,7 +255,8 @@ namespace Framework
               {
                 if (x < MapSize.x && x >= 0 && y < MapSize.y && y >= 0)
                 {
-                  float dQ = ConductiveHeatTransfer (Const::K_Air, TemperatureMap.Get (i, j), TemperatureMap.Get (x, y), dt, 1.0f);
+                  float dQ = ConductiveHeatTransfer(materialList[Terrain.Get(i, j)].K,
+                    TemperatureMap.Get(i, j), TemperatureMap.Get(x, y), dt, 1.0f);
                   netdQ += dQ;
                   float oTemp = TemperatureMap.Get (x, y);
                   TemperatureMap.Set (x, y, TemperatureMap.Get (x, y) - dTemp (dQ, DensityMap.Get (x, y) * 1.0f, Const::c_Air));
@@ -210,7 +266,8 @@ namespace Framework
                 }
                 else
                 {
-                  float dQ = ConductiveHeatTransfer (Const::K_Air, TemperatureMap.Get(i, j), AtmosphericTemperature, dt, 0.1f);
+                  float dQ = ConductiveHeatTransfer(materialList[Terrain.Get(i, j)].K,
+                    TemperatureMap.Get(i, j), AtmosphericTemperature, dt, 0.1f);
                   netdQ += dQ;
                 }
               }
@@ -218,9 +275,10 @@ namespace Framework
           }
           if (j + 1 <= MapSize.y)
           {
-            if (Terrain.Get(i, j) == AIR && Terrain.Get(i, j + 1) == AIR)
+            if (materialList[Terrain.Get(i, j)].isFluid && materialList[Terrain.Get(i, j)].isFluid)
             {
-              float dQConv = ConvectiveHeatTransfer (Const::Hc_Air, TemperatureMap.Get(i, j), TemperatureMap.Get(i, j + 1), dt);
+              float dQConv = ConvectiveHeatTransfer(materialList[Terrain.Get(i, j)].Hc,
+                TemperatureMap.Get(i, j), TemperatureMap.Get(i, j + 1), dt);
               float oTempConv = TemperatureMap.Get(i, j + 1);
               netdQ += dQConv;
               TemperatureMap.Set(i, j + 1, TemperatureMap.Get(i, j + 1) - dTemp (dQConv, DensityMap.Get(i, j + 1) * 1.0f, Const::c_Air));
@@ -232,7 +290,8 @@ namespace Framework
           {
             if (Terrain.Get(i, j) == 0 && Terrain.Get(i, j + 1) == 0)
             {
-              float dQConv = ConvectiveHeatTransfer (Const::Hc_Air, TemperatureMap.Get(i, j), AtmosphericTemperature, dt);
+              float dQConv = ConvectiveHeatTransfer(materialList[Terrain.Get(i, j)].Hc, 
+                TemperatureMap.Get(i, j), AtmosphericTemperature, dt);
               netdQ += dQConv;
             }
           }
@@ -301,47 +360,7 @@ namespace Framework
     //Update fire
     void ThermodynamicsSystem::UpdateFire(const int& start_index, const int& end_index, const double& dt)
     {
-      //std::cout << "Updated Fire" << std::endl;
-      for (int j = start_index; j < end_index; ++j)
-      {
-        for (int i = 1; i < 100; ++i)
-        {
-          int OxyCount = 0;
-          float OxyAmount = 0.f;
-          for (int y = j - 1; y <= j + 1; ++y)
-          {
-            for (int x = i - 1; x <= i + 1; ++x)
-            {
-              if ((x != i || y != j) && Terrain.Get(i, j) == 0)
-              {
-                ++OxyCount;
-                //OxyAmount += OxygenMap[x][y] * CellSize*CellSize*CellSize;
-              }
-            } //for x
-          } //for y
-          float tempRange = Const::BT_Organics - Const::IT_Wood;
-          float tempDiff = TemperatureMap.Get(i, j) - Const::IT_Wood;
-          float tempFactor = tempDiff / tempRange;
-          tempFactor *= 10;
-          if (FuelMap.Get(i, j) >= 0.f &&
-            OxyCount > 0 && TemperatureMap.Get(i, j) > Const::IT_Wood)
-          {
-            if (TemperatureMap.Get(i, j) <= Const::BT_Organics)
-            {
-              //HeatMap[i][j] += tempRange * (float)dt;
-            }
-            //float oxyfactor = 
-          }//if
-          else
-          {
-            if (TemperatureMap.Get(i, j) >= Const::IT_Wood)
-            {
-              TemperatureMap.Set(i, j, TemperatureMap.Get(i, j) - tempRange * (float) dt);
-            }
-          }
-          FireMap.Set(i, j, tempFactor);
-        }//for i
-      }//for j
+      
     }//function
 
     void ThermodynamicsSystem::Reset ()
@@ -355,17 +374,13 @@ namespace Framework
       VelocityMapY.fill ({ 0 });
       VelocityMap_PrevX.fill ({ 0 });
       VelocityMap_PrevY.fill ({ 0 });
-
-      FireMap.fill (0.0f);
-
-      FuelMap.fill (10.f);
     }
 
-    vec2 ThermodynamicsSystem::GetSubscript(const float &x, const float &y)
+    glm::ivec2 ThermodynamicsSystem::GetSubscript(const float &x, const float &y)
     {
       int sub_x = int(std::abs(((x)* (MapSize.x / 2 - 1) + MapOffset.x - 1)));
       int sub_y = int(std::abs(((y)* (MapSize.y / 2 - 1) + MapOffset.y - 1)));
-      vec2 res(sub_x, sub_y);
+      glm::ivec2 res(sub_x, sub_y);
       return res;
     }
 
@@ -466,7 +481,7 @@ namespace Framework
       glMatrixMode (GL_MODELVIEW);
       glLoadIdentity ();
       glColor3f (1, 1, 1);
-      glBegin (GL_QUADS);
+      /*glBegin (GL_QUADS);
       {
         for (int i = 0; i < Terrain.getSize ().y; ++i)
         {
@@ -483,7 +498,7 @@ namespace Framework
           }
         }
       }
-      glEnd ();
+      glEnd ();*/
 
       glBegin (GL_QUADS);
       {
