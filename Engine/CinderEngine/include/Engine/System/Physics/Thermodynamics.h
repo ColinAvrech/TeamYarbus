@@ -27,10 +27,10 @@
 
 #pragma endregion
 
-class FireStarter;
 
 namespace Framework
 {
+  class FireStarter;
 
   namespace Physics
   {
