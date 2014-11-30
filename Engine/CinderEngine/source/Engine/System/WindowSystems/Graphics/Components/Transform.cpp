@@ -13,6 +13,7 @@
 #include "WindowSystem.h"
 #include "Pipeline.h"
 #include "Collider2D.h"
+#include "Thermodynamics.h"
 
 
 using namespace Zilch;
@@ -190,6 +191,15 @@ namespace Framework
     glm::mat4 mvp = (modelViewProjectionMatrix / modelMatrix) * matrix;
 
     return glm::vec2 (mvp [3][0] / mvp [3][3], mvp [3][1] / mvp [3][3]);
+  }
+
+  glm::vec2 Transform::GetGridPosition ()
+  {
+    return glm::vec2
+    (
+      (Physics::THERMODYNAMICS->MapSize.x * (1 + GetNDCPosition ().x)) * 0.5f - 1,
+      (Physics::THERMODYNAMICS->MapSize.y * (1 - GetNDCPosition ().y)) * 0.5f - 1
+    );
   }
 
   glm::vec2 Transform::GetScreenPosition ()
