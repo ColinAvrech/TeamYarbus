@@ -26,7 +26,7 @@ namespace Framework
       //Properties of specific materials--------------------
       //Common densities
       static const float p_Air   = 1.225f;   //Kg/m^3 | Density of air at sea level at 15C.
-      static const float p_Water = 999.97;   //Kg/m^3
+      static const float p_Water = 999.97f;   //Kg/m^3
       static const float p_Wood = 500.f;     //Kg/m^3
       static const float p_Soil = 1600.f;
       static const float p_Rock = 2500.f;

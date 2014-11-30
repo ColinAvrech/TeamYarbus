@@ -7,16 +7,17 @@
 \brief  The logic for burning gameObjects
 */
 /******************************************************************************/
-#include "FireStarter.h"
+
+#include "Thermodynamics.h"
 #include "GameObject.h"
 #include "ComponentInclude.h"
-#include "Thermodynamics.h"
 
 namespace Framework
 { 
   void FireStarter::Serialize(Serializer::DataNode* data)
   {
-    Serializer::DataNode* temp = data->FindElement(data, "onFire");
+    Component::Get_Enabled (data);
+    Serializer::DataNode* temp = data->FindElement(data, "OnFire");
     temp->GetValue(&onFire);
 
     temp = data->FindElement(data, "Fuel");
@@ -24,6 +25,9 @@ namespace Framework
 
     temp = data->FindElement(data, "InitTemp");
     temp->GetValue(&initTemp);
+
+    temp = data->FindElement (data, "MaterialType");
+    temp->GetValue (&material_type);
   }
 
   void FireStarter::Update(const double dt)
@@ -35,8 +39,8 @@ namespace Framework
   void FireStarter::Initialize()
   {
     gameObject->FireStarter = this;
-    float x = this->gameObject->Transform->GetPosition().x;
-    float y = this->gameObject->Transform->GetPosition().y;
+    float x = this->gameObject->Transform->GetGridPosition().x;
+    float y = this->gameObject->Transform->GetGridPosition().y;
     Physics::THERMODYNAMICS->Add_Object(x, y, this);
   }
 
@@ -45,6 +49,10 @@ namespace Framework
     if (!onFire)
     {
       onFire = true;
+      Physics::ThermodynamicsSystem::FIRE->AddFire
+        (gameObject->Transform->GetPosition ().x,
+        gameObject->Transform->GetPosition ().y,
+        300);
       cout << "Lit\n";
     }
   }

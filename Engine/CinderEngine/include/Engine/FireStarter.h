@@ -7,6 +7,10 @@
 \brief  The logic for burning gameObjects
 */
 /******************************************************************************/
+
+#ifndef _FIRE_STARTER_H
+#define _FIRE_STARTER_H
+
 #include "Component.h"
 #include "DataNode.h"
 #include "TDLib.h"
@@ -23,7 +27,7 @@ namespace Framework
     void Update(const double dt);
 		void Serialize(Serializer::DataNode* data);
 		void Initialize();
-    Physics::Material material_type;
+    int material_type;
 
 		const static std::string Name;
 		bool onFire;	
@@ -31,3 +35,5 @@ namespace Framework
     float initTemp;
 	};
 }
+
+#endif _FIRE_STARTER_H

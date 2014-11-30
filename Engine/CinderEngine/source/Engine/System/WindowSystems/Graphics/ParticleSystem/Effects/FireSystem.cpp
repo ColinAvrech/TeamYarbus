@@ -72,11 +72,11 @@ namespace Framework
     texture = Resources::RS->Get_Texture ("Particle.bmp");
     shader = Resources::RS->Get_Shader ("Particle");
 
-    const size_t NUM_PARTICLES = numParticles == 0 ? 20000 : numParticles;
+    const size_t NUM_PARTICLES = numParticles == 0 ? 50000 : numParticles;
     m_system = std::make_shared<ParticleSystem> (NUM_PARTICLES);
     m_system->init (NUM_PARTICLES);
 
-    AddFire (0, 0, 100);
+    //AddFire (0, 0, 100);
 
     auto timeUpdater = std::make_shared<BasicTimeUpdater> ();
     m_system->addUpdater (timeUpdater);

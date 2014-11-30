@@ -23,6 +23,7 @@
 #include "FluidSolver.h"
 #include "FireSystem.h"
 #include "Terrain2D.h"
+#include "FireStarter.h"
 #include "TDLib.h"
 
 #pragma endregion
@@ -30,7 +31,6 @@
 
 namespace Framework
 {
-  class FireStarter;
   namespace Physics
   {
     typedef void* ThreadHandle;
@@ -155,6 +155,7 @@ namespace Framework
       friend class Smoke_Grid;
       friend class FireSystem;
       friend class Terrain2D;
+      friend class FireStarter;
 
     private:
 

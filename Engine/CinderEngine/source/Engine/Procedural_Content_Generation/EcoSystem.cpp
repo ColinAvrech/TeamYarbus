@@ -13,6 +13,7 @@
 #include "Terrain2d.h"
 #include "Tree2D.h"
 #include "ObjectSystem.h"
+#include "FireStarter.h"
 
 namespace Framework
 {
@@ -73,7 +74,7 @@ namespace Framework
       tree_list[i] = Evaluate_Compatibility(i);
       //Hack!!
       //if (tree_list[i] != OPEN)
-      if (i % 1 == 0)
+      //if (i % 100 == 0)
         GenerateType(
           offsetX + Translation.x,
           offsetY + Translation.y,
@@ -92,7 +93,7 @@ namespace Framework
     Component* c = grass->AddComponent("Transform");
     if (c)
     {
-      static_cast<Transform*>(c)->Translate(x, y, z);
+      static_cast<Transform*>(c)->Translate (x, y, z);
       static_cast<Transform*>(c)->Scale (10, 10, 1);
       c->Initialize();
     }
@@ -104,7 +105,18 @@ namespace Framework
       c->Initialize();
     }
     //Add firestarter component here
-
+    FireStarter* fs = reinterpret_cast<FireStarter*> (grass->AddComponent ("FireStarter"));
+    if (fs)
+    {
+      fs->Fuel = 100.0f;
+      fs->material_type = 2;
+      fs->onFire = false;
+      if (type == GRASS)
+        fs->initTemp = 400.0f;
+      else
+        fs->initTemp = 4000.0f;
+      fs->Initialize ();
+    }
   }
 }
 

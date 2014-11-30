@@ -7,7 +7,6 @@
 #include "WindowSystem.h"
 #include "Camera.h"
 #include "solver.c"
-#include "FireStarter.h"
 
 #define SIZE 10
 
@@ -84,9 +83,9 @@ namespace Framework
 
     void ThermodynamicsSystem::Add_Object(const float x, const float y, FireStarter *obj)
     {
-      glm::ivec2 sub = GetSubscript(x, y);
+      glm::ivec2 sub = glm::vec2 (x, y);
       FireMap.push_back(std::make_pair(sub, obj));
-      Terrain.Set(sub.x, sub.y, obj->material_type);
+      Terrain.Set(sub.x, sub.y, Physics::Material (obj->material_type));
       TemperatureMap.Set(sub.x, sub.y, obj->initTemp);
     }
 
@@ -94,6 +93,7 @@ namespace Framework
     void ThermodynamicsSystem::Update (const double& dt)
     {
       UpdateMultiThreaded ();
+      UpdateFire (0.016);
       //solver.vel_step
       //  (
       //  MapSize.x,
@@ -464,7 +464,7 @@ namespace Framework
 
     void ThermodynamicsSystem::Draw ()
     {
-      /*glMatrixMode (GL_PROJECTION);
+      glMatrixMode (GL_PROJECTION);
       glLoadIdentity ();
       glOrtho (0, 128, 0, 128, -1, 1);
       glMatrixMode (GL_MODELVIEW);
@@ -479,7 +479,7 @@ namespace Framework
             glColor4f (TemperatureMap.Get (j, i) / Constant::BT_Organics,
               TemperatureMap.Get (j, i) / Constant::BT_Organics,
               TemperatureMap.Get (j, i) / Constant::BT_Organics,
-              TemperatureMap.Get (j, i) / Constant::BT_Organics);
+              TemperatureMap.Get (j, i) / Constant::BT_Organics * 0.4f);
             glVertex2f (j, i);
             glVertex2f (j - 1, i);
             glVertex2f (j - 1, i - 1);
@@ -495,7 +495,7 @@ namespace Framework
         {
           for (int j = 0; j < Terrain.getSize ().x; ++j)
           {
-            glColor4f ((float)Terrain.Get (j, i) / STONE, 0, 0, (float)Terrain.Get (j, i) / STONE);
+            glColor4f ((float) Terrain.Get (j, i) / STONE, 0, 0, (float) (Terrain.Get (j, i) / STONE) * 0.4f);
             glVertex2f (j, i);
             glVertex2f (j - 1, i);
             glVertex2f (j - 1, i - 1);
@@ -518,16 +518,33 @@ namespace Framework
             glVertex2f (j, i - 1);
           }
         }
-        for (auto i = FireMap.begin(); i != FireMap.end(); ++i)
+
+        glMatrixMode (GL_PROJECTION);
+        glLoadIdentity ();
+        gluPerspective (Camera::main->GetFOV (), (float) WINDOWSYSTEM->Get_Width () / WINDOWSYSTEM->Get_Height (), 0, 100.0f);
+        glMatrixMode (GL_MODELVIEW);
+        glLoadIdentity ();
+
+        glm::vec3 eye = glm::vec3 (0, 0, 1) * Camera::main->GetSize () + glm::vec3 (Camera::main->gameObject->Transform->GetPosition ().x, Camera::main->gameObject->Transform->GetPosition ().y, 0);
+        glm::vec3 center = Camera::main->gameObject->Transform->GetPosition ();
+        glm::vec3 up = glm::vec3 (0, 1, 0);
+
+        gluLookAt (eye.x, eye.y, eye.z, center.x, center.y, center.z, up.x, up.y, up.z);
+
+        for (auto i = FireMap.begin (); i != FireMap.end (); ++i)
         {
-          glColor4f (0, 1, 0, 1);
-          glVertex2f ((*i).first.y, (*i).first.x);
-          glVertex2f((*i).first.y - 1, (*i).first.x);
-          glVertex2f((*i).first.y - 1, (*i).first.x - 1);
-          glVertex2f((*i).first.y, (*i).first.x - 1);
+          glColor4f (0, 1, 0, 0.2f);
+          glVertex2f ((*i).first.x, (*i).first.y);
+          glVertex2f ((*i).first.x - 1, (*i).first.y);
+          glVertex2f ((*i).first.x - 1, (*i).first.y - 1);
+          glVertex2f ((*i).first.x, (*i).first.y - 1);
         }
       }
-      glEnd ();*/
+      glEnd ();
+      glMatrixMode (GL_PROJECTION);
+      glLoadIdentity ();
+      glMatrixMode (GL_MODELVIEW);
+      glLoadIdentity ();
     } //draw function
 
   }//namespace Physics
