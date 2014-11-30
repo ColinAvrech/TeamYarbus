@@ -170,10 +170,6 @@ namespace Framework
     m_renderer->render ();
     shader->Disable ();
     texture->Unbind ();
-
-    glDisable (GL_POINT_SPRITE);
-    glDisable (GL_PROGRAM_POINT_SIZE);
-    glDisable (GL_BLEND);
   }
 
   int FireSystem::numAllParticles ()

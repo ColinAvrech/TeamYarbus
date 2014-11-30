@@ -144,7 +144,7 @@ namespace Framework
         break;*/
         //if (previousHeight != offsetY || i == t.Get_Width () - 1)
         {
-          height_points.push_back ({ offsetX, offsetY / peak });
+          height_points.push_back ({ offsetX, offsetY});
           previousHeight = offsetY;
         }
 
@@ -173,9 +173,9 @@ namespace Framework
 
     for (int x = 0; x < THERMODYNAMICS->MapSize.x; ++x)
     {
-      for (int y = height_points [x].y * 64; y >= 0; --y)
+      for (int y = height_points [x].y * 128; y >= 0; --y)
       {
-        THERMODYNAMICS->Terrain.Set (x, y, WOOD);
+        THERMODYNAMICS->Terrain.Set (x, y, STONE);
       }
     }
 
@@ -262,6 +262,16 @@ namespace Framework
       p [1] = Vector2 (p3.x, p3.y);
       p [2] = Vector2 (p0.x, p0.y);
       p [3] = Vector2 (p1.x, p1.y);
+
+      //////////////////////////////////////////////////////////////////////////
+      //////////////////////////////////////////////////////////////////////////
+      // EDGES FOR THERMODYNAMICS
+      //////////////////////////////////////////////////////////////////////////
+      Physics::ThermodynamicsSystem::TerrainPoints.push_back (p2);
+      Physics::ThermodynamicsSystem::TerrainPoints.push_back (p3);
+      Physics::ThermodynamicsSystem::TerrainPoints.push_back (p0);
+      Physics::ThermodynamicsSystem::TerrainPoints.push_back (p1);
+      //////////////////////////////////////////////////////////////////////////
       p [2].y = p [3].y = y;
 
       CalculateIntersectionPoint

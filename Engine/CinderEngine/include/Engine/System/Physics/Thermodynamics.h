@@ -132,6 +132,7 @@ namespace Framework
 #pragma region Static Public Variables
 
       static glm::ivec2 MapSize;
+      static std::vector <glm::vec2> TerrainPoints;
 
 #pragma endregion
 

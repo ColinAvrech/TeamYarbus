@@ -80,7 +80,7 @@ Level =
 		Transform = 
 		{
 			Vec3 Translation = [0, 0, 0],
-			Vec3 Scale = [128, 128, 1],
+			Vec3 Scale = [128, 20, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
     Terrain2D = 
@@ -95,9 +95,6 @@ Level =
       Vec4 Color = [0.2, 0.2, 0.2, 1],
       bool AddCollider = true,
 		},
-    EcoSystem = 
-    {
-    },
   },
   Cog = 
 	  {

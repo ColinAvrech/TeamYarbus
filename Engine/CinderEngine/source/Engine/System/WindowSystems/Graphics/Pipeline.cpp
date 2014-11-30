@@ -305,7 +305,7 @@ namespace Framework
 //    Interpolate_Background ();
 //
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    //glClearColor (color.r, color.g, color.b, 1.0f);
+    glClearColor (color.r, color.g, color.b, 1.0f);
     glEnable (GL_BLEND);
     sFactor = GL_SRC_ALPHA;
     dFactor = GL_ONE_MINUS_SRC_ALPHA;
@@ -352,8 +352,8 @@ namespace Framework
     //glBindTexture (GL_TEXTURE_2D, 0);
 
 #ifdef _DEBUG
-    //THERMODYNAMICS->Draw ();
-    PHYSICS->Render ();
+    THERMODYNAMICS->Draw ();
+    //PHYSICS->Render ();
 #endif
   }
 
