@@ -80,7 +80,7 @@ namespace Framework
       //Calculate velocity vectors
       void ComputeVelocity(const int& start_index, const int& end_index, const double& dt);
       //Update fire
-      void UpdateFire(const int& start_index, const int& end_index, const double& dt);
+      void UpdateFire(const double& dt);
 
       void Reset ();
 
@@ -216,6 +216,7 @@ namespace Framework
 #pragma region Private Functions
       //Determine subscript from position
       glm::ivec2 GetSubscript(const float& x, const float& y);
+      glm::vec2 GetConvecDir(const unsigned i, const unsigned j);
       void Init_Materials();
 #pragma endregion
 

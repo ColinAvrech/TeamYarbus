@@ -47,7 +47,7 @@ namespace Framework
       //Scan level
       MapSize = { 128, 128 };
       std::cout << "Grid " << MapSize.x << "x " << MapSize.y << std::endl;
-      MapOffset = { 50, 50 };
+      MapOffset = { -MapSize.x / 2, MapSize.y / 2 };
       AtmosphericTemperature = 300.f;
       //Allocate heatmap
       TemperatureMap.allocate (MapSize.x, MapSize.y);
@@ -247,6 +247,7 @@ namespace Framework
         {
           float netdQ = 0.f;
           float oTemp = TemperatureMap.Get (i, j);
+          //Loop through surrounding cells
           for (int y = j - 1; y <= j + 1; ++y)
           {
             for (int x = i - 1; x <= i + 1; ++x)
@@ -267,7 +268,7 @@ namespace Framework
                 else
                 {
                   float dQ = ConductiveHeatTransfer(materialList[Terrain.Get(i, j)].K,
-                    TemperatureMap.Get(i, j), AtmosphericTemperature, dt, 0.1f);
+                    TemperatureMap.Get(i, j), AtmosphericTemperature, dt, 1.0f);
                   netdQ += dQ;
                 }
               }
@@ -305,62 +306,48 @@ namespace Framework
     //Update velocity vectors
     void ThermodynamicsSystem::ComputeVelocity(const int& start_index, const int& end_index, const double& dt)
     {
-      //vec2 dirvec [8] = {
-      //  { -1, -1 },
-      //  { 0, -1 },
-      //  { 1, -1 },
-      //  { -1, 0 },
-      //  { 1, 0 },
-      //  { -1, 1 },
-      //  { 0, 1 },
-      //  { 1, 1 }
-      //};
-      //for (int j = start_index; j < end_index; ++j)
-      //{
-      //  for (int i = 1; i < 100; ++i)
-      //  {
-      //    float dSum = 0.f;
-      //    for (int y = j - 1; y <= j + 1; ++y)
-      //    {
-      //      for (int x = i - 1; x <= i + 1; ++x)
-      //      {
-      //        dSum += DensityMap->Get(x, y);
-      //      }
-      //    }
-      //    float meanDensity = dSum / 8;
-      //    float buoyancy = Buoyancy (meanDensity, DensityMap->Get(i, j), 1.f);
+      
+    }
 
-      //    int vectorindex = 0;
-      //    float dDenseSum = 0.f;
-      //    VelocityMap->Set(i, j, { 0, 0 });
-      //    for (int y = j - 1; y <= j + 1; ++y)
-      //    {
-      //      for (int x = i - 1; x <= i + 1; ++x)
-      //      {
-      //        if (x != i || y != j)
-      //        {
-      //          float dDense = DensityMap->Get(x, y) - DensityMap->Get(i, j);
-      //          VelocityMap->Set(i, j, VelocityMap->Get(i, j) - (dirvec [vectorindex] * (dDense / 8)));
-      //          //if (EqualizePressure)
-      //          //{
-      //          //OxygenMap[x][y] += (dDense / 8) * (float)dt;
-      //          dDenseSum += (dDense / 8);
-      //          //}
-      //          ++vectorindex;
-      //        }
+    glm::vec2 ThermodynamicsSystem::GetConvecDir(const unsigned i, const unsigned j)
+    {
 
-      //      } //for x
-      //    } //for y
-      //    //OxygenMap[i][j] -= dDenseSum * (float)dt;
-      //    VelocityMap->Get(i, j) += (vec2 (0, 1) * buoyancy);
-      //  }//for i
-      //} //for j
     }
 
     //Update fire
-    void ThermodynamicsSystem::UpdateFire(const int& start_index, const int& end_index, const double& dt)
+    void ThermodynamicsSystem::UpdateFire(const double& dt)
     {
-      
+      for (auto i = FireMap.begin(); i != FireMap.end(); ++i)
+      {
+        if ((*i).second->onFire)
+        {
+          if (TemperatureMap.Get((*i).first.x, (*i).first.y) < Const::BT_Organics)
+          {
+            TemperatureMap.Set((*i).first.x, (*i).first.y,
+              TemperatureMap.Get((*i).first.x, (*i).first.y) + dt);
+          }
+        }
+        //Fire triangle consists of 3 elements :
+        //Oxygen, Fuel and Heat. Test if all 3 are
+        //present to decide whether or not to set
+        //an object on fire.
+        float cur_temp = TemperatureMap.Get((*i).first.x, (*i).first.y);
+        float ign_temp = materialList[(*i).second->material_type].IT;
+        float fuel_left = (*i).second->Fuel;
+        bool oxygen = false;
+        if (Terrain.Get((*i).first.x, (*i).first.y + 1) == AIR)
+          oxygen = true;
+        //if all 3 conditions are satisfied light fire
+        if (cur_temp >= ign_temp && fuel_left > 0.0f && oxygen)
+        {
+          (*i).second->LightOnFire();
+        }
+        //otherwise douse fire
+        else
+        {
+          (*i).second->DouseFire();
+        }
+      } //for
     }//function
 
     void ThermodynamicsSystem::Reset ()
@@ -450,14 +437,14 @@ namespace Framework
       }
 
       // Start Temperature Threads
-      for (int i = 0; i < kNumThreads; ++i)
+      /*for (int i = 0; i < kNumThreads; ++i)
       {
         SetEvent (eventStartFire [i]);
-      }
+      }*/
 
       WaitForMultipleObjects (kNumThreads, eventEndTemperature, true, INFINITE);
       WaitForMultipleObjects (kNumThreads, eventEndVelocity, true, INFINITE);
-      WaitForMultipleObjects (kNumThreads, eventEndFire, true, INFINITE);
+      //WaitForMultipleObjects (kNumThreads, eventEndFire, true, INFINITE);
 
       for (int i = 0; i < kNumThreads; ++i)
       {
@@ -467,10 +454,10 @@ namespace Framework
       {
         ResetEvent (eventEndVelocity [i]);
       }
-      for (int i = 0; i < kNumThreads; ++i)
+      /*for (int i = 0; i < kNumThreads; ++i)
       {
         ResetEvent (eventEndFire [i]);
-      }
+      }*/
     }
 
     void ThermodynamicsSystem::Draw ()
