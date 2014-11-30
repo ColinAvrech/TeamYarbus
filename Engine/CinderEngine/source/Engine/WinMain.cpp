@@ -66,7 +66,7 @@ int main (void)
   WindowSystem                  * windows     = new WindowSystem (WindowTitle, ClientWidth, ClientHeight, launchFullScreen);
   AudioSystem                   * audio       = new AudioSystem ();
   EventSystem                   * events      = new EventSystem ();
-  AudioEvents                   * audioEvents = new AudioEvents();  audioEvents->Initialize();
+  AudioEvents                   * audioEvents = new AudioEvents();
   ScriptSystem                  * zilch       = new ScriptSystem();
   ObjectSystem                  * objsys      = new ObjectSystem ();
   UISystem                      * ui          = new UISystem ();
@@ -99,6 +99,7 @@ int main (void)
 
   //! Initialize all added Systems. DON'T INIT YOUR OWN
   engine->Initialize ();
+  audioEvents->Initialize();
 
   //Sound *test = audio->LoadSound("FireA.ogg", "NOISE", Sound::SOUND_2D, 1.0f);
   //test->Play();

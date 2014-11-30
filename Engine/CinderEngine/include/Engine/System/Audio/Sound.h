@@ -25,6 +25,8 @@
 
 namespace Framework
 {
+  #define DISTANCE_FACTOR .04
+
   /*---------------------------------------------------------------------------
   // Class
   ---------------------------------------------------------------------------*/
@@ -156,6 +158,7 @@ namespace Framework
                                     const float endPos = 0, 
                                     const int index = 0);
       void            SetType(unsigned type, unsigned index);
+      void            SetPosition(Vec2 pos);
 
       // Getters
       float           GetMasterVolume(void);
@@ -232,7 +235,7 @@ namespace Framework
       FMOD::Channel                 *pChannel;
       FMOD::ChannelGroup            *pChannelGroup;
       FMOD::System                  *pFMODAudioSystem;
-      string                   _soundName;      
+      string                        _soundName;      
       FMOD_VECTOR                   _position;
       float                         _CutOffCounter;
       float                         _BandwidthCounter;

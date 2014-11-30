@@ -32,29 +32,34 @@ namespace Framework
   #pragma region Constructors  
 
   Sound::Sound(void) : ID(0),
-    pChannel(NULL), pChannelGroup(NULL), _volume(1.0f),
-    pFMODAudioSystem(NULL)
+                       pChannel(NULL), 
+                       pChannelGroup(NULL), 
+                       _volume(1.0f),
+                       pFMODAudioSystem(NULL)
 
   {
-    _volume        = 0;
-    _paused        = 0;
-    _pitch         = 0;
-    _volValue      = 0;
-    _fadeValue     = 0;
-    _fadeValA1     = 0;
-    _fadeValA2     = 0;
-    _fadeValA3     = 0;
-    _fadeValB1     = 0;
-    _fadeValB2     = 0;
-    _fadeValB3     = 0;
-    _centerValA    = 0;
-    _centerValB    = 0;
-    _bandwidthValA = 0;
-    _bandwidthValB = 0;
-    _gainValA      = 0;
-    _gainValB      = 0;
-    _CutOffCounter = 0;
+    _volume        = 0.0f;
+    _paused        = 0.0f;
+    _pitch         = 0.0f;
+    _volValue      = 0.0f;
+    _fadeValue     = 0.0f;
+    _fadeValA1     = 0.0f;
+    _fadeValA2     = 0.0f;
+    _fadeValA3     = 0.0f;
+    _fadeValB1     = 0.0f;
+    _fadeValB2     = 0.0f;
+    _fadeValB3     = 0.0f;
+    _centerValA    = 0.0f;
+    _centerValB    = 0.0f;
+    _bandwidthValA = 0.0f;
+    _bandwidthValB = 0.0f;
+    _gainValA      = 0.0f;
+    _gainValB      = 0.0f;
+    _CutOffCounter = 0.0f;
     _BandwidthCounter = 1.0f;
+    _position.x = 0.0f;
+    _position.y = 0.0f;
+    _position.z = 0.0f;
   }
 
   #pragma endregion
@@ -386,7 +391,7 @@ namespace Framework
       break;
     case SOUND_3D:
       pSound->setMode(FMOD_3D);
-      SetLoop(false, index);
+      SetLoop(true, index);
       break;
     case MUSIC:
       pSound->setMode(FMOD_2D);
@@ -394,6 +399,19 @@ namespace Framework
       break;
     }
   }
+
+  //void Sound::SetPosition(Vec2 pos)
+  //{
+  //  if (Sound::system_on_ == false)
+  //  { 
+  //    return; 
+  //  }
+  //
+  //  _position.x = static_cast<float>((pos._x) * DISTANCE_FACTOR);
+  //  _position.y = static_cast<float>((pos._y) * DISTANCE_FACTOR);
+  //}
+
+
 
   /***************************************************************************/
   /*!
@@ -709,6 +727,14 @@ namespace Framework
     {
       return;
     }    
+
+    if (ID == SOUND_3D)
+    {
+      if (pChannel)
+      {
+        pChannel->set3DAttributes(&_position, 0);
+      }
+    }
 
     // Update Functions
     UpdateVolumeFade(dt);
