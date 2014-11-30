@@ -87,6 +87,7 @@ namespace Framework
       glm::ivec2 sub = GetSubscript(x, y);
       FireMap.push_back(std::make_pair(sub, obj));
       Terrain.Set(sub.x, sub.y, obj->material_type);
+      TemperatureMap.Set(sub.x, sub.y, obj->initTemp);
     }
 
     // Called every frame
@@ -326,6 +327,7 @@ namespace Framework
             TemperatureMap.Set((*i).first.x, (*i).first.y,
               TemperatureMap.Get((*i).first.x, (*i).first.y) + dt);
           }
+          (*i).second->Update(dt);
         }
         //Fire triangle consists of 3 elements :
         //Oxygen, Fuel and Heat. Test if all 3 are
