@@ -16,7 +16,20 @@ namespace Framework
 { 
   void FireStarter::Serialize(Serializer::DataNode* data)
   {
-    
+    Serializer::DataNode* temp = data->FindElement(data, "onFire");
+    temp->GetValue(&onFire);
+
+    temp = data->FindElement(data, "Fuel");
+    temp->GetValue(&Fuel);
+
+    temp = data->FindElement(data, "InitTemp");
+    temp->GetValue(&initTemp);
+  }
+
+  void FireStarter::Update(const double dt)
+  {
+    if (Fuel > 0.0f)
+      Fuel -= dt;
   }
 
   void FireStarter::Initialize()
@@ -43,11 +56,6 @@ namespace Framework
       onFire = false;
       cout << "Doused\n";
     }
-  }
-
-  void FireStarter::Update(const double dt)
-  {
-
   }
 
   DefineComponentName(FireStarter);

@@ -309,10 +309,10 @@ namespace Framework
       
     }
 
-    glm::vec2 ThermodynamicsSystem::GetConvecDir(const unsigned i, const unsigned j)
+   /* glm::vec2 ThermodynamicsSystem::GetConvecDir(const unsigned i, const unsigned j)
     {
 
-    }
+    }*/
 
     //Update fire
     void ThermodynamicsSystem::UpdateFire(const double& dt)
@@ -462,13 +462,13 @@ namespace Framework
 
     void ThermodynamicsSystem::Draw ()
     {
-      glMatrixMode (GL_PROJECTION);
+      /*glMatrixMode (GL_PROJECTION);
       glLoadIdentity ();
       glOrtho (0, 128, 0, 128, -1, 1);
       glMatrixMode (GL_MODELVIEW);
       glLoadIdentity ();
       glColor3f (1, 1, 1);
-      /*glBegin (GL_QUADS);
+      glBegin (GL_QUADS);
       {
         for (int i = 0; i < Terrain.getSize ().y; ++i)
         {
@@ -485,7 +485,7 @@ namespace Framework
           }
         }
       }
-      glEnd ();*/
+      glEnd ();
 
       glBegin (GL_QUADS);
       {
@@ -503,22 +503,30 @@ namespace Framework
       }
       glEnd ();
 
-      //glBegin (GL_QUADS);
-      //{
-      //  for (int i = 0; i < FireMap.getSize ().y; ++i)
-      //  {
-      //    for (int j = 0; j < FireMap.getSize ().x; ++j)
-      //    {
-      //      glColor4f (0, FireMap.Get (j, i), 0, FireMap.Get (j, i));
-      //      glVertex2f (j, i);
-      //      glVertex2f (j - 1, i);
-      //      glVertex2f (j - 1, i - 1);
-      //      glVertex2f (j, i - 1);
-      //    }
-      //  }
-      //}
-      //glEnd ();
-    }
+      glBegin (GL_QUADS);
+      {
+        for (int i = 0; i < MapSize.y; ++i)
+        {
+          for (int j = 0; j < MapSize.x; ++j)
+          {
+            glColor4f (0, 0, 0, 0);
+            glVertex2f (j, i);
+            glVertex2f (j - 1, i);
+            glVertex2f (j - 1, i - 1);
+            glVertex2f (j, i - 1);
+          }
+        }
+        for (auto i = FireMap.begin(); i != FireMap.end(); ++i)
+        {
+          glColor4f (0, 1, 0, 1);
+          glVertex2f ((*i).first.y, (*i).first.x);
+          glVertex2f((*i).first.y - 1, (*i).first.x);
+          glVertex2f((*i).first.y - 1, (*i).first.x - 1);
+          glVertex2f((*i).first.y, (*i).first.x - 1);
+        }
+      }
+      glEnd ();*/
+    } //draw function
 
   }//namespace Physics
 }//namespace Framework

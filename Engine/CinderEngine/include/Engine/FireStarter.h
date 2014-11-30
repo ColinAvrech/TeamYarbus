@@ -28,5 +28,6 @@ namespace Framework
 		const static std::string Name;
 		bool onFire;	
     float Fuel;
+    float initTemp;
 	};
 }
