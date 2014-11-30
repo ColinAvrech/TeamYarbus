@@ -24,6 +24,9 @@ namespace Framework
 
     temp = data->FindElement(data, "InitTemp");
     temp->GetValue(&initTemp);
+
+    temp = data->FindElement(data, "MaterialType");
+    temp->GetValue(&material_type);
   }
 
   void FireStarter::Update(const double dt)

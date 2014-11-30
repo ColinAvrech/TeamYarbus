@@ -86,7 +86,7 @@ namespace Framework
     {
       glm::ivec2 sub = GetSubscript(x, y);
       FireMap.push_back(std::make_pair(sub, obj));
-      Terrain.Set(sub.x, sub.y, obj->material_type);
+      Terrain.Set(sub.x, sub.y, Material(obj->material_type));
       TemperatureMap.Set(sub.x, sub.y, obj->initTemp);
     }
 
