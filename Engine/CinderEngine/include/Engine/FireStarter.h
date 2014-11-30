@@ -18,12 +18,15 @@ namespace Framework
 	public:
 		FireStarter(){}
 		~FireStarter(){}
-		void lightOnFire();
+		void LightOnFire();
+    void DouseFire();
+    void Update(const double dt);
 		void Serialize(Serializer::DataNode* data);
 		void Initialize();
     Physics::Material material_type;
 
 		const static std::string Name;
-		bool onFire;		
+		bool onFire;	
+    float Fuel;
 	};
 }

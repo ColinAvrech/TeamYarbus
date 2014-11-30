@@ -27,9 +27,27 @@ namespace Framework
     Physics::THERMODYNAMICS->Add_Object(x, y, this);
   }
 
-  void FireStarter::lightOnFire(void)
+  void FireStarter::LightOnFire(void)
   {
-    onFire = true;
+    if (!onFire)
+    {
+      onFire = true;
+      cout << "Lit\n";
+    }
+  }
+
+  void FireStarter::DouseFire(void)
+  {
+    if (onFire)
+    {
+      onFire = false;
+      cout << "Doused\n";
+    }
+  }
+
+  void FireStarter::Update(const double dt)
+  {
+
   }
 
   DefineComponentName(FireStarter);
