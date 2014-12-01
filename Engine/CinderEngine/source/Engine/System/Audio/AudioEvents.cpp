@@ -18,6 +18,8 @@
 #include "EventSystem.h"
 #include "WindowFocusEvent.h"
 #include "UpdateEvent.h"
+#include "KeyEvent.h"
+#include "WindowSystem.h"
 
 #pragma endregion
 
@@ -32,9 +34,10 @@ namespace Framework
   ---------------------------------------------------------------------------*/
   #pragma region Constructors
 
+  Sound *test;
+
   AudioEvents::AudioEvents()
-  {
-  
+  {    
   }
   #pragma endregion
 
@@ -60,6 +63,10 @@ namespace Framework
   void AudioEvents::Initialize()
   {
     EVENTSYSTEM->mConnect<WindowFocusEvent, AudioEvents>(Events::WINDOWFOCUSEVENT, this, &AudioEvents::AudioEventsUpdate);
+    EVENTSYSTEM->mConnect<KeyEvent, AudioEvents>(Events::KEY_ANY, this, &AudioEvents::OnKeyPressed);
+
+    //test = AUDIOSYSTEM->LoadSound("Pads.ogg", "NOISE", Sound::SOUND_3D, 1.0f);
+    //test->Play();
   }
 
   void AudioEvents::AudioEventsUpdate(WindowFocusEvent* e)
@@ -73,6 +80,21 @@ namespace Framework
     {
       //AUDIOSYSTEM->SetPaused(true, Sound::SFX_ALL);
       //AUDIOSYSTEM->SetPauseMenuEffect(1000.0f, 1.5f, 3.0f);
+    }
+  }
+
+  void AudioEvents::OnKeyPressed(KeyEvent* key)
+  {
+    switch (key->KeyValue)
+    {
+      case GLFW_KEY_UP:
+        break;
+
+      case GLFW_KEY_DOWN:
+        break;
+
+      default:
+        break;
     }
   }
 

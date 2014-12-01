@@ -23,6 +23,7 @@
 namespace Framework
 {
   class WindowFocusEvent;
+  class KeyEvent;
 
   /*---------------------------------------------------------------------------
   // Class
@@ -60,9 +61,8 @@ namespace Framework
       #pragma region Public Functions
 
       void Initialize();
-
-
       void AudioEventsUpdate(WindowFocusEvent* e);
+      void OnKeyPressed(KeyEvent* _key);
 
       #pragma endregion
 
