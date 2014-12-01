@@ -95,6 +95,9 @@ Level =
       Vec4 Color = [0.2, 0.2, 0.2, 1],
       bool AddCollider = true,
 		},
+    EcoSystem = 
+    {
+    },
   },
   Cog = 
 	  {
@@ -139,7 +142,7 @@ Level =
       bool Enabled = true,
       bool OnFire = false,
       float Fuel = 100,
-      float InitTemp = 40000000,
+      float InitTemp = 400,
       int MaterialType = 2,
     },
   },

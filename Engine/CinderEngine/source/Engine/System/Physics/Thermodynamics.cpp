@@ -509,46 +509,46 @@ namespace Framework
       }
       glEnd ();
 
-      //glBegin (GL_QUADS);
-      //{
-      //  for (int i = 0; i < MapSize.y; ++i)
-      //  {
-      //    for (int j = 0; j < MapSize.x; ++j)
-      //    {
-      //      glColor4f (0, 0, 0, 0);
-      //      glVertex2f (j, i);
-      //      glVertex2f (j - 1, i);
-      //      glVertex2f (j - 1, i - 1);
-      //      glVertex2f (j, i - 1);
-      //    }
-      //  }
+      glBegin (GL_QUADS);
+      {
+        for (int i = 0; i < MapSize.y; ++i)
+        {
+          for (int j = 0; j < MapSize.x; ++j)
+          {
+            glColor4f (0, 0, 0, 0);
+            glVertex2f (j, i);
+            glVertex2f (j - 1, i);
+            glVertex2f (j - 1, i - 1);
+            glVertex2f (j, i - 1);
+          }
+        }
 
-      //  glMatrixMode (GL_PROJECTION);
-      //  glLoadIdentity ();
-      //  gluPerspective (Camera::main->GetFOV (), (float) WINDOWSYSTEM->Get_Width () / WINDOWSYSTEM->Get_Height (), 0, 100.0f);
-      //  glMatrixMode (GL_MODELVIEW);
-      //  glLoadIdentity ();
+        glMatrixMode (GL_PROJECTION);
+        glLoadIdentity ();
+        gluPerspective (Camera::main->GetFOV (), (float) WINDOWSYSTEM->Get_Width () / WINDOWSYSTEM->Get_Height (), 0, 100.0f);
+        glMatrixMode (GL_MODELVIEW);
+        glLoadIdentity ();
 
-      //  glm::vec3 eye = glm::vec3 (0, 0, 1) * Camera::main->GetSize () + glm::vec3 (Camera::main->gameObject->Transform->GetPosition ().x, Camera::main->gameObject->Transform->GetPosition ().y, 0);
-      //  glm::vec3 center = Camera::main->gameObject->Transform->GetPosition ();
-      //  glm::vec3 up = glm::vec3 (0, 1, 0);
+        glm::vec3 eye = glm::vec3 (0, 0, 1) * Camera::main->GetSize () + glm::vec3 (Camera::main->gameObject->Transform->GetPosition ().x, Camera::main->gameObject->Transform->GetPosition ().y, 0);
+        glm::vec3 center = Camera::main->gameObject->Transform->GetPosition ();
+        glm::vec3 up = glm::vec3 (0, 1, 0);
 
-      //  gluLookAt (eye.x, eye.y, eye.z, center.x, center.y, center.z, up.x, up.y, up.z);
+        gluLookAt (eye.x, eye.y, eye.z, center.x, center.y, center.z, up.x, up.y, up.z);
 
-      //  for (auto i = FireMap.begin (); i != FireMap.end (); ++i)
-      //  {
-      //    glColor4f (0, 1, 0, 0.2f);
-      //    glVertex2f ((*i).first.x, (*i).first.y);
-      //    glVertex2f ((*i).first.x - 1, (*i).first.y);
-      //    glVertex2f ((*i).first.x - 1, (*i).first.y - 1);
-      //    glVertex2f ((*i).first.x, (*i).first.y - 1);
-      //  }
-      //}
-      //glEnd ();
-      //glMatrixMode (GL_PROJECTION);
-      //glLoadIdentity ();
-      //glMatrixMode (GL_MODELVIEW);
-      //glLoadIdentity ();
+        for (auto i = FireMap.begin (); i+1 != FireMap.end (); ++i)
+        {
+          glColor4f (0, 1, 0, 0.2f);
+          glVertex2f ((*i).first.x, (*i).first.y);
+          glVertex2f ((*(i)).first.x + 7.5, (*i).first.y);
+          glVertex2f ((*(i)).first.x + 7.5, (*(i)).first.y - 5);
+          glVertex2f ((*i).first.x, (*(i)).first.y-5);
+        }
+      }
+      glEnd ();
+      glMatrixMode (GL_PROJECTION);
+      glLoadIdentity ();
+      glMatrixMode (GL_MODELVIEW);
+      glLoadIdentity ();
     } //draw function
 
   }//namespace Physics

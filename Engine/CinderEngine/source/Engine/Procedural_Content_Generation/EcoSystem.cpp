@@ -73,7 +73,7 @@ namespace Framework
 
       tree_list[i] = Evaluate_Compatibility(i);
       //Hack!!
-      //if (tree_list[i] != OPEN)
+      if (tree_list[i] != OPEN)
       //if (i % 100 == 0)
         GenerateType(
           offsetX + Translation.x,
@@ -114,7 +114,7 @@ namespace Framework
       if (type == GRASS)
         fs->initTemp = 400.0f;
       else
-        fs->initTemp = 4000.0f;
+        fs->initTemp = 400.0f;
       fs->Initialize ();
     }
   }
