@@ -84,8 +84,6 @@ namespace Framework
 
   void Camera::Initialize ()
   {
-    // HACK!!
-    AUDIOSYSTEM->listener = gameObject->Transform;
     EVENTSYSTEM->mConnect <KeyEvent, Camera> (Events::KEY_ANY, this, &Camera::OnKeyPressed);
     gameObject->Camera = this;
     allCameras.push_back(this);

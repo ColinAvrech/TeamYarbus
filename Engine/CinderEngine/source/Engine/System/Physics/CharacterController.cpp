@@ -18,7 +18,6 @@
 #include "Collider2D.h"
 
 
-
 namespace Framework
 {
   CharacterController* PLAYER = nullptr;
@@ -175,6 +174,8 @@ namespace Framework
     EVENTSYSTEM->mConnect<KeyEvent, CharacterController> (Events::KEY_ANY, this, &CharacterController::OnKeyPressed);
     EVENTSYSTEM->mConnect<CollisionEvent, CharacterController> (Events::COLLISION, this, &CharacterController::OnCollisionEnter);
     EVENTSYSTEM->mConnect<UpdateEvent, CharacterController> (Events::UPDATEEVENT, this, &CharacterController::Update);
+
+    AUDIOSYSTEM->listener = gameObject->Transform;
   }
 
   void CharacterController::Serialize (Serializer::DataNode* data)

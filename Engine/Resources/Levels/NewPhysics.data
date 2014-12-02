@@ -95,6 +95,20 @@ Level =
       Vec4 Color = [0.05, 0.05, 0.05, 1],
       bool AddCollider = false,
 		},
+    AudioComponent = 
+	  {  
+		  string SoundID = "FireA.ogg",
+		  bool Play = true,
+		  bool Mute = false,
+		  bool Positional = true,
+      bool LowPassFilter = true,
+      float LPFcutoff = 6000,
+      float LPFresonance = 1,
+      bool HighPassFilter = true,
+      float HPFcutoff = 150,
+      float HPFresonance = 1,
+      bool MicEffect = true,
+	  },
   },
   Cog = 
 	{
