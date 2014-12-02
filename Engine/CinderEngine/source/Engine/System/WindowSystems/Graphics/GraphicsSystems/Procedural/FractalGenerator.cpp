@@ -124,10 +124,10 @@ namespace Framework
       p2 = glm::vec2 (OPENGL->GetModelMatrix () * glm::vec4 (0, -sizes.at(i), 0, 1));
       OPENGL->PopMatrix ();
       color = glm::vec4 (0.5f / (colors.at (i) * treeRed), 0.5f / (colors.at (i) * treeGreen), 0.0f, 1.0f);
-      if (i % (lines / 4) == 0)
-      {
-        joints->push_back ({ p1.x, p1.y });
-      }
+      //if (i % (lines / 4) == 0)
+      //{
+      //  joints->push_back ({ p1.x, p1.y });
+      //}
       mesh->push_back (p1.x);
       mesh->push_back (p1.y);
       mesh->push_back (color.r);

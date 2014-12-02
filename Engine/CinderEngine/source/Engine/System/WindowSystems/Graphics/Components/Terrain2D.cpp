@@ -125,7 +125,7 @@ namespace Framework
     tc = new Procedural::TerrainCreator (MapSize, BaseHeight, Passes, Waves, PeakHeight, WaterDepth);
     Procedural::TerrainCreator& t = *tc;
     float* Map = t.GetRockMap ();
-    float* W_Map = t.GetWaterMap();
+    //float* W_Map = t.GetWaterMap();
     float peak = t.GetPeakHeight () / t.Get_Width();
 
     {

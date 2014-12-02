@@ -83,7 +83,7 @@ namespace Framework
     {
       AddRock();
       AddSoil();
-      AddWater();
+      //AddWater();
     }
 
     void TerrainCreator::AddSoil()
