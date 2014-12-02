@@ -42,14 +42,14 @@ namespace Framework
 	{
 		float growthRate = .1f;
 		currentRadius += growthRate * c->Dt;
-		gameObject->Transform->Scale(currentRadius / maxRadius);
+	//	gameObject->Transform->Scale(currentRadius / maxRadius);
 	}
 
 	void Health::Update(UpdateEvent* e)
 	{
 		float deathRate = .03f;
 		currentRadius -= deathRate * e->Dt;
-		gameObject->Transform->Scale(currentRadius / maxRadius);
+	//	gameObject->Transform->Scale(currentRadius / maxRadius);
 
 		if (currentRadius == minRadius)
 			printf("dead");

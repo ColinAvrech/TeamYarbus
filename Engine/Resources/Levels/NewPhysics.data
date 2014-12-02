@@ -220,7 +220,7 @@ Level =
 		{
       bool Enabled = true,
 		  Vec2 Acceleration = [400, 0],
-		  Vec2 JumpVelocity = [0, 800],
+		  Vec2 JumpVelocity = [0, 10],
 		  Vec2 MicrophoneMultiplier = [0, 75],
 		},
 		Health = 

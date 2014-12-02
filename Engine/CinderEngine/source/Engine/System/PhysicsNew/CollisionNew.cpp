@@ -1,5 +1,7 @@
 #include "CollisionNew.h"
 #include "Manifold.h"
+#include "CollisionEvent.h"
+#include "EventSystem.h"
 
 namespace Framework
 {
@@ -77,7 +79,13 @@ namespace Framework
 	      faceNormal = i;
 	    }
 	  }
-	
+	  //has collided
+	  CollisionEvent collisionEvent;
+	  collisionEvent.normal.x = B->m_normals[faceNormal].x;
+	  collisionEvent.normal.y = B->m_normals[faceNormal].y;
+	  collisionEvent.normal.z = 0.0f;
+	  EVENTSYSTEM->TriggerEvent(Events::COLLISION, collisionEvent);
+
 	  // Grab face's vertices
 	  Vector2 v1 = B->m_vertices[faceNormal];
 	  unsigned i2 = faceNormal + 1 < B->m_vertexCount ? faceNormal + 1 : 0;
