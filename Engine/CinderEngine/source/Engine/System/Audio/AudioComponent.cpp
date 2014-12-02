@@ -65,11 +65,32 @@ namespace Framework
     Serializer::DataNode* value = data->FindElement(data, "Positional");
     value->GetValue(&positional);
 
+    value = data->FindElement(data, "MicEffect");
+    value->GetValue(&micEffect);
+
     value = data->FindElement(data, "Play");
     value->GetValue(&playing);
 
     value = data->FindElement(data, "Mute");
     value->GetValue(&mute);
+
+    value = data->FindElement(data, "LowPassFilter");
+    value->GetValue(&lowpassed);
+
+    value = data->FindElement(data, "LPFcutoff");
+    value->GetValue(&lowcutoff);
+
+    value = data->FindElement(data, "LPFresonance");
+    value->GetValue(&lowresonance);
+
+    value = data->FindElement(data, "HighPassFilter");
+    value->GetValue(&highpassed);
+
+    value = data->FindElement(data, "HPFcutoff");
+    value->GetValue(&highcutoff);
+
+    value = data->FindElement(data, "HPFresonance");
+    value->GetValue(&highresonance);
 
     value = data->FindElement(data, "SoundID");
     value->GetValue(&soundName);
@@ -86,17 +107,33 @@ namespace Framework
   void AudioComponent::Update()
   {
     if (positional)
-    {
       newSound->SetPosition(gameObject->Transform->GetPosition());
-    }
-
 
     if (playing)
       newSound->Play();
     else
       newSound->Stop();
 
-      newSound->SetMute(mute);
+    if (lowpassed)
+    {
+      newSound->LowPassFilter();
+      newSound->SetLPF(lowcutoff, lowresonance);
+
+      lowpassed = false;
+    }
+
+    if (highpassed)
+    {
+      newSound->HighPassFilter();
+      newSound->SetHPF(highcutoff, highresonance);
+
+      highpassed = false;
+    }
+
+    if (micEffect)
+      newSound->micEffectUpdate();
+
+    newSound->SetMute(mute);
   }
 
   #pragma endregion

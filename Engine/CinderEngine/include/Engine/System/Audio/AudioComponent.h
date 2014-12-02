@@ -104,6 +104,13 @@ namespace Framework
       bool          positional;
       bool          playing;
       bool          mute = false;
+      bool          lowpassed;
+      float         lowcutoff;
+      float         lowresonance;
+      bool          highpassed;
+      float         highcutoff;
+      float         highresonance;
+      bool          micEffect;
       Sound         *newSound;
 
       #pragma endregion

@@ -123,7 +123,7 @@ int main (void)
   //Currently broken;
   //OBJECTSYSTEM->LoadAllLevels("..//..//Resources//Levels//MasterLevelFile.txt");
 
-  OBJECTSYSTEM->ZilchLoadLevel(Zilch::String("ZIlchTestLevel"));
+  OBJECTSYSTEM->ZilchLoadLevel(Zilch::String("FirePropogationTest"));
 
   // Connect example
   //MyClass _myclass;

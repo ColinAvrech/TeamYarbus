@@ -127,6 +127,7 @@ namespace Framework
       void            AddSound(char* filename);
       virtual void    Update(const double &dt);
       void            UpdateVolumeFade(const double dt);
+      void            micEffectUpdate();
 
       // DSP
       void            LowPassFilter();
@@ -228,8 +229,10 @@ namespace Framework
       float                         _bandwidthValB;
       float                         _gainValA;
       float                         _gainValB;
+      float                         _micLPF = 6000.0f;
       bool                          test = true;
       bool                          test2 = true;
+      bool                          checkPos = true;
       bool                          _EQStateA = false;
       bool                          _EQStateB = false;
       std::vector<FMOD::Sound*>     sound_queue_;

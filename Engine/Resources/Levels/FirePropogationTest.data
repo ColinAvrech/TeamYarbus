@@ -146,11 +146,18 @@ Level =
       int MaterialType = 2,
     },
 	AudioComponent = 
-	{
+	{  
+		string SoundID = "FireA.ogg",
 		bool Play = true,
 		bool Mute = false,
 		bool Positional = true,
-		string SoundID = "FireA.ogg",
+    bool LowPassFilter = true,
+    float LPFcutoff = 6000,
+    float LPFresonance = 1,
+    bool HighPassFilter = true,
+    float HPFcutoff = 150,
+    float HPFresonance = 1,
+    bool MicEffect = true,
 	},
   },
       Cog = 

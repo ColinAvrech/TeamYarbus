@@ -405,6 +405,8 @@ namespace Framework
       break;
     case SOUND_3D:
       pSound->setMode(FMOD_3D);
+      pFMODAudioSystem->set3DSettings(1.0f, float(DISTANCE_FACTOR), 1.0f);
+      pSound->set3DMinMaxDistance(10.0f * float(DISTANCE_FACTOR), 15000.0f * float(DISTANCE_FACTOR));
       SetLoop(true, index);
       break;
     case MUSIC:
@@ -421,12 +423,10 @@ namespace Framework
       return; 
     }
   
-    _position.x = (pos.x - AUDIOSYSTEM->listener->GetPosition().x) * DISTANCE_FACTOR;
-    _position.y = (pos.y - AUDIOSYSTEM->listener->GetPosition().y) * DISTANCE_FACTOR;
-    _position.z = (pos.z - AUDIOSYSTEM->listener->GetPosition().z) * DISTANCE_FACTOR;
+    _position.x = (pos.x - AUDIOSYSTEM->listener->GetPosition().x) * float(DISTANCE_FACTOR);
+    _position.y = (pos.y - AUDIOSYSTEM->listener->GetPosition().y) * float(DISTANCE_FACTOR);
+    _position.z = (pos.z - AUDIOSYSTEM->listener->GetPosition().z) * float(DISTANCE_FACTOR);
   }
-
-
 
   /***************************************************************************/
   /*!
@@ -819,6 +819,26 @@ namespace Framework
       }
     }  
   }  
+
+  void Sound::micEffectUpdate()
+  {
+    if (AUDIOSYSTEM->GetMicrophoneValue() > 0.05f)
+    {
+      if (_micLPF < 22000)
+      {
+        _micLPF += AUDIOSYSTEM->GetMicrophoneValue() * 200.0f;
+      }
+    }
+    else
+    {
+      if (_micLPF > 6000)
+      {
+        _micLPF -= 150.0f;
+      }
+    }
+
+    this->SetLPF(_micLPF, 1);
+  }
  
   /*---------------------------------------------------------------------------
   // Destructor
