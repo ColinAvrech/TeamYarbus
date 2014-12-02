@@ -38,6 +38,6 @@ namespace Framework
   {
   public:
     ZilchDeclareBaseType (PauseEvent, Zilch::TypeCopyMode::ReferenceType);
-    bool Paused;
+    Zilch::Boolean Paused;
   };
 }
