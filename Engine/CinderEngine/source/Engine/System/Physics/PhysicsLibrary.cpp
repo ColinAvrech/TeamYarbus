@@ -81,5 +81,14 @@ namespace Framework
       glm::vec3 accel = force / (float)mass;
       return accel;
     }
+
+    float Angle_from_Vertical(const glm::vec2& d_vec)
+    {
+      glm::vec2 y_axis = { 0.0f, 1.0f };
+
+      float cos_t = glm::dot(y_axis, d_vec);
+
+      return glm::acos(cos_t);
+    }
   }
 }

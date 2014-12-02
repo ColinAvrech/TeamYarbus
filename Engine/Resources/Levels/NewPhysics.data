@@ -173,7 +173,7 @@ Level =
     },
     FireSystem = 
     {
-      bool Enabled = true,
+      bool Enabled = false,
       float ParticleSize = 100,
     },
   },
@@ -225,7 +225,7 @@ Level =
 		},
 		PlayerEffect = 
 		{
-      bool Enabled = true,
+      bool Enabled = false,
 		  float ParticleSize = 100,
 		  float MaxSize = 10,
 		  float MinSize = 10,
