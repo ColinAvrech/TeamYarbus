@@ -95,6 +95,9 @@ Level =
       Vec4 Color = [0.2, 0.2, 0.2, 1],
       bool AddCollider = true,
 		},
+    EcoSystem = 
+    {
+    },
   },
   Cog = 
 	  {
@@ -139,9 +142,23 @@ Level =
       bool Enabled = true,
       bool OnFire = false,
       float Fuel = 100,
-      float InitTemp = 40000000,
+      float InitTemp = 4000,
       int MaterialType = 2,
     },
+	AudioComponent = 
+	{  
+		string SoundID = "FireA.ogg",
+		bool Play = true,
+		bool Mute = false,
+		bool Positional = true,
+    bool LowPassFilter = true,
+    float LPFcutoff = 6000,
+    float LPFresonance = 1,
+    bool HighPassFilter = true,
+    float HPFcutoff = 150,
+    float HPFresonance = 1,
+    bool MicEffect = true,
+	},
   },
       Cog = 
 	  {

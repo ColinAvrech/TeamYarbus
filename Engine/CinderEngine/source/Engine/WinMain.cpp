@@ -66,7 +66,7 @@ int main (void)
   WindowSystem                  * windows     = new WindowSystem (WindowTitle, ClientWidth, ClientHeight, launchFullScreen);
   AudioSystem                   * audio       = new AudioSystem ();
   EventSystem                   * events      = new EventSystem ();
-  AudioEvents                   * audioEvents = new AudioEvents();  audioEvents->Initialize();
+  AudioEvents                   * audioEvents = new AudioEvents();
   ScriptSystem                  * zilch       = new ScriptSystem();
   ObjectSystem                  * objsys      = new ObjectSystem ();
   UISystem                      * ui          = new UISystem ();
@@ -95,10 +95,15 @@ int main (void)
   //Cinder::Objsys = objsys;
 
   Resources resourceManager;
+  ZInterface::ResourceSystem = &resourceManager;
   resourceManager.Load_Resources ();
 
   //! Initialize all added Systems. DON'T INIT YOUR OWN
   engine->Initialize ();
+  audioEvents->Initialize();
+
+  //Sound *test = resourceManager.Get_Sound("Pads.ogg");
+  //test->Play();
 
   //Sound *test = audio->LoadSound("FireA.ogg", "NOISE", Sound::SOUND_2D, 1.0f);
   //test->Play();
@@ -117,7 +122,8 @@ int main (void)
   //! activate the window.
   //Currently broken;
   //OBJECTSYSTEM->LoadAllLevels("..//..//Resources//Levels//MasterLevelFile.txt");
-  OBJECTSYSTEM->ZilchLoadLevel(Zilch::String("NewPhysics"));
+
+  OBJECTSYSTEM->ZilchLoadLevel(Zilch::String("FirePropogationTest"));
 
   // Connect example
   //MyClass _myclass;

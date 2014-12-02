@@ -27,6 +27,9 @@ namespace Framework
 {
 
   class Resources;
+  class AudioComponent;
+  class Transform;
+
   /*---------------------------------------------------------------------------
   // Class
   ---------------------------------------------------------------------------*/
@@ -50,6 +53,7 @@ namespace Framework
 
       char* AudioAssetsPath = "../../Resources/Audio/";      
       FMOD_DSP_METERING_INFO input; // Microphone input values
+      Transform* listener;
 
       #pragma endregion
 
@@ -70,6 +74,8 @@ namespace Framework
       Sound*        LoadSound(const char* filename,  char* soundName, 
                               Sound::SoundID type,  float volume);      
       void          StopSounds(int id);
+      void          AddAudioComponent(AudioComponent* component);
+      void          DeleteAudioComponent(AudioComponent* component);
 
       // Pause Menu Effect
       void          InitPauseMenuEffect();
@@ -137,7 +143,8 @@ namespace Framework
       -----------------------------------------------------------------------*/
       #pragma region Private Variables
 
-      std::map<string, Sound*>     soundMap;
+      std::map<string, Sound*>          soundMap;
+      std::list<AudioComponent*>        audioComponentList;
       FMOD::System                      *pFMODAudioSystem = NULL;
       FMOD::ChannelGroup                *GroupMusic;
       FMOD::ChannelGroup                *Group2DSFX;

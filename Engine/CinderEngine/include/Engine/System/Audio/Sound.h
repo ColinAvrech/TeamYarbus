@@ -25,12 +25,15 @@
 
 namespace Framework
 {
+  #define DISTANCE_FACTOR 0.04
+
   /*---------------------------------------------------------------------------
   // Class
   ---------------------------------------------------------------------------*/
   class Sound
   {
     public:
+		ZilchDeclareBaseType(Sound, Zilch::TypeCopyMode::ReferenceType);
     
       /*-----------------------------------------------------------------------
       // Constructors
@@ -124,6 +127,7 @@ namespace Framework
       void            AddSound(char* filename);
       virtual void    Update(const double &dt);
       void            UpdateVolumeFade(const double dt);
+      void            micEffectUpdate();
 
       // DSP
       void            LowPassFilter();
@@ -156,6 +160,7 @@ namespace Framework
                                     const float endPos = 0, 
                                     const int index = 0);
       void            SetType(unsigned type, unsigned index);
+      void            SetPosition(glm::vec3 pos);
 
       // Getters
       float           GetMasterVolume(void);
@@ -224,15 +229,17 @@ namespace Framework
       float                         _bandwidthValB;
       float                         _gainValA;
       float                         _gainValB;
+      float                         _micLPF = 6000.0f;
       bool                          test = true;
       bool                          test2 = true;
+      bool                          checkPos = true;
       bool                          _EQStateA = false;
       bool                          _EQStateB = false;
       std::vector<FMOD::Sound*>     sound_queue_;
       FMOD::Channel                 *pChannel;
       FMOD::ChannelGroup            *pChannelGroup;
       FMOD::System                  *pFMODAudioSystem;
-      string                   _soundName;      
+      string                        _soundName;      
       FMOD_VECTOR                   _position;
       float                         _CutOffCounter;
       float                         _BandwidthCounter;

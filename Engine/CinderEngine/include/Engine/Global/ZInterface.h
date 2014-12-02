@@ -42,8 +42,14 @@ namespace Framework
 		ZilchDeclareBaseType(ZInterface, Zilch::TypeCopyMode::ReferenceType);
 		static ObjectSystem* ObjectSys;
 		static WindowSystem* WindowSys;
+		static Resources* ResourceSystem;
 		
 		static void QuitGame();
+
+		static Sound* GetSound(String soundName);
+		static void TogglePaused();
+		static void IsPaused();
+		;
 
 		static ZilchFile* OpenFile(Zilch::String filepath);
 		

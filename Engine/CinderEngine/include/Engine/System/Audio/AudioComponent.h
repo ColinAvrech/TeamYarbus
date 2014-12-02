@@ -1,34 +1,34 @@
 /*****************************************************************************/
 /*!
-\file   AudioEvents.h
+\file   AudioComponent.h
 \author Deepak Chennakkadan
 \par    Course: GAM200
 \par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
-\brief  Creates the infrastructure for the Audio Events
+\brief  Header file for the AudioSystem Class
 */
 /*****************************************************************************/
 
-#ifndef _AUDIOEVENTS_H
-#define _AUDIOEVENTS_H
+#ifndef _AUDIO_COMPONENT
+#define _AUDIO_COMPONENT
 
 /*-----------------------------------------------------------------------------
 // Includes
 -----------------------------------------------------------------------------*/
 #pragma region Includes
 
-#include "Common.h"
+#include "Component.h"
+#include "JSONSerializer.h"
 
 #pragma endregion
 
 namespace Framework
 {
-  class WindowFocusEvent;
-  class KeyEvent;
+  class Sound;
 
   /*---------------------------------------------------------------------------
   // Class
   ---------------------------------------------------------------------------*/
-  class AudioEvents
+  class AudioComponent : public  Component
   {
     public:
 
@@ -37,7 +37,7 @@ namespace Framework
       -----------------------------------------------------------------------*/
       #pragma region Constructors
 
-      AudioEvents();
+      AudioComponent();
 
       #pragma endregion
 
@@ -45,6 +45,8 @@ namespace Framework
       // Public Variables
       -----------------------------------------------------------------------*/
       #pragma region Public Variables
+
+      static const string Name;
 
       #pragma endregion
 
@@ -60,11 +62,12 @@ namespace Framework
       -----------------------------------------------------------------------*/
       #pragma region Public Functions
 
-      void Initialize();
-      void AudioEventsUpdate(WindowFocusEvent* e);
-      void OnKeyPressed(KeyEvent* _key);
+      virtual void Serialize(Serializer::DataNode*);
+      virtual void Initialize();
+      void AudioComponent::Update();
 
       #pragma endregion
+
 
       /*-----------------------------------------------------------------------
       // Static Public Variables
@@ -73,6 +76,7 @@ namespace Framework
 
       #pragma endregion
 
+
       /*-----------------------------------------------------------------------
       // Static Public Functions
       -----------------------------------------------------------------------*/
@@ -80,12 +84,13 @@ namespace Framework
 
       #pragma endregion
 
+
       /*-----------------------------------------------------------------------
       // Destructor
       -----------------------------------------------------------------------*/
       #pragma region Destructors
 
-      virtual ~AudioEvents();
+      ~AudioComponent();
 
       #pragma endregion
 
@@ -96,7 +101,20 @@ namespace Framework
       -----------------------------------------------------------------------*/
       #pragma region Private Variables
 
+      bool          positional;
+      bool          playing;
+      bool          mute = false;
+      bool          lowpassed;
+      float         lowcutoff;
+      float         lowresonance;
+      bool          highpassed;
+      float         highcutoff;
+      float         highresonance;
+      bool          micEffect;
+      Sound         *newSound;
+
       #pragma endregion
+
 
       /*-----------------------------------------------------------------------
       // Private Structs
@@ -112,17 +130,17 @@ namespace Framework
 
       #pragma endregion
 
+
       /*-----------------------------------------------------------------------
       // Static Functions
       -----------------------------------------------------------------------*/
       #pragma region Static Functions
 
       #pragma endregion
-  };
 
-  extern AudioEvents *AUDIOEVENTS;
-} // namespace Framework
+  };
+}
 
 //-----------------------------------------------------------------------------
 
-#endif				// _AUDIOEVENTS_H
+#endif				// _AUDIO_COMPONENT

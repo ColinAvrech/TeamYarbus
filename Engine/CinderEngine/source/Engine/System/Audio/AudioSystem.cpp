@@ -15,6 +15,7 @@
 
 #include "AudioSystem.h"
 #include "AudioEvents.h"
+#include "AudioComponent.h"
 #include "Console.h"
 #include "Core.h"
 
@@ -53,7 +54,7 @@ namespace Framework
   /*---------------------------------------------------------------------------
   // Public Variables
   ---------------------------------------------------------------------------*/
-#pragma region Public Variables
+#pragma region Global Variables
 
   AudioSystem *AUDIOSYSTEM;
 
@@ -169,6 +170,16 @@ namespace Framework
     return newSound;
   }
 
+  void AudioSystem::AddAudioComponent(AudioComponent* component)
+  {
+    audioComponentList.push_back(component);
+  }
+
+  void AudioSystem::DeleteAudioComponent(AudioComponent* component)
+  {
+    audioComponentList.remove(component);
+  }
+
   /***************************************************************************/
   /*!
   \brief  Stops the specific sounds we want to stop playing
@@ -236,6 +247,11 @@ namespace Framework
     for (it = soundMap.begin(); it != soundMap.end(); ++it)
     {
       it->second->Update(dt);
+    }
+
+    for (auto *i : audioComponentList)
+    {
+      i->Update();
     }
   }
 

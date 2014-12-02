@@ -14,6 +14,9 @@
 #pragma region Includes
 
 #include "Sound.h"
+#include "AudioSystem.h"
+#include "Transform.h"
+#include "ZilchCompiledLib.h"
 
 #pragma endregion
 
@@ -22,6 +25,17 @@ static char THIS_FILE[] = __FILE__;
 
 namespace Framework
 {
+	ZilchDefineType(Sound, CinderZilch)
+	{
+
+		ZilchBindMethod(SetVolume);
+		ZilchBindMethod(SetPan);
+		ZilchBindMethod(SetPause);
+		ZilchBindMethod(Stop);
+		ZilchBindMethod(Play);
+		ZilchBindMethod(VolumeFade);
+		//ZilchBindConstructor();
+	}
   /*---------------------------------------------------------------------------
   // Class Implementation
   ---------------------------------------------------------------------------*/
@@ -32,29 +46,34 @@ namespace Framework
   #pragma region Constructors  
 
   Sound::Sound(void) : ID(0),
-    pChannel(NULL), pChannelGroup(NULL), _volume(1.0f),
-    pFMODAudioSystem(NULL)
+                       pChannel(NULL), 
+                       pChannelGroup(NULL), 
+                       _volume(1.0f),
+                       pFMODAudioSystem(NULL)
 
   {
-    _volume        = 0;
-    _paused        = 0;
-    _pitch         = 0;
-    _volValue      = 0;
-    _fadeValue     = 0;
-    _fadeValA1     = 0;
-    _fadeValA2     = 0;
-    _fadeValA3     = 0;
-    _fadeValB1     = 0;
-    _fadeValB2     = 0;
-    _fadeValB3     = 0;
-    _centerValA    = 0;
-    _centerValB    = 0;
-    _bandwidthValA = 0;
-    _bandwidthValB = 0;
-    _gainValA      = 0;
-    _gainValB      = 0;
-    _CutOffCounter = 0;
+    _volume        = 0.0f;
+    _paused        = 0.0f;
+    _pitch         = 0.0f;
+    _volValue      = 0.0f;
+    _fadeValue     = 0.0f;
+    _fadeValA1     = 0.0f;
+    _fadeValA2     = 0.0f;
+    _fadeValA3     = 0.0f;
+    _fadeValB1     = 0.0f;
+    _fadeValB2     = 0.0f;
+    _fadeValB3     = 0.0f;
+    _centerValA    = 0.0f;
+    _centerValB    = 0.0f;
+    _bandwidthValA = 0.0f;
+    _bandwidthValB = 0.0f;
+    _gainValA      = 0.0f;
+    _gainValB      = 0.0f;
+    _CutOffCounter = 0.0f;
     _BandwidthCounter = 1.0f;
+    _position.x = 0.0f;
+    _position.y = 0.0f;
+    _position.z = 0.0f;
   }
 
   #pragma endregion
@@ -62,7 +81,7 @@ namespace Framework
   /*---------------------------------------------------------------------------
   // Public Variables
   ---------------------------------------------------------------------------*/
-  #pragma region Public Variables
+  #pragma region Global Variables
 
   bool Sound::system_on_ = true;
 
@@ -386,13 +405,27 @@ namespace Framework
       break;
     case SOUND_3D:
       pSound->setMode(FMOD_3D);
-      SetLoop(false, index);
+      pFMODAudioSystem->set3DSettings(1.0f, float(DISTANCE_FACTOR), 1.0f);
+      pSound->set3DMinMaxDistance(10.0f * float(DISTANCE_FACTOR), 15000.0f * float(DISTANCE_FACTOR));
+      SetLoop(true, index);
       break;
     case MUSIC:
       pSound->setMode(FMOD_2D);
       SetLoop(true, index);
       break;
     }
+  }
+
+  void Sound::SetPosition(glm::vec3 pos)
+  {
+    if (Sound::system_on_ == false)
+    { 
+      return; 
+    }
+  
+    _position.x = (pos.x - AUDIOSYSTEM->listener->GetPosition().x) * float(DISTANCE_FACTOR);
+    _position.y = (pos.y - AUDIOSYSTEM->listener->GetPosition().y) * float(DISTANCE_FACTOR);
+    _position.z = (pos.z - AUDIOSYSTEM->listener->GetPosition().z) * float(DISTANCE_FACTOR);
   }
 
   /***************************************************************************/
@@ -710,6 +743,14 @@ namespace Framework
       return;
     }    
 
+    if (ID == SOUND_3D)
+    {
+      if (pChannel)
+      {
+        pChannel->set3DAttributes(&_position, 0);
+      }
+    }
+
     // Update Functions
     UpdateVolumeFade(dt);
     UpdateFrequency1(dt);
@@ -778,6 +819,26 @@ namespace Framework
       }
     }  
   }  
+
+  void Sound::micEffectUpdate()
+  {
+    if (AUDIOSYSTEM->GetMicrophoneValue() > 0.05f)
+    {
+      if (_micLPF < 22000)
+      {
+        _micLPF += AUDIOSYSTEM->GetMicrophoneValue() * 200.0f;
+      }
+    }
+    else
+    {
+      if (_micLPF > 6000)
+      {
+        _micLPF -= 150.0f;
+      }
+    }
+
+    this->SetLPF(_micLPF, 1);
+  }
  
   /*---------------------------------------------------------------------------
   // Destructor
