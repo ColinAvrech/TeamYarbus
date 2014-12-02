@@ -10,6 +10,7 @@
 #include "Health.h"
 #include "EventSystem.h"
 #include "UpdateEvent.h"
+#include "CollisionEvent.h"
 
 namespace Framework
 {
@@ -31,21 +32,26 @@ namespace Framework
 	void Health::Initialize()
 	{
 		EVENTSYSTEM->mConnect<UpdateEvent, Health>(Events::UPDATEEVENT, this, &Health::Update);
+		EVENTSYSTEM->mConnect<CollisionEvent, Health>("CollisionEvent", this, &Health::OnCollisionEnter);
 		gameObject->Health = this;
 
 		currentRadius = maxRadius;
 	}
 
+	void Health::OnCollisionEnter(CollisionEvent* c)
+	{
+		float growthRate = .1f;
+		currentRadius += growthRate * c->Dt;
+		gameObject->Transform->Scale(currentRadius / maxRadius);
+	}
+
 	void Health::Update(UpdateEvent* e)
 	{
-		float deathRate = .01f;
-		if (!reFueling)
-		{
-			currentRadius -= deathRate * e->Dt;
-			gameObject->Transform->Scale(currentRadius / maxRadius);
-		}
+		float deathRate = .03f;
+		currentRadius -= deathRate * e->Dt;
+		gameObject->Transform->Scale(currentRadius / maxRadius);
 
-		if (currentRadius == 0)
+		if (currentRadius == minRadius)
 			printf("dead");
 	}
 

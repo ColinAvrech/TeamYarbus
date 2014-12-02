@@ -173,7 +173,7 @@ Level =
     },
     FireSystem = 
     {
-      bool Enabled = true,
+      bool Enabled = false,
       float ParticleSize = 100,
     },
   },
@@ -189,7 +189,7 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, 200, 0],
+			Vec3 Translation = [0, 50, 0],
 			Vec3 Scale = [1, 1, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
@@ -223,9 +223,16 @@ Level =
 		  Vec2 JumpVelocity = [0, 800],
 		  Vec2 MicrophoneMultiplier = [0, 75],
 		},
+		Health = 
+		{
+		bool alive = true,
+		float maxRadius = 1f,
+		float minRadius = .1f,
+		bool reFueling = false,
+		},
 		PlayerEffect = 
 		{
-      bool Enabled = true,
+      bool Enabled = false,
 		  float ParticleSize = 100,
 		  float MaxSize = 10,
 		  float MinSize = 10,
