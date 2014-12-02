@@ -15,6 +15,7 @@
 #include "WindowSystem.h"
 #include "GameObject.h"
 #include "Pipeline.h"
+#include "CharacterController.h"
 
 
 namespace Framework
@@ -45,7 +46,7 @@ namespace Framework
   void Camera::OnKeyPressed (KeyEvent* key)
   {
     float camSpeed = 1.0f;
-    float zoomSpeed = 1.0f;
+    float zoomSpeed = 100.0f;
     if (key->KeyDown)
       switch (key->KeyValue)
     {
@@ -165,6 +166,7 @@ namespace Framework
   {
     if (!matricesReady && enabled)
     {
+      gameObject->Transform->SetPosition (PLAYER->gameObject->Transform->GetPosition ().x, PLAYER->gameObject->Transform->GetPosition ().y);
       OPENGL->Perspective (fov, aspect, nearPlane, farPlane);
       OPENGL->LookAt
         (size * viewDirection +

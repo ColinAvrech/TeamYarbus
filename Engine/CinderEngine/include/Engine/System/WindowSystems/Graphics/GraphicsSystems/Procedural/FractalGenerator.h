@@ -14,6 +14,7 @@
 #include <vector>
 #include "VertexArrayObject.h"
 #include "VertexBufferObject.h"
+#include "glm.hpp"
 
 namespace Framework
 {
@@ -26,7 +27,7 @@ namespace Framework
   ~FractalGenerator ();
   
   void Generate_Tree ();
-  void Create_Mesh (int lines, std::vector <float>* mesh);
+  void Create_Mesh (int lines, std::vector <float>* mesh, std::vector <glm::vec2>* joints);
 
   int getTotalLines ()
   {

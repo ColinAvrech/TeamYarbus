@@ -53,6 +53,7 @@ namespace Framework
     /*inline*/ float GetRotation ();
     vec2 GetNDCPosition ();
     glm::vec2 GetGridPosition ();
+    glm::vec2 GetGridPosition (glm::vec2 pos);
     glm::vec2 GetNDCPosition (const glm::vec2& v);
     glm::vec2 GetScreenPosition ();
 

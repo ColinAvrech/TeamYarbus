@@ -42,6 +42,8 @@ namespace Framework
     float x = this->gameObject->Transform->GetGridPosition().x;
     float y = this->gameObject->Transform->GetGridPosition().y;
     Physics::THERMODYNAMICS->Add_Object(x, y, this);
+
+    //grid.Create (gameObject->Transform);
   }
 
   void FireStarter::LightOnFire(void)
@@ -66,5 +68,42 @@ namespace Framework
     }
   }
 
+  FireStarter::FireStarter ()
+  {
+    onFire = false;
+    Fuel = 100.0f;
+    material_type = WOOD;
+  }
+
   DefineComponentName(FireStarter);
+
+  void FireGrid::Create (FireStarter* fs)
+  {
+    glm::vec2 pos = glm::vec2 (fs->gameObject->Transform->GetPosition ());
+    glm::vec2 scale = glm::vec2 (fs->gameObject->Transform->GetScale ());
+    temperatures.allocate (2, 2);
+    temperatures.fill (fs->initTemp);
+    positions.allocate (2, 2);
+
+    positions.Set (0, 0, glm::vec2 (pos.x - scale.x, pos.y - scale.y));
+    positions.Set (0, 0, glm::vec2 (pos.x - (scale.x * 0.5f), pos.y - scale.y));
+    positions.Set (0, 0, glm::vec2 (pos.x, pos.y - scale.y));
+    positions.Set (0, 0, glm::vec2 (pos.x - scale.x, pos.y - scale.y));
+  }
+
+  void FireGrid::Destroy ()
+  {
+
+  }
+
+  void FireGrid::Update ()
+  {
+
+  }
+
+  void FireGrid::Draw ()
+  {
+
+  }
+
 }

@@ -51,6 +51,7 @@ namespace Framework
     VAO* vao;
     VBO* vbo;
     std::vector <float> treeMesh;
+    std::vector <glm::vec2> joints;
     Tree_Type type;
     // Resources
     FractalGenerator* tree;

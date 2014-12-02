@@ -14,13 +14,27 @@
 #include "Component.h"
 #include "DataNode.h"
 #include "TDLib.h"
+#include "Grid2D.h"
 
 namespace Framework
 {
+  using namespace Physics;
+  class FireStarter;
+  class FireGrid
+  {
+  public:
+    void Create (FireStarter* transform);
+    void Destroy ();
+    void Update ();
+    void Draw ();
+    Grid2D <float> temperatures;
+    Grid2D <glm::vec2> positions;
+  };
+
 	class FireStarter : public Component
 	{
 	public:
-		FireStarter(){}
+		FireStarter();
 		~FireStarter(){}
 		void LightOnFire();
     void DouseFire();
@@ -33,6 +47,7 @@ namespace Framework
 		bool onFire;	
     float Fuel;
     float initTemp;
+    FireGrid grid;
 	};
 }
 

@@ -41,19 +41,20 @@ namespace Framework
 
   int EcoSystem::Evaluate_Compatibility(int pos)
   {
-    int i;
-    for ( i = pos; i >= 0 || tree_list[i] == OPEN || tree_list[i] == GRASS; --i);
+    //int i;
+    //for ( i = pos; i >= 0 || tree_list[i] == OPEN || tree_list[i] == GRASS; --i);
 
-    int AvailableSpace = pos - i;
-    //HACK!!!
-    if (AvailableSpace > 3 && water[pos] > 0.5f && water[pos] < 0.7f)
-      return TREE_5;
+    //int AvailableSpace = pos - i;
+    ////HACK!!!
+    //if (AvailableSpace > 3 && water[pos] > 0.5f && water[pos] < 0.7f)
+    //  return TREE_5;
 
-    else if (AvailableSpace <= 3 && water[pos] > 0.1f && water[pos] < 0.9f)
-      return GRASS;
+    //else if (AvailableSpace <= 3 && water[pos] > 0.1f && water[pos] < 0.9f)
+    //  return GRASS;
 
-    else
-      return OPEN;
+    //else
+    //  return OPEN;
+    return 0;
   }
 
   void EcoSystem::GenerateVegetation()
@@ -69,17 +70,17 @@ namespace Framework
       offsetY = (terrain[i] * nY) / 2.f;
       if (offsetY < 0)
         offsetY = 0.0f;
-      offsetX += 4 * nX;
+      offsetX += nX;
 
       tree_list[i] = Evaluate_Compatibility(i);
       //Hack!!
       //if (tree_list[i] != OPEN)
-      //if (i % 100 == 0)
+      if (i % 8 == 0)
         GenerateType(
           offsetX + Translation.x,
           offsetY + Translation.y,
           Translation.z,
-          tree_list[i], ID
+          TREE_5, ID
           );
       }
     }
@@ -111,10 +112,10 @@ namespace Framework
       fs->Fuel = 100.0f;
       fs->material_type = 2;
       fs->onFire = false;
-      if (type == GRASS)
+      if (type == 5)
         fs->initTemp = 400.0f;
       else
-        fs->initTemp = 4000.0f;
+        fs->initTemp = 400.0f;
       fs->Initialize ();
     }
   }

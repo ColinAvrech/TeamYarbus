@@ -117,7 +117,7 @@ int main (void)
   //! activate the window.
   //Currently broken;
   //OBJECTSYSTEM->LoadAllLevels("..//..//Resources//Levels//MasterLevelFile.txt");
-  OBJECTSYSTEM->ZilchLoadLevel(Zilch::String("FirePropogationTest"));
+  OBJECTSYSTEM->ZilchLoadLevel(Zilch::String("NewPhysics"));
 
   // Connect example
   //MyClass _myclass;

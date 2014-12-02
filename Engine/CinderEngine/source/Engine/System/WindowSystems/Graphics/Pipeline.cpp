@@ -352,7 +352,7 @@ namespace Framework
     //glBindTexture (GL_TEXTURE_2D, 0);
 
 #ifdef _DEBUG
-    THERMODYNAMICS->Draw ();
+    //THERMODYNAMICS->Draw ();
     //PHYSICS->Render ();
 #endif
   }

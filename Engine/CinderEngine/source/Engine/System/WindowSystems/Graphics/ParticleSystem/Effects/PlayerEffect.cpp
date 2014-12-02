@@ -208,10 +208,6 @@ namespace Framework
     m_renderer->render ();
     shader->Disable ();
     texture->Unbind ();
-
-    glDisable (GL_POINT_SPRITE);
-    glDisable (GL_PROGRAM_POINT_SIZE);
-    glDisable (GL_BLEND);
   }
 
   void PlayerEffect::CreateTrailEmitter(std::shared_ptr<BoxPosGen> trail, bool active, vec3 position, vec3 minVelocity, vec3 maxVelocity, float emitRate)

@@ -202,6 +202,15 @@ namespace Framework
     );
   }
 
+  glm::vec2 Transform::GetGridPosition (glm::vec2 pos)
+  {
+    return glm::vec2
+      (
+      pos.x + (Physics::THERMODYNAMICS->MapSize.x * 0.5f) - 1,
+      pos.y + (Physics::THERMODYNAMICS->MapSize.y * 0.5f) - 1
+      );
+  }
+
   glm::vec2 Transform::GetScreenPosition ()
   {
     //glm::vec2 screenPos;

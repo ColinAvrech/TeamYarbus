@@ -63,8 +63,8 @@ Level =
       Vec3 Facing = [0, 0, 1],
 			float FieldOfView = 45,
 			float NearPlane = 0,
-			float FarPlane = 1,
-			float Size = 20,
+			float FarPlane = 100,
+			float Size = 128,
 		},
   },
   Cog = 
@@ -79,8 +79,8 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [-15, 0.5, -4],
-			Vec3 Scale = [40, 4, 1],
+			Vec3 Translation = [0, 0, -4],
+			Vec3 Scale = [128, 40, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Terrain2D = 
@@ -108,8 +108,8 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [-15, -3.0, -2],
-			Vec3 Scale = [20, 4, 1],
+			Vec3 Translation = [0, 0, -2],
+			Vec3 Scale = [128, 20, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Terrain2D = 
@@ -138,8 +138,8 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [-18.5, -5.0, 0],
-			Vec3 Scale = [20, 20, 1],
+			Vec3 Translation = [0, 0, 0],
+			Vec3 Scale = [64, 10, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Terrain2D = 
@@ -147,7 +147,7 @@ Level =
       bool Enabled = true,
       int MapSize = 128,
       int BaseHeight = 32,
-      int PeakHeight = 96,
+      int PeakHeight = 40,
       int Passes = 1,
       int Waves = 5,
       int Water = 5,
@@ -156,6 +156,11 @@ Level =
 		},
     EcoSystem = 
     {
+    },
+    FireSystem = 
+    {
+      bool Enabled = true,
+      float ParticleSize = 100,
     },
   },
   Cog = 
@@ -170,8 +175,8 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [4, 4, 0],
-			Vec3 Scale = [0.5, 0.5, 1],
+			Vec3 Translation = [0, 200, 0],
+			Vec3 Scale = [1, 1, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
     Sprite = 
@@ -194,14 +199,14 @@ Level =
 		{
       bool Enabled = true,
 		  float Radius = 1,
-		  bool Static = true,
+		  bool Static = false,
 		  string Material = "4de020863e872da8:DefaultPhysicsMaterial",
 		},
 		CharacterController = 
 		{
       bool Enabled = true,
-		  Vec2 Acceleration = [100, 0],
-		  Vec2 JumpVelocity = [0, 600],
+		  Vec2 Acceleration = [400, 0],
+		  Vec2 JumpVelocity = [0, 800],
 		  Vec2 MicrophoneMultiplier = [0, 75],
 		},
 		PlayerEffect = 
@@ -218,42 +223,5 @@ Level =
       float Intensity = 5,
       Vec4 Color = [0.4, 0.7, 0.4, 1],
     },
-    CameraFollow = 
-    {
-    },
-	},
-  Cog = 
-	{
-		LinkId = 
-		{
-			uint Id = 4,
-		},
-		Named = 
-		{
-			string Name = "GAMEOBJECT",
-		},
-		Transform = 
-		{
-			Vec3 Translation = [0, 0, 0],
-			Vec3 Scale = [1, 1, 1],
-			Quat Rotation = [0, 0, 0, 1],
-		},
-	},
-  Cog = 
-	{
-		LinkId = 
-		{
-			uint Id = 4,
-		},
-		Named = 
-		{
-			string Name = "GAMEOBJECT",
-		},
-		Transform = 
-		{
-			Vec3 Translation = [5, 0, 0],
-			Vec3 Scale = [1, 1, 1],
-			Quat Rotation = [0, 0, 0, 1],
-		},
 	},
 },

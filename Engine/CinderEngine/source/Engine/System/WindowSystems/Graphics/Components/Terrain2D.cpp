@@ -159,7 +159,7 @@ namespace Framework
         }
 
 
-        offsetX += 4 * nX;
+        offsetX += nX;
       }
     }
 
@@ -171,13 +171,13 @@ namespace Framework
     //  }
     //}
 
-    for (int x = 0; x < THERMODYNAMICS->MapSize.x; ++x)
-    {
-      for (int y = height_points [x].y * 128; y >= 0; --y)
-      {
-        THERMODYNAMICS->Terrain.Set (x, y, STONE);
-      }
-    }
+    //for (int x = 0; x < THERMODYNAMICS->MapSize.x; ++x)
+    //{
+    //  for (int y = height_points [x].y * 128; y >= 0; --y)
+    //  {
+    //    THERMODYNAMICS->Terrain.Set (x, y, STONE);
+    //  }
+    //}
 
     ////THERMODYNAMICS->Terrain.Set (64, 64, WOOD);
     //THERMODYNAMICS->TemperatureMap.Set (64, 64, 1000000000000000.0f);
@@ -263,15 +263,15 @@ namespace Framework
       p [2] = Vector2 (p0.x, p0.y);
       p [3] = Vector2 (p1.x, p1.y);
 
-      //////////////////////////////////////////////////////////////////////////
-      //////////////////////////////////////////////////////////////////////////
-      // EDGES FOR THERMODYNAMICS
-      //////////////////////////////////////////////////////////////////////////
-      Physics::ThermodynamicsSystem::TerrainPoints.push_back (p2);
-      Physics::ThermodynamicsSystem::TerrainPoints.push_back (p3);
-      Physics::ThermodynamicsSystem::TerrainPoints.push_back (p0);
-      Physics::ThermodynamicsSystem::TerrainPoints.push_back (p1);
-      //////////////////////////////////////////////////////////////////////////
+      ////////////////////////////////////////////////////////////////////////////
+      ////////////////////////////////////////////////////////////////////////////
+      //// EDGES FOR THERMODYNAMICS
+      ////////////////////////////////////////////////////////////////////////////
+      //Physics::ThermodynamicsSystem::TerrainPoints.push_back (p2);
+      //Physics::ThermodynamicsSystem::TerrainPoints.push_back (p3);
+      //Physics::ThermodynamicsSystem::TerrainPoints.push_back (p0);
+      //Physics::ThermodynamicsSystem::TerrainPoints.push_back (p1);
+      ////////////////////////////////////////////////////////////////////////////
       p [2].y = p [3].y = y;
 
       CalculateIntersectionPoint

@@ -72,7 +72,7 @@ namespace Framework
     texture = Resources::RS->Get_Texture ("Particle.bmp");
     shader = Resources::RS->Get_Shader ("Particle");
 
-    const size_t NUM_PARTICLES = numParticles == 0 ? 50000 : numParticles;
+    const size_t NUM_PARTICLES = numParticles == 0 ? 500000 : numParticles;
     m_system = std::make_shared<ParticleSystem> (NUM_PARTICLES);
     m_system->init (NUM_PARTICLES);
 

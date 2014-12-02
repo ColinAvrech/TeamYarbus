@@ -27,7 +27,6 @@ namespace Framework
       //Do stuff
       CellSize = 0.1f;
       THERMODYNAMICS = this;
-      MapSize = { 100, 100 };
     }
 
     //Destructor
@@ -157,9 +156,8 @@ namespace Framework
 
     float ThermodynamicsSystem::SetCellTemperature(const float& x, const float& y, const float& temp, const double& dt)
     {
-      glm::ivec2 sub = GetSubscript(x, y);
-      int sub_x = int(sub.x);
-      int sub_y = int(sub.y);
+      int sub_x = int(x);
+      int sub_y = int(y);
       float dQ;
       if (sub_x < 0 || sub_x > MapSize.x || sub_y < 0 || sub_y > MapSize.y)
         dQ = ConductiveHeatTransfer (Const::K_Wood, AtmosphericTemperature, temp, dt, 1);
@@ -245,7 +243,7 @@ namespace Framework
       //std::cout << "Updated Temperature/Density/Pressure" << std::endl;
       for (int j = start_index; j < end_index; ++j)
       {
-        for (int i = 0; i < 100; ++i)
+        for (int i = 0; i < MapSize.x; ++i)
         {
           float netdQ = 0.f;
           float oTemp = TemperatureMap.Get (i, j);
@@ -476,38 +474,39 @@ namespace Framework
       glm::vec3 center = Camera::main->gameObject->Transform->GetPosition ();
       glm::vec3 up = glm::vec3 (0, 1, 0);
       gluLookAt (eye.x, eye.y, eye.z, center.x, center.y, center.z, up.x, up.y, up.z);
-      //glScalef (1.0f / 64, 1.0f / 64, 1.0f);
-      //glBegin (GL_QUADS);
-      //{
-      //  for (int i = 0; i < Terrain.getSize ().y; ++i)
-      //  {
-      //    for (int j = 0; j < Terrain.getSize ().x; ++j)
-      //    {
-      //      glColor4f (TemperatureMap.Get (j, i) / Constant::BT_Organics,
-      //        TemperatureMap.Get (j, i) / Constant::BT_Organics,
-      //        TemperatureMap.Get (j, i) / Constant::BT_Organics,
-      //        TemperatureMap.Get (j, i) / Constant::BT_Organics * 0.4f);
-      //      glVertex2f (j, i);
-      //      glVertex2f (j - 1, i);
-      //      glVertex2f (j - 1, i - 1);
-      //      glVertex2f (j, i - 1);
-      //    }
-      //  }
-      //}
-      //glEnd ();
-
-      glColor4f (1, 1, 1, 0.2f);
+      //glTranslatef (0, 32, 0);
+      //glScalef (64, 64, 1.0f);
       glBegin (GL_QUADS);
       {
-        for (unsigned i = 0; i < TerrainPoints.size (); i+=4)
+        for (int i = 0; i < Terrain.getSize ().y; ++i)
         {
-          glVertex2f (TerrainPoints.at (i).x, TerrainPoints.at (i).y);
-          glVertex2f (TerrainPoints.at (i + 1).x, TerrainPoints.at (i + 1).y);
-          glVertex2f (TerrainPoints.at (i + 2).x, TerrainPoints.at (i + 2).y);
-          glVertex2f (TerrainPoints.at (i + 3).x, TerrainPoints.at (i + 3).y);
+          for (int j = 0; j < Terrain.getSize ().x; ++j)
+          {
+            glColor4f (TemperatureMap.Get (j, i) / Constant::BT_Organics,
+              TemperatureMap.Get (j, i) / Constant::BT_Organics,
+              TemperatureMap.Get (j, i) / Constant::BT_Organics,
+              TemperatureMap.Get (j, i) / Constant::BT_Organics * 0.4f);
+            glVertex2f (j - (MapSize.x * 0.5f) - 1, i - (MapSize.y * 0.5f) - 1);
+            glVertex2f (j - (MapSize.x * 0.5f) - 2, i - (MapSize.y * 0.5f) - 1);
+            glVertex2f (j - (MapSize.x * 0.5f) - 2, i - (MapSize.y * 0.5f) - 2);
+            glVertex2f (j - (MapSize.x * 0.5f) - 1, i - (MapSize.x * 0.5f) - 2);
+          }
         }
       }
       glEnd ();
+
+      //glColor4f (1, 1, 1, 0.2f);
+      //glBegin (GL_QUADS);
+      //{
+      //  for (unsigned i = 0; i < TerrainPoints.size (); i+=4)
+      //  {
+      //    glVertex2f (TerrainPoints.at (i).x, TerrainPoints.at (i).y);
+      //    glVertex2f (TerrainPoints.at (i + 1).x, TerrainPoints.at (i + 1).y);
+      //    glVertex2f (TerrainPoints.at (i + 2).x, TerrainPoints.at (i + 2).y);
+      //    glVertex2f (TerrainPoints.at (i + 3).x, TerrainPoints.at (i + 3).y);
+      //  }
+      //}
+      //glEnd ();
 
       //glBegin (GL_QUADS);
       //{

@@ -54,13 +54,24 @@ namespace Framework
       treeGreen = 0.30f;
 
     Generate_Fractal (0, 0, (rand () % screenHeight / 4) + 40.0f, 0.0f);
+
+    //joints->clear ();
+    //int r0 = rand () % xPositions.size ();
+    //joints->push_back ({ xPositions.at (r0), yPositions.at (r0) });
+    //int r1 = rand () % xPositions.size ();
+    //joints->push_back ({ xPositions.at (r1), yPositions.at (r1) });
+    //int r2 = rand () % xPositions.size ();
+    //joints->push_back ({ xPositions.at (r2), yPositions.at (r2) });
+    //int r3 = rand () % xPositions.size ();
+    //joints->push_back ({ xPositions.at (r3), yPositions.at (r3) });
   }
 
   void FractalGenerator::Generate_Fractal (GLfloat xPos, GLfloat yPos, GLfloat size, GLfloat degrees)
   {
     if (size < 5.0f || yPos - size > 10.0f)
+    {
       return;
-
+    }
     static const int maxShrink = 900; // per thousand
     static const int minShrink = 1;
     static const int maxAngle = 45;
@@ -76,6 +87,8 @@ namespace Framework
     angles.push_back (degrees);
 
     int branches = rand () % (maxBranches - minBranches) + 1 + minBranches;
+
+      //joints->push_back ({ xPos / screenWidth, yPos / screenHeight });
     for (int i = 0; i < branches; ++i)
     {
       int x = rand () % 2 == 1 ? -1 : 1;
@@ -83,7 +96,7 @@ namespace Framework
     }
   }
 
-  void FractalGenerator::Create_Mesh(int lines, std::vector <float>* mesh)
+  void FractalGenerator::Create_Mesh(int lines, std::vector <float>* mesh, std::vector <glm::vec2>* joints)
 {
     mesh->clear ();
     screenWidth = WINDOWSYSTEM->Get_Width ();
@@ -111,6 +124,10 @@ namespace Framework
       p2 = glm::vec2 (OPENGL->GetModelMatrix () * glm::vec4 (0, -sizes.at(i), 0, 1));
       OPENGL->PopMatrix ();
       color = glm::vec4 (0.5f / (colors.at (i) * treeRed), 0.5f / (colors.at (i) * treeGreen), 0.0f, 1.0f);
+      if (i % (lines / 4) == 0)
+      {
+        joints->push_back ({ p1.x, p1.y });
+      }
       mesh->push_back (p1.x);
       mesh->push_back (p1.y);
       mesh->push_back (color.r);
