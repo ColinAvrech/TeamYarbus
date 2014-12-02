@@ -11,11 +11,14 @@
 #include "Zilch.hpp"
 #include "Core.h"
 #include "WindowSystem.h"
+#include "ResourceManager.h"
 
 namespace Framework
 {
 	ObjectSystem* ZInterface::ObjectSys = OBJECTSYSTEM;
 	WindowSystem* ZInterface::WindowSys = WINDOWSYSTEM;
+	Resources* ZInterface::ResourceSystem = nullptr;
+	
 	ZilchDefineType(ZilchFile, CinderZilch)
 	{
 		type->HandleManager = ZilchManagerId(Zilch::PointerManager);
@@ -38,6 +41,7 @@ namespace Framework
 		ZilchBindStaticMethod(QuitGame);
 		ZilchBindStaticFieldGetAs(ObjectSys, "ObjectSystem");
 		ZilchBindStaticFieldGetAs(WindowSys, "WindowSystem");
+		ZilchBindStaticFieldGet(ResourceSystem);
 		
 		
 	}
@@ -64,6 +68,18 @@ namespace Framework
 
 		return new ZilchFile(&myfile);
 
+	}
+
+	
+
+	void ZInterface::TogglePaused()
+	{
+		CORE->TogglePaused();
+	}
+
+	void ZInterface::IsPaused()
+	{
+		CORE->IsPaused();
 	}
 
 	ZilchFile::ZilchFile(ifstream* file)

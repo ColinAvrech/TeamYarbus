@@ -1,9 +1,12 @@
 #include "ResourceManager.h"
 #include <algorithm>
 #include <fstream>
+#include "ZilchCompiledLib.h"
 
 namespace Framework
 {
+	
+
   Resources* Resources::RS;
 
   Resources::Resources ()
@@ -11,7 +14,10 @@ namespace Framework
     RS = this;
   }
 
-
+	ZilchDefineType(Resources, CinderZilch)
+	{
+		ZilchBindMethodAs(ZGetSound, "GetSound");
+	}
   Resources::~Resources ()
   {
     for (auto i : shaders)
@@ -31,7 +37,10 @@ namespace Framework
       delete (i.second);
     }
   }
-
+  Sound* Resources::ZGetSound(String soundName)
+  {
+	  return RS->Get_Sound(soundName.c_str());
+  }
   void Resources::Load_Resources ()
   {
     Load_Textures ();

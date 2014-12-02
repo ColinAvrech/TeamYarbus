@@ -24,6 +24,8 @@ namespace Framework
   ZilchDefineType(CoreEngine, CinderZilch)
   {
 	  ZilchBindMethod(QuitGame);
+	  ZilchBindMethod(TogglePaused);
+	  ZilchBindMethod(IsPaused);
   }
   CoreEngine::CoreEngine()
   {

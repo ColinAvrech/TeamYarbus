@@ -372,13 +372,14 @@ namespace Framework
 				
         GameObjects[newobj->GameObjectID] = newobj;
         auto ct = it->branch->next->next;
+		std::cout << newobj->Name << std::endl;
         while (ct)
         {
           Component* newcomp = newobj->AddComponent(ct->objectName);
           if (newcomp)
           {
             newcomp->gameObject = newobj;
-			std::cout << newobj->Name << std::endl;
+			std::cout << ct->objectName << std::endl;
             newcomp->Serialize(ct->branch);
             newcomp->Initialize(); //Set pointer to GameObject, Setup Component
           }
