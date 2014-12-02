@@ -42,6 +42,10 @@ namespace Framework
   virtual void Serialize (Serializer::DataNode* data);
   virtual void Initialize ();
   virtual void Draw ();
+  std::vector <glm::vec2>& Get_Edges ()
+  {
+    return edges;
+  }
 
   void Set(glm::vec4& _color, Tree_Type _type);
   const static std::string Name;
@@ -51,7 +55,7 @@ namespace Framework
     VAO* vao;
     VBO* vbo;
     std::vector <float> treeMesh;
-    std::vector <glm::vec2> joints;
+    std::vector <glm::vec2> edges;
     Tree_Type type;
     // Resources
     FractalGenerator* tree;

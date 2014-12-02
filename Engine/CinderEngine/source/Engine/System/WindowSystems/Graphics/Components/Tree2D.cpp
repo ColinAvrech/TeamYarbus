@@ -78,17 +78,18 @@ namespace Framework
       tree = new FractalGenerator ();
       tree->Generate_Tree ();
       shader = Resources::RS->Get_Shader ("Tree");
-      tree->Create_Mesh (tree->getTotalLines (), &treeMesh, &joints);
+      tree->Create_Mesh (tree->getTotalLines (), &treeMesh, &edges);
       Generate_Buffers ();
 
-      for (int i = 0; i < joints.size (); ++i)
+      for (unsigned i = 0; i < edges.size (); ++i)
       {
         GameObject* go = OBJECTSYSTEM->CreateObject ();
-        glm::vec2 pos = glm::mat2 (gameObject->Transform->GetModelMatrix ()) * joints.at (i);
-        glm::vec2 gridPos = gameObject->Transform->GetGridPosition (pos);
+        glm::vec2 pos = glm::mat2 (gameObject->Transform->GetModelMatrix ()) * edges.at (i);
         Transform* trans = reinterpret_cast<Transform*> (go->AddComponent ("Transform"));
         trans->Initialize ();
-        go->Transform->SetPosition (pos.x, pos.y);
+        go->Transform->SetPosition (gameObject->Transform->GetPosition ().x + pos.x, gameObject->Transform->GetPosition().y + pos.y);
+        glm::vec2 gridPos = go->Transform->GetGridPosition ();
+        std::cout << gridPos.x << "\n";
         FireStarter* fs = reinterpret_cast<FireStarter*> (go->AddComponent ("FireStarter"));
         fs->Initialize ();
         go->FireStarter->initTemp = 400.0f;

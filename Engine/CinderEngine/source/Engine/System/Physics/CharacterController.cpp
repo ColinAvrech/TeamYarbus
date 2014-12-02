@@ -135,6 +135,7 @@ namespace Framework
   {
     gridPos = gameObject->Transform->GetGridPosition ();
     float micValue = AUDIOSYSTEM->GetMicrophoneValue ();
+    //std::cout << micValue << "\n";
     gameObject->RigidBody2D->ApplyForce
       (
       Vector2
@@ -143,7 +144,7 @@ namespace Framework
       micValue * microhponeMultiplier.y * density
       )
       );
-    Physics::THERMODYNAMICS->SetCellTemperature (gridPos.x, gridPos.y, 4000000, 0.016);
+    Physics::THERMODYNAMICS->SetCellTemperature (gridPos.x, gridPos.y, 100000 * micValue, 0.016);
 
     ////how to get line collider
     ////gameObject->CircleCollider->DetectLine(gameObject->LineCollider);

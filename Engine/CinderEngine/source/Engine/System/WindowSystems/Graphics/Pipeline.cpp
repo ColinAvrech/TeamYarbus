@@ -24,6 +24,7 @@
 #include "ResourceManager.h"
 #include "glut.h"
 #include "Thermodynamics.h"
+#include "CLParticleRenderer.h"
 #include "HeatMap.h"
 
 namespace Framework
@@ -45,6 +46,7 @@ namespace Framework
   FBO* fbo;
   Shader* sceneShader;
   GLuint renderTexture;
+  CLParticleRenderer cl;
 
   void Interpolate_Background ()
   {
@@ -96,6 +98,9 @@ namespace Framework
     matricesReady = true;
     currentMatrix = 0;
 
+    cl.GenerateBuffers ();
+    cl.GenerateShaders ();
+    cl.GenerateTextures ();
     //RigidBody2D* b;
     ////CircleCollider2D c (1.0f);
     ////b = PHYSICS->Add (&c, 2, 1);
@@ -320,7 +325,7 @@ namespace Framework
     {
       i->UpdateCamera (this);
     }
-
+    cl.Render ();
     //Draw_Quad ();
     for (auto* i : graphicsObjects)
     {

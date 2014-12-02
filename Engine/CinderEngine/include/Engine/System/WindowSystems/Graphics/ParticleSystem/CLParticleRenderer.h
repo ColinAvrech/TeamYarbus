@@ -58,8 +58,7 @@ namespace Framework
     void Interpolate_Colors ();
     void OnKeyPressed (KeyEvent* key);
     //////////////////////////////////////////////////////////////////////////
-    float destPosX;
-    float destPosY;
+    glm::vec2 destPos;
 
   private:
     SSBO* SSBOPos, *SSBOVel;

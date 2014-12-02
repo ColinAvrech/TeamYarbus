@@ -173,7 +173,7 @@ Level =
     },
     FireSystem = 
     {
-      bool Enabled = false,
+      bool Enabled = true,
       float ParticleSize = 100,
     },
   },

@@ -96,9 +96,10 @@ namespace Framework
     }
   }
 
-  void FractalGenerator::Create_Mesh(int lines, std::vector <float>* mesh, std::vector <glm::vec2>* joints)
+  void FractalGenerator::Create_Mesh(int lines, std::vector <float>* mesh, std::vector <glm::vec2>* edges)
 {
     mesh->clear ();
+    edges->clear ();
     screenWidth = WINDOWSYSTEM->Get_Width ();
     screenHeight = WINDOWSYSTEM->Get_Height ();
 
@@ -115,6 +116,16 @@ namespace Framework
     glm::vec2 p2;
     glm::vec4 color;
 
+    //float right = *std::max_element (xPositions.begin (), xPositions.end ());
+    //float left = *std::min_element (xPositions.begin (), xPositions.end ());
+    //float top = *std::max_element (yPositions.begin (), yPositions.end ());
+    //float bottom = *std::min_element (yPositions.begin (), yPositions.end ());
+
+    //edges->push_back ({ left, bottom });
+    //edges->push_back ({ right, bottom });
+    //edges->push_back ({ left, top });
+    //edges->push_back ({ right, top });
+
     for (int i = 0; i < lines; ++i)
     {
       OPENGL->PushMatrix ();
@@ -124,10 +135,18 @@ namespace Framework
       p2 = glm::vec2 (OPENGL->GetModelMatrix () * glm::vec4 (0, -sizes.at(i), 0, 1));
       OPENGL->PopMatrix ();
       color = glm::vec4 (0.5f / (colors.at (i) * treeRed), 0.5f / (colors.at (i) * treeGreen), 0.0f, 1.0f);
-      //if (i % (lines / 4) == 0)
-      //{
-      //  joints->push_back ({ p1.x, p1.y });
-      //}
+      if (lines > 1 && i % (lines / 2) == 0)
+      {
+        int i = rand () % 1;
+        if (i == 0)
+        {
+          edges->push_back ({ p1.x, p1.y });
+        }
+        else
+        {
+          edges->push_back ({ p2.x, p2.y });
+        }
+      }
       mesh->push_back (p1.x);
       mesh->push_back (p1.y);
       mesh->push_back (color.r);
