@@ -24,7 +24,9 @@ class Josh : Component
 	
 	//this.ObjectSys
 	Console.WriteLine(ZInterface.WindowSystem);
+	this.MenuObjects = ZInterface.ObjectSystem.LoadLevelAdditive("HowToPlay");
 	this.MenuObjects = ZInterface.ObjectSystem.LoadLevelAdditive("MainMenu");
+	
 	/*
 	for (var i = 0; i < list.Length; i += 1)
 	{
@@ -49,6 +51,7 @@ class Josh : Component
 	//Console.WriteLine(new Player());
 	//Console.WriteLine(this.Owner);
 	EventSystem.Connect("KESCAPE", this.EscapePressed);
+	//EventSystem.Connect(Events.UpdateEvent, this.LogicUpdate);
 	//Console.WriteLine(this);
 	//Console.WriteLine("hello");
 	//var gameobject = this.ObjectSys.CreateObject();
@@ -101,7 +104,7 @@ class Josh : Component
 		}
 		else if (e.State == MouseState.MouseExit)
 		{
-			Console.WriteLine("Exit");
+			//Console.WriteLine("Exit");
 			this.Owner.Sprite.ChangeTexture("Default");
 		}
 		//Console.WriteLine("MOUSE!");
@@ -125,16 +128,20 @@ class Josh : Component
 
 	function EscapePressed(e: KeyEvent)
 	{
-		if(InputManager.IsKeyTriggered(Keys.ESCAPE))
+		if (InputManager.IsKeyTriggered(Keys.ESCAPE))
 		{
-			if(this.MenuObjects.Get(0).Sprite.GetColor().W == 0)
+			if (this.MenuObjects.Get(0).Sprite.GetColor().W == 0)
 			{
 				this.ChangeMenuAlpha(1);
 			}
 			else
 			{
 				this.ChangeMenuAlpha(0);
+				this.MenuObjects.Get(2).Sprite.ChangeTexture("UIResumeBlack.png");
+				this.MenuObjects.Get(3).Sprite.ChangeTexture("UIHowToPlayBlack.png");
+				this.MenuObjects.Get(4).Sprite.ChangeTexture("UIExitBlack.png");
 			}
+			ZInterface.TogglePaused();
 		}
 	}
 	

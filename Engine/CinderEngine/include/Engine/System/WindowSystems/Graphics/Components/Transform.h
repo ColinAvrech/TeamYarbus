@@ -37,7 +37,7 @@ namespace Framework
     // Transformations
     void Load_Identity ();
     void Translate (const float x, const float y, const float z);
-	  void Translate(const vec3 &v);
+	void Translate(const vec3 &v);
     void Scale (const float x, const float y, const float z);
     void Scale (const float v);
     void Rotate (const float angle);

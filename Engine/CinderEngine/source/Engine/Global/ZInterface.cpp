@@ -42,6 +42,8 @@ namespace Framework
 		ZilchBindStaticFieldGetAs(ObjectSys, "ObjectSystem");
 		ZilchBindStaticFieldGetAs(WindowSys, "WindowSystem");
 		ZilchBindStaticFieldGet(ResourceSystem);
+		ZilchBindStaticMethod(TogglePaused);
+		ZilchBindStaticMethod(IsPaused);
 		
 		
 	}

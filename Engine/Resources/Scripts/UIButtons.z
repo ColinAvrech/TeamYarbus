@@ -19,9 +19,8 @@ class ExitButton : Component
 	
 	function LogicUpdate(e: UpdateEvent)
 	{
-		//var dimensions = this.Owner.Transform.GetScreenPosition(Real2(1, 0.21));
-		//this.Detector.Rect.Width = dimensions.X;
-		//this.Detector.Rect.Height = dimensions.Y;
+		var camerapos = Camera.Main.Owner.Transform.GetTranslation();
+		this.Owner.Transform.SetTranslation(Real3(camerapos.X, camerapos.Y - 0.75, 0));
 	}
 	
 	function OnMouseEvent(e: MouseEvent)
@@ -35,14 +34,15 @@ class ExitButton : Component
 				
 				ZInterface.QuitGame();
 			}
+			this.Owner.Sprite.ChangeTexture("UIExitWhite.png");
 			
 		}
 		else if (e.State == MouseState.MouseEnter)
 		{
 			//Console.WriteLine("Enter");
-			this.Owner.Sprite.ChangeTexture("UIExitWhite.png");
+			
 		}
-		else if (e.State == MouseState.MouseExit)
+		else if (e.State == MouseState.MouseOutside)
 		{
 			//Console.WriteLine("Exit");
 			this.Owner.Sprite.ChangeTexture("UIExitBlack.png");
@@ -85,13 +85,20 @@ class ResumeButton : Component
 	
 	function LogicUpdate(e: UpdateEvent)
 	{
-		//var dimensions = this.Owner.Transform.GetScreenPosition(Real2(1, 0.21));
-		//this.Detector.Rect.Width = dimensions.X;
-		//this.Detector.Rect.Height = dimensions.Y;
+		
+		var camerapos = Camera.Main.Owner.Transform.GetTranslation();
+		this.MenuObjects.Get(0).Transform.SetTranslation(Real3(camerapos.X, camerapos.Y, 0));
+		this.MenuObjects.Get(1).Transform.SetTranslation(Real3(camerapos.X, camerapos.Y + 0.8775, 0));
+		
+		this.Owner.Transform.SetTranslation(Real3(camerapos.X, camerapos.Y + 0.45, 0));
 	}
 	
 	function OnMouseEvent(e: MouseEvent)
 	{
+		if (this.Owner.Sprite.GetColor().W == 0)
+		{
+			return;
+		}
 		if (e.State == MouseState.MouseInside)
 		{
 			if (InputManager.IsMouseTriggered(Mouse.LEFT))
@@ -100,14 +107,16 @@ class ResumeButton : Component
 				{
 					obj.Sprite.ChangeColor(1,1,1,0);
 				}
+				ZInterface.TogglePaused();
 			}
+			this.Owner.Sprite.ChangeTexture("UIResumeWhite.png");
 		}
 		else if (e.State == MouseState.MouseEnter)
 		{
 			//Console.WriteLine("Enter");
-			this.Owner.Sprite.ChangeTexture("UIResumeWhite.png");
+			
 		}
-		else if (e.State == MouseState.MouseExit)
+		else if (e.State == MouseState.MouseOutside)
 		{
 			//Console.WriteLine("Exit");
 			this.Owner.Sprite.ChangeTexture("UIResumeBlack.png");
@@ -123,8 +132,8 @@ class ResumeButton : Component
 class HowToPlayButton : Component
 {
 	var Detector: MouseDetector = null;
-	
-	var SpawnedObject:GameObject = null;
+	var MenuObjects:Array[GameObject] = new Array[GameObject]();
+	var HowToPlay:GameObject = null;
   
 	constructor() : base()
 	{
@@ -138,11 +147,95 @@ class HowToPlayButton : Component
 		this.Detector.Rect.Width = 1.5;
 		this.Detector.Rect.Height = 0.33;
 		this.Detector.Offset = Real2(0, 0.02);
+		
+		this.HowToPlay = ZInterface.ObjectSystem.FindObjectByID(15);
+		this.MenuObjects.Add(ZInterface.ObjectSystem.FindObjectByID(10));
+		this.MenuObjects.Add(ZInterface.ObjectSystem.FindObjectByID(11));
+		this.MenuObjects.Add(ZInterface.ObjectSystem.FindObjectByID(12));
+		this.MenuObjects.Add(ZInterface.ObjectSystem.FindObjectByID(13));
+		this.MenuObjects.Add(ZInterface.ObjectSystem.FindObjectByID(14));
+		
 		EventSystem.Connect(Events.UpdateEvent, this.LogicUpdate);
 	}
 	
 	function LogicUpdate(e: UpdateEvent)
 	{
+		var camerapos = Camera.Main.Owner.Transform.GetTranslation();
+		this.Owner.Transform.SetTranslation(Real3(camerapos.X, camerapos.Y - 0.15, 0));
+	}
+	
+	function OnMouseEvent(e: MouseEvent)
+	{
+		if (this.Owner.Sprite.GetColor().W == 0)
+		{
+			return;
+		}
+		if (e.State == MouseState.MouseInside)
+		{
+			if (InputManager.IsMouseTriggered(Mouse.LEFT))
+			{
+				foreach (var obj in this.MenuObjects)
+				{
+					obj.Sprite.ChangeColor(1,1,1,0);
+				}
+				this.HowToPlay.Sprite.ChangeColor(1,1,1,1);
+				
+			}
+			this.Owner.Sprite.ChangeTexture("UIHowToPlayWhite.png");
+			//Console.WriteLine("Outside");
+		}
+		else if (e.State == MouseState.MouseOutside)
+		{
+			//Console.WriteLine("Exit");
+			this.Owner.Sprite.ChangeTexture("UIHowToPlayBlack.png");
+		}
+		//Console.WriteLine("MOUSE!");
+	}
+	
+}
+
+class InstructionsMenu : Component
+{
+	var Detector: MouseDetector = null;
+	
+	var SpawnedObject:GameObject = null;
+	
+	var IsMicrophone:Boolean = false;
+  
+	var MenuObjects:Array[GameObject] = new Array[GameObject]();
+  
+	constructor() : base()
+	{
+
+	}
+
+	function Initialize(owner:GameObject)
+	{
+		this.Owner = owner;
+		this.SpawnedObject = ZInterface.ObjectSystem.CreateObject();
+		this.SpawnedObject.AddComponent("Transform");
+		//this.SpawnedObject.Transform.SetTranslation(Real3(0, -1,0));
+		this.SpawnedObject.Transform.SetScale(Real3(0.75,0.75,0));
+		this.SpawnedObject.AddComponent("Sprite");
+		this.SpawnedObject.Sprite.ChangeTexture("UIGotItBlack.png");
+		this.SpawnedObject.Sprite.ChangeColor(1,1,1,0);
+		
+		this.Detector = new MouseDetector(this.SpawnedObject, this.OnMouseEvent);
+		this.Detector.Rect.Width = 1.5;
+		this.Detector.Rect.Height = 0.33;
+		this.Detector.Offset = Real2(0, 0.02);
+		
+		
+		EventSystem.Connect(Events.UpdateEvent, this.LogicUpdate);
+	}
+	
+	function LogicUpdate(e: UpdateEvent)
+	{
+		var camerapos = Camera.Main.Owner.Transform.GetTranslation();
+		this.SpawnedObject.Transform.SetTranslation(Real3(camerapos.X, camerapos.Y - 1.11, 0));
+		
+		var color = this.Owner.Sprite.GetColor();
+		this.SpawnedObject.Sprite.ChangeColor(color.X, color.Y, color.Z, color.W);
 		//var dimensions = this.Owner.Transform.GetScreenPosition(Real2(1, 0.21));
 		//this.Detector.Rect.Width = dimensions.X;
 		//this.Detector.Rect.Height = dimensions.Y;
@@ -150,19 +243,49 @@ class HowToPlayButton : Component
 	
 	function OnMouseEvent(e: MouseEvent)
 	{
-		if (e.State == MouseState.MouseOutside)
-		{
-			//Console.WriteLine("Outside");
+		if (e.State == MouseState.MouseInside)
+		{	
+			
+			if (InputManager.IsMouseTriggered(Mouse.LEFT))
+			{
+				
+				if (this.IsMicrophone)
+				{
+					if (this.MenuObjects.Count == 0)
+					{
+						this.MenuObjects.Add(ZInterface.ObjectSystem.FindObjectByID(10));
+						this.MenuObjects.Add(ZInterface.ObjectSystem.FindObjectByID(11));
+						this.MenuObjects.Add(ZInterface.ObjectSystem.FindObjectByID(12));
+						this.MenuObjects.Add(ZInterface.ObjectSystem.FindObjectByID(13));
+						this.MenuObjects.Add(ZInterface.ObjectSystem.FindObjectByID(14));
+					}
+					this.Owner.Sprite.ChangeTexture("UIKeyboardMovement.png");
+					this.Owner.Sprite.ChangeColor(1,1,1,0);
+					foreach (var obj in this.MenuObjects)
+					{
+						obj.Sprite.ChangeColor(1,1,1,1);
+					}
+					
+					this.IsMicrophone = false;
+					return;
+				}
+				
+				this.IsMicrophone = true;
+				this.Owner.Sprite.ChangeTexture("UIInstructionsScreen.png");
+			}
+			
+			this.SpawnedObject.Sprite.ChangeTexture("UIGotItWhite.png");
 		}
 		else if (e.State == MouseState.MouseEnter)
 		{
 			//Console.WriteLine("Enter");
-			this.Owner.Sprite.ChangeTexture("UIHowToPlayWhite.png");
+			
 		}
-		else if (e.State == MouseState.MouseExit)
+		else if (e.State == MouseState.MouseOutside)
 		{
-			//Console.WriteLine("Exit");
-			this.Owner.Sprite.ChangeTexture("UIHowToPlayBlack.png");
+			Console.WriteLine("Exit");
+			
+			this.SpawnedObject.Sprite.ChangeTexture("UIGotItBlack.png");
 		}
 		else
 		{
