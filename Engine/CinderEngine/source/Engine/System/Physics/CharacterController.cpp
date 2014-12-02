@@ -21,6 +21,7 @@
 namespace Framework
 {
   CharacterController* PLAYER = nullptr;
+  static bool onGround = false;
 
   CharacterController::~CharacterController ()
   {
@@ -35,14 +36,12 @@ namespace Framework
       //gameObject->RigidBody->vel.y = jumpVel;
       //Physics::applyAccel(accelV, 0.016);
       //gameObject->Transform->Translate(0, 1, 0);
-      gameObject->RigidBody2D->ApplyForce
-        (
-        Vector2
-        (
-        jumpVel.x * density,
-        jumpVel.y * density
-        )
-        );
+      
+      if (onGround)
+      {
+        gameObject->RigidBody2D->velocity.y += jumpVel.y;
+        onGround = false;
+      }
       break;
 
     case GLFW_KEY_RIGHT:
@@ -116,10 +115,18 @@ namespace Framework
     ////////////////////////////////////////////////////////////////////////
   }
 
+  static void UpdateGroundState(CollisionEvent* collision)
+  {
+    glm::vec2 normal = glm::vec2(collision->normal);
+    if (Physics::Angle_from_Vertical(normal) < 3.14f / 3.f)
+      onGround = true;
+    else
+      onGround = false;
+  }
+
   void CharacterController::OnCollisionEnter (CollisionEvent* collision)
   {
-    //if (collision->OtherObject->LineCollider)
-    //  collision->OtherObject->Transform->Translate(-collision->normal.x * 0.05f, -collision->normal.y * 0.05f, 0.0f);
+    UpdateGroundState(collision);
   }
 
   static float t = 1;
