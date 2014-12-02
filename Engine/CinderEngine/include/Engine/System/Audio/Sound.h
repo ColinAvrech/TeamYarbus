@@ -33,6 +33,7 @@ namespace Framework
   class Sound
   {
     public:
+		ZilchDeclareBaseType(Sound, Zilch::TypeCopyMode::ReferenceType);
     
       /*-----------------------------------------------------------------------
       // Constructors

@@ -14,6 +14,7 @@
 #pragma region Includes
 
 #include "Sound.h"
+#include "ZilchCompiledLib.h"
 
 #pragma endregion
 
@@ -22,6 +23,17 @@ static char THIS_FILE[] = __FILE__;
 
 namespace Framework
 {
+	ZilchDefineType(Sound, CinderZilch)
+	{
+
+		ZilchBindMethod(SetVolume);
+		ZilchBindMethod(SetPan);
+		ZilchBindMethod(SetPause);
+		ZilchBindMethod(Stop);
+		ZilchBindMethod(Play);
+		ZilchBindMethod(VolumeFade);
+		//ZilchBindConstructor();
+	}
   /*---------------------------------------------------------------------------
   // Class Implementation
   ---------------------------------------------------------------------------*/

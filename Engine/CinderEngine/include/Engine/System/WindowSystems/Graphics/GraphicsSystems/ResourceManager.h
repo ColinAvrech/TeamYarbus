@@ -14,6 +14,7 @@ namespace Framework
   class Resources
   {
   public:
+	  ZilchDeclareBaseType(Resources, Zilch::TypeCopyMode::ReferenceType);
     Resources();
     ~Resources ();
 
@@ -28,6 +29,7 @@ namespace Framework
     SpriteSheet* Get_SpriteSheet (string spriteSheetName);
     Shader* Get_Shader (string shaderName);
     Sound* Get_Sound(string soundName);
+	Sound* ZGetSound(String soundName);
     ComputeShader* Get_ComputeShader (string shaderName);
 
     static Resources* RS;
