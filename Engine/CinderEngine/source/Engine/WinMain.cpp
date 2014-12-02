@@ -29,6 +29,7 @@ starts the game loop.
 #include "Serializer/JSONSerializer.h"
 #include "UISystem.h"
 #include "ZInterface.h"
+#include "CheatCodes.h"
 
 //testing includes
 #include "ComponentInclude.h"
@@ -97,6 +98,7 @@ int main (void)
   Resources resourceManager;
   ZInterface::ResourceSystem = &resourceManager;
   resourceManager.Load_Resources ();
+  
 
   //! Initialize all added Systems. DON'T INIT YOUR OWN
   engine->Initialize ();
@@ -123,6 +125,10 @@ int main (void)
   //Currently broken;
   //OBJECTSYSTEM->LoadAllLevels("..//..//Resources//Levels//MasterLevelFile.txt");
 
+  //Initialize Cheat Codes
+  Cheats::InitializeCheats();
+
+  // Load Level
   OBJECTSYSTEM->ZilchLoadLevel(Zilch::String("NewPhysics"));
 
   // Connect example
