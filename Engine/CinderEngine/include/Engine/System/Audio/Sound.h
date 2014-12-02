@@ -25,7 +25,7 @@
 
 namespace Framework
 {
-  #define DISTANCE_FACTOR .04
+  #define DISTANCE_FACTOR 0.04
 
   /*---------------------------------------------------------------------------
   // Class
@@ -158,7 +158,7 @@ namespace Framework
                                     const float endPos = 0, 
                                     const int index = 0);
       void            SetType(unsigned type, unsigned index);
-      void            SetPosition(Vec2 pos);
+      void            SetPosition(glm::vec3 pos);
 
       // Getters
       float           GetMasterVolume(void);

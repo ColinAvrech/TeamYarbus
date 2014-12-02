@@ -1,11 +1,11 @@
 /*****************************************************************************/
 /*!
-\file   AudioEvents.cpp
+\file   AudioComponent.cpp
 \author Deepak Chennakkadan
 \par    Course: GAM200
 \par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
-\brief  Creates the infrastructure for the Audio Events
-*/
+\brief  Creates a component for audio
+*/      
 /*****************************************************************************/
 
 /*-----------------------------------------------------------------------------
@@ -13,14 +13,10 @@
 -----------------------------------------------------------------------------*/
 #pragma region Includes
 
-#include "AudioEvents.h"
-#include "KeyEvent.h"
-#include "EventSystem.h"
-#include "WindowFocusEvent.h"
-#include "UpdateEvent.h"
-#include "KeyEvent.h"
-#include "WindowSystem.h"
-#include "Core.h"
+#include "AudioComponent.h"
+#include "GameObject.h"
+#include "ResourceManager.h"
+#include "AudioSystem.h"
 
 #pragma endregion
 
@@ -35,17 +31,18 @@ namespace Framework
   ---------------------------------------------------------------------------*/
   #pragma region Constructors
 
-  Sound *test;
+  DefineComponentName(AudioComponent);
 
-  AudioEvents::AudioEvents()
-  {    
+  AudioComponent::AudioComponent()
+  { 
   }
+
   #pragma endregion
 
   /*---------------------------------------------------------------------------
   // Public Variables
   ---------------------------------------------------------------------------*/
-  #pragma region Public Variables
+  #pragma region Global Variables
 
   #pragma endregion
 
@@ -61,53 +58,49 @@ namespace Framework
   ---------------------------------------------------------------------------*/
   #pragma region Public Functions
 
-  void AudioEvents::Initialize()
+  void AudioComponent::Serialize(Serializer::DataNode* data)
   {
-    EVENTSYSTEM->mConnect<WindowFocusEvent, AudioEvents>(Events::WINDOWFOCUSEVENT, this, &AudioEvents::AudioEventsUpdate);
-    EVENTSYSTEM->mConnect<KeyEvent, AudioEvents>(Events::KEY_ANY, this, &AudioEvents::OnKeyPressed);
+    string soundName;
 
-    //test = AUDIOSYSTEM->LoadSound("Pads.ogg", "NOISE", Sound::SOUND_3D, 1.0f);
-    //test->Play();
+    Serializer::DataNode* value = data->FindElement(data, "Positional");
+    value->GetValue(&positional);
 
+    value = data->FindElement(data, "Play");
+    value->GetValue(&playing);
+
+    value = data->FindElement(data, "Mute");
+    value->GetValue(&mute);
+
+    value = data->FindElement(data, "SoundID");
+    value->GetValue(&soundName);
+
+    newSound = Resources::RS->Get_Sound(soundName);
   }
 
-  void AudioEvents::AudioEventsUpdate(WindowFocusEvent* e)
+  void AudioComponent::Initialize()
   {
-    if (e->InFocus)
-    {      
-      AUDIOSYSTEM->SetPaused(false, Sound::SFX_ALL);
-    }
-    else
-    {
-      AUDIOSYSTEM->SetPaused(true, Sound::SFX_ALL);
-    }
-
-    if (CORE->IsPaused() == true)
-    {
-      AUDIOSYSTEM->SetPauseMenuEffect(1000.0f, 1.5f, 3.0f);
-    }
-    else
-    {
-      AUDIOSYSTEM->SetPauseMenuEffect(22000.0f, 0.0f, 5.0f);
-    }
+    gameObject->AudioComponent;
+    AUDIOSYSTEM->AddAudioComponent(this);
   }
 
-  void AudioEvents::OnKeyPressed(KeyEvent* key)
+  void AudioComponent::Update()
   {
-    switch (key->KeyValue)
+    if (positional)
     {
-      case GLFW_KEY_UP:
-        break;
-
-      case GLFW_KEY_DOWN:
-        break;
-
-      default:
-        break;
+      newSound->SetPosition(gameObject->Transform->GetPosition());
     }
+
+
+    if (playing)
+      newSound->Play();
+    else
+      newSound->Stop();
+
+      newSound->SetMute(mute);
   }
 
   #pragma endregion
+
 
   /*---------------------------------------------------------------------------
   // Static Public Variables
@@ -116,6 +109,7 @@ namespace Framework
 
   #pragma endregion
 
+
   /*---------------------------------------------------------------------------
   // Static Public Functions
   ---------------------------------------------------------------------------*/
@@ -123,17 +117,14 @@ namespace Framework
 
   #pragma endregion
 
+
   /*---------------------------------------------------------------------------
   // Destructor
   ---------------------------------------------------------------------------*/
   #pragma region Destructor
 
-  AudioEvents::~AudioEvents()
-  {
-  
-  }
-
   #pragma endregion
+
 
   /*---------------------------------------------------------------------------
   // Private Variables
@@ -141,6 +132,7 @@ namespace Framework
   #pragma region Private Variables
 
   #pragma endregion
+
 
   /*---------------------------------------------------------------------------
   // Private Structs
@@ -156,13 +148,19 @@ namespace Framework
 
   #pragma endregion
 
+
   /*---------------------------------------------------------------------------
   // Static Functions
   ---------------------------------------------------------------------------*/
   #pragma region Static Functions
 
+  AudioComponent::~AudioComponent()
+  {
+    AUDIOSYSTEM->DeleteAudioComponent(this);
+  }
+
   #pragma endregion
 
-} // namespace Framework
+}
 
 //-----------------------------------------------------------------------------

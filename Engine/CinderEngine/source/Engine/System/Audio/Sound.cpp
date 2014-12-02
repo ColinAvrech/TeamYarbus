@@ -14,6 +14,8 @@
 #pragma region Includes
 
 #include "Sound.h"
+#include "AudioSystem.h"
+#include "Transform.h"
 
 #pragma endregion
 
@@ -67,7 +69,7 @@ namespace Framework
   /*---------------------------------------------------------------------------
   // Public Variables
   ---------------------------------------------------------------------------*/
-  #pragma region Public Variables
+  #pragma region Global Variables
 
   bool Sound::system_on_ = true;
 
@@ -400,16 +402,17 @@ namespace Framework
     }
   }
 
-  //void Sound::SetPosition(Vec2 pos)
-  //{
-  //  if (Sound::system_on_ == false)
-  //  { 
-  //    return; 
-  //  }
-  //
-  //  _position.x = static_cast<float>((pos._x) * DISTANCE_FACTOR);
-  //  _position.y = static_cast<float>((pos._y) * DISTANCE_FACTOR);
-  //}
+  void Sound::SetPosition(glm::vec3 pos)
+  {
+    if (Sound::system_on_ == false)
+    { 
+      return; 
+    }
+  
+    _position.x = (pos.x - AUDIOSYSTEM->listener->GetPosition().x) * DISTANCE_FACTOR;
+    _position.y = (pos.y - AUDIOSYSTEM->listener->GetPosition().y) * DISTANCE_FACTOR;
+    _position.z = (pos.z - AUDIOSYSTEM->listener->GetPosition().z) * DISTANCE_FACTOR;
+  }
 
 
 

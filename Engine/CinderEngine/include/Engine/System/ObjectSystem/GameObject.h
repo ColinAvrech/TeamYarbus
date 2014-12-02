@@ -54,6 +54,7 @@ namespace Framework
   class ShapeCollider2D;
   class RigidBody2D;
   class Health;
+  class AudioComponent;
 
   class GameObject
   {
@@ -97,6 +98,7 @@ namespace Framework
     ComponentPointer(Microphone);
     ComponentPointer(Terrain2D);
     ComponentPointer(Terrain3D);
+    ComponentPointer(AudioComponent);
 
    // Menu Components
    ComponentPointer(MenuController);

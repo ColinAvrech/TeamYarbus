@@ -142,9 +142,16 @@ Level =
       bool Enabled = true,
       bool OnFire = false,
       float Fuel = 100,
-      float InitTemp = 400,
+      float InitTemp = 4000,
       int MaterialType = 2,
     },
+	AudioComponent = 
+	{
+		bool Play = true,
+		bool Mute = false,
+		bool Positional = true,
+		string SoundID = "FireA.ogg",
+	},
   },
       Cog = 
 	  {
