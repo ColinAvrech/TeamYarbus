@@ -100,9 +100,7 @@ namespace Framework
     matricesReady = true;
     currentMatrix = 0;
 
-    cl.GenerateBuffers ();
-    cl.GenerateShaders ();
-    cl.GenerateTextures ();
+    cl.Initialize ();
 
     EVENTSYSTEM->mConnect<PauseEvent, Pipeline> (Events::PAUSE, this, &Pipeline::OnApplicationPause);
     //RigidBody2D* b;

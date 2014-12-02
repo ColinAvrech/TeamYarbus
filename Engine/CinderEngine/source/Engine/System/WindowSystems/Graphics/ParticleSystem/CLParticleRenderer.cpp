@@ -13,6 +13,7 @@
 #include "EventSystem.h"
 #include "BaseEvent.h"
 #include "KeyEvent.h"
+#include "GameEvent.h"
 #include "Thermodynamics.h"
 
 namespace Framework
@@ -55,6 +56,14 @@ namespace Framework
   CLParticleRenderer::~CLParticleRenderer ()
   {
     delete SSBOPos, SSBOVel, vao;
+  }
+
+  void CLParticleRenderer::Initialize ()
+  {
+    GenerateBuffers ();
+    GenerateShaders ();
+    GenerateTextures ();
+    EVENTSYSTEM->mConnect<PauseEvent, CLParticleRenderer> (Events::PAUSE, this, &CLParticleRenderer::OnApplicationPause);
   }
 
   void CLParticleRenderer::GenerateShaders ()
@@ -270,7 +279,6 @@ namespace Framework
     shader->vertexAttribPtr (posAttrib, 4, GL_FLOAT, GL_FALSE, 0, 0);
     shader->enableVertexAttribArray (posAttrib);
     glPointSize (particleSize);
-    if (draw)
     glDrawArrays (GL_POINTS, 0, particleCount);
 
     texture->Unbind ();
@@ -318,6 +326,11 @@ namespace Framework
       color [1] = 64.0f;
       color [2] = 0.0f;
     }
+  }
+
+  void CLParticleRenderer::OnApplicationPause (PauseEvent* pauseEvent)
+  {
+    pause = pauseEvent->Paused;
   }
 
 }

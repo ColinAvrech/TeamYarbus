@@ -21,6 +21,8 @@
 namespace Framework
 {
   class KeyEvent;
+  class PauseEvent;
+
   class CLParticleEmitter
   {
     vec4 position;
@@ -39,6 +41,7 @@ namespace Framework
     void GenerateBuffers ();
     void ResetBuffers ();
     void GenerateTextures ();
+    virtual void Initialize ();
     void Set_Cursor_Pos (double, double);
     void Render ();
 
@@ -57,6 +60,7 @@ namespace Framework
     void ResetVelocity ();
     void Interpolate_Colors ();
     void OnKeyPressed (KeyEvent* key);
+    void OnApplicationPause (PauseEvent* pause);
     //////////////////////////////////////////////////////////////////////////
     glm::vec2 destPos;
 
