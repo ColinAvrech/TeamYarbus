@@ -5,6 +5,8 @@
 #include "WindowSystem.h"
 #include "Pipeline.h"
 #include "Core.h"
+#include "EventSystem.h"
+#include "GameEvent.h"
 
 
 namespace Framework
@@ -162,12 +164,28 @@ namespace Framework
 
   void PhysicsSystemNew::Update (const double& dt)
   {
-    Step ();
+    if (!paused)
+    {
+      Step ();
+    }
   }
 
   const string PhysicsSystemNew::GetName ()
   {
     return "PhysicsSystemNew";
+  }
+
+  bool PhysicsSystemNew::Initialize ()
+  {
+    std::cout << GetName () + " initialized\n";
+    EVENTSYSTEM->mConnect<PauseEvent, PhysicsSystemNew> (Events::PAUSE, this, &PhysicsSystemNew::OnApplicationPause);
+
+    return true;
+  }
+
+  void PhysicsSystemNew::OnApplicationPause (PauseEvent* pauseEvent)
+  {
+    paused = pauseEvent->Paused;
   }
 
 }

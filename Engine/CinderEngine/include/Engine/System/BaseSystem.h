@@ -20,6 +20,7 @@ using namespace std::chrono;
 
 namespace Framework
 {
+  class PauseEvent;
   /*!System is a pure virtual base class (an interface) which is
   inherited by other classes.*/
   class BaseSystem
@@ -29,7 +30,7 @@ namespace Framework
 
     //!All systems are updated every frame.
     virtual void Update(const double& dt) = 0;
-
+    virtual void OnApplicationPause (PauseEvent* pause) {}
     virtual bool UpdatesOnPaused() { return m_ShouldUpdateOnPaused; }
 
     //!All systems need a name.
@@ -40,6 +41,9 @@ namespace Framework
 
     //!All systems need a virtual destrutor to have their distructor Called
     virtual ~BaseSystem(){}
+
+  protected:
+    bool paused = false;
 
   private:
     bool m_ShouldUpdateOnPaused = true;

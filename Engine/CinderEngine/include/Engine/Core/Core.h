@@ -39,7 +39,7 @@ namespace Framework
     //! Add a system to be updated every frame.
     void AddSystem(BaseSystem* system);
 
-    void TogglePaused(){ GamePaused = !GamePaused; }
+    void TogglePaused();
     bool IsPaused(){ return GamePaused; }
    
     //! Stops the game for whatever reason

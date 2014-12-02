@@ -16,6 +16,8 @@ Main Game Loop.
 
 
 #include "Core.h"
+#include "EventSystem.h"
+#include "GameEvent.h"
 
 namespace Framework
 {
@@ -137,6 +139,14 @@ namespace Framework
 
     /*!The average system dt is affected more by recent deltas*/
     _dt_ave = (11 * _dt_ave + _dt) / 12;
+  }
+
+  void CoreEngine::TogglePaused ()
+  {
+    GamePaused = !GamePaused;
+    PauseEvent pause;
+    pause.Paused = GamePaused;
+    EVENTSYSTEM->TriggerEvent (Events::PAUSE, pause);
   }
 
 }

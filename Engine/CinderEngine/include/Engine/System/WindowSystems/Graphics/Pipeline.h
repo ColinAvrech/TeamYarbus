@@ -13,6 +13,7 @@
 
 #include "glew.h"
 #include "CinderMath.h"
+#include "FrameBufferObject.h"
 #include <vector>
 #include <list>
 
@@ -25,6 +26,7 @@ namespace Framework
   class ShapeCollider;
   class Shader;
   class PointLight;
+  class PauseEvent;
 
   enum MATRIX_MODE
   {
@@ -59,6 +61,9 @@ namespace Framework
     void PushMatrix ();
     void PopMatrix ();
 
+    void ResizeBuffer (const int w, const int h);
+    void OnApplicationPause (PauseEvent* pause);
+
     int GetMatrixMode ();
     glm::mat4 GetModelMatrix ();
     glm::mat4 GetViewMatrix ();
@@ -86,6 +91,8 @@ namespace Framework
     GLenum dFactor;
     int currentMatrix;
     bool matricesReady;
+
+    void RenderToTexture (FBO* fbo, GLuint tex, Shader* shader);
   };
 
   extern Pipeline* OPENGL;

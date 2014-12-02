@@ -237,12 +237,5 @@ Level =
 		  float MaxSize = 10,
 		  float MinSize = 10,
 		},
-    PointLight = 
-    {
-      bool Enabled = true,
-      float Radius = 2,
-      float Intensity = 5,
-      Vec4 Color = [0.4, 0.7, 0.4, 1],
-    },
 	},
 },
