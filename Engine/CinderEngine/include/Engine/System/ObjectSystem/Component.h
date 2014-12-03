@@ -29,6 +29,7 @@ relaying information)
 namespace Framework
 {
   class GameObject;
+  class PauseEvent;
 
   /*! A Component is added to a Game object composition and is
   a small piece of logic for an object. 
@@ -42,6 +43,7 @@ namespace Framework
     Component()
     {
       enabled = true;
+      paused = false;
     }
     virtual ~Component() {}
 
@@ -57,6 +59,9 @@ namespace Framework
       ErrorIf (true, "Serialize Component Not Overriden");
     }
 
+    virtual void OnApplicationPause (PauseEvent* pause)
+    {}
+
     GameObject* GetOwner();
     // Definition in GameObject.cpp
 
@@ -70,6 +75,8 @@ namespace Framework
       Serializer::DataNode* value = data->FindElement (data, enableKey.c_str());
       value->GetValue (&enabled);
     }
+
+    bool paused;
   };
 
 }

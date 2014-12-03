@@ -28,6 +28,7 @@
 #include "HeatMap.h"
 #include "EventSystem.h"
 #include "GameEvent.h"
+#include "Text.h"
 
 namespace Framework
 {
@@ -85,7 +86,10 @@ namespace Framework
   std::list <UIComponent*> Pipeline::uiObjects;
   std::list <Camera*> Pipeline::cameras;
   std::list <PointLight*> Pipeline::pointLights;
+  std::list <Text*> Pipeline::textObjects;
   std::list <ShapeCollider*> Pipeline::debugColliders;
+
+  static Text text;
 
   Pipeline::Pipeline ()
   {
@@ -218,10 +222,18 @@ namespace Framework
       i->UIDraw ();
     }
 
+    for (auto* i : textObjects)
+    {
+      i->Draw ();
+    }
+
     //sFactor = GL_ONE;
     //dFactor = GL_ONE;
     glBlendFunc (sFactor, dFactor);
     RenderToTexture (fbo, renderTexture, sceneShader);
+
+    //////////////////////////////////////////////////////////////////////////
+    text.Draw ("HELLO WORLD", -1.0f, 0.9f);
 
 #ifdef _DEBUG
     //THERMODYNAMICS->Draw ();

@@ -17,6 +17,7 @@
 #include "EventSystem.h"
 #include "KeyEvent.h"
 #include "Collider2D.h"
+#include "GameEvent.h"
 
 namespace Framework
 {
@@ -62,6 +63,7 @@ namespace Framework
     initializeRenderer ();
 
     EVENTSYSTEM->mConnect<KeyEvent, PlayerEffect> (Events::KEY_ANY, this, &PlayerEffect::OnKeyPressed);
+    EVENTSYSTEM->mConnect<PauseEvent, PlayerEffect> (Events::PAUSE, this, &PlayerEffect::OnApplicationPause);
   }
 
 
@@ -184,8 +186,11 @@ namespace Framework
   {
     if (enabled)
     {
-      cpuUpdate (0.016);
-      gpuUpdate (0.016);
+      if (!paused)
+      {
+        cpuUpdate (0.016);
+        gpuUpdate (0.016);
+      }
       render ();
     }
   }
@@ -284,5 +289,10 @@ namespace Framework
     ringEmitter->addGenerator (timeGenerator);
 
     m_system->addEmitter (ringEmitter);
+  }
+
+  void PlayerEffect::OnApplicationPause (PauseEvent* pauseEvent)
+  {
+    paused = pauseEvent->Paused;
   }
 }
