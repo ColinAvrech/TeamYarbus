@@ -237,7 +237,7 @@ namespace Framework
 
 #ifdef _DEBUG
     //THERMODYNAMICS->Draw ();
-    //PHYSICS->Render ();
+    PHYSICS->Render ();
 #endif
   }
 
