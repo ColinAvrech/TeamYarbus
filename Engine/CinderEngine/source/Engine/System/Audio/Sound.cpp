@@ -156,6 +156,8 @@ namespace Framework
   /***************************************************************************/
   void Sound::SetVolume(const float volume)
   {
+    FMOD_RESULT result;
+
     // Checks if system is not on
     if (Sound::system_on_ == false)
     {
@@ -165,7 +167,10 @@ namespace Framework
     _volume = volume;
 
     if (pChannel)
-      pChannel->setVolume(volume);
+    {
+      result = pChannel->setVolume(volume);
+      ErrCheck(result);
+    }
   }
 
   /***************************************************************************/
@@ -215,6 +220,7 @@ namespace Framework
   /***************************************************************************/
   void Sound::SetPause(bool pauseState)
   {
+    FMOD_RESULT result;
     // Checks if system is not on
     if (Sound::system_on_ == false)
     { 
@@ -226,12 +232,14 @@ namespace Framework
     {
       if (pauseState == true)
       {
-        pChannel->setPaused(true);
+        result = pChannel->setPaused(true);
+        ErrCheck(result);
         _paused = true;
       }
       else if (pauseState == false)
       {
-        pChannel->setPaused(false);
+        result = pChannel->setPaused(false);
+        ErrCheck(result);
         _paused = false;
       }
       
@@ -247,6 +255,8 @@ namespace Framework
   /***************************************************************************/
   void Sound::Stop()
   {
+    FMOD_RESULT result;
+
     // Checks if system is not on
     if (Sound::system_on_ == false)
     { 
@@ -257,7 +267,10 @@ namespace Framework
     if (pChannel)
     {
       bool playing = false;
-      pChannel->isPlaying(&playing);
+
+      result = pChannel->isPlaying(&playing);
+      ErrCheck(result);
+
       if (playing)
       {
         ErrCheck(pChannel->stop());
@@ -278,6 +291,8 @@ namespace Framework
   /***************************************************************************/
   void Sound::SetMute(bool muteState)
   {
+    FMOD_RESULT result;
+
     // Checks if system is not on
     if (Sound::system_on_ == false)
     {
@@ -289,11 +304,13 @@ namespace Framework
     {
       if (muteState == true)
       {
-        pChannel->setMute(muteState);
+        result = pChannel->setMute(muteState);
+        ErrCheck(result);
       }
       else if (muteState == false)
       {
-        pChannel->setMute(muteState);
+        result = pChannel->setMute(muteState);
+        ErrCheck(result);
       }
     }    
   }
@@ -313,6 +330,8 @@ namespace Framework
   /***************************************************************************/
   void Sound::SetLoop(const bool loopState, int index)
   {
+    FMOD_RESULT result;
+
     // Checks if system is not on
     if (Sound::system_on_ == false)
     { 
@@ -324,11 +343,13 @@ namespace Framework
 
     if (loopState == true)
     {
-      pSound->setMode(FMOD_LOOP_NORMAL); // Sets Loop On
+      result = pSound->setMode(FMOD_LOOP_NORMAL); // Sets Loop On
+      ErrCheck(result);
     }
     else
     {
-      pSound->setMode(FMOD_LOOP_OFF);    // Sets Loop Off
+      result = pSound->setMode(FMOD_LOOP_OFF);    // Sets Loop Off
+      ErrCheck(result);
     }
   }
 
@@ -349,6 +370,8 @@ namespace Framework
                             const float endPos, 
                             const int index)
   {
+    FMOD_RESULT result;
+
     // Checks if system is not on
     if (Sound::system_on_ == false)
     { 
@@ -362,11 +385,13 @@ namespace Framework
 
     if (!fmEndPos)
     { 
-      pSound->getLength(&fmEndPos, FMOD_TIMEUNIT_MS); 
+      result = pSound->getLength(&fmEndPos, FMOD_TIMEUNIT_MS); 
+      ErrCheck(result);
     }
 
-    pSound->setLoopPoints(fmStartPos, FMOD_TIMEUNIT_MS, fmEndPos,
+    result = pSound->setLoopPoints(fmStartPos, FMOD_TIMEUNIT_MS, fmEndPos,
       FMOD_TIMEUNIT_MS);
+    ErrCheck(result);
   }
   /***************************************************************************/
   /*!
@@ -383,6 +408,8 @@ namespace Framework
   /***************************************************************************/
   void Sound::SetType(unsigned type, unsigned index)
   {
+    FMOD_RESULT result;
+
     // Checks if system is not on
     if (Sound::system_on_ == false)
     { 
@@ -400,17 +427,22 @@ namespace Framework
     switch (type)
     {
     case SOUND_2D:
-      pSound->setMode(FMOD_2D);
+      result = pSound->setMode(FMOD_2D);
+      ErrCheck(result);
       SetLoop(false, index);
       break;
     case SOUND_3D:
-      pSound->setMode(FMOD_3D);
-      pFMODAudioSystem->set3DSettings(1.0f, float(DISTANCE_FACTOR), 1.0f);
-      pSound->set3DMinMaxDistance(10.0f * float(DISTANCE_FACTOR), 15000.0f * float(DISTANCE_FACTOR));
+      result = pSound->setMode(FMOD_3D);
+      ErrCheck(result);
+      result = pFMODAudioSystem->set3DSettings(1.0f, float(DISTANCE_FACTOR), 1.0f);
+      ErrCheck(result);
+      result = pSound->set3DMinMaxDistance(10.0f * float(DISTANCE_FACTOR), 15000.0f * float(DISTANCE_FACTOR));
+      ErrCheck(result);
       SetLoop(true, index);
       break;
     case MUSIC:
-      pSound->setMode(FMOD_2D);
+      result = pSound->setMode(FMOD_2D);
+      ErrCheck(result);
       SetLoop(true, index);
       break;
     }
@@ -469,6 +501,7 @@ namespace Framework
   /***************************************************************************/
   bool Sound::GetPlaying()
   {
+    FMOD_RESULT result;
     // Checks if system is not on
     if (Sound::system_on_ == false)
     { 
@@ -480,7 +513,8 @@ namespace Framework
     // If channel exists
     if (pChannel)
     {
-      pChannel->isPlaying(&playing); // Check if channel is playing
+      result = pChannel->isPlaying(&playing); // Check if channel is playing
+      ErrCheck(result);
     }
 
     return playing;
@@ -495,6 +529,8 @@ namespace Framework
   /***************************************************************************/
   bool Sound::GetPaused()
   {
+    FMOD_RESULT result;
+
     // Checks if system is not on
     if (Sound::system_on_ == false)
     { 
@@ -506,7 +542,8 @@ namespace Framework
     // If the channel exists
     if (pChannel)
     {
-      pChannel->getPaused(&paused); // Checks the paused state
+      result = pChannel->getPaused(&paused); // Checks the paused state
+      ErrCheck(result);
     }
 
     return paused;
@@ -521,6 +558,8 @@ namespace Framework
   /***************************************************************************/
   void Sound::Play()
   {
+    FMOD_RESULT result;
+
     // Checks if system is not on
     if (Sound::system_on_ == false)
     { 
@@ -538,7 +577,8 @@ namespace Framework
     {
       if (pChannel) // If the channel exists
       {
-        pChannel->setPaused(false); // Unpause
+        result = pChannel->setPaused(false); // Unpause
+        ErrCheck(result);
       }
       return;
     }
@@ -557,6 +597,8 @@ namespace Framework
   /***************************************************************************/
   void Sound::PlayNew()
   {
+    FMOD_RESULT result;
+
     if (Sound::system_on_ == false)
     {
       return; 
@@ -565,12 +607,14 @@ namespace Framework
     FMOD::Sound* pSound = sound_queue_[0]; // Adds the new sound object
 
     // Calls the FMOD playSound function
-    pFMODAudioSystem->playSound(pSound, 0, false, &pChannel);
+    result = pFMODAudioSystem->playSound(pSound, 0, false, &pChannel);
+    ErrCheck(result);
 
     // If the channel group exists
     if (pChannelGroup)
     { 
-      pChannel->setChannelGroup(pChannelGroup); // Add channel to the group
+      result = pChannel->setChannelGroup(pChannelGroup); // Add channel to the group
+      ErrCheck(result);
     }
     
     _paused = false; // Set paused state to false
@@ -616,6 +660,8 @@ namespace Framework
   /***************************************************************************/
   float Sound::GetMasterVolume(void)
   {
+    FMOD_RESULT result;
+
     // Checks if system is not on
     if (Sound::system_on_ == false)
     { 
@@ -626,7 +672,8 @@ namespace Framework
 
     if (pChannelGroup)
     {
-      pChannelGroup->getVolume(&volume); // Gets the master volume
+      result = pChannelGroup->getVolume(&volume); // Gets the master volume
+      ErrCheck(result);
     }
     return volume;
   }
@@ -676,6 +723,8 @@ namespace Framework
   /***************************************************************************/
   unsigned Sound::GetTime()
   {
+    FMOD_RESULT result;
+
     if (Sound::system_on_ == false)
     { 
       return 0; 
@@ -685,7 +734,8 @@ namespace Framework
 
     if (pChannel)
     {
-      pChannel->getPosition(&milliseconds, FMOD_TIMEUNIT_MS);
+      result = pChannel->getPosition(&milliseconds, FMOD_TIMEUNIT_MS);
+      ErrCheck(result);
     }   
 
     return milliseconds;
@@ -737,6 +787,8 @@ namespace Framework
   /***************************************************************************/
   void Sound::Update(const double &dt)
   {
+    FMOD_RESULT result;
+
     // Checks if system is not on
     if (Sound::system_on_ == false)
     {
@@ -747,7 +799,8 @@ namespace Framework
     {
       if (pChannel)
       {
-        pChannel->set3DAttributes(&_position, 0);
+        result = pChannel->set3DAttributes(&_position, 0);
+        ErrCheck(result);
       }
     }
 
@@ -790,12 +843,14 @@ namespace Framework
   /***************************************************************************/
   void Sound::UpdateVolumeFade(const double dt)
   {
+    FMOD_RESULT result;
     float currentVolume = 0;    
 
     // If the channel exists
     if (pChannel != NULL)
     {
-      pChannel->getVolume(&currentVolume);
+      result = pChannel->getVolume(&currentVolume);
+      ErrCheck(result);
 
       // If volume doesn't reach the required fade volume
       if (_volValue != currentVolume)

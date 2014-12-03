@@ -324,7 +324,7 @@ namespace Framework
           if (TemperatureMap.Get((*i).first.x, (*i).first.y) < Const::BT_Organics)
           {
             TemperatureMap.Set((*i).first.x, (*i).first.y,
-              TemperatureMap.Get((*i).first.x, (*i).first.y) + dt);
+              TemperatureMap.Get((*i).first.x, (*i).first.y) + (float)dt);
           }
           (*i).second->Update(dt);
         }

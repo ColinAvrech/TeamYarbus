@@ -16,9 +16,12 @@
 #include "GameEvent.h"
 #include "Thermodynamics.h"
 #include "CharacterController.h"
+#include "GameObject.h"
 
 namespace Framework
 {
+  DefineComponentName (CLParticleRenderer);
+
   enum MOVEMENT
   {
     LEFT,
@@ -26,6 +29,11 @@ namespace Framework
   };
 
   MOVEMENT move = LEFT;
+
+  static bool borderEnabled = true;
+  static bool colorFade = false;
+  static bool pause = false;
+
   static bool draw = true;
   static double cursorX = 0, cursorY = 0;
   static GLuint fbo, rbo;
@@ -57,6 +65,23 @@ namespace Framework
   CLParticleRenderer::~CLParticleRenderer ()
   {
     delete SSBOPos, SSBOVel, vao;
+  }
+
+  void CLParticleRenderer::Serialize (Serializer::DataNode* data)
+  {
+    Serializer::DataNode* value = data->FindElement (data, "ParticleCount");
+    value->GetValue (&particleCount);
+
+    value = data->FindElement (data, "ParticleSize");
+    value->GetValue (&particleSize);
+
+    value = data->FindElement (data, "EffectRadius");
+    value->GetValue (&radiusMultiplier);
+
+    value = data->FindElement (data, "Color");
+    value->GetValue (&color);
+
+    minAlpha = color [3];
   }
 
   void CLParticleRenderer::Initialize ()
@@ -144,22 +169,15 @@ namespace Framework
 
     //destPos.x = (float) (cursorX / (windowWidth) -0.5f) * 2.0f;
     //destPos.y = (float) ((windowHeight - cursorY) / windowHeight - 0.5f) * 2.0f;
-    if (PLAYER == nullptr)
-    {
-      destPos.x = 1.0f;
-      destPos.y = 1.0f;
-    }
-    else
-    {
-      destPos = PLAYER->gameObject->Transform->GetNDCPosition ();
-    }
+
+    destPos = gameObject->Transform->GetNDCPosition ();
 
     vec4* verticesPos = (vec4*) SSBOPos->MapBufferRange<vec4> (0, particleCount);
     for (int i = 0; i < particleCount; i++)
     {
       float rnd = (float) rand () / (float) (RAND_MAX);
       float rndVal = (float) rand () / (float) (RAND_MAX / (360.0f * 3.14f * 2.0f));
-      float rndRad = (float) rand () / (float) (RAND_MAX) * 0.1f;
+      float rndRad = (float) rand () / (float) (RAND_MAX) * radiusMultiplier;
       radius = rndRad;
       verticesPos [i].x = destPos.x + cos (rndVal) * rndRad;
       verticesPos [i].y = destPos.y + sin (rndVal) * rndRad;
@@ -185,7 +203,7 @@ namespace Framework
   }
 
 
-  void CLParticleRenderer::Render ()
+  void CLParticleRenderer::Draw ()
   {
     Interpolate_Colors ();
     vao->bindVAO ();
@@ -199,7 +217,7 @@ namespace Framework
     }
     else
     {
-      if (color [3] > 0.1f) color [3] -= 0.016f;
+      if (color [3] > minAlpha) color [3] -= 0.016f;
     }
     double frameTimeStart = glfwGetTime () * 1000;
 
@@ -216,7 +234,7 @@ namespace Framework
     //destPos.x = (float) ((cursorX / (windowWidth) -0.5f) * 2.0f);
     //destPos.y = (float) ((windowHeight - cursorY) / windowHeight - 0.5f) * 2.0f;
 
-    destPos = PLAYER->gameObject->Transform->GetNDCPosition ();
+    destPos = gameObject->Transform->GetNDCPosition ();
 
     //switch (move)
     //{
@@ -248,11 +266,11 @@ namespace Framework
     //  break;
     //}
 
-    if (speedMultiplier <= 10.0f)
+    if (speedMultiplier <= 3.0f)
     {
       speedMultiplier += 0.016f;
     }
-    std::cout << speedMultiplier << "\n";
+    //std::cout << speedMultiplier << "\n";
     //destPos = glm::mix (glm::vec2 (-1, -1), glm::vec2 (1, 1), t);
 
     //destPosX = random (-1.0f, 1.0f);

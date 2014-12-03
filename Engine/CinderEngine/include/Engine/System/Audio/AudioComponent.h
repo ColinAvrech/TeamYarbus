@@ -64,7 +64,9 @@ namespace Framework
 
       virtual void Serialize(Serializer::DataNode*);
       virtual void Initialize();
-      void AudioComponent::Update();
+      void LoadSound(std::string name);
+      void PlaySound();
+      void Update();
 
       #pragma endregion
 

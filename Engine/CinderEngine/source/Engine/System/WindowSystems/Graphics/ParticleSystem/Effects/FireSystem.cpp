@@ -14,6 +14,7 @@
 #include "EventSystem.h"
 #include "KeyEvent.h"
 #include "Thermodynamics.h"
+#include "GameEvent.h"
 #include "glfw3.h"
 
 namespace Framework
@@ -69,7 +70,7 @@ namespace Framework
   bool FireSystem::initialize (size_t numParticles)
   {
     EVENTSYSTEM->mConnect<KeyEvent, FireSystem> (Events::KEY_ANY, this, &FireSystem::OnKeyPressed);
-    texture = Resources::RS->Get_Texture ("Particle.bmp");
+    texture = Resources::RS->Get_Texture ("Capture.png");
     shader = Resources::RS->Get_Shader ("Particle");
 
     const size_t NUM_PARTICLES = numParticles == 0 ? 500000 : numParticles;
@@ -146,8 +147,11 @@ namespace Framework
   {
     if (enabled)
     {
-      cpuUpdate (0.016);
-      gpuUpdate (0.016);
+      if (!paused)
+      {
+        cpuUpdate (0.016);
+        gpuUpdate (0.016);
+      }
       render ();
     }
   }
@@ -219,6 +223,11 @@ namespace Framework
     }
 
     m_system->addEmitter (particleEmitter);
+  }
+
+  void FireSystem::OnApplicationPause (PauseEvent* pause)
+  {
+    paused = pause->Paused;
   }
 
 }

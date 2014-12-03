@@ -57,7 +57,10 @@ namespace Framework
     Texture* texture;
 
     void AddFireEmitter (glm::vec3 position, float emitRate, glm::vec3 minVel, glm::vec3 maxVel);
-  };  
+
+    virtual void OnApplicationPause (PauseEvent* pause);
+
+  };
 }
 
 #endif

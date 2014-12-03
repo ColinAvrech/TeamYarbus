@@ -35,7 +35,7 @@ namespace Framework
   ---------------------------------------------------------------------------*/
   #pragma region Constructors
 
-  Sound *test;
+  Sound *test, *test2;
 
   AudioEvents::AudioEvents()
   {    
@@ -67,6 +67,7 @@ namespace Framework
     EVENTSYSTEM->mConnect<KeyEvent, AudioEvents>(Events::KEY_ANY, this, &AudioEvents::OnKeyPressed);
 
     //test = AUDIOSYSTEM->LoadSound("Pads.ogg", "NOISE", Sound::SOUND_3D, 1.0f);
+    //test2 = AUDIOSYSTEM->LoadSound("Pads.ogg", "NOISE", Sound::SOUND_3D, 1.0f);
     //test->Play();
 
   }
@@ -100,9 +101,11 @@ namespace Framework
     switch (key->KeyValue)
     {
       case GLFW_KEY_UP:
+        //test->Play();
         break;
 
       case GLFW_KEY_DOWN:
+       //test2->Play();
         break;
 
       default:

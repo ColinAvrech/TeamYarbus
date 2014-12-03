@@ -169,27 +169,34 @@ namespace Framework
       if (_smootheddelta < (_adjustedlatency - _driftthreshold) || 
           _smootheddelta > _soundlength / 2)
       {
-        micChannel->setFrequency((float)_recordrate - (_recordrate / 50));
+        result = micChannel->setFrequency((float)_recordrate - (_recordrate / 50));
+        ErrCheck(result);
       }
       else if (_smootheddelta > (_adjustedlatency + _driftthreshold))
       {
-        micChannel->setFrequency((float)_recordrate + (_recordrate / 50));
+        result = micChannel->setFrequency((float)_recordrate + (_recordrate / 50));
+        ErrCheck(result);
       }
       else
       {
-        micChannel->setFrequency((float)_recordrate);
+        result = micChannel->setFrequency((float)_recordrate);
+        ErrCheck(result);
       }      
 
       if (_check == true)
       {
-        micChannel->setMute(true); // Avoid acoustic feedback
+        result = micChannel->setMute(true); // Avoid acoustic feedback
+        ErrCheck(result);
+
         micFilter();               // Apply microphone filter
         micMeter();                // Get the RMS peaks from the mic
         micFrequencyData();        //Get dominant frequency ranges       
 
         _check = false;        
-      }      
-      meter->getMeteringInfo(&input, 0);
+      } 
+
+      result = meter->getMeteringInfo(&input, 0);
+      ErrCheck(result);
 
       // FOR TESTING
       //frequencyConsoleOut();   

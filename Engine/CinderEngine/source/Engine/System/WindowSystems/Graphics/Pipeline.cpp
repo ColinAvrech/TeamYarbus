@@ -28,6 +28,7 @@
 #include "HeatMap.h"
 #include "EventSystem.h"
 #include "GameEvent.h"
+#include "Text.h"
 
 namespace Framework
 {
@@ -48,7 +49,6 @@ namespace Framework
   FBO* fbo;
   Shader* sceneShader;
   GLuint renderTexture;
-  CLParticleRenderer cl;
 
   void Interpolate_Background ()
   {
@@ -86,7 +86,10 @@ namespace Framework
   std::list <UIComponent*> Pipeline::uiObjects;
   std::list <Camera*> Pipeline::cameras;
   std::list <PointLight*> Pipeline::pointLights;
+  std::list <Text*> Pipeline::textObjects;
   std::list <ShapeCollider*> Pipeline::debugColliders;
+
+  static Text text;
 
   Pipeline::Pipeline ()
   {
@@ -100,26 +103,32 @@ namespace Framework
     matricesReady = true;
     currentMatrix = 0;
 
-    cl.Initialize ();
-
     EVENTSYSTEM->mConnect<PauseEvent, Pipeline> (Events::PAUSE, this, &Pipeline::OnApplicationPause);
-    //RigidBody2D* b;
-    ////CircleCollider2D c (1.0f);
-    ////b = PHYSICS->Add (&c, 2, 1);
+    RigidBody2D* b;
+    //CircleCollider2D c (1.0f);
+    //b = PHYSICS->Add (&c, 2, 1);
 
-    //PolygonCollider2D poly;
-    //poly.SetBox (0.5f, 0.5f);
-    //b = PHYSICS->Add (&poly, -9, 0);
-    //b->SetStatic ();
-    //b->SetOrient (0);
+    PolygonCollider2D poly;
+    poly.SetBox (0.5f, 100.0f);
+    b = PHYSICS->Add (&poly, -64, 0);
+    b->SetStatic ();
+    b->SetOrient (0);
 
-    //PolygonCollider2D poly1;
-    //poly1.SetBox (0.5f, 0.5f);
-    //b = PHYSICS->Add (&poly1, 15, -2);
-    //b->SetStatic ();
-    //b->SetOrient (0);
-    //b->dynamicFriction = 0.0f;
-    //b->staticFriction = 0.0f;
+    PolygonCollider2D poly1;
+    poly1.SetBox (0.5f, 100.0f);
+    b = PHYSICS->Add (&poly1, 64, 0);
+    b->SetStatic ();
+    b->SetOrient (0);
+    b->dynamicFriction = 0.0f;
+    b->staticFriction = 0.0f;
+
+    PolygonCollider2D poly2;
+    poly2.SetBox (128.0, 0.5f);
+    b = PHYSICS->Add (&poly2, 0, 32);
+    b->SetStatic ();
+    b->SetOrient (0);
+    b->dynamicFriction = 0.0f;
+    b->staticFriction = 0.0f;
 
     GLfloat vertices [] =
     {
@@ -200,7 +209,7 @@ namespace Framework
     {
       i->UpdateCamera (this);
     }
-    cl.Render ();
+
     //Draw_Quad ();
     for (auto* i : graphicsObjects)
     {
@@ -213,10 +222,18 @@ namespace Framework
       i->UIDraw ();
     }
 
+    for (auto* i : textObjects)
+    {
+      i->Draw ();
+    }
+
     //sFactor = GL_ONE;
     //dFactor = GL_ONE;
     glBlendFunc (sFactor, dFactor);
     RenderToTexture (fbo, renderTexture, sceneShader);
+
+    //////////////////////////////////////////////////////////////////////////
+    text.Draw ("HELLO WORLD", -1.0f, 0.9f);
 
 #ifdef _DEBUG
     //THERMODYNAMICS->Draw ();

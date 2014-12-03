@@ -37,6 +37,8 @@ deleted.
 #include "PointLight.h"
 #include "PlayerEffect.h"
 #include "FireSystem.h"
+#include "CLParticleRenderer.h"
+#include "Text.h"
 //////////////////////////////////////////////////////////////////////////
 // AUDIO
 //////////////////////////////////////////////////////////////////////////
@@ -131,50 +133,52 @@ namespace Framework
 		return obj;
 	}
 
-	/*
-	Called When the ObjectSystem is created
-	*/
-	void ObjectSystem::RegisterComponents(void)
-	{
-		//////////////////////////////////////////////////////////////////////////
-		// PHYSICS
-		//////////////////////////////////////////////////////////////////////////
-		RegisterComponent (RigidBody);
-		RegisterComponent (RigidBody2D);
-		RegisterComponent (ShapeCollider2D);
-		RegisterComponent (CircleCollider2D);
-		RegisterComponent (PolygonCollider2D);
-		//RegisterComponent (SplineCollider);
-		AddComponentCreator ("SplineCollider", new ComponentCreatorType<SplineCollider> ("SplineCollider"));
-		AddComponentCreator ("SphereCollider", new ComponentCreatorType<CircleCollider> ("SphereCollider"));
-		AddComponentCreator ("BoxCollider", new ComponentCreatorType<LineCollider> ("BoxCollider"));
-		//////////////////////////////////////////////////////////////////////////
-		// GRAPHICS
-		//////////////////////////////////////////////////////////////////////////
-		RegisterComponent (Transform);
-		RegisterComponent (Sprite);
-		RegisterComponent (Camera);
-		RegisterComponent (Terrain2D);
-		RegisterComponent (Terrain3D);
-		RegisterComponent (Tree2D);
-		RegisterComponent (EcoSystem);
-		RegisterComponent (UIBox);
-		RegisterComponent (PointLight);
-		RegisterComponent (PlayerEffect);
-		RegisterComponent (FireSystem);
-		//////////////////////////////////////////////////////////////////////////
-		// AUDIO
-		//////////////////////////////////////////////////////////////////////////
-		RegisterComponent (Microphone);
-		RegisterComponent (AudioComponent);
-		//////////////////////////////////////////////////////////////////////////
-		// GAMEPLAY
-		//////////////////////////////////////////////////////////////////////////
-		RegisterComponent (CharacterController);
-		RegisterComponent (Health);
-		RegisterComponent (FireStarter);
-		//////////////////////////////////////////////////////////////////////////
-	}
+  /*
+  Called When the ObjectSystem is created
+  */
+  void ObjectSystem::RegisterComponents(void)
+  {
+    //////////////////////////////////////////////////////////////////////////
+    // PHYSICS
+    //////////////////////////////////////////////////////////////////////////
+    RegisterComponent (RigidBody);
+    RegisterComponent (RigidBody2D);
+    RegisterComponent (ShapeCollider2D);
+    RegisterComponent (CircleCollider2D);
+    RegisterComponent (PolygonCollider2D);
+    //RegisterComponent (SplineCollider);
+    AddComponentCreator ("SplineCollider", new ComponentCreatorType<SplineCollider> ("SplineCollider"));
+    AddComponentCreator ("SphereCollider", new ComponentCreatorType<CircleCollider> ("SphereCollider"));
+    AddComponentCreator ("BoxCollider", new ComponentCreatorType<LineCollider> ("BoxCollider"));
+    //////////////////////////////////////////////////////////////////////////
+    // GRAPHICS
+    //////////////////////////////////////////////////////////////////////////
+    RegisterComponent (Transform);
+    RegisterComponent (Sprite);
+    RegisterComponent (Camera);
+    RegisterComponent (Terrain2D);
+    RegisterComponent (Terrain3D);
+    RegisterComponent (Tree2D);
+    RegisterComponent (EcoSystem);
+    RegisterComponent (UIBox);
+    RegisterComponent (PointLight);
+    RegisterComponent (PlayerEffect);
+    RegisterComponent (FireSystem);
+    RegisterComponent (CLParticleRenderer);
+    RegisterComponent (Text);
+    //////////////////////////////////////////////////////////////////////////
+    // AUDIO
+    //////////////////////////////////////////////////////////////////////////
+    RegisterComponent (Microphone);
+    RegisterComponent (AudioComponent);
+    //////////////////////////////////////////////////////////////////////////
+    // GAMEPLAY
+    //////////////////////////////////////////////////////////////////////////
+    RegisterComponent (CharacterController);
+    RegisterComponent (Health);
+    RegisterComponent (FireStarter);
+    //////////////////////////////////////////////////////////////////////////
+  }
 
 	void ObjectSystem::AddComponentCreator(string name, ComponentCreator* creator)
 	{
@@ -183,15 +187,16 @@ namespace Framework
 
 	
 
-	void ObjectSystem::DestroyAllObjects()
-	{
-		for each(auto obj in GameObjects)
-		{
-			delete obj.second;
-			obj.second = NULL;
-		}
-		GameObjects.clear();
-	}
+  void ObjectSystem::DestroyAllObjects()
+  {
+    //EVENTSYSTEM->DeleteAllEvents();
+    for each(auto obj in GameObjects)
+    {
+      delete obj.second;
+      obj.second = NULL;
+    }
+    GameObjects.clear();
+  }
 
 	void ObjectSystem::DestroyGameObjectsToBeDestroyed()
 	{

@@ -13,27 +13,27 @@
 
 namespace Framework
 {
-  ////////////////////////////////////////////////////////////
-  //      ECO SYSTEM
-  ////////////////////////////////////////////////////////////
-  class EcoSystem : public Component
-  {
-  public:
+	////////////////////////////////////////////////////////////
+	//      ECO SYSTEM
+	////////////////////////////////////////////////////////////
+	class EcoSystem : public Component
+	{
+	public:
 
-    /*-----------------------------------------------------------------------
-    // Constructors
-    -----------------------------------------------------------------------*/
+		/*-----------------------------------------------------------------------
+		// Constructors
+		-----------------------------------------------------------------------*/
 #pragma region Constructors
 
-    EcoSystem(){};
+		EcoSystem(){};
 
-    EcoSystem(GameObject *obj){ gameObject = obj; }
+		EcoSystem(GameObject *obj){ gameObject = obj; }
 
 
 #pragma endregion
-    /*-----------------------------------------------------------------------
-    // Static Public Variables
-    -----------------------------------------------------------------------*/
+		/*-----------------------------------------------------------------------
+		// Static Public Variables
+		-----------------------------------------------------------------------*/
 #pragma region Static Public Variables
 
 
@@ -41,93 +41,96 @@ namespace Framework
 #pragma endregion
 
 
-    /*-----------------------------------------------------------------------
-    // Static Public Functions
-    -----------------------------------------------------------------------*/
+		/*-----------------------------------------------------------------------
+		// Static Public Functions
+		-----------------------------------------------------------------------*/
 #pragma region Static Public Functions
 
 #pragma endregion
 
 
-    /*-----------------------------------------------------------------------
-    // Destructor
-    -----------------------------------------------------------------------*/
+		/*-----------------------------------------------------------------------
+		// Destructor
+		-----------------------------------------------------------------------*/
 #pragma region Destructors
-   // ~EcoSystem();
+		// ~EcoSystem();
 
 #pragma endregion
 
 
-    /*-----------------------------------------------------------------------
-    // Public Variables
-    -----------------------------------------------------------------------*/
+		/*-----------------------------------------------------------------------
+		// Public Variables
+		-----------------------------------------------------------------------*/
 #pragma region Public Variables
 
 #pragma endregion
 
-    /*---------------------------------------------------------------------*/
-    // Public Structs
-    /*---------------------------------------------------------------------*/
+		/*---------------------------------------------------------------------*/
+		// Public Structs
+		/*---------------------------------------------------------------------*/
 #pragma region Public Structs
 
 #pragma endregion
 
-    /*-----------------------------------------------------------------------
-    // Public Functions
-    -----------------------------------------------------------------------*/
+		/*-----------------------------------------------------------------------
+		// Public Functions
+		-----------------------------------------------------------------------*/
 #pragma region Public Functions
-    //!Initialize the system
-    virtual void Initialize();
-    //Serialize Component
-    virtual void Serialize(Serializer::DataNode* data);
+		//!Initialize the system
+		virtual void Initialize();
+		//Serialize Component
+		virtual void Serialize(Serializer::DataNode* data);
 
-    // Called every frame
-    void Update(const double dt);
+		// Called every frame
+		void Update(const double dt);
 
-  private:
+		int GetTotalObjects();
 
-    /*-----------------------------------------------------------------------
-    // Private Variables
-    -----------------------------------------------------------------------*/
+	private:
+
+		/*-----------------------------------------------------------------------
+		// Private Variables
+		-----------------------------------------------------------------------*/
 #pragma region Private Variables
-    const float *terrain;
-    const float *water;
-    int *tree_list;
-    std::pair<int, int>Min_Space; //Implement later
-    int MapWidth;
-    glm::vec3 Translation;
-    glm::vec3 Scale;
+		const float *terrain;
+		const float *water;
+		int *tree_list;
+		std::pair<int, int>Min_Space; //Implement later
+		int MapWidth;
+		glm::vec3 Translation;
+		glm::vec3 Scale;
+		int Total_Objects = 0;
 #pragma endregion
 
 
-    /*-----------------------------------------------------------------------
-    // Private Structs
-    -----------------------------------------------------------------------*/
+		/*-----------------------------------------------------------------------
+		// Private Structs
+		-----------------------------------------------------------------------*/
 #pragma region Private Structs
 
 
 #pragma endregion
 
-    /*-----------------------------------------------------------------------
-    // Private Functions
-    -----------------------------------------------------------------------*/
+		/*-----------------------------------------------------------------------
+		// Private Functions
+		-----------------------------------------------------------------------*/
 #pragma region Private Functions
-    void GenerateVegetation();
+		void GenerateVegetation();
 
-    void GenerateType(float x, float y, float z, int type, unsigned ID);
+		void GenerateType(float x, float y, float z, int type, unsigned ID);
 
-    int Evaluate_Compatibility(int pos);
+		int Evaluate_Compatibility(int pos);
 #pragma endregion
 
 
-    /*-----------------------------------------------------------------------
-    // Static Functions
-    -----------------------------------------------------------------------*/
+		/*-----------------------------------------------------------------------
+		// Static Functions
+		-----------------------------------------------------------------------*/
 #pragma region Static Functions
 
 #pragma endregion
 
-  }; //class thermodynamics
+	}; //class thermodynamics
 
 }  //Framework
 

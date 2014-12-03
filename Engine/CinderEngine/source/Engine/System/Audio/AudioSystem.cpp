@@ -192,6 +192,8 @@ namespace Framework
   /***************************************************************************/
   void AudioSystem::StopSounds(int id)
   {
+    FMOD_RESULT result;
+
     // Checks if audio system is not on
     if (Sound::system_on_ == false)
     {
@@ -201,21 +203,24 @@ namespace Framework
     // Stops all Music sounds
     if (id == Sound::MUSIC || id == -1)
     {
-      GroupMusic->stop();
+      result = GroupMusic->stop();
+      ErrCheck(result);
     }
 
     // Stops all 2D sound effects
     if (id == Sound::SOUND_2D
       || id == Sound::SFX_ALL || id == -1)
     {
-      Group2DSFX->stop();
+      result = Group2DSFX->stop();
+      ErrCheck(result);
     }
 
     // Stops all 3D sound effects
     if (id == Sound::SOUND_3D
       || id == Sound::SFX_ALL || id == -1)
     {
-      Group3DSFX->stop();
+      result = Group3DSFX->stop();
+      ErrCheck(result);
     }
   }
 
@@ -231,6 +236,8 @@ namespace Framework
   /***************************************************************************/
   void AudioSystem::Update(const double &dt)
   {
+    FMOD_RESULT result;
+
     // Checks if audio system is not on
     if (Sound::system_on_ == false)
     {
@@ -238,7 +245,9 @@ namespace Framework
     }
 
     // Updates the audio system
-    pFMODAudioSystem->update();
+    result = pFMODAudioSystem->update();
+    ErrCheck(result);
+
     UpdateMicData();
     UpdatePauseMenuEffect(dt);
 
@@ -282,6 +291,8 @@ namespace Framework
   /***************************************************************************/
   bool AudioSystem::GetMuted(int id)
   {
+    FMOD_RESULT result;
+
     // Checks if audio system is not on
     if (Sound::system_on_ == false)
     {
@@ -298,9 +309,14 @@ namespace Framework
     bool musicMuted = 0;
 
     // FMOD getters for checking for Mute
-    GroupMusic->getMute(&sfx2DMuted);
-    Group2DSFX->getMute(&sfx3DMuted);
-    Group3DSFX->getMute(&musicMuted);
+    result = GroupMusic->getMute(&sfx2DMuted);
+    ErrCheck(result);
+
+    result = Group2DSFX->getMute(&sfx3DMuted);
+    ErrCheck(result);
+    
+    result = Group3DSFX->getMute(&musicMuted);
+    ErrCheck(result);
 
     // Statements to check which groups have been muted
     if (id == -1)
@@ -340,6 +356,7 @@ namespace Framework
   /***************************************************************************/
   void AudioSystem::SetPaused(bool paused, int id)
   {
+    FMOD_RESULT result;
     // Checks if audio system is not on
     if (Sound::system_on_ == false)
     {
@@ -350,21 +367,24 @@ namespace Framework
     if (id == Sound::MUSIC
       || id == Sound::SFX_ALL || id == -1)
     {
-      GroupMusic->setPaused(paused);
+      result = GroupMusic->setPaused(paused);
+      ErrCheck(result);
     }
 
     // Pauses all 2D sound effects
     if (id == Sound::SOUND_2D
       || id == Sound::SFX_ALL || id == -1)
     {
-      Group2DSFX->setPaused(paused);
+      result = Group2DSFX->setPaused(paused);
+      ErrCheck(result);
     }
 
     // Pauses all 3D sound effects
     if (id == Sound::SOUND_3D
       || id == Sound::SFX_ALL || id == -1)
     {
-      Group3DSFX->setPaused(paused);
+      result = Group3DSFX->setPaused(paused);
+      ErrCheck(result);
     }
   }
 

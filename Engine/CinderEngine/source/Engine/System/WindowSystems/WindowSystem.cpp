@@ -53,7 +53,7 @@ namespace Framework
 		WINDOWSYSTEM->Set_W_H(w, aspectHeight);
 		if (h < aspectHeight)
 		{
-			mouseOffset.y = aspectHeight - h;
+			mouseOffset.y = float(aspectHeight - h);
 		}
     else
     {

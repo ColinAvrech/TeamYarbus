@@ -166,7 +166,7 @@ namespace Framework
   {
     if (!matricesReady && enabled)
     {
-      gameObject->Transform->SetPosition (PLAYER->gameObject->Transform->GetPosition ().x, PLAYER->gameObject->Transform->GetPosition ().y);
+      //gameObject->Transform->SetPosition (PLAYER->gameObject->Transform->GetPosition ().x, PLAYER->gameObject->Transform->GetPosition ().y);
       OPENGL->Perspective (fov, aspect, nearPlane, farPlane);
       OPENGL->LookAt
         (size * viewDirection +

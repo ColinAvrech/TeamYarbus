@@ -65,6 +65,7 @@ solution "CinderEngine"
                 "copy ..\\dependency\\opengl\\library\\glfw3.dll ..\\bin\\debug\\",
                 "copy ..\\dependency\\opengl\\library\\glew32.dll ..\\bin\\debug\\",
                 "copy ..\\dependency\\opengl\\library\\freetype6.dll ..\\bin\\debug\\",
+                "copy ..\\dependency\\opengl\\library\\glut32.dll ..\\bin\\debug\\",
                 "copy ..\\dependency\\fmod\\library\\fmod.dll ..\\bin\\debug\\",
                 "copy ..\\dependency\\AntTweakBar\\library\\AntTweakBar.dll ..\\bin\\debug\\",
               }
@@ -81,6 +82,7 @@ solution "CinderEngine"
                 "copy ..\\dependency\\opengl\\library\\glfw3.dll ..\\bin\\release\\",
                 "copy ..\\dependency\\opengl\\library\\glew32.dll ..\\bin\\release\\",
                 "copy ..\\dependency\\opengl\\library\\freetype6.dll ..\\bin\\release\\",
-								"copy ..\\dependency\\fmod\\library\\fmod.dll ..\\bin\\release\\",
-								"copy ..\\dependency\\AntTweakBar\\library\\AntTweakBar.dll ..\\bin\\release\\"        
+                "copy ..\\dependency\\opengl\\library\\glut32.dll ..\\bin\\release\\",
+		"copy ..\\dependency\\fmod\\library\\fmod.dll ..\\bin\\release\\",
+		"copy ..\\dependency\\AntTweakBar\\library\\AntTweakBar.dll ..\\bin\\release\\"        
               }
