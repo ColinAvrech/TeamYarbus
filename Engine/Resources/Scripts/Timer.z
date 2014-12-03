@@ -1,0 +1,26 @@
+class Timer : Component
+{
+  var TimeLength : Float = 9.0;
+  var Timer : Float = 0.0;
+  
+	constructor() : base()
+	{
+
+	}
+
+	function Initialize(owner:GameObject)
+	{
+		this.Owner = owner;
+		
+		EventSystem.Connect(Events.UpdateEvent, this.LogicUpdate);
+	}
+	
+	function LogicUpdate(e: UpdateEvent)
+	{
+		Timer += e.Dt;
+		if(Timer >= TimeLength)
+    {
+      OBJECTSYSTEM.ZilchLoadLevel("");
+    }
+	} 
+}

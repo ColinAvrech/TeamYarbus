@@ -43,7 +43,7 @@ namespace Framework
         (*Array)[i] = 0.0f;
 
       //int* WaveBuffer = new int[ 2 * waves];
-      int WaveBuffer[10] = { 32, 1, 0, 0, 0, 0, 0, 0, 1, 32 };
+      float WaveBuffer[10] = { 16, 1.5, 0, 0, 0, 0, 0, 0, 1.5, 16 };
       //for (int i = 0; i < 2* waves; ++i)
       //  WaveBuffer[i] = rand() % 2;
 

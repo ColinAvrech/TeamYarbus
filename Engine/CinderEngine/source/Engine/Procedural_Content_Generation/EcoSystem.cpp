@@ -102,6 +102,7 @@ namespace Framework
 		{
 			static_cast<Transform*>(c)->Translate(x, y, z);
 			static_cast<Transform*>(c)->Scale(10, 10, 1);
+      static_cast<Transform*>(c)->Rotate(1.f);
 			c->Initialize();
 		}
 		c = grass->AddComponent("Tree2D");

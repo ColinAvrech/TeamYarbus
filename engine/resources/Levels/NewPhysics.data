@@ -63,8 +63,8 @@ Level =
       Vec3 Facing = [0, 0, 1],
 			float FieldOfView = 45,
 			float NearPlane = 0,
-			float FarPlane = 800,
-			float Size = 28,
+			float FarPlane = 100,
+			float Size = 128,
 		},
   },
   Cog = 
@@ -75,53 +75,24 @@ Level =
 		},
 		Named = 
 		{
-			string Name = "Mountains",
+			string Name = "Forest",
 		},
 		Transform = 
 		{
-			Vec3 Translation = [-60, 0, -4],
-			Vec3 Scale = [128, 40, 1],
+			Vec3 Translation = [-150, -90, -16],
+			Vec3 Scale = [256, 128, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Terrain2D = 
 		{
       bool Enabled = true,
-      int MapSize = 512,
-      int BaseHeight = 128,
-      int PeakHeight = 256,
+      int MapSize = 64,
+      int BaseHeight = 0,
+      int PeakHeight = 64,
       int Passes = 0,
-      int Waves = 20,
+      int Waves = 1,
       int Water = 0,
-      Vec4 Color = [0.05, 0.05, 0.05, 1],
-      bool AddCollider = false,
-		},
-  },
-  Cog = 
-	{
-		LinkId = 
-		{
-			uint Id = 8,
-		},
-		Named = 
-		{
-			string Name = "Mountains",
-		},
-		Transform = 
-		{
-			Vec3 Translation = [0, 0, -4],
-			Vec3 Scale = [128, 40, 1],
-			Quat Rotation = [0, 0, 0, 1],
-		},
-		Terrain2D = 
-		{
-      bool Enabled = true,
-      int MapSize = 512,
-      int BaseHeight = 128,
-      int PeakHeight = 256,
-      int Passes = 0,
-      int Waves = 20,
-      int Water = 0,
-      Vec4 Color = [0.05, 0.05, 0.05, 1],
+      Vec4 Color = [0.2, 0.2, 0.2, 1],
       bool AddCollider = false,
 		},
   },
@@ -137,15 +108,14 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, 0, -2],
-			Vec3 Scale = [128, 20, 1],
+			Vec3 Translation = [-100, 0, -8],
+			Vec3 Scale = [256, 13, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Terrain2D = 
 		{
       bool Enabled = true,
-      int MapSize = 64,
-      int MapDepth = 2,
+      int MapSize = 128,
       int BaseHeight = 32,
       int PeakHeight = 64,
       int Passes = 0,
@@ -180,7 +150,7 @@ Level =
       int Passes = 1,
       int Waves = 5,
       int Water = 5,
-      Vec4 Color = [0.2, 0.2, 0.2, 1],
+      Vec4 Color = [0.0, 0.0, 0.0, 1],
       bool AddCollider = true,
 		},
     EcoSystem = 
@@ -188,7 +158,7 @@ Level =
     },
     FireSystem = 
     {
-      bool Enabled = true,
+      bool Enabled = false,
       float ParticleSize = 100,
     },
     Text = 
@@ -219,7 +189,7 @@ Level =
 			bool FlipX = false,
 			bool FlipY = false,
 			Vec4 Color = [1, 0, 1, 1],
-			bool Visible = false,
+			bool Visible = true,
 			bool OnTop = false,
 			bool AnimationActive = true,
 			float AnimationSpeed = 1,
@@ -252,7 +222,7 @@ Level =
 		},
 		PlayerEffect = 
 		{
-		  bool Enabled = true,
+      bool Enabled = false,
 		  float ParticleSize = 100,
 		  float MaxSize = 10,
 		  float MinSize = 10,
@@ -262,7 +232,7 @@ Level =
       int ParticleCount = 10000,
       float ParticleSize = 5,
       float EffectRadius = 0.2,
-      Vec4 Color = [255, 80, 0, 1.0],
+      Vec4 Color = [255, 80, 0, 0.2],
     },
     CameraFollow = 
     {
