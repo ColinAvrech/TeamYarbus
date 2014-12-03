@@ -11,6 +11,7 @@
 #include "EventSystem.h"
 #include "UpdateEvent.h"
 #include "CollisionEvent.h"
+#include "Core.h"
 
 namespace Framework
 {
@@ -47,15 +48,16 @@ namespace Framework
 
 	void Health::Update(UpdateEvent* e)
 	{
-		float deathRate = 5.03f;
+    if (!e)
+      return;
+
+		float deathRate = 2.0f;
 		currentRadius -= deathRate * e->Dt;
-	//	gameObject->Transform->Scale(currentRadius / maxRadius);
 
     if (currentRadius <= minRadius)
     {
-      //OBJECTSYSTEM->ZilchLoadLevel(Zilch::String("NewPhysics"));
-
-      //printf("dead");
+       //OBJECTSYSTEM->ZilchLoadLevel(Zilch::String("NewPhysics"));
+      printf("dead");
     }
 	}
 

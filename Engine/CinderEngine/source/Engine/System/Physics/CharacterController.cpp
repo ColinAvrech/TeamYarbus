@@ -133,6 +133,9 @@ namespace Framework
 
   void CharacterController::Update (UpdateEvent* e)
   {
+    if (!e)
+      return;
+
     gridPos = gameObject->Transform->GetGridPosition ();
     float micValue = AUDIOSYSTEM->GetMicrophoneValue ();
     //std::cout << micValue << "\n";

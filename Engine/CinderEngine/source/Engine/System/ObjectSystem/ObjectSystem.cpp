@@ -59,79 +59,79 @@ deleted.
 
 namespace Framework
 {
-  //!Null untill the ObjectSystem has been created
-  ObjectSystem * OBJECTSYSTEM = NULL;
-  //!Set first object's id to zero
-  unsigned ObjectSystem::LastGameObjectId = 0;
-  int ObjectSystem::currentLevel = 0;
+	//!Null untill the ObjectSystem has been created
+	ObjectSystem * OBJECTSYSTEM = NULL;
+	//!Set first object's id to zero
+	unsigned ObjectSystem::LastGameObjectId = 0;
+	int ObjectSystem::currentLevel = 0;
 	ZilchDefineType(BaseSystem, CinderZilch)
 	{
 
 	}
-  ZilchDefineType(ObjectSystem, CinderZilch)
-  {
-    type->HandleManager = ZilchManagerId(Zilch::PointerManager);
-    
-    ZilchBindMethod(CreateObject);
-    ZilchBindMethod(DestroyAllObjects);
-    ZilchBindMethod(LoadLevelAdditive);
-	  ZilchBindMethodAs(ZilchLoadLevel, "LoadLevel");
-	  ZilchBindMethod(FindObjectByName);
-	  ZilchBindMethod(FindObjectByID);
-	  ZilchBindMethod(DestroyObject);
-    //ZilchBindMethod(LoadLevel);
-    //ZilchBindConstructor(Transform);
-    //ZilchBindMethodOverload(LoadLevel, void, Zilch::String);
-    //ZilchBindMethodOverload(Scale, void, float);
-    //ZilchBindMethod(Rotate);
-  }
+	ZilchDefineType(ObjectSystem, CinderZilch)
+	{
+		type->HandleManager = ZilchManagerId(Zilch::PointerManager);
+		
+		ZilchBindMethod(CreateObject);
+		ZilchBindMethod(DestroyAllObjects);
+		ZilchBindMethod(LoadLevelAdditive);
+		ZilchBindMethodAs(ZilchLoadLevel, "LoadLevel");
+		ZilchBindMethod(FindObjectByName);
+		ZilchBindMethod(FindObjectByID);
+		ZilchBindMethod(DestroyObject);
+		//ZilchBindMethod(LoadLevel);
+		//ZilchBindConstructor(Transform);
+		//ZilchBindMethodOverload(LoadLevel, void, Zilch::String);
+		//ZilchBindMethodOverload(Scale, void, float);
+		//ZilchBindMethod(Rotate);
+	}
 
 
 
-  ObjectSystem::ObjectSystem()
-  {
-    ErrorIf(OBJECTSYSTEM != NULL, "Factory Already Created");
-    OBJECTSYSTEM = this;
-    
-    RegisterComponents();
-  }
+	ObjectSystem::ObjectSystem()
+	{
+		ErrorIf(OBJECTSYSTEM != NULL, "Factory Already Created");
+		OBJECTSYSTEM = this;
+		
+		RegisterComponents();
+	}
 
-  ObjectSystem::~ObjectSystem()
-  {
-    if (GameObjects.size() > 0)
-    {
-      DestroyAllObjects();
-    }
+	ObjectSystem::~ObjectSystem()
+	{
+		if (GameObjects.size() > 0)
+		{
+			DestroyAllObjects();
+		}
 
-    for (auto level : levelList)
-    {
-      delete level;
-    }
-    levelList.clear();
-  }
-
-
-  bool ObjectSystem::Initialize()
-  {
-    return true;
-  }
+		for (auto level : levelList)
+		{
+			delete level;
+		}
+		levelList.clear();
+	}
 
 
-  /*!Deletes all objects int eh ObjectsToBeDelted List.*/
-  void ObjectSystem::Update(const double &dt)
-  {
-    DestroyGameObjectsToBeDestroyed();
+	bool ObjectSystem::Initialize()
+	{
+		return true;
+	}
 
-  }
 
-  GameObject* ObjectSystem::CreateObject()
-  {
-    GameObject * obj = new GameObject(LastGameObjectId);
+	/*!Deletes all objects int eh ObjectsToBeDelted List.*/
+	void ObjectSystem::Update(const double &dt)
+	{
+		DestroyGameObjectsToBeDestroyed();
 
-    GameObjects[LastGameObjectId] = obj;
-    ++LastGameObjectId;
-    return obj;
-  }
+	}
+
+	GameObject* ObjectSystem::CreateObject()
+	{
+		GameObject * obj = new GameObject(LastGameObjectId);
+
+		GameObjects[LastGameObjectId] = obj;
+		++LastGameObjectId;
+		return obj;
+	}
 
   /*
   Called When the ObjectSystem is created
@@ -180,12 +180,12 @@ namespace Framework
     //////////////////////////////////////////////////////////////////////////
   }
 
-  void ObjectSystem::AddComponentCreator(string name, ComponentCreator* creator)
-  {
-    SerialMap[name] = creator;
-  }
+	void ObjectSystem::AddComponentCreator(string name, ComponentCreator* creator)
+	{
+		SerialMap[name] = creator;
+	}
 
-  
+	
 
   void ObjectSystem::DestroyAllObjects()
   {
@@ -198,102 +198,102 @@ namespace Framework
     GameObjects.clear();
   }
 
-  void ObjectSystem::DestroyGameObjectsToBeDestroyed()
-  {
-    for each(auto obj in GameObjectsToBeDestroyed)
-    {
-	  delete obj;
-      obj = NULL;
-    }
+	void ObjectSystem::DestroyGameObjectsToBeDestroyed()
+	{
+		for each(auto obj in GameObjectsToBeDestroyed)
+		{
+		delete obj;
+			obj = NULL;
+		}
 	
 
-  }
+	}
 
-  void ObjectSystem::LoadAllLevels(const string& p_levellist)
-  {
-    Level* defaultLevel = new Level();
-    defaultLevel->SetName("Default");
-    defaultLevel->SetFile("ZilchTestLevel");
+	void ObjectSystem::LoadAllLevels(const string& p_levellist)
+	{
+		Level* defaultLevel = new Level();
+		defaultLevel->SetName("Default");
+		defaultLevel->SetFile("ZilchTestLevel");
 
-    std::cout << CinderConsole::cyan << "--------------------------------\nLoading Textures...\n" << CinderConsole::gray;
+		std::cout << CinderConsole::cyan << "--------------------------------\nLoading Textures...\n" << CinderConsole::gray;
 
-    std::ifstream levelFile(p_levellist);
+		std::ifstream levelFile(p_levellist);
 
-    if (!levelFile.good())
-    {
-      std::cout << CinderConsole::red << "Failed to Load Levels...\n" << CinderConsole::gray;
-      return;
-    }
-    else
-    {
-      string str;
-      Level* newLevel;
-      while (!levelFile.eof())
-      {
-        levelFile >> str;
-        newLevel = new Level(str.c_str());
-        levelList.push_back(newLevel);
-        std::cout << CinderConsole::green << str << std::endl << CinderConsole::gray;
-      }
-    }
-    std::cout << CinderConsole::cyan << "--------------------------------\n" << CinderConsole::gray;
+		if (!levelFile.good())
+		{
+			std::cout << CinderConsole::red << "Failed to Load Levels...\n" << CinderConsole::gray;
+			return;
+		}
+		else
+		{
+			string str;
+			Level* newLevel;
+			while (!levelFile.eof())
+			{
+				levelFile >> str;
+				newLevel = new Level(str.c_str());
+				levelList.push_back(newLevel);
+				std::cout << CinderConsole::green << str << std::endl << CinderConsole::gray;
+			}
+		}
+		std::cout << CinderConsole::cyan << "--------------------------------\n" << CinderConsole::gray;
 
-    if (levelList.size() == 0)
-    {
-      levelList.push_back(defaultLevel);
-    }
+		if (levelList.size() == 0)
+		{
+			levelList.push_back(defaultLevel);
+		}
 
 	
-  }
+	}
 
-  void ObjectSystem::LoadLevel(const string &levelName, const string &fn_level)
-  {
-    for (auto level : levelList)
-    {
-      if (levelName != "" && levelName == level->GetName())
-      {
-        return;
-      }
-      else if (fn_level != "" && fn_level == level->GetName())
-      {
-        return;
-      }
-    }
+	void ObjectSystem::LoadLevel(const string &levelName, const string &fn_level)
+	{
+		for (auto level : levelList)
+		{
+			if (levelName != "" && levelName == level->GetName())
+			{
+				return;
+			}
+			else if (fn_level != "" && fn_level == level->GetName())
+			{
+				return;
+			}
+		}
 
-    DestroyAllObjects();
+		DestroyAllObjects();
 
-    Level* newLevel = new Level(levelName, fn_level);
-    Serializer::DataNode* Trunk = newLevel->GetData()->GetTrunk();
-    SerializeObject(Trunk);
-    levelList.push_back(newLevel);
-  }
+		Level* newLevel = new Level(levelName, fn_level);
+		Serializer::DataNode* Trunk = newLevel->GetData()->GetTrunk();
+		SerializeObject(Trunk);
+		levelList.push_back(newLevel);
+	}
 
-  void ObjectSystem::StartLevel()
-  {
-    //DestroyAllObjects();
-    GameEvent e;
-    EVENTSYSTEM->TriggerEvent(Events::GAME_ALLOBJECTSINITIALIZED, e);
-    //InitializeObject ();
-    EVENTSYSTEM->TriggerEvent(Events::GAME_LEVELSTARTED, e);
-  }
+	void ObjectSystem::StartLevel()
+	{
+		//DestroyAllObjects();
+		GameEvent e;
+		EVENTSYSTEM->TriggerEvent(Events::GAME_ALLOBJECTSINITIALIZED, e);
+		//InitializeObject ();
+		EVENTSYSTEM->TriggerEvent(Events::GAME_LEVELSTARTED, e);
+	}
 
-  void ObjectSystem::ChangeLevel(const string& name)
-  {
-    for (unsigned i = 0; i < levelList.size(); ++i)
-    {
-      if (name == levelList[i]->GetName())
-      {
-        ChangeLevel(i);
-        return;
-      }
-    }
-  }
+	void ObjectSystem::ChangeLevel(const string& name)
+	{
+		for (unsigned i = 0; i < levelList.size(); ++i)
+		{
+			if (name == levelList[i]->GetName())
+			{
+				ChangeLevel(i);
+				return;
+			}
+		}
+	}
 
-  void ObjectSystem::ChangeLevel(const int& iNewLevel)
-  {
-    currentLevel = iNewLevel;
-    StartLevel();
-  }
+	void ObjectSystem::ChangeLevel(const int& iNewLevel)
+	{
+		currentLevel = iNewLevel;
+		StartLevel();
+	}
 
 	GameObject* ObjectSystem::FindObjectByName(Zilch::String name)
 	{
@@ -317,139 +317,139 @@ namespace Framework
 		//return Zilch::Array<GameObject*>();
 	}
 
-  void ObjectSystem::FindAllObjectsByName(Zilch::String name)
-  {
-    //return Zilch::Array<GameObject*>();
-  }
+	void ObjectSystem::FindAllObjectsByName(Zilch::String name)
+	{
+		//return Zilch::Array<GameObject*>();
+	}
 
-  void ObjectSystem::RestartLevel()
-  {
-    DestroyAllObjects();
-    StartLevel();
-  }
+	void ObjectSystem::RestartLevel()
+	{
+		DestroyAllObjects();
+		StartLevel();
+	}
 
-  void ObjectSystem::ZilchLoadLevel(Zilch::String level)
-  {
-    DestroyAllObjects();
+	void ObjectSystem::ZilchLoadLevel(Zilch::String level)
+	{
+		DestroyAllObjects();
 
-    Serializer::ZeroSerializer data;
+		Serializer::ZeroSerializer data;
 
-    data.open(level.c_str());
-    data.CreateArchive();
-    Serializer::DataNode* Trunk = data.GetTrunk();
-    SerializeObject(Trunk);
-    //return objects;
-    //InitializeObject ();
-  }
+		data.open(level.c_str());
+		data.CreateArchive();
+		Serializer::DataNode* Trunk = data.GetTrunk();
+		SerializeObject(Trunk);
+		//return objects;
+		//InitializeObject ();
+	}
 
-  ZArray* ObjectSystem::LoadLevelAdditive(Zilch::String level)
-  {
-    Serializer::ZeroSerializer data;
+	ZArray* ObjectSystem::LoadLevelAdditive(Zilch::String level)
+	{
+		Serializer::ZeroSerializer data;
 	
-    data.open(level.c_str());
-    data.CreateArchive();
-    Serializer::DataNode* Trunk = data.GetTrunk();
+		data.open(level.c_str());
+		data.CreateArchive();
+		Serializer::DataNode* Trunk = data.GetTrunk();
 	return new ZArray(SerializeObject(Trunk));
-    //InitializeObject ();
-  }
+		//InitializeObject ();
+	}
 
-  //Private function to create and serilize an object
-  Zilch::Array<GameObject*>* ObjectSystem::SerializeObject(Serializer::DataNode* data)
-  {
-    //GameObject* go = new GameObject(data->branch->value_.UInt_);
-    auto it = data->branch;
-    
+	//Private function to create and serilize an object
+	Zilch::Array<GameObject*>* ObjectSystem::SerializeObject(Serializer::DataNode* data)
+	{
+		//GameObject* go = new GameObject(data->branch->value_.UInt_);
+		auto it = data->branch;
+		
 	Zilch::Array<GameObject*>* objectlist = new Zilch::Array<GameObject*>();
-    vector<std::pair<ZilchComponent*, Serializer::DynamicElement*> > scripts;
-    /*
-    go->Name = data->objectName;
-    GameObjects[go->GameObjectID] = go;
-    */
+		vector<std::pair<ZilchComponent*, Serializer::DynamicElement*> > scripts;
+		/*
+		go->Name = data->objectName;
+		GameObjects[go->GameObjectID] = go;
+		*/
 	std::cout << "SERIALIZING" << std::endl;
-    //Create and Serilize Objects
-    while (it)
-    {
-      if (it->objectName.compare("Cog") == 0 &&
-        it->branch->next->branch->value_.String_->compare("EditorCamera") != 0)
-      {
-        GameObject* newobj = new GameObject(it->branch->branch->value_.UInt_);
-        newobj->Name = *it->branch->next->branch->value_.String_;
+		//Create and Serilize Objects
+		while (it)
+		{
+			if (it->objectName.compare("Cog") == 0 &&
+				it->branch->next->branch->value_.String_->compare("EditorCamera") != 0)
+			{
+				GameObject* newobj = new GameObject(it->branch->branch->value_.UInt_);
+				newobj->Name = *it->branch->next->branch->value_.String_;
 				
-        GameObjects[newobj->GameObjectID] = newobj;
-        auto ct = it->branch->next->next;
+				GameObjects[newobj->GameObjectID] = newobj;
+				auto ct = it->branch->next->next;
 		std::cout << newobj->Name << std::endl;
-        while (ct)
-        {
-          Component* newcomp = newobj->AddComponent(ct->objectName);
-          if (newcomp)
-          {
-            newcomp->gameObject = newobj;
+				while (ct)
+				{
+					Component* newcomp = newobj->AddComponent(ct->objectName);
+					if (newcomp)
+					{
+						newcomp->gameObject = newobj;
 			std::cout << ct->objectName << std::endl;
-            newcomp->Serialize(ct->branch);
-            newcomp->Initialize(); //Set pointer to GameObject, Setup Component
-          }
-          else
-          {
-            ZilchComponent* zilchComp = newobj->AddZilchComponent(ct->objectName);
-            newcomp = zilchComp;
-            newcomp->gameObject = newobj;
-            //newcomp->Serialize(ct->branch);
+						newcomp->Serialize(ct->branch);
+						newcomp->Initialize(); //Set pointer to GameObject, Setup Component
+					}
+					else
+					{
+						ZilchComponent* zilchComp = newobj->AddZilchComponent(ct->objectName);
+						newcomp = zilchComp;
+						newcomp->gameObject = newobj;
+						//newcomp->Serialize(ct->branch);
 
-            
-            scripts.push_back(std::pair<ZilchComponent*, Serializer::DynamicElement*>(zilchComp, ct->branch));
-            //newcomp->Initialize();
-          }
-          ct = ct->next;
-        }
+						
+						scripts.push_back(std::pair<ZilchComponent*, Serializer::DynamicElement*>(zilchComp, ct->branch));
+						//newcomp->Initialize();
+					}
+					ct = ct->next;
+				}
 		objectlist->append(newobj);
 
-        ErrorIf(newobj->Transform == nullptr, (string("Transform component missing on GameObject ") + newobj->Name).c_str());
-        GameObjects[newobj->GameObjectID] = newobj;
-      }
-      it = it->next;
-    }
+				ErrorIf(newobj->Transform == nullptr, (string("Transform component missing on GameObject ") + newobj->Name).c_str());
+				GameObjects[newobj->GameObjectID] = newobj;
+			}
+			it = it->next;
+		}
 
-    //Initializing Zilch COmponents
-    for each (auto i in scripts)
-    {
-      //i.first->InitializeAndSerialize(i.second);
-      i.first->Initialize();
-    }
+		//Initializing Zilch COmponents
+		for each (auto i in scripts)
+		{
+			//i.first->InitializeAndSerialize(i.second);
+			i.first->Initialize();
+		}
 
-    return objectlist;
-  }
+		return objectlist;
+	}
 
-  //Private function to create and serilize a component
-  void ObjectSystem::SerializeComponent(string ComponentName, Serializer::DataNode* data)
-  {
-
-
-  }
-
-  void ObjectSystem::InitializeObject()
-  {
-    // Need Component List
-    for each (auto i in GameObjects)
-    {
-      i.second->Transform->Initialize();
-      i.second->Sprite->Initialize();
-    }
-  }
-
-  void ObjectSystem::DestroyObject(GameObject* obj )
-  {
-	  /*
-	  for each(auto object in GameObjects)
-	  {
-		  if (object.second == obj)
-		  {
-			  delete object.second;
-			  object.second = NULL;
-		  }
-	  }*/
-	  //GameObjectsToBeDestroyed.push_back(obj);
+	//Private function to create and serilize a component
+	void ObjectSystem::SerializeComponent(string ComponentName, Serializer::DataNode* data)
+	{
 
 
-  }
+	}
+
+	void ObjectSystem::InitializeObject()
+	{
+		// Need Component List
+		for each (auto i in GameObjects)
+		{
+			i.second->Transform->Initialize();
+			i.second->Sprite->Initialize();
+		}
+	}
+
+	void ObjectSystem::DestroyObject(GameObject* obj )
+	{
+		/*
+		for each(auto object in GameObjects)
+		{
+			if (object.second == obj)
+			{
+				delete object.second;
+				object.second = NULL;
+			}
+		}*/
+		//GameObjectsToBeDestroyed.push_back(obj);
+
+
+	}
 
 }

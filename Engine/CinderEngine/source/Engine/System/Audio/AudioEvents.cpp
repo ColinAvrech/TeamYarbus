@@ -74,7 +74,7 @@ namespace Framework
 
   void AudioEvents::AudioEventsUpdate(WindowFocusEvent* e)
   {
-    if (!e)
+    if (e == nullptr)
       return;
 
     if (e->InFocus)
