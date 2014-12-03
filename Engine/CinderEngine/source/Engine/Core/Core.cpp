@@ -148,5 +148,4 @@ namespace Framework
     pause.Paused = GamePaused;
     EVENTSYSTEM->TriggerEvent (Events::PAUSE, pause);
   }
-
 }

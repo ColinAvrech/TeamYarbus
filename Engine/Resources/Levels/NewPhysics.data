@@ -264,6 +264,9 @@ Level =
       float EffectRadius = 0.2,
       Vec4 Color = [255, 80, 0, 0.2],
     },
+    CameraFollow = 
+    {
+    },
 	},
   Cog = 
 	{

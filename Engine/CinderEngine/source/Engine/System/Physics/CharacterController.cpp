@@ -144,7 +144,7 @@ namespace Framework
       micValue * microhponeMultiplier.y * density
       )
       );
-    Physics::THERMODYNAMICS->SetCellTemperature (gridPos.x, gridPos.y, 100000 * micValue, 0.016);
+    Physics::THERMODYNAMICS->SetCellTemperature (gridPos.x, gridPos.y, 400000, 0.016);
 
     ////how to get line collider
     ////gameObject->CircleCollider->DetectLine(gameObject->LineCollider);

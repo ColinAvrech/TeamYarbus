@@ -38,7 +38,7 @@ namespace Framework
 	void FireStarter::Update(const double dt)
 	{
 		if (Fuel > 0.0f)
-			Fuel -= dt;
+			Fuel -= (float)dt;
 	}
 
 	void FireStarter::Initialize()

@@ -121,6 +121,9 @@ namespace Framework
 			fs->initTemp = 400.0f;
 			fs->Initialize();
 		}
+
+    Component* ac = grass->AddComponent("AudioComponent");
+    ac->Initialize();
 	}
 }
 

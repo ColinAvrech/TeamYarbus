@@ -189,7 +189,7 @@ namespace Framework
 
   void ObjectSystem::DestroyAllObjects()
   {
-    EVENTSYSTEM->DeleteAllEvents();
+    //EVENTSYSTEM->DeleteAllEvents();
     for each(auto obj in GameObjects)
     {
       delete obj.second;
