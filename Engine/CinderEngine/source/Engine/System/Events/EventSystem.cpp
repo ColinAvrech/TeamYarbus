@@ -169,7 +169,6 @@ namespace Framework
 		return RegisteredEvents.size();
 	}
 
-
 	/******************************************/
 	//  Private
 	/******************************************/
@@ -187,5 +186,23 @@ namespace Framework
 
 		InputManager::Update();
 	}
+
+  EventDeployer* EventSystem::GetEventDeployer(std::string eventName)
+  {
+    auto eDeployer = RegisteredEvents.find(eventName);
+    if (eDeployer != RegisteredEvents.end())
+      return eDeployer->second;
+    return nullptr;
+
+    //for (auto it = eDeployer->second->Delegates.begin(); it != eDeployer->second->Delegates.end(); ++it)
+    //{
+    //  auto gd = static_cast<GlobalDelegate<UpdateEvent>*>(*it);
+    //  if (gd->Function == func)
+    //  {
+    //    delete gd;
+    //    eDeployer->second->Delegates.erase(it);
+    //  }
+    //}
+  }
 
 }

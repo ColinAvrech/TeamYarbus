@@ -26,36 +26,50 @@ namespace Framework
   public:
     ZilchDeclareBaseType(EventSystem, Zilch::TypeCopyMode::ReferenceType);
 
-    EventSystem ();
-    ~EventSystem ();
+    EventSystem();
+    ~EventSystem();
 
-    virtual void Update (const double& dt);
+    virtual void Update(const double& dt);
 
-    virtual const string GetName () { return "EventSystem"; }
+    virtual const string GetName() { return "EventSystem"; }
 
-    virtual bool Initialize ();
+    virtual bool Initialize();
 
-    unsigned NumberOfEvents ();
+    unsigned NumberOfEvents();
 
     void DeleteAllEvents();
 
     //Global functions use this connect function to conntect to events.
     template<typename EventType>
-    void gConnect (const string eventname, void (*func)(EventType*));
+    void gConnect(const string eventname, void(*func)(EventType*));
+
+    //Global functions use this connect function to conntect to events.
+    template<typename EventType>
+    void gDisconnect(const string eventname, void(*func)(EventType*));
 
     // C++ Member functions use this connect function to connect to events.
     template<typename EventType, typename ClassType>
-    void mConnect (const string eventname, ClassType *this_ptr, void(ClassType::*func)(EventType*));
+    void mConnect(const string eventname, ClassType *this_ptr, void(ClassType::*func)(EventType*));
+
+    // C++ Member functions use this connect function to connect to events.
+    template<typename EventType, typename ClassType>
+    void mDisconnect(const string eventname, ClassType *this_ptr, void(ClassType::*func)(EventType*));
 
     void EventSystem::zConnect(Call& call, ExceptionReport& report);
 
-    void TriggerEvent (const string eventname, BaseEvent& e);
-    
+    void TriggerEvent(const string eventname, BaseEvent& e);
+
+
     double _TotalTimePassed = 0;
     double _dt = 0;
 
     typedef std::unordered_map<string, EventDeployer*> EventMap;
     EventMap RegisteredEvents;
+
+
+  private:
+
+    EventDeployer* GetEventDeployer(std::string eDeployer);
   };
 
   extern EventSystem* EVENTSYSTEM;

@@ -43,7 +43,6 @@ namespace Framework
 
     void DisconnectAll();
 
-  private:
     typedef std::vector<Delegate*> EventDelegates;
     EventDelegates Delegates;
   };

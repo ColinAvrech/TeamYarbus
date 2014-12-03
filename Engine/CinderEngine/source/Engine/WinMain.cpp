@@ -48,7 +48,19 @@ const char WindowTitle [] = "CinderEngine";
 const int ClientWidth = 1024;
 const int ClientHeight = 1024;
 
+//class MyClass
+//{
+//public:
+//  void TestUEDisconnectMember(UpdateEvent * e){
+//    std::cout << "Member disconnect" << std::endl;
+//  }
+//};
 
+
+void TestUEDisconnect(UpdateEvent* e)
+{
+  std::cout << "Global Disconnect:" << std::endl;
+}
 
 int main (void)
 {
@@ -104,20 +116,6 @@ int main (void)
   engine->Initialize ();
   audioEvents->Initialize();
 
-  //Sound *test = resourceManager.Get_Sound("Pads.ogg");
-  //test->Play();
-
-  //Sound *test = audio->LoadSound("FireA.ogg", "NOISE", Sound::SOUND_2D, 1.0f);
-  //test->Play();
-  //
-  //Sound *test2 = audio->LoadSound("Pads.ogg", "NOISE", Sound::SOUND_2D, 1.0f);
-  //test2->Play();
-
-  //Sound *test3 = audio->LoadSound("test.mp3", "NOISE", Sound::SOUND_2D, 1.0f);
-  //test->Play();
-  //test->GenerateNoise();
-  //test->LowPassFilter();
-  //test->SetLPF(0, 1.0);
 
   audio->LoadMicData ();
 
@@ -129,16 +127,15 @@ int main (void)
  //Initialize Cheat Codes
   Cheats::InitializeCheats();
 
-  // Load Level
-  // Connect example
-  //MyClass _myclass;
-  //EVENTSYSTEM->mConnect<KeyEvent, MyClass>(Events::KEY_RIGHT, &_myclass, &MyClass::WhenRightIsPressed);
-  //EVENTSYSTEM->mConnect<KeyEvent, MyClass>(Events::KEY_LEFT, &_myclass, &MyClass::WhenLeftIsPressed);
-  //OBJECTSYSTEM->LoadLevel("PhysicsTest.data");
 
-  // Connect example
+  // Connect and Disconnect example
   //MyClass _myclass;
-  //EVENTSYSTEM->mConnect<UpdateEvent, MyClass>(Events::UPDATEEVENT, &_myclass, &MyClass::Print);
+  //EVENTSYSTEM->mConnect<UpdateEvent, MyClass>(Framework::Events::UPDATEEVENT, &_myclass, &MyClass::TestUEDisconnectMember);
+  //EVENTSYSTEM->mDisconnect<UpdateEvent, MyClass>(Framework::Events::UPDATEEVENT, &_myclass, &MyClass::TestUEDisconnectMember);
+  //
+  //EVENTSYSTEM->gConnect<UpdateEvent>(Framework::Events::UPDATEEVENT, &TestUEDisconnect);
+  //EVENTSYSTEM->gDisconnect<UpdateEvent>(Framework::Events::UPDATEEVENT, &TestUEDisconnect);
+
 	//ZInterface::OpenFile();
 
   //! Run the game! NOW!
