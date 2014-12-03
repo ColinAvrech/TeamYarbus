@@ -61,7 +61,6 @@ namespace Framework
 		if (!onFire)
 		{
 			onFire = true;
-<<<<<<< HEAD
       GameObject* temp = gameObject;
 
       while (temp->Parent != nullptr)
@@ -91,7 +90,6 @@ namespace Framework
             gameObject->Transform->GetPosition ().y,
             30
             );
-=======
 			//for (unsigned i = 0; i < grid.positions.getSize ().x; ++i)
 			//{
 			//  for (unsigned j = 0; j < grid.positions.getSize ().y; ++j)
@@ -111,7 +109,6 @@ namespace Framework
 				gameObject->Transform->GetPosition().y,
 				30
 				);
->>>>>>> c19b732217a933a100bc230a706f5bd819a54257
 		}
 	}
 
