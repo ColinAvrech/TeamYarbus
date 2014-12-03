@@ -75,7 +75,7 @@ namespace Framework
       tree_list[i] = Evaluate_Compatibility(i);
       //Hack!!
       //if (tree_list[i] != OPEN)
-      if (i % 8 == 0)
+      if (i % 8 == 0 && terrain[i] <= 72)
         GenerateType(
           offsetX + Translation.x,
           offsetY + Translation.y,
@@ -112,10 +112,7 @@ namespace Framework
       fs->Fuel = 100.0f;
       fs->material_type = 2;
       fs->onFire = false;
-      if (type == 5)
-        fs->initTemp = 400.0f;
-      else
-        fs->initTemp = 400.0f;
+      fs->initTemp = 400.0f;
       fs->Initialize ();
     }
   }

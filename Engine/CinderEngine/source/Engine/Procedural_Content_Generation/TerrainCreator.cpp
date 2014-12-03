@@ -42,9 +42,10 @@ namespace Framework
       for (unsigned i = 0; i < MapWidth; ++i)
         (*Array)[i] = 0.0f;
 
-      int* WaveBuffer = new int[ 2 * waves];
-      for (int i = 0; i < 2* waves; ++i)
-        WaveBuffer[i] = rand() % 2;
+      //int* WaveBuffer = new int[ 2 * waves];
+      int WaveBuffer[10] = { 8, 0, 0, 0, 0, 0, 0, 0, 0, 8 };
+      //for (int i = 0; i < 2* waves; ++i)
+      //  WaveBuffer[i] = rand() % 2;
 
       int *x1/*[100]*/, *x2/*[50]*/, *x4/*[25]*/, *x8/*[12]*/;
       x1 = new int[MapWidth];
@@ -76,7 +77,7 @@ namespace Framework
       delete[] x2;
       delete[] x4;
       delete[] x8;
-      delete[] WaveBuffer;
+      //delete[] WaveBuffer;
     } //function
 
     void TerrainCreator::Generate()
