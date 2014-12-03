@@ -199,7 +199,7 @@ Level =
 			bool FlipX = false,
 			bool FlipY = false,
 			Vec4 Color = [1, 0, 1, 1],
-			bool Visible = true,
+			bool Visible = false,
 			bool OnTop = false,
 			bool AnimationActive = true,
 			float AnimationSpeed = 1,
@@ -212,7 +212,7 @@ Level =
 		CircleCollider2D = 
 		{
       bool Enabled = true,
-		  float Radius = 1,
+		  float Radius = 0.5,
 		  bool Static = false,
 		  string Material = "4de020863e872da8:DefaultPhysicsMaterial",
 		},
@@ -221,7 +221,7 @@ Level =
       bool Enabled = true,
 		  Vec2 Acceleration = [400, 0],
 		  Vec2 JumpVelocity = [0, 10],
-		  Vec2 MicrophoneMultiplier = [0, 75],
+		  Vec2 MicrophoneMultiplier = [0, 10],
 		},
 		Health = 
 		{
@@ -232,7 +232,7 @@ Level =
 		},
 		PlayerEffect = 
 		{
-      bool Enabled = false,
+      bool Enabled = true,
 		  float ParticleSize = 100,
 		  float MaxSize = 10,
 		  float MinSize = 10,
