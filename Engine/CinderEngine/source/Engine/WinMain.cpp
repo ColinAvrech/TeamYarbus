@@ -125,12 +125,11 @@ int main (void)
   //Currently broken;
   //OBJECTSYSTEM->LoadAllLevels("..//..//Resources//Levels//MasterLevelFile.txt");
 
-  //Initialize Cheat Codes
+  OBJECTSYSTEM->ZilchLoadLevel(Zilch::String("NewPhysics"));
+ //Initialize Cheat Codes
   Cheats::InitializeCheats();
 
   // Load Level
-  OBJECTSYSTEM->ZilchLoadLevel(Zilch::String("NewPhysics"));
-
   // Connect example
   //MyClass _myclass;
   //EVENTSYSTEM->mConnect<KeyEvent, MyClass>(Events::KEY_RIGHT, &_myclass, &MyClass::WhenRightIsPressed);

@@ -91,19 +91,19 @@ class MouseDetector
 		this.CollidingThis = collision;
 		
 		
-		if(this.CollidingLast && this.CollidingThis)
+		if (this.CollidingLast && this.CollidingThis)
 		{
 			this.Funct(new MouseEvent(MouseState.MouseInside, mousePos));
 		}
-		else if(!this.CollidingLast && this.CollidingThis)
+		else if (!this.CollidingLast && this.CollidingThis)
 		{
 			this.Funct(new MouseEvent(MouseState.MouseEnter, mousePos));
 		}
-		else if(this.CollidingLast && !this.CollidingThis)
+		else if (this.CollidingLast && !this.CollidingThis)
 		{
 			this.Funct(new MouseEvent(MouseState.MouseExit, mousePos));
 		}
-		else if(this.CollidingLast && !this.CollidingThis)
+		else if (!this.CollidingThis)
 		{
 			this.Funct(new MouseEvent(MouseState.MouseOutside, mousePos));
 		}
