@@ -59,6 +59,14 @@ namespace Framework
 		return true;
 	}
 
+  void EventSystem::DeleteAllEvents()
+  {
+    for each(auto e in RegisteredEvents)
+    {
+      e.second->DisconnectAll();
+    }
+  }
+
 	// Function called from Zilch Script to register to events.
 	void ZilchConnect(Call& call, ExceptionReport& report)
 	{
