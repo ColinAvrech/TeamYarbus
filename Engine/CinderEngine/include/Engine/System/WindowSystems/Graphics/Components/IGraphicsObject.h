@@ -16,6 +16,12 @@
 
 namespace Framework
 {
+  enum LAYER
+  {
+    DEFAULT = 0,
+    PAUSE,
+  };
+
   class Shader;
 
   class IGraphicsObject : public Component
@@ -31,6 +37,9 @@ namespace Framework
 
   void Register ();
   void Deregister ();
+  void Change_Layer (int lay);
+
+  LAYER layer;
 
   protected:
     Shader* shader;

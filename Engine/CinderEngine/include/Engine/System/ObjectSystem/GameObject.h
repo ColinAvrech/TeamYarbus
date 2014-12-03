@@ -39,6 +39,7 @@ factory in the next loop.
 #include "CharacterController.h"
 #include "Zilch.hpp"
 #include "ScriptComponent.h"
+#include "Health.h"
 //#include "FireStarter.h"
 //#include "Microphone.h"
 

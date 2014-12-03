@@ -88,6 +88,13 @@ namespace Framework
       break;
     }
 
+    Vector2* vel = &gameObject->RigidBody2D->velocity;
+    if (vel->Len() > maxVel)
+    {
+      vel->Normalize();
+      *vel = *vel * maxVel;
+    }
+
 
     //if (_key->KeyDown)
     //{
@@ -177,7 +184,7 @@ namespace Framework
     PLAYER = this;
     //accel = { 0 , 0 };
     //maxAcceleration = { 50, 100 };
-    //maxXVel = 2.0f;
+    maxVel = 128.0f;
     //drag = 5;
     //currentforce = 0;
     density = gameObject->ShapeCollider2D->Density;

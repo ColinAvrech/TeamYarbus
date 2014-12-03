@@ -15,6 +15,7 @@
 #include "CinderMath.h"
 #include "FrameBufferObject.h"
 #include <vector>
+#include <unordered_map>
 #include <list>
 
 namespace Framework
@@ -73,7 +74,7 @@ namespace Framework
     glm::mat4 GetModelViewProjectionMatrix ();
   
     static std::list <Transform*> transforms;
-    static std::list <IGraphicsObject*> graphicsObjects;
+    static std::unordered_map <int, std::list <IGraphicsObject*>> graphicsObjects;
     static std::list <UIComponent*> uiObjects;
     static std::list <Camera*> cameras;
     static std::list <ShapeCollider*> debugColliders;
@@ -95,6 +96,8 @@ namespace Framework
     bool matricesReady;
 
     void RenderToTexture (FBO* fbo, GLuint tex, Shader* shader);
+
+    bool useDebugDraw;
   };
 
   extern Pipeline* OPENGL;
