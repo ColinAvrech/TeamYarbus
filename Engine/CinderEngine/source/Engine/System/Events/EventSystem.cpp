@@ -140,6 +140,16 @@ namespace Framework
     }
   }
 
+  // Disconnet all events
+  void EventSystem::DeleteAllEvents()
+  {
+    for each(auto regEvent in  RegisteredEvents)
+    {
+      regEvent.second->DisconnectAll();
+    }
+    RegisteredEvents.clear();
+  }
+
   /* Returns the total Number of Events */
   unsigned EventSystem::NumberOfEvents()
   {

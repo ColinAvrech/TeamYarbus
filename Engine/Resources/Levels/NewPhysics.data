@@ -191,6 +191,11 @@ Level =
       bool Enabled = true,
       float ParticleSize = 100,
     },
+    Text = 
+    {
+      string Text = "Hello World",
+      Vec2 Position = [-1.0, 0.8],
+    },
   },
   Cog = 
 	{
@@ -256,8 +261,30 @@ Level =
     {
       int ParticleCount = 10000,
       float ParticleSize = 5,
-      float EffectRadius = 0.5,
+      float EffectRadius = 0.2,
       Vec4 Color = [255, 80, 0, 0.2],
     },
 	},
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 8,
+		},
+		Named = 
+		{
+			string Name = "Terrain",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0, 0, 0],
+			Vec3 Scale = [64, 10, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+    Text = 
+    {
+      string Text = "Hello World",
+      Vec2 Position = [-1.0, 0.8],
+    },
+  },
 },

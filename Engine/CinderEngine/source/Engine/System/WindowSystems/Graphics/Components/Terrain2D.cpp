@@ -142,7 +142,7 @@ namespace Framework
         /*height_points.push_back ({ offsetX, offsetY });
         offsetY = -1.0f;
         break;*/
-        //if (previousHeight != offsetY || i == t.Get_Width () - 1)
+        if (previousHeight != offsetY || i == t.Get_Width () - 1)
         {
           height_points.push_back ({ offsetX, offsetY});
           previousHeight = offsetY;

@@ -14,6 +14,7 @@
 #include "EventSystem.h"
 #include "KeyEvent.h"
 #include "Thermodynamics.h"
+#include "GameEvent.h"
 #include "glfw3.h"
 
 namespace Framework
@@ -146,8 +147,11 @@ namespace Framework
   {
     if (enabled)
     {
-      cpuUpdate (0.016);
-      gpuUpdate (0.016);
+      if (!paused)
+      {
+        cpuUpdate (0.016);
+        gpuUpdate (0.016);
+      }
       render ();
     }
   }
@@ -219,6 +223,11 @@ namespace Framework
     }
 
     m_system->addEmitter (particleEmitter);
+  }
+
+  void FireSystem::OnApplicationPause (PauseEvent* pause)
+  {
+    paused = pause->Paused;
   }
 
 }

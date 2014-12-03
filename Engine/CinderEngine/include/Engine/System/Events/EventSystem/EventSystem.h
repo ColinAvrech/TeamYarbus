@@ -37,6 +37,7 @@ namespace Framework
 
     unsigned NumberOfEvents ();
 
+    void DeleteAllEvents();
 
     //Global functions use this connect function to conntect to events.
     template<typename EventType>
