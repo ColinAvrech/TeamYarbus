@@ -189,7 +189,7 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, 50, 0],
+			Vec3 Translation = [0, 16, 0],
 			Vec3 Scale = [1, 1, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
@@ -212,7 +212,7 @@ Level =
 		CircleCollider2D = 
 		{
       bool Enabled = true,
-		  float Radius = 0.5,
+		  float Radius = 1.0,
 		  bool Static = false,
 		  string Material = "4de020863e872da8:DefaultPhysicsMaterial",
 		},
@@ -237,5 +237,15 @@ Level =
 		  float MaxSize = 10,
 		  float MinSize = 10,
 		},
+    CLParticleRenderer = 
+    {
+      int ParticleCount = 10000,
+      float ParticleSize = 5,
+      float EffectRadius = 0.5,
+      Vec4 Color = [255, 80, 0, 0.2],
+    },
+    CameraFollow = 
+    {
+    },
 	},
 },

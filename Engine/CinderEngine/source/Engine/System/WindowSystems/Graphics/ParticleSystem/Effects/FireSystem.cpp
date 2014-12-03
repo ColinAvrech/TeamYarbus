@@ -69,7 +69,7 @@ namespace Framework
   bool FireSystem::initialize (size_t numParticles)
   {
     EVENTSYSTEM->mConnect<KeyEvent, FireSystem> (Events::KEY_ANY, this, &FireSystem::OnKeyPressed);
-    texture = Resources::RS->Get_Texture ("Particle.bmp");
+    texture = Resources::RS->Get_Texture ("Capture.png");
     shader = Resources::RS->Get_Shader ("Particle");
 
     const size_t NUM_PARTICLES = numParticles == 0 ? 500000 : numParticles;
