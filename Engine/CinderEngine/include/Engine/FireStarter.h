@@ -31,24 +31,24 @@ namespace Framework
     Grid2D <glm::vec2> positions;
   };
 
-	class FireStarter : public Component
-	{
-	public:
-		FireStarter();
-		~FireStarter(){}
-		void LightOnFire();
+  class FireStarter : public Component
+  {
+  public:
+    FireStarter();
+    ~FireStarter(){}
+    void LightOnFire();
     void DouseFire();
     void Update(const double dt);
-		void Serialize(Serializer::DataNode* data);
-		void Initialize();
+    void Serialize(Serializer::DataNode* data);
+    void Initialize();
     int material_type;
 
-		const static std::string Name;
-		bool onFire;	
+    const static std::string Name;
+    bool onFire;	
     float Fuel;
     float initTemp;
     FireGrid grid;
-	};
+  };
 }
 
 #endif _FIRE_STARTER_H

@@ -73,6 +73,9 @@ namespace Framework
 
   void AudioEvents::AudioEventsUpdate(WindowFocusEvent* e)
   {
+    if (e == nullptr)
+      return;
+
     if (e->InFocus)
     {      
       AUDIOSYSTEM->SetPaused(false, Sound::SFX_ALL);

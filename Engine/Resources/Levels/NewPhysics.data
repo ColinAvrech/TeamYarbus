@@ -173,7 +173,7 @@ Level =
     },
     FireSystem = 
     {
-      bool Enabled = true,
+      bool Enabled = false,
       float ParticleSize = 100,
     },
   },
@@ -189,7 +189,7 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, 50, 0],
+			Vec3 Translation = [0, 20, 0],
 			Vec3 Scale = [1, 1, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
@@ -199,7 +199,7 @@ Level =
 			bool FlipX = false,
 			bool FlipY = false,
 			Vec4 Color = [1, 0, 1, 1],
-			bool Visible = false,
+			bool Visible = true,
 			bool OnTop = false,
 			bool AnimationActive = true,
 			float AnimationSpeed = 1,
@@ -232,7 +232,7 @@ Level =
 		},
 		PlayerEffect = 
 		{
-      bool Enabled = true,
+      bool Enabled = false,
 		  float ParticleSize = 100,
 		  float MaxSize = 10,
 		  float MinSize = 10,
