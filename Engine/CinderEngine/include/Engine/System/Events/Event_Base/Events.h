@@ -24,6 +24,7 @@
 #define WindowFocusEventPrefix 'F'
 #define GameEventPrefix 'G'
 #define UIEventPrefix 'I'
+#define PauseEventPrefix 'P'
 
 //#define DeclareEvent(Name) namespace Events { static const string Name(#Name); }
 #define DeclareEvent(Name, String) namespace Events { static const string Name(#String); }
@@ -133,5 +134,6 @@ namespace Framework
   DeclareEvent(UPDATEEVENT, U)
   DeclareEvent(COLLISION, C)
   DeclareEvent (UI, I)
+  DeclareEvent (PAUSE, P)
 
 }

@@ -27,6 +27,7 @@ namespace Framework
 	float Penetration;
 	vec3 normal;
 
+	float Dt;
   };
 
 }

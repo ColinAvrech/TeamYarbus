@@ -50,26 +50,26 @@ namespace Framework
     if (key->KeyDown)
       switch (key->KeyValue)
     {
-      case GLFW_KEY_A:
-        OPENGL->MatrixMode (VIEW);
-        Camera::main->gameObject->Transform->Translate (-camSpeed, 0, 0);
-        Camera::main->matricesReady = false;
-        break;
-      case GLFW_KEY_D:
-        OPENGL->MatrixMode (VIEW);
-        Camera::main->gameObject->Transform->Translate (camSpeed, 0, 0);
-        Camera::main->matricesReady = false;
-        break;
-      case GLFW_KEY_S:
-        OPENGL->MatrixMode (VIEW);
-        Camera::main->gameObject->Transform->Translate (0, -camSpeed, 0);
-        Camera::main->matricesReady = false;
-        break;
-      case GLFW_KEY_W:
-        OPENGL->MatrixMode (VIEW);
-        Camera::main->gameObject->Transform->Translate (0, camSpeed, 0);
-        Camera::main->matricesReady = false;
-        break;
+      //case GLFW_KEY_A:
+      //  OPENGL->MatrixMode (VIEW);
+      //  Camera::main->gameObject->Transform->Translate (-camSpeed, 0, 0);
+      //  Camera::main->matricesReady = false;
+      //  break;
+      //case GLFW_KEY_D:
+      //  OPENGL->MatrixMode (VIEW);
+      //  Camera::main->gameObject->Transform->Translate (camSpeed, 0, 0);
+      //  Camera::main->matricesReady = false;
+      //  break;
+      //case GLFW_KEY_S:
+      //  OPENGL->MatrixMode (VIEW);
+      //  Camera::main->gameObject->Transform->Translate (0, -camSpeed, 0);
+      //  Camera::main->matricesReady = false;
+      //  break;
+      //case GLFW_KEY_W:
+      //  OPENGL->MatrixMode (VIEW);
+      //  Camera::main->gameObject->Transform->Translate (0, camSpeed, 0);
+      //  Camera::main->matricesReady = false;
+      //  break;
       case GLFW_KEY_Z:
         Camera::main->Zoom (zoomSpeed);
         break;

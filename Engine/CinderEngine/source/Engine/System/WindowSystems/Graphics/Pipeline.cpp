@@ -24,7 +24,10 @@
 #include "ResourceManager.h"
 #include "glut.h"
 #include "Thermodynamics.h"
+#include "CLParticleRenderer.h"
 #include "HeatMap.h"
+#include "EventSystem.h"
+#include "GameEvent.h"
 
 namespace Framework
 {
@@ -45,6 +48,7 @@ namespace Framework
   FBO* fbo;
   Shader* sceneShader;
   GLuint renderTexture;
+  CLParticleRenderer cl;
 
   void Interpolate_Background ()
   {
@@ -96,6 +100,9 @@ namespace Framework
     matricesReady = true;
     currentMatrix = 0;
 
+    cl.Initialize ();
+
+    EVENTSYSTEM->mConnect<PauseEvent, Pipeline> (Events::PAUSE, this, &Pipeline::OnApplicationPause);
     //RigidBody2D* b;
     ////CircleCollider2D c (1.0f);
     ////b = PHYSICS->Add (&c, 2, 1);
@@ -114,46 +121,107 @@ namespace Framework
     //b->dynamicFriction = 0.0f;
     //b->staticFriction = 0.0f;
 
-    //GLfloat vertices [] =
-    //{
-    //  -1.0f, 1.0f, 0.0f, 1.0f,
-    //    1.0f, 1.0f, 1.0f, 1.0f,
-    //    1.0f, -1.0f, 1.0f, 0.0f,
+    GLfloat vertices [] =
+    {
+      -1.0f, 1.0f, 0.0f, 1.0f,
+        1.0f, 1.0f, 1.0f, 1.0f,
+        1.0f, -1.0f, 1.0f, 0.0f,
 
-    //    1.0f, -1.0f, 1.0f, 0.0f,
-    //    -1.0f, -1.0f, 0.0f, 0.0f,
-    //    -1.0f, 1.0f, 0.0f, 1.0f
-    //};
+        1.0f, -1.0f, 1.0f, 0.0f,
+        -1.0f, -1.0f, 0.0f, 0.0f,
+        -1.0f, 1.0f, 0.0f, 1.0f
+    };
 
-    //sceneShader = Resources::RS->Get_Shader ("PointLight");
+    sceneShader = Resources::RS->Get_Shader ("Passthrough");
 
-    //vao = new VAO ();
-    //vbo = new VBO (sizeof(vertices), vertices);
+    vao = new VAO ();
+    vbo = new VBO (sizeof(vertices), vertices);
 
-    //sceneShader->Use ();
-    //GLint posAttrib = sceneShader->attribLocation ("position");
-    //sceneShader->enableVertexAttribArray (posAttrib);
-    //sceneShader->vertexAttribPtr (posAttrib, 2, GL_FLOAT, GL_FALSE, 4 * sizeof GLfloat, 0);
-    //GLint texAttrib = sceneShader->attribLocation ("texcoord");
-    //sceneShader->enableVertexAttribArray (texAttrib);
-    //sceneShader->vertexAttribPtr (texAttrib, 2, GL_FLOAT, GL_FALSE, 4 * sizeof GLfloat, 2 * sizeof GLfloat);
-    //sceneShader->Disable ();
-    //vao->unbindVAO ();
+    sceneShader->Use ();
+    GLint posAttrib = sceneShader->attribLocation ("position");
+    sceneShader->enableVertexAttribArray (posAttrib);
+    sceneShader->vertexAttribPtr (posAttrib, 2, GL_FLOAT, GL_FALSE, 4 * sizeof GLfloat, 0);
+    GLint texAttrib = sceneShader->attribLocation ("texcoord");
+    sceneShader->enableVertexAttribArray (texAttrib);
+    sceneShader->vertexAttribPtr (texAttrib, 2, GL_FLOAT, GL_FALSE, 4 * sizeof GLfloat, 2 * sizeof GLfloat);
+    sceneShader->Disable ();
+    vao->unbindVAO ();
 
-    //fbo = new FBO ();
-    //glGenTextures (1, &renderTexture);
-    //glBindTexture (GL_TEXTURE_2D, renderTexture);
-    //glTexImage2D (GL_TEXTURE_2D, 0, GL_RGB, WINDOWSYSTEM->Get_Width(), WINDOWSYSTEM->Get_Height(), 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
-    //glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    //glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    //glFramebufferTexture2D (GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderTexture, 0);
-    //glBindTexture (GL_TEXTURE_2D, 0);
-    //fbo->unBind ();
+    fbo = new FBO ();
+    glGenTextures (1, &renderTexture);
+    glBindTexture (GL_TEXTURE_2D, renderTexture);
+    glTexImage2D (GL_TEXTURE_2D, 0, GL_RGB, WINDOWSYSTEM->Get_Width(), WINDOWSYSTEM->Get_Height(), 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
+    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glFramebufferTexture2D (GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderTexture, 0);
+    glBindTexture (GL_TEXTURE_2D, 0);
+    fbo->unBind ();
   }
 
   Pipeline::~Pipeline ()
   {
     OPENGL = nullptr;
+  }
+
+  static void Draw_Quad ()
+  {
+    glMatrixMode (GL_PROJECTION);
+    glLoadIdentity ();
+    glMatrixMode (GL_MODELVIEW);
+    glLoadIdentity ();
+    glBegin (GL_QUADS);
+    glColor4d (0.2f, 0.2f, 0.5, 0.8f);
+    glVertex2f (-1, -1);
+    glVertex2f (1, -1);
+    glColor4d (0, 0, 0.3, 0.5f);
+    glVertex2f (1, 1);
+    glVertex2f (-1, 1);
+    glEnd ();
+  }
+
+  void Pipeline::Update ()
+  {
+    fbo->bind ();
+//    Interpolate_Background ();
+//
+    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClearColor (color.r, color.g, color.b, 1.0f);
+    glEnable (GL_BLEND);
+    sFactor = GL_SRC_ALPHA;
+    dFactor = GL_ONE_MINUS_SRC_ALPHA;
+    glBlendFunc (sFactor, dFactor);
+
+    for (auto* i : transforms)
+    {
+      i->UpdateMatrices ();
+    }
+
+    for (auto* i : cameras)
+    {
+      i->UpdateCamera (this);
+    }
+    cl.Render ();
+    //Draw_Quad ();
+    for (auto* i : graphicsObjects)
+    {
+      i->Update ();
+      i->Draw ();
+    }
+
+    for (auto* i : uiObjects)
+    {
+      i->UIDraw ();
+    }
+
+    //sFactor = GL_ONE;
+    //dFactor = GL_ONE;
+    glBlendFunc (sFactor, dFactor);
+    RenderToTexture (fbo, renderTexture, sceneShader);
+
+#ifdef _DEBUG
+    //THERMODYNAMICS->Draw ();
+    //PHYSICS->Render ();
+#endif
   }
 
   void Pipeline::LoadIdentity ()
@@ -280,83 +348,6 @@ namespace Framework
     matricesReady = false;
   }
 
-  static void Draw_Quad ()
-  {
-    glMatrixMode (GL_PROJECTION);
-    glLoadIdentity ();
-    glMatrixMode (GL_MODELVIEW);
-    glLoadIdentity ();
-    glBegin (GL_QUADS);
-    glColor4d (0.2f, 0.2f, 0.5, 0.8f);
-    glVertex2f (-1, -1);
-    glVertex2f (1, -1);
-    glColor4d (0, 0, 0.3, 0.5f);
-    glVertex2f (1, 1);
-    glVertex2f (-1, 1);
-    glEnd ();
-  }
-
-  void Pipeline::Update ()
-  {
-    //glBindTexture (GL_TEXTURE_2D, renderTexture);
-    //glTexImage2D (GL_TEXTURE_2D, 0, GL_RGB, WINDOWSYSTEM->Get_Width (), WINDOWSYSTEM->Get_Height (), 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
-    //fbo->bind ();
-
-//    Interpolate_Background ();
-//
-    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glClearColor (color.r, color.g, color.b, 1.0f);
-    glEnable (GL_BLEND);
-    sFactor = GL_SRC_ALPHA;
-    dFactor = GL_ONE_MINUS_SRC_ALPHA;
-    glBlendFunc (sFactor, dFactor);
-
-    for (auto* i : transforms)
-    {
-      i->UpdateMatrices ();
-    }
-
-    for (auto* i : cameras)
-    {
-      i->UpdateCamera (this);
-    }
-
-    //Draw_Quad ();
-    for (auto* i : graphicsObjects)
-    {
-      i->Update ();
-      i->Draw ();
-    }
-
-    for (auto* i : uiObjects)
-    {
-      i->UIDraw ();
-    }
-
-    //sFactor = GL_ONE;
-    //dFactor = GL_ONE;
-    //glBlendFunc (sFactor, dFactor);
-
-    //vao->bindVAO ();
-    //fbo->unBind ();
-    //glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    //sceneShader->Use ();
-    //glBindTexture (GL_TEXTURE_2D, renderTexture);
-
-    //for (auto& it : pointLights)
-    //{
-    //  it->Draw ();
-    //  glDrawArrays (GL_TRIANGLES, 0, 6);
-    //}
-    //sceneShader->Disable ();
-    //glBindTexture (GL_TEXTURE_2D, 0);
-
-#ifdef _DEBUG
-    //THERMODYNAMICS->Draw ();
-    //PHYSICS->Render ();
-#endif
-  }
-
   void Pipeline::UpdateMatrices ()
   {
     if (!matricesReady)
@@ -469,6 +460,39 @@ namespace Framework
   void Pipeline::ResetBlendMode ()
   {
     glBlendFunc (sFactor, dFactor);
+  }
+
+  void Pipeline::RenderToTexture(FBO* fbo, GLuint tex, Shader* shader)
+{
+    vao->bindVAO ();
+    fbo->unBind ();
+    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    shader->Use ();
+    glBindTexture (GL_TEXTURE_2D, renderTexture);
+    shader->uni1i ("image", 0);
+    glDrawArrays (GL_TRIANGLES, 0, 6);
+    shader->Disable ();
+    glBindTexture (GL_TEXTURE_2D, 0);
+    vao->unbindVAO ();
+  }
+
+  void Pipeline::ResizeBuffer (const int w, const int h)
+  {
+    glBindTexture (GL_TEXTURE_2D, renderTexture);
+    glTexImage2D (GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
+    glBindTexture (GL_TEXTURE_2D, 0);
+  }
+
+  void Pipeline::OnApplicationPause (PauseEvent* pause)
+  {
+    if (pause->Paused)
+    {
+      sceneShader = Resources::RS->Get_Shader ("Blur");
+    }
+    else
+    {
+      sceneShader = Resources::RS->Get_Shader ("Passthrough");
+    }
   }
 
 }

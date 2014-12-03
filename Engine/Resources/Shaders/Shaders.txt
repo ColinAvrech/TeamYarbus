@@ -80,6 +80,6 @@ PointLight.frag.glsl
 PointLight
 >
 Passthrough.vs.glsl
-GaussianBlur.frag.glsl
+Blur.frag.glsl
 0
-GaussianBlur
+Blur

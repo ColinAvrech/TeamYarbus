@@ -283,7 +283,7 @@ class InstructionsMenu : Component
 		}
 		else if (e.State == MouseState.MouseOutside)
 		{
-			Console.WriteLine("Exit");
+			//Console.WriteLine("Exit");
 			
 			this.SpawnedObject.Sprite.ChangeTexture("UIGotItBlack.png");
 		}

@@ -9,4 +9,4 @@ ColorCodeCell.frag.glsl
 Terrain.frag.glsl
 Tree.frag.glsl
 PointLight.frag.glsl
-GaussianBlur.frag.glsl
+Blur.frag.glsl

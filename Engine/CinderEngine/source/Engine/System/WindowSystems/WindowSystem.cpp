@@ -61,6 +61,7 @@ namespace Framework
     }
 
       glfwSetWindowSize (window, WINDOWSYSTEM->Get_Width (), WINDOWSYSTEM->Get_Height ());
+      OPENGL->ResizeBuffer (WINDOWSYSTEM->Get_Width (), WINDOWSYSTEM->Get_Height ());
     }
 
     void GLFWFrameBufferResize (GLFWwindow* _window, const int w, const int h)
