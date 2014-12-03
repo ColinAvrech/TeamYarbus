@@ -15,6 +15,7 @@
 #include "KeyEvent.h"
 #include "GameEvent.h"
 #include "Thermodynamics.h"
+#include "CharacterController.h"
 
 namespace Framework
 {
@@ -42,7 +43,7 @@ namespace Framework
 
   CLParticleRenderer::CLParticleRenderer ()
   {
-    particleCount = 100000;
+    particleCount = 10000;
     particleSize = 5;
     //speedMultiplier = 100.0f;
     srand ((unsigned) time (NULL));
@@ -143,15 +144,22 @@ namespace Framework
 
     //destPos.x = (float) (cursorX / (windowWidth) -0.5f) * 2.0f;
     //destPos.y = (float) ((windowHeight - cursorY) / windowHeight - 0.5f) * 2.0f;
-    destPos.x = 1.0f;
-    destPos.y = 1.0f;
+    if (PLAYER == nullptr)
+    {
+      destPos.x = 1.0f;
+      destPos.y = 1.0f;
+    }
+    else
+    {
+      destPos = PLAYER->gameObject->Transform->GetNDCPosition ();
+    }
 
     vec4* verticesPos = (vec4*) SSBOPos->MapBufferRange<vec4> (0, particleCount);
     for (int i = 0; i < particleCount; i++)
     {
       float rnd = (float) rand () / (float) (RAND_MAX);
       float rndVal = (float) rand () / (float) (RAND_MAX / (360.0f * 3.14f * 2.0f));
-      float rndRad = (float) rand () / (float) (RAND_MAX) * 0.8f;
+      float rndRad = (float) rand () / (float) (RAND_MAX) * 0.1f;
       radius = rndRad;
       verticesPos [i].x = destPos.x + cos (rndVal) * rndRad;
       verticesPos [i].y = destPos.y + sin (rndVal) * rndRad;
@@ -207,32 +215,45 @@ namespace Framework
 
     //destPos.x = (float) ((cursorX / (windowWidth) -0.5f) * 2.0f);
     //destPos.y = (float) ((windowHeight - cursorY) / windowHeight - 0.5f) * 2.0f;
-    switch (move)
-    {
-    case Framework::LEFT:
-      t -= 0.016f;
-      if (t <= 0.0f)
-      {
-        move = RIGHT;
-      }
-      break;
-    case Framework::RIGHT:
-      t += 0.016f;
-      if (t >= 1.0f)
-      {
-        move = LEFT;
-      }
-      break;
-    default:
-      break;
-    }
 
-    //std::cout << t << "\n";
-    destPos = glm::mix (glm::vec2 (-1, -1), glm::vec2 (1, 1), t);
-    if (speedMultiplier < 2.50f)
+    destPos = PLAYER->gameObject->Transform->GetNDCPosition ();
+
+    //switch (move)
+    //{
+    //case Framework::LEFT:
+    //  t -= 0.016f;
+    //  speedMultiplier += 0.01f;
+    //  //if (t <= 0.0f)
+    //  //{
+    //  //  move = RIGHT;
+    //  //}
+    //  if (speedMultiplier >= 10.0f)
+    //  {
+    //    move = RIGHT;
+    //  }
+    //  break;
+    //case Framework::RIGHT:
+    //  t += 0.016f;
+    //  speedMultiplier -= 0.01f;
+    //  //if (t >= 1.0f)
+    //  //{
+    //  //  move = LEFT;
+    //  //}
+    //  if (speedMultiplier <= 0.15f)
+    //  {
+    //    move = LEFT;
+    //  }
+    //  break;
+    //default:
+    //  break;
+    //}
+
+    if (speedMultiplier <= 10.0f)
     {
-      speedMultiplier += 0.001f;
+      speedMultiplier += 0.016f;
     }
+    std::cout << speedMultiplier << "\n";
+    //destPos = glm::mix (glm::vec2 (-1, -1), glm::vec2 (1, 1), t);
 
     //destPosX = random (-1.0f, 1.0f);
     //destPosY = random (-1.0f, 1.0f);
@@ -267,14 +288,14 @@ namespace Framework
     // Render scene
 
     shader->Use ();
-
+    //color [3] = 1.0f;
     shader->uni4f ("Color", color [0] / 255.0f, color [1] / 255.0f, color [2] / 255.0f, color [3]);
 
     glGetError ();
 
     texture->Bind ();
     GLuint posAttrib = shader->attribLocation ("position");
-
+    shader->uniMat4 ("mvp", glm::value_ptr (PLAYER->gameObject->Transform->GetModelViewProjectionMatrix ()));
     glBindBuffer (GL_ARRAY_BUFFER, SSBOPos->Get_POS ());
     shader->vertexAttribPtr (posAttrib, 4, GL_FLOAT, GL_FALSE, 0, 0);
     shader->enableVertexAttribArray (posAttrib);
