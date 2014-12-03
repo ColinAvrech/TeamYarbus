@@ -20,15 +20,6 @@ namespace Framework
       return glm::dot(vec2d, l.normalVec);
     }
 
-    float Angle_from_Vertical(const glm::vec2& d_vec)
-    {
-      glm::vec2 y_axis = { 0.0f, 1.0f };
-
-      float cos_t = glm::dot(y_axis, d_vec);
-
-      return glm::acos(cos_t);
-    }
-
     glm::vec2 Closest_Point_on_Seg(glm::vec2 seg_a, glm::vec2 seg_b, glm::vec2 circ_pos)
     {
       //the segment vector, seg_v (from seg_a to seg_b)

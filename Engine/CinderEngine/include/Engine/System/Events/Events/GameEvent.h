@@ -33,4 +33,11 @@ namespace Framework
     ZilchDeclareBaseType(UIEvent, Zilch::TypeCopyMode::ReferenceType);
     Zilch::String Message;
   };
+
+  class PauseEvent : public BaseEvent
+  {
+  public:
+    ZilchDeclareBaseType (PauseEvent, Zilch::TypeCopyMode::ReferenceType);
+    Zilch::Boolean Paused;
+  };
 }

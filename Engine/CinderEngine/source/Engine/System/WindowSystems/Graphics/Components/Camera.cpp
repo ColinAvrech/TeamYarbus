@@ -15,6 +15,7 @@
 #include "WindowSystem.h"
 #include "GameObject.h"
 #include "Pipeline.h"
+#include "CharacterController.h"
 
 
 namespace Framework
@@ -38,37 +39,37 @@ namespace Framework
   {
     allCameras.remove (this);
     gameObject->Camera = nullptr;
-    OPENGL->camera = nullptr;
+    OPENGL->cameras.remove (this);
   }
 
 
   void Camera::OnKeyPressed (KeyEvent* key)
   {
-    float camSpeed = 1.f;
-    float zoomSpeed = 5.f;
+    float camSpeed = 1.0f;
+    float zoomSpeed = 100.0f;
     if (key->KeyDown)
       switch (key->KeyValue)
     {
-      case GLFW_KEY_A:
-        OPENGL->MatrixMode (VIEW);
-        Camera::main->gameObject->Transform->Translate (-camSpeed, 0, 0);
-        Camera::main->matricesReady = false;
-        break;
-      case GLFW_KEY_D:
-        OPENGL->MatrixMode (VIEW);
-        Camera::main->gameObject->Transform->Translate (camSpeed, 0, 0);
-        Camera::main->matricesReady = false;
-        break;
-      case GLFW_KEY_S:
-        OPENGL->MatrixMode (VIEW);
-        Camera::main->gameObject->Transform->Translate (0, -camSpeed, 0);
-        Camera::main->matricesReady = false;
-        break;
-      case GLFW_KEY_W:
-        OPENGL->MatrixMode (VIEW);
-        Camera::main->gameObject->Transform->Translate (0, camSpeed, 0);
-        Camera::main->matricesReady = false;
-        break;
+      //case GLFW_KEY_A:
+      //  OPENGL->MatrixMode (VIEW);
+      //  Camera::main->gameObject->Transform->Translate (-camSpeed, 0, 0);
+      //  Camera::main->matricesReady = false;
+      //  break;
+      //case GLFW_KEY_D:
+      //  OPENGL->MatrixMode (VIEW);
+      //  Camera::main->gameObject->Transform->Translate (camSpeed, 0, 0);
+      //  Camera::main->matricesReady = false;
+      //  break;
+      //case GLFW_KEY_S:
+      //  OPENGL->MatrixMode (VIEW);
+      //  Camera::main->gameObject->Transform->Translate (0, -camSpeed, 0);
+      //  Camera::main->matricesReady = false;
+      //  break;
+      //case GLFW_KEY_W:
+      //  OPENGL->MatrixMode (VIEW);
+      //  Camera::main->gameObject->Transform->Translate (0, camSpeed, 0);
+      //  Camera::main->matricesReady = false;
+      //  break;
       case GLFW_KEY_Z:
         Camera::main->Zoom (zoomSpeed);
         break;
@@ -94,7 +95,7 @@ namespace Framework
     }
     Camera::current = this;
 
-    OPENGL->camera = this;
+    OPENGL->cameras.push_back(this);
     OPENGL->Perspective (fov, aspect, nearPlane, farPlane);
     OPENGL->MatrixMode (MODEL);
     OPENGL->Translatefv (const_cast <float*>(glm::value_ptr (gameObject->Transform->GetPosition ())));
@@ -163,8 +164,9 @@ namespace Framework
 
   void Camera::UpdateCamera (Pipeline* p)
   {
-    if (!matricesReady)
+    if (!matricesReady && enabled)
     {
+      //gameObject->Transform->SetPosition (PLAYER->gameObject->Transform->GetPosition ().x, PLAYER->gameObject->Transform->GetPosition ().y);
       OPENGL->Perspective (fov, aspect, nearPlane, farPlane);
       OPENGL->LookAt
         (size * viewDirection +

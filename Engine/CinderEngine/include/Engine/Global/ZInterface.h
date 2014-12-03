@@ -42,11 +42,32 @@ namespace Framework
 		ZilchDeclareBaseType(ZInterface, Zilch::TypeCopyMode::ReferenceType);
 		static ObjectSystem* ObjectSys;
 		static WindowSystem* WindowSys;
+		static Resources* ResourceSystem;
 		
 		static void QuitGame();
 
+		static Sound* GetSound(String soundName);
+		static void TogglePaused();
+		static void IsPaused();
+		;
+
 		static ZilchFile* OpenFile(Zilch::String filepath);
 		
+	};
+
+	class ZArray
+	{
+	public:
+		ZilchDeclareBaseType(ZArray, Zilch::TypeCopyMode::ReferenceType);
+		ZArray(Zilch::Array<GameObject*>* arr);
+		~ZArray();
+		unsigned Length;
+
+		GameObject* Get(unsigned index);
+
+		Zilch::Array<GameObject*> Objects;
+	private:
+
 	};
 
 	

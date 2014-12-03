@@ -15,6 +15,7 @@
 
 #include "AudioSystem.h"
 #include "AudioEvents.h"
+#include "AudioComponent.h"
 #include "Console.h"
 #include "Core.h"
 
@@ -25,16 +26,16 @@ namespace Framework
   /*---------------------------------------------------------------------------
   // Class Implementation
   ---------------------------------------------------------------------------*/
-  
+
   /*---------------------------------------------------------------------------
   // Constructors
   ---------------------------------------------------------------------------*/
-  #pragma region Constructors
+#pragma region Constructors
 
-  AudioSystem::AudioSystem() : pFMODAudioSystem(NULL), 
-                               GroupMusic(NULL), 
-                               Group2DSFX(NULL), 
-                               Group3DSFX(NULL)
+  AudioSystem::AudioSystem() : pFMODAudioSystem(NULL),
+    GroupMusic(NULL),
+    Group2DSFX(NULL),
+    Group3DSFX(NULL)
   {
 #ifdef _DEBUG
     ErrorIf(AUDIOSYSTEM != NULL, "AudioSystem Audio System already created");
@@ -48,28 +49,28 @@ namespace Framework
 #endif
   }
 
-  #pragma endregion
+#pragma endregion
 
   /*---------------------------------------------------------------------------
   // Public Variables
   ---------------------------------------------------------------------------*/
-  #pragma region Public Variables
+#pragma region Global Variables
 
   AudioSystem *AUDIOSYSTEM;
 
-  #pragma endregion
+#pragma endregion
 
   /*-------------------------------------------------------------------------*/
   // Public Structs
   /*-------------------------------------------------------------------------*/
-  #pragma region Public Structs
+#pragma region Public Structs
 
-  #pragma endregion
+#pragma endregion
 
   /*---------------------------------------------------------------------------
   // Public Functions
   ---------------------------------------------------------------------------*/
-  #pragma region Public Functions
+#pragma region Public Functions
 
   /***************************************************************************/
   /*!
@@ -87,8 +88,8 @@ namespace Framework
     {
       char buffer[1000];
 
-      sprintf(buffer, "FMOD error! (%d) %s\n", 
-              result, FMOD_ErrorString(result));
+      sprintf(buffer, "FMOD error! (%d) %s\n",
+        result, FMOD_ErrorString(result));
 
       // Prints the buffer to Visual Studio's output window
       OutputDebugStringA(buffer);
@@ -106,10 +107,11 @@ namespace Framework
   {
     // Calls function the creates FMOD groups
     CreateSoundGroups();
+    InitPauseMenuEffect();
     InitMicData();
 
     std::cout << "Audio System Initialized" << std::endl;
-	  return true;
+    return true;
   }
 
   /***************************************************************************/
@@ -131,11 +133,11 @@ namespace Framework
   \return Returns a Sound class Object
   */
   /***************************************************************************/
-  Sound* AudioSystem::LoadSound(const char* filename, 
-                                char* soundName, 
-                                Sound::SoundID type, 
-                                float volume)
-  {    
+  Sound* AudioSystem::LoadSound(const char* filename,
+    char* soundName,
+    Sound::SoundID type,
+    float volume)
+  {
     Sound* newSound = new Sound(); // Dynamically creates a new 'Sound' object
     char Path[250];
 
@@ -159,13 +161,23 @@ namespace Framework
     }
 
     // Assigns volume to the sound object
-    newSound->SetVolume(volume); 
+    newSound->SetVolume(volume);
 
     // Adds the sound object to the soundMap container
-    soundMap[soundName] = (newSound); 
+    soundMap[soundName] = (newSound);
 
     // Returns the newly created sound object
     return newSound;
+  }
+
+  void AudioSystem::AddAudioComponent(AudioComponent* component)
+  {
+    audioComponentList.push_back(component);
+  }
+
+  void AudioSystem::DeleteAudioComponent(AudioComponent* component)
+  {
+    audioComponentList.remove(component);
   }
 
   /***************************************************************************/
@@ -180,6 +192,8 @@ namespace Framework
   /***************************************************************************/
   void AudioSystem::StopSounds(int id)
   {
+    FMOD_RESULT result;
+
     // Checks if audio system is not on
     if (Sound::system_on_ == false)
     {
@@ -189,21 +203,24 @@ namespace Framework
     // Stops all Music sounds
     if (id == Sound::MUSIC || id == -1)
     {
-      GroupMusic->stop();
+      result = GroupMusic->stop();
+      ErrCheck(result);
     }
 
     // Stops all 2D sound effects
     if (id == Sound::SOUND_2D
       || id == Sound::SFX_ALL || id == -1)
     {
-      Group2DSFX->stop();
+      result = Group2DSFX->stop();
+      ErrCheck(result);
     }
 
     // Stops all 3D sound effects
     if (id == Sound::SOUND_3D
       || id == Sound::SFX_ALL || id == -1)
     {
-      Group3DSFX->stop();
+      result = Group3DSFX->stop();
+      ErrCheck(result);
     }
   }
 
@@ -219,6 +236,8 @@ namespace Framework
   /***************************************************************************/
   void AudioSystem::Update(const double &dt)
   {
+    FMOD_RESULT result;
+
     // Checks if audio system is not on
     if (Sound::system_on_ == false)
     {
@@ -226,14 +245,22 @@ namespace Framework
     }
 
     // Updates the audio system
-    pFMODAudioSystem->update();
+    result = pFMODAudioSystem->update();
+    ErrCheck(result);
+
     UpdateMicData();
+    UpdatePauseMenuEffect(dt);
 
     // Updates all the Sound Object Instances
     std::map<string, Sound*>::iterator it;
     for (it = soundMap.begin(); it != soundMap.end(); ++it)
     {
       it->second->Update(dt);
+    }
+
+    for (auto *i : audioComponentList)
+    {
+      i->Update();
     }
   }
 
@@ -250,7 +277,7 @@ namespace Framework
   Sound* AudioSystem::GetSound(char* soundName)
   {
     return soundMap[soundName];
-  }  
+  }
 
   /***************************************************************************/
   /*!
@@ -264,6 +291,8 @@ namespace Framework
   /***************************************************************************/
   bool AudioSystem::GetMuted(int id)
   {
+    FMOD_RESULT result;
+
     // Checks if audio system is not on
     if (Sound::system_on_ == false)
     {
@@ -280,9 +309,14 @@ namespace Framework
     bool musicMuted = 0;
 
     // FMOD getters for checking for Mute
-    GroupMusic->getMute(&sfx2DMuted);
-    Group2DSFX->getMute(&sfx3DMuted);
-    Group3DSFX->getMute(&musicMuted);
+    result = GroupMusic->getMute(&sfx2DMuted);
+    ErrCheck(result);
+
+    result = Group2DSFX->getMute(&sfx3DMuted);
+    ErrCheck(result);
+    
+    result = Group3DSFX->getMute(&musicMuted);
+    ErrCheck(result);
 
     // Statements to check which groups have been muted
     if (id == -1)
@@ -305,7 +339,7 @@ namespace Framework
     {
       return sfx2DMuted && sfx3DMuted;
     }
-  }  
+  }
 
   /***************************************************************************/
   /*!
@@ -322,9 +356,10 @@ namespace Framework
   /***************************************************************************/
   void AudioSystem::SetPaused(bool paused, int id)
   {
+    FMOD_RESULT result;
     // Checks if audio system is not on
     if (Sound::system_on_ == false)
-    { 
+    {
       return;
     }
 
@@ -332,21 +367,158 @@ namespace Framework
     if (id == Sound::MUSIC
       || id == Sound::SFX_ALL || id == -1)
     {
-      GroupMusic->setPaused(paused);
+      result = GroupMusic->setPaused(paused);
+      ErrCheck(result);
     }
 
     // Pauses all 2D sound effects
     if (id == Sound::SOUND_2D
       || id == Sound::SFX_ALL || id == -1)
     {
-      Group2DSFX->setPaused(paused);
+      result = Group2DSFX->setPaused(paused);
+      ErrCheck(result);
     }
 
     // Pauses all 3D sound effects
     if (id == Sound::SOUND_3D
       || id == Sound::SFX_ALL || id == -1)
     {
-      Group3DSFX->setPaused(paused);
+      result = Group3DSFX->setPaused(paused);
+      ErrCheck(result);
+    }
+  }
+
+  void AudioSystem::InitPauseMenuEffect()
+  {
+    FMOD_RESULT result;
+
+    result = pFMODAudioSystem->createDSPByType(FMOD_DSP_TYPE_LOWPASS, &lowPassEffect);
+    ErrCheck(result);
+
+    result = lowPassEffect->setParameterFloat(FMOD_DSP_LOWPASS_CUTOFF, 22000.0f);
+    ErrCheck(result);
+
+    result = lowPassEffect->setParameterFloat(FMOD_DSP_LOWPASS_RESONANCE, 0.0f);
+    ErrCheck(result);
+  }
+
+  void AudioSystem::SetPauseMenuEffect(float cutoff, float resonance, float time)
+  {
+    FMOD_RESULT result;
+    FMOD::ChannelGroup *masterGroup = 0;
+    float currentCutoff;
+    float currentResonance;
+    float fadeSpeedA;
+    float fadeSpeedB;
+    bool active;
+    char buffer[16];
+
+    result = lowPassEffect->getActive(&active);
+    ErrCheck(result);
+
+    result = pFMODAudioSystem->getMasterChannelGroup(&masterGroup);
+    ErrCheck(result);
+
+    if (!active && _lpfstate == false)
+    {
+      result = masterGroup->addDSP(0, lowPassEffect);
+      ErrCheck(result);
+
+      result = lowPassEffect->setActive(true);
+      ErrCheck(result);
+
+      _lpfstate = true;
+
+    }
+
+    _cutoffVal = cutoff;
+    _resonanceVal = resonance;
+
+    result = lowPassEffect->getParameterFloat(FMOD_DSP_LOWPASS_CUTOFF, &currentCutoff, buffer, 16);
+    ErrCheck(result);
+
+    result = lowPassEffect->getParameterFloat(FMOD_DSP_LOWPASS_RESONANCE, &currentResonance, buffer, 16);
+    ErrCheck(result);
+
+    fadeSpeedA = (cutoff - currentCutoff) / time;
+    _fadeValA = fadeSpeedA;
+
+    fadeSpeedB = (resonance - currentResonance) / time;
+    _fadeValB = fadeSpeedB;    
+  }
+
+  void AudioSystem::UpdatePauseMenuEffect(const double dt)
+  {
+    FMOD_RESULT result;
+    float currentCutoff;
+    float currentResonance;
+    char buffer[16];
+    bool active;
+    FMOD::ChannelGroup *masterGroup = 0;
+
+    result = pFMODAudioSystem->getMasterChannelGroup(&masterGroup);
+    ErrCheck(result);
+
+    if (lowPassEffect)
+    {
+      result = lowPassEffect->getParameterFloat(FMOD_DSP_LOWPASS_CUTOFF, &currentCutoff, buffer, 16);
+      ErrCheck(result);
+
+      if (currentCutoff == 10)
+        _cutoffVal = 22000;
+
+      result = lowPassEffect->getParameterFloat(FMOD_DSP_LOWPASS_RESONANCE, &currentResonance, buffer, 16);
+      ErrCheck(result);
+
+      result = lowPassEffect->getActive(&active);
+      ErrCheck(result);
+
+      if (currentCutoff > 22000 && _lpfstate == true && active)
+      {
+        result = masterGroup->removeDSP(lowPassEffect);
+        ErrCheck(result);
+
+        result = lowPassEffect->setActive(false);
+        ErrCheck(result);
+
+        _lpfstate = false;
+      }
+
+      if (_cutoffVal != currentCutoff)
+      {
+        float newParam;
+        newParam = (float)(currentCutoff + ((double)_fadeValA * dt));
+
+        if (newParam > _cutoffVal && _fadeValA > 0.0f)
+        {
+          newParam = _cutoffVal;
+        }
+        else if (newParam < _cutoffVal && _fadeValA < 0.0f)
+        {
+          newParam = _cutoffVal;
+        }
+
+        result = lowPassEffect->setParameterFloat(FMOD_DSP_LOWPASS_CUTOFF, newParam);
+        ErrCheck(result);
+      }
+
+      if (_resonanceVal != currentResonance)
+      {
+        float newParam;
+        newParam = (float)(currentResonance + ((double)_fadeValB * dt));
+
+        if (newParam > _resonanceVal && _fadeValB > 0.0f)
+        {
+          newParam = _resonanceVal;
+        }
+        else if (newParam < _resonanceVal && _fadeValB < 0.0f)
+        {
+          newParam = _resonanceVal;
+        }
+
+        result = lowPassEffect->setParameterFloat(FMOD_DSP_LOWPASS_RESONANCE, newParam);
+        ErrCheck(result);
+      }
     }
   }
 

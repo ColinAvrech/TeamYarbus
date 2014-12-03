@@ -99,7 +99,7 @@ namespace Framework
     while (true)
     {
       WaitForSingleObject (eventStartFire [threadIndex], INFINITE);
-      THERMODYNAMICS->UpdateFire (startIndex, endIndex, 0.016);
+      //THERMODYNAMICS->UpdateFire (0.016);
       SetEvent (eventEndFire [threadIndex]);
     }
 

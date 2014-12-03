@@ -18,9 +18,12 @@
 #include "PhysicsSystemNew.h"
 #include "Collider2D.h"
 #include "RigidBody2D.h"
+#include "Thermodynamics.h"
+#include "TDLib.h"
 
 namespace Framework
 {
+  using namespace Physics;
   static std::vector <float> lineVertices;
   static VAO* vao1;
   static VBO* vbo1;
@@ -85,7 +88,7 @@ namespace Framework
 
 
   void Terrain2D::Draw ()
-  {
+  { 
     shader->Use ();
     vao->bindVAO ();
     shader->uni4f ("color", color.r, color.g, color.b, color.a);
@@ -122,7 +125,7 @@ namespace Framework
     tc = new Procedural::TerrainCreator (MapSize, BaseHeight, Passes, Waves, PeakHeight, WaterDepth);
     Procedural::TerrainCreator& t = *tc;
     float* Map = t.GetRockMap ();
-    float* W_Map = t.GetWaterMap();
+    //float* W_Map = t.GetWaterMap();
     float peak = t.GetPeakHeight () / t.Get_Width();
 
     {
@@ -141,7 +144,7 @@ namespace Framework
         break;*/
         if (previousHeight != offsetY || i == t.Get_Width () - 1)
         {
-          height_points.push_back ({ offsetX, offsetY / peak });
+          height_points.push_back ({ offsetX, offsetY});
           previousHeight = offsetY;
         }
 
@@ -156,9 +159,30 @@ namespace Framework
         }
 
 
-        offsetX += 4 * nX;
+        offsetX += nX;
       }
     }
+
+    //for (int y = 0; y < THERMODYNAMICS->MapSize.y; ++y)
+    //{
+    //  for (int x = 0; x < THERMODYNAMICS->MapSize.x; ++x)
+    //  {
+    //    THERMODYNAMICS->Terrain.Set (x, y, STONE);
+    //  }
+    //}
+
+    //for (int x = 0; x < THERMODYNAMICS->MapSize.x; ++x)
+    //{
+    //  for (int y = height_points [x].y * 128; y >= 0; --y)
+    //  {
+    //    THERMODYNAMICS->Terrain.Set (x, y, STONE);
+    //  }
+    //}
+
+    ////THERMODYNAMICS->Terrain.Set (64, 64, WOOD);
+    //THERMODYNAMICS->TemperatureMap.Set (64, 64, 1000000000000000.0f);
+    //THERMODYNAMICS->TemperatureMap.Set (68, 64, 1000000000000000.0f);
+    //THERMODYNAMICS->TemperatureMap.Set (72, 64, 1000000000000000.0f);
   }
 
 
@@ -238,6 +262,16 @@ namespace Framework
       p [1] = Vector2 (p3.x, p3.y);
       p [2] = Vector2 (p0.x, p0.y);
       p [3] = Vector2 (p1.x, p1.y);
+
+      ////////////////////////////////////////////////////////////////////////////
+      ////////////////////////////////////////////////////////////////////////////
+      //// EDGES FOR THERMODYNAMICS
+      ////////////////////////////////////////////////////////////////////////////
+      //Physics::ThermodynamicsSystem::TerrainPoints.push_back (p2);
+      //Physics::ThermodynamicsSystem::TerrainPoints.push_back (p3);
+      //Physics::ThermodynamicsSystem::TerrainPoints.push_back (p0);
+      //Physics::ThermodynamicsSystem::TerrainPoints.push_back (p1);
+      ////////////////////////////////////////////////////////////////////////////
       p [2].y = p [3].y = y;
 
       CalculateIntersectionPoint

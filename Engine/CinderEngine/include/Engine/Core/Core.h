@@ -17,6 +17,7 @@
 
 #include "Common.h"
 #include "BaseSystem.h"
+#include "ZilchCompiledLib.h"
 
 using namespace std::chrono;
 
@@ -28,7 +29,7 @@ namespace Framework
   public:
     CoreEngine();
     ~CoreEngine();
-
+	ZilchDeclareBaseType(CoreEngine, Zilch::TypeCopyMode::ReferenceType);
     //!Update all the systems
     void GameLoop();
 
@@ -38,7 +39,7 @@ namespace Framework
     //! Add a system to be updated every frame.
     void AddSystem(BaseSystem* system);
 
-    void TogglePaused(){ GamePaused = !GamePaused; }
+    void TogglePaused();
     bool IsPaused(){ return GamePaused; }
    
     //! Stops the game for whatever reason

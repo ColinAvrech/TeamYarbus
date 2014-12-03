@@ -42,8 +42,13 @@ namespace Framework
 
     Texture* texture;
   public:
-    PlayerEffect () { }
+    PlayerEffect (){}
     virtual ~PlayerEffect ();
+
+    virtual void Initialize ();
+    virtual void Serialize (Serializer::DataNode* data);
+    virtual void Draw ();
+    virtual void OnApplicationPause (PauseEvent* pause);
 
     bool initialize (size_t numParticles) override;
     bool initializeRenderer () override;
@@ -61,11 +66,7 @@ namespace Framework
     int numAliveParticles () override { return m_system->numAliveParticles (); }
     void CreateTrailEmitter (std::shared_ptr<BoxPosGen> trail, bool active, vec3 position, vec3 minVelocity, vec3 maxVelocity, float emitRate);
     void CreateRingEmitter (bool active, vec3 position, vec3 minVelocity, vec3 maxVelocity, float emitRate);
-    virtual void Initialize ();
 
-    virtual void Serialize (Serializer::DataNode* data);
-
-    virtual void Draw ();
     const static string Name;
   };
 }

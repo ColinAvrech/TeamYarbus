@@ -45,6 +45,7 @@ namespace Framework
 
 	Zilch::Real Width;
 	Zilch::Real Height;
+	Zilch::Real4 GetColor();
 
     Shader* Get_Shader ();
     Texture* Get_Texture ();

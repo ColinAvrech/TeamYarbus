@@ -6,4 +6,6 @@ Vertex.vs.glsl
 DebugDraw.vs.glsl
 ColorCodeCell.vs.glsl
 Terrain.vs.glsl
+Terrain3D.vs.glsl
 Tree.vs.glsl
+PointLight.vs.glsl

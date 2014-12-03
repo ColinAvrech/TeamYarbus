@@ -13,6 +13,7 @@
 #include "Thermodynamics.h"
 #include "glm/gtc/random.hpp"
 #include "glm/gtc/noise.hpp"
+#include "Camera.h"
 #include <fstream>
 
 namespace Framework
@@ -68,10 +69,13 @@ namespace Framework
     float offset_y = 0.0;
     float scale = 1.0;
 
-    model = glm::scale (glm::mat4 (1.0f), vec3 (1.6f, 0.9f, 1));
+    model = glm::scale (glm::mat4 (1.0f), vec3 (1.0f, 1.0f, 1));
+    glm::mat4 view, projection;
+    view = Camera::GetWorldToViewMatrix ();
+    projection = Camera::GetViewToProjectionMatrix ();
+    //view = glm::lookAt (vec3 (0.0, 0.0, 5.0), vec3 (0.0, 0.0, -1.0), vec3 (0.0, 1.0, 0.0));
+    //projection = glm::perspective (18.0f * 3.14f / 180, 1.0f * 1280 / 720.f, 0.1f, 200.0f);
 
-    glm::mat4 view = glm::lookAt (vec3 (0.0, 0.0, 5.0), vec3 (0.0, 0.0, -1.0), vec3 (0.0, 1.0, 0.0));
-    glm::mat4 projection = glm::perspective (18.0f * 3.14f / 180, 1.0f * 1280 / 720.f, 0.1f, 200.0f);
 
     glm::mat4 vertex_transform = projection * view * model;
     glm::mat4 texture_transform = glm::translate (glm::scale (glm::mat4 (1.0f), vec3 (scale, scale, 1)), vec3 (offset_x, offset_y, 0));
@@ -272,16 +276,16 @@ namespace Framework
   {
     float x = -1.0f;
     float y = 1.0f;
-    for (int i = 0; i < 101; ++i)
+    for (int i = 0; i < 129; ++i)
     {
-      for (int j = 0; j < 101; ++j)
+      for (int j = 0; j < 129; ++j)
       {
         //std::cout << x << ", " << y << "\n";
         temperatures [i][j] = Physics::THERMODYNAMICS->GetCellTemperature (x, y);
-        x += 1.f / 50;
+        x += 1.f / 64;
       }
 
-      y -= 1.f / 50;
+      y -= 1.f / 64;
       x = -1.0f;
     }
 

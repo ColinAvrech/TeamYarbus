@@ -17,6 +17,7 @@ namespace Framework
 		ZilchBindMethodOverloadAs(Change_Shader,"ChangeShader", void, Zilch::String);
 		ZilchBindMethodOverloadAs(Change_Texture,"ChangeTexture", void, Zilch::String);
 		ZilchBindMethodAs(Change_Color, "ChangeColor");
+		ZilchBindMethod(GetColor);
 		ZilchBindMethod(GetCurrentFrame);
 		ZilchBindMethod(GetAnimationSpeed);
 		ZilchBindMethod(Initialize);
@@ -49,6 +50,8 @@ namespace Framework
 		// texture  : Texture*      Resources::RS->Get_Texture (Serialized String Name);
 		// atlas    : SpriteSheet*  Resources::RS->Get_SpriteSheet (Serialized String Name);
 		//////////////////////////////////////////////////////////////////////////
+    Component::Get_Enabled (data, "Visible");
+
 		Serializer::DataNode* value = data->FindElement(data, "SpriteSource");
 		std::string texname;
 		value->GetValue(&texname);
@@ -65,7 +68,7 @@ namespace Framework
 		//SerializeResource(shader, "BasicDefault");
 
 		value = data->FindElement(data, "Color");
-		value->GetValue(&color);
+    value->GetValue (&color);
 
 		animated = false;
 
@@ -86,6 +89,11 @@ namespace Framework
 		Width = Zilch::Real(texture->width / (WINDOWSYSTEM->Get_Width() - 0.5f) * 2.0f);
 		Height = Zilch::Real(texture->height / (WINDOWSYSTEM->Get_Height() - 0.5f) * 2.0f);
 
+	}
+
+	Zilch::Real4 Sprite::GetColor()
+	{
+		return Real4(Real(color.x), Real(color.y), Real(color.z), Real(color.w));
 	}
 
 
@@ -260,13 +268,16 @@ namespace Framework
 	// Called By Renderer Component
 	void Sprite::Draw()
 	{
-		vao->bindVAO();
-		shader->Use();
-		shader->uni4fv("overrideColor", glm::value_ptr(color));
-		//shader->uniMat4("modelViewProjectionMatrix", glm::value_ptr(gameObject->Transform->GetModelViewProjectionMatrix()));
-		(this->*DrawFunction)();
-		shader->Disable();
-		vao->unbindVAO();
+    if (enabled)
+    {
+      vao->bindVAO ();
+      shader->Use ();
+      shader->uni4fv ("overrideColor", glm::value_ptr (color));
+      //shader->uniMat4("modelViewProjectionMatrix", glm::value_ptr(gameObject->Transform->GetModelViewProjectionMatrix()));
+      (this->*DrawFunction)();
+      shader->Disable ();
+      vao->unbindVAO ();
+    }
 	}
 
 

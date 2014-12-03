@@ -54,7 +54,8 @@ namespace Framework
   class Terrain3D;
   class ShapeCollider2D;
   class RigidBody2D;
-  //class Health;
+  class Health;
+  class AudioComponent;
 
   class GameObject
   {
@@ -79,6 +80,7 @@ namespace Framework
 
     //Public Variables
     string Name;
+	String GetName();
     GameObject* Parent;
     const unsigned GameObjectID;
 
@@ -97,6 +99,7 @@ namespace Framework
     ComponentPointer(Microphone);
     ComponentPointer(Terrain2D);
     ComponentPointer(Terrain3D);
+    ComponentPointer(AudioComponent);
 
    // Menu Components
    ComponentPointer(MenuController);

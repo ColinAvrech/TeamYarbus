@@ -53,7 +53,7 @@ namespace Framework
 		WINDOWSYSTEM->Set_W_H(w, aspectHeight);
 		if (h < aspectHeight)
 		{
-			mouseOffset.y = aspectHeight - h;
+			mouseOffset.y = float(aspectHeight - h);
 		}
     else
     {
@@ -61,6 +61,7 @@ namespace Framework
     }
 
       glfwSetWindowSize (window, WINDOWSYSTEM->Get_Width (), WINDOWSYSTEM->Get_Height ());
+      OPENGL->ResizeBuffer (WINDOWSYSTEM->Get_Width (), WINDOWSYSTEM->Get_Height ());
     }
 
     void GLFWFrameBufferResize (GLFWwindow* _window, const int w, const int h)

@@ -14,14 +14,16 @@ namespace Framework
 	class PhysicsSystemNew : public BaseSystem
 	{
   public:
-	  PhysicsSystemNew( float dt, unsigned iterations );
-	
-	  void Step( void );
-	  void Render( void );
-	  RigidBody2D *Add( ShapeCollider2D *shape, float x, float y );
-	  void Clear( void );
+    PhysicsSystemNew (float dt, unsigned iterations);
 
+    virtual bool Initialize ();
     virtual void Update (const double& dt);
+    virtual void OnApplicationPause (PauseEvent* pause);
+
+    RigidBody2D *Add (ShapeCollider2D *shape, float x, float y);
+    void Step (void);
+    void Render (void);
+    void Clear (void);
 
     virtual const string GetName ();
 

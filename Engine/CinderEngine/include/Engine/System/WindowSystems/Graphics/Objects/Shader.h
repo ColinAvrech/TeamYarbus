@@ -61,6 +61,7 @@ namespace Framework
     GLuint Create_Shader (const char*, string, GLenum shaderType);
     GLuint Create_Shader_From_String (string& vs, string& fs);
     GLuint Create_Program (string name, GLuint _vertexShader, GLuint _fragmentShader, GLuint _geometryShader = 0);
+    GLuint Create_Program (string name, GLuint _fragmentShader);
   };
 
 

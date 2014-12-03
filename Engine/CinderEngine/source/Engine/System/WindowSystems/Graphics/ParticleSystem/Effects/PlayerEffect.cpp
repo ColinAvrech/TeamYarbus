@@ -1,6 +1,6 @@
 /******************************************************************************/
 /*!
-\file   FountainEffect.cpp
+\file   PlayerEffect.cpp
 \author Manas Sudhir Kulkarni
 \par    Course: GAM200
 \par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
@@ -17,6 +17,7 @@
 #include "EventSystem.h"
 #include "KeyEvent.h"
 #include "Collider2D.h"
+#include "GameEvent.h"
 
 namespace Framework
 {
@@ -33,6 +34,7 @@ namespace Framework
 
   void PlayerEffect::Serialize (Serializer::DataNode* data)
   {
+    Component::Get_Enabled (data);
     Serializer::DataNode* value = data->FindElement (data, "ParticleSize");
     value->GetValue (&size);
 
@@ -61,6 +63,7 @@ namespace Framework
     initializeRenderer ();
 
     EVENTSYSTEM->mConnect<KeyEvent, PlayerEffect> (Events::KEY_ANY, this, &PlayerEffect::OnKeyPressed);
+    EVENTSYSTEM->mConnect<PauseEvent, PlayerEffect> (Events::PAUSE, this, &PlayerEffect::OnApplicationPause);
   }
 
 
@@ -133,12 +136,10 @@ namespace Framework
     //Editor::RemoveVar (tw, "bounce");
   }
 
-  static float getmic() { return AUDIOSYSTEM->input.peaklevel[0]; }
-
   void PlayerEffect::update (double dt)
   {
-    static double time = 0.0;
-    time += dt;
+    //static double time = 0.0;
+    //time += dt;
 	//std::cout << particleEmitter->m_emitRate << "\n";
 	/*if (getmic() > 0.1f)
 	{
@@ -183,9 +184,15 @@ namespace Framework
 
   void PlayerEffect::Draw ()
   {
-    cpuUpdate (0.016);
-    gpuUpdate (0.016);
-    render ();
+    if (enabled)
+    {
+      if (!paused)
+      {
+        cpuUpdate (0.016);
+        gpuUpdate (0.016);
+      }
+      render ();
+    }
   }
 
   void PlayerEffect::render ()
@@ -206,10 +213,6 @@ namespace Framework
     m_renderer->render ();
     shader->Disable ();
     texture->Unbind ();
-
-    glDisable (GL_POINT_SPRITE);
-    glDisable (GL_PROGRAM_POINT_SIZE);
-    glDisable (GL_BLEND);
   }
 
   void PlayerEffect::CreateTrailEmitter(std::shared_ptr<BoxPosGen> trail, bool active, vec3 position, vec3 minVelocity, vec3 maxVelocity, float emitRate)
@@ -286,5 +289,10 @@ namespace Framework
     ringEmitter->addGenerator (timeGenerator);
 
     m_system->addEmitter (ringEmitter);
+  }
+
+  void PlayerEffect::OnApplicationPause (PauseEvent* pauseEvent)
+  {
+    paused = pauseEvent->Paused;
   }
 }

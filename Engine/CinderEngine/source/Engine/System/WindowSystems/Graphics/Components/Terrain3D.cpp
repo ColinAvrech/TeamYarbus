@@ -12,6 +12,7 @@
 #include "ResourceManager.h"
 #include "WindowSystem.h"
 #include "Thermodynamics.h"
+#include "PhysicsLibrary.h"
 #include "random.hpp"
 
 namespace Framework
@@ -35,6 +36,7 @@ namespace Framework
 
   void Terrain3D::Serialize(Serializer::DataNode* data)
   {
+    Component::Get_Enabled (data);
     Serializer::DataNode* value = data->FindElement(data, "MapSize");
     value->GetValue(&MapSize);
 
@@ -155,45 +157,71 @@ namespace Framework
     //Vertices
     for (unsigned i = 0; i < height_points.size() - (MapDepth + 1); ++i)
     {
+      glm::vec3 surfaceNormal = Physics::Normal (height_points [i], height_points [i + 1], height_points [i + MapDepth]);
       //Triangle 1
       //pt1
       vertices.push_back(height_points[i].x);
       vertices.push_back(height_points[i].y);
       vertices.push_back(height_points[i].z);
+      vertices.push_back (surfaceNormal.x);
+      vertices.push_back (surfaceNormal.y);
+      vertices.push_back (surfaceNormal.z);
       //pt2
       vertices.push_back(height_points[i + 1].x);
       vertices.push_back(height_points[i + 1].y);
       vertices.push_back(height_points[i + 1].z);
+      vertices.push_back (surfaceNormal.x);
+      vertices.push_back (surfaceNormal.y);
+      vertices.push_back (surfaceNormal.z);
       //pt3
       vertices.push_back(height_points[i + MapDepth].x);
       vertices.push_back(height_points[i + MapDepth].y);
       vertices.push_back(height_points[i + MapDepth].z);
+      vertices.push_back (surfaceNormal.x);
+      vertices.push_back (surfaceNormal.y);
+      vertices.push_back (surfaceNormal.z);
+
+      surfaceNormal = Physics::Normal (height_points [i], height_points [i + 1], height_points [i + MapDepth]);
+
       //Triangle 2
       //pt1
       vertices.push_back(height_points[i + MapDepth + 1].x);
       vertices.push_back(height_points[i + MapDepth + 1].y);
       vertices.push_back(height_points[i + MapDepth + 1].z);
+      vertices.push_back (surfaceNormal.x);
+      vertices.push_back (surfaceNormal.y);
+      vertices.push_back (surfaceNormal.z);
       //pt2
       vertices.push_back(height_points[i + MapDepth].x);
       vertices.push_back(height_points[i + MapDepth].y);
       vertices.push_back(height_points[i + MapDepth].z);
+      vertices.push_back (surfaceNormal.x);
+      vertices.push_back (surfaceNormal.y);
+      vertices.push_back (surfaceNormal.z);
       //pt3
       vertices.push_back(height_points[i + 1].x);
       vertices.push_back(height_points[i + 1].y);
       vertices.push_back(height_points[i + 1].z);
+      vertices.push_back (surfaceNormal.x);
+      vertices.push_back (surfaceNormal.y);
+      vertices.push_back (surfaceNormal.z);
     }
   }
 
   void Terrain3D::Generate_Buffers()
   {
     vao = new VAO();
-    shader = Resources::RS->Get_Shader("Terrain");
+    shader = Resources::RS->Get_Shader("Terrain3D");
     shader->Use();
 
     vbo = new VBO(vertices.size() * sizeof(float), vertices.data());
     GLuint posAttrib = shader->attribLocation("position");
     shader->enableVertexAttribArray(posAttrib);
-    shader->vertexAttribPtr(posAttrib, 3, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
+    shader->vertexAttribPtr(posAttrib, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), 0);
+
+    GLuint normalAttrib = shader->attribLocation ("normal");
+    shader->enableVertexAttribArray (normalAttrib);
+    shader->vertexAttribPtr (normalAttrib, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), 3 * sizeof (float));
     vao->unbindVAO();
   }
 

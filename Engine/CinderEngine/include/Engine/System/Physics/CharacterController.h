@@ -31,6 +31,7 @@ namespace Framework
     void OnCollisionEnter(CollisionEvent* collision);
 
   private:
+    glm::vec2 gridPos;
     glm::vec2 accel;
     glm::vec2 jumpVel;
     glm::vec2 acceleration;
@@ -42,4 +43,6 @@ namespace Framework
     float density;
     glm::vec2 maxAcceleration;
   };
+
+  extern CharacterController* PLAYER;
 }

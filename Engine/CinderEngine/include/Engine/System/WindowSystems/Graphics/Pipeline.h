@@ -13,6 +13,7 @@
 
 #include "glew.h"
 #include "CinderMath.h"
+#include "FrameBufferObject.h"
 #include <vector>
 #include <list>
 
@@ -24,6 +25,9 @@ namespace Framework
   class UIComponent;
   class ShapeCollider;
   class Shader;
+  class PointLight;
+  class PauseEvent;
+  class Text;
 
   enum MATRIX_MODE
   {
@@ -58,6 +62,9 @@ namespace Framework
     void PushMatrix ();
     void PopMatrix ();
 
+    void ResizeBuffer (const int w, const int h);
+    void OnApplicationPause (PauseEvent* pause);
+
     int GetMatrixMode ();
     glm::mat4 GetModelMatrix ();
     glm::mat4 GetViewMatrix ();
@@ -68,8 +75,10 @@ namespace Framework
     static std::list <Transform*> transforms;
     static std::list <IGraphicsObject*> graphicsObjects;
     static std::list <UIComponent*> uiObjects;
-    static Camera* camera;
+    static std::list <Camera*> cameras;
     static std::list <ShapeCollider*> debugColliders;
+    static std::list <Text*> textObjects;
+    static std::list <PointLight*> pointLights;
 
   private:
     std::vector <glm::mat4> modelMatrix;
@@ -84,6 +93,8 @@ namespace Framework
     GLenum dFactor;
     int currentMatrix;
     bool matricesReady;
+
+    void RenderToTexture (FBO* fbo, GLuint tex, Shader* shader);
   };
 
   extern Pipeline* OPENGL;

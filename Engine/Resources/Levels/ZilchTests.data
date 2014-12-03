@@ -47,14 +47,13 @@ Level =
 		},
 		Camera = 
 		{
-			ProjectionMode ProjectionMode = Orthographic,
-			Vec3 Facing = [0, 0, -1],
-			SpriteSort SpriteSort = ZDepth,
-			string SpriteLayerOrder = "52b23ad3c402d436:DefaultSpriteLayerOrder",
-			float FieldOfView = 45,
-			float NearPlane = 0.5,
-			float FarPlane = 200,
-			float Size = 20,
+      bool Enabled = true,
+			bool main = true,
+			Vec3 Facing = [0, 0, 1],
+			float FieldOfView = 120,
+			float NearPlane = 0,
+			float FarPlane = 20,
+			float Size = 1,
 		},
 	},
 	Cog = 
@@ -75,6 +74,7 @@ Level =
 		},
 		Sprite = 
 		{
+      bool Visible = true,
 			string SpriteSource = "Env.png",
 			string Shader = "Default",
 			Vec4 Color = [1, 0, 0.5, 0.5],
@@ -102,6 +102,7 @@ Level =
 		},
 		UIBox = 
 		{
+      bool Enabled = true,
 		  Vec2 Dimension = [5, 1],
 		  string SpriteSource = "UIExitWhite.png",
 		  Vec4 NormalColor = [1, 1, 1, 1],
@@ -128,6 +129,7 @@ Level =
 		},
 		UIBox = 
 		{
+      bool Enabled = true,
 		  Vec2 Dimension = [5, 1],
 		  string SpriteSource = "UIResumeWhite.png",
 		  Vec4 NormalColor = [1, 1, 1, 1],
@@ -154,8 +156,9 @@ Level =
 		},
 		UIBox = 
 		{
+      bool Enabled = true,
 		  Vec2 Dimension = [5, 1],
-	      string SpriteSource = "UIHowToPlayWhite.png",
+	    string SpriteSource = "UIHowToPlayWhite.png",
 		  Vec4 NormalColor = [1, 1, 1, 1],
 		  Vec4 HoverColor = [1, 0, 0, 1],
 		  Vec4 DownColor = [0, 0, 1, 1],
@@ -180,6 +183,7 @@ Level =
 		},
 		UIBox = 
 		{
+      bool Enabled = true,
 		  Vec2 Dimension = [5, 1],
 		  string SpriteSource = "UIGotItWhite.png",
 		  Vec4 NormalColor = [1, 1, 1, 1],
@@ -206,8 +210,8 @@ Level =
 		},
 		Tree2D = 
 		{
-            int Tree_Type = 6,
-            Vec4 Color = [1.0, 0.2, 0.1, 1.0],
+      int Tree_Type = 6,
+      Vec4 Color = [1.0, 0.2, 0.1, 1.0],
 		},
   },
 },

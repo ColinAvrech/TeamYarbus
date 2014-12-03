@@ -51,32 +51,32 @@ void main()
   vPos += vVel * deltaT;
 
 
-  if (borderClamp == 1.0f)
-  {
-    if (vPos.x < -vpDim.x)
-    {
-        vPos.x = -vpDim.x;
-        vVel.x = -vVel.x;
-    }
+  //if (borderClamp == 1.0f)
+  //{
+  //  if (vPos.x < -vpDim.x)
+  //  {
+  //      vPos.x = -vpDim.x;
+  //      vVel.x = -vVel.x;
+  //  }
 
-    if (vPos.x > vpDim.x)
-    {
-        vPos.x = vpDim.x;
-        vVel.x = -vVel.x;
-    }
+  //  if (vPos.x > vpDim.x)
+  //  {
+  //      vPos.x = vpDim.x;
+  //      vVel.x = -vVel.x;
+  //  }
 
-    if (vPos.y < -vpDim.y)
-    {
-        vPos.y = -vpDim.y;
-        vVel.y = -vVel.y;
-    }
+  //  if (vPos.y < -vpDim.y)
+  //  {
+  //      vPos.y = -vpDim.y;
+  //      vVel.y = -vVel.y;
+  //  }
 
-    if (vPos.y > vpDim.y)
-    {
-        vPos.y = vpDim.y;
-        vVel.y = -vVel.y;
-    }
-  }
+  //  if (vPos.y > vpDim.y)
+  //  {
+  //      vPos.y = vpDim.y;
+  //      vVel.y = -vVel.y;
+  //  }
+  //}
 
   // Write back
 

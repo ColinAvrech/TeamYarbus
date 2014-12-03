@@ -127,8 +127,8 @@ namespace Framework
   void UIBox::UIUpdate (UpdateEvent* update)
   {
 	glm::vec2 normPos = WINDOWSYSTEM->Get_Normalized_Mouse_Position();
-    box.S_Min = gameObject->Transform->GetScreenPosition (box.Min);
-    box.S_Max = gameObject->Transform->GetScreenPosition (box.Max);
+    box.S_Min = gameObject->Transform->GetNDCPosition (box.Min);
+    box.S_Max = gameObject->Transform->GetNDCPosition (box.Max);
 	std::cout << "MIN " << box.S_Min.x << ", " << box.S_Min.y << "\n";
 	std::cout << "MAX " << box.S_Max.x << ", " << box.S_Max.y << "\n";
 

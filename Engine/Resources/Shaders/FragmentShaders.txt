@@ -8,3 +8,5 @@ DebugDraw.frag.glsl
 ColorCodeCell.frag.glsl
 Terrain.frag.glsl
 Tree.frag.glsl
+PointLight.frag.glsl
+Blur.frag.glsl

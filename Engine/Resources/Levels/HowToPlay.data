@@ -1,0 +1,30 @@
+Level = 
+{
+	Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 15,
+		},
+		Named = 
+		{
+			string Name = "HowToPlayBackground",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0, 0, 0],
+			Vec3 Scale = [1.5, 1.5, 1.5],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Sprite = 
+		{
+			bool Visible = true,
+			string SpriteSource = "UIKeyboardMovement.png",
+			string Shader = "Default",
+			Vec4 Color = [1, 1, 1, 0],
+		},
+		InstructionsMenu = 
+		{
+		},
+	},
+},

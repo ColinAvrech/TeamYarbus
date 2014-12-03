@@ -29,6 +29,7 @@ relaying information)
 namespace Framework
 {
   class GameObject;
+  class PauseEvent;
 
   /*! A Component is added to a Game object composition and is
   a small piece of logic for an object. 
@@ -39,7 +40,11 @@ namespace Framework
     ZilchDeclareBaseType(Component, Zilch::TypeCopyMode::ReferenceType);
     // Zilch Definition in GameObject.cpp
 
-    Component() {}
+    Component()
+    {
+      enabled = true;
+      paused = false;
+    }
     virtual ~Component() {}
 
     /*!Telegraph that the component is active*/
@@ -54,11 +59,24 @@ namespace Framework
       ErrorIf (true, "Serialize Component Not Overriden");
     }
 
+    virtual void OnApplicationPause (PauseEvent* pause)
+    {}
+
     GameObject* GetOwner();
     // Definition in GameObject.cpp
 
     //Variables that all components have
     GameObject* gameObject;
+    bool enabled;
+
+  protected:
+    void Get_Enabled (Serializer::DataNode* data, std::string enableKey = "Enabled")
+    {
+      Serializer::DataNode* value = data->FindElement (data, enableKey.c_str());
+      value->GetValue (&enabled);
+    }
+
+    bool paused;
   };
 
 }

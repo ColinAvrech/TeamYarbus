@@ -7,10 +7,9 @@
 #include "glmOverloads.h"
 #include "PhysicsLibrary.h"
 #include "IncludeForAllCollision.h"
-
+#include "Thermodynamics.h"
 #include "GameObject.h"
 #include "RigidBody.h"
-
 #include "EventSystem.h"
 #include "CollisionEvent.h"
 #include "KeyEvent.h"
@@ -19,13 +18,13 @@
 #include "Collider2D.h"
 
 
-
 namespace Framework
 {
+  CharacterController* PLAYER = nullptr;
+  static bool onGround = false;
 
   CharacterController::~CharacterController ()
   {
-
   }
 
   void CharacterController::OnKeyPressed (KeyEvent* _key)
@@ -37,14 +36,12 @@ namespace Framework
       //gameObject->RigidBody->vel.y = jumpVel;
       //Physics::applyAccel(accelV, 0.016);
       //gameObject->Transform->Translate(0, 1, 0);
-      gameObject->RigidBody2D->ApplyForce
-        (
-        Vector2
-        (
-        jumpVel.x * density,
-        jumpVel.y * density
-        )
-        );
+      
+      if (onGround)
+      {
+        gameObject->RigidBody2D->velocity.y += jumpVel.y;
+        onGround = false;
+      }
       break;
 
     case GLFW_KEY_RIGHT:
@@ -75,14 +72,16 @@ namespace Framework
       break;
 
     case GLFW_KEY_R:
-      gameObject->RigidBody2D->position = Vector2 (0, 4);
-      gameObject->RigidBody2D->angularVelocity = 0.0f;
-      gameObject->RigidBody2D->velocity = Vector2 (0, 0);
-      gameObject->RigidBody2D->force = Vector2 (0, 0);
-      Camera::main->gameObject->Transform->SetPosition (0, 0);
-      //if (gameObject->RigidBody->vel.x >= -maxXVel)
-      //  gameObject->RigidBody->vel.x -= accel*0.016f;
-      //gameObject->Transform->Translate(-1, 0, 0);
+    {glm::vec2 position = glm::vec2 (0, 500);
+    gameObject->RigidBody2D->position = Vector2 (position.x, position.y);
+    gameObject->RigidBody2D->angularVelocity = 0.0f;
+    gameObject->RigidBody2D->velocity = Vector2 (0, 0);
+    gameObject->RigidBody2D->force = Vector2 (0, 0);
+    Camera::main->gameObject->Transform->SetPosition (position.x, position.y);
+    //if (gameObject->RigidBody->vel.x >= -maxXVel)
+    //  gameObject->RigidBody->vel.x -= accel*0.016f;
+    //gameObject->Transform->Translate(-1, 0, 0);
+    }
       break;
 
     default:
@@ -116,17 +115,30 @@ namespace Framework
     ////////////////////////////////////////////////////////////////////////
   }
 
+  static void UpdateGroundState(CollisionEvent* collision)
+  {
+    glm::vec2 normal = glm::vec2(collision->normal);
+    if (Physics::Angle_from_Vertical(normal) < 3.14f / 3.f)
+      onGround = true;
+    else
+      onGround = false;
+  }
+
   void CharacterController::OnCollisionEnter (CollisionEvent* collision)
   {
-    //if (collision->OtherObject->LineCollider)
-    //  collision->OtherObject->Transform->Translate(-collision->normal.x * 0.05f, -collision->normal.y * 0.05f, 0.0f);
+    UpdateGroundState(collision);
   }
 
   static float t = 1;
 
   void CharacterController::Update (UpdateEvent* e)
   {
+    if (!e)
+      return;
+
+    gridPos = gameObject->Transform->GetGridPosition ();
     float micValue = AUDIOSYSTEM->GetMicrophoneValue ();
+    //std::cout << micValue << "\n";
     gameObject->RigidBody2D->ApplyForce
       (
       Vector2
@@ -135,6 +147,7 @@ namespace Framework
       micValue * microhponeMultiplier.y * density
       )
       );
+    Physics::THERMODYNAMICS->SetCellTemperature (gridPos.x, gridPos.y, 400000, 0.016);
 
     ////how to get line collider
     ////gameObject->CircleCollider->DetectLine(gameObject->LineCollider);
@@ -161,6 +174,7 @@ namespace Framework
   /*!Telegraph that the component is active*/
   void CharacterController::Initialize ()
   {
+    PLAYER = this;
     //accel = { 0 , 0 };
     //maxAcceleration = { 50, 100 };
     //maxXVel = 2.0f;
@@ -171,6 +185,8 @@ namespace Framework
     EVENTSYSTEM->mConnect<KeyEvent, CharacterController> (Events::KEY_ANY, this, &CharacterController::OnKeyPressed);
     EVENTSYSTEM->mConnect<CollisionEvent, CharacterController> (Events::COLLISION, this, &CharacterController::OnCollisionEnter);
     EVENTSYSTEM->mConnect<UpdateEvent, CharacterController> (Events::UPDATEEVENT, this, &CharacterController::Update);
+
+    AUDIOSYSTEM->listener = gameObject->Transform;
   }
 
   void CharacterController::Serialize (Serializer::DataNode* data)

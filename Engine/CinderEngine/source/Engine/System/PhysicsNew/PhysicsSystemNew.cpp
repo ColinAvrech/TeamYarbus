@@ -3,7 +3,10 @@
 #include "Collider2D.h"
 #include "GameObject.h"
 #include "WindowSystem.h"
+#include "Pipeline.h"
 #include "Core.h"
+#include "EventSystem.h"
+#include "GameEvent.h"
 
 
 namespace Framework
@@ -95,57 +98,60 @@ namespace Framework
 	
 	void PhysicsSystemNew::Render( void )
 	{
-    glMatrixMode (GL_PROJECTION);
-    glLoadIdentity ();
-    gluPerspective (Camera::main->GetFOV (), (float) WINDOWSYSTEM->Get_Width () / WINDOWSYSTEM->Get_Height (), 0, 100.0f);
-    glMatrixMode (GL_MODELVIEW);
-    glLoadIdentity ();
+    if (Pipeline::cameras.size () > 0)
+    {
+      glMatrixMode (GL_PROJECTION);
+      glLoadIdentity ();
+      gluPerspective (Camera::main->GetFOV (), (float) WINDOWSYSTEM->Get_Width () / WINDOWSYSTEM->Get_Height (), 0, 100.0f);
+      glMatrixMode (GL_MODELVIEW);
+      glLoadIdentity ();
 
-    glm::vec3 eye = glm::vec3 (0, 0, 1) * Camera::main->GetSize () + glm::vec3 (Camera::main->gameObject->Transform->GetPosition ().x, Camera::main->gameObject->Transform->GetPosition ().y, 0);
-    glm::vec3 center = Camera::main->gameObject->Transform->GetPosition ();
-    glm::vec3 up = glm::vec3 (0, 1, 0);
+      glm::vec3 eye = glm::vec3 (0, 0, 1) * Camera::main->GetSize () + glm::vec3 (Camera::main->gameObject->Transform->GetPosition ().x, Camera::main->gameObject->Transform->GetPosition ().y, 0);
+      glm::vec3 center = Camera::main->gameObject->Transform->GetPosition ();
+      glm::vec3 up = glm::vec3 (0, 1, 0);
 
-    gluLookAt (eye.x, eye.y, eye.z, center.x, center.y, center.z, up.x, up.y, up.z);
+      gluLookAt (eye.x, eye.y, eye.z, center.x, center.y, center.z, up.x, up.y, up.z);
 
-	  for(unsigned i = 0; i < rigidBodies.size( ); ++i)
-	  {
-	    RigidBody2D *b = rigidBodies[i];
-	    b->shape->Draw( );
-	  }
-	
-	  glPointSize( 4.0f );
-	  glBegin( GL_POINTS );
-	  glColor3f( 1.0f, 0.0f, 0.0f );
-	  for(unsigned i = 0; i < contacts.size( ); ++i)
-	  {
-	    Manifold& m = contacts[i];
-	    for(unsigned j = 0; j < m.contact_count; ++j)
-	    {
-	      Vector2 c = m.contacts[j];
-	      glVertex2f( c.x, c.y );
-	    }
-	  }
-	  glEnd( );
-	  glPointSize( 1.0f );
-	
-	  glBegin( GL_LINES );
-	  glColor3f( 0.0f, 1.0f, 0.0f );
-	  for(unsigned i = 0; i < contacts.size( ); ++i)
-	  {
-	    Manifold& m = contacts[i];
-	    Vector2 n = m.normal;
-	    for(unsigned j = 0; j < m.contact_count; ++j)
-	    {
-	      Vector2 c = m.contacts[j];
-	      glVertex2f( c.x, c.y );
-	      n *= 0.75f;
-	      c += n;
-	      glVertex2f( c.x, c.y );
-	    }
-	  }
-	  glEnd( );
+      for (unsigned i = 0; i < rigidBodies.size (); ++i)
+      {
+        RigidBody2D *b = rigidBodies [i];
+        b->shape->Draw ();
+      }
 
-    glLoadIdentity ();
+      glPointSize (4.0f);
+      glBegin (GL_POINTS);
+      glColor3f (1.0f, 0.0f, 0.0f);
+      for (unsigned i = 0; i < contacts.size (); ++i)
+      {
+        Manifold& m = contacts [i];
+        for (unsigned j = 0; j < m.contact_count; ++j)
+        {
+          Vector2 c = m.contacts [j];
+          glVertex2f (c.x, c.y);
+        }
+      }
+      glEnd ();
+      glPointSize (1.0f);
+
+      glBegin (GL_LINES);
+      glColor3f (0.0f, 1.0f, 0.0f);
+      for (unsigned i = 0; i < contacts.size (); ++i)
+      {
+        Manifold& m = contacts [i];
+        Vector2 n = m.normal;
+        for (unsigned j = 0; j < m.contact_count; ++j)
+        {
+          Vector2 c = m.contacts [j];
+          glVertex2f (c.x, c.y);
+          n *= 0.75f;
+          c += n;
+          glVertex2f (c.x, c.y);
+        }
+      }
+      glEnd ();
+
+      glLoadIdentity ();
+    }
 	}
 	
 	RigidBody2D * PhysicsSystemNew::Add( ShapeCollider2D *shape, float x, float y )
@@ -158,12 +164,28 @@ namespace Framework
 
   void PhysicsSystemNew::Update (const double& dt)
   {
-    Step ();
+    if (!paused)
+    {
+      Step ();
+    }
   }
 
   const string PhysicsSystemNew::GetName ()
   {
     return "PhysicsSystemNew";
+  }
+
+  bool PhysicsSystemNew::Initialize ()
+  {
+    std::cout << GetName () + " initialized\n";
+    EVENTSYSTEM->mConnect<PauseEvent, PhysicsSystemNew> (Events::PAUSE, this, &PhysicsSystemNew::OnApplicationPause);
+
+    return true;
+  }
+
+  void PhysicsSystemNew::OnApplicationPause (PauseEvent* pauseEvent)
+  {
+    paused = pauseEvent->Paused;
   }
 
 }

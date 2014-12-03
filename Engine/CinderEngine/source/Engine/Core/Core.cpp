@@ -16,12 +16,19 @@ Main Game Loop.
 
 
 #include "Core.h"
+#include "EventSystem.h"
+#include "GameEvent.h"
 
 namespace Framework
 {
   //! Global pointer to the Engine Core
   CoreEngine* CORE;
-
+  ZilchDefineType(CoreEngine, CinderZilch)
+  {
+	  ZilchBindMethod(QuitGame);
+	  ZilchBindMethod(TogglePaused);
+	  ZilchBindMethod(IsPaused);
+  }
   CoreEngine::CoreEngine()
   {
     CORE = this;
@@ -134,4 +141,11 @@ namespace Framework
     _dt_ave = (11 * _dt_ave + _dt) / 12;
   }
 
+  void CoreEngine::TogglePaused ()
+  {
+    GamePaused = !GamePaused;
+    PauseEvent pause;
+    pause.Paused = GamePaused;
+    EVENTSYSTEM->TriggerEvent (Events::PAUSE, pause);
+  }
 }

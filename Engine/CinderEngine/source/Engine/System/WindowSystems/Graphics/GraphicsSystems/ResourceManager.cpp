@@ -1,9 +1,12 @@
 #include "ResourceManager.h"
 #include <algorithm>
 #include <fstream>
+#include "ZilchCompiledLib.h"
 
 namespace Framework
 {
+	
+
   Resources* Resources::RS;
 
   Resources::Resources ()
@@ -11,7 +14,10 @@ namespace Framework
     RS = this;
   }
 
-
+	ZilchDefineType(Resources, CinderZilch)
+	{
+		ZilchBindMethodAs(ZGetSound, "GetSound");
+	}
   Resources::~Resources ()
   {
     for (auto i : shaders)
@@ -31,7 +37,10 @@ namespace Framework
       delete (i.second);
     }
   }
-
+  Sound* Resources::ZGetSound(String soundName)
+  {
+	  return RS->Get_Sound(soundName.c_str());
+  }
   void Resources::Load_Resources ()
   {
     Load_Textures ();
@@ -175,13 +184,20 @@ namespace Framework
         shaderComposition >> name;
         if (gs == "0")
         {
-          // Link The Corresponding Vertex And Fragment Shaders in the Shader Program Document
+          // Link The Corresponding Vertex And Fragment Shaders in the Shader Program File
           shaders [name] = new Shader ();
-          shaders [name]->shaderProgram = shaders [name]->Create_Program (name, vSource [vs], fSource [fs]);
+          if (vs == "0")
+          {
+            shaders [name]->shaderProgram = shaders [name]->Create_Program (name, fSource [fs]);
+          }
+          else
+          {
+            shaders [name]->shaderProgram = shaders [name]->Create_Program (name, vSource [vs], fSource [fs]);
+          }
         }
         else
         {
-          // Link The Corresponding Vertex And Fragment Shaders in the Shader Program Document
+          // Link The Corresponding Vertex And Fragment Shaders in the Shader Program File
           shaders [name] = new Shader ();
           shaders [name]->shaderProgram = shaders [name]->Create_Program (name, vSource [vs], fSource [fs], gSource[gs]);
         }

@@ -1,0 +1,188 @@
+Level = 
+{
+  LevelSettings = 
+  {
+    LinkId = 
+    {
+      uint Id = 1,
+    },
+    Named = 
+    {
+      string Name = "LevelSettings",
+    },
+    GravityEffect = 
+    {
+      bool Active = true,
+      bool WakeUpOnChange = false,
+      bool LocalSpaceDirection = true,
+      float Strength = 10,
+      Vec3 Direction = [0, -1, 0],
+    },
+    DragEffect = 
+    {
+      bool Active = true,
+      bool WakeUpOnChange = false,
+      float Drag = 0.7,
+    },
+    CameraViewport = 
+    {
+      bool Background = true,
+      Vec2 Offset = [0, 0],
+      Vec2 Size = [1, 1],
+      uint Layer = 0,
+      bool Active = true,
+      bool Blocking = true,
+      uint Renderer = 1,
+      uint Camera = 2,
+    },
+    ForwardRenderer = 
+    {
+      Vec4 ClearColor = [0.278431, 0.278431, 0.278431, 1],
+    },
+  },
+  Cog = 
+  {
+    LinkId = 
+    {
+      uint Id = 0,
+    },
+    Named = 
+    {
+      string Name = "Camera",
+    },
+    Transform = 
+    {
+      Vec3 Translation = [0, 0, -10],
+      Vec3 Scale = [1, 1, 1],
+      Quat Rotation = [0, 0, 0, 1],
+    },
+    Camera = 
+    {
+      bool Enabled = true,
+      bool main = true,
+      Vec3 Facing = [0, 0, 1],
+      float FieldOfView = 45,
+      float NearPlane = 0,
+      float FarPlane = 10,
+      float Size = 128,
+    },
+  },
+  Cog = 
+  {
+    LinkId = 
+    {
+      uint Id = 8,
+    },
+    Named = 
+    {
+      string Name = "Terrain",
+    },
+    Transform = 
+    {
+      Vec3 Translation = [0, 0, 0],
+      Vec3 Scale = [128, 20, 1],
+      Quat Rotation = [0, 0, 0, 1],
+    },
+    Terrain2D = 
+    {
+      bool Enabled = true,
+      int MapSize = 128,
+      int BaseHeight = 32,
+      int PeakHeight = 96,
+      int Passes = 1,
+      int Waves = 5,
+      int Water = 5,
+      Vec4 Color = [0.2, 0.2, 0.2, 1],
+      bool AddCollider = true,
+    },
+    EcoSystem = 
+    {
+    },
+  },
+  Cog = 
+    {
+    LinkId = 
+    {
+      uint Id = 0,
+    },
+    Named = 
+    {
+      string Name = "FireSystem",
+    },
+    Transform = 
+    {
+      Vec3 Translation = [0, 0, 0],
+      Vec3 Scale = [6, 6, 1],
+      Quat Rotation = [0, 0, 0, 1],
+    },
+    FireSystem = 
+    {
+      bool Enabled = true,
+      float ParticleSize = 100,
+    },
+  },
+    Cog = 
+    {
+    LinkId = 
+    {
+      uint Id = 0,
+    },
+    Named = 
+    {
+      string Name = "Test",
+    },
+    Transform = 
+    {
+      Vec3 Translation = [2, 0, 0],
+      Vec3 Scale = [6, 6, 1],
+      Quat Rotation = [0, 0, 0, 1],
+    },
+    FireStarter = 
+    {
+      bool Enabled = true,
+      bool OnFire = false,
+      float Fuel = 100,
+      float InitTemp = 4000,
+      int MaterialType = 2,
+    },
+  AudioComponent = 
+  {  
+    string SoundID = "FireA.ogg",
+    bool Play = true,
+    bool Mute = false,
+    bool Positional = true,
+    bool LowPassFilter = true,
+    float LPFcutoff = 6000,
+    float LPFresonance = 1,
+    bool HighPassFilter = true,
+    float HPFcutoff = 150,
+    float HPFresonance = 1,
+    bool MicEffect = true,
+  },
+  },
+      Cog = 
+    {
+    LinkId = 
+    {
+      uint Id = 0,
+    },
+    Named = 
+    {
+      string Name = "Test",
+    },
+    Transform = 
+    {
+      Vec3 Translation = [2, 1, 0],
+      Vec3 Scale = [6, 6, 1],
+      Quat Rotation = [0, 0, 0, 1],
+    },
+    FireStarter = 
+    {
+      bool Enabled = true,
+      bool OnFire = false,
+      float Fuel = 100,
+      float InitTemp = 400,
+      int MaterialType = 2,
+    },
+  },
+},

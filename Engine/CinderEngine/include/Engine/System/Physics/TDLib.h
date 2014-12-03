@@ -25,7 +25,11 @@ namespace Framework
 
       //Properties of specific materials--------------------
       //Common densities
-      static const float p_Air = 1.225f;   //Kg/m^3 | Density of air at sea level at 15C.
+      static const float p_Air   = 1.225f;   //Kg/m^3 | Density of air at sea level at 15C.
+      static const float p_Water = 999.97f;   //Kg/m^3
+      static const float p_Wood = 500.f;     //Kg/m^3
+      static const float p_Soil = 1600.f;
+      static const float p_Rock = 2500.f;
       //Specific heat
       static const float c_Air = 1046.f;
       static const float c_Water = 4186.f;
@@ -46,10 +50,10 @@ namespace Framework
       static const float K_Cement = 1.73f;
       static const float K_Stone = 1.7f;
       static const float K_Copper = 401.f;
-
+      static const float K_Water = 0.575f;
       //Heat transfer coefficient
-      static const float Hc_Air = 10;
-
+      static const float Hc_Air = 10.f;
+      static const float Hc_Water = 1000.f;
       //Ignition temperatures (in K)
       static const float IT_Carbon = 973.f;
       static const float IT_Charcoal = 622.f;
@@ -70,6 +74,24 @@ namespace Framework
     float ConductiveHeatTransfer(float K, float T1, float T2, const double dt, float Size);
     float ConvectiveHeatTransfer(float Hc, float T1, float T2, const double dt);
     float dTemp(float dQ, float m, float c);
+
+    //Possible materials used in terrain
+    enum Material
+    {
+      AIR,
+      WATER,
+      WOOD,
+      SOIL,
+      GRASS,
+      STONE,
+      IRON,
+      LEAD,
+      STEEL,
+      COTTON,
+      CEMENT,
+      CARBON,
+      FUEL,
+    };//enum material
 
   } //namespace Physics
 } //namespace Framework

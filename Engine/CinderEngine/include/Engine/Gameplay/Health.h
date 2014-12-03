@@ -13,6 +13,7 @@
 namespace Framework
 {
 	class UpdateEvent;
+	class CollisionEvent;
 	class Health : public Component
 	{
 	public:
@@ -26,6 +27,7 @@ namespace Framework
 		~Health(){}
 		void reFuel();
 		void Update(UpdateEvent* e);
+		void OnCollisionEnter(CollisionEvent* c);
 		virtual void Serialize(Serializer::DataNode* data);
 		virtual void Initialize();
 

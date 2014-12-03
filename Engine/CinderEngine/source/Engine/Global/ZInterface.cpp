@@ -11,20 +11,26 @@
 #include "Zilch.hpp"
 #include "Core.h"
 #include "WindowSystem.h"
+#include "ResourceManager.h"
 
 namespace Framework
 {
 	ObjectSystem* ZInterface::ObjectSys = OBJECTSYSTEM;
 	WindowSystem* ZInterface::WindowSys = WINDOWSYSTEM;
+	Resources* ZInterface::ResourceSystem = nullptr;
+	
 	ZilchDefineType(ZilchFile, CinderZilch)
 	{
 		type->HandleManager = ZilchManagerId(Zilch::PointerManager);
-		
-		
 		ZilchBindMethod(ReadLine);
-
 	}
-
+	ZilchDefineType(ZArray, CinderZilch)
+	{
+		type->HandleManager = ZilchManagerId(Zilch::PointerManager);
+		ZilchBindMethod(Get);
+		ZilchBindFieldGet(Length);
+		//ZilchBindFieldGet(Objects);
+	}
 
 
 	ZilchDefineType(ZInterface, CinderZilch)
@@ -35,6 +41,9 @@ namespace Framework
 		ZilchBindStaticMethod(QuitGame);
 		ZilchBindStaticFieldGetAs(ObjectSys, "ObjectSystem");
 		ZilchBindStaticFieldGetAs(WindowSys, "WindowSystem");
+		ZilchBindStaticFieldGet(ResourceSystem);
+		ZilchBindStaticMethod(TogglePaused);
+		ZilchBindStaticMethod(IsPaused);
 		
 		
 	}
@@ -61,6 +70,18 @@ namespace Framework
 
 		return new ZilchFile(&myfile);
 
+	}
+
+	
+
+	void ZInterface::TogglePaused()
+	{
+		CORE->TogglePaused();
+	}
+
+	void ZInterface::IsPaused()
+	{
+		CORE->IsPaused();
 	}
 
 	ZilchFile::ZilchFile(ifstream* file)
@@ -95,5 +116,21 @@ namespace Framework
 	void ZInterface::QuitGame()
 	{
 		CORE->QuitGame();
+	}
+
+	ZArray::ZArray(Zilch::Array<GameObject*>* arr)
+	{
+		Objects = *arr;
+		Length = Objects.size();
+	}
+
+	GameObject* ZArray::Get(unsigned index)
+	{
+		return Objects[index];
+	}
+
+	ZArray::~ZArray()
+	{
+		Objects.deallocate();
 	}
 }

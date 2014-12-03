@@ -29,6 +29,7 @@ starts the game loop.
 #include "Serializer/JSONSerializer.h"
 #include "UISystem.h"
 #include "ZInterface.h"
+#include "CheatCodes.h"
 
 //testing includes
 #include "ComponentInclude.h"
@@ -47,7 +48,19 @@ const char WindowTitle [] = "CinderEngine";
 const int ClientWidth = 1024;
 const int ClientHeight = 1024;
 
+//class MyClass
+//{
+//public:
+//  void TestUEDisconnectMember(UpdateEvent * e){
+//    std::cout << "Member disconnect" << std::endl;
+//  }
+//};
 
+
+void TestUEDisconnect(UpdateEvent* e)
+{
+  std::cout << "Global Disconnect:" << std::endl;
+}
 
 int main (void)
 {
@@ -66,7 +79,7 @@ int main (void)
   WindowSystem                  * windows     = new WindowSystem (WindowTitle, ClientWidth, ClientHeight, launchFullScreen);
   AudioSystem                   * audio       = new AudioSystem ();
   EventSystem                   * events      = new EventSystem ();
-  AudioEvents                   * audioEvents = new AudioEvents();  audioEvents->Initialize();
+  AudioEvents                   * audioEvents = new AudioEvents();
   ScriptSystem                  * zilch       = new ScriptSystem();
   ObjectSystem                  * objsys      = new ObjectSystem ();
   UISystem                      * ui          = new UISystem ();
@@ -95,31 +108,34 @@ int main (void)
   //Cinder::Objsys = objsys;
 
   Resources resourceManager;
+  ZInterface::ResourceSystem = &resourceManager;
   resourceManager.Load_Resources ();
+  
 
   //! Initialize all added Systems. DON'T INIT YOUR OWN
   engine->Initialize ();
+  audioEvents->Initialize();
 
-  //Sound *test = audio->LoadSound("Pads.ogg", "NOISE", Sound::SOUND_2D, 1.0f);
-  //test->Play();
-  //test->GenerateNoise();
-  //test->LowPassFilter();
-  //test->SetLPF(0, 1.0);
 
   audio->LoadMicData ();
 
   //! activate the window.
-  OBJECTSYSTEM->LoadAllLevels("MasterLevelFile.txt");
+  //Currently broken;
+  //OBJECTSYSTEM->LoadAllLevels("..//..//Resources//Levels//MasterLevelFile.txt");
 
-  // Connect example
-  //MyClass _myclass;
-  //EVENTSYSTEM->mConnect<KeyEvent, MyClass>(Events::KEY_RIGHT, &_myclass, &MyClass::WhenRightIsPressed);
-  //EVENTSYSTEM->mConnect<KeyEvent, MyClass>(Events::KEY_LEFT, &_myclass, &MyClass::WhenLeftIsPressed);
-  //OBJECTSYSTEM->LoadLevel("PhysicsTest.data");
+  OBJECTSYSTEM->ZilchLoadLevel(Zilch::String("NewPhysics"));
+ //Initialize Cheat Codes
+  Cheats::InitializeCheats();
 
-  // Connect example
+
+  // Connect and Disconnect example
   //MyClass _myclass;
-  //EVENTSYSTEM->mConnect<UpdateEvent, MyClass>(Events::UPDATEEVENT, &_myclass, &MyClass::Print);
+  //EVENTSYSTEM->mConnect<UpdateEvent, MyClass>(Framework::Events::UPDATEEVENT, &_myclass, &MyClass::TestUEDisconnectMember);
+  //EVENTSYSTEM->mDisconnect<UpdateEvent, MyClass>(Framework::Events::UPDATEEVENT, &_myclass, &MyClass::TestUEDisconnectMember);
+  //
+  //EVENTSYSTEM->gConnect<UpdateEvent>(Framework::Events::UPDATEEVENT, &TestUEDisconnect);
+  //EVENTSYSTEM->gDisconnect<UpdateEvent>(Framework::Events::UPDATEEVENT, &TestUEDisconnect);
+
 	//ZInterface::OpenFile();
 
   //! Run the game! NOW!
