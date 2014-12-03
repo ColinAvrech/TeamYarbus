@@ -95,6 +95,8 @@ namespace Framework
     bool matricesReady;
 
     void RenderToTexture (FBO* fbo, GLuint tex, Shader* shader);
+
+    bool useDebugDraw;
   };
 
   extern Pipeline* OPENGL;

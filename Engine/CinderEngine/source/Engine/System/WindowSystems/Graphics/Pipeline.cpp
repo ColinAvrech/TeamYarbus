@@ -93,6 +93,7 @@ namespace Framework
 
   Pipeline::Pipeline ()
   {
+    useDebugDraw = false;
     OPENGL = this;
     modelMatrix.push_back (glm::mat4 (1.0));
     viewMatrix.push_back (glm::mat4 (1.0));
@@ -235,10 +236,11 @@ namespace Framework
     //////////////////////////////////////////////////////////////////////////
     text.Draw ("HELLO WORLD", -1.0f, 0.9f);
 
-#ifdef _DEBUG
-    //THERMODYNAMICS->Draw ();
-    //PHYSICS->Render ();
-#endif
+    if (useDebugDraw)
+    {
+      THERMODYNAMICS->Draw ();
+      PHYSICS->Render ();
+    }
   }
 
   void Pipeline::LoadIdentity ()

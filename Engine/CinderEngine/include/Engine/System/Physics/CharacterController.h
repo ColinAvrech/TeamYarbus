@@ -38,7 +38,7 @@ namespace Framework
     glm::vec2 microhponeMultiplier;
 
     float drag;
-    float maxXVel;
+    float maxVel;
     float currentforce;
     float density;
     glm::vec2 maxAcceleration;
