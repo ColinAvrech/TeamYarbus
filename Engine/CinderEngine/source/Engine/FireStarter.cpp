@@ -14,6 +14,7 @@
 #include "CollisionEvent.h"
 #include "EventSystem.h"
 #include "Tree2D.h"
+#include "AudioComponent.h"
 
 namespace Framework
 {
@@ -59,6 +60,16 @@ namespace Framework
 		if (!onFire)
 		{
 			onFire = true;
+      GameObject* temp = gameObject;
+
+      while (temp->Parent != nullptr)
+      {
+        temp = temp->Parent;        
+      }
+
+      if (temp->AudioComponent != nullptr)
+        temp->AudioComponent->PlaySound();
+
       //for (unsigned i = 0; i < grid.positions.getSize ().x; ++i)
       //{
       //  for (unsigned j = 0; j < grid.positions.getSize ().y; ++j)

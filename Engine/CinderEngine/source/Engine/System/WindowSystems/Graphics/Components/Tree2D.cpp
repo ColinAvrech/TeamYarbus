@@ -94,6 +94,7 @@ namespace Framework
         fs->Initialize ();
         go->FireStarter->initTemp = 400.0f;
         Physics::THERMODYNAMICS->Add_Object (gridPos.x, gridPos.y, reinterpret_cast<FireStarter*> (go->GetComponent ("FireStarter")));
+        go->Parent = gameObject;
       }
 
       break;

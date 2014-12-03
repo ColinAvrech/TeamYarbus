@@ -47,12 +47,16 @@ namespace Framework
 
 	void Health::Update(UpdateEvent* e)
 	{
-		float deathRate = .03f;
+		float deathRate = 5.03f;
 		currentRadius -= deathRate * e->Dt;
 	//	gameObject->Transform->Scale(currentRadius / maxRadius);
 
-		if (currentRadius == minRadius)
-			printf("dead");
+    if (currentRadius <= minRadius)
+    {
+      OBJECTSYSTEM->LoadLevelAdditive(Zilch::String("NewPhysics"));
+
+      printf("dead");
+    }
 	}
 
 	void Health::reFuel()

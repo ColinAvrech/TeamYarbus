@@ -34,7 +34,17 @@ namespace Framework
   DefineComponentName(AudioComponent);
 
   AudioComponent::AudioComponent()
-  { 
+  {
+    positional = false;
+    playing = false;
+    mute = false;
+    lowpassed = false;
+    lowcutoff = 6000;
+    lowresonance = 1;
+    highpassed = false;
+    highcutoff = 150;
+    highresonance = 1;
+    micEffect = false;
   }
 
   #pragma endregion
@@ -95,13 +105,34 @@ namespace Framework
     value = data->FindElement(data, "SoundID");
     value->GetValue(&soundName);
 
-    newSound = Resources::RS->Get_Sound(soundName);
+    
+
+    newSound = AUDIOSYSTEM->LoadSound(soundName.c_str(), "Test", Sound::SOUND_3D, 1.0f);
   }
 
   void AudioComponent::Initialize()
   {
-    gameObject->AudioComponent;
+    LoadSound("FireA.ogg");
+    gameObject->AudioComponent = this;
     AUDIOSYSTEM->AddAudioComponent(this);
+  }
+
+  void AudioComponent::LoadSound(std::string name)
+  {
+    newSound = AUDIOSYSTEM->LoadSound(name.c_str(), "Test", Sound::SOUND_3D, 1.0f);
+  }
+
+  void AudioComponent::PlaySound()
+  {
+    playing = true;
+    positional = true;
+    lowpassed = true;
+    lowcutoff = 6000;
+    lowresonance = 1;
+    highpassed = false;
+    highcutoff = 150;
+    highresonance = 1;
+    micEffect = true;
   }
 
   void AudioComponent::Update()
@@ -114,7 +145,7 @@ namespace Framework
     else
       newSound->Stop();
 
-    if (lowpassed)
+    if (lowpassed && playing)
     {
       newSound->LowPassFilter();
       newSound->SetLPF(lowcutoff, lowresonance);
@@ -122,7 +153,7 @@ namespace Framework
       lowpassed = false;
     }
 
-    if (highpassed)
+    if (highpassed && playing)
     {
       newSound->HighPassFilter();
       newSound->SetHPF(highcutoff, highresonance);
@@ -130,7 +161,7 @@ namespace Framework
       highpassed = false;
     }
 
-    if (micEffect)
+    if (micEffect && playing)
       newSound->micEffectUpdate();
 
     newSound->SetMute(mute);

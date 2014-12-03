@@ -14,6 +14,7 @@
 #include "Tree2D.h"
 #include "ObjectSystem.h"
 #include "FireStarter.h"
+#include "AudioComponent.h"
 
 namespace Framework
 {
@@ -115,6 +116,9 @@ namespace Framework
       fs->initTemp = 400.0f;
       fs->Initialize ();
     }
+
+    Component* ac = grass->AddComponent("AudioComponent");
+    ac->Initialize();
   }
 }
 

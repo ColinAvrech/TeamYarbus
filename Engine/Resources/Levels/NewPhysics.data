@@ -79,6 +79,35 @@ Level =
 		},
 		Transform = 
 		{
+			Vec3 Translation = [-60, 0, -4],
+			Vec3 Scale = [128, 40, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Terrain2D = 
+		{
+      bool Enabled = true,
+      int MapSize = 512,
+      int BaseHeight = 128,
+      int PeakHeight = 256,
+      int Passes = 0,
+      int Waves = 20,
+      int Water = 0,
+      Vec4 Color = [0.05, 0.05, 0.05, 1],
+      bool AddCollider = false,
+		},
+  },
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 8,
+		},
+		Named = 
+		{
+			string Name = "Mountains",
+		},
+		Transform = 
+		{
 			Vec3 Translation = [0, 0, -4],
 			Vec3 Scale = [128, 40, 1],
 			Quat Rotation = [0, 0, 0, 1],
@@ -95,20 +124,6 @@ Level =
       Vec4 Color = [0.05, 0.05, 0.05, 1],
       bool AddCollider = false,
 		},
-    AudioComponent = 
-	  {  
-		  string SoundID = "FireA.ogg",
-		  bool Play = true,
-		  bool Mute = false,
-		  bool Positional = true,
-      bool LowPassFilter = true,
-      float LPFcutoff = 6000,
-      float LPFresonance = 1,
-      bool HighPassFilter = true,
-      float HPFcutoff = 150,
-      float HPFresonance = 1,
-      bool MicEffect = true,
-	  },
   },
   Cog = 
 	{
@@ -243,9 +258,6 @@ Level =
       float ParticleSize = 5,
       float EffectRadius = 0.5,
       Vec4 Color = [255, 80, 0, 0.2],
-    },
-    CameraFollow = 
-    {
     },
 	},
 },
