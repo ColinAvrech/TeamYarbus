@@ -123,7 +123,7 @@ int main (void)
   //Currently broken;
   //OBJECTSYSTEM->LoadAllLevels("..//..//Resources//Levels//MasterLevelFile.txt");
 
-  OBJECTSYSTEM->ZilchLoadLevel(Zilch::String("NewPhysics"));
+  OBJECTSYSTEM->ZilchLoadLevel (Zilch::String ("NewPhysics"));
  //Initialize Cheat Codes
   Cheats::InitializeCheats();
 

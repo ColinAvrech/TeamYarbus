@@ -82,7 +82,7 @@ namespace Framework
   Pipeline* OPENGL = NULL;
 
   std::list <Transform*> Pipeline::transforms;
-  std::list <IGraphicsObject*> Pipeline::graphicsObjects;
+  std::unordered_map <int, std::list <IGraphicsObject*>> Pipeline::graphicsObjects;
   std::list <UIComponent*> Pipeline::uiObjects;
   std::list <Camera*> Pipeline::cameras;
   std::list <PointLight*> Pipeline::pointLights;
@@ -191,8 +191,8 @@ namespace Framework
   void Pipeline::Update ()
   {
     fbo->bind ();
-//    Interpolate_Background ();
-//
+    Interpolate_Background ();
+
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor (color.r, color.g, color.b, 1.0f);
     glEnable (GL_BLEND);
@@ -210,8 +210,28 @@ namespace Framework
       i->UpdateCamera (this);
     }
 
-    //Draw_Quad ();
-    for (auto* i : graphicsObjects)
+    //////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
+    // SCENE DRAW
+    //////////////////////////////////////////////////////////////////////////
+    for (auto* i : graphicsObjects [DEFAULT])
+    {
+      i->Update ();
+      i->Draw ();
+    }
+
+    sFactor = GL_SRC_ALPHA;
+    dFactor = GL_ONE_MINUS_SRC_ALPHA;
+    glBlendFunc (sFactor, dFactor);
+    RenderToTexture (fbo, renderTexture, sceneShader);
+
+    //////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
+    // UI DRAW
+    //////////////////////////////////////////////////////////////////////////
+    text.Draw ("HELLO WORLD", -1.0f, 0.9f);
+
+    for (auto* i : graphicsObjects [PAUSE])
     {
       i->Update ();
       i->Draw ();
@@ -226,19 +246,13 @@ namespace Framework
     {
       i->Draw ();
     }
-
-    //sFactor = GL_ONE;
-    //dFactor = GL_ONE;
-    glBlendFunc (sFactor, dFactor);
-    RenderToTexture (fbo, renderTexture, sceneShader);
-
     //////////////////////////////////////////////////////////////////////////
-    text.Draw ("HELLO WORLD", -1.0f, 0.9f);
-
-#ifdef _DEBUG
+    //////////////////////////////////////////////////////////////////////////
+    // DEBUG DRAW
+    //////////////////////////////////////////////////////////////////////////
     //THERMODYNAMICS->Draw ();
     //PHYSICS->Render ();
-#endif
+    //////////////////////////////////////////////////////////////////////////
   }
 
   void Pipeline::LoadIdentity ()
