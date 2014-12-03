@@ -85,15 +85,6 @@ namespace Framework
     {
       AUDIOSYSTEM->SetPaused(true, Sound::SFX_ALL);
     }
-
-    if (CORE->IsPaused() == true)
-    {
-      AUDIOSYSTEM->SetPauseMenuEffect(1000.0f, 1.5f, 3.0f);
-    }
-    else
-    {
-      AUDIOSYSTEM->SetPauseMenuEffect(22000.0f, 0.0f, 5.0f);
-    }
   }
 
   void AudioEvents::OnKeyPressed(KeyEvent* key)
