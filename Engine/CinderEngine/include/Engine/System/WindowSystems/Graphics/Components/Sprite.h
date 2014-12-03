@@ -22,6 +22,7 @@
 
 namespace Framework
 {
+
   class Sprite : public IGraphicsObject
   {
   public:
@@ -34,18 +35,19 @@ namespace Framework
     virtual void Serialize (Serializer::DataNode* data);
     virtual void Draw ();
 
-	void LoadSprite(Zilch::String texturename, Zilch::String shadername);
+	  void LoadSprite(Zilch::String texturename, Zilch::String shadername);
     void Create_Sprite (Shader* _shader, Texture* _texture = NULL);
     void Create_Sprite (Shader* _shader, SpriteSheet* _atlas);
     void Change_Shader (Shader* _shaderID);
-	void Change_Texture(Texture* _texture);
+	  void Change_Texture(Texture* _texture);
     void Change_Shader (Zilch::String);
     void Change_Texture (Zilch::String);
     void Update_Shader ();
 
-	Zilch::Real Width;
-	Zilch::Real Height;
-	Zilch::Real4 GetColor();
+	  Zilch::Real Width;
+	  Zilch::Real Height;
+
+	  Zilch::Real4 GetColor();
 
     Shader* Get_Shader ();
     Texture* Get_Texture ();

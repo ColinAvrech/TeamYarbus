@@ -19,6 +19,7 @@ namespace Framework
   IGraphicsObject::IGraphicsObject ()
   {
     //shader = nullptr;
+    layer = DEFAULT;
     Register ();
   }
   
@@ -32,13 +33,13 @@ namespace Framework
   void IGraphicsObject::Register ()
   {
     //WindowSystem::graphicsObjects.push_back (this);
-    OPENGL->graphicsObjects.push_back (this);
+    OPENGL->graphicsObjects [layer].push_back (this);
   }
 
   void IGraphicsObject::Deregister ()
   {
     //WindowSystem::graphicsObjects.remove (this);
-    OPENGL->graphicsObjects.remove (this);
+    OPENGL->graphicsObjects [layer].remove (this);
   }
 
   void IGraphicsObject::Update ()
@@ -53,6 +54,13 @@ namespace Framework
 
   void IGraphicsObject::Draw ()
   {
+  }
+
+  void IGraphicsObject::Change_Layer (int lay)
+  {
+    OPENGL->graphicsObjects [layer].remove (this);
+    layer = LAYER (lay);
+    OPENGL->graphicsObjects [layer].push_back (this);
   }
 
 }
