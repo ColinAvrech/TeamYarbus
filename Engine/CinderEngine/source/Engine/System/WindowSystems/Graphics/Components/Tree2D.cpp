@@ -92,13 +92,14 @@ namespace Framework
         std::cout << gridPos.x << "\n";
         FireStarter* fs = reinterpret_cast<FireStarter*> (go->AddComponent ("FireStarter"));
         fs->Initialize ();
+        fs->material_type = GRASS;
         go->FireStarter->initTemp = 400.0f;
         Physics::THERMODYNAMICS->Add_Object (gridPos.x, gridPos.y, reinterpret_cast<FireStarter*> (go->GetComponent ("FireStarter")));
         go->Parent = gameObject;
       }
 
       break;
-    case Framework::GRASS:
+    case Framework::TREE_GRASS:
       Make_Grass (0, -0.1f, 0.1f);
       break;
     default:

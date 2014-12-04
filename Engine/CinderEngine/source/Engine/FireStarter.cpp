@@ -88,7 +88,7 @@ namespace Framework
             (
             gameObject->Transform->GetPosition().x,
             gameObject->Transform->GetPosition ().y,
-            30
+            60
             );
 			//for (unsigned i = 0; i < grid.positions.getSize ().x; ++i)
 			//{
