@@ -78,7 +78,7 @@ namespace Framework
 				offsetY = 0.0f;
 			offsetX += nX;
 
-			tree_list[i] = Evaluate_Compatibility(i);
+			//tree_list[i] = Evaluate_Compatibility(i);
 			//Hack!!
 			//if (tree_list[i] != OPEN)
 			if (i % 8 == 0 && terrain[i] <= 72)

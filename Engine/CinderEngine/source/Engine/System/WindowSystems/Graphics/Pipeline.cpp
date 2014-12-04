@@ -61,7 +61,7 @@ namespace Framework
         cState = INTERPOLATE;
         t = 0.0f;
         startColor = color;
-        endColor = glm::linearRand (glm::vec4 (0, 0, 0, 0), glm::vec4 (0.4f, 0.4f, 0.4f, 1.0f));
+        endColor = glm::linearRand (glm::vec4 (0, 0, 0, 0), glm::vec4 (0.2f, 0.2f, 0.2f, 1.0f));
       }
       break;
     case Framework::INTERPOLATE:
