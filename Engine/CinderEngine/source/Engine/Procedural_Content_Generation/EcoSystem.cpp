@@ -113,18 +113,19 @@ namespace Framework
 			c->Initialize();
 		}
 		////Add firestarter component here
-		//FireStarter* fs = reinterpret_cast<FireStarter*> (grass->AddComponent("FireStarter"));
-		//if (fs)
-		//{
-		//	fs->Fuel = 100.0f;
-		//	fs->material_type = WOOD;
-		//	fs->onFire = false;
-		//	fs->initTemp = 400.0f;
-		//	fs->Initialize();
-		//}
+		/*FireStarter* fs = reinterpret_cast<FireStarter*> (grass->AddComponent("FireStarter"));
+		if (fs)
+		{
+			fs->Fuel = 100.0f;
+			fs->material_type = WOOD;
+			fs->onFire = false;
+			fs->initTemp = 400.0f;
+			fs->Initialize();
+		}*/
 
     Component* ac = grass->AddComponent("AudioComponent");
     ac->Initialize();
+    static_cast<AudioComponent*>(ac)->position = glm::vec3(x, y, z);
 	}
 }
 

@@ -2,7 +2,7 @@ FireA.ogg
 3D
 Pads.ogg
 3D
-GameplayMusic.wav
+CreditsMusic.wav
 BG
 MainMenuScroll.wav
 2D

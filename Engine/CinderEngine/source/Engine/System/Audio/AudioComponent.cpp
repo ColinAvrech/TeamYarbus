@@ -36,16 +36,16 @@ namespace Framework
 
   AudioComponent::AudioComponent()
   {
-    positional = false;
-    playing = false;
-    mute = false;
-    lowpassed = false;
-    lowcutoff = 6000;
-    lowresonance = 1;
-    highpassed = false;
-    highcutoff = 150;
-    highresonance = 1;
-    micEffect = false;
+    _positional = false;
+    _playing = false;
+    _mute = false;
+    _lowpassed = false;
+    _lowcutoff = 6000;
+    _lowresonance = 1;
+    _highpassed = false;
+    _highcutoff = 150;
+    _highresonance = 1;
+    _micEffect = false;
   }
 
   #pragma endregion
@@ -74,41 +74,41 @@ namespace Framework
     string soundName;
 
     Serializer::DataNode* value = data->FindElement(data, "Positional");
-    value->GetValue(&positional);
+    value->GetValue(&_positional);
 
     value = data->FindElement(data, "MicEffect");
-    value->GetValue(&micEffect);
+    value->GetValue(&_micEffect);
 
     value = data->FindElement(data, "Play");
-    value->GetValue(&playing);
+    value->GetValue(&_playing);
 
     value = data->FindElement(data, "Mute");
-    value->GetValue(&mute);
+    value->GetValue(&_mute);
 
     value = data->FindElement(data, "LowPassFilter");
-    value->GetValue(&lowpassed);
+    value->GetValue(&_lowpassed);
 
     value = data->FindElement(data, "LPFcutoff");
-    value->GetValue(&lowcutoff);
+    value->GetValue(&_lowcutoff);
 
     value = data->FindElement(data, "LPFresonance");
-    value->GetValue(&lowresonance);
+    value->GetValue(&_lowresonance);
 
     value = data->FindElement(data, "HighPassFilter");
-    value->GetValue(&highpassed);
+    value->GetValue(&_highpassed);
 
     value = data->FindElement(data, "HPFcutoff");
-    value->GetValue(&highcutoff);
+    value->GetValue(&_highcutoff);
 
     value = data->FindElement(data, "HPFresonance");
-    value->GetValue(&highresonance);
+    value->GetValue(&_highresonance);
 
     value = data->FindElement(data, "SoundID");
     value->GetValue(&soundName);
 
     
 
-    newSound = AUDIOSYSTEM->LoadSound(soundName.c_str(), "Test", Sound::SOUND_3D, 1.0f);
+    _newSound = AUDIOSYSTEM->LoadSound(soundName.c_str(), "Test", Sound::SOUND_3D, 1.0f);
   }
 
   void AudioComponent::Initialize()
@@ -120,52 +120,52 @@ namespace Framework
 
   void AudioComponent::LoadSound(std::string name)
   {
-    newSound = AUDIOSYSTEM->LoadSound(name.c_str(), "Test", Sound::SOUND_3D, 1.0f);
+    _newSound = AUDIOSYSTEM->LoadSound(name.c_str(), "Test", Sound::SOUND_3D, 1.0f);
   }
 
   void AudioComponent::PlaySound()
   {
-    playing = true;
-    positional = true;
-    lowpassed = true;
-    lowcutoff = 6000;
-    lowresonance = 1;
-    highpassed = false;
-    highcutoff = 150;
-    highresonance = 1;
-    micEffect = true;
+    _playing = true;
+    _positional = true;
+    _lowpassed = true;
+    _lowcutoff = 6000;
+    _lowresonance = 1;
+    _highpassed = false;
+    _highcutoff = 150;
+    _highresonance = 1;
+    _micEffect = true;
   }
 
   void AudioComponent::Update()
   {
-    if (positional)
-      newSound->SetPosition(gameObject->Transform->GetPosition());
+    if (_positional)
+      _newSound->SetPosition(gameObject->Transform->GetPosition());
 
-    if (playing)
-      newSound->Play();
+    if (_playing)
+      _newSound->Play();
     else
-      newSound->Stop();
+      _newSound->Stop();
 
-    if (lowpassed && playing)
+    if (_lowpassed && _playing)
     {
-      newSound->LowPassFilter();
-      newSound->SetLPF(lowcutoff, lowresonance);
+      _newSound->LowPassFilter();
+      _newSound->SetLPF(_lowcutoff, _lowresonance);
 
-      lowpassed = false;
+      _lowpassed = false;
     }
 
-    if (highpassed && playing)
+    if (_highpassed && _playing)
     {
-      newSound->HighPassFilter();
-      newSound->SetHPF(highcutoff, highresonance);
+      _newSound->HighPassFilter();
+      _newSound->SetHPF(_highcutoff, _highresonance);
 
-      highpassed = false;
+      _highpassed = false;
     }
 
-    if (micEffect && playing)
-      newSound->micEffectUpdate();
+    if (_micEffect && _playing)
+      _newSound->micEffectUpdate();
 
-    newSound->SetMute(mute);
+    _newSound->SetMute(_mute);
   }
 
   #pragma endregion
