@@ -28,75 +28,69 @@ namespace Framework
 		ZilchBindStaticMethod(IsKeyReleased);
 	}
 
+  //Mouse
 	bool InputManager::IsMouseDown(unsigned button)
 	{
-		
-		return MouseDown[button];
+		return MouseWasDown[button];
 	}
 
 	bool InputManager::IsMouseTriggered(unsigned button)
 	{
-		
-		return MouseDown[button] && !MouseWasDown[button];
-		
+		return !MouseDown[button] && !MouseWasDown[button];
 	}
 
 	bool InputManager::IsMouseReleased(unsigned button)
 	{
-		return !MouseDown[button] && MouseWasDown[button];
+		return MouseDown[button] && !MouseWasDown[button];
 	}
 
+  //Keyboard
 	bool InputManager::IsKeyDown(unsigned key)
 	{
-		return KeyPressed[key] == 1;
+    return KeyWasPressed[key];
 	}
 
 	bool InputManager::IsKeyTriggered(unsigned key)
 	{
-		return KeyPressed[key] && !KeyWasPressed[key];
+		return !KeyPressed[key] && KeyWasPressed[key];
 	}
 
 	bool InputManager::IsKeyReleased(unsigned key)
 	{
-		return !KeyPressed[key] && KeyWasPressed[key];
+		return KeyPressed[key] && !KeyWasPressed[key];
 	}
 
+  //Callbacks
 	void InputManager::KeyChange(const int& key, const int& scanCode, const int& state, const int& mod)
-	{
-		if (key < GLFW_KEY_LAST)
-		{
-			KeyPressed[key] = true ? (state == 1) : false;
-		}
-		
+  {
+    if (key < GLFW_KEY_LAST)
+    {
+      // Set the Key's State      
+      KeyWasPressed[key] = state;
+    }	
 	}
 
 	void InputManager::MouseChange(const int& button, const int& action, const int& mod)
-	{
-		if (button < GLFW_KEY_LAST)
-		{
-			MouseDown[button] = true ? (action == 1) : false;
-			
-		}
-		
-		
+  {
+    if (button < GLFW_MOUSE_BUTTON_LAST)
+    {
+      // Set the Mouse's State
+      KeyWasPressed[button] = action;
+    }
 	}
 
+  //Bool update
 	void InputManager::Update()
 	{
-		
-		
 		for (unsigned i = 0; i < GLFW_KEY_LAST; ++i)
 		{
-			KeyWasPressed[i] = KeyPressed[i];
-			
+       KeyPressed[i] = KeyWasPressed[i];
 		}
 
-		for (unsigned j = 0; j < GLFW_MOUSE_BUTTON_LAST; ++j)
+		for (unsigned i = 0; i < GLFW_MOUSE_BUTTON_LAST; ++i)
 		{
-			MouseWasDown[j] = MouseDown[j];
-			
+      MouseDown[i] = MouseWasDown[i];
 		}
 
-		
 	}
 }
