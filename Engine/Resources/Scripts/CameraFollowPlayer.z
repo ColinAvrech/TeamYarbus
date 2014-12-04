@@ -15,6 +15,10 @@ class CameraFollow : Component
 	
 	function LogicUpdate(e: UpdateEvent)
 	{
+		if(this.Owner == null)
+		{
+			return;
+		}
 		var pos1 = Camera.Main.Owner.Transform.GetTranslation();
 		var pos2 = this.Owner.Transform.GetTranslation();
 		var distance = Math.LengthSq(Real2(pos2.X - pos1.X, pos2.Y - pos2.Y));

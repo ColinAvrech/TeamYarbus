@@ -77,7 +77,7 @@ namespace Framework
 		
 		ZilchBindMethod(CreateObject);
 		ZilchBindMethod(DestroyAllObjects);
-    ZilchBindMethodOverload(LoadLevelAdditive, ZArray*, Zilch::String);
+		ZilchBindMethodOverload(LoadLevelAdditive, ZArray*, Zilch::String);
 		ZilchBindMethodAs(ZilchLoadLevel, "LoadLevel");
 		ZilchBindMethod(FindObjectByName);
 		ZilchBindMethod(FindObjectByID);
