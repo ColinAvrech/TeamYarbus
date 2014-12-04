@@ -106,36 +106,6 @@ namespace Framework
 
     EVENTSYSTEM->mConnect<PauseEvent, Pipeline> (Events::PAUSE, this, &Pipeline::OnApplicationPause);
 
-    RigidBody2D* rb, *rb1, *rb2;
-    GameObject* go, *go1, *go2;
-    go = OBJECTSYSTEM->CreateObject ();
-    go1 = OBJECTSYSTEM->CreateObject ();
-    go2 = OBJECTSYSTEM->CreateObject ();
-    PolygonCollider2D* poly = new PolygonCollider2D ();
-    poly->gameObject = go;
-    poly->SetBox (0.5f, 100.0f);
-    rb = PHYSICS->Add (poly, -64, 0);
-    rb->SetStatic ();
-    rb->SetOrient (0);
-
-    PolygonCollider2D* poly1 = new PolygonCollider2D ();
-    poly1->gameObject = go1;
-    poly1->SetBox (0.5f, 100.0f);
-    rb1 = PHYSICS->Add (poly1, 64, 0);
-    rb1->SetStatic ();
-    rb1->SetOrient (0);
-    rb1->dynamicFriction = 0.0f;
-    rb1->staticFriction = 0.0f;
-
-    PolygonCollider2D* poly2 = new PolygonCollider2D ();
-    poly2->gameObject = go2;
-    poly2->SetBox (128.0, 0.5f);
-    rb2 = PHYSICS->Add (poly2, 0, 32);
-    rb2->SetStatic ();
-    rb2->SetOrient (0);
-    rb2->dynamicFriction = 0.0f;
-    rb2->staticFriction = 0.0f;
-
     GLfloat vertices [] =
     {
       -1.0f, 1.0f, 0.0f, 1.0f,
@@ -257,8 +227,8 @@ namespace Framework
     // DEBUG DRAW
     //if (useDebugDraw)
     {
-      THERMODYNAMICS->Draw ();
-      //PHYSICS->Render ();
+      //THERMODYNAMICS->Draw ();
+      PHYSICS->Render ();
     }
   }
 

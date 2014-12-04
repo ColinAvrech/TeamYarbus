@@ -222,7 +222,7 @@ Level =
 		},
 		PlayerEffect = 
 		{
-		  bool Enabled = true,
+      bool Enabled = true,
 		  float ParticleSize = 100,
 		  float MaxSize = 10,
 		  float MinSize = 10,
@@ -254,13 +254,80 @@ Level =
 			Vec3 Scale = [64, 10, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
-    Text = 
-    {
-      string Text = "Hello World",
-      Vec2 Position = [-1.0, 0.8],
-    },
-	Josh = 
+  },
+  Cog = 
 	{
-	},
+		LinkId = 
+		{
+			uint Id = 9,
+		},
+		Named = 
+		{
+			string Name = "LeftWall",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [-60, 0, 0],
+			Vec3 Scale = [1, 1, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+    PolygonCollider2D = 
+    {
+      bool Enabled = true,
+		  bool Static = true,
+		  string Material = "4de020863e872da8:DefaultPhysicsMaterial",
+      Vec2 Dimensions = [5, 150],
+      float Orientation = 0,
+    },
+  },
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 9,
+		},
+		Named = 
+		{
+			string Name = "RightWall",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [60, 0, 0],
+			Vec3 Scale = [1, 1, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+    PolygonCollider2D = 
+    {
+      bool Enabled = true,
+		  bool Static = true,
+		  string Material = "4de020863e872da8:DefaultPhysicsMaterial",
+      Vec2 Dimensions = [5, 150],
+      float Orientation = 0,
+    },
+  },
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 9,
+		},
+		Named = 
+		{
+			string Name = "RightWall",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0, 32, 0],
+			Vec3 Scale = [1, 1, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+    PolygonCollider2D = 
+    {
+      bool Enabled = true,
+		  bool Static = true,
+		  string Material = "4de020863e872da8:DefaultPhysicsMaterial",
+      Vec2 Dimensions = [150, 5],
+      float Orientation = 0,
+    },
   },
 },
