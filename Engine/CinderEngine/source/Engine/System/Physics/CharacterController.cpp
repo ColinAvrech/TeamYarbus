@@ -113,7 +113,7 @@ namespace Framework
     PLAYER = this;
     //accel = { 0 , 0 };
     //maxAcceleration = { 50, 100 };
-    maxVel = 128.0f;
+    maxVel = 20.0f;
     //drag = 5;
     //currentforce = 0;
     density = gameObject->ShapeCollider2D->Density;
