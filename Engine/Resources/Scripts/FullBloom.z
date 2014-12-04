@@ -208,8 +208,8 @@ class Cinder
 	function MouseToWorldZPlane():Real2
 	{
 		var position = Camera.GetWorldMousePosition();
-		position.X *= 3.07919694543663;
-		position.Y *= 3.07919694543663;
+		//position.X *= 3.07919694543663;
+		//position.Y *= 3.07919694543663;
 		var cameraPos = Camera.Main.Owner.Transform.GetTranslation();
 		position.X += cameraPos.X;
 		position.Y += cameraPos.Y;
