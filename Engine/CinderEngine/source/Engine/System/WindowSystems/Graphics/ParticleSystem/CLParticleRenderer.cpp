@@ -314,7 +314,7 @@ namespace Framework
 
     texture->Bind ();
     GLuint posAttrib = shader->attribLocation ("position");
-    shader->uniMat4 ("mvp", glm::value_ptr (PLAYER->gameObject->Transform->GetModelViewProjectionMatrix ()));
+    shader->uniMat4 ("mvp", glm::value_ptr (CharacterController::PLAYER->gameObject->Transform->GetModelViewProjectionMatrix ()));
     glBindBuffer (GL_ARRAY_BUFFER, SSBOPos->Get_POS ());
     shader->vertexAttribPtr (posAttrib, 4, GL_FLOAT, GL_FALSE, 0, 0);
     shader->enableVertexAttribArray (posAttrib);

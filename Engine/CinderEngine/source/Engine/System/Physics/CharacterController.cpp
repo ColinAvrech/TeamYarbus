@@ -21,14 +21,27 @@
 
 namespace Framework
 {
-  CharacterController* PLAYER = nullptr;
+  CharacterController* CharacterController::PLAYER = nullptr;
+
+  ZilchDefineType (CharacterController, CinderZilch)
+  {
+    ZilchBindStaticFieldGetAs (PLAYER, "Player");
+    //type->HandleManager = ZilchManagerId (Zilch::PointerManager);
+    //ZilchBindStaticMethodAs(ZGetCameraMousePosition, "GetCameraMousePosition");
+  }
+
   static bool onGround = false;
+
+  CharacterController::CharacterController ()
+  {
+    PLAYER = this;
+  }
 
   CharacterController::~CharacterController ()
   {
-    //EVENTSYSTEM->mDisconnect<KeyEvent, CharacterController> (Events::KEY_ANY, this, &CharacterController::OnKeyPressed);
     EVENTSYSTEM->mDisconnect<CollisionEvent, CharacterController> (Events::COLLISION, this, &CharacterController::OnCollisionEnter);
     EVENTSYSTEM->mDisconnect<UpdateEvent, CharacterController> (Events::UPDATEEVENT, this, &CharacterController::Update);
+    PLAYER = nullptr;
   }
 
   static void UpdateGroundState(CollisionEvent* collision)
