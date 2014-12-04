@@ -11,6 +11,7 @@
 //This is only for testing thermo
 #pragma once
 #include <utility>
+#include <string>
 
 namespace Framework
 {
@@ -21,8 +22,9 @@ namespace Framework
     public:
       TerrainCreator (){}
       //Constructor
-      //Takes map width, map height, base height, smoothing passes, number of waves
-      TerrainCreator(int width, int baseHeight, int passes = 3, int waves = 2, int peak = 100, int water = 50);
+      //Takes map width, map height, base height, smoothing passes, number of waves, peak height, water depth and preset shape
+      TerrainCreator(int width, int baseHeight, int passes = 3, int waves = 2, 
+        int peak = 100, int water = 50, const std::string& HMap = "");
       //Destructor
       ~TerrainCreator();
       float * const GetRockMap() { return HeightMapRock;  }
@@ -36,7 +38,7 @@ namespace Framework
 
       inline int Get_Width ();
 
-      void Generate();
+      void Generate(const std::string& MapFile);
       void Save(const char *file);
       void Load(const char *file);
 
@@ -66,11 +68,11 @@ namespace Framework
       //Private Member Functions
       //Layering
       void AddSoil();
-      void AddRock();
+      void AddRock(const std::string& File);
       void AddWater();
 
       //Helper functions
-      void GenerateHeightMap(float **Array, int base, int height);
+      void GenerateHeightMap(float **Array, int base, int height, const std::string& File = "");
       void SettleWater();
       FlowDirection EvaluateSlope(const float *map, unsigned int pos);
       std::pair<int, unsigned> EvaluateSpread(const float *map, unsigned int pos);
@@ -78,6 +80,7 @@ namespace Framework
       void FlowLeft(float *&map, unsigned int start_pos);
       void FlowRight(float *&map, unsigned int start_pos);
       void Make_Rain(float *&map, unsigned int pos);
+      bool ReadFile(int **Buffer, const std::string& _File);
     }; //class terrain
 
     inline int TerrainCreator::Get_Width ()
