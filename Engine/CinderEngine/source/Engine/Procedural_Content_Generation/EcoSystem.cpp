@@ -78,7 +78,7 @@ namespace Framework
 				offsetY = 0.0f;
 			offsetX += nX;
 
-			tree_list[i] = Evaluate_Compatibility(i);
+			//tree_list[i] = Evaluate_Compatibility(i);
 			//Hack!!
 			//if (tree_list[i] != OPEN)
 			if (i % 8 == 0 && terrain[i] <= 72)
@@ -112,19 +112,20 @@ namespace Framework
 			static_cast<Tree2D*>(c)->Set(color, Tree_Type(type));
 			c->Initialize();
 		}
-		//Add firestarter component here
-		FireStarter* fs = reinterpret_cast<FireStarter*> (grass->AddComponent("FireStarter"));
+		////Add firestarter component here
+		/*FireStarter* fs = reinterpret_cast<FireStarter*> (grass->AddComponent("FireStarter"));
 		if (fs)
 		{
 			fs->Fuel = 100.0f;
-			fs->material_type = 2;
+			fs->material_type = WOOD;
 			fs->onFire = false;
 			fs->initTemp = 400.0f;
 			fs->Initialize();
-		}
+		}*/
 
     Component* ac = grass->AddComponent("AudioComponent");
     ac->Initialize();
+    static_cast<AudioComponent*>(ac)->position = glm::vec3(x, y, z);
 	}
 }
 

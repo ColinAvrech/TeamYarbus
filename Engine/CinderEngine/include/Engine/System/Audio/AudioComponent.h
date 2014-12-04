@@ -47,6 +47,7 @@ namespace Framework
       #pragma region Public Variables
 
       static const string Name;
+      glm::vec3     position;
 
       #pragma endregion
 
@@ -103,17 +104,17 @@ namespace Framework
       -----------------------------------------------------------------------*/
       #pragma region Private Variables
 
-      bool          positional;
-      bool          playing;
-      bool          mute = false;
-      bool          lowpassed;
-      float         lowcutoff;
-      float         lowresonance;
-      bool          highpassed;
-      float         highcutoff;
-      float         highresonance;
-      bool          micEffect;
-      Sound         *newSound;
+      bool          _positional;
+      bool          _playing;
+      bool          _mute = false;
+      bool          _lowpassed;
+      float         _lowcutoff;
+      float         _lowresonance;
+      bool          _highpassed;
+      float         _highcutoff;
+      float         _highresonance;
+      bool          _micEffect;
+      Sound         *_newSound;
 
       #pragma endregion
 

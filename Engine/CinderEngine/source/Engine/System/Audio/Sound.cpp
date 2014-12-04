@@ -17,6 +17,7 @@
 #include "AudioSystem.h"
 #include "Transform.h"
 #include "ZilchCompiledLib.h"
+#include "Core.h"
 
 #pragma endregion
 
@@ -156,8 +157,6 @@ namespace Framework
   /***************************************************************************/
   void Sound::SetVolume(const float volume)
   {
-    FMOD_RESULT result;
-
     // Checks if system is not on
     if (Sound::system_on_ == false)
     {
@@ -168,8 +167,7 @@ namespace Framework
 
     if (pChannel)
     {
-      result = pChannel->setVolume(volume);
-      ErrCheck(result);
+      pChannel->setVolume(volume);
     }
   }
 
@@ -481,7 +479,7 @@ namespace Framework
     FMOD::Sound* pSound;
 
     // FMOD error check to check if sounds are being created in the system
-    ErrCheck(pFMODAudioSystem->createStream(filename, FMOD_INIT_NORMAL, 0, &pSound));
+    ErrCheck(pFMODAudioSystem->createSound(filename, FMOD_DEFAULT, 0, &pSound));
 
     // Piles up the sound on the stack
     sound_queue_.push_back(pSound);
@@ -501,7 +499,6 @@ namespace Framework
   /***************************************************************************/
   bool Sound::GetPlaying()
   {
-    FMOD_RESULT result;
     // Checks if system is not on
     if (Sound::system_on_ == false)
     { 
@@ -513,8 +510,7 @@ namespace Framework
     // If channel exists
     if (pChannel)
     {
-      result = pChannel->isPlaying(&playing); // Check if channel is playing
-      ErrCheck(result);
+      pChannel->isPlaying(&playing); // Check if channel is playing
     }
 
     return playing;
@@ -529,8 +525,6 @@ namespace Framework
   /***************************************************************************/
   bool Sound::GetPaused()
   {
-    FMOD_RESULT result;
-
     // Checks if system is not on
     if (Sound::system_on_ == false)
     { 
@@ -542,8 +536,7 @@ namespace Framework
     // If the channel exists
     if (pChannel)
     {
-      result = pChannel->getPaused(&paused); // Checks the paused state
-      ErrCheck(result);
+     pChannel->getPaused(&paused); // Checks the paused state
     }
 
     return paused;
@@ -567,10 +560,14 @@ namespace Framework
     }
 
     // If the sound is already playing then return
-    if (GetPlaying())
+
+    if (ID != SOUND_2D)
     {
-      return;
-    }
+      if (GetPlaying())
+      {
+        return;
+      }
+    }    
 
     // If the sound is paused
     if (GetPaused())
@@ -723,8 +720,6 @@ namespace Framework
   /***************************************************************************/
   unsigned Sound::GetTime()
   {
-    FMOD_RESULT result;
-
     if (Sound::system_on_ == false)
     { 
       return 0; 
@@ -734,8 +729,7 @@ namespace Framework
 
     if (pChannel)
     {
-      result = pChannel->getPosition(&milliseconds, FMOD_TIMEUNIT_MS);
-      ErrCheck(result);
+      pChannel->getPosition(&milliseconds, FMOD_TIMEUNIT_MS);
     }   
 
     return milliseconds;
@@ -795,40 +789,52 @@ namespace Framework
       return;
     }    
 
-    if (ID == SOUND_3D)
+    if (pChannel)
     {
-      if (pChannel)
+      if (ID == SOUND_3D)
       {
-        result = pChannel->set3DAttributes(&_position, 0);
-        ErrCheck(result);
+        if (pChannel)
+        {
+          result = pChannel->set3DAttributes(&_position, 0);
+          ErrCheck(result);
+        }
       }
-    }
 
-    // Update Functions
-    UpdateVolumeFade(dt);
-    UpdateFrequency1(dt);
-    UpdateFrequency2(dt);
-    UpdateNoise();
+      // Update Functions
+      UpdateVolumeFade(dt);
+      UpdateFrequency1(dt);
+      UpdateFrequency2(dt);
+      UpdateNoise();
 
-    SetVolume(GetVolume());
+      SetVolume(GetVolume());
 
 
-    // FOR TESTING ONLY
-    if (this->GetTime() > 5000 && this->GetTime() < 5500 && test == true)
-    {
-      //test = false;
-      //std::cout << CinderConsole::cyan << "FIVE SECONDS" << std::endl;
-      //this->SweepEQ1(100.0f, 5.5f, 10.0f, 4.0f);
-      //this->SweepEQ2(5000.0f, 5.0f, 10.0f, 4.0f);
-      //this->VolumeFade(0.0f, 5.0f);
-    }
-    if (this->GetTime() > 10000 && this->GetTime() < 10500 && test2 == true)
-    {
-      //test2 = false;
-      //std::cout << CinderConsole::green<< "TEN SECONDS" << std::endl;
-      //this->SweepEQ1(20.0f, 0.2f, -30.0f, 5.0f);
-      //this->SweepEQ2(20.0f, 0.2f, -30.0f, 5.0f);
-    }
+      // FOR TESTING ONLY
+      if (this->GetTime() > 5000 && this->GetTime() < 5500 && test == true)
+      {
+        //test = false;
+        //std::cout << CinderConsole::cyan << "FIVE SECONDS" << std::endl;
+        //this->SweepEQ1(100.0f, 5.5f, 10.0f, 4.0f);
+        //this->SweepEQ2(5000.0f, 5.0f, 10.0f, 4.0f);
+        //this->VolumeFade(0.0f, 5.0f);
+      }
+      if (this->GetTime() > 10000 && this->GetTime() < 10500 && test2 == true)
+      {
+        //test2 = false;
+        //std::cout << CinderConsole::green<< "TEN SECONDS" << std::endl;
+        //this->SweepEQ1(20.0f, 0.2f, -30.0f, 5.0f);
+        //this->SweepEQ2(20.0f, 0.2f, -30.0f, 5.0f);
+      }
+
+      if (CORE->IsPaused() == true)
+      {
+        AUDIOSYSTEM->SetPauseMenuEffect(500.0f, 2.5f, 0.5f);
+      }
+      else
+      {
+        AUDIOSYSTEM->SetPauseMenuEffect(22000.0f, 0.0f, 4.0f);
+      }
+    }    
   }
 
   /***************************************************************************/
@@ -843,14 +849,12 @@ namespace Framework
   /***************************************************************************/
   void Sound::UpdateVolumeFade(const double dt)
   {
-    FMOD_RESULT result;
     float currentVolume = 0;    
 
     // If the channel exists
     if (pChannel != NULL)
     {
-      result = pChannel->getVolume(&currentVolume);
-      ErrCheck(result);
+      pChannel->getVolume(&currentVolume);      
 
       // If volume doesn't reach the required fade volume
       if (_volValue != currentVolume)

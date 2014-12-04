@@ -123,7 +123,7 @@ int main (void)
   //Currently broken;
   //OBJECTSYSTEM->LoadAllLevels("..//..//Resources//Levels//MasterLevelFile.txt");
 
-  OBJECTSYSTEM->ZilchLoadLevel (Zilch::String ("NewPhysics"));
+  OBJECTSYSTEM->LoadLevel("NewPhysics");
  //Initialize Cheat Codes
   Cheats::InitializeCheats();
 
@@ -137,6 +137,8 @@ int main (void)
   //EVENTSYSTEM->gDisconnect<UpdateEvent>(Framework::Events::UPDATEEVENT, &TestUEDisconnect);
 
 	//ZInterface::OpenFile();
+  // Update the ObjectManager to load in the first level
+  OBJECTSYSTEM->Update(0.016);
 
   //! Run the game! NOW!
   engine->GameLoop ();

@@ -42,10 +42,6 @@ namespace Framework
 
 		bool ZeroSerializer::open(const char* filepath)
 		{
-			if (dataFile.is_open())
-			{
-				dataFile.close();
-			}
 			std::string path("..//..//Resources//Levels//");
 			std::string extension(".data");
 			path.append(filepath);
@@ -64,8 +60,6 @@ namespace Framework
 			trunk = AddNode(trunk, TYPE_OBJECT, dummy.c_str(), 0);
 			CurrentNode = CurrentStem = trunk;
 			return true;
-
-			return false;
 		} //function open
 
 		void ZeroSerializer::close()

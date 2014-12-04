@@ -66,9 +66,9 @@ namespace Framework
     EVENTSYSTEM->mConnect<WindowFocusEvent, AudioEvents>(Events::WINDOWFOCUSEVENT, this, &AudioEvents::AudioEventsUpdate);
     EVENTSYSTEM->mConnect<KeyEvent, AudioEvents>(Events::KEY_ANY, this, &AudioEvents::OnKeyPressed);
 
-    //test = AUDIOSYSTEM->LoadSound("Pads.ogg", "NOISE", Sound::SOUND_3D, 1.0f);
-    //test2 = AUDIOSYSTEM->LoadSound("Pads.ogg", "NOISE", Sound::SOUND_3D, 1.0f);
-    //test->Play();
+    test = AUDIOSYSTEM->LoadSound("CreditsMusic.wav", "NOISE", Sound::MUSIC, 1.0f);
+    test2 = AUDIOSYSTEM->LoadSound("MainMenuScroll.wav", "meh", Sound::SOUND_2D, 1.0f);
+    test->Play();
 
   }
 
@@ -89,19 +89,22 @@ namespace Framework
 
   void AudioEvents::OnKeyPressed(KeyEvent* key)
   {
-    switch (key->KeyValue)
+    if (key->KeyDown)
     {
+      switch (key->KeyValue)
+      {
       case GLFW_KEY_UP:
         //test->Play();
         break;
 
       case GLFW_KEY_DOWN:
-       //test2->Play();
+        //test2->Play();
         break;
 
       default:
         break;
-    }
+      }
+    }    
   }
 
   #pragma endregion

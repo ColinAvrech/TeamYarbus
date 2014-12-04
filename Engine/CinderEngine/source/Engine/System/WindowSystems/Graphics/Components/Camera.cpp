@@ -41,6 +41,7 @@ namespace Framework
     allCameras.remove (this);
     gameObject->Camera = nullptr;
     OPENGL->cameras.remove (this);
+    EVENTSYSTEM->mDisconnect <KeyEvent, Camera> (Events::KEY_ANY, this, &Camera::OnKeyPressed);
   }
 
 

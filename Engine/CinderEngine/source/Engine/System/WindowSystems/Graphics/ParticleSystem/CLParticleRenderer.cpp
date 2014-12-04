@@ -65,6 +65,7 @@ namespace Framework
   CLParticleRenderer::~CLParticleRenderer ()
   {
     delete SSBOPos, SSBOVel, vao;
+    EVENTSYSTEM->mDisconnect<KeyEvent, CLParticleRenderer> (Events::KEY_ANY, this, &CLParticleRenderer::OnKeyPressed);
   }
 
   void CLParticleRenderer::Serialize (Serializer::DataNode* data)

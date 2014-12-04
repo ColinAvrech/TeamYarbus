@@ -274,7 +274,7 @@ namespace Framework
               }
             }
           }
-          if (j + 1 <= MapSize.y)
+          if (j <= MapSize.y)
           {
             if (materialList[Terrain.Get(i, j)].isFluid && materialList[Terrain.Get(i, j)].isFluid)
             {
@@ -335,7 +335,7 @@ namespace Framework
         float cur_temp = TemperatureMap.Get((*i).first.x, (*i).first.y);
         float ign_temp = materialList[(*i).second->material_type].IT;
         float fuel_left = (*i).second->Fuel;
-        bool oxygen = false;
+        bool oxygen = true;
         if (Terrain.Get((*i).first.x, (*i).first.y + 1) == AIR)
           oxygen = true;
         //if all 3 conditions are satisfied light fire
@@ -362,6 +362,8 @@ namespace Framework
       VelocityMapY.fill ({ 0 });
       VelocityMap_PrevX.fill ({ 0 });
       VelocityMap_PrevY.fill ({ 0 });
+
+      FireMap.clear ();
     }
 
     glm::ivec2 ThermodynamicsSystem::GetSubscript(const float &x, const float &y)
@@ -476,24 +478,24 @@ namespace Framework
       gluLookAt (eye.x, eye.y, eye.z, center.x, center.y, center.z, up.x, up.y, up.z);
       //glTranslatef (0, 32, 0);
       //glScalef (64, 64, 1.0f);
-      glBegin (GL_QUADS);
+      /*glBegin (GL_QUADS);
       {
-        for (int i = 0; i < Terrain.getSize ().y; ++i)
-        {
-          for (int j = 0; j < Terrain.getSize ().x; ++j)
-          {
-            glColor4f (TemperatureMap.Get (j, i) / Constant::BT_Organics,
-              TemperatureMap.Get (j, i) / Constant::BT_Organics,
-              TemperatureMap.Get (j, i) / Constant::BT_Organics,
-              TemperatureMap.Get (j, i) / Constant::BT_Organics * 0.4f);
-            glVertex2f (j - (MapSize.x * 0.5f) - 1, i - (MapSize.y * 0.5f) - 1);
-            glVertex2f (j - (MapSize.x * 0.5f) - 2, i - (MapSize.y * 0.5f) - 1);
-            glVertex2f (j - (MapSize.x * 0.5f) - 2, i - (MapSize.y * 0.5f) - 2);
-            glVertex2f (j - (MapSize.x * 0.5f) - 1, i - (MapSize.x * 0.5f) - 2);
-          }
-        }
+      for (int i = 0; i < Terrain.getSize ().y; ++i)
+      {
+      for (int j = 0; j < Terrain.getSize ().x; ++j)
+      {
+      glColor4f (TemperatureMap.Get (j, i) / Constant::BT_Organics,
+      TemperatureMap.Get (j, i) / Constant::BT_Organics,
+      TemperatureMap.Get (j, i) / Constant::BT_Organics,
+      TemperatureMap.Get (j, i) / Constant::BT_Organics * 0.4f);
+      glVertex2f (j - (MapSize.x * 0.5f) - 1, i - (MapSize.y * 0.5f) - 1);
+      glVertex2f (j - (MapSize.x * 0.5f) - 2, i - (MapSize.y * 0.5f) - 1);
+      glVertex2f (j - (MapSize.x * 0.5f) - 2, i - (MapSize.y * 0.5f) - 2);
+      glVertex2f (j - (MapSize.x * 0.5f) - 1, i - (MapSize.x * 0.5f) - 2);
       }
-      glEnd ();
+      }
+      }
+      glEnd ();*/
 
       //glColor4f (1, 1, 1, 0.2f);
       //glBegin (GL_QUADS);
@@ -521,33 +523,21 @@ namespace Framework
       //      glVertex2f (j, i - 1);
       //    }
       //  }
-
-      //  glMatrixMode (GL_PROJECTION);
-      //  glLoadIdentity ();
-      //  gluPerspective (Camera::main->GetFOV (), (float) WINDOWSYSTEM->Get_Width () / WINDOWSYSTEM->Get_Height (), 0, 100.0f);
-      //  glMatrixMode (GL_MODELVIEW);
-      //  glLoadIdentity ();
-
-      //  glm::vec3 eye = glm::vec3 (0, 0, 1) * Camera::main->GetSize () + glm::vec3 (Camera::main->gameObject->Transform->GetPosition ().x, Camera::main->gameObject->Transform->GetPosition ().y, 0);
-      //  glm::vec3 center = Camera::main->gameObject->Transform->GetPosition ();
-      //  glm::vec3 up = glm::vec3 (0, 1, 0);
-
-      //  gluLookAt (eye.x, eye.y, eye.z, center.x, center.y, center.z, up.x, up.y, up.z);
-
-      //  for (auto i = FireMap.begin (); i != FireMap.end (); ++i)
-      //  {
-      //    glColor4f (0, 1, 0, 0.2f);
-      //    glVertex2f ((*i).first.x, (*i).first.y);
-      //    glVertex2f ((*i).first.x - 1, (*i).first.y);
-      //    glVertex2f ((*i).first.x - 1, (*i).first.y - 1);
-      //    glVertex2f ((*i).first.x, (*i).first.y - 1);
-      //  }
-      //}
-      //glEnd ();
-      //glMatrixMode (GL_PROJECTION);
-      //glLoadIdentity ();
-      //glMatrixMode (GL_MODELVIEW);
-      //glLoadIdentity ();
+      glPointSize (10.0f);
+      glBegin (GL_POINTS);
+      for (auto i = FireMap.begin (); i != FireMap.end (); ++i)
+      {
+        glColor4f (0, 1, 0, 1.0f);
+        glVertex2f ((*i).second->gameObject->Transform->GetPosition ().x, (*i).second->gameObject->Transform->GetPosition ().y);
+        //glVertex2f ((*i).first.x - 1, (*i).first.y);
+        //glVertex2f ((*i).first.x - 1, (*i).first.y - 1);
+        //glVertex2f ((*i).first.x, (*i).first.y - 1);
+      }
+    glEnd ();
+    glMatrixMode (GL_PROJECTION);
+    glLoadIdentity ();
+    glMatrixMode (GL_MODELVIEW);
+    glLoadIdentity ();
     } //draw function
 
   }//namespace Physics

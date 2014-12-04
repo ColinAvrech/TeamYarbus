@@ -72,7 +72,6 @@ namespace Framework
     /*Triggers a Key event if there are any listeners*/
     void TriggerKeyEvent (const string eventname, const int& key, const int& scanCode, const int& state, const int& mod)
     {
-		  InputManager::KeyChange(key, scanCode, state, mod);
       KeyEvent triggered_key_event;
       SetupKeyEvent (&triggered_key_event, key, scanCode, state, mod);
       EVENTSYSTEM->TriggerEvent (eventname, triggered_key_event);
@@ -129,9 +128,10 @@ namespace Framework
 
     void GLFWMessageHandler (GLFWwindow* window, const int key, const int scanCode, const int state, const int mod)
     {
-      //A Key has been pressed
-	  //SetKeyLog(key, scanCode, state, mod);
+      // Set booleans for InputManager
+      InputManager::KeyChange(key, scanCode, state, mod);
 
+      //Trigger the any key event
       TriggerKeyEvent (Events::KEY_ANY, key, scanCode, state, mod);
 
       switch (key)
