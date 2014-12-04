@@ -1,5 +1,32 @@
 Level = 
 {
+  Cog = 
+	{
+	  LinkId = 
+	  {
+		  uint Id = 0,
+	  },
+	  Named = 
+	  {
+		  string Name = "Camera",
+	  },
+    Transform = 
+	  {
+		  Vec3 Translation = [0, 0, -10],
+		  Vec3 Scale = [1, 1, 1],
+		  Quat Rotation = [0, 0, 0, 1],
+	  },
+    Camera = 
+		{
+      bool Enabled = true,
+      bool main = true,
+      Vec3 Facing = [0, 0, 1],
+			float FieldOfView = 45,
+			float NearPlane = 0,
+			float FarPlane = 100,
+			float Size = 128,
+		},
+  },
 	Cog = 
 	{
 		LinkId = 
