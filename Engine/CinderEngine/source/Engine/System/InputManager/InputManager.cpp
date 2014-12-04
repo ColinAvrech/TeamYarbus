@@ -36,7 +36,7 @@ namespace Framework
 
 	bool InputManager::IsMouseTriggered(unsigned button)
 	{
-		return !MouseDown[button] && !MouseWasDown[button];
+		return !MouseDown[button] && MouseWasDown[button];
 	}
 
 	bool InputManager::IsMouseReleased(unsigned button)
@@ -75,7 +75,7 @@ namespace Framework
     if (button < GLFW_MOUSE_BUTTON_LAST)
     {
       // Set the Mouse's State
-      KeyWasPressed[button] = action;
+      MouseWasDown[button] = action;
     }
 	}
 
