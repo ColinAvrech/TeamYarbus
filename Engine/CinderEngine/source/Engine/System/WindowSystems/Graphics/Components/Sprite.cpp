@@ -278,6 +278,7 @@ namespace Framework
       vao->bindVAO ();
       shader->Use ();
       shader->uni4fv ("overrideColor", glm::value_ptr (color));
+      shader->uniMat4 ("mvp", glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix ()));
       //shader->uniMat4("modelViewProjectionMatrix", glm::value_ptr(gameObject->Transform->GetModelViewProjectionMatrix()));
       (this->*DrawFunction)();
       shader->Disable ();

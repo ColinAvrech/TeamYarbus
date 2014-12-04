@@ -192,7 +192,6 @@ namespace Framework
     //////////////////////////////////////////////////////////////////////////
     for (auto* i : graphicsObjects [DEFAULT])
     {
-      i->Update ();
       i->Draw ();
     }
 
@@ -228,7 +227,7 @@ namespace Framework
     //if (useDebugDraw)
     {
       //THERMODYNAMICS->Draw ();
-      PHYSICS->Render ();
+      //PHYSICS->Render ();
     }
   }
 
