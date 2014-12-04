@@ -213,12 +213,15 @@ namespace Framework
 
     if (AUDIOSYSTEM->input.peaklevel [0] > 0.05f)
     {
-      if (color [3] < 1) color [3] += AUDIOSYSTEM->input.peaklevel [0] * 0.1f;
-      //printf("%f\n", color[3]);
+      if (color [3] < 1) color [3] += AUDIOSYSTEM->input.peaklevel [0] * 0.016f;
+      printf("%f\n", color[3]);
     }
     else
     {
-      if (color [3] > minAlpha) color [3] -= 0.016f;
+      if (color [3] > minAlpha)
+      {
+        color [3] -= 0.016f;
+      }
     }
     double frameTimeStart = glfwGetTime () * 1000;
 

@@ -38,6 +38,7 @@ namespace Framework
 		shader = Resources::RS->Get_Shader("Default");
 		color = { 1, 1, 1, 1 };
 		animated = false;
+    frameNumber = 0;
 
 		Width = Zilch::Real(texture->width / (WINDOWSYSTEM->Get_Width()-0.5f) * 2.0f);
 		Height = Zilch::Real(texture->height / (WINDOWSYSTEM->Get_Height() - 0.5f) * 2.0f);
@@ -53,25 +54,28 @@ namespace Framework
 		//////////////////////////////////////////////////////////////////////////
     Component::Get_Enabled (data, "Visible");
 
-		Serializer::DataNode* value = data->FindElement(data, "SpriteSource");
+    Serializer::DataNode* value = data->FindElement (data, "AnimationActive");
+    value->GetValue (&animated);
+
+		value = data->FindElement(data, "SpriteSource");
 		std::string texname;
 		value->GetValue(&texname);
-		texture = Resources::RS->Get_Texture(texname);
+    if (animated)
+    {
+      atlas = Resources::RS->Get_SpriteSheet (texname);
+    }
+    else
+    {
+      texture = Resources::RS->Get_Texture (texname);
+    }
 
 		value = data->FindElement(data, "Shader");
 		std::string shadername;
-		/*
-		if (shader)
-			shadername = shader->name;*/
 		value->GetValue(&shadername);
 		shader = Resources::RS->Get_Shader(shadername);
 
-		//SerializeResource(shader, "BasicDefault");
-
 		value = data->FindElement(data, "Color");
     value->GetValue (&color);
-
-		animated = false;
 
 		Width = Zilch::Real(texture->width / (WINDOWSYSTEM->Get_Width() - 0.5f) * 2.0f);
 		Height = Zilch::Real(texture->height / (WINDOWSYSTEM->Get_Height() - 0.5f) * 2.0f);
@@ -311,8 +315,6 @@ namespace Framework
 
 	void Sprite::Draw_Animated()
 	{
-		//Specify_Attributes ();
-
 		++frameNumber;
 		if (frameNumber % atlas->Get_Samples() == 0)
 		{
@@ -329,7 +331,7 @@ namespace Framework
 		}
 		glUniform2fv(uniFrameRatio, 1, glm::value_ptr(frameRatio));
 		glUniform2fv(uniTexOffset, 1, glm::value_ptr(texOffset));
-
+    shader->uni4fv ("overrideColor", glm::value_ptr (color));
 		atlas->Bind();
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		atlas->Unbind();

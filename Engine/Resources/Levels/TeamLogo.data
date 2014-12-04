@@ -79,21 +79,22 @@ Level =
 	  },
     Transform = 
 	  {
-		  Vec3 Translation = [0, -0.3, 0],
+		  Vec3 Translation = [0, 0, 0],
 		  Vec3 Scale = [3, 3, 1],
 		  Quat Rotation = [0, 0, 0, 1],
 	  },
     Sprite = 
 		{
 			bool Visible = true,
-			string SpriteSource = "VectorLogo.png",
-			string Shader = "Default",
+			string SpriteSource = "HighResLogo.jpg",
+      bool AnimationActive = true,
+			string Shader = "Animation",
 			Vec4 Color = [1, 1, 1, 1],
 		},
     LevelTimer = 
     {
       string NextLevel = "NewPhysics",
-      float EndTime = 0.0,
+      float EndTime = 5.0,
     },
   },
 },

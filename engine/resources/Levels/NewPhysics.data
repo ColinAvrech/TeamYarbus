@@ -191,7 +191,7 @@ Level =
 			Vec4 Color = [1, 0.5, 0, 0.8],
 			bool Visible = true,
 			bool OnTop = false,
-			bool AnimationActive = true,
+			bool AnimationActive = false,
 			float AnimationSpeed = 1,
 			uint StartFrame = 0,
 			BlendMode BlendMode = Alpha,
@@ -232,7 +232,7 @@ Level =
       int ParticleCount = 10000,
       float ParticleSize = 5,
       float EffectRadius = 0.2,
-      Vec4 Color = [255, 80, 0, 0.5],
+      Vec4 Color = [255, 80, 0, 0],
     },
     CameraFollow = 
     {
@@ -262,7 +262,7 @@ Level =
     LevelTimer = 
     {
       string NextLevel = "DigipenLogo",
-      float EndTime = 10.0,
+      float EndTime = 1000000.0,
     },
   },
 },
