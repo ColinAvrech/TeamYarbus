@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "Zilch.hpp"
 
 namespace Framework
 {
@@ -10,6 +11,7 @@ namespace Framework
   class CharacterController : public Component
   {
   public:
+    ZilchDeclareDerivedType (CharacterController, Component);
     const static string Name;
 
     CharacterController (GameObject * obj)
@@ -17,7 +19,7 @@ namespace Framework
       gameObject = obj;
     }
 
-    CharacterController(){}
+    CharacterController ();
 
     ~CharacterController();
 
@@ -29,6 +31,8 @@ namespace Framework
     void Update(UpdateEvent* e);
     void OnKeyPressed(KeyEvent* key);
     void OnCollisionEnter(CollisionEvent* collision);
+
+    static CharacterController* PLAYER;
 
   private:
     glm::vec2 gridPos;
@@ -44,5 +48,4 @@ namespace Framework
     glm::vec2 maxAcceleration;
   };
 
-  extern CharacterController* PLAYER;
 }

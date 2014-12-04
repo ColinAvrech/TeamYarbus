@@ -1,0 +1,144 @@
+<<<<<<< HEAD
+Level = 
+{
+  Cog = 
+	{
+	  LinkId = 
+	  {
+		  uint Id = 0,
+	  },
+	  Named = 
+	  {
+		  string Name = "Camera",
+	  },
+    Transform = 
+	  {
+		  Vec3 Translation = [0, 0, -10],
+		  Vec3 Scale = [1, 1, 1],
+		  Quat Rotation = [0, 0, 0, 1],
+	  },
+    Camera = 
+		{
+      bool Enabled = true,
+      bool main = true,
+      Vec3 Facing = [0, 0, 1],
+			float FieldOfView = 45,
+			float NearPlane = 0,
+			float FarPlane = 100,
+			float Size = 128,
+		},
+  },
+	Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 12,
+		},
+		Named = 
+		{
+			string Name = "ResumeGame",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0, 0.45, 0],
+			Vec3 Scale = [0.75, 0.75, 0.75],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Sprite = 
+		{
+			bool Visible = true,
+			string SpriteSource = "UIResumeBlack.png",
+			string Shader = "Default",
+			Vec4 Color = [1, 1, 1, 0],
+		},
+		ResumeButton = 
+		{
+		},
+	},
+	Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 14,
+		},
+		Named = 
+		{
+			string Name = "QuitGame",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0, -0.75, 0],
+			Vec3 Scale = [0.75, 0.75, 0.75],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Sprite = 
+		{
+			bool Visible = true,
+			string SpriteSource = "UIExitBlack.png",
+			string Shader = "Default",
+			Vec4 Color = [1, 1, 1, 0],
+		},
+		ExitButton = 
+		{
+		},
+	},
+},
+=======
+Level = 
+{
+	Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 12,
+		},
+		Named = 
+		{
+			string Name = "ResumeGame",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0, 0.45, 0],
+			Vec3 Scale = [0.75, 0.75, 0.75],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Sprite = 
+		{
+			bool Visible = true,
+			string SpriteSource = "UIResumeBlack.png",
+			string Shader = "Default",
+			Vec4 Color = [1, 1, 1, 0],
+		},
+		ResumeButton = 
+		{
+		},
+	},
+	Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 14,
+		},
+		Named = 
+		{
+			string Name = "QuitGame",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0, -0.75, 0],
+			Vec3 Scale = [0.75, 0.75, 0.75],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Sprite = 
+		{
+			bool Visible = true,
+			string SpriteSource = "UIExitBlack.png",
+			string Shader = "Default",
+			Vec4 Color = [1, 1, 1, 0],
+		},
+		ExitButton = 
+		{
+		},
+	},
+},
+>>>>>>> 40c9a5fe7e690045ecadfdb391f949118d42f1e0

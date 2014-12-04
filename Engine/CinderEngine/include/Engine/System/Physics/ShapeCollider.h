@@ -31,10 +31,12 @@ namespace Framework
     void SerializeMaterial (const char* name);
     int numOfShapes;
 		// Getters
-		vec3 getPosition(void){
+		vec3 getPosition(void)
+    {
 			return position;
 		}
-		vec3 getOffset(void){
+		vec3 getOffset(void)
+    {
 			return offset;
 		}
 		float getDensity(void)

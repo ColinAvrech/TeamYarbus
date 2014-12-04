@@ -92,13 +92,14 @@ namespace Framework
         std::cout << gridPos.x << "\n";
         FireStarter* fs = reinterpret_cast<FireStarter*> (go->AddComponent ("FireStarter"));
         fs->Initialize ();
+        fs->material_type = GRASS;
         go->FireStarter->initTemp = 400.0f;
         Physics::THERMODYNAMICS->Add_Object (gridPos.x, gridPos.y, reinterpret_cast<FireStarter*> (go->GetComponent ("FireStarter")));
         go->Parent = gameObject;
       }
 
       break;
-    case Framework::GRASS:
+    case Framework::TREE_GRASS:
       Make_Grass (0, -0.1f, 0.1f);
       break;
     default:
@@ -168,6 +169,7 @@ namespace Framework
       //}
       glLineWidth (7.0f);
       shader->Use ();
+      shader->uniMat4 ("mvp", glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix ()));
       vao->bindVAO ();
       //shader->uniMat4 ("mvp", glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix ()));
       glDrawArrays (GL_LINES, 0, treeMesh.size () / 6);
@@ -178,6 +180,7 @@ namespace Framework
     else
     {
       shader->Use ();
+      shader->uniMat4 ("mvp", glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix ()));
       shader->uni4fv ("color", glm::value_ptr (color));
       vao->bindVAO ();
       glDrawArrays (GL_LINES, 0, treeMesh.size () / 2);

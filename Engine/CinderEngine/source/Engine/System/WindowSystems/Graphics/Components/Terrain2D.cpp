@@ -97,6 +97,7 @@ namespace Framework
   { 
     shader->Use ();
     vao->bindVAO ();
+    shader->uniMat4 ("mvp", glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix ()));
     shader->uni4f ("color", color.r, color.g, color.b, color.a);
 
     glDrawArrays (GL_TRIANGLES, 0, vertices.size () / 3);
@@ -257,7 +258,7 @@ namespace Framework
     // Edges for Line Colliders
     for (unsigned i = 0; i < height_points.size () - 1; ++i)
     {
-      PolygonCollider2D poly;
+      PolygonCollider2D* poly = new PolygonCollider2D ();
       glm::dvec2 center;
       glm::vec2 p0 = (glm::mat2)gameObject->Transform->GetModelMatrix () * glm::vec2 (height_points [i].x, y);
       glm::vec2 p1 = (glm::mat2)gameObject->Transform->GetModelMatrix () * glm::vec2 (height_points [i + 1].x, y);
@@ -289,8 +290,8 @@ namespace Framework
         &center.x, &center.y
         );
 
-      poly.Set (p, 4);
-      RigidBody2D* b = PHYSICS->Add (&poly, gameObject->Transform->GetPosition().x + (float)(center.x),
+      poly->Set (p, 4);
+      RigidBody2D* b = PHYSICS->Add (poly, gameObject->Transform->GetPosition().x + (float)(center.x),
         (gameObject->Transform->GetPosition ().y + (float)(center.y)));
       b->SetOrient (0);
       b->SetStatic ();

@@ -19,6 +19,7 @@ Level =
 		Sprite = 
 		{
 			bool Visible = true,
+			bool AnimationActive = false,
 			string SpriteSource = "UIBackground.png",
 			string Shader = "Default",
 			Vec4 Color = [1, 1, 1, 0],
@@ -36,13 +37,14 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, 0.8775, 0],
+			Vec3 Translation = [0, 8.775, 0],
 			Vec3 Scale = [0.75, 0.75, 0.75],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Sprite = 
 		{
 			bool Visible = true,
+			bool AnimationActive = false,
 			string SpriteSource = "UIPauseTitle.png",
 			string Shader = "Default",
 			Vec4 Color = [1, 1, 1, 0],
@@ -67,6 +69,7 @@ Level =
 		Sprite = 
 		{
 			bool Visible = true,
+			bool AnimationActive = false,
 			string SpriteSource = "UIResumeBlack.png",
 			string Shader = "Default",
 			Vec4 Color = [1, 1, 1, 0],
@@ -94,6 +97,7 @@ Level =
 		Sprite = 
 		{
 			bool Visible = true,
+			bool AnimationActive = false,
 			string SpriteSource = "UIHowToPlayBlack.png",
 			string Shader = "Default",
 			Vec4 Color = [1, 1, 1, 0],
@@ -121,6 +125,7 @@ Level =
 		Sprite = 
 		{
 			bool Visible = true,
+			bool AnimationActive = false,
 			string SpriteSource = "UIExitBlack.png",
 			string Shader = "Default",
 			Vec4 Color = [1, 1, 1, 0],

@@ -16,8 +16,9 @@ namespace Framework
 
   ShapeCollider2D::~ShapeCollider2D ()
   {
+    PHYSICS->Remove (rigidBody);
+    delete rigidBody;
     rigidBody = nullptr;
-    if (gameObject != nullptr)
     gameObject->ShapeCollider2D = nullptr;
   }
 
@@ -179,28 +180,40 @@ namespace Framework
 
   void PolygonCollider2D::Serialize (Framework::Serializer::DataNode* data)
   {
+    Serializer::DataNode* value = data->FindElement (data, "Static");
+    value->GetValue (&isStatic);
+
     std::string Mat;
-    data->FindElement (data, "Material")->GetValue (&Mat);
+    value = data->FindElement (data, "Material");
+    value->GetValue (&Mat);
     SerializeMaterial (Mat);
+
+    glm::vec2 dimension;
+    value->FindElement (data, "Dimensions")->GetValue (&dimension);
+    dimensions.x = gameObject->Transform->GetScale ().x * dimension.x;
+    dimensions.y = gameObject->Transform->GetScale ().y * dimension.y;
+
+    value->FindElement (data, "Orientation")->GetValue (&orientation);
   }
 
   void PolygonCollider2D::Initialize ()
   {
+    SetBox (dimensions.x, dimensions.y);
+    SetOrient (orientation);
     gameObject->ShapeCollider2D = this;
     RigidBody2D* b = PHYSICS->Add (this, gameObject->Transform->GetPosition ().x, gameObject->Transform->GetPosition ().y);
-
+    rigidBody = b;
+    b->gameObject = this->gameObject;
+    gameObject->RigidBody2D = b;
     b->restitution = Bounciness;
     b->dynamicFriction = DynamicFriction;
     b->staticFriction = StaticFriction;
-    ComputeMass (Density);
+    //ComputeMass (Density);
 
     if (isStatic)
     {
       b->SetStatic ();
     }
-
-    b->gameObject = this->gameObject;
-    gameObject->RigidBody2D = b;
   }
 
 	Vector2 PolygonCollider2D::GetSupport (const Vector2& dir)

@@ -65,6 +65,7 @@ namespace Framework
   CLParticleRenderer::~CLParticleRenderer ()
   {
     delete SSBOPos, SSBOVel, vao;
+    EVENTSYSTEM->mDisconnect<KeyEvent, CLParticleRenderer> (Events::KEY_ANY, this, &CLParticleRenderer::OnKeyPressed);
   }
 
   void CLParticleRenderer::Serialize (Serializer::DataNode* data)
@@ -212,12 +213,15 @@ namespace Framework
 
     if (AUDIOSYSTEM->input.peaklevel [0] > 0.05f)
     {
-      if (color [3] < 1) color [3] += AUDIOSYSTEM->input.peaklevel [0] * 0.1f;
-      //printf("%f\n", color[3]);
+      if (color [3] < 1) color [3] += AUDIOSYSTEM->input.peaklevel [0] * 0.016f;
+      printf("%f\n", color[3]);
     }
     else
     {
-      if (color [3] > minAlpha) color [3] -= 0.016f;
+      if (color [3] > minAlpha)
+      {
+        color [3] -= 0.016f;
+      }
     }
     double frameTimeStart = glfwGetTime () * 1000;
 
@@ -313,7 +317,7 @@ namespace Framework
 
     texture->Bind ();
     GLuint posAttrib = shader->attribLocation ("position");
-    shader->uniMat4 ("mvp", glm::value_ptr (PLAYER->gameObject->Transform->GetModelViewProjectionMatrix ()));
+    shader->uniMat4 ("mvp", glm::value_ptr (CharacterController::PLAYER->gameObject->Transform->GetModelViewProjectionMatrix ()));
     glBindBuffer (GL_ARRAY_BUFFER, SSBOPos->Get_POS ());
     shader->vertexAttribPtr (posAttrib, 4, GL_FLOAT, GL_FALSE, 0, 0);
     shader->enableVertexAttribArray (posAttrib);

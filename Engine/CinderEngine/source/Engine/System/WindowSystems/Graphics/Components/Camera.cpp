@@ -27,6 +27,7 @@ namespace Framework
 		ZilchBindStaticMethodAs(ZGetWorldMousePosition, "GetWorldMousePosition");
 		ZilchBindStaticFieldGetAs(main, "Main");
 		ZilchBindFieldGetAs(aspect, "Aspect");
+		ZilchBindFieldGetAs(size, "Size");
 		//ZilchBindStaticMethodAs(ZGetCameraMousePosition, "GetCameraMousePosition");
 	}
   DefineComponentName(Camera);
@@ -40,6 +41,7 @@ namespace Framework
     allCameras.remove (this);
     gameObject->Camera = nullptr;
     OPENGL->cameras.remove (this);
+    EVENTSYSTEM->mDisconnect <KeyEvent, Camera> (Events::KEY_ANY, this, &Camera::OnKeyPressed);
   }
 
 
@@ -237,8 +239,8 @@ namespace Framework
 
   glm::vec2 Camera::GetWorldMousePosition()
   {
-    glm::vec2 ndc = { (WINDOWSYSTEM->Get_Mouse_Position ().x / WINDOWSYSTEM->Get_Width () - 0.5f) * 2.0f,
-      ((WINDOWSYSTEM->Get_Height () - WINDOWSYSTEM->Get_Mouse_Position ().y) / WINDOWSYSTEM->Get_Height () - 0.5f) * 2.0f };
+	  glm::vec2 ndc = { (WINDOWSYSTEM->Get_Mouse_Position().x / WINDOWSYSTEM->Get_Width() - 0.5f) * 1.47f,
+		  ((WINDOWSYSTEM->Get_Height() - WINDOWSYSTEM->Get_Mouse_Position().y) / WINDOWSYSTEM->Get_Height() - 0.5f) * 1.47f };
     
     //
     /*
