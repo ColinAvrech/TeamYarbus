@@ -135,7 +135,7 @@ class Josh : Component
 	//Console.WriteLine(Camera.GetWorldMousePosition());
 	}
 
-	function EscapePressed(e: PauseEvent)
+	function EscapePressed(e: KeyEvent)
 	{
 		if (InputManager.IsKeyTriggered(Keys.ESCAPE))
 		{
