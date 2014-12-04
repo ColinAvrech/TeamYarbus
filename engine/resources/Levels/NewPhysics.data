@@ -191,7 +191,7 @@ Level =
 			Vec4 Color = [1, 0.5, 0, 0.8],
 			bool Visible = true,
 			bool OnTop = false,
-			bool AnimationActive = true,
+			bool AnimationActive = false,
 			float AnimationSpeed = 1,
 			uint StartFrame = 0,
 			BlendMode BlendMode = Alpha,
@@ -254,15 +254,80 @@ Level =
 			Vec3 Scale = [64, 10, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
-    Text = 
+  },
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 9,
+		},
+		Named = 
+		{
+			string Name = "LeftWall",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [-60, 0, 0],
+			Vec3 Scale = [1, 1, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+    PolygonCollider2D = 
     {
-      string Text = "Hello World",
-      Vec2 Position = [-1.0, 0.8],
+      bool Enabled = true,
+		  bool Static = true,
+		  string Material = "4de020863e872da8:DefaultPhysicsMaterial",
+      Vec2 Dimensions = [5, 150],
+      float Orientation = 0,
     },
-    LevelTimer = 
+  },
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 9,
+		},
+		Named = 
+		{
+			string Name = "RightWall",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [60, 0, 0],
+			Vec3 Scale = [1, 1, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+    PolygonCollider2D = 
     {
-      string NextLevel = "DigipenLogo",
-      float EndTime = 10.0,
+      bool Enabled = true,
+		  bool Static = true,
+		  string Material = "4de020863e872da8:DefaultPhysicsMaterial",
+      Vec2 Dimensions = [5, 150],
+      float Orientation = 0,
+    },
+  },
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 9,
+		},
+		Named = 
+		{
+			string Name = "RightWall",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0, 32, 0],
+			Vec3 Scale = [1, 1, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+    PolygonCollider2D = 
+    {
+      bool Enabled = true,
+		  bool Static = true,
+		  string Material = "4de020863e872da8:DefaultPhysicsMaterial",
+      Vec2 Dimensions = [150, 5],
+      float Orientation = 0,
     },
   },
 },

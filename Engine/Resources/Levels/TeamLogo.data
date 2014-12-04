@@ -86,9 +86,9 @@ Level =
     Sprite = 
 		{
 			bool Visible = true,
-			string SpriteSource = "HighResLogo.jpg",
-      bool AnimationActive = true,
-			string Shader = "Animation",
+			string SpriteSource = "TeamLogo.png",
+      bool AnimationActive = false,
+			string Shader = "Default",
 			Vec4 Color = [1, 1, 1, 1],
 		},
     LevelTimer = 

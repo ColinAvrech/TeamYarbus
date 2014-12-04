@@ -97,7 +97,8 @@ namespace Framework
 	  void Set( Vector2 *vertices, unsigned count );
 	
 	  Vector2 GetSupport( const Vector2& dir );
-	
+    Vector2 dimensions;
+    float orientation;
 	  unsigned m_vertexCount;
 	  Vector2 m_vertices[MaxVertices];
 	  Vector2 m_normals[MaxVertices];
