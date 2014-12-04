@@ -182,6 +182,7 @@ namespace Framework
 
   void PhysicsSystemNew::Update (const double& dt)
   {
+	  paused = CORE->IsPaused();
     if (!paused)
     {
       Step ();

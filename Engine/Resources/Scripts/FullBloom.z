@@ -26,7 +26,16 @@ class Josh : Component
 	Console.WriteLine(ZInterface.WindowSystem);
 	this.MenuObjects = ZInterface.ObjectSystem.LoadLevelAdditive("HowToPlay");
 	this.MenuObjects = ZInterface.ObjectSystem.LoadLevelAdditive("MainMenu");
-	
+	var scale = this.Owner.Transform.GetScale();
+	var trans =  this.Owner.Transform.GetTranslation();
+	var len = this.MenuObjects.Length;
+	for (var i:Integer = 0; i < len; i += 1)
+	{
+		var obj = this.MenuObjects.Get(i);
+		var prevScale = obj.Transform.GetScale();
+		obj.Transform.SetScale(Real3(prevScale.X * scale.X, prevScale.Y * scale.Y, prevScale.Z * scale.Z));
+		obj.Transform.Translate(0,0,trans.Z);
+	}
 	/*
 	for (var i = 0; i < list.Length; i += 1)
 	{
@@ -130,6 +139,7 @@ class Josh : Component
 	{
 		if (InputManager.IsKeyTriggered(Keys.ESCAPE))
 		{
+			
 			if (this.MenuObjects.Get(0).Sprite.GetColor().W == 0)
 			{
 				this.ChangeMenuAlpha(1);
@@ -141,6 +151,7 @@ class Josh : Component
 				this.MenuObjects.Get(3).Sprite.ChangeTexture("UIHowToPlayBlack.png");
 				this.MenuObjects.Get(4).Sprite.ChangeTexture("UIExitBlack.png");
 			}
+			Console.WriteLine("PAUSED!");
 			ZInterface.TogglePaused();
 		}
 	}
@@ -202,7 +213,7 @@ class Cinder
 		var cameraPos = Camera.Main.Owner.Transform.GetTranslation();
 		position.X += cameraPos.X;
 		position.Y += cameraPos.Y;
-		//Console.WriteLine(position);
+		Console.WriteLine(position);
 		
 		return position;
 	}
