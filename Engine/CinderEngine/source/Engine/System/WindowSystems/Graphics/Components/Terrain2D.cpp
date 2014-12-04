@@ -67,6 +67,12 @@ namespace Framework
 
     value = data->FindElement(data, "Color");
     value->GetValue(&color);
+
+    value = data->FindElement(data, "MapPreset");
+    if (value)
+      value->GetValue(&MapFile);
+    else
+      MapFile = "";
   }
 
   void Terrain2D::Initialize ()
@@ -122,7 +128,7 @@ namespace Framework
   void Terrain2D::Generate_Height_Points ()
   {
     std::vector <float> heights;
-    tc = new Procedural::TerrainCreator (MapSize, BaseHeight, Passes, Waves, PeakHeight, WaterDepth);
+    tc = new Procedural::TerrainCreator (MapSize, BaseHeight, Passes, Waves, PeakHeight, WaterDepth, MapFile);
     Procedural::TerrainCreator& t = *tc;
     float* Map = t.GetRockMap ();
     //float* W_Map = t.GetWaterMap();
