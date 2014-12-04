@@ -61,13 +61,13 @@ Level =
 	  },
     Camera = 
 		{
-      bool Enabled = true,
+			bool Enabled = true,
 			bool main = true,
 			Vec3 Facing = [0, 0, 1],
-			float FieldOfView = 120,
+			float FieldOfView = 45,
 			float NearPlane = 0,
-			float FarPlane = 20,
-			float Size = 1,
+			float FarPlane = 100,
+			float Size = 128,
 		},
   },
 	Cog = 
@@ -83,7 +83,7 @@ Level =
 		Transform = 
 		{
 			Vec3 Translation = [0, 0, 0],
-			Vec3 Scale = [1, 1, 1],
+			Vec3 Scale = [9, 9, 9],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Josh = 

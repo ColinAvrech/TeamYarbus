@@ -18,6 +18,7 @@
 #include "KeyEvent.h"
 #include "Collider2D.h"
 #include "GameEvent.h"
+#include "Core.h"
 
 namespace Framework
 {
@@ -28,7 +29,9 @@ namespace Framework
 
   PlayerEffect::~PlayerEffect ()
   {
-    //WINDOWSYSTEM->effectList.remove (this);
+
+	  //EVENTSYSTEM->mDisconnect<KeyEvent, PlayerEffect>(Events::KEY_ESCAPE, this, &PlayerEffect::OnKeyPressed);
+	  //EVENTSYSTEM->mDisconnect<PauseEvent, PlayerEffect>(Events::PAUSE, this, &PlayerEffect::OnApplicationPause);
   }
 
 
@@ -37,23 +40,14 @@ namespace Framework
     Component::Get_Enabled (data);
     Serializer::DataNode* value = data->FindElement (data, "ParticleSize");
     value->GetValue (&size);
-
-    value = data->FindElement (data, "MaxSize");
-    value->GetValue (&maxSize);
-
-    value = data->FindElement (data, "MinSize");
-    value->GetValue (&minSize);
   }
 
   void PlayerEffect::OnKeyPressed (KeyEvent* key)
   {
-    switch (key->KeyValue)
-    {
-    case GLFW_KEY_F:
-      break;
-    default:
-      break;
-    }
+	  if (key->KeyDown)
+	  {
+		  CORE->TogglePaused();
+	  }
   }
 
 
@@ -62,8 +56,9 @@ namespace Framework
     initialize (0);
     initializeRenderer ();
 
-    EVENTSYSTEM->mConnect<KeyEvent, PlayerEffect> (Events::KEY_ANY, this, &PlayerEffect::OnKeyPressed);
-    EVENTSYSTEM->mConnect<PauseEvent, PlayerEffect> (Events::PAUSE, this, &PlayerEffect::OnApplicationPause);
+    //EVENTSYSTEM->mConnect<KeyEvent, PlayerEffect> (Events::KEY_ANY, this, &PlayerEffect::OnKeyPressed);
+    //EVENTSYSTEM->mConnect<PauseEvent, PlayerEffect> (Events::PAUSE, this, &PlayerEffect::OnApplicationPause);
+
   }
 
 
@@ -184,6 +179,7 @@ namespace Framework
 
   void PlayerEffect::Draw ()
   {
+	  paused = CORE->IsPaused();
     if (enabled)
     {
       if (!paused)

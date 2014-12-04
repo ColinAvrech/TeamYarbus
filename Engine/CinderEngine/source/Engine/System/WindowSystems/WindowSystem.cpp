@@ -382,7 +382,7 @@ namespace Framework
   }
 
 
-  static void OnKeyPressed (KeyEvent* key)
+  void WindowSystem::KeyFunction (KeyEvent* key)
   {
     if (key->KeyDown)
     {
@@ -402,7 +402,7 @@ namespace Framework
     std::cout << GetName () << " initialized\n";
 
     OPENGL = new Pipeline ();
-    EVENTSYSTEM->gConnect (Events::KEY_ANY, &OnKeyPressed);
+    EVENTSYSTEM->mConnect <KeyEvent, WindowSystem> (Events::KEY_ESCAPE, this, &WindowSystem::KeyFunction);
     return true;
   }
 

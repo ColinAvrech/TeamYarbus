@@ -32,7 +32,7 @@ class CameraFollow : Component
 				newpos.Y = pos1.Y;
 			}*/
 		}
-		Console.WriteLine(pos1, pos2, distance);
+		//Console.WriteLine(pos1, pos2, distance);
 		Camera.Main.Owner.Transform.SetTranslation(Real3(newpos.X, newpos.Y, -10)) ;
 			
 	} 

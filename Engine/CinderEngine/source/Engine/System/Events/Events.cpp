@@ -85,6 +85,9 @@ namespace Framework
 	  type->HandleManager = ZilchManagerId(PointerManager);
 	  
   }
-
+  ZilchDefineType(PauseEvent, CinderZilch)
+  {
+	  ZilchBindFieldGet(Paused);
+  }
 
 }

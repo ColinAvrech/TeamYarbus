@@ -17,11 +17,12 @@ namespace Framework
 {
   namespace Procedural
   {
-    TerrainCreator::TerrainCreator(int w, int bh, int detail, int wl, int peak, int water) :
-      MapWidth (w), BaseHeight (bh), passes (detail), waves (wl), PeakHeight (peak),
-      WaterDepth(water)
+    TerrainCreator::TerrainCreator(int _width, int _baseHeight, int _passes,
+      int _waves, int _peak, int _water, const std::string& _HMap) :
+      MapWidth (_width), BaseHeight (_baseHeight), passes (_passes), waves (_waves), PeakHeight (_peak),
+      WaterDepth(_water)
     {
-      Generate();
+      Generate(_HMap);
     }
 
     TerrainCreator::~TerrainCreator()
@@ -36,16 +37,24 @@ namespace Framework
      
     }
 
-    void TerrainCreator::GenerateHeightMap(float **Array, int base, int height)
+    void TerrainCreator::GenerateHeightMap(float **Array, int base, int height, const std::string& _File)
     {
+      int* WaveBuffer;
+      bool success = false;
+      if (_File.size() > 0)
+      {
+        success = ReadFile(&WaveBuffer, _File);
+      }
+      if (!success)
+      {
+        WaveBuffer = new int[2 * waves];
+        for (int i = 0; i < 2 * waves; ++i)
+          WaveBuffer[i] = rand() % 2;
+      }
+      
       *Array = new float[MapWidth];
       for (unsigned i = 0; i < MapWidth; ++i)
         (*Array)[i] = 0.0f;
-
-      //int* WaveBuffer = new int[ 2 * waves];
-      float WaveBuffer[10] = { 16, 1.5, 0, 0, 0, 0, 0, 0, 1.5, 16 };
-      //for (int i = 0; i < 2* waves; ++i)
-      //  WaveBuffer[i] = rand() % 2;
 
       int *x1/*[100]*/, *x2/*[50]*/, *x4/*[25]*/, *x8/*[12]*/;
       x1 = new int[MapWidth];
@@ -80,11 +89,11 @@ namespace Framework
       //delete[] WaveBuffer;
     } //function
 
-    void TerrainCreator::Generate()
+    void TerrainCreator::Generate(const std::string& MapFile)
     {
-      AddRock();
+      AddRock(MapFile);
       AddSoil();
-      //AddWater();
+      AddWater();
     }
 
     void TerrainCreator::AddSoil()
@@ -92,9 +101,9 @@ namespace Framework
       //GenerateHeightMap(HeightMapSoil, 0, WaterDepth);
     }
 
-    void TerrainCreator::AddRock()
+    void TerrainCreator::AddRock(const std::string& _File)
     {
-      GenerateHeightMap(&HeightMapRock, BaseHeight, PeakHeight);
+      GenerateHeightMap(&HeightMapRock, BaseHeight, PeakHeight, _File);
     }
 
     void TerrainCreator::AddWater()
@@ -102,7 +111,7 @@ namespace Framework
       if (WaterDepth > 0)
       {
         GenerateHeightMap(&HeightMapWater, 0, WaterDepth);
-        SettleWater();
+        //SettleWater();
       }
     }
 
@@ -244,5 +253,25 @@ namespace Framework
       else
         return NONE;
     }
+
+    bool TerrainCreator::ReadFile(int **Buffer, const std::string& _File)
+    {
+      std::string path("..//..//Resources//Levels//");
+      std::string extension(".terrain");
+      path.append(_File);
+      path.append(extension);
+      std::ifstream t(path);
+      if (!t.is_open())
+        return false;
+
+      t >> waves;
+      *Buffer = new int[2 * waves];
+      for (int i = 0; i < 2 * waves; ++i)
+      {
+        t >> (*Buffer)[i];
+      }
+      return true;
+    }
+
   } //Procedural
 } //Framework

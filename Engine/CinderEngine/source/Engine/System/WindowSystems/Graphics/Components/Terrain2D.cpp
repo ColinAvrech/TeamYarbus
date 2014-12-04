@@ -67,6 +67,12 @@ namespace Framework
 
     value = data->FindElement(data, "Color");
     value->GetValue(&color);
+
+    value = data->FindElement(data, "MapPreset");
+    if (value)
+      value->GetValue(&MapFile);
+    else
+      MapFile = "";
   }
 
   void Terrain2D::Initialize ()
@@ -91,6 +97,7 @@ namespace Framework
   { 
     shader->Use ();
     vao->bindVAO ();
+    shader->uniMat4 ("mvp", glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix ()));
     shader->uni4f ("color", color.r, color.g, color.b, color.a);
 
     glDrawArrays (GL_TRIANGLES, 0, vertices.size () / 3);
@@ -122,7 +129,7 @@ namespace Framework
   void Terrain2D::Generate_Height_Points ()
   {
     std::vector <float> heights;
-    tc = new Procedural::TerrainCreator (MapSize, BaseHeight, Passes, Waves, PeakHeight, WaterDepth);
+    tc = new Procedural::TerrainCreator (MapSize, BaseHeight, Passes, Waves, PeakHeight, WaterDepth, MapFile);
     Procedural::TerrainCreator& t = *tc;
     float* Map = t.GetRockMap ();
     //float* W_Map = t.GetWaterMap();

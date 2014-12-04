@@ -183,22 +183,6 @@ Level =
 			Vec3 Scale = [1, 1, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
-    Sprite = 
-		{
-			string SpriteSource = "Circle.png",
-			bool FlipX = false,
-			bool FlipY = false,
-			Vec4 Color = [1, 0.5, 0, 0.8],
-			bool Visible = true,
-			bool OnTop = false,
-			bool AnimationActive = false,
-			float AnimationSpeed = 1,
-			uint StartFrame = 0,
-			BlendMode BlendMode = Alpha,
-			SpriteGeometryMode GeometryMode = ZPlane,
-			string SpriteLayer = "52ad5fa30d7fcd50:DefaultSpriteLayer",
-			string Shader = "Default",
-		},
 		CircleCollider2D = 
 		{
       bool Enabled = true,
@@ -220,19 +204,17 @@ Level =
 		float minRadius = .1f,
 		bool reFueling = false,
 		},
-		PlayerEffect = 
-		{
-      bool Enabled = true,
-		  float ParticleSize = 100,
-		  float MaxSize = 10,
-		  float MinSize = 10,
-		},
     CLParticleRenderer = 
     {
       int ParticleCount = 10000,
       float ParticleSize = 5,
       float EffectRadius = 0.2,
       Vec4 Color = [255, 80, 0, 0.5],
+    },
+    PlayerEffect = 
+    {
+      bool Enabled = true,
+      float ParticleSize = 100,
     },
     CameraFollow = 
     {
@@ -246,14 +228,34 @@ Level =
 		},
 		Named = 
 		{
-			string Name = "Terrain",
+			string Name = "FollowPlayer",
 		},
 		Transform = 
 		{
 			Vec3 Translation = [0, 0, 0],
-			Vec3 Scale = [64, 10, 1],
+			Vec3 Scale = [1, 1, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
+    Sprite = 
+		{
+			string SpriteSource = "Circle.png",
+			bool FlipX = false,
+			bool FlipY = false,
+			Vec4 Color = [1, 0.5, 0, 0.8],
+			bool Visible = true,
+			bool OnTop = false,
+			bool AnimationActive = false,
+			float AnimationSpeed = 1,
+			uint StartFrame = 0,
+			BlendMode BlendMode = Alpha,
+			SpriteGeometryMode GeometryMode = ZPlane,
+			string SpriteLayer = "52ad5fa30d7fcd50:DefaultSpriteLayer",
+			string Shader = "Default",
+		},
+    Follow = 
+    {
+      string Target = "Player",
+    },
   },
   Cog = 
 	{
@@ -309,7 +311,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 9,
+			uint Id = 8,
 		},
 		Named = 
 		{
@@ -330,4 +332,24 @@ Level =
       float Orientation = 0,
     },
   },
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 9,
+		},
+		Named = 
+		{
+			string Name = "MainMenu",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0, 0, -20],
+			Vec3 Scale = [8, 8, 8],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Josh = 
+		{
+		},
+	},
 },
