@@ -70,7 +70,7 @@ namespace Framework
   bool FireSystem::initialize (size_t numParticles)
   {
     EVENTSYSTEM->mConnect<KeyEvent, FireSystem> (Events::KEY_ANY, this, &FireSystem::OnKeyPressed);
-    texture = Resources::RS->Get_Texture ("Capture.png");
+    texture = Resources::RS->Get_Texture ("Particle.bmp");
     shader = Resources::RS->Get_Shader ("Particle");
 
     const size_t NUM_PARTICLES = numParticles == 0 ? 500000 : numParticles;
@@ -95,8 +95,8 @@ namespace Framework
 
   void FireSystem::AddFire (float x, float y, float emitRate)
   {
-    glm::vec3 minVelocity = glm::linearRand (glm::vec3 (-0.5f, 1.0f, -0.5f), glm::vec3 (0.5f, 5.0f, 0.5f));
-    glm::vec3 maxVelocity = glm::linearRand (glm::vec3 (-1.0f, 5.0f, -1.0f), glm::vec3 (1.0f, 10.0f, 1.0f));
+    glm::vec3 minVelocity = glm::linearRand (glm::vec3 (-1.0f, 1.0f, 0), glm::vec3 (1.0f, 2.0f, 0));
+    glm::vec3 maxVelocity = glm::linearRand (glm::vec3 (-2.0f, 2.0f, 0), glm::vec3 (2.0f, 6.0f, 0));
     AddFireEmitter (glm::vec3 (x, y, 0), emitRate, minVelocity, maxVelocity);
   }
 
@@ -201,12 +201,12 @@ namespace Framework
       // pos:
       auto m_posGenerator = std::make_shared<BoxPosGen> ();
       m_posGenerator->m_pos = glm::vec4{ particleEmitter->position, 0.0 };
-      m_posGenerator->m_maxStartPosOffset = glm::vec4{ 0.0, 0.0, 0.0, 0.0 };
+      m_posGenerator->m_maxStartPosOffset = glm::vec4{ 0.75f, 1.0, 0.0, 0.0 };
       particleEmitter->addGenerator (m_posGenerator);
 
       auto m_colGenerator = std::make_shared<BasicColorGen> ();
       m_colGenerator->m_minStartCol = glm::vec4{ 255.0 / 255, 64.0 / 255, 00.0 / 255, 0.0 };
-      m_colGenerator->m_maxStartCol = glm::vec4{ 255.0 / 255, 64.0 / 255, 0.0 / 255, 0.4 };
+      m_colGenerator->m_maxStartCol = glm::vec4{ 255.0 / 255, 64.0 / 255, 0.0 / 255, 0.2 };
       m_colGenerator->m_minEndCol = glm::vec4{ 0, 0, 0, 0.0 };
       m_colGenerator->m_maxEndCol = glm::vec4{ 0, 0, 0, 0.0 };
       particleEmitter->addGenerator (m_colGenerator);

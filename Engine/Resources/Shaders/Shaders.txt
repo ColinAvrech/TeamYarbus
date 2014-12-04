@@ -1,6 +1,6 @@
 <
 Passthrough.vs.glsl
-Passthrough.frag.glsl
+Lighting.frag.glsl
 0
 Passthrough
 >

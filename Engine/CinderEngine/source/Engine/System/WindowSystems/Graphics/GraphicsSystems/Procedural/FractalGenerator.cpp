@@ -116,15 +116,43 @@ namespace Framework
     glm::vec2 p2;
     glm::vec4 color;
 
-    //float right = *std::max_element (xPositions.begin (), xPositions.end ());
-    //float left = *std::min_element (xPositions.begin (), xPositions.end ());
-    //float top = *std::max_element (yPositions.begin (), yPositions.end ());
-    //float bottom = *std::min_element (yPositions.begin (), yPositions.end ());
+    std::cout << lines << "\n";
 
-    //edges->push_back ({ left, bottom });
-    //edges->push_back ({ right, bottom });
-    //edges->push_back ({ left, top });
-    //edges->push_back ({ right, top });
+    float right = *std::max_element (xPositions.begin (), xPositions.end ());
+    float left = *std::min_element (xPositions.begin (), xPositions.end ());
+    float top = *std::max_element (yPositions.begin (), yPositions.end ());
+    float bottom = *std::min_element (yPositions.begin (), yPositions.end ());
+    float height = (top - bottom);
+    float center = (left + right) / 2;
+    //edges->push_back ({ center, bottom + height * 2.0f });
+    ////edges->push_back ({ right, bottom + 0.5f });
+    //edges->push_back ({ left, top + height });
+    //edges->push_back ({ right, top + height });
+
+    edges->push_back ({ center, height * 1.35f });
+
+    if (lines >= 128)
+    {
+      //edges->push_back ({ right * 0.5f, height * 0.5f });
+      //edges->push_back ({ left * 0.5f, height * 0.5f });
+      if (lines >= 512)
+      {
+        edges->push_back ({ right, height });
+        edges->push_back ({ left, height });
+      }
+      if (lines >= 2048)
+      {
+        edges->push_back ({ right * 0.75f, height * 1.25f });
+        edges->push_back ({ left * 0.75f, height * 1.25f });
+      }
+      if (lines >= 4096)
+      {
+        edges->push_back ({ center, height * 1.5f });
+        edges->push_back ({ right * 0.35f, height * 1.25f });
+        edges->push_back ({ left * 0.35f, height * 1.25f });
+        edges->push_back ({ center, height });
+      }
+    }
 
     for (int i = 0; i < lines; ++i)
     {
@@ -135,18 +163,18 @@ namespace Framework
       p2 = glm::vec2 (OPENGL->GetModelMatrix () * glm::vec4 (0, -sizes.at(i), 0, 1));
       OPENGL->PopMatrix ();
       color = glm::vec4 (0.5f / (colors.at (i) * treeRed), 0.5f / (colors.at (i) * treeGreen), 0.0f, 1.0f);
-      if (lines > 1 && i % (lines / 2) == 0)
-      {
-        int i = rand () % 1;
-        if (i == 0)
-        {
-          edges->push_back ({ p1.x, p1.y });
-        }
-        else
-        {
-          edges->push_back ({ p2.x, p2.y });
-        }
-      }
+      //if (lines > 1 && i % (lines / 2) == 0)
+      //{
+      //  int i = rand () % 1;
+      //  if (i == 0)
+      //  {
+      //    edges->push_back ({ p1.x, p1.y });
+      //  }
+      //  else
+      //  {
+      //    edges->push_back ({ p2.x, p2.y });
+      //  }
+      //}
       mesh->push_back (p1.x);
       mesh->push_back (p1.y);
       mesh->push_back (color.r);

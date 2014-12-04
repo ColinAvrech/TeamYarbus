@@ -37,7 +37,7 @@ namespace Framework
       //Physics::applyAccel(accelV, 0.016);
       //gameObject->Transform->Translate(0, 1, 0);
       
-      if (onGround)
+      //if (onGround)
       {
         gameObject->RigidBody2D->velocity.y += jumpVel.y;
         onGround = false;
