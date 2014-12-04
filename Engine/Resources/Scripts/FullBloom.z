@@ -59,7 +59,7 @@ class Josh : Component
 	//Console.Writeline(obj);
 	//Console.WriteLine(new Player());
 	//Console.WriteLine(this.Owner);
-	EventSystem.Connect("PAUSE", this.EscapePressed);
+	EventSystem.Connect("KESCAPE", this.EscapePressed);
 	//EventSystem.Connect(Events.UpdateEvent, this.LogicUpdate);
 	//Console.WriteLine(this);
 	//Console.WriteLine("hello");
