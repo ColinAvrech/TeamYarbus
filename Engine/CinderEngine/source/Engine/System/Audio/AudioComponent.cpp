@@ -166,15 +166,6 @@ namespace Framework
       newSound->micEffectUpdate();
 
     newSound->SetMute(mute);
-
-    if (CORE->IsPaused() == true)
-    {
-      AUDIOSYSTEM->SetPauseMenuEffect(500.0f, 2.5f, 0.5f);
-    }
-    else
-    {
-      AUDIOSYSTEM->SetPauseMenuEffect(22000.0f, 0.0f, 4.0f);
-    }
   }
 
   #pragma endregion
