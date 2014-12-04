@@ -220,11 +220,6 @@ Level =
 		float minRadius = .1f,
 		bool reFueling = false,
 		},
-		PlayerEffect = 
-		{
-		  bool Enabled = true,
-		  float ParticleSize = 100,
-		},
     CLParticleRenderer = 
     {
       int ParticleCount = 10000,
@@ -307,7 +302,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 9,
+			uint Id = 8,
 		},
 		Named = 
 		{
@@ -328,4 +323,24 @@ Level =
       float Orientation = 0,
     },
   },
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 9,
+		},
+		Named = 
+		{
+			string Name = "MainMenu",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0, 0, -20],
+			Vec3 Scale = [9, 9, 9],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Josh = 
+		{
+		},
+	},
 },
