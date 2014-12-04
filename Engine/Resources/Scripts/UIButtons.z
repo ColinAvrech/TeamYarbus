@@ -12,16 +12,17 @@ class ExitButton : Component
 		this.Owner = owner;
 		
 		this.Detector = new MouseDetector(this.Owner, this.OnMouseEvent);
-		this.Detector.Rect.Width = 9 * 150;
-		this.Detector.Rect.Height = 0.33 * 90;
-		this.Detector.Offset = Real2(0, 100);
+		
+		this.Detector.Rect.Width = 8 * 1.5;
+		this.Detector.Rect.Height = 0.33 * 8;
+		this.Detector.Offset = Real2(0, 0.02 * 8);
 		EventSystem.Connect(Events.UpdateEvent, this.LogicUpdate);
 	}
 	
 	function LogicUpdate(e: UpdateEvent)
 	{
 		var camerapos = Camera.Main.Owner.Transform.GetTranslation();
-		this.Owner.Transform.SetTranslation(Real3(camerapos.X, camerapos.Y - (0.75 * 9), 0));
+		this.Owner.Transform.SetTranslation(Real3(camerapos.X, camerapos.Y - (0.75 * 8), 0));
 	}
 	
 	function OnMouseEvent(e: MouseEvent)
@@ -71,9 +72,9 @@ class ResumeButton : Component
 	{
 		this.Owner = owner;
 		this.Detector = new MouseDetector(this.Owner, this.OnMouseEvent);
-		this.Detector.Rect.Width = 9 * 1.5 * this.Owner.Sprite.Width;
-		this.Detector.Rect.Height = 0.323 * 9;
-		this.Detector.Offset = Real2(0, 0.02 * 9);
+		this.Detector.Rect.Width = 8 * 1.5;
+		this.Detector.Rect.Height = 0.323 * 8;
+		this.Detector.Offset = Real2(0, 0.02 * 8);
 		
 		this.MenuObjects.Add(ZInterface.ObjectSystem.FindObjectByID(10));
 		this.MenuObjects.Add(ZInterface.ObjectSystem.FindObjectByID(11));
@@ -86,17 +87,20 @@ class ResumeButton : Component
 	
 	function LogicUpdate(e: UpdateEvent)
 	{
-		
+		Console.WriteLine("DIMENSIONS: ");
 		var camerapos = Camera.Main.Owner.Transform.GetTranslation();
 		this.MenuObjects.Get(0).Transform.SetTranslation(Real3(camerapos.X, camerapos.Y, 0));
-		this.MenuObjects.Get(1).Transform.SetTranslation(Real3(camerapos.X, camerapos.Y + (0.8775 * 9), 0));
-		this.Owner.Transform.SetTranslation(Real3(camerapos.X, camerapos.Y + (0.45 * 9), 0));
+		this.MenuObjects.Get(1).Transform.SetTranslation(Real3(camerapos.X, camerapos.Y + (0.8775 * 8), 0));
+		this.Owner.Transform.SetTranslation(Real3(camerapos.X, camerapos.Y + (0.45 * 8), 0));
+		Console.WriteLine(camerapos);
+		Console.WriteLine(this.Owner.Transform.GetTranslation());
 	}
 	
 	function OnMouseEvent(e: MouseEvent)
 	{
-		Console.WriteLine("DIMENSIONS: ");
-		Console.WriteLine(this.Detector.Rect.X, this.Detector.Rect.Y);
+		//Console.WriteLine("DIMENSIONS: ");
+		//Console.WriteLine(Camera.Main.Owner.Transform.GetTranslation());
+		//Console.WriteLine(this.Detector.Rect.X, this.Detector.Rect.Y);
 		//Console.WriteLine(this.Detector.Rect.TopLeft(), this.Detector.Rect.TopRight());
 		//Console.WriteLine(this.Detector.Rect.BottomLeft(), this.Detector.Rect.BottomRight());
 		if (this.Owner.Sprite.GetColor().W == 0)
@@ -111,7 +115,7 @@ class ResumeButton : Component
 				{
 					obj.Sprite.ChangeColor(1,1,1,0);
 				}
-				//ZInterface.TogglePaused();
+				ZInterface.TogglePaused();
 			}
 			this.Owner.Sprite.ChangeTexture("UIResumeWhite.png");
 		}
@@ -138,7 +142,6 @@ class HowToPlayButton : Component
 	var Detector: MouseDetector = null;
 	var MenuObjects:Array[GameObject] = new Array[GameObject]();
 	var HowToPlay:GameObject = null;
-  
 	constructor() : base()
 	{
 
@@ -148,9 +151,9 @@ class HowToPlayButton : Component
 	{
 		this.Owner = owner;
 		this.Detector = new MouseDetector(this.Owner, this.OnMouseEvent);
-		this.Detector.Rect.Width = 9 * 1.5;
-		this.Detector.Rect.Height = 0.33;
-		this.Detector.Offset = Real2(0, 0.02);
+		this.Detector.Rect.Width = 8 * 1.5;
+		this.Detector.Rect.Height = 0.33 * 8;
+		this.Detector.Offset = Real2(0, 0.02 * 8);
 		
 		this.HowToPlay = ZInterface.ObjectSystem.FindObjectByID(15);
 		this.MenuObjects.Add(ZInterface.ObjectSystem.FindObjectByID(10));
@@ -159,13 +162,15 @@ class HowToPlayButton : Component
 		this.MenuObjects.Add(ZInterface.ObjectSystem.FindObjectByID(13));
 		this.MenuObjects.Add(ZInterface.ObjectSystem.FindObjectByID(14));
 		
+		
 		EventSystem.Connect(Events.UpdateEvent, this.LogicUpdate);
 	}
 	
 	function LogicUpdate(e: UpdateEvent)
 	{
 		var camerapos = Camera.Main.Owner.Transform.GetTranslation();
-		this.Owner.Transform.SetTranslation(Real3(camerapos.X, camerapos.Y - (0.15 * 9), 0));
+		this.Owner.Transform.SetTranslation(Real3(camerapos.X, camerapos.Y - (0.15 * 8), 0));
+		this.HowToPlay.Transform.SetTranslation(Real3(camerapos.X, camerapos.Y, 0));
 	}
 	
 	function OnMouseEvent(e: MouseEvent)
@@ -225,10 +230,15 @@ class InstructionsMenu : Component
 		this.SpawnedObject.Sprite.ChangeColor(1,1,1,0);
 		
 		this.Detector = new MouseDetector(this.SpawnedObject, this.OnMouseEvent);
-		this.Detector.Rect.Width = 9 * 1.5;
-		this.Detector.Rect.Height = 0.33;
-		this.Detector.Offset = Real2(0, 0.02);
+		this.Detector.Rect.Width = 8 * 1.5;
+		this.Detector.Rect.Height = 0.33 * 8;
+		this.Detector.Offset = Real2(0, 0.02 * 8);
 		
+		var scale = this.Owner.Transform.GetScale();
+		this.Owner.Transform.SetScale(Real3(scale.X * 8, scale.Y * 8, scale.Z * 8));
+		
+		scale = this.SpawnedObject.Transform.GetScale();
+		this.SpawnedObject.Transform.SetScale(Real3(scale.X * 8, scale.Y * 8, scale.Z * 8));
 		
 		EventSystem.Connect(Events.UpdateEvent, this.LogicUpdate);
 	}
@@ -236,12 +246,12 @@ class InstructionsMenu : Component
 	function LogicUpdate(e: UpdateEvent)
 	{
 		var camerapos = Camera.Main.Owner.Transform.GetTranslation();
-		this.SpawnedObject.Transform.SetTranslation(Real3(camerapos.X, camerapos.Y - (1.11 * 9), 0));
+		this.SpawnedObject.Transform.SetTranslation(Real3(camerapos.X, camerapos.Y - (1.11 * 8), 0));
 		
 		var color = this.Owner.Sprite.GetColor();
 		this.SpawnedObject.Sprite.ChangeColor(color.X, color.Y, color.Z, color.W);
 		//var dimensions = this.Owner.Transform.GetScreenPosition(Real2(1, 0.21));
-		//this.Detector.Rect.Width = 9 * dimensions.X;
+		//this.Detector.Rect.Width = 8 * dimensions.X;
 		//this.Detector.Rect.Height = dimensions.Y;
 	}
 	

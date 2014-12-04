@@ -336,7 +336,7 @@ Level =
 		Transform = 
 		{
 			Vec3 Translation = [0, 0, -20],
-			Vec3 Scale = [9, 9, 9],
+			Vec3 Scale = [8, 8, 8],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Josh = 

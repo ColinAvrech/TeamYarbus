@@ -228,7 +228,7 @@ namespace Framework
     //if (useDebugDraw)
     {
       //THERMODYNAMICS->Draw ();
-      PHYSICS->Render ();
+      //PHYSICS->Render ();
     }
   }
 
