@@ -19,6 +19,7 @@
 
 namespace Framework
 {
+  int counter = 0;
 	void FireStarter::Serialize(Serializer::DataNode* data)
 	{
 		Component::Get_Enabled(data);
@@ -68,8 +69,14 @@ namespace Framework
         temp = temp->Parent;        
       }
 
-      if (temp->AudioComponent != nullptr)
-        temp->AudioComponent->PlaySound();
+      if (counter < 1)
+      {
+        if (temp->AudioComponent != nullptr)
+          //temp->AudioComponent->PlaySound();
+
+        counter++;
+      }
+      
 
       //for (unsigned i = 0; i < grid.positions.getSize ().x; ++i)
       //{
@@ -88,7 +95,7 @@ namespace Framework
             (
             gameObject->Transform->GetPosition().x,
             gameObject->Transform->GetPosition ().y,
-            30
+            60
             );
 			//for (unsigned i = 0; i < grid.positions.getSize ().x; ++i)
 			//{

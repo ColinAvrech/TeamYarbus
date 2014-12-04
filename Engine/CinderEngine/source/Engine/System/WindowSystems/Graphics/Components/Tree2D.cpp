@@ -92,13 +92,14 @@ namespace Framework
         std::cout << gridPos.x << "\n";
         FireStarter* fs = reinterpret_cast<FireStarter*> (go->AddComponent ("FireStarter"));
         fs->Initialize ();
+        fs->material_type = GRASS;
         go->FireStarter->initTemp = 400.0f;
         Physics::THERMODYNAMICS->Add_Object (gridPos.x, gridPos.y, reinterpret_cast<FireStarter*> (go->GetComponent ("FireStarter")));
         go->Parent = gameObject;
       }
 
       break;
-    case Framework::GRASS:
+    case Framework::TREE_GRASS:
       Make_Grass (0, -0.1f, 0.1f);
       break;
     default:
@@ -174,6 +175,17 @@ namespace Framework
       vao->unbindVAO ();
       shader->Disable ();
       OPENGL->ResetBlendMode ();
+
+      glMatrixMode (GL_PROJECTION);
+      glLoadIdentity ();
+      glMatrixMode (GL_MODELVIEW);
+      glLoadIdentity ();
+      glColor3f (0, 1, 0);
+      glBegin (GL_LINES);
+      glVertex2f (0.0f, 0.0f);
+      glVertex2f (-0.1f, 0.1f);
+      glVertex2f (-0.2f, 0.2f);
+      glEnd ();
     }
     else
     {
