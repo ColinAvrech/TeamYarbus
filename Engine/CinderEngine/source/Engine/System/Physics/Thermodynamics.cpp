@@ -362,6 +362,8 @@ namespace Framework
       VelocityMapY.fill ({ 0 });
       VelocityMap_PrevX.fill ({ 0 });
       VelocityMap_PrevY.fill ({ 0 });
+
+      FireMap.clear ();
     }
 
     glm::ivec2 ThermodynamicsSystem::GetSubscript(const float &x, const float &y)

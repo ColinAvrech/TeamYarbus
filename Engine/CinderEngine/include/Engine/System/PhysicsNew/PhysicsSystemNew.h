@@ -21,6 +21,7 @@ namespace Framework
     virtual void OnApplicationPause (PauseEvent* pause);
 
     RigidBody2D *Add (ShapeCollider2D *shape, float x, float y);
+    void Remove (RigidBody2D* rb);
     void Step (void);
     void Render (void);
     void Clear (void);

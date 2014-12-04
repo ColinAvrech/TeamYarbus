@@ -11,6 +11,8 @@ deleted.
 /******************************************************************************/
 
 #include "ObjectSystem.h"
+#include "PhysicsSystemNew.h"
+#include "Thermodynamics.h"
 #include "BaseSystem.h"
 #include "IncludeForAllCollision.h"
 #include "GameEvent.h"
@@ -51,6 +53,7 @@ deleted.
 #include "ScriptComponent.h"
 #include "FireStarter.h"
 #include "Health.h"
+#include "LevelTimer.h"
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 
@@ -195,6 +198,7 @@ namespace Framework
     RegisterComponent (CharacterController);
     RegisterComponent (Health);
     RegisterComponent (FireStarter);
+    RegisterComponent (LevelTimer);
     //////////////////////////////////////////////////////////////////////////
   }
 	void ObjectSystem::AddComponentCreator(string name, ComponentCreator* creator)
@@ -250,6 +254,8 @@ namespace Framework
 
   void ObjectSystem::LoadLevel(const char* name)
   {
+    PHYSICS->Clear ();
+    Physics::THERMODYNAMICS->Reset ();
     CommandList.push(ObjectSystemCommand::_LoadLevel);
     currentLevelName = name;
   }

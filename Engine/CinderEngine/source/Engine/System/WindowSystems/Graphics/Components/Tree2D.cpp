@@ -175,17 +175,6 @@ namespace Framework
       vao->unbindVAO ();
       shader->Disable ();
       OPENGL->ResetBlendMode ();
-
-      glMatrixMode (GL_PROJECTION);
-      glLoadIdentity ();
-      glMatrixMode (GL_MODELVIEW);
-      glLoadIdentity ();
-      glColor3f (0, 1, 0);
-      glBegin (GL_LINES);
-      glVertex2f (0.0f, 0.0f);
-      glVertex2f (-0.1f, 0.1f);
-      glVertex2f (-0.2f, 0.2f);
-      glEnd ();
     }
     else
     {
