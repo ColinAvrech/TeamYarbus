@@ -10,10 +10,15 @@ class ExitButton : Component
 	function Initialize(owner:GameObject)
 	{
 		this.Owner = owner;
+		
+		var scale = this.Owner.Transform.GetScale();
+		var size = Camera.Main.Size/3.5;
+		this.Owner.Transform.SetScale(Real3(scale.X * size, scale.Y * size, scale.Z));
+		
 		this.Detector = new MouseDetector(this.Owner, this.OnMouseEvent);
-		this.Detector.Rect.Width = 1.5;
-		this.Detector.Rect.Height = 0.33;
-		this.Detector.Offset = Real2(0, 0.02);
+		this.Detector.Rect.Width = 15 * size;
+		this.Detector.Rect.Height = 03.3 * size;
+		this.Detector.Offset = Real2(0, 0.02 * size);
 		EventSystem.Connect(Events.UpdateEvent, this.LogicUpdate);
 	}
 	

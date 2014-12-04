@@ -54,6 +54,7 @@ deleted.
 #include "FireStarter.h"
 #include "Health.h"
 #include "LevelTimer.h"
+#include "CheatCodes.h"
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 
@@ -77,7 +78,7 @@ namespace Framework
 		
 		ZilchBindMethod(CreateObject);
 		ZilchBindMethod(DestroyAllObjects);
-    ZilchBindMethodOverload(LoadLevelAdditive, ZArray*, Zilch::String);
+		ZilchBindMethodOverload(LoadLevelAdditive, ZArray*, Zilch::String);
 		ZilchBindMethodAs(ZilchLoadLevel, "LoadLevel");
 		ZilchBindMethod(FindObjectByName);
 		ZilchBindMethod(FindObjectByID);
@@ -133,10 +134,12 @@ namespace Framework
 
         case _LoadLevel:
           DestroyAllObjects();
+          EVENTSYSTEM->DeleteAllEvents();
           data.open(currentLevelName.c_str());
           data.CreateArchive();
           Trunk = data.GetTrunk();
           SerializeObject(Trunk);
+          Cheats::InitializeCheats();
           break;
 
         default:
