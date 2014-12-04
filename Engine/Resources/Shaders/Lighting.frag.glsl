@@ -27,7 +27,7 @@ uniform vec3 mspecular = vec3 (1, 1, 1);
 ////////////////////////////////////////////
 ////////////////////////////////////////////
 // SHININESS
-uniform float shininess = 3;
+uniform float shininess = 4;
 ////////////////////////////////////////////
 ////////////////////////////////////////////
 
@@ -45,7 +45,7 @@ void main()
   float dist = length (Position - lightPos);
 
   // calculate attentuation using distance from light
-  float att = 2.0 / (1.0 + 0.1 * dist + 0.01 * dist * dist);
+  float att = 1.5 / (1.0 + 0.1 * dist + 0.01 * dist * dist);
 
   //the ambient light
   vec3 ambient = mambient * lambient;

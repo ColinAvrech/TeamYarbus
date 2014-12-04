@@ -2,3 +2,9 @@ FireA.ogg
 3D
 Pads.ogg
 3D
+CreditsMusic.wav
+BG
+MainMenuScroll.wav
+2D
+SplashScreen.wav
+2D

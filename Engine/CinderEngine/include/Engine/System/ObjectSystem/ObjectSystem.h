@@ -31,12 +31,12 @@ namespace Framework
 
 namespace Framework
 {
-  /*!Game Object Factory:
-  The Game object factory creates composition objects from data streams and manages
-  their lifetimes. As part of controlling the life times of the GameObjectComposition (GOC)
-  it also provides an integer based Id system for safe referencing of game objects
-  through integer Id Handles.
-  */
+  enum ObjectSystemCommand
+  {
+    _Idle,
+    _LoadLevel,
+    _LoadLevelAdditive,
+  };
 
   //!Set the factory to null to indicate is hasn't been created yet
   extern ObjectSystem * OBJECTSYSTEM;
@@ -45,9 +45,6 @@ namespace Framework
   {
   public:
     ZilchDeclareDerivedType(ObjectSystem, BaseSystem);
-	
-	//ZilchDeclareBaseType(Zilch::Array<GameObject*>, Zilch::TypeCopyMode::ReferenceType);
-	//ZilchDeclareBaseType(Zilch::Array<GameObject*>, Zilch::TypeCopyMode::ReferenceType);
 	
 	friend class ZArray;
     friend class GameObject;
@@ -68,29 +65,26 @@ namespace Framework
     GameObject* CreateObject();
 
     //!Destroy all the GOC. Used in final shutdown procedure.
+    void DestroyObjectNow(GameObject* obj);
+    void DestroyObject(GameObject* obj);
     void DestroyAllObjects();
 
-    void DestroyGameObjectsToBeDestroyed();
-
-    void LoadAllLevels(const string &levellist);
-    void LoadLevel(const string &fn_level = "", const string &levelName = "");
-    void ChangeLevel(const string& name);
-    void ChangeLevel(const int& iNewLevel);
-    void StartLevel();
-    void RestartLevel ();
-	void ZilchLoadLevel(Zilch::String level);
-	ZArray* LoadLevelAdditive(Zilch::String level);
-
-	GameObject* FindObjectByName(Zilch::String name);
-	GameObject* FindObjectByID(Zilch::Integer id);
-	void FindAllObjectsByName(Zilch::String name);
+    void ZilchLoadLevel(Zilch::String level);
+    void LoadLevel(const char* name);
     
-	void DestroyObject(GameObject* obj);
-	  
-    /*!Used to generator unique GOCIds*/
-    static unsigned LastGameObjectId;
-    static int currentLevel;
 
+    // Adds more objects to an existing level
+    ZArray* LoadLevelAdditive(Zilch::String level);
+    void LoadLevelAdditive(const char* name);
+
+    void RestartLevel();
+    
+	  GameObject* FindObjectByName(Zilch::String name);
+	  GameObject* FindObjectByID(Zilch::Integer id);
+	  
+    static unsigned LastGameObjectId;
+    std::string currentLevelName;
+    static int currentLevel;
 
     typedef std::unordered_map<string, ComponentCreator *> SerializationMap;
     SerializationMap SerialMap;
@@ -99,21 +93,29 @@ namespace Framework
     GameObjectMap GameObjects;
 
   private:
+	  Zilch::Array<GameObject*>* ObjectSystem::SerializeObject(Serializer::DataNode* data);
 
-	Zilch::Array<GameObject*>* ObjectSystem::SerializeObject(Serializer::DataNode* data);
-    void ObjectSystem::SerializeComponent(string ComponentName, Serializer::DataNode* data);
+    void DestroyGameObjectsToBeDestroyed();
 
     void RegisterComponents(void);
     void AddComponentCreator(string name, ComponentCreator* creator);
-    void InitializeObject ();
-
-    std::vector<Level*> levelList;
+    
     typedef std::vector<GameObject *> ObjectsToBeDestroyed;
     ObjectsToBeDestroyed GameObjectsToBeDestroyed;
+    std::vector<Level*> levelList;
+    std::queue<ObjectSystemCommand> CommandList;
   };
-
-
-
 }
 
 
+// Collins Stuff (DO NOT TOUCH)
+/*
+void LoadAllLevels(const string &levellist);
+void LoadLevel(const string &fn_level = "", const string &levelName = "");
+
+void ChangeLevel(const string& name);
+void ChangeLevel(const int& iNewLevel);
+
+void StartLevel();
+void RestartLevel();
+*/
