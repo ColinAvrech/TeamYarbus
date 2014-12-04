@@ -55,6 +55,7 @@ deleted.
 #include "Health.h"
 #include "LevelTimer.h"
 #include "CheatCodes.h"
+#include "Follow.h"
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 
@@ -80,7 +81,7 @@ namespace Framework
 		ZilchBindMethod(DestroyAllObjects);
 		ZilchBindMethodOverload(LoadLevelAdditive, ZArray*, Zilch::String);
 		ZilchBindMethodAs(ZilchLoadLevel, "LoadLevel");
-		ZilchBindMethod(FindObjectByName);
+		ZilchBindMethodOverload(FindObjectByName, GameObject*, Zilch::String);
 		ZilchBindMethod(FindObjectByID);
 		ZilchBindMethod(DestroyObject);
 		//ZilchBindMethod(LoadLevel);
@@ -202,6 +203,7 @@ namespace Framework
     RegisterComponent (Health);
     RegisterComponent (FireStarter);
     RegisterComponent (LevelTimer);
+    RegisterComponent (Follow);
     //////////////////////////////////////////////////////////////////////////
   }
 	void ObjectSystem::AddComponentCreator(string name, ComponentCreator* creator)
@@ -299,6 +301,19 @@ namespace Framework
 		}
 		return nullptr;
 	}
+
+  GameObject* ObjectSystem::FindObjectByName (std::string name)
+  {
+    for each (auto& i in GameObjects)
+    {
+      if (name.compare(i.second->Name) == 0)
+      {
+        return i.second;
+      }
+    }
+
+    return nullptr;
+  }
 
 	GameObject* ObjectSystem::FindObjectByID(Zilch::Integer id)
 	{

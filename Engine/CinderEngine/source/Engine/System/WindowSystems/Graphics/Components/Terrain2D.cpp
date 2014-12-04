@@ -91,6 +91,7 @@ namespace Framework
   { 
     shader->Use ();
     vao->bindVAO ();
+    shader->uniMat4 ("mvp", glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix ()));
     shader->uni4f ("color", color.r, color.g, color.b, color.a);
 
     glDrawArrays (GL_TRIANGLES, 0, vertices.size () / 3);

@@ -169,6 +169,7 @@ namespace Framework
       //}
       glLineWidth (7.0f);
       shader->Use ();
+      shader->uniMat4 ("mvp", glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix ()));
       vao->bindVAO ();
       //shader->uniMat4 ("mvp", glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix ()));
       glDrawArrays (GL_LINES, 0, treeMesh.size () / 6);
@@ -179,6 +180,7 @@ namespace Framework
     else
     {
       shader->Use ();
+      shader->uniMat4 ("mvp", glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix ()));
       shader->uni4fv ("color", glm::value_ptr (color));
       vao->bindVAO ();
       glDrawArrays (GL_LINES, 0, treeMesh.size () / 2);

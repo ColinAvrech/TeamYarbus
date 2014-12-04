@@ -69,6 +69,7 @@ namespace Framework
   {
 	  return String(Name.c_str());
   }
+
   // Zilch method for adding components to GameObjects
   Component* GameObject::ZAddComponent(Zilch::String name)
   {

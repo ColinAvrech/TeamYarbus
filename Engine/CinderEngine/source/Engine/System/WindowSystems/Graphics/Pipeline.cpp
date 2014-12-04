@@ -192,7 +192,6 @@ namespace Framework
     //////////////////////////////////////////////////////////////////////////
     for (auto* i : graphicsObjects [DEFAULT])
     {
-      i->Update ();
       i->Draw ();
     }
 
