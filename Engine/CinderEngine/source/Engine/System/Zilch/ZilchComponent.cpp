@@ -21,7 +21,7 @@ namespace Framework
 
   ZilchComponent::~ZilchComponent()
   {
-
+	  ActiveScript.Delete();
   }
 
   //INITIALIZE
@@ -46,10 +46,9 @@ namespace Framework
     // The exception report stores any exceptions that may have occurred while executing code
     // Exceptions include accessing arrays out of bounds, dereferencing null, etc
     Zilch::ExceptionReport report;
-    Zilch::Handle bob;
     Zilch::ExecutableState* state = ZILCH->GetDependencies();
-    bob = state->AllocateDefaultConstructedHeapObject(ZilchClass, report, Zilch::HeapFlags::NonReferenceCounted);
-
+    ActiveScript = state->AllocateDefaultConstructedHeapObject(ZilchClass, report, Zilch::HeapFlags::NonReferenceCounted);
+	
 	//var Owner : GameObject;
 	//owner->PropertyType == ZilchTypeId(Real);
 	/*
@@ -67,7 +66,7 @@ namespace Framework
     {
       // Invoke the SayHello function, which should print out to the console
       Zilch::Call call(ZilchInitialize, ZILCH->GetDependencies());
-      call.SetHandle(Zilch::Call::This, bob);
+      call.SetHandle(Zilch::Call::This, ActiveScript);
       //call.Set<Zilch::String>(0, ohai.c_str());
       //call.SetHandle(1, engineHandle);
 	  //call.SetHandle(0, OBJECTSYSTEM);

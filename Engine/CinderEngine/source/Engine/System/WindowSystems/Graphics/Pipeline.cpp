@@ -61,7 +61,7 @@ namespace Framework
         cState = INTERPOLATE;
         t = 0.0f;
         startColor = color;
-        endColor = glm::linearRand (glm::vec4 (0, 0, 0, 0), glm::vec4 (0.2f, 0.2f, 0.2f, 1.0f));
+        endColor = glm::linearRand (glm::vec4 (0, 0, 0, 0), glm::vec4 (0.4f, 0.4f, 0.4f, 1.0f));
       }
       break;
     case Framework::INTERPOLATE:
@@ -105,31 +105,36 @@ namespace Framework
     currentMatrix = 0;
 
     EVENTSYSTEM->mConnect<PauseEvent, Pipeline> (Events::PAUSE, this, &Pipeline::OnApplicationPause);
-    RigidBody2D* b;
-    //CircleCollider2D c (1.0f);
-    //b = PHYSICS->Add (&c, 2, 1);
 
-    PolygonCollider2D poly;
-    poly.SetBox (0.5f, 100.0f);
-    b = PHYSICS->Add (&poly, -64, 0);
-    b->SetStatic ();
-    b->SetOrient (0);
+    RigidBody2D* rb, *rb1, *rb2;
+    GameObject* go, *go1, *go2;
+    go = OBJECTSYSTEM->CreateObject ();
+    go1 = OBJECTSYSTEM->CreateObject ();
+    go2 = OBJECTSYSTEM->CreateObject ();
+    PolygonCollider2D* poly = new PolygonCollider2D ();
+    poly->gameObject = go;
+    poly->SetBox (0.5f, 100.0f);
+    rb = PHYSICS->Add (poly, -64, 0);
+    rb->SetStatic ();
+    rb->SetOrient (0);
 
-    PolygonCollider2D poly1;
-    poly1.SetBox (0.5f, 100.0f);
-    b = PHYSICS->Add (&poly1, 64, 0);
-    b->SetStatic ();
-    b->SetOrient (0);
-    b->dynamicFriction = 0.0f;
-    b->staticFriction = 0.0f;
+    PolygonCollider2D* poly1 = new PolygonCollider2D ();
+    poly1->gameObject = go1;
+    poly1->SetBox (0.5f, 100.0f);
+    rb1 = PHYSICS->Add (poly1, 64, 0);
+    rb1->SetStatic ();
+    rb1->SetOrient (0);
+    rb1->dynamicFriction = 0.0f;
+    rb1->staticFriction = 0.0f;
 
-    PolygonCollider2D poly2;
-    poly2.SetBox (128.0, 0.5f);
-    b = PHYSICS->Add (&poly2, 0, 32);
-    b->SetStatic ();
-    b->SetOrient (0);
-    b->dynamicFriction = 0.0f;
-    b->staticFriction = 0.0f;
+    PolygonCollider2D* poly2 = new PolygonCollider2D ();
+    poly2->gameObject = go2;
+    poly2->SetBox (128.0, 0.5f);
+    rb2 = PHYSICS->Add (poly2, 0, 32);
+    rb2->SetStatic ();
+    rb2->SetOrient (0);
+    rb2->dynamicFriction = 0.0f;
+    rb2->staticFriction = 0.0f;
 
     GLfloat vertices [] =
     {

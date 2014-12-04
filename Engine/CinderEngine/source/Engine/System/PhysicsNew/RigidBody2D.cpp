@@ -11,10 +11,10 @@ namespace Framework
 
 
 	RigidBody2D::RigidBody2D(ShapeCollider2D* shape_, float x, float y)
-	  : shape( shape_->Clone( ) )
 	{
     gameObject = nullptr;
-	  shape->rigidBody = this;
+    shape = shape_;
+	  shape_->rigidBody = this;
 	  position.Set( (float)x, (float)y );
 	  velocity.Set( 0, 0 );
 	  maxVelocity.Set(10, 10);
@@ -32,9 +32,9 @@ namespace Framework
 	  b = MyRandom( 0.2f, 1.0f );
 	}
 	
-	RigidBody2D::RigidBody2D ()
+	RigidBody2D::~RigidBody2D ()
 	{
-	
+    gameObject->RigidBody2D = nullptr;
 	}
 	
 	

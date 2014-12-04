@@ -162,6 +162,24 @@ namespace Framework
 	  return b;
 	}
 
+  void PhysicsSystemNew::Remove (RigidBody2D* rb)
+  {
+    for (auto it = rigidBodies.begin (); it != rigidBodies.end (); ++it)
+    {
+      if ((*it) == rb)
+      {
+        rigidBodies.erase (it);
+        break;
+      }
+    }
+  }
+
+  void PhysicsSystemNew::Clear ()
+  {
+    contacts.clear ();
+    rigidBodies.clear ();
+  }
+
   void PhysicsSystemNew::Update (const double& dt)
   {
     if (!paused)
