@@ -57,7 +57,7 @@ namespace Framework
     if (currentRadius <= minRadius)
     {
        //OBJECTSYSTEM->ZilchLoadLevel(Zilch::String("NewPhysics"));
-      printf("dead");
+      //printf("dead");
     }
 	}
 

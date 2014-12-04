@@ -69,7 +69,7 @@ namespace Framework
       }
 
       if (temp->AudioComponent != nullptr)
-        temp->AudioComponent->PlaySound();
+        //temp->AudioComponent->PlaySound();
 
       //for (unsigned i = 0; i < grid.positions.getSize ().x; ++i)
       //{
