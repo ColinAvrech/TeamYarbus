@@ -66,7 +66,7 @@ namespace Framework
     if (key < GLFW_KEY_LAST)
     {
       // Set the Key's State      
-      KeyWasPressed[key] = state;
+      KeyWasPressed[key] = static_cast<bool>(state);
     }	
 	}
 
@@ -75,7 +75,7 @@ namespace Framework
     if (button < GLFW_MOUSE_BUTTON_LAST)
     {
       // Set the Mouse's State
-      MouseWasDown[button] = action;
+      MouseWasDown[button] = static_cast<bool>(action);
     }
 	}
 

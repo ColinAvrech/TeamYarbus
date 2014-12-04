@@ -54,6 +54,7 @@ deleted.
 #include "FireStarter.h"
 #include "Health.h"
 #include "LevelTimer.h"
+#include "CheatCodes.h"
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 
@@ -133,10 +134,12 @@ namespace Framework
 
         case _LoadLevel:
           DestroyAllObjects();
+          EVENTSYSTEM->DeleteAllEvents();
           data.open(currentLevelName.c_str());
           data.CreateArchive();
           Trunk = data.GetTrunk();
           SerializeObject(Trunk);
+          Cheats::InitializeCheats();
           break;
 
         default:
