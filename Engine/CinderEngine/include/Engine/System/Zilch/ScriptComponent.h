@@ -76,7 +76,7 @@ namespace Framework
     virtual void Serialize(Serializer::DataNode* componentData);
 
     //Destructor
-    virtual ~ZilchComponent();
+	virtual ~ZilchComponent() override;
 
 
   private:
@@ -92,6 +92,8 @@ namespace Framework
     Zilch::Function* ZilchInitialize;
     //Update
     Zilch::Function* Run;
+
+	Zilch::Handle ActiveScript;
     //Zilch exception handler (Zilch::ExceptionReport)
     Zilch::ExceptionReport report;
 
