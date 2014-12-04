@@ -50,7 +50,7 @@ class Josh : Component
 	//Console.Writeline(obj);
 	//Console.WriteLine(new Player());
 	//Console.WriteLine(this.Owner);
-	EventSystem.Connect("KESCAPE", this.EscapePressed);
+	EventSystem.Connect("PAUSE", this.EscapePressed);
 	//EventSystem.Connect(Events.UpdateEvent, this.LogicUpdate);
 	//Console.WriteLine(this);
 	//Console.WriteLine("hello");
@@ -126,7 +126,7 @@ class Josh : Component
 	//Console.WriteLine(Camera.GetWorldMousePosition());
 	}
 
-	function EscapePressed(e: KeyEvent)
+	function EscapePressed(e: PauseEvent)
 	{
 		if (InputManager.IsKeyTriggered(Keys.ESCAPE))
 		{

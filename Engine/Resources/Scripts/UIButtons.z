@@ -112,7 +112,7 @@ class ResumeButton : Component
 				{
 					obj.Sprite.ChangeColor(1,1,1,0);
 				}
-				ZInterface.TogglePaused();
+				//ZInterface.TogglePaused();
 			}
 			this.Owner.Sprite.ChangeTexture("UIResumeWhite.png");
 		}

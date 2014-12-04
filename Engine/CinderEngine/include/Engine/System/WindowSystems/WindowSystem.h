@@ -42,7 +42,7 @@ namespace Framework
 
     void WindowsUpdate(const double& dt);
     void GraphicsUpdate(const double& dt);
-
+	void KeyFunction(KeyEvent* key);
     // GLFW callbacks
     void GLFWMessageHandler(GLFWwindow* window, const int key, const int scanCode, const int state, const int mod);
     void GLFWMouseButtonFunction(GLFWwindow *, const int button, const int action, const int mod);

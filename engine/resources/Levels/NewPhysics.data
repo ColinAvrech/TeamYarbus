@@ -222,10 +222,8 @@ Level =
 		},
 		PlayerEffect = 
 		{
-      bool Enabled = true,
+		  bool Enabled = true,
 		  float ParticleSize = 100,
-		  float MaxSize = 10,
-		  float MinSize = 10,
 		},
     CLParticleRenderer = 
     {
