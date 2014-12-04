@@ -53,6 +53,9 @@ namespace Framework
     Texture* Get_Texture ();
     void Specify_Attributes ();
 
+    // Public Variables
+    vec4 color;
+
     const static string Name;
 
   private:
@@ -60,7 +63,6 @@ namespace Framework
     // Resources
     Texture* texture;
     SpriteSheet* atlas;
-    vec4 color;
     GLenum BlendMode;
 
     // Animated Sprites

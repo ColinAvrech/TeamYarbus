@@ -83,18 +83,5 @@ Level =
 		  Vec3 Scale = [4, 2, 1],
 		  Quat Rotation = [0, 0, 0, 1],
 	  },
-    Sprite = 
-		{
-			bool Visible = true,
-			string SpriteSource = "DigiPenLogo.png",
-      bool AnimationActive = false,
-			string Shader = "Default",
-			Vec4 Color = [1, 1, 1, 1],
-		},
-    LevelTimer = 
-    {
-      string NextLevel = "TeamLogo",
-      float EndTime = 3.0,
-    },
   },
 },
