@@ -27,6 +27,7 @@ namespace Framework
 		ZilchBindStaticMethodAs(ZGetWorldMousePosition, "GetWorldMousePosition");
 		ZilchBindStaticFieldGetAs(main, "Main");
 		ZilchBindFieldGetAs(aspect, "Aspect");
+		ZilchBindFieldGetAs(size, "Size");
 		//ZilchBindStaticMethodAs(ZGetCameraMousePosition, "GetCameraMousePosition");
 	}
   DefineComponentName(Camera);
