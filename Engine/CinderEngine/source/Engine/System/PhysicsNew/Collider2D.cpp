@@ -16,8 +16,9 @@ namespace Framework
 
   ShapeCollider2D::~ShapeCollider2D ()
   {
+    PHYSICS->Remove (rigidBody);
+    delete rigidBody;
     rigidBody = nullptr;
-    if (gameObject != nullptr)
     gameObject->ShapeCollider2D = nullptr;
   }
 

@@ -1,0 +1,57 @@
+Level = 
+{
+	Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 12,
+		},
+		Named = 
+		{
+			string Name = "ResumeGame",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0, 0.45, 0],
+			Vec3 Scale = [0.75, 0.75, 0.75],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Sprite = 
+		{
+			bool Visible = true,
+			string SpriteSource = "UIResumeBlack.png",
+			string Shader = "Default",
+			Vec4 Color = [1, 1, 1, 0],
+		},
+		ResumeButton = 
+		{
+		},
+	},
+	Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 14,
+		},
+		Named = 
+		{
+			string Name = "QuitGame",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0, -0.75, 0],
+			Vec3 Scale = [0.75, 0.75, 0.75],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Sprite = 
+		{
+			bool Visible = true,
+			string SpriteSource = "UIExitBlack.png",
+			string Shader = "Default",
+			Vec4 Color = [1, 1, 1, 0],
+		},
+		ExitButton = 
+		{
+		},
+	},
+},

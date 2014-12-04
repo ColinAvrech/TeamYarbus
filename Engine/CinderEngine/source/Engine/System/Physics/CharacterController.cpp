@@ -26,6 +26,9 @@ namespace Framework
 
   CharacterController::~CharacterController ()
   {
+    EVENTSYSTEM->mDisconnect<KeyEvent, CharacterController> (Events::KEY_ANY, this, &CharacterController::OnKeyPressed);
+    EVENTSYSTEM->mDisconnect<CollisionEvent, CharacterController> (Events::COLLISION, this, &CharacterController::OnCollisionEnter);
+    EVENTSYSTEM->mDisconnect<UpdateEvent, CharacterController> (Events::UPDATEEVENT, this, &CharacterController::Update);
   }
 
   static void UpdateGroundState(CollisionEvent* collision)

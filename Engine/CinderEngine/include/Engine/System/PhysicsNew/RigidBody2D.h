@@ -13,7 +13,8 @@ namespace Framework
 	public:
 	  const static std::string Name;
 	  RigidBody2D(ShapeCollider2D *shape_, float x, float y);
-	  RigidBody2D ();
+    ~RigidBody2D ();
+    RigidBody2D (){}
 	
 	  virtual void Serialize (Framework::Serializer::DataNode* data);
     void SerializeMaterial (const char* name);
