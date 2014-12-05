@@ -61,6 +61,7 @@ deleted.
 #include "SpriteColorUpdate.h"
 #include "Rotator.h"
 #include "PlayerStats.h"
+#include "CameraShake.h"
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 
@@ -217,6 +218,7 @@ namespace Framework
     RegisterComponent (SpriteColorUpdate);
     RegisterComponent (Rotator);
     RegisterComponent (PlayerStats);
+    RegisterComponent (CameraShake);
     //////////////////////////////////////////////////////////////////////////
   }
 	void ObjectSystem::AddComponentCreator(string name, ComponentCreator* creator)

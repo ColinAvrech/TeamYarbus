@@ -167,7 +167,7 @@ namespace Framework
 
   void Camera::UpdateCamera (Pipeline* p)
   {
-    if (!matricesReady && enabled)
+    if (enabled)
     {
       //gameObject->Transform->SetPosition (PLAYER->gameObject->Transform->GetPosition ().x, PLAYER->gameObject->Transform->GetPosition ().y);
       OPENGL->Perspective (fov, aspect, nearPlane, farPlane);
