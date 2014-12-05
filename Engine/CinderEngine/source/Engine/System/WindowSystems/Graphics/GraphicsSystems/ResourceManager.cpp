@@ -26,7 +26,8 @@ namespace Framework
 
 	ZilchDefineType(Resources, CinderZilch)
 	{
-		ZilchBindMethodAs(ZGetSound, "GetSound");
+		type->HandleManager = ZilchManagerId(Zilch::PointerManager);
+		ZilchBindMethodAs(ZGetSound, "LoadSound");
 	}
   Resources::~Resources ()
   {

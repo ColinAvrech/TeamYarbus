@@ -26,7 +26,7 @@ namespace Framework
   class Sprite : public IGraphicsObject
   {
   public:
-    ZilchDeclareBaseType(Sprite, Zilch::TypeCopyMode::ReferenceType);
+    ZilchDeclareDerivedType(Sprite, IGraphicsObject);
 
 	Sprite();
 	virtual ~Sprite();
@@ -43,7 +43,6 @@ namespace Framework
     void Change_Shader (Zilch::String);
     void Change_Texture (Zilch::String);
     void Update_Shader ();
-
 	  Zilch::Real Width;
 	  Zilch::Real Height;
 

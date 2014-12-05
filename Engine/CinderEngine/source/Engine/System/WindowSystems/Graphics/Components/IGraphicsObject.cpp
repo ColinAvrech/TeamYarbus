@@ -14,7 +14,17 @@
 
 namespace Framework
 {
-
+	/*
+	ZilchDefineType(Shader, CinderZilch)
+	{
+		type->HandleManager = ZilchManagerId(Zilch::PointerManager);
+	}
+	*/
+	ZilchDefineType(IGraphicsObject, CinderZilch)
+	{
+		type->HandleManager = ZilchManagerId(Zilch::PointerManager);
+		ZilchBindMethodAs(Change_Layer, "ChangeLayer");
+	}
   // Constructor
   IGraphicsObject::IGraphicsObject ()
   {

@@ -52,7 +52,11 @@ Level =
 	  },
     Transform = 
 	  {
+<<<<<<< HEAD
 		  Vec3 Translation = [0, 4, -10],
+=======
+		  Vec3 Translation = [0, 1.7, -10],
+>>>>>>> 7da30c6df1e1a3fd727307de6e8f86019b61edc0
 		  Vec3 Scale = [1, 1, 1],
 		  Quat Rotation = [0, 0, 0, 1],
 	  },
