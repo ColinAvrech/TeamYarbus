@@ -168,11 +168,6 @@ Level =
       bool Enabled = true,
       float ParticleSize = 100,
     },
-    GUIText = 
-    {
-      string Text = "Hello World",
-      Vec2 Position = [-1.0, 0.8],
-    },
   },
   Cog = 
 	{
@@ -253,6 +248,11 @@ Level =
 			string SpriteLayer = "52ad5fa30d7fcd50:DefaultSpriteLayer",
 			string Shader = "Default",
 		},
+    GUIText = 
+    {
+      string Text = "",
+      Vec2 Position = [0, 0],
+    },
 	},
   Cog = 
 	{
