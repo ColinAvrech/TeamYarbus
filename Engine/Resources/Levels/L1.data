@@ -53,7 +53,6 @@ Level =
     Transform = 
 	  {
 		  Vec3 Translation = [0, 7, -10],
-		  Vec3 Translation = [0, 2, -10],
 		  Vec3 Scale = [1, 1, 1],
 		  Quat Rotation = [0, 0, 0, 1],
 	  },
@@ -64,15 +63,15 @@ Level =
       Vec3 Facing = [0, 0, 1],
 			float FieldOfView = 45,
 			float NearPlane = 0,
-			float FarPlane = 1000,
-			float Size = 128,
+			float FarPlane = 100,
+			float Size = 17,
 		},
   },
   Cog = 
 	{
 		LinkId = 
 		{
-			uint Id = 8,
+			uint Id = 1,
 		},
 		Named = 
 		{
@@ -80,7 +79,7 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, 0, -16],
+			Vec3 Translation = [0, 0, -8],
 			Vec3 Scale = [256, 20, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
@@ -101,7 +100,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 8,
+			uint Id = 2,
 		},
 		Named = 
 		{
@@ -109,7 +108,7 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, 0, -8],
+			Vec3 Translation = [0, 0, -4],
 			Vec3 Scale = [256, 10, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
@@ -130,7 +129,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 8,
+			uint Id = 3,
 		},
 		Named = 
 		{
@@ -183,8 +182,6 @@ Level =
 		{
 			Vec3 Translation = [0, 16, 0],
 			Vec3 Scale = [0.5, 0.5, 1],
-			Vec3 Translation = [0, 26, 0],
-			Vec3 Scale = [1, 1, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		CircleCollider2D = 
@@ -244,7 +241,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 8,
+			uint Id = 5,
 		},
 		Named = 
 		{
@@ -281,7 +278,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 9,
+			uint Id = 6,
 		},
 		Named = 
 		{
@@ -306,7 +303,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 9,
+			uint Id = 7,
 		},
 		Named = 
 		{

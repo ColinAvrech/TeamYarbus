@@ -117,7 +117,7 @@ namespace Framework
       {
         manager->onFire = true;
         FireStarterManager::numTreesLeft--;
-        if (FireStarterManager::numTreesLeft == 2)
+        if (FireStarterManager::numTreesLeft <= 0)
         {
           BaseEvent b;
           EVENTSYSTEM->TriggerEvent (Events::ALLLTREESBURNED, b);

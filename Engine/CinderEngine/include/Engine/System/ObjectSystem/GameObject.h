@@ -66,7 +66,7 @@ namespace Framework
 	//ZilchDefineType(Zilch::Array<GameObject*>);
     //! Called by Factory
     GameObject(unsigned gameObjectID);
-    ~GameObject();
+    virtual ~GameObject();
 
     // Adding Components
     Component* ZAddComponent(Zilch::String name);
