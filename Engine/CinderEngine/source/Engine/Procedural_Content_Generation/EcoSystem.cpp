@@ -81,7 +81,7 @@ namespace Framework
 			//tree_list[i] = Evaluate_Compatibility(i);
 			//Hack!!
 			//if (tree_list[i] != OPEN)
-			if (i % 8 == 0 && terrain[i] <= 72)
+			if (i % (rand () % 6 + 2) == 0 && terrain[i] <= 72)
 				GenerateType(
 				offsetX + Translation.x,
 				offsetY + Translation.y,

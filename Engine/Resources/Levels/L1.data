@@ -52,7 +52,7 @@ Level =
 	  },
     Transform = 
 	  {
-		  Vec3 Translation = [0, 2, -10],
+		  Vec3 Translation = [0, 7, -10],
 		  Vec3 Scale = [1, 1, 1],
 		  Quat Rotation = [0, 0, 0, 1],
 	  },
@@ -64,23 +64,29 @@ Level =
 			float FieldOfView = 45,
 			float NearPlane = 0,
 			float FarPlane = 100,
-			float Size = 128,
+			float Size = 17,
 		},
+    CameraShake = 
+    {
+      bool Enabled = true,
+      Vec2 Intensity = [0.5, 1.0],
+      float Duration = 2.0,
+    },
   },
   Cog = 
 	{
 		LinkId = 
 		{
-			uint Id = 8,
+			uint Id = 1,
 		},
 		Named = 
 		{
-			string Name = "Forest",
+			string Name = "Mountains",
 		},
 		Transform = 
 		{
-			Vec3 Translation = [-150, -90, -16],
-			Vec3 Scale = [256, 128, 1],
+			Vec3 Translation = [0, 0, -8],
+			Vec3 Scale = [256, 20, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Terrain2D = 
@@ -100,7 +106,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 8,
+			uint Id = 2,
 		},
 		Named = 
 		{
@@ -108,8 +114,8 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, 0, -8],
-			Vec3 Scale = [256, 13, 1],
+			Vec3 Translation = [0, 0, -4],
+			Vec3 Scale = [256, 10, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Terrain2D = 
@@ -129,7 +135,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 8,
+			uint Id = 3,
 		},
 		Named = 
 		{
@@ -159,8 +165,8 @@ Level =
     },
     FireSystem = 
     {
-      bool Enabled = false,
-      float ParticleSize = 200,
+      bool Enabled = true,
+      float ParticleSize = 100,
     },
     GUIText = 
     {
@@ -180,8 +186,8 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, 26, 0],
-			Vec3 Scale = [1, 1, 1],
+			Vec3 Translation = [0, 16, 0],
+			Vec3 Scale = [0.5, 0.5, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		CircleCollider2D = 
@@ -194,8 +200,9 @@ Level =
 		CharacterController = 
 		{
       bool Enabled = true,
-		  Vec2 Acceleration = [400, 0],
-		  Vec2 JumpVelocity = [0, 10],
+      bool UseFlying = false,
+		  Vec2 Acceleration = [10, 0],
+		  Vec2 JumpVelocity = [0, 0],
 		  Vec2 MicrophoneMultiplier = [0, 10],
 		},
 		Health = 
@@ -207,18 +214,19 @@ Level =
 		},
     CLParticleRenderer = 
     {
-      int ParticleCount = 10000,
-      float ParticleSize = 5,
+      int ParticleCount = 1000,
+      float ParticleSize = 1,
       float EffectRadius = 0.2,
       Vec4 Color = [255, 80, 0, 0.5],
     },
     PlayerEffect = 
     {
-      bool Enabled = false,
-      float ParticleSize = 100,
+      bool Enabled = true,
+      float ParticleSize = 10,
     },
-    CameraFollow = 
+    PlayerStats = 
     {
+      string NextLevel = "L2",
     },
     AudioComponent = 
     {
@@ -232,14 +240,16 @@ Level =
       bool HighPassFilter = true,
       float HPFcutoff = 150,
       float HPFresonance = 1,
-      string SoundID = "FireA.ogg",
+      string SoundID = "3D",
+      string SoundName = "Fire",
+      string FileName = "FireA.ogg",
     },
 	},
   Cog = 
 	{
 		LinkId = 
 		{
-			uint Id = 8,
+			uint Id = 5,
 		},
 		Named = 
 		{
@@ -271,12 +281,28 @@ Level =
     {
       string Target = "Player",
     },
+    AudioComponent = 
+    {
+      bool Positional = false,
+      bool MicEffect = false,
+      bool Play = true,
+      bool Mute = false,
+      bool LowPassFilter = false,
+      float LPFcutoff = 6000,
+      float LPFresonance = 1,
+      bool HighPassFilter = false,
+      float HPFcutoff = 150,
+      float HPFresonance = 1,
+      string SoundID = "2D",
+      string SoundName = "Rumble",
+      string FileName = "L1_Rumble.wav",
+    },
   },
   Cog = 
 	{
 		LinkId = 
 		{
-			uint Id = 9,
+			uint Id = 6,
 		},
 		Named = 
 		{
@@ -301,7 +327,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 9,
+			uint Id = 7,
 		},
 		Named = 
 		{

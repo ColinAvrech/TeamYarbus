@@ -1,3 +1,17 @@
+/******************************************************************************/
+/*!
+\file   MouseCollision.z
+\author Joshua Biggs
+\par    Course: GAM205
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+\brief  This file contains the Rectangle class, used to create bounding boxes.
+		This file also contains the MouseDetector class, which uses a rectangle
+		and determines if the mouse is ever colliding with it.
+		Finally, this class contains the Enum for all of the different GLFW keys,
+		to be used with the InputManager.
+*/
+/******************************************************************************/
+
 enum MouseState
 {
 	MouseEnter,

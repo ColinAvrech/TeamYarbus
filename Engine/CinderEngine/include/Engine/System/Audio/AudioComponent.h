@@ -18,6 +18,7 @@
 
 #include "Component.h"
 #include "JSONSerializer.h"
+#include "Sound.h"
 
 #pragma endregion
 
@@ -104,17 +105,22 @@ namespace Framework
       -----------------------------------------------------------------------*/
       #pragma region Private Variables
 
-      bool          _positional;
-      bool          _playing;
-      bool          _mute = false;
-      bool          _lowpassed;
-      float         _lowcutoff;
-      float         _lowresonance;
-      bool          _highpassed;
-      float         _highcutoff;
-      float         _highresonance;
-      bool          _micEffect;
-      Sound         *_newSound;
+      bool           _positional;
+      bool           _playing;
+      bool           _mute = false;
+      bool           _lowpassed;
+      float          _lowcutoff;
+      float          _lowresonance;
+      bool           _highpassed;
+      float          _highcutoff;
+      float          _highresonance;
+      bool           _micEffect;
+      Sound          *_newSound;
+      string         _fileName;
+      string         _soundID;
+      string         _soundName;
+      Sound::SoundID _type;
+      bool           _played = false;
 
       #pragma endregion
 

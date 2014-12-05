@@ -52,7 +52,7 @@ Level =
 	  },
     Transform = 
 	  {
-		  Vec3 Translation = [0, 0, -10],
+		  Vec3 Translation = [-45, 2, -10],
 		  Vec3 Scale = [1, 1, 1],
 		  Quat Rotation = [0, 0, 0, 1],
 	  },
@@ -64,14 +64,14 @@ Level =
 			float FieldOfView = 45,
 			float NearPlane = 0,
 			float FarPlane = 100,
-			float Size = 128,
+			float Size = 16,
 		},
   },
   Cog = 
 	{
 		LinkId = 
 		{
-			uint Id = 8,
+			uint Id = 1,
 		},
 		Named = 
 		{
@@ -79,15 +79,15 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [-150, -90, -16],
-			Vec3 Scale = [256, 128, 1],
+			Vec3 Translation = [0, 0, -8],
+			Vec3 Scale = [256, 10, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Terrain2D = 
 		{
       bool Enabled = true,
       int MapSize = 64,
-      int BaseHeight = 0,
+      int BaseHeight = 64,
       int PeakHeight = 64,
       int Passes = 0,
       int Waves = 1,
@@ -100,7 +100,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 8,
+			uint Id = 2,
 		},
 		Named = 
 		{
@@ -108,8 +108,8 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, 0, -8],
-			Vec3 Scale = [256, 13, 1],
+			Vec3 Translation = [0, 0, -4],
+			Vec3 Scale = [256, 20, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Terrain2D = 
@@ -117,7 +117,7 @@ Level =
       bool Enabled = true,
       int MapSize = 128,
       int BaseHeight = 64,
-      int PeakHeight = 0,
+      int PeakHeight = 20,
       int Passes = 0,
       int Waves = 1,
       int Water = 0,
@@ -129,7 +129,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 8,
+			uint Id = 3,
 		},
 		Named = 
 		{
@@ -159,8 +159,8 @@ Level =
     },
     FireSystem = 
     {
-      bool Enabled = false,
-      float ParticleSize = 200,
+      bool Enabled = true,
+      float ParticleSize = 100,
     },
     GUIText = 
     {
@@ -180,7 +180,7 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, 16, 0],
+			Vec3 Translation = [-45, 8, 0],
 			Vec3 Scale = [1, 1, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
@@ -194,8 +194,9 @@ Level =
 		CharacterController = 
 		{
       bool Enabled = true,
-		  Vec2 Acceleration = [400, 0],
-		  Vec2 JumpVelocity = [0, 10],
+      bool UseFlying = true,
+		  Vec2 Acceleration = [100, 0],
+		  Vec2 JumpVelocity = [0, 4],
 		  Vec2 MicrophoneMultiplier = [0, 10],
 		},
 		Health = 
@@ -214,18 +215,22 @@ Level =
     },
     PlayerEffect = 
     {
-      bool Enabled = false,
+      bool Enabled = true,
       float ParticleSize = 100,
     },
     CameraFollow = 
     {
+    },
+    PlayerStats = 
+    {
+      string NextLevel = "L3",
     },
 	},
   Cog = 
 	{
 		LinkId = 
 		{
-			uint Id = 8,
+			uint Id = 5,
 		},
 		Named = 
 		{
@@ -262,7 +267,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 9,
+			uint Id = 6,
 		},
 		Named = 
 		{
@@ -287,7 +292,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 9,
+			uint Id = 7,
 		},
 		Named = 
 		{

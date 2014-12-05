@@ -8,18 +8,9 @@
 */
 /******************************************************************************/
 
-#include "Common.h"
 #include "CharacterController.h"
-#include "ComponentInclude.h"
-#include "ResourceManager.h"
-#include "WindowSystem.h"
-#include "TimeQuery.h"
-#include "glmOverloads.h"
-#include "PhysicsLibrary.h"
-#include "IncludeForAllCollision.h"
 #include "Thermodynamics.h"
 #include "GameObject.h"
-#include "RigidBody.h"
 #include "EventSystem.h"
 #include "CollisionEvent.h"
 #include "KeyEvent.h"
@@ -27,7 +18,7 @@
 #include "RigidBody2D.h"
 #include "Collider2D.h"
 #include "InputManager.h"
-#include "TDLib.h"
+#include "glfw3.h"
 
 
 namespace Framework
@@ -55,6 +46,50 @@ namespace Framework
     EVENTSYSTEM->mDisconnect<CollisionEvent, CharacterController> (Events::COLLISION, this, &CharacterController::OnCollisionEnter);
     EVENTSYSTEM->mDisconnect<UpdateEvent, CharacterController> (Events::UPDATEEVENT, this, &CharacterController::Update);
     PLAYER = nullptr;
+  }
+
+  void CharacterController::Serialize (Serializer::DataNode* data)
+  {
+    Serializer::DynamicElement* element = data->FindElement(data, "MicrophoneMultiplier");
+    if (element)
+      element->GetValue(&micMultiplier);
+    else
+      micMultiplier = vec2(0.0f, 10.0f);
+    
+    element = data->FindElement(data, "Acceleration");
+    if (element)
+      element->GetValue(&acceleration);
+    else
+      acceleration = vec2(400.0f, 0.0f);
+    
+    element = data->FindElement(data, "JumpVelocity");
+    if (element)
+      element->GetValue(&jumpVel);
+    else
+      jumpVel = vec2(0.0f, 10.0f);
+    
+    element = data->FindElement(data, "UseFlying");
+    if (element)
+      element->GetValue(&useFlying);
+    else
+      useFlying = false;
+  }
+
+  void CharacterController::Initialize ()
+  {
+    OBJECTSYSTEM->ptrPlayer = this->gameObject;
+    PLAYER = this;
+    //accel = { 0 , 0 };
+    //maxAcceleration = { 50, 100 };
+    maxVel = 20.0f;
+    //drag = 5;
+    //currentforce = 0;
+    density = gameObject->ShapeCollider2D->Density;
+
+    EVENTSYSTEM->mConnect<CollisionEvent, CharacterController> (Events::COLLISION, this, &CharacterController::OnCollisionEnter);
+    EVENTSYSTEM->mConnect<UpdateEvent, CharacterController> (Events::UPDATEEVENT, this, &CharacterController::Update);
+
+    AUDIOSYSTEM->listener = gameObject->Transform;
   }
 
   static void UpdateGroundState(CollisionEvent* collision)
@@ -127,40 +162,8 @@ namespace Framework
     // Microphone input
     gridPos = gameObject->Transform->GetGridPosition ();
     float micValue = AUDIOSYSTEM->GetMicrophoneValue ();
-    body->ApplyForce(Vector2(micValue * microhponeMultiplier.x * density,micValue * microhponeMultiplier.y * density));
+    body->ApplyForce(Vector2(micValue * micMultiplier.x * density,micValue * micMultiplier.y * density));
     Physics::THERMODYNAMICS->SetCellTemperature (gridPos.x, gridPos.y, 400000, 0.016);
-
-  }
-
-
-  /*!Telegraph that the component is active*/
-  void CharacterController::Initialize ()
-  {
-    OBJECTSYSTEM->ptrPlayer = this->gameObject;
-    PLAYER = this;
-    //accel = { 0 , 0 };
-    //maxAcceleration = { 50, 100 };
-    maxVel = 20.0f;
-    //drag = 5;
-    //currentforce = 0;
-    density = gameObject->ShapeCollider2D->Density;
-
-    EVENTSYSTEM->mConnect<CollisionEvent, CharacterController> (Events::COLLISION, this, &CharacterController::OnCollisionEnter);
-    EVENTSYSTEM->mConnect<UpdateEvent, CharacterController> (Events::UPDATEEVENT, this, &CharacterController::Update);
-
-    AUDIOSYSTEM->listener = gameObject->Transform;
-  }
-
-  void CharacterController::Serialize (Serializer::DataNode* data)
-  {
-    Serializer::DataNode* value = data->FindElement (data, "MicrophoneMultiplier");
-    value->GetValue (&microhponeMultiplier);
-
-    value = data->FindElement (data, "Acceleration");
-    value->GetValue (&acceleration);
-
-    value = data->FindElement (data, "JumpVelocity");
-    value->GetValue (&jumpVel);
   }
 
   void CharacterController::ToggleFlying()

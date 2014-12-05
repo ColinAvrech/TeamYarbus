@@ -154,7 +154,7 @@ Level =
     LevelTimer = 
     {
       float EndTime = 1.0,
-      string NextLevel = "NewPhysics",
+      string NextLevel = "L1",
     },
   },
 },

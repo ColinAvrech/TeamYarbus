@@ -70,7 +70,7 @@ Level =
 		{
 			bool Visible = true,
 			bool AnimationActive = false,
-			string SpriteSource = "UIYesWhite.png",
+			string SpriteSource = "UIYesBlack.png",
 			string Shader = "Default",
 			Vec4 Color = [1, 1, 1, 0],
 		},
@@ -98,7 +98,7 @@ Level =
 		{
 			bool Visible = true,
 			bool AnimationActive = false,
-			string SpriteSource = "UINoWhite.png",
+			string SpriteSource = "UINoBlack.png",
 			string Shader = "Default",
 			Vec4 Color = [1, 1, 1, 0],
 		},

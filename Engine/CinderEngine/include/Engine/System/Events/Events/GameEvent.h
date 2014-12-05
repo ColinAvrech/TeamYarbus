@@ -40,4 +40,10 @@ namespace Framework
     ZilchDeclareBaseType (PauseEvent, Zilch::TypeCopyMode::ReferenceType);
     Zilch::Boolean Paused;
   };
+
+  class AllTreesBurnedEvent : public BaseEvent
+  {
+  public:
+    ZilchDeclareBaseType (AllTreesBurnedEvent, Zilch::TypeCopyMode::ReferenceType);
+  };
 }

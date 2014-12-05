@@ -1,3 +1,14 @@
+/******************************************************************************/
+/*!
+\file   Utility.z
+\author Joshua Biggs
+\par    Course: GAM205
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+\brief  This script contains several utility functions for Zilch, mostly math 
+		functions for easing.
+*/
+/******************************************************************************/
+
 class Utility
 {
     // This is a basic String->Integer converter. 
@@ -165,7 +176,7 @@ class Utility
     }
     
     
-    
+    //This script was taken from the ZeroEngine void.
     [Static]
     function ToInteger(value : String) : Integer
     {

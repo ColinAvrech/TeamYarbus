@@ -29,7 +29,10 @@ namespace Framework
     PHYSICS->Remove (rigidBody);
     delete rigidBody;
     rigidBody = nullptr;
-    gameObject->ShapeCollider2D = nullptr;
+    if (gameObject != nullptr)
+    {
+      gameObject->ShapeCollider2D = nullptr;
+    }
   }
 
   void ShapeCollider2D::SerializeMaterial (std::string name)

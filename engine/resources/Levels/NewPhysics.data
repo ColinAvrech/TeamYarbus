@@ -71,7 +71,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 8,
+			uint Id = 2,
 		},
 		Named = 
 		{
@@ -204,7 +204,7 @@ Level =
 		},
 		CharacterController = 
 		{
-	    bool Enabled = true,
+	      bool Enabled = true,
 		  Vec2 Acceleration = [400, 0],
 		  Vec2 JumpVelocity = [0, 10],
 		  Vec2 MicrophoneMultiplier = [0, 10],
@@ -351,7 +351,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 100,
+			uint Id = 10,
 		},
 		Named = 
 		{

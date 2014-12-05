@@ -17,9 +17,14 @@
 #include "EventSystem.h"
 #include "Tree2D.h"
 #include "AudioComponent.h"
+#include "Events.h"
+#include "GameEvent.h"
+#include "EventSystem.h"
 
 namespace Framework
 {
+  int FireStarterManager::numTreesLeft = 0;
+
   FireStarterManager::FireStarterManager()
   {
     onFire = false; 
@@ -40,6 +45,7 @@ namespace Framework
   {
     firePoints.push_back(newFirePoint);
     Physics::THERMODYNAMICS->Add_Object(newFirePoint);
+    ++numPoints;
   }
 
 	void FireStarterManager::Serialize(Serializer::DataNode* data)
@@ -103,15 +109,23 @@ namespace Framework
 		if (!onFire)
 		{
 			onFire = true;
-      
-      std::cout << CinderConsole::green;
-      printf("Number of trees remaining: %d", numTreesLeft);
-      std::cout << CinderConsole::red;
 
       if (manager && !manager->onFire)
       {
-        manager->onFire = true;
-        numTreesLeft--;
+        --manager->numPoints;
+        if (manager->numPoints <= 0)
+        {
+          manager->onFire = true;
+          --FireStarterManager::numTreesLeft;
+          std::cout << CinderConsole::green;
+          printf ("Number of trees remaining: %d\n", FireStarterManager::numTreesLeft);
+          std::cout << CinderConsole::red;
+        }
+        if (FireStarterManager::numTreesLeft <= 0)
+        {
+          BaseEvent b;
+          EVENTSYSTEM->TriggerEvent (Events::ALLLTREESBURNED, b);
+        }
       }
 
       vec2 pos = GetPosition();

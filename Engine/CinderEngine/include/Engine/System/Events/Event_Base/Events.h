@@ -136,5 +136,6 @@ namespace Framework
 		DeclareEvent(COLLISION, C)
 		DeclareEvent(UI, I)
 		DeclareEvent(PAUSE, P)
+    DeclareEvent (ALLLTREESBURNED, G)
 
 }

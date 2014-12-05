@@ -194,6 +194,7 @@ Level =
 		CharacterController = 
 		{
       bool Enabled = true,
+      bool UseFlying = true,
 		  Vec2 Acceleration = [400, 0],
 		  Vec2 JumpVelocity = [0, 10],
 		  Vec2 MicrophoneMultiplier = [0, 10],
@@ -214,7 +215,7 @@ Level =
     },
     PlayerEffect = 
     {
-      bool Enabled = false,
+      bool Enabled = true,
       float ParticleSize = 100,
     },
     CameraFollow = 

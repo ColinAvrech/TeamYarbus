@@ -17,6 +17,8 @@ namespace Framework
   {
     DataNode* ZeroSerializer::FindStem(DataNode* current)
     {
+      assert(current); // If current is NULL, this will break
+
       auto it = current;
       while (it && it->previous && it == it->previous->next)
       {
