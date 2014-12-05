@@ -379,6 +379,25 @@ namespace Framework
     WINDOWSYSTEM = this;
     WindowNameSpace::Create_Context (&window, ClientWidth, ClientHeight, fullscreen);
     WindowNameSpace::Init_Glew ();
+    cursorVisible = true;
+    ToggleCursorVisibility();
+
+    //Disables Sticky Keys - Colin
+    glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_FALSE);
+    glfwSetInputMode(window, GLFW_STICKY_MOUSE_BUTTONS, GL_FALSE);
+  }
+
+  void WindowSystem::ToggleCursorVisibility()
+  {
+    cursorVisible = !cursorVisible;
+    if (cursorVisible)
+    {
+      glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+    }
+    else
+    {
+      glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    }
   }
 
 

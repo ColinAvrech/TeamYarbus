@@ -26,7 +26,7 @@ namespace Framework
     OPENGL->textObjects.remove (this);
   }
 
-  void Text::Draw (std::string text, float x, float y)
+  void Text::Draw ()
   {
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity ();
@@ -36,7 +36,7 @@ namespace Framework
     const int font = (int) GLUT_BITMAP_TIMES_ROMAN_24;
     std::string s = text;
     const char* c = s.c_str ();
-    glRasterPos2f (x, y);
+    glRasterPos2f (position.x, position.y);
     for (unsigned i = 0; i < s.size (); ++i)
     {
       glutBitmapCharacter ((void*) font, *(c + i));
@@ -45,11 +45,6 @@ namespace Framework
     glLoadIdentity ();
     glMatrixMode (GL_MODELVIEW);
     glLoadIdentity ();
-  }
-
-  void Text::Draw ()
-  {
-    Draw (text, position.x, position.y);
   }
 
   void Text::Initialize ()

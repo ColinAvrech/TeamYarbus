@@ -134,6 +134,8 @@ namespace Framework
           break;
 
         case _LoadLevel:
+          PHYSICS->Clear ();
+          Physics::THERMODYNAMICS->Reset ();
           DestroyAllObjects();
           EVENTSYSTEM->DeleteAllEvents();
           data.open(currentLevelName.c_str());
@@ -215,7 +217,7 @@ namespace Framework
 
   void ObjectSystem::DestroyObjectNow(GameObject* obj)
   {
-    for each(auto object in GameObjects)
+    for(auto object : GameObjects)
     {
       if (object.second == obj)
       {
@@ -233,7 +235,7 @@ namespace Framework
 	void ObjectSystem::DestroyAllObjects()
   {
     //EVENTSYSTEM->DeleteAllEvents();
-    for each(auto obj in GameObjects)
+    for(auto obj : GameObjects)
     {
       delete obj.second;
       obj.second = nullptr;
@@ -243,7 +245,7 @@ namespace Framework
 
 	void ObjectSystem::DestroyGameObjectsToBeDestroyed()
 	{
-		for each(auto obj in GameObjectsToBeDestroyed)
+		for(auto obj : GameObjectsToBeDestroyed)
 		{
 		  delete obj;
 			obj = NULL;
@@ -259,8 +261,6 @@ namespace Framework
 
   void ObjectSystem::LoadLevel(const char* name)
   {
-    PHYSICS->Clear ();
-    Physics::THERMODYNAMICS->Reset ();
     CommandList.push(ObjectSystemCommand::_LoadLevel);
     currentLevelName = name;
   }
@@ -292,7 +292,7 @@ namespace Framework
 
 	GameObject* ObjectSystem::FindObjectByName(Zilch::String name)
 	{
-		for each (auto i in GameObjects)
+		for(auto i : GameObjects)
 		{
 			if (name.c_str() == i.second->GetName().c_str())
 			{
@@ -304,7 +304,7 @@ namespace Framework
 
   GameObject* ObjectSystem::FindObjectByName (std::string name)
   {
-    for each (auto& i in GameObjects)
+    for(auto& i : GameObjects)
     {
       if (name.compare(i.second->Name) == 0)
       {
@@ -370,7 +370,7 @@ namespace Framework
 		}
 
 		//Initializing Zilch Components
-		for each (auto i in scripts)
+		for(auto i : scripts)
 		{
 			i.first->Initialize();
 		}

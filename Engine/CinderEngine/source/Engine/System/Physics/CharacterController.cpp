@@ -65,7 +65,15 @@ namespace Framework
 
     if (InputManager::IsKeyDown(GLFW_KEY_UP))
     {
+#ifdef _DEBUG
       gameObject->RigidBody2D->velocity.y += jumpVel.y;
+#else
+      if (onGround)
+      {
+        gameObject->RigidBody2D->velocity.y += jumpVel.y;
+      }
+#endif
+
       onGround = false;
     }
     

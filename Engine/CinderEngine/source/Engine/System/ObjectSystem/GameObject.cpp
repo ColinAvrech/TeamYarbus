@@ -58,7 +58,7 @@ namespace Framework
 
   GameObject::~GameObject()
   {
-    for each (auto comp in Components)
+    for(auto comp : Components)
     {
       delete comp.second;
     }
