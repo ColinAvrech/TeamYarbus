@@ -51,7 +51,7 @@ namespace Framework
     glm::vec2 accel;
     glm::vec2 jumpVel;
     glm::vec2 acceleration;
-    glm::vec2 microhponeMultiplier;
+    glm::vec2 micMultiplier;
 
     float drag;
     float maxVel;
