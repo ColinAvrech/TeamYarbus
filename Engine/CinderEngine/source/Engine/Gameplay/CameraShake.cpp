@@ -70,7 +70,6 @@ namespace Framework
       state = CS_RESET;
       break;
     case Framework::CS_RESET:
-    {
       time += 0.016f;
       if (time < 1.0f)
       {
@@ -83,7 +82,6 @@ namespace Framework
         enabled = false;
         state = CS_NONE;
       }
-    }
       break;
     default:
       break;
@@ -92,7 +90,7 @@ namespace Framework
 
   void CameraShake::OnApplicationPause (PauseEvent* pause)
   {
-    enabled = pause->Paused;
+    //enabled = pause->Paused;
   }
 
 }
