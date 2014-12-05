@@ -23,7 +23,7 @@ namespace Framework
   FireStarterManager::FireStarterManager()
   {
     onFire = false; 
-    numTreesLeft++;
+    ++numTreesLeft;
   }
 
   FireStarterManager::~FireStarterManager()
@@ -104,14 +104,14 @@ namespace Framework
 		{
 			onFire = true;
       
+      std::cout << CinderConsole::green;
+      printf("Number of trees remaining: %d", numTreesLeft);
+      std::cout << CinderConsole::red;
+
       if (manager && !manager->onFire)
       {
         manager->onFire = true;
         numTreesLeft--;
-      
-        std::cout << CinderConsole::green;
-        printf("Number of trees remaining: %d", numTreesLeft);
-        std::cout << CinderConsole::red;
       }
 
       vec2 pos = GetPosition();
