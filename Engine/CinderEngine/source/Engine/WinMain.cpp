@@ -64,12 +64,17 @@ void TestUEDisconnect(UpdateEvent* e)
 
 int main (void)
 {
+#ifdef _DEBUG
   bool launchFullScreen = false;
 
   EnableMemoryLeakChecking ();
 
   // TODO (EXTRA): make a window to show while the game is loading
   CinderConsole::Create_Cinder_Console ("CinderEngineConsole");
+#else
+  bool launchFullScreen = true;
+#endif
+
   // TODO Make console accept input by pressing '`', if '`' is pressed again return to game
   
   //! Create the core engine which manages all systems.
@@ -126,7 +131,7 @@ int main (void)
   OBJECTSYSTEM->LoadLevel("NewPhysics");
  //Initialize Cheat Codes
   Cheats::InitializeCheats();
-  
+
 
   // Connect and Disconnect example
   //MyClass _myclass;

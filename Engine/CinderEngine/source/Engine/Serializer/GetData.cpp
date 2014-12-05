@@ -90,7 +90,7 @@ namespace Framework
       {
         it = it->next;
       }
-      ErrorIf(it == nullptr, "The data field was not found");
+      //ErrorIf(it == nullptr, "The data field was not found");
       return it;
     }
 
