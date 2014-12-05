@@ -101,7 +101,7 @@ class ResumeButton : Component
 	{
 		//Console.WriteLine("DIMENSIONS: ");
 		var camerapos = Camera.Main.Owner.Transform.GetTranslation();
-		Console.WriteLine(ZInterface.ObjectSystem.FindObjectByID(10));
+		//Console.WriteLine(ZInterface.ObjectSystem.FindObjectByID(10));
 		
 		this.MenuObjects.Get(0).Transform.SetTranslation(Real3(camerapos.X, camerapos.Y, 0));
 		this.MenuObjects.Get(1).Transform.SetTranslation(Real3(camerapos.X, camerapos.Y + (0.8775 * 8), 0));

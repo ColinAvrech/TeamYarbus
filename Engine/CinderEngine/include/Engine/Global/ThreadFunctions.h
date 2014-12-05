@@ -44,7 +44,7 @@ namespace Framework
       //startClocks = GetSystemClock ();
       //std::cout << deltaTime << "\n";
       WaitForSingleObject (eventStartTemperature [threadIndex], INFINITE);
-      THERMODYNAMICS->UpdateTemp (startIndex, endIndex, 0.016);
+      THERMODYNAMICS->UpdateTemp (startIndex, endIndex, 0.5);
       SetEvent (eventEndTemperature [threadIndex]);
     }
 

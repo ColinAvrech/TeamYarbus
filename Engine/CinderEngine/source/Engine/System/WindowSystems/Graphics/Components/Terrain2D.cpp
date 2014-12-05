@@ -170,21 +170,16 @@ namespace Framework
       }
     }
 
-    //for (int y = 0; y < THERMODYNAMICS->MapSize.y; ++y)
-    //{
-    //  for (int x = 0; x < THERMODYNAMICS->MapSize.x; ++x)
-    //  {
-    //    THERMODYNAMICS->Terrain.Set (x, y, STONE);
-    //  }
-    //}
-
-    //for (int x = 0; x < THERMODYNAMICS->MapSize.x; ++x)
-    //{
-    //  for (int y = height_points [x].y * 128; y >= 0; --y)
-    //  {
-    //    THERMODYNAMICS->Terrain.Set (x, y, STONE);
-    //  }
-    //}
+    if (AddCollider)
+    {
+      for (int x = 0; x < THERMODYNAMICS->MapSize.x; ++x)
+      {
+        for (int y = 0; y < THERMODYNAMICS->MapSize.y && y < Map[x]; ++y)
+        {
+          THERMODYNAMICS->Terrain.Set (x, y, STONE);
+        }
+      }
+    }
 
     ////THERMODYNAMICS->Terrain.Set (64, 64, WOOD);
     //THERMODYNAMICS->TemperatureMap.Set (64, 64, 1000000000000000.0f);

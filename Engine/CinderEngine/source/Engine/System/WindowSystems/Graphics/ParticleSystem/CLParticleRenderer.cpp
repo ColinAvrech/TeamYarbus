@@ -130,7 +130,7 @@ namespace Framework
 
   void CLParticleRenderer::OnKeyPressed (KeyEvent* key)
   {
-    std::cout << cursorX << std::endl;
+    //std::cout << cursorX << std::endl;
     if (key->KeyDown)
     {
       if (key->KeyValue == GLFW_KEY_Y)
