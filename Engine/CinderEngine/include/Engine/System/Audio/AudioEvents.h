@@ -24,6 +24,8 @@ namespace Framework
 {
   class WindowFocusEvent;
   class KeyEvent;
+  class UpdateEvent;
+  class Sound;
 
   /*---------------------------------------------------------------------------
   // Class
@@ -46,6 +48,7 @@ namespace Framework
       -----------------------------------------------------------------------*/
       #pragma region Public Variables
 
+      std::vector<Sound*> unmanagedSounds;
       #pragma endregion
 
       /*---------------------------------------------------------------------*/
@@ -63,6 +66,8 @@ namespace Framework
       void Initialize();
       void AudioEventsUpdate(WindowFocusEvent* e);
       void OnKeyPressed(KeyEvent* _key);
+      void OnUpdate(UpdateEvent *e);
+      void SetPauseUnmanagedSounds(bool paused);
 
       #pragma endregion
 

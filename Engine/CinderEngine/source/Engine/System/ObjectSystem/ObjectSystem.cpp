@@ -46,6 +46,7 @@ deleted.
 //////////////////////////////////////////////////////////////////////////
 #include "Microphone.h"
 #include "AudioComponent.h"
+#include "AudioEvents.h"
 //////////////////////////////////////////////////////////////////////////
 // GAMEPLAY
 //////////////////////////////////////////////////////////////////////////
@@ -146,6 +147,7 @@ namespace Framework
           Trunk = data.GetTrunk();
           SerializeObject(Trunk);
           Cheats::InitializeCheats();
+          AUDIOEVENTS->Initialize();
           break;
 
         default:

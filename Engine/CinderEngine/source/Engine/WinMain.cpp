@@ -119,11 +119,11 @@ int main (void)
 
   //! Initialize all added Systems. DON'T INIT YOUR OWN
   engine->Initialize ();
-  audioEvents->Initialize();
 
 
   audio->LoadMicData ();
   Sound *SplashScreenMusic = resourceManager.Get_Sound("SplashScreen.wav");
+  AUDIOEVENTS->unmanagedSounds.push_back(SplashScreenMusic);
 
   //! activate the window.
   //Currently broken;
