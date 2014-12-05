@@ -160,7 +160,7 @@ Level =
     FireSystem = 
     {
       bool Enabled = true,
-      float ParticleSize = 200,
+      float ParticleSize = 100,
     },
     GUIText = 
     {
