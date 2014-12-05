@@ -71,25 +71,48 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 8,
+			uint Id = 2,
 		},
 		Named = 
 		{
-			string Name = "Forest",
+			string Name = "VolcanoEffect",
 		},
 		Transform = 
 		{
-			Vec3 Translation = [-150, -90, -16],
-			Vec3 Scale = [256, 128, 1],
+			Vec3 Translation = [0, 108, -16],
+			Vec3 Scale = [1, 1, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+    FountainEffect = 
+    {
+      bool Enabled = true,
+      float ParticleSize = 300,
+    },
+  },
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 1,
+		},
+		Named = 
+		{
+			string Name = "Volcano",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0, 0, -16],
+			Vec3 Scale = [128, 20, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Terrain2D = 
 		{
+      string MapPreset = "Volcano",
       bool Enabled = true,
       int MapSize = 64,
       int BaseHeight = 0,
       int PeakHeight = 64,
-      int Passes = 0,
+      int Passes = 4,
       int Waves = 1,
       int Water = 0,
       Vec4 Color = [0.2, 0.2, 0.2, 1],
@@ -100,7 +123,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 8,
+			uint Id = 3,
 		},
 		Named = 
 		{
@@ -129,7 +152,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 8,
+			uint Id = 4,
 		},
 		Named = 
 		{
@@ -172,7 +195,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 4,
+			uint Id = 5,
 		},
 		Named = 
 		{
@@ -211,15 +234,12 @@ Level =
       bool Enabled = true,
       float ParticleSize = 100,
     },
-    CameraFollow = 
-    {
-    },
 	},
   Cog = 
 	{
 		LinkId = 
 		{
-			uint Id = 8,
+			uint Id = 6,
 		},
 		Named = 
 		{
@@ -256,7 +276,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 9,
+			uint Id = 7,
 		},
 		Named = 
 		{
@@ -281,7 +301,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 9,
+			uint Id = 8,
 		},
 		Named = 
 		{
@@ -306,7 +326,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 8,
+			uint Id = 9,
 		},
 		Named = 
 		{
@@ -331,7 +351,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 9,
+			uint Id = 10,
 		},
 		Named = 
 		{
@@ -342,9 +362,6 @@ Level =
 			Vec3 Translation = [0, 0, -20],
 			Vec3 Scale = [8, 8, 8],
 			Quat Rotation = [0, 0, 0, 1],
-		},
-		Josh = 
-		{
 		},
 	},
 },

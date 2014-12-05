@@ -30,6 +30,7 @@
 #include "GameEvent.h"
 #include "Text.h"
 
+
 namespace Framework
 {
   using namespace Physics;
@@ -78,7 +79,7 @@ namespace Framework
         -1.0f, 1.0f, 0.0f, 1.0f
     };
 
-    sceneShader = Resources::RS->Get_Shader ("Passthrough");
+    Change_Shader ("Passthrough", (int) SS_DEFAULT);
 
     vao = new VAO ();
     vbo = new VBO (sizeof(vertices), vertices);
@@ -188,6 +189,7 @@ namespace Framework
     }
   }
 
+#pragma region TRANSFORMATIONS
   void Pipeline::LoadIdentity ()
   {
     if (currentMatrix == MODEL || currentMatrix == VIEW)
@@ -421,6 +423,8 @@ namespace Framework
     return modelViewProjectionMatrix;
   }
 
+#pragma endregion
+
   void Pipeline::ResetBlendMode ()
   {
     glBlendFunc (sFactor, dFactor);
@@ -442,13 +446,46 @@ namespace Framework
   }
 
   void Pipeline::RenderToTexture(FBO* fbo, GLuint tex, Shader* shader)
-{
+  {
     vao->bindVAO ();
     fbo->unBind ();
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     shader->Use ();
     glBindTexture (GL_TEXTURE_2D, renderTexture);
+
+    switch (shaderState)
+    {
+    case Framework::SS_DEFAULT:
+      shader->uni1i ("image", 0);
+      break;
+
+    case Framework::SS_LIGHTING:
+      shader->uni1i ("image", 0);
+      break;
+
+    case Framework::SS_FADE_IN:
+      ALPHA += 0.016f;
+      if (ALPHA >= 1.0f)
+      {
+        ALPHA = 1.0f;
+        shaderState = SS_FADE_OUT;
+      }
+      break;
+
+    case Framework::SS_FADE_OUT:
+      ALPHA -= 0.016f;
+      if (ALPHA <= 0.0f)
+      {
+        ALPHA = 0.0f;
+        Change_Shader ("Passthrough", (int) SS_DEFAULT);
+      }
+      break;
+
+    default:
+      break;
+    }
     shader->uni1i ("image", 0);
+    shader->uni1f ("alpha", ALPHA);
     glDrawArrays (GL_TRIANGLES, 0, 6);
     shader->Disable ();
     glBindTexture (GL_TEXTURE_2D, 0);
@@ -461,5 +498,16 @@ namespace Framework
     glTexImage2D (GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
     glBindTexture (GL_TEXTURE_2D, 0);
   }
+
+  void Pipeline::Change_Shader (std::string sh, int id /* = 0*/)
+  {
+    sceneShader = Resources::RS->Get_Shader (sh);
+    shaderState = (SHADER_STATE)id;
+    if (id == (int) SS_FADE_IN)
+      ALPHA = 0.0f;
+    else if (id == (int) SS_FADE_OUT)
+      ALPHA = 1.0f;
+  }
+
 
 }

@@ -1,6 +1,6 @@
 /******************************************************************************/
 /*!
-\file   FireSystem.h
+\file   FireEffect.h
 \author Manas Sudhir Kulkarni
 \par    Course: GAM200
 \par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
@@ -48,7 +48,7 @@ namespace Framework
 
     void OnKeyPressed (KeyEvent* key);
     void AddFire (float x, float y, float emitRate);
-    void RemoveFire (FireStarter* param1);
+    void RemoveFire (FireStarter* param1){}
 
     const static std::string Name;
   private:

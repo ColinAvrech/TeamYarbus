@@ -39,6 +39,8 @@ namespace Framework
     }
 
     firePoints.clear();
+    numPoints = 0;
+    numTreesLeft = 0;
   }
 
   void FireStarterManager::AddFireStarter(FireStarter *newFirePoint)
@@ -125,6 +127,7 @@ namespace Framework
         {
           BaseEvent b;
           EVENTSYSTEM->TriggerEvent (Events::ALLLTREESBURNED, b);
+          return;
         }
       }
 
@@ -150,7 +153,7 @@ namespace Framework
 			PingEvent e;
 			e.Ping = manager->gameObject;
 			EVENTSYSTEM->TriggerEvent(Events::PING_DOUSEPLANT, e);
-      Physics::ThermodynamicsSystem::FIRE->RemoveFire (this);
+      //Physics::ThermodynamicsSystem::FIRE->RemoveFire (this);
 		}
 	}
 

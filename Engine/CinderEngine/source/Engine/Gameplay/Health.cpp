@@ -16,6 +16,7 @@
 #include "Text.h"
 #include "Thermodynamics.h"
 #include "PlayerEffect.h"
+#include "Pipeline.h"
 
 namespace Framework
 {
@@ -54,6 +55,17 @@ namespace Framework
 
 	void Health::Update(UpdateEvent* e)
 	{
+    if (levelFailed)
+    {
+      timer += 0.016f;
+      if (timer > 1.0f)
+      {
+        OBJECTSYSTEM->LoadLevel (OBJECTSYSTEM->currentLevelName.c_str ());
+      }
+      return;
+    }
+
+
 		//check if player is colliding with node on fire -- for refuel
 		glm::ivec2 currPos = gameObject->Transform->GetGridPosition();
 		int material = Physics::THERMODYNAMICS->GetCellMaterial(currPos.x, currPos.y);
@@ -73,12 +85,13 @@ namespace Framework
 
     if (currentRadius <= minRadius)
     {
+      levelFailed = true;
+      OPENGL->Change_Shader ("FadeIn", (int) SS_FADE_OUT);
       //printf("dead");
       GUIText* guiText = reinterpret_cast<GUIText*>(gameObject->GetComponent("GUIText"));
       if (guiText)
       {
         guiText->text = "You ran out of fuel :(";
-        OBJECTSYSTEM->LoadLevel (OBJECTSYSTEM->currentLevelName.c_str());
         //TODO_AUDIO: Play Death Sound/Music
       }
     }

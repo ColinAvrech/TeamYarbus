@@ -12,6 +12,8 @@
 #include "EventSystem.h"
 #include "ObjectSystem.h"
 #include "GameEvent.h"
+#include "UpdateEvent.h"
+#include "Pipeline.h"
 
 namespace Framework
 {
@@ -28,6 +30,7 @@ namespace Framework
   void PlayerStats::Initialize ()
   {
     EVENTSYSTEM->mConnect<AllTreesBurnedEvent, PlayerStats> (Events::ALLLTREESBURNED, this, &PlayerStats::AllTreesBurned);
+    EVENTSYSTEM->mConnect<UpdateEvent, PlayerStats> (Events::UPDATEEVENT, this, &PlayerStats::Update);
   }
 
   void PlayerStats::Serialize (Serializer::DataNode* data)
@@ -42,7 +45,20 @@ namespace Framework
 
   void PlayerStats::AllTreesBurned (AllTreesBurnedEvent* atb)
   {
-    OBJECTSYSTEM->LoadLevel (NextLevel.c_str ());
+    OPENGL->Change_Shader ("FadeIn", (int) SS_FADE_OUT);
+    levelComplete = true;
+  }
+
+  void PlayerStats::Update (UpdateEvent* update)
+  {
+    if (levelComplete)
+    {
+      timer += 0.016f;
+      if (timer > 1.0f)
+      {
+        OBJECTSYSTEM->LoadLevel (NextLevel.c_str ());
+      }
+    }
   }
 
 }

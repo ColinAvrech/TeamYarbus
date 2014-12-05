@@ -20,6 +20,13 @@ namespace Framework
   class KeyEvent;
   class Pipeline;
 
+  enum CAMERA_ZOOM_STATE
+  {
+    CZ_NONE,
+    CZ_ZOOMOUT,
+    CZ_ZOOMIN,
+  };
+
   class Camera : public Component
   {
   public:
@@ -45,12 +52,15 @@ namespace Framework
     static glm::mat4 GetViewToProjectionMatrix ();
     static glm::vec2 GetWorldMousePosition ();
     void OnKeyPressed (KeyEvent* key);
+    virtual void OnApplicationPause (PauseEvent* pause);
     float GetSize ();
     float GetFOV ();
     static std::list <Camera*> allCameras;
     static Camera* current;
     static Camera* main;
-
+    CAMERA_ZOOM_STATE czs = CZ_NONE;
+    float originalSize;
+    float timer = 0.0f;
     //////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////
     // ZILCH FUNCTIONS

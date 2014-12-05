@@ -39,6 +39,7 @@ deleted.
 #include "PointLight.h"
 #include "PlayerEffect.h"
 #include "FireSystem.h"
+#include "VolcanoEffect.h"
 #include "CLParticleRenderer.h"
 #include "Text.h"
 //////////////////////////////////////////////////////////////////////////
@@ -200,6 +201,7 @@ namespace Framework
     RegisterComponent (PointLight);
     RegisterComponent (PlayerEffect);
     RegisterComponent (FireSystem);
+    RegisterComponent (FountainEffect);
     RegisterComponent (CLParticleRenderer);
     RegisterComponent(GUIText);
     //////////////////////////////////////////////////////////////////////////

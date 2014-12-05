@@ -41,8 +41,8 @@ namespace Framework
     const unsigned int endId = p->m_countAlive;
     for (size_t i = 0; i < endId; ++i)
     {
-      //acc [i] += globalA;
-      ////vel [i] += localDT * acc [i];
+      acc [i] += globalA;
+      vel [i] += localDT * acc [i];
       pos [i] += localDT * vel [i];
     }
   }
