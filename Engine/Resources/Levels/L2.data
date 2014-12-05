@@ -52,7 +52,7 @@ Level =
 	  },
     Transform = 
 	  {
-		  Vec3 Translation = [-45, 9, -10],
+		  Vec3 Translation = [-45, 2, -10],
 		  Vec3 Scale = [1, 1, 1],
 		  Quat Rotation = [0, 0, 0, 1],
 	  },
@@ -195,7 +195,7 @@ Level =
 		{
       bool Enabled = true,
       bool UseFlying = true,
-		  Vec2 Acceleration = [400, 0],
+		  Vec2 Acceleration = [100, 0],
 		  Vec2 JumpVelocity = [0, 4],
 		  Vec2 MicrophoneMultiplier = [0, 10],
 		},
