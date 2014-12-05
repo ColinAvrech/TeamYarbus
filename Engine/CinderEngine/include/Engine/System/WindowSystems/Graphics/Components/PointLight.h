@@ -28,7 +28,7 @@ namespace Framework
 
     void Draw ();
 
-    virtual BoundType* ZilchGetDerivedType () const;
+    //virtual BoundType* ZilchGetDerivedType () const;
 
     float radius;
     float intensity;

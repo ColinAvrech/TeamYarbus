@@ -28,7 +28,7 @@ Level =
 		},
 	LevelTimer = 
     {
-      float EndTime = 1.5f,
+      float EndTime = .5f,
       string NextLevel = "newPhysics",
     },
   },
