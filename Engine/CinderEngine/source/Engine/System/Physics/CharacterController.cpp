@@ -8,18 +8,9 @@
 */
 /******************************************************************************/
 
-#include "Common.h"
 #include "CharacterController.h"
-#include "ComponentInclude.h"
-#include "ResourceManager.h"
-#include "WindowSystem.h"
-#include "TimeQuery.h"
-#include "glmOverloads.h"
-#include "PhysicsLibrary.h"
-#include "IncludeForAllCollision.h"
 #include "Thermodynamics.h"
 #include "GameObject.h"
-#include "RigidBody.h"
 #include "EventSystem.h"
 #include "CollisionEvent.h"
 #include "KeyEvent.h"
@@ -27,6 +18,7 @@
 #include "RigidBody2D.h"
 #include "Collider2D.h"
 #include "InputManager.h"
+#include "glfw3.h"
 
 
 namespace Framework
