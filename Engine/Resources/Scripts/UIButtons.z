@@ -1,3 +1,14 @@
+/******************************************************************************/
+/*!
+\file   UIButtons.z
+\author Joshua Biggs
+\par    Course: GAM205
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+\brief  WinMain.cpp is the starting place for the engine. This initializes all the systems and
+starts the game loop.
+*/
+/******************************************************************************/
+
 class ExitButton : Component
 {
 	var Detector: MouseDetector = null;
@@ -75,25 +86,31 @@ class ResumeButton : Component
 		this.Detector.Rect.Width = 8 * 1.5;
 		this.Detector.Rect.Height = 0.323 * 8;
 		this.Detector.Offset = Real2(0, 0.02 * 8);
-		
 		this.MenuObjects.Add(ZInterface.ObjectSystem.FindObjectByID(10));
 		this.MenuObjects.Add(ZInterface.ObjectSystem.FindObjectByID(11));
 		this.MenuObjects.Add(ZInterface.ObjectSystem.FindObjectByID(12));
 		this.MenuObjects.Add(ZInterface.ObjectSystem.FindObjectByID(13));
 		this.MenuObjects.Add(ZInterface.ObjectSystem.FindObjectByID(14));
 		
+		foreach (var obj in this.MenuObjects)
+		{
+			Console.WriteLine(obj);
+		}
+		
 		EventSystem.Connect(Events.UpdateEvent, this.LogicUpdate);
 	}
 	
 	function LogicUpdate(e: UpdateEvent)
 	{
-		Console.WriteLine("DIMENSIONS: ");
+		//Console.WriteLine("DIMENSIONS: ");
 		var camerapos = Camera.Main.Owner.Transform.GetTranslation();
+		Console.WriteLine(ZInterface.ObjectSystem.FindObjectByID(10));
+		
 		this.MenuObjects.Get(0).Transform.SetTranslation(Real3(camerapos.X, camerapos.Y, 0));
 		this.MenuObjects.Get(1).Transform.SetTranslation(Real3(camerapos.X, camerapos.Y + (0.8775 * 8), 0));
 		this.Owner.Transform.SetTranslation(Real3(camerapos.X, camerapos.Y + (0.45 * 8), 0));
-		Console.WriteLine(camerapos);
-		Console.WriteLine(this.Owner.Transform.GetTranslation());
+		//Console.WriteLine(camerapos);
+		//Console.WriteLine(this.Owner.Transform.GetTranslation());
 	}
 	
 	function OnMouseEvent(e: MouseEvent)
