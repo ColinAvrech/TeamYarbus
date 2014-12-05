@@ -28,7 +28,7 @@ namespace Framework
 {
 	ZilchDefineType(Sound, CinderZilch)
 	{
-
+		type->HandleManager = ZilchManagerId(Zilch::PointerManager);
 		ZilchBindMethod(SetVolume);
 		ZilchBindMethod(SetPan);
 		ZilchBindMethod(SetPause);

@@ -12,7 +12,8 @@ starts the game loop.
 class ExitButton : Component
 {
 	var Detector: MouseDetector = null;
-  
+	var EnterSound:Sound = null;
+	
 	constructor() : base()
 	{
 
@@ -21,6 +22,7 @@ class ExitButton : Component
 	function Initialize(owner:GameObject)
 	{
 		this.Owner = owner;
+		this.EnterSound = ZInterface.ResourceSystem.LoadSound("MainMenuScroll.wav");
 		this.Owner.Sprite.ChangeLayer(1);
 		this.Detector = new MouseDetector(this.Owner, this.OnMouseEvent);
 		
@@ -44,15 +46,22 @@ class ExitButton : Component
 			
 			if (InputManager.IsMouseTriggered(Mouse.LEFT))
 			{
-				
-				ZInterface.QuitGame();
+				if (this.Owner.Sprite.GetColor().W == 1)
+				{
+					ZInterface.QuitGame();
+				}
 			}
 			this.Owner.Sprite.ChangeTexture("UIExitWhite.png");
 			
 		}
+		if (this.Owner.Sprite.GetColor().W == 0)
+		{
+			return;
+		}
 		else if (e.State == MouseState.MouseEnter)
 		{
 			//Console.WriteLine("Enter");
+			this.EnterSound.Play();
 			
 		}
 		else if (e.State == MouseState.MouseOutside)

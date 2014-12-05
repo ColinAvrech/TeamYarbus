@@ -13,6 +13,7 @@
 #include "UpdateEvent.h"
 #include "ObjectSystem.h"
 #include "Zilch.hpp"
+#include "InputManager.h"
 
 namespace Framework
 {
@@ -44,6 +45,11 @@ namespace Framework
 
   void LevelTimer::Update (UpdateEvent* update)
   {
+	  if (InputManager::IsKeyDown(256) || InputManager::IsKeyDown(32))
+	  {
+		  OBJECTSYSTEM->LoadLevel(nextLevel.c_str());
+	  }
+
     time += 0.016f;
 
     if (time >= endTime)
