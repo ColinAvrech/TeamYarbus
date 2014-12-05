@@ -42,6 +42,7 @@ namespace Framework
 	  ZilchBindMethodAs(Get_Height, "GetHeight");
     ZilchBindMethodAs(ToggleCursorVisibility, "ToggleCursor");
 	ZilchBindMethodAs(SetCursorVisibility, "SetCursor");
+	ZilchBindFieldGetAs(cursorVisible, "CursorVisible");
   }
 
   static glm::vec2 mouseOffset;

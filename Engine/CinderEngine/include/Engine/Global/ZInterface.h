@@ -50,6 +50,7 @@ namespace Framework
 		static Sound* GetSound(String soundName);
 		static void TogglePaused();
 		static Boolean IsPaused();
+		static void ZInterface::SetPaused(bool state);
 		static void SetSceneShader(String shader);
 
 		static ZilchFile* OpenFile(Zilch::String filepath);

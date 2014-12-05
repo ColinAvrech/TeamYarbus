@@ -47,6 +47,7 @@ namespace Framework
 		ZilchBindStaticFieldGet(ResourceSystem);
 		ZilchBindStaticMethod(TogglePaused);
 		ZilchBindStaticMethod(IsPaused);
+		ZilchBindStaticMethod(SetPaused);
 		ZilchBindStaticMethod(SetSceneShader);
 		
 		
@@ -95,6 +96,11 @@ namespace Framework
 	Boolean ZInterface::IsPaused()
 	{
 		return CORE->IsPaused();
+	}
+
+	void ZInterface::SetPaused(bool state)
+	{
+		return CORE->SetPaused(state);
 	}
 
 	ZilchFile::ZilchFile(ifstream* file)

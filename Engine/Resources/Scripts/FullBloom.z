@@ -141,9 +141,10 @@ class Josh : Component
 		if (InputManager.IsKeyTriggered(Keys.ESCAPE))
 		{
 			
-			if (this.MenuObjects.Get(0).Sprite.GetColor().W == 0)
+			if (this.MenuObjects.Get(0).Sprite.GetColor().W == 0 && !ZInterface.WindowSystem.CursorVisible)
 			{
 				this.ChangeMenuAlpha(1);
+				ZInterface.SetPaused(true);
 			}
 			else
 			{
@@ -151,18 +152,22 @@ class Josh : Component
 				this.MenuObjects.Get(2).Sprite.ChangeTexture("UIResumeBlack.png");
 				this.MenuObjects.Get(3).Sprite.ChangeTexture("UIHowToPlayBlack.png");
 				this.MenuObjects.Get(4).Sprite.ChangeTexture("UIExitBlack.png");
+				ZInterface.SetPaused(false);
 			}
 			Console.WriteLine("PAUSED!");
-			ZInterface.TogglePaused();
 			if (ZInterface.IsPaused())
 			{
 				ZInterface.SetSceneShader("Blur");
+				ZInterface.WindowSystem.SetCursor(true);
+				
 			}
 			else
 			{
 				ZInterface.SetSceneShader("Passthrough");
+				ZInterface.WindowSystem.SetCursor(false);
 			}
-			ZInterface.WindowSystem.ToggleCursor();
+			
+			
 		}
 	}
 	
