@@ -234,7 +234,9 @@ Level =
       bool HighPassFilter = true,
       float HPFcutoff = 150,
       float HPFresonance = 1,
-      string SoundID = "FireA.ogg",
+      string SoundID = "3D",
+      string SoundName = "Fire",
+      string FileName = "FireA.ogg",
     },
 	},
   Cog = 

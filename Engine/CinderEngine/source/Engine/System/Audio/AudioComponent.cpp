@@ -71,8 +71,6 @@ namespace Framework
 
   void AudioComponent::Serialize(Serializer::DataNode* data)
   {
-    string soundName;
-
     Serializer::DataNode* value = data->FindElement(data, "Positional");
     value->GetValue(&_positional);
 
@@ -103,12 +101,23 @@ namespace Framework
     value = data->FindElement(data, "HPFresonance");
     value->GetValue(&_highresonance);
 
+    value = data->FindElement(data, "FileName");
+    value->GetValue(&_fileName);
+
     value = data->FindElement(data, "SoundID");
-    value->GetValue(&soundName);
+    value->GetValue(&_soundID);
 
-    
+    value = data->FindElement(data, "SoundName");
+    value->GetValue(&_soundName);
 
-    _newSound = AUDIOSYSTEM->LoadSound(soundName.c_str(), "Test", Sound::SOUND_3D, 1.0f);
+    if (_soundID == "BG")
+      _type = Sound::MUSIC;
+    else if (_soundID == "2D")
+      _type = Sound::SOUND_2D;
+    else if (_soundID == "3D")
+      _type = Sound::SOUND_3D;    
+
+    _newSound = AUDIOSYSTEM->LoadSound(_fileName.c_str(), const_cast<char*>(_soundName.c_str()), _type, 1.0f);
   }
 
   void AudioComponent::Initialize()
