@@ -12,6 +12,7 @@
 #include "EventSystem.h"
 #include "KeyEvent.h"
 #include "GLFW3.h"
+#include "Pipeline.h"
 
 namespace Framework
 {
@@ -47,6 +48,13 @@ namespace Framework
       {
         std::cout << "Goto NextLevel Cheat!" << std::endl;
 
+      }
+
+
+      // Enter Debug Mode: Tilda Key ' ` '
+      if (e->KeyDown && e->KeyValue == GLFW_KEY_GRAVE_ACCENT)
+      {
+        OPENGL->ToggleDebugDraw();
       }
 
     }

@@ -56,6 +56,8 @@ deleted.
 #include "LevelTimer.h"
 #include "CheatCodes.h"
 #include "Follow.h"
+#include "InterpolateBackground.h"
+#include "SpriteColorUpdate.h"
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 
@@ -134,6 +136,8 @@ namespace Framework
           break;
 
         case _LoadLevel:
+          PHYSICS->Clear ();
+          Physics::THERMODYNAMICS->Reset ();
           DestroyAllObjects();
           EVENTSYSTEM->DeleteAllEvents();
           data.open(currentLevelName.c_str());
@@ -204,6 +208,8 @@ namespace Framework
     RegisterComponent (FireStarter);
     RegisterComponent (LevelTimer);
     RegisterComponent (Follow);
+    RegisterComponent (InterpolateBackground);
+    RegisterComponent (SpriteColorUpdate);
     //////////////////////////////////////////////////////////////////////////
   }
 	void ObjectSystem::AddComponentCreator(string name, ComponentCreator* creator)
@@ -259,8 +265,6 @@ namespace Framework
 
   void ObjectSystem::LoadLevel(const char* name)
   {
-    PHYSICS->Clear ();
-    Physics::THERMODYNAMICS->Reset ();
     CommandList.push(ObjectSystemCommand::_LoadLevel);
     currentLevelName = name;
   }

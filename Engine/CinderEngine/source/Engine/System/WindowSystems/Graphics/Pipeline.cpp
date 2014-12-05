@@ -184,10 +184,10 @@ namespace Framework
     //////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////
     // DEBUG DRAW
-    //if (useDebugDraw)
+    if (useDebugDraw)
     {
-      //THERMODYNAMICS->Draw ();
-      //PHYSICS->Render ();
+      THERMODYNAMICS->Draw ();
+      PHYSICS->Render ();
     }
   }
 
@@ -427,6 +427,21 @@ namespace Framework
   void Pipeline::ResetBlendMode ()
   {
     glBlendFunc (sFactor, dFactor);
+  }
+
+
+  void Pipeline::ToggleDebugDraw ()
+  {
+    if (useDebugDraw)
+    {
+      std::cout << "Ending DebugDraw" << std::endl;
+      useDebugDraw = false;
+    }
+    else
+    {
+      std::cout << "Starting DebugDraw" << std::endl;
+      useDebugDraw = true;
+    }
   }
 
   void Pipeline::RenderToTexture(FBO* fbo, GLuint tex, Shader* shader)
