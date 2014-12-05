@@ -1,3 +1,13 @@
+/******************************************************************************/
+/*!
+\file   Solver.cpp
+\author Manas Sudhir Kulkarni
+\par    Course: GAM200
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+\brief  NOT USED IN F2014 build
+*/
+/******************************************************************************/
+
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 // Based on Jos Stam's Solver for Fluids (Real Time N-S Solver)

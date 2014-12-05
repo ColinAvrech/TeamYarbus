@@ -11,6 +11,8 @@
 #include "InputManager.h"
 #include "WindowSystem.h"
 
+#pragma warning(disable : 4800)
+
 namespace Framework
 {
 	bool InputManager::MouseDown[8] = { false };
@@ -68,7 +70,7 @@ namespace Framework
       // Set the Key's State      
       KeyWasPressed[key] = static_cast<bool>(state);
     }	
-	}
+  }
 
 	void InputManager::MouseChange(const int& button, const int& action, const int& mod)
   {
@@ -77,7 +79,7 @@ namespace Framework
       // Set the Mouse's State
       MouseWasDown[button] = static_cast<bool>(action);
     }
-	}
+  }
 
   //Bool update
 	void InputManager::Update()

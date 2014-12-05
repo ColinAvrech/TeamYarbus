@@ -1,3 +1,13 @@
+/******************************************************************************/
+/*!
+\file   gl_core_3_3.cpp
+\author Creators of GLFW
+\par    Course: GAM200
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+\brief  
+*/
+/******************************************************************************/
+
 #include <stdlib.h>
 #include <string.h>
 #include <stddef.h>

@@ -1,3 +1,12 @@
+/******************************************************************************/
+/*!
+\file   RigidBody2D.h
+\author Manas Sudhir Kulkarni
+\par    Course: GAM200
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+\brief
+*/
+/******************************************************************************/
 #ifndef _RIGID_BODY_2D_H
 #define _RIGID_BODY_2D_H
 

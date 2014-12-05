@@ -1,3 +1,13 @@
+/******************************************************************************/
+/*!
+\file   WindowSystem.h
+\author Micah Rust, Sagnik Chowdhury
+\par    Course: GAM200
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+\brief  Contains all of the framework for creating and maintaining a window.
+*/
+/******************************************************************************/
+
 #include "ScriptComponent.h"
 #include "ZilchCompiledLib.h"
 #include "ObjectSystem.h"

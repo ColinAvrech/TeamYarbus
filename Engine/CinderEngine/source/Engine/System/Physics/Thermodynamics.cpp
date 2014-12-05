@@ -1,3 +1,12 @@
+/******************************************************************************/
+/*!
+\file   Thermodynamics.cpp
+\author Anna Pearson
+\par    Course: GAM200
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+*/
+/******************************************************************************/
+
 #include "Physics/Thermodynamics.h"
 #include "TDLib.h"
 #include "AudioSystem.h"

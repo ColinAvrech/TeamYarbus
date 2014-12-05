@@ -1,10 +1,10 @@
 /******************************************************************************/
 /*!
-\file   ComponentSystem.h
+\file   TestingComp.h
 \author Micah Rust
 \par    Course: GAM200
 \par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
-\brief  
+\brief  For copy and paste to create new Components
 */
 /******************************************************************************/
 
