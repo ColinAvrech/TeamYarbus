@@ -434,7 +434,7 @@ namespace Framework
       ErrCheck(result);
       result = pFMODAudioSystem->set3DSettings(1.0f, float(DISTANCE_FACTOR), 1.0f);
       ErrCheck(result);
-      result = pSound->set3DMinMaxDistance(10.0f * float(DISTANCE_FACTOR), 15000.0f * float(DISTANCE_FACTOR));
+      result = pSound->set3DMinMaxDistance(1.5f * float(DISTANCE_FACTOR), 10000.0f * float(DISTANCE_FACTOR));
       ErrCheck(result);
       SetLoop(true, index);
       break;
@@ -453,9 +453,9 @@ namespace Framework
       return; 
     }
   
-    _position.x = (pos.x - AUDIOSYSTEM->listener->GetPosition().x) * float(DISTANCE_FACTOR);
-    _position.y = (pos.y - AUDIOSYSTEM->listener->GetPosition().y) * float(DISTANCE_FACTOR);
-    _position.z = (pos.z - AUDIOSYSTEM->listener->GetPosition().z) * float(DISTANCE_FACTOR);
+    _position.x = pos.x * float(DISTANCE_FACTOR);
+    _position.y = pos.y * float(DISTANCE_FACTOR);
+    _position.z = pos.z * float(DISTANCE_FACTOR);
   }
 
   /***************************************************************************/

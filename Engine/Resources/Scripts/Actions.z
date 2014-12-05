@@ -1,3 +1,14 @@
+/******************************************************************************/
+/*!
+\file   Actions.z
+\author Joshua Biggs
+\par    Course: GAM205
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+\brief  This script contains the Actions class which is used to interpolate between
+		two values over a specified time. An ease is also specified.
+*/
+/******************************************************************************/
+
 class Actions
 {
     //Private Variables

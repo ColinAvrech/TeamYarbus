@@ -1,3 +1,14 @@
+/******************************************************************************/
+/*!
+\file   SampleCurve.z
+\author Joshua Biggs
+\par    Course: GAM205
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+\brief  This script contains the Enum of all the different eases in the Action System
+		as well as the class for the Sample Easing Curve for the actions.
+*/
+/******************************************************************************/
+
 class SampleCurve
 {
     var Sample:delegate(currenttime:Real, startvalue:Real, endvalue:Real, duration:Real):Real = null;

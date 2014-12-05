@@ -113,7 +113,7 @@ namespace Framework
 
   void AudioComponent::Initialize()
   {
-    LoadSound("FireA.ogg");
+    //LoadSound("FireA.ogg");
     gameObject->AudioComponent = this;
     AUDIOSYSTEM->AddAudioComponent(this);
   }
@@ -143,8 +143,6 @@ namespace Framework
 
     if (_playing)
       _newSound->Play();
-    else
-      _newSound->Stop();
 
     if (_lowpassed && _playing)
     {
@@ -165,7 +163,8 @@ namespace Framework
     if (_micEffect && _playing)
       _newSound->micEffectUpdate();
 
-    _newSound->SetMute(_mute);
+    if (_playing)
+      _newSound->SetMute(_mute);
   }
 
   #pragma endregion

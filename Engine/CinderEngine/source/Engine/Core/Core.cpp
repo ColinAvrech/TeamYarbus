@@ -28,6 +28,7 @@ namespace Framework
 	  ZilchBindMethod(QuitGame);
 	  ZilchBindMethod(TogglePaused);
 	  ZilchBindMethod(IsPaused);
+	  //ZilchBindMethod(SetPaused);
   }
   CoreEngine::CoreEngine()
   {
@@ -147,5 +148,13 @@ namespace Framework
     PauseEvent pause;
     pause.Paused = GamePaused;
     EVENTSYSTEM->TriggerEvent (Events::PAUSE, pause);
+  }
+
+  void CoreEngine::SetPaused(bool state)
+  {
+	  GamePaused = state;
+	  PauseEvent pause;
+	  pause.Paused = GamePaused;
+	  EVENTSYSTEM->TriggerEvent(Events::PAUSE, pause);
   }
 }

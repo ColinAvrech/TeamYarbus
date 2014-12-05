@@ -52,7 +52,11 @@ Level =
 	  },
     Transform = 
 	  {
+<<<<<<< HEAD
 		  Vec3 Translation = [0, 7, -10],
+=======
+		  Vec3 Translation = [0, 2, -10],
+>>>>>>> 0363af3167d3edd9fa70374aae3e067a4e22f28f
 		  Vec3 Scale = [1, 1, 1],
 		  Quat Rotation = [0, 0, 0, 1],
 	  },
@@ -180,8 +184,13 @@ Level =
 		},
 		Transform = 
 		{
+<<<<<<< HEAD
 			Vec3 Translation = [0, 16, 0],
 			Vec3 Scale = [0.5, 0.5, 1],
+=======
+			Vec3 Translation = [0, 26, 0],
+			Vec3 Scale = [1, 1, 1],
+>>>>>>> 0363af3167d3edd9fa70374aae3e067a4e22f28f
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		CircleCollider2D = 
@@ -221,6 +230,20 @@ Level =
     PlayerStats = 
     {
       string NextLevel = "L2",
+    },
+    AudioComponent = 
+    {
+      bool Positional = true,
+      bool MicEffect = true,
+      bool Play = true,
+      bool Mute = false,
+      bool LowPassFilter = true,
+      float LPFcutoff = 6000,
+      float LPFresonance = 1,
+      bool HighPassFilter = true,
+      float HPFcutoff = 150,
+      float HPFresonance = 1,
+      string SoundID = "FireA.ogg",
     },
 	},
   Cog = 

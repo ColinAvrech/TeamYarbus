@@ -41,7 +41,7 @@ namespace Framework
 
     void TogglePaused();
     bool IsPaused(){ return GamePaused; }
-   
+	void CoreEngine::SetPaused(bool state);
     //! Stops the game for whatever reason
     void QuitGame();
 
