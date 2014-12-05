@@ -8,3 +8,7 @@ MainMenuScroll.wav
 2D
 SplashScreen.wav
 2D
+L1_Collision.wav
+2D
+L1_Rumble.wav
+2D
