@@ -62,7 +62,7 @@ namespace Framework
 
     if (currentRadius <= minRadius)
     {
-       OBJECTSYSTEM->ZilchLoadLevel(Zilch::String("WinScreen"));
+       //OBJECTSYSTEM->ZilchLoadLevel(Zilch::String("WinScreen"));
       //printf("dead");
     }
 	}

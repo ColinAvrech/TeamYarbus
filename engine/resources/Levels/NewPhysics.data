@@ -315,7 +315,7 @@ Level =
 		},
 		Named = 
 		{
-			string Name = "RightWall",
+			string Name = "TopWall",
 		},
 		Transform = 
 		{
@@ -323,14 +323,14 @@ Level =
 			Vec3 Scale = [1, 1, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
-    PolygonCollider2D = 
-    {
-      bool Enabled = true,
-		  bool Static = true,
-		  string Material = "4de020863e872da8:DefaultPhysicsMaterial",
-      Vec2 Dimensions = [150, 5],
-      float Orientation = 0,
-    },
+		PolygonCollider2D = 
+		{
+		  bool Enabled = true,
+			  bool Static = true,
+			  string Material = "4de020863e872da8:DefaultPhysicsMaterial",
+		  Vec2 Dimensions = [150, 5],
+		  float Orientation = 0,
+		},
   },
   Cog = 
 	{

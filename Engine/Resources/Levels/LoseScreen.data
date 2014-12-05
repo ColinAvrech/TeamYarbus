@@ -63,9 +63,6 @@ Level =
 			string Shader = "Default",
 			Vec4 Color = [1, 1, 1, 0],
 		},
-		ResumeButton = 
-		{
-		},
 	},
 	Cog = 
 	{

@@ -82,6 +82,7 @@ class ResumeButton : Component
 	function Initialize(owner:GameObject)
 	{
 		this.Owner = owner;
+		Console.WriteLine(this.Owner.GetName());
 		this.Detector = new MouseDetector(this.Owner, this.OnMouseEvent);
 		this.Detector.Rect.Width = 8 * 1.5;
 		this.Detector.Rect.Height = 0.323 * 8;
@@ -92,10 +93,6 @@ class ResumeButton : Component
 		this.MenuObjects.Add(ZInterface.ObjectSystem.FindObjectByID(13));
 		this.MenuObjects.Add(ZInterface.ObjectSystem.FindObjectByID(14));
 		
-		foreach (var obj in this.MenuObjects)
-		{
-			Console.WriteLine(obj);
-		}
 		
 		EventSystem.Connect(Events.UpdateEvent, this.LogicUpdate);
 	}
