@@ -169,7 +169,7 @@ namespace Framework
 	float FindAxisLeastPenetration( unsigned *faceIndex, PolygonCollider2D *A, PolygonCollider2D *B )
 	{
 	  float bestDistance = -FLT_MAX;
-	  unsigned bestIndex;
+	  unsigned bestIndex = -1;
 	
 	  for(unsigned i = 0; i < A->m_vertexCount; ++i)
 	  {
@@ -201,6 +201,8 @@ namespace Framework
 	      bestIndex = i;
 	    }
 	  }
+
+    assert(bestIndex != -1);
 	
 	  *faceIndex = bestIndex;
 	  return bestDistance;
