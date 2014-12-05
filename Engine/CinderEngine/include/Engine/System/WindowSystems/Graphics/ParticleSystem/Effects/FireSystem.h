@@ -20,6 +20,7 @@
 namespace Framework
 {
   class KeyEvent;
+  class FireStarter;
 
   class FireSystem : public IEffect
   {
@@ -43,10 +44,11 @@ namespace Framework
     virtual int numAllParticles ();
     virtual int numAliveParticles ();
     virtual void Draw ();
-    virtual BoundType* ZilchGetDerivedType () const;
+    //virtual BoundType* ZilchGetDerivedType () const;
 
     void OnKeyPressed (KeyEvent* key);
     void AddFire (float x, float y, float emitRate);
+    void RemoveFire (FireStarter* param1);
 
     const static std::string Name;
   private:
@@ -57,9 +59,7 @@ namespace Framework
     Texture* texture;
 
     void AddFireEmitter (glm::vec3 position, float emitRate, glm::vec3 minVel, glm::vec3 maxVel);
-
     virtual void OnApplicationPause (PauseEvent* pause);
-
   };
 }
 

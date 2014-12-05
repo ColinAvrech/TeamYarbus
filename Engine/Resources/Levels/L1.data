@@ -66,6 +66,12 @@ Level =
 			float FarPlane = 100,
 			float Size = 17,
 		},
+    CameraShake = 
+    {
+      bool Enabled = true,
+      Vec2 Intensity = [0.5, 1.0],
+      float Duration = 1.0,
+    },
   },
   Cog = 
 	{
@@ -180,8 +186,8 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, 16, 0],
-			Vec3 Scale = [0.5, 0.5, 1],
+			Vec3 Translation = [0, 100, 0],
+			Vec3 Scale = [1, 1, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		CircleCollider2D = 
@@ -195,28 +201,21 @@ Level =
 		{
       bool Enabled = true,
       bool UseFlying = false,
-		  Vec2 Acceleration = [10, 0],
+		  Vec2 Acceleration = [30, 0],
 		  Vec2 JumpVelocity = [0, 0],
 		  Vec2 MicrophoneMultiplier = [0, 10],
-		},
-		Health = 
-		{
-		bool alive = true,
-		float maxRadius = 1f,
-		float minRadius = .1f,
-		bool reFueling = false,
 		},
     CLParticleRenderer = 
     {
       int ParticleCount = 1000,
-      float ParticleSize = 1,
+      float ParticleSize = 5,
       float EffectRadius = 0.2,
       Vec4 Color = [255, 80, 0, 0.5],
     },
     PlayerEffect = 
     {
       bool Enabled = true,
-      float ParticleSize = 10,
+      float ParticleSize = 60,
     },
     PlayerStats = 
     {
@@ -234,8 +233,26 @@ Level =
       bool HighPassFilter = true,
       float HPFcutoff = 150,
       float HPFresonance = 1,
-      string SoundID = "FireA.ogg",
+      string SoundID = "3D",
+      string SoundName = "Fire",
+      string FileName = "FireA.ogg",
     },
+    Sprite = 
+		{
+			string SpriteSource = "Circle.png",
+			bool FlipX = false,
+			bool FlipY = false,
+			Vec4 Color = [1, 0.5, 0, 0.8],
+			bool Visible = true,
+			bool OnTop = false,
+			bool AnimationActive = false,
+			float AnimationSpeed = 1,
+			uint StartFrame = 0,
+			BlendMode BlendMode = Alpha,
+			SpriteGeometryMode GeometryMode = ZPlane,
+			string SpriteLayer = "52ad5fa30d7fcd50:DefaultSpriteLayer",
+			string Shader = "Default",
+		},
 	},
   Cog = 
 	{
@@ -253,25 +270,25 @@ Level =
 			Vec3 Scale = [1, 1, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
-    Sprite = 
-		{
-			string SpriteSource = "Circle.png",
-			bool FlipX = false,
-			bool FlipY = false,
-			Vec4 Color = [1, 0.5, 0, 0.8],
-			bool Visible = true,
-			bool OnTop = false,
-			bool AnimationActive = false,
-			float AnimationSpeed = 1,
-			uint StartFrame = 0,
-			BlendMode BlendMode = Alpha,
-			SpriteGeometryMode GeometryMode = ZPlane,
-			string SpriteLayer = "52ad5fa30d7fcd50:DefaultSpriteLayer",
-			string Shader = "Default",
-		},
     Follow = 
     {
       string Target = "Player",
+    },
+    AudioComponent = 
+    {
+      bool Positional = false,
+      bool MicEffect = false,
+      bool Play = true,
+      bool Mute = false,
+      bool LowPassFilter = false,
+      float LPFcutoff = 6000,
+      float LPFresonance = 1,
+      bool HighPassFilter = false,
+      float HPFcutoff = 150,
+      float HPFresonance = 1,
+      string SoundID = "2D",
+      string SoundName = "Rumble",
+      string FileName = "L1_Rumble.wav",
     },
   },
   Cog = 
@@ -321,31 +338,6 @@ Level =
 		  bool Static = true,
 		  string Material = "4de020863e872da8:DefaultPhysicsMaterial",
       Vec2 Dimensions = [5, 150],
-      float Orientation = 0,
-    },
-  },
-  Cog = 
-	{
-		LinkId = 
-		{
-			uint Id = 8,
-		},
-		Named = 
-		{
-			string Name = "RightWall",
-		},
-		Transform = 
-		{
-			Vec3 Translation = [0, 32, 0],
-			Vec3 Scale = [1, 1, 1],
-			Quat Rotation = [0, 0, 0, 1],
-		},
-    PolygonCollider2D = 
-    {
-      bool Enabled = true,
-		  bool Static = true,
-		  string Material = "4de020863e872da8:DefaultPhysicsMaterial",
-      Vec2 Dimensions = [150, 5],
       float Orientation = 0,
     },
   },

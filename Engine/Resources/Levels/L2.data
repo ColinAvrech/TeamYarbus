@@ -52,7 +52,7 @@ Level =
 	  },
     Transform = 
 	  {
-		  Vec3 Translation = [-45, 9, -10],
+		  Vec3 Translation = [-45, 2, -10],
 		  Vec3 Scale = [1, 1, 1],
 		  Quat Rotation = [0, 0, 0, 1],
 	  },
@@ -162,11 +162,6 @@ Level =
       bool Enabled = true,
       float ParticleSize = 100,
     },
-    GUIText = 
-    {
-      string Text = "Hello World",
-      Vec2 Position = [-1.0, 0.8],
-    },
   },
   Cog = 
 	{
@@ -195,16 +190,9 @@ Level =
 		{
       bool Enabled = true,
       bool UseFlying = true,
-		  Vec2 Acceleration = [400, 0],
+		  Vec2 Acceleration = [100, 0],
 		  Vec2 JumpVelocity = [0, 4],
 		  Vec2 MicrophoneMultiplier = [0, 10],
-		},
-		Health = 
-		{
-		bool alive = true,
-		float maxRadius = 1f,
-		float minRadius = .1f,
-		bool reFueling = false,
 		},
     CLParticleRenderer = 
     {
@@ -218,6 +206,13 @@ Level =
       bool Enabled = true,
       float ParticleSize = 100,
     },
+    Health = 
+		{
+		bool alive = true,
+		float maxRadius = 1.0f,
+		float minRadius = 0.1f,
+		bool reFueling = false,
+		},
     CameraFollow = 
     {
     },
@@ -225,6 +220,27 @@ Level =
     {
       string NextLevel = "L3",
     },
+    GUIText = 
+    {
+      string Text = "Hello World",
+      Vec2 Position = [-1.0, 0.8],
+    },
+    Sprite = 
+		{
+			string SpriteSource = "Circle.png",
+			bool FlipX = false,
+			bool FlipY = false,
+			Vec4 Color = [1, 0.5, 0, 0.8],
+			bool Visible = true,
+			bool OnTop = false,
+			bool AnimationActive = false,
+			float AnimationSpeed = 1,
+			uint StartFrame = 0,
+			BlendMode BlendMode = Alpha,
+			SpriteGeometryMode GeometryMode = ZPlane,
+			string SpriteLayer = "52ad5fa30d7fcd50:DefaultSpriteLayer",
+			string Shader = "Default",
+		},
 	},
   Cog = 
 	{
@@ -241,22 +257,6 @@ Level =
 			Vec3 Translation = [0, 0, 0],
 			Vec3 Scale = [1, 1, 1],
 			Quat Rotation = [0, 0, 0, 1],
-		},
-    Sprite = 
-		{
-			string SpriteSource = "Circle.png",
-			bool FlipX = false,
-			bool FlipY = false,
-			Vec4 Color = [1, 0.5, 0, 0.8],
-			bool Visible = true,
-			bool OnTop = false,
-			bool AnimationActive = false,
-			float AnimationSpeed = 1,
-			uint StartFrame = 0,
-			BlendMode BlendMode = Alpha,
-			SpriteGeometryMode GeometryMode = ZPlane,
-			string SpriteLayer = "52ad5fa30d7fcd50:DefaultSpriteLayer",
-			string Shader = "Default",
 		},
     Follow = 
     {

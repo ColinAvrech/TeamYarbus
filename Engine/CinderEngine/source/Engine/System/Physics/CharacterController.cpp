@@ -1,6 +1,6 @@
 /******************************************************************************/
 /*!
-\file   CharacterController.h
+\file   CharacterController.cpp
 \author Anna Pearson
 \par    Course: GAM200
 \par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
@@ -122,6 +122,7 @@ namespace Framework
     {
       if (useFlying)
       {
+        gameObject->Health->deathRate *= 2.0f;
         body->velocity.y += jumpVel.y;
       }
       if (onGround)

@@ -23,7 +23,6 @@
 namespace Framework
 {
   DefineComponentName (PlayerEffect);
-  static float size;
   static float maxSize;
   static float minSize;
 

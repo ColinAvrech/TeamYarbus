@@ -111,11 +111,13 @@ namespace Framework
       //Get Map size
       vec2 GetMapSize(){ return MapSize; }
       //Get cell temperature
-      float GetCellTemperature(const float& x, const float& y);
+      float GetCellTemperature(int x, int y);
       //Get cell oxygen content
       float GetCellOxygen(const float& x, const float& y);
       //Get cell velocity
       vec2 GetCellVelocity(const float& x, const float& y);
+	  //Return Terrain binary map value
+	  int GetCellMaterial(int x, int y);
 
       // Setters
       void ToggleAutoDissipation();

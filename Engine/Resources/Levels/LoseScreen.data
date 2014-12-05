@@ -1,94 +1,35 @@
 Level = 
 {
-	LevelSettings = 
+  Cog = 
 	{
-		LinkId = 
+	  LinkId = 
+	  {
+		  uint Id = 1,
+	  },
+	  Named = 
+	  {
+		  string Name = "Camera",
+	  },
+    Transform = 
+	  {
+		  Vec3 Translation = [0, 4, -10],
+		  Vec3 Scale = [1, 1, 1],
+		  Quat Rotation = [0, 0, 0, 1],
+	  },
+    Camera = 
 		{
-			uint Id = 1,
+      bool Enabled = true,
+      bool main = true,
+      Vec3 Facing = [0, 0, 1],
+			float FieldOfView = 45,
+			float NearPlane = 0,
+			float FarPlane = 1000,
+			float Size = 128,
 		},
-		Named = 
-		{
-			string Name = "LevelSettings",
-		},
-		GravityEffect = 
-		{
-			bool Active = true,
-			bool WakeUpOnChange = false,
-			bool LocalSpaceDirection = true,
-			float Strength = 10,
-			Vec3 Direction = [0, -1, 0],
-		},
-		DragEffect = 
-		{
-			bool Active = true,
-			bool WakeUpOnChange = false,
-			float Drag = 0.7,
-		},
-		CameraViewport = 
-		{
-			bool Background = true,
-			Vec2 Offset = [0, 0],
-			Vec2 Size = [1, 1],
-			uint Layer = 0,
-			bool Active = true,
-			bool Blocking = true,
-			uint Renderer = 1,
-			uint Camera = 2,
-		},
-		ForwardRenderer = 
-		{
-			Vec4 ClearColor = [0.278431, 0.278431, 0.278431, 1],
-		},
-	},
-	Cog = 
-	{
-		LinkId = 
-		{
-			uint Id = 12,
-		},
-		Named = 
-		{
-			string Name = "ResumeGame",
-		},
-		Transform = 
-		{
-			Vec3 Translation = [0, 0.45, 0],
-			Vec3 Scale = [0.75, 0.75, 0.75],
-			Quat Rotation = [0, 0, 0, 1],
-		},
-		Sprite = 
-		{
-			bool Visible = true,
-			string SpriteSource = "UIResumeBlack.png",
-			string Shader = "Default",
-			Vec4 Color = [1, 1, 1, 0],
-		},
-	},
-	Cog = 
-	{
-		LinkId = 
-		{
-			uint Id = 14,
-		},
-		Named = 
-		{
-			string Name = "QuitGame",
-		},
-		Transform = 
-		{
-			Vec3 Translation = [0, -0.75, 0],
-			Vec3 Scale = [0.75, 0.75, 0.75],
-			Quat Rotation = [0, 0, 0, 1],
-		},
-		Sprite = 
-		{
-			bool Visible = true,
-			string SpriteSource = "UIExitBlack.png",
-			string Shader = "Default",
-			Vec4 Color = [1, 1, 1, 0],
-		},
-		ExitButton = 
-		{
-		},
-	},
+	LevelTimer = 
+    {
+      float EndTime = .5f,
+      string NextLevel = "L1",
+    },
+  },
 },

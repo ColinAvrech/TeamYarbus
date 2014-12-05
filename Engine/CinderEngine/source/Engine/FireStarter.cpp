@@ -45,6 +45,7 @@ namespace Framework
   {
     firePoints.push_back(newFirePoint);
     Physics::THERMODYNAMICS->Add_Object(newFirePoint);
+    ++numPoints;
   }
 
 	void FireStarterManager::Serialize(Serializer::DataNode* data)
@@ -108,15 +109,18 @@ namespace Framework
 		if (!onFire)
 		{
 			onFire = true;
-      
-      std::cout << CinderConsole::green;
-      printf("Number of trees remaining: %d\n", FireStarterManager::numTreesLeft);
-      std::cout << CinderConsole::red;
 
       if (manager && !manager->onFire)
       {
-        manager->onFire = true;
-        FireStarterManager::numTreesLeft--;
+        --manager->numPoints;
+        if (manager->numPoints <= 0)
+        {
+          manager->onFire = true;
+          --FireStarterManager::numTreesLeft;
+          std::cout << CinderConsole::green;
+          printf ("Number of trees remaining: %d\n", FireStarterManager::numTreesLeft);
+          std::cout << CinderConsole::red;
+        }
         if (FireStarterManager::numTreesLeft <= 0)
         {
           BaseEvent b;
@@ -146,6 +150,7 @@ namespace Framework
 			PingEvent e;
 			e.Ping = manager->gameObject;
 			EVENTSYSTEM->TriggerEvent(Events::PING_DOUSEPLANT, e);
+      Physics::ThermodynamicsSystem::FIRE->RemoveFire (this);
 		}
 	}
 

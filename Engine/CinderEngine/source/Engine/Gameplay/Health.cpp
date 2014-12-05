@@ -14,13 +14,15 @@
 #include "Core.h"
 #include "ObjectSystem.h"
 #include "Text.h"
+#include "Thermodynamics.h"
+#include "PlayerEffect.h"
 
 namespace Framework
 {
 	Health::~Health()
 	{
 		EVENTSYSTEM->mDisconnect<UpdateEvent, Health>(Events::UPDATEEVENT, this, &Health::Update);
-		EVENTSYSTEM->mDisconnect<CollisionEvent, Health>("CollisionEvent", this, &Health::OnCollisionEnter);
+		//EVENTSYSTEM->mDisconnect<CollisionEvent, Health>("CollisionEvent", this, &Health::OnCollisionEnter);
 	}
 
 	void Health::Serialize(Serializer::DataNode* data)
@@ -41,42 +43,41 @@ namespace Framework
 	void Health::Initialize()
 	{
 		EVENTSYSTEM->mConnect<UpdateEvent, Health>(Events::UPDATEEVENT, this, &Health::Update);
-		EVENTSYSTEM->mConnect<CollisionEvent, Health>("CollisionEvent", this, &Health::OnCollisionEnter);
 		gameObject->Health = this;
 
 		currentRadius = maxRadius;
     invincible = false;
+    originalPosition = gameObject->Transform->GetPosition ();
+    playerEffect = reinterpret_cast<PlayerEffect*>(gameObject->GetComponent ("PlayerEffect"));
 	}
-
-	void Health::OnCollisionEnter(CollisionEvent* c)
-	{
-		float growthRate = .1f;
-		currentRadius += growthRate * c->Dt;
-	//	gameObject->Transform->Scale(currentRadius / maxRadius);
-	}
-
 
 	void Health::Update(UpdateEvent* e)
 	{
-    if (!e)
-      return;
+		//check if player is colliding with node on fire -- for refuel
+		glm::vec2 currPos = gameObject->Transform->GetGridPosition();
+		int material = Physics::THERMODYNAMICS->GetCellMaterial(currPos.x, currPos.y);
+		float temp = Physics::THERMODYNAMICS->GetCellTemperature(currPos.x, currPos.y);
 
+    playerEffect->size = currentRadius * 100.0f;
+
+		if (temp >= Physics::Constant::BT_Organics && material == GRASS)
+			currentRadius = maxRadius;
     if (invincible)
     {
       return;
     }
 
-		float deathRate = 2.0f;
 		currentRadius -= deathRate * e->Dt;
+		gameObject->Transform->Scale(currentRadius / maxRadius);
 
     if (currentRadius <= minRadius)
     {
-       //OBJECTSYSTEM->ZilchLoadLevel(Zilch::String("WinScreen"));
       //printf("dead");
-      GUIText* guiText = reinterpret_cast<GUIText*>(OBJECTSYSTEM->FindObjectByID(4)->GetComponent("GUIText"));
+      GUIText* guiText = reinterpret_cast<GUIText*>(gameObject->GetComponent("GUIText"));
       if (guiText)
       {
         guiText->text = "You ran out of fuel :(";
+        OBJECTSYSTEM->LoadLevel (OBJECTSYSTEM->currentLevelName.c_str());
         //TODO_AUDIO: Play Death Sound/Music
       }
     }

@@ -64,14 +64,14 @@ Level =
 			float FieldOfView = 45,
 			float NearPlane = 0,
 			float FarPlane = 1000,
-			float Size = 128,
+			float Size = 28,
 		},
   },
   Cog = 
 	{
 		LinkId = 
 		{
-			uint Id = 8,
+			uint Id = 2,
 		},
 		Named = 
 		{
@@ -159,7 +159,7 @@ Level =
     },
     FireSystem = 
     {
-      bool Enabled = true,
+      bool Enabled = false,
       float ParticleSize = 200,
     },
   },
@@ -178,6 +178,22 @@ Level =
 			Vec3 Translation = [0, 16, 0],
 			Vec3 Scale = [1, 1, 1],
 			Quat Rotation = [0, 0, 0, 1],
+		},
+		Sprite = 
+		{
+			string SpriteSource = "Circle.png",
+			bool FlipX = false,
+			bool FlipY = false,
+			Vec4 Color = [1, 0.5, 0, 0.8],
+			bool Visible = true,
+			bool OnTop = false,
+			bool AnimationActive = false,
+			float AnimationSpeed = 1,
+			uint StartFrame = 0,
+			BlendMode BlendMode = Alpha,
+			SpriteGeometryMode GeometryMode = ZPlane,
+			string SpriteLayer = "52ad5fa30d7fcd50:DefaultSpriteLayer",
+			string Shader = "Default",
 		},
 		CircleCollider2D = 
 		{
@@ -209,7 +225,7 @@ Level =
     },
     PlayerEffect = 
     {
-      bool Enabled = true,
+      bool Enabled = false,
       float ParticleSize = 100,
     },
     CameraFollow = 
@@ -222,17 +238,19 @@ Level =
     },
     AudioComponent = 
     {
-      bool Positional = true,
-      bool MicEffect = true,
+      bool Positional = false,
+      bool MicEffect = false,
       bool Play = true,
       bool Mute = false,
-      bool LowPassFilter = true,
+      bool LowPassFilter = false,
       float LPFcutoff = 6000,
       float LPFresonance = 1,
-      bool HighPassFilter = true,
+      bool HighPassFilter = false,
       float HPFcutoff = 150,
       float HPFresonance = 1,
-      string SoundID = "FireA.ogg",
+      string SoundID = "2D",
+      string SoundName = "Music",
+      string FileName = "CreditsMusic",
     },
 	},
   Cog = 
@@ -250,22 +268,6 @@ Level =
 			Vec3 Translation = [0, 0, 0],
 			Vec3 Scale = [1, 1, 1],
 			Quat Rotation = [0, 0, 0, 1],
-		},
-    Sprite = 
-		{
-			string SpriteSource = "Circle.png",
-			bool FlipX = false,
-			bool FlipY = false,
-			Vec4 Color = [1, 0.5, 0, 0.8],
-			bool Visible = true,
-			bool OnTop = false,
-			bool AnimationActive = false,
-			float AnimationSpeed = 1,
-			uint StartFrame = 0,
-			BlendMode BlendMode = Alpha,
-			SpriteGeometryMode GeometryMode = ZPlane,
-			string SpriteLayer = "52ad5fa30d7fcd50:DefaultSpriteLayer",
-			string Shader = "Default",
 		},
     Follow = 
     {
@@ -351,7 +353,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 100,
+			uint Id = 10,
 		},
 		Named = 
 		{
