@@ -14,6 +14,7 @@
 #include "ObjectSystem.h"
 #include "Zilch.hpp"
 #include "InputManager.h"
+#include "WindowSystem.h"
 
 namespace Framework
 {
@@ -32,6 +33,7 @@ namespace Framework
   void LevelTimer::Initialize ()
   {
     EVENTSYSTEM->mConnect<UpdateEvent, LevelTimer> (Events::UPDATEEVENT, this, &LevelTimer::Update);
+	WINDOWSYSTEM->SetCursorVisibility(false);
   }
 
   void LevelTimer::Serialize (Serializer::DataNode* data)

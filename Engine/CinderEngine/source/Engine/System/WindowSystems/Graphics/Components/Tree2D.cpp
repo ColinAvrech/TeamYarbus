@@ -170,7 +170,7 @@ namespace Framework
       shader->uniMat4 ("mvp", glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix ()));
       vao->bindVAO ();
       //shader->uniMat4 ("mvp", glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix ()));
-      glDrawArrays (GL_LINES, 0, treeMesh.size () / 6);
+      glDrawArrays (GL_LINE_STRIP, 0, treeMesh.size () / 6);
       vao->unbindVAO ();
       shader->Disable ();
       OPENGL->ResetBlendMode ();
