@@ -80,7 +80,7 @@ Level =
     Transform = 
 	  {
 		  Vec3 Translation = [0, 0, 0],
-		  Vec3 Scale = [4, 2, 1],
+		  Vec3 Scale = [2.5, 0.65, 1],
 		  Quat Rotation = [0, 0, 0, 1],
 	  },
     Sprite = 
