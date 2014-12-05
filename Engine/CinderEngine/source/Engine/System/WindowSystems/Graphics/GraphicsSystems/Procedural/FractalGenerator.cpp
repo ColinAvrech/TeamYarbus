@@ -182,12 +182,6 @@ namespace Framework
       mesh->push_back (color.g);
       mesh->push_back (color.b);
       mesh->push_back (color.a);
-      mesh->push_back (p2.x);
-      mesh->push_back (p2.y);
-      mesh->push_back (color.r);
-      mesh->push_back (color.g);
-      mesh->push_back (color.b);
-      mesh->push_back (color.a);
     }
 
     OPENGL->MatrixMode (MODEL);
