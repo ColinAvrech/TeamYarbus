@@ -30,6 +30,7 @@ class CameraFollow : Component
 		}
 		var pos1 = Camera.Main.Owner.Transform.GetTranslation();
 		var pos2 = this.Owner.Transform.GetTranslation();
+		pos2.Y += 4;
 		var distance = Math.LengthSq(Real2(pos2.X - pos1.X, pos2.Y - pos2.Y));
 		var newpos = Math.Lerp(pos1, pos2, distance * e.Dt / 20);
 		
