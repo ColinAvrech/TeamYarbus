@@ -58,6 +58,7 @@ deleted.
 #include "Follow.h"
 #include "InterpolateBackground.h"
 #include "SpriteColorUpdate.h"
+#include "Rotator.h"
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 
@@ -210,6 +211,7 @@ namespace Framework
     RegisterComponent (Follow);
     RegisterComponent (InterpolateBackground);
     RegisterComponent (SpriteColorUpdate);
+    RegisterComponent (Rotator);
     //////////////////////////////////////////////////////////////////////////
   }
 	void ObjectSystem::AddComponentCreator(string name, ComponentCreator* creator)
