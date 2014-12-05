@@ -15,7 +15,9 @@
 #include "WindowSystem.h"
 #include "GameObject.h"
 #include "Pipeline.h"
+#include "GameEvent.h"
 #include "CharacterController.h"
+#include "Core.h"
 
 
 namespace Framework
@@ -83,10 +85,24 @@ namespace Framework
     }
   }
 
+  void Camera::OnApplicationPause (PauseEvent* pause)
+  {
+    timer = 0.0f;
+    if (pause->Paused)
+    {
+      czs = CZ_ZOOMOUT;
+    }
+    else
+    {
+      czs = CZ_ZOOMIN;
+    }
+  }
+
 
   void Camera::Initialize ()
   {
     EVENTSYSTEM->mConnect <KeyEvent, Camera> (Events::KEY_ANY, this, &Camera::OnKeyPressed);
+    EVENTSYSTEM->mConnect <PauseEvent, Camera> (Events::PAUSE, this, &Camera::OnApplicationPause);
     gameObject->Camera = this;
     allCameras.push_back(this);
     if (mainCamera)
@@ -167,7 +183,35 @@ namespace Framework
 
   void Camera::UpdateCamera (Pipeline* p)
   {
-    if (enabled)
+    switch (czs)
+
+    {
+    case Framework::CZ_NONE:
+      break;
+    case Framework::CZ_ZOOMOUT:
+      timer += 0.016f;
+      if (size < 28.0f)
+      {
+        size = glm::mix (16.0f, 28.0f, timer);
+        std::cout << originalSize << "\n";
+      }
+      break;
+    case Framework::CZ_ZOOMIN:
+      timer += 0.016f;
+      if (size > 16.0f)
+      {
+        size = glm::mix (28.0f, 16.0f, timer);
+      }
+      if (timer >= 1.0f)
+      {
+        czs = CZ_NONE;
+      }
+      break;
+    default:
+      break;
+    }
+
+    //if (enabled)
     {
       //gameObject->Transform->SetPosition (PLAYER->gameObject->Transform->GetPosition ().x, PLAYER->gameObject->Transform->GetPosition ().y);
       OPENGL->Perspective (fov, aspect, nearPlane, farPlane);
