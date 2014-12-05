@@ -15,6 +15,12 @@
 
 namespace Framework
 {
+	Health::~Health()
+	{
+		EVENTSYSTEM->mDisconnect<UpdateEvent, Health>(Events::UPDATEEVENT, this, &Health::Update);
+		EVENTSYSTEM->mDisconnect<CollisionEvent, Health>("CollisionEvent", this, &Health::OnCollisionEnter);
+	}
+
 	void Health::Serialize(Serializer::DataNode* data)
 	{
 		Serializer::DataNode* value = data->FindElement(data, "alive");
@@ -56,7 +62,7 @@ namespace Framework
 
     if (currentRadius <= minRadius)
     {
-       //OBJECTSYSTEM->ZilchLoadLevel(Zilch::String("NewPhysics"));
+       OBJECTSYSTEM->ZilchLoadLevel(Zilch::String("WinScreen"));
       //printf("dead");
     }
 	}
