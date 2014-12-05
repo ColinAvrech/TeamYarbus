@@ -4,8 +4,7 @@
 \author Joshua Biggs
 \par    Course: GAM205
 \par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
-\brief  WinMain.cpp is the starting place for the engine. This initializes all the systems and
-starts the game loop.
+\brief  UIButtons.z contains the different classes for all of the different UI buttons in the game.
 */
 /******************************************************************************/
 

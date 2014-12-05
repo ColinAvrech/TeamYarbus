@@ -1,3 +1,12 @@
+/******************************************************************************/
+/*!
+\file   CameraFollowPlayer.z
+\author Joshua Biggs
+\par    Course: GAM205
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+\brief  This script causes the Main camera to follow it's owner.
+*/
+/******************************************************************************/
 class CameraFollow : Component
 {
   
