@@ -86,13 +86,11 @@ namespace Framework
     {      
       AUDIOSYSTEM->SetPaused(false, Sound::SFX_ALL);
       SetPauseUnmanagedSounds(false);
-      std::cout << CinderConsole::red << "PAUSE OFF" << std::endl;
     }
     else
     {
       AUDIOSYSTEM->SetPaused(true, Sound::SFX_ALL);
       SetPauseUnmanagedSounds(true);
-      std::cout << CinderConsole::green << "PAUSE ON" << std::endl;
     }
   }
 
