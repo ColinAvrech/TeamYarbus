@@ -49,7 +49,7 @@ namespace Framework
   std::list <UIComponent*> Pipeline::uiObjects;
   std::list <Camera*> Pipeline::cameras;
   std::list <PointLight*> Pipeline::pointLights;
-  std::list <Text*> Pipeline::textObjects;
+  std::list <GUIText*> Pipeline::textObjects;
   std::list <ShapeCollider*> Pipeline::debugColliders;
 
   Pipeline::Pipeline ()

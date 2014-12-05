@@ -29,7 +29,8 @@ namespace Framework
 		void Update(UpdateEvent* e);
 		void OnCollisionEnter(CollisionEvent* c);
 		virtual void Serialize(Serializer::DataNode* data);
-		virtual void Initialize();
+    virtual void Initialize(); 
+    void ToggleInvulnerability();
 
 	private:
 		float maxRadius;
@@ -37,5 +38,6 @@ namespace Framework
 		float currentRadius;
 		bool alive;
 		bool reFueling;
+    bool invincible;
 	};
 }

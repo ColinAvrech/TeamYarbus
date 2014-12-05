@@ -194,7 +194,7 @@ namespace Framework
     RegisterComponent (PlayerEffect);
     RegisterComponent (FireSystem);
     RegisterComponent (CLParticleRenderer);
-    RegisterComponent (Text);
+    RegisterComponent(GUIText);
     //////////////////////////////////////////////////////////////////////////
     // AUDIO
     //////////////////////////////////////////////////////////////////////////

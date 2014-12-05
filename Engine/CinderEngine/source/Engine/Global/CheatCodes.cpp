@@ -18,11 +18,8 @@ namespace Framework
 {
   namespace Cheats
   {
-    bool PlayerIsInvincible;
-
     void InitializeCheats()
     {
-      PlayerIsInvincible = false;
       EVENTSYSTEM->gConnect<KeyEvent>(Events::KEY_ANY, &CheckToEnableCheats);
     }
 
@@ -33,14 +30,7 @@ namespace Framework
       {
         std::cout << "Toggle Invincibility Cheat!" << std::endl;
 
-        if (PlayerIsInvincible)
-        {
-          PlayerIsInvincible = false;
-        }
-        else
-        {
-          PlayerIsInvincible = true;
-        }
+        OBJECTSYSTEM->FindObjectByID(5)->Health->ToggleInvulnerability();
       }
 
       // Goto NextLevel: Shift + N
@@ -55,8 +45,12 @@ namespace Framework
       if (e->KeyDown && e->KeyValue == GLFW_KEY_GRAVE_ACCENT)
       {
         OPENGL->ToggleDebugDraw();
-      }
 
+        if (OBJECTSYSTEM->ptrPlayer && OBJECTSYSTEM->ptrPlayer->CharacterController)
+        {
+          OBJECTSYSTEM->ptrPlayer->CharacterController->ToggleFlying();
+        }
+      }
     }
   }// namespace Cheats  
 }// namespace Framework

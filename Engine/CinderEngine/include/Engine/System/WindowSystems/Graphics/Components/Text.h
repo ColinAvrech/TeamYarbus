@@ -19,11 +19,11 @@ namespace Framework
 {
   class BoundType;
 
-  class Text : public Component
+  class GUIText : public Component
   {
   public:
-    Text ();
-    virtual ~Text ();
+    GUIText();
+    virtual ~GUIText();
 
     virtual void Serialize (Serializer::DataNode* data);
     virtual void Initialize ();

@@ -93,6 +93,8 @@ namespace Framework
     typedef std::unordered_map<unsigned, GameObject*> GameObjectMap;
     GameObjectMap GameObjects;
 
+    GameObject* ptrPlayer;
+
   private:
 	  Zilch::Array<GameObject*>* ObjectSystem::SerializeObject(Serializer::DataNode* data);
 

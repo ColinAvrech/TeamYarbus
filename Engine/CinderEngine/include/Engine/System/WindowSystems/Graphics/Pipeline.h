@@ -28,7 +28,7 @@ namespace Framework
   class Shader;
   class PointLight;
   class PauseEvent;
-  class Text;
+  class GUIText;
 
   enum MATRIX_MODE
   {
@@ -79,7 +79,7 @@ namespace Framework
     static std::list <UIComponent*> uiObjects;
     static std::list <Camera*> cameras;
     static std::list <ShapeCollider*> debugColliders;
-    static std::list <Text*> textObjects;
+    static std::list <GUIText*> textObjects;
     static std::list <PointLight*> pointLights;
 
   private:

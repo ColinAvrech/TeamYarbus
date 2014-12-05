@@ -159,13 +159,8 @@ Level =
     },
     FireSystem = 
     {
-      bool Enabled = false,
+      bool Enabled = true,
       float ParticleSize = 200,
-    },
-    Text = 
-    {
-      string Text = "Ember: Hello World",
-      Vec2 Position = [0, 0.8],
     },
   },
   Cog = 
@@ -186,14 +181,14 @@ Level =
 		},
 		CircleCollider2D = 
 		{
-      bool Enabled = true,
+			bool Enabled = true,
 		  float Radius = 1.0,
 		  bool Static = false,
 		  string Material = "4de020863e872da8:DefaultPhysicsMaterial",
 		},
 		CharacterController = 
 		{
-      bool Enabled = true,
+	      bool Enabled = true,
 		  Vec2 Acceleration = [400, 0],
 		  Vec2 JumpVelocity = [0, 10],
 		  Vec2 MicrophoneMultiplier = [0, 10],
@@ -214,11 +209,16 @@ Level =
     },
     PlayerEffect = 
     {
-      bool Enabled = false,
+      bool Enabled = true,
       float ParticleSize = 100,
     },
     CameraFollow = 
     {
+    },
+	GUIText = 
+    {
+      string Text = "Ember: Hello World",
+      Vec2 Position = [0, 0.8],
     },
 	},
   Cog = 

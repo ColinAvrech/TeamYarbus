@@ -12,6 +12,8 @@
 #include "UpdateEvent.h"
 #include "CollisionEvent.h"
 #include "Core.h"
+#include "ObjectSystem.h"
+#include "Text.h"
 
 namespace Framework
 {
@@ -43,6 +45,7 @@ namespace Framework
 		gameObject->Health = this;
 
 		currentRadius = maxRadius;
+    invincible = false;
 	}
 
 	void Health::OnCollisionEnter(CollisionEvent* c)
@@ -52,10 +55,16 @@ namespace Framework
 	//	gameObject->Transform->Scale(currentRadius / maxRadius);
 	}
 
+
 	void Health::Update(UpdateEvent* e)
 	{
     if (!e)
       return;
+
+    if (invincible)
+    {
+      return;
+    }
 
 		float deathRate = 2.0f;
 		currentRadius -= deathRate * e->Dt;
@@ -64,6 +73,11 @@ namespace Framework
     {
        //OBJECTSYSTEM->ZilchLoadLevel(Zilch::String("WinScreen"));
       //printf("dead");
+      GUIText* guiText = reinterpret_cast<GUIText*>(OBJECTSYSTEM->FindObjectByID(4)->GetComponent("GUIText"));
+      if (guiText)
+      {
+        guiText->text = "You ran out of fuel :(";
+      }
     }
 	}
 
@@ -71,6 +85,11 @@ namespace Framework
 	{
 		reFueling = true;
 	}
+
+  void Health::ToggleInvulnerability()
+  {
+    invincible = !invincible;
+  }
 
 	DefineComponentName(Health);
 }
