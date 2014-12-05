@@ -129,8 +129,8 @@ int main (void)
   //Currently broken;
   //OBJECTSYSTEM->LoadAllLevels("..//..//Resources//Levels//MasterLevelFile.txt");
 
-  SplashScreenMusic->Play();
-  OBJECTSYSTEM->LoadLevel("NewPhysics");
+  //SplashScreenMusic->Play();
+  OBJECTSYSTEM->LoadLevel("ZilchTestLevel");
 
  //Initialize Cheat Codes
   Cheats::InitializeCheats();
