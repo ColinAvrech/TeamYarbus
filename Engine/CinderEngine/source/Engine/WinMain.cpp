@@ -123,10 +123,10 @@ int main (void)
   //Currently broken;
   //OBJECTSYSTEM->LoadAllLevels("..//..//Resources//Levels//MasterLevelFile.txt");
 
-  OBJECTSYSTEM->LoadLevel("TeamLogo");
+  OBJECTSYSTEM->LoadLevel("NewPhysics");
  //Initialize Cheat Codes
   Cheats::InitializeCheats();
-
+  
 
   // Connect and Disconnect example
   //MyClass _myclass;
