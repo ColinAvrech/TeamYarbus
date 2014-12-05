@@ -335,8 +335,9 @@ namespace Framework
       }
     }
 
-    std::cout << CinderConsole::red << soundName << " Invalid Name...\n" << CinderConsole::gray;
-    throw ("Invalid Name...");
+    std::cout << CinderConsole::red << " Invalid Name...\n" << soundName << CinderConsole::gray;
+    
+    return nullptr;
   }
 
   ComputeShader* Resources::Get_ComputeShader (string shaderName)

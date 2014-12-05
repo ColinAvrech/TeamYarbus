@@ -38,6 +38,7 @@ namespace Framework
   CharacterController::CharacterController ()
   {
     PLAYER = this;
+    OBJECTSYSTEM->ptrPlayer = this->gameObject;
     useFlying = false;
   }
 
@@ -46,6 +47,7 @@ namespace Framework
     EVENTSYSTEM->mDisconnect<CollisionEvent, CharacterController> (Events::COLLISION, this, &CharacterController::OnCollisionEnter);
     EVENTSYSTEM->mDisconnect<UpdateEvent, CharacterController> (Events::UPDATEEVENT, this, &CharacterController::Update);
     PLAYER = nullptr;
+    OBJECTSYSTEM->ptrPlayer = nullptr;
   }
 
   void CharacterController::Serialize (Serializer::DataNode* data)
@@ -77,8 +79,8 @@ namespace Framework
 
   void CharacterController::Initialize ()
   {
-    OBJECTSYSTEM->ptrPlayer = this->gameObject;
     PLAYER = this;
+    OBJECTSYSTEM->ptrPlayer = this->gameObject;
     //accel = { 0 , 0 };
     //maxAcceleration = { 50, 100 };
     maxVel = 20.0f;
@@ -126,16 +128,15 @@ namespace Framework
 
       if (onGround)
       {
-        gameObject->Health->deathRate *= 2.0f;
         body->velocity.y += jumpVel.y;
       }
       else if (useFlying)
       {
-        if (gameObject->Health != nullptr)
+        if (hp)
         {
-          gameObject->Health->deathRate *= 0.016f;
+          hp->currentDeathRate *= 0.016f;
+//        hp->currentDeathRate = 2 * hp->startDeathRate;
         }
-        hp->currentDeathRate = 2 * hp->startDeathRate;
         body->velocity.y += jumpVel.y;
       }
 
