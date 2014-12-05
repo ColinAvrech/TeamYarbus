@@ -42,6 +42,8 @@ namespace Framework
   public:
     Pipeline ();
     ~Pipeline ();
+	
+	Shader* sceneShader;
 
     void LoadIdentity ();
     void MatrixMode (int mode);
@@ -65,7 +67,7 @@ namespace Framework
     void ToggleDebugDraw();
 
     void ResizeBuffer (const int w, const int h);
-    void OnApplicationPause (PauseEvent* pause);
+    //void OnApplicationPause (UpdateEvent* pause);
 
     int GetMatrixMode ();
     glm::mat4 GetModelMatrix ();

@@ -15,6 +15,7 @@
 #include "ResourceManager.h"
 #include "ShapeGenerator.h"
 #include "WindowSystem.h"
+#include "Pipeline.h"
 
 namespace Framework
 {
@@ -31,8 +32,8 @@ namespace Framework
 		ZilchBindMethod(GetCurrentFrame);
 		ZilchBindMethod(GetAnimationSpeed);
 		ZilchBindMethod(Initialize);
+		
 		ZilchBindMethod(LoadSprite);
-    ZilchBindMethod (Change_Layer);
 		ZilchBindFieldGetAs(texture, "Texture");
 		ZilchBindFieldGet(Width);
 		ZilchBindFieldGet(Height);
@@ -41,7 +42,14 @@ namespace Framework
 	VAO* Sprite::vao;
 	VBO* Sprite::vbo;
 	EBO* Sprite::ebo;
-
+	/*
+	void Sprite::ChangeLayer (int lay)
+	{
+		OPENGL->graphicsObjects[layer].remove(this);
+		layer = LAYER(lay);
+		OPENGL->graphicsObjects[layer].push_back(this);
+	}
+	*/
 	Sprite::Sprite()
 	{
 		texture = Resources::RS->Get_Texture("Default");
