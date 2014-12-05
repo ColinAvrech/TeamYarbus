@@ -162,7 +162,7 @@ Level =
       bool Enabled = false,
       float ParticleSize = 200,
     },
-    Text = 
+    GUIText = 
     {
       string Text = "Hello World",
       Vec2 Position = [-1.0, 0.8],

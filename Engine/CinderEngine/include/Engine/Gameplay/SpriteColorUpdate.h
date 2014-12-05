@@ -20,6 +20,7 @@ namespace Framework
 
   enum SIDE
   {
+    NONE,
     LEFT,
     RIGHT,
   };
@@ -41,6 +42,7 @@ namespace Framework
     SIDE side = RIGHT;
     glm::vec4 minColor;
     glm::vec4 maxColor;
+    bool loop;
     float timer = 0.0f;
     float multiplier;
 

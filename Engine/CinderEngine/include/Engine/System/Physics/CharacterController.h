@@ -43,7 +43,10 @@ namespace Framework
 
     static CharacterController* PLAYER;
 
+    void ToggleFlying();
+
   private:
+    bool useFlying;
     glm::vec2 gridPos;
     glm::vec2 accel;
     glm::vec2 jumpVel;
@@ -55,6 +58,7 @@ namespace Framework
     float currentforce;
     float density;
     glm::vec2 maxAcceleration;
+
   };
 
 }

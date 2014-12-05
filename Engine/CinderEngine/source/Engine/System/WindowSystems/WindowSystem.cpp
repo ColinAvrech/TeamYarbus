@@ -40,8 +40,7 @@ namespace Framework
 	  ZilchBindFieldGet(IsMouseDown);
 	  ZilchBindMethodAs(Get_Width, "GetWidth");
 	  ZilchBindMethodAs(Get_Height, "GetHeight");
-	  ZilchBindMethodAs(ToggleCursorVisibility, "ToggleCursor");
-
+    ZilchBindMethodAs(ToggleCursorVisibility, "ToggleCursor");
   }
 
   static glm::vec2 mouseOffset;
@@ -381,7 +380,7 @@ namespace Framework
     WindowNameSpace::Create_Context (&window, ClientWidth, ClientHeight, fullscreen);
     WindowNameSpace::Init_Glew ();
     cursorVisible = true;
-    ToggleCursorVisibility();
+    //ToggleCursorVisibility();
 
     //Disables Sticky Keys - Colin
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_FALSE);

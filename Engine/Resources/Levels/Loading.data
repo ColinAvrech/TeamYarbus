@@ -83,7 +83,7 @@ Level =
 		  Vec3 Scale = [1, 1, 1],
 		  Quat Rotation = [0, 0, 0, 1],
 	  },
-    Text = 
+    GUIText = 
     {
       Vec2 Position = [0, 0],
       string Text = "Loading",
