@@ -34,7 +34,7 @@ namespace Framework
   private:
     glm::vec4 minColor;
     glm::vec4 maxColor;
-    float timer;
+    float timer = 0.0f;
     float multiplier;
 
   };  

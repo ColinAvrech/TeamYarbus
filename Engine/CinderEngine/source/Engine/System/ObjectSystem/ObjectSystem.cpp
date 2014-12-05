@@ -56,6 +56,8 @@ deleted.
 #include "LevelTimer.h"
 #include "CheatCodes.h"
 #include "Follow.h"
+#include "InterpolateBackground.h"
+#include "SpriteColorUpdate.h"
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 
@@ -205,6 +207,8 @@ namespace Framework
     RegisterComponent (FireStarter);
     RegisterComponent (LevelTimer);
     RegisterComponent (Follow);
+    RegisterComponent (InterpolateBackground);
+    RegisterComponent (SpriteColorUpdate);
     //////////////////////////////////////////////////////////////////////////
   }
 	void ObjectSystem::AddComponentCreator(string name, ComponentCreator* creator)
