@@ -48,7 +48,7 @@ namespace Framework
 
     void OnKeyPressed (KeyEvent* key);
     void AddFire (float x, float y, float emitRate);
-    void RemoveFire (FireStarter* param1);
+    void RemoveFire (FireStarter* param1){}
 
     const static std::string Name;
   private:

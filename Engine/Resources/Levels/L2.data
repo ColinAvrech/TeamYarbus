@@ -246,27 +246,6 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 5,
-		},
-		Named = 
-		{
-			string Name = "FollowPlayer",
-		},
-		Transform = 
-		{
-			Vec3 Translation = [0, 0, 0],
-			Vec3 Scale = [1, 1, 1],
-			Quat Rotation = [0, 0, 0, 1],
-		},
-    Follow = 
-    {
-      string Target = "Player",
-    },
-  },
-  Cog = 
-	{
-		LinkId = 
-		{
 			uint Id = 6,
 		},
 		Named = 
