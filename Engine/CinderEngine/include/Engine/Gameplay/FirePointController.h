@@ -42,9 +42,7 @@ namespace Framework
   private:
 
     std::vector<GameObject*> FireStarters;
-
     void CreateFireStarters();
-
   };
 
 

@@ -12,14 +12,21 @@
 #define _FIRE_STARTER_H
 
 #include "Component.h"
+#include "GameObject.h"
 #include "DataNode.h"
 #include "TDLib.h"
 #include "Grid2D.h"
+#include <vector>
+
+using std::vector;
 
 namespace Framework
 {
+  static int numTreesLeft = 0;
+
   using namespace Physics;
   class FireStarter;
+  /*
   class FireGrid
   {
   public:
@@ -30,24 +37,46 @@ namespace Framework
     Grid2D <float> temperatures;
     Grid2D <glm::vec2> positions;
   };
+  */
 
-  class FireStarter : public Component
+  class FireStarterManager;
+  class FireStarter
+  {
+    public:
+      FireStarter(const vec2& pos, FireStarterManager* fsm);
+      ~FireStarter(){}
+      void LightOnFire();
+      void DouseFire();
+      void Update(const double dt);
+      vec2 GetPosition();
+      vec2 GetGridPosition();
+
+
+      int material_type;
+
+      vec2 positionOffset;
+      bool onFire;	
+      float Fuel;
+      float initTemp;
+      //FireGrid grid;
+      FireStarterManager* manager;
+  };
+
+  class FireStarterManager : public Component
   {
   public:
-    FireStarter();
-    ~FireStarter(){}
-    void LightOnFire();
-    void DouseFire();
-    void Update(const double dt);
-    void Serialize(Serializer::DataNode* data);
-    void Initialize();
-    int material_type;
+    FireStarterManager();
+    ~FireStarterManager();
+
+    virtual void Initialize(){ gameObject->FireStarterManager = this; }
+    virtual void Serialize(Serializer::DataNode* data);
+    void AddFireStarter(FireStarter* newFirePoint);
 
     const static std::string Name;
-    bool onFire;	
-    float Fuel;
-    float initTemp;
-    FireGrid grid;
+    bool onFire;
+
+  //private:
+    vector<const FireStarter *> firePoints;
   };
 }
 

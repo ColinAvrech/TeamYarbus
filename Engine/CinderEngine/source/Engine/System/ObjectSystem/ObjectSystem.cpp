@@ -46,6 +46,7 @@ deleted.
 //////////////////////////////////////////////////////////////////////////
 #include "Microphone.h"
 #include "AudioComponent.h"
+#include "AudioEvents.h"
 //////////////////////////////////////////////////////////////////////////
 // GAMEPLAY
 //////////////////////////////////////////////////////////////////////////
@@ -146,6 +147,8 @@ namespace Framework
           Trunk = data.GetTrunk();
           SerializeObject(Trunk);
           Cheats::InitializeCheats();
+          AUDIOEVENTS->Initialize();
+          PHYSICS->Reset ();
           break;
 
         default:
@@ -206,7 +209,7 @@ namespace Framework
     //////////////////////////////////////////////////////////////////////////
     RegisterComponent (CharacterController);
     RegisterComponent (Health);
-    RegisterComponent (FireStarter);
+    RegisterComponent (FireStarterManager);
     RegisterComponent (LevelTimer);
     RegisterComponent (Follow);
     RegisterComponent (InterpolateBackground);

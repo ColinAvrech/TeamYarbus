@@ -74,16 +74,20 @@ namespace Framework
 
   void CharacterController::Update (UpdateEvent* e)
   {
+    RigidBody2D* body = gameObject->RigidBody2D;
+
+    if (!body)
+      return;
 
     if (InputManager::IsKeyDown(GLFW_KEY_UP))
     {
       if (useFlying)
       {
-        gameObject->RigidBody2D->velocity.y += jumpVel.y;
+        body->velocity.y += jumpVel.y;
       }
       if (onGround)
       {
-        gameObject->RigidBody2D->velocity.y += jumpVel.y;
+        body->velocity.y += jumpVel.y;
       }
 
       onGround = false;
@@ -91,37 +95,38 @@ namespace Framework
     
     if (InputManager::IsKeyDown(GLFW_KEY_RIGHT))
     {
-      if (gameObject->RigidBody2D->force.x < 0.4f && gameObject->RigidBody2D->force.x > -0.4f)
-        gameObject->RigidBody2D->ApplyForce(Vector2(acceleration.x * density,acceleration.y * density));
+      if (body->force.x < 0.4f && body->force.x > -0.4f)
+        body->ApplyForce(Vector2(acceleration.x * density,acceleration.y * density));
     }
     if (InputManager::IsKeyDown(GLFW_KEY_LEFT))
     {
-      if (gameObject->RigidBody2D->force.x < 0.4f && gameObject->RigidBody2D->force.x > -0.4f)
-        gameObject->RigidBody2D->ApplyForce(Vector2(-acceleration.x * density,acceleration.y * density));
+      if (body->force.x < 0.4f && body->force.x > -0.4f)
+        body->ApplyForce(Vector2(-acceleration.x * density,acceleration.y * density));
     }
     
     if (InputManager::IsKeyDown(GLFW_KEY_R))
     {
       glm::vec2 position = glm::vec2(0, 500);
-      gameObject->RigidBody2D->position = Vector2(position.x, position.y);
-      gameObject->RigidBody2D->angularVelocity = 0.0f;
-      gameObject->RigidBody2D->velocity = Vector2(0, 0);
-      gameObject->RigidBody2D->force = Vector2(0, 0);
+      body->position = Vector2(position.x, position.y);
+      body->angularVelocity = 0.0f;
+      body->velocity = Vector2(0, 0);
+      body->force = Vector2(0, 0);
       Camera::main->gameObject->Transform->SetPosition(position.x, position.y);
     }
 
-    Vector2* vel = &gameObject->RigidBody2D->velocity;
+    /*
+    Vector2* vel = &body->velocity;
     if (vel->Len() > maxVel)
     {
       vel->Normalize();
       *vel = *vel * maxVel;
     }
-
+    */
 
     // Microphone input
     gridPos = gameObject->Transform->GetGridPosition ();
     float micValue = AUDIOSYSTEM->GetMicrophoneValue ();
-    gameObject->RigidBody2D->ApplyForce(Vector2(micValue * microhponeMultiplier.x * density,micValue * microhponeMultiplier.y * density));
+    body->ApplyForce(Vector2(micValue * microhponeMultiplier.x * density,micValue * microhponeMultiplier.y * density));
     Physics::THERMODYNAMICS->SetCellTemperature (gridPos.x, gridPos.y, 400000, 0.016);
 
   }

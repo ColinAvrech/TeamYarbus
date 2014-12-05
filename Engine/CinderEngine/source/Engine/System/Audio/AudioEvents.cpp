@@ -22,6 +22,7 @@
 #include "WindowSystem.h"
 #include "Core.h"
 
+
 #pragma endregion
 
 namespace Framework
@@ -30,6 +31,7 @@ namespace Framework
   // Class Implementation
   ---------------------------------------------------------------------------*/
 
+  AudioEvents *AUDIOEVENTS = nullptr;
   /*---------------------------------------------------------------------------
   // Constructors
   ---------------------------------------------------------------------------*/
@@ -38,7 +40,9 @@ namespace Framework
   Sound *test, *test2;
 
   AudioEvents::AudioEvents()
-  {    
+  {
+    ErrorIf(AUDIOEVENTS != nullptr, "ERROR created AudioEvents twice!");
+    AUDIOEVENTS = this;
   }
   #pragma endregion
 
@@ -46,6 +50,7 @@ namespace Framework
   // Public Variables
   ---------------------------------------------------------------------------*/
   #pragma region Public Variables
+
 
   #pragma endregion
 
@@ -65,11 +70,11 @@ namespace Framework
   {
     EVENTSYSTEM->mConnect<WindowFocusEvent, AudioEvents>(Events::WINDOWFOCUSEVENT, this, &AudioEvents::AudioEventsUpdate);
     EVENTSYSTEM->mConnect<KeyEvent, AudioEvents>(Events::KEY_ANY, this, &AudioEvents::OnKeyPressed);
+    EVENTSYSTEM->mConnect<UpdateEvent, AudioEvents>(Events::UPDATEEVENT, this, &AudioEvents::OnUpdate);
 
     //test = AUDIOSYSTEM->LoadSound("CreditsMusic.wav", "NOISE", Sound::MUSIC, 1.0f);
     //test2 = AUDIOSYSTEM->LoadSound("MainMenuScroll.wav", "meh", Sound::SOUND_2D, 1.0f);
     //test->Play();
-
   }
 
   void AudioEvents::AudioEventsUpdate(WindowFocusEvent* e)
@@ -80,10 +85,12 @@ namespace Framework
     if (e->InFocus)
     {      
       AUDIOSYSTEM->SetPaused(false, Sound::SFX_ALL);
+      SetPauseUnmanagedSounds(false);
     }
     else
     {
       AUDIOSYSTEM->SetPaused(true, Sound::SFX_ALL);
+      SetPauseUnmanagedSounds(true);
     }
   }
 
@@ -105,6 +112,18 @@ namespace Framework
         break;
       }
     }    
+  }
+
+  void AudioEvents::OnUpdate(UpdateEvent *e)
+  {
+  }
+
+  void AudioEvents::SetPauseUnmanagedSounds(bool paused)
+  {
+    for (auto Sound : unmanagedSounds)
+    {
+      Sound->Get_Channel()->setPaused(paused);
+    }
   }
 
   #pragma endregion

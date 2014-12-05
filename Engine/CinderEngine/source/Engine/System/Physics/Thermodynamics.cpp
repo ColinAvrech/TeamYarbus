@@ -90,12 +90,15 @@ namespace Framework
       return true;
     }
 
-    void ThermodynamicsSystem::Add_Object(const float x, const float y, FireStarter *obj)
+    void ThermodynamicsSystem::Add_Object(FireStarter *obj)
     {
-      glm::ivec2 sub = glm::vec2 (x, y);
-      FireMap.push_back(std::make_pair(sub, obj));
-      Terrain.Set(sub.x, sub.y, Physics::Material (obj->material_type));
-      TemperatureMap.Set(sub.x, sub.y, obj->initTemp);
+      if (obj)
+      {
+        glm::ivec2 sub = obj->GetGridPosition();
+        FireMap.push_back(std::make_pair(sub, obj));
+        Terrain.Set(sub.x, sub.y, Physics::Material(obj->material_type));
+        TemperatureMap.Set(sub.x, sub.y, obj->initTemp);
+      }
     }
 
     // Called every frame
@@ -534,10 +537,19 @@ namespace Framework
       //  }
       glPointSize (10.0f);
       glBegin (GL_POINTS);
+      FireStarter* firePoint;
       for (auto i = FireMap.begin (); i != FireMap.end (); ++i)
       {
         glColor4f (0, 1, 0, 1.0f);
-        glVertex2f ((*i).second->gameObject->Transform->GetPosition ().x, (*i).second->gameObject->Transform->GetPosition ().y);
+
+        firePoint = (*i).second;
+
+        if (firePoint)
+        {
+          vec2 pos = firePoint->GetPosition();
+
+          glVertex2f(pos.x, pos.y);
+        }
         //glVertex2f ((*i).first.x - 1, (*i).first.y);
         //glVertex2f ((*i).first.x - 1, (*i).first.y - 1);
         //glVertex2f ((*i).first.x, (*i).first.y - 1);

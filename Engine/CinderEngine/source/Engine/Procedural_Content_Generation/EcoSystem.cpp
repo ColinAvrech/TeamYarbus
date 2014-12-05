@@ -105,6 +105,12 @@ namespace Framework
       static_cast<Transform*>(c)->Rotate(1.f);
 			c->Initialize();
 		}
+		////Add firestarter component here
+		c = grass->AddComponent("FireStarterManager");
+		if (c)
+		{
+			c->Initialize();
+		}
 		c = grass->AddComponent("Tree2D");
 		if (c)
 		{
@@ -112,16 +118,6 @@ namespace Framework
 			static_cast<Tree2D*>(c)->Set(color, Tree_Type(type));
 			c->Initialize();
 		}
-		////Add firestarter component here
-		/*FireStarter* fs = reinterpret_cast<FireStarter*> (grass->AddComponent("FireStarter"));
-		if (fs)
-		{
-			fs->Fuel = 100.0f;
-			fs->material_type = WOOD;
-			fs->onFire = false;
-			fs->initTemp = 400.0f;
-			fs->Initialize();
-		}*/
 
     Component* ac = grass->AddComponent("AudioComponent");
     ac->Initialize();

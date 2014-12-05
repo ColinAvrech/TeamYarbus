@@ -8,6 +8,7 @@
 */
 /******************************************************************************/
 
+#include "FireStarter.h"
 #include "Thermodynamics.h"
 #include "GameObject.h"
 #include "PingEvent.h"
@@ -19,11 +20,34 @@
 
 namespace Framework
 {
-  int counter = 0;
-	void FireStarter::Serialize(Serializer::DataNode* data)
+  FireStarterManager::FireStarterManager()
+  {
+    onFire = false; 
+    ++numTreesLeft;
+  }
+
+  FireStarterManager::~FireStarterManager()
+  {
+    for (auto firePoint : firePoints)
+    {
+      delete firePoint;
+    }
+
+    firePoints.clear();
+  }
+
+  void FireStarterManager::AddFireStarter(FireStarter *newFirePoint)
+  {
+    firePoints.push_back(newFirePoint);
+    Physics::THERMODYNAMICS->Add_Object(newFirePoint);
+  }
+
+	void FireStarterManager::Serialize(Serializer::DataNode* data)
 	{
-		Component::Get_Enabled(data);
-		Serializer::DataNode* temp = data->FindElement(data, "OnFire");
+    //TODO:: Serialize in FSM instead of here once we switch away from procedural
+		//Component::Get_Enabled(data);
+    /*
+    Serializer::DataNode* temp = data->FindElement(data, "OnFire");
 		temp->GetValue(&onFire);
 
 		temp = data->FindElement(data, "Fuel");
@@ -34,6 +58,7 @@ namespace Framework
 
 		temp = data->FindElement(data, "MaterialType");
 		temp->GetValue(&material_type);
+    */
 	}
 
 	void FireStarter::Update(const double dt)
@@ -42,15 +67,31 @@ namespace Framework
 			Fuel -= (float)dt;
 	}
 
-	void FireStarter::Initialize()
+	FireStarter::FireStarter(const vec2& pos, FireStarterManager* fsm)
 	{
-		gameObject->FireStarter = this;
-		float x = this->gameObject->Transform->GetGridPosition().x;
-		float y = this->gameObject->Transform->GetGridPosition().y;
-		Physics::THERMODYNAMICS->Add_Object(x, y, this);
+		//manager->gameObject->FireStarter = this;
+    positionOffset = pos;
+    onFire = false;
+    Fuel = 100.0f;
+    initTemp = 400.0f;
+    material_type = GRASS;
+    manager = fsm;
 
 		//grid.Create (this);
 	}
+
+  vec2 FireStarter::GetPosition()
+  {
+    vec3 pos = manager->gameObject->Transform->GetPosition(); //Get Tree position
+
+    return vec2(pos.x + positionOffset.x, pos.y + positionOffset.y);
+  }
+
+  vec2 FireStarter::GetGridPosition()
+  {
+    manager->gameObject->Transform->GetGridPosition(positionOffset + (glm::vec2) manager->gameObject->Transform->GetPosition ());
+    return manager->gameObject->Transform->GetGridPosition() + positionOffset;
+  }
 
 	void FireStarter::LightOnFire(void)
 	{
@@ -62,60 +103,27 @@ namespace Framework
 		if (!onFire)
 		{
 			onFire = true;
-      GameObject* temp = gameObject;
-
-      while (temp->Parent != nullptr)
-      {
-        temp = temp->Parent;        
-      }
-
-      if (counter < 1)
-      {
-        if (temp->AudioComponent != nullptr)
-          //temp->AudioComponent->PlaySound();
-
-        counter++;
-      }
       
+      std::cout << CinderConsole::green;
+      printf("Number of trees remaining: %d", numTreesLeft);
+      std::cout << CinderConsole::red;
 
-      //for (unsigned i = 0; i < grid.positions.getSize ().x; ++i)
-      //{
-      //  for (unsigned j = 0; j < grid.positions.getSize ().y; ++j)
-      //  {
-      //    Physics::ThermodynamicsSystem::FIRE->AddFire
-      //      (
-      //      grid.positions.Get (i, j).x,
-      //      grid.positions.Get (i, j).y,
-      //      300
-      //      );
-      //    cout << "Lit\n";
-      //  }
-      //}
-          Physics::ThermodynamicsSystem::FIRE->AddFire
-            (
-            gameObject->Transform->GetPosition().x,
-            gameObject->Transform->GetPosition ().y,
-            60
-            );
-			//for (unsigned i = 0; i < grid.positions.getSize ().x; ++i)
-			//{
-			//  for (unsigned j = 0; j < grid.positions.getSize ().y; ++j)
-			//  {
-			//    Physics::ThermodynamicsSystem::FIRE->AddFire
-			//      (
-			//      grid.positions.Get (i, j).x,
-			//      grid.positions.Get (i, j).y,
-			//      300
-			//      );
-			//    cout << "Lit\n";
-			//  }
-			//}
+      if (manager && !manager->onFire)
+      {
+        manager->onFire = true;
+        numTreesLeft--;
+      }
+
+      vec2 pos = GetPosition();
+      Physics::ThermodynamicsSystem::FIRE->AddFire( pos.x, pos.y, 60);
+      /*
 			Physics::ThermodynamicsSystem::FIRE->AddFire
 				(
 				gameObject->Transform->GetPosition().x,
 				gameObject->Transform->GetPosition().y,
 				30
 				);
+      */
 		}
 	}
 
@@ -126,41 +134,35 @@ namespace Framework
 			onFire = false;
 			//cout << "Doused\n";
 			PingEvent e;
-			e.Ping = gameObject;
+			e.Ping = manager->gameObject;
 			EVENTSYSTEM->TriggerEvent(Events::PING_DOUSEPLANT, e);
 		}
 	}
 
-	FireStarter::FireStarter()
+	DefineComponentName(FireStarterManager);
+  /* TODO:: Use Firegrid
+  void FireGrid::Create(FireStarter* fs)
 	{
-		onFire = false;
-		Fuel = 100.0f;
-		material_type = WOOD;
-	}
-
-	DefineComponentName(FireStarter);
-
-	void FireGrid::Create(FireStarter* fs)
-	{
-		Tree2D* tree = reinterpret_cast<Tree2D*> (fs->gameObject->GetComponent("Tree2D"));
+		Tree2D* tree = reinterpret_cast<Tree2D*> (fs->manager->gameObject->GetComponent("Tree2D"));
 		if (tree != nullptr)
 		{
-			glm::vec2 pos = glm::vec2(fs->gameObject->Transform->GetPosition());
-			glm::vec2 scale = glm::vec2(fs->gameObject->Transform->GetScale());
-			std::vector <glm::vec2>& edges = tree->Get_Edges();
-			glm::vec2 MIN = (glm::mat2)(fs->gameObject->Transform->GetModelMatrix()) * edges.at(0);
+      Transform* tform = fs->manager->gameObject->Transform;
+			vec2 pos = vec2(tform->GetPosition());
+      vec2 scale = vec2(tform->GetScale());
+			vector <vec2>& edges = tree->Get_Edges();
+      vec2 MIN = (glm::mat2)(tform->GetModelMatrix()) * edges.at(0);
 			MIN.y += scale.y * 0.5f;
-			glm::vec2 MAX = (glm::mat2)(fs->gameObject->Transform->GetModelMatrix()) * edges.at(3);
+      vec2 MAX = (glm::mat2)(tform->GetModelMatrix()) * edges.at(3);
 			MAX.y += scale.y * 0.5f;
 			temperatures.allocate(2, 2);
 			temperatures.fill(fs->initTemp);
 			positions.allocate(2, 2);
 
-			positions.Set(0, 0, glm::vec2(pos.x + MIN.x, pos.y + MIN.y));
-			positions.Set(0, 1, glm::vec2(pos.x + MAX.x, pos.y + MIN.y));
+			positions.Set(0, 0, vec2(pos.x + MIN.x, pos.y + MIN.y));
+			positions.Set(0, 1, vec2(pos.x + MAX.x, pos.y + MIN.y));
 
-			positions.Set(1, 0, glm::vec2(pos.x + MIN.x, pos.y + MAX.y));
-			positions.Set(1, 1, glm::vec2(pos.x + MAX.x, pos.y + MAX.y));
+			positions.Set(1, 0, vec2(pos.x + MIN.x, pos.y + MAX.y));
+			positions.Set(1, 1, vec2(pos.x + MAX.x, pos.y + MAX.y));
 		}
 	}
 
@@ -178,5 +180,5 @@ namespace Framework
 	{
 
 	}
-
+  */
 }

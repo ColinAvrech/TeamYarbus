@@ -57,6 +57,7 @@ namespace Framework
 
   void Tree2D::Initialize ()
   {
+    FireStarterManager* fsm = gameObject->FireStarterManager;
     switch (type)
     {
     case Framework::TREE_0:
@@ -81,24 +82,21 @@ namespace Framework
       tree->Create_Mesh (tree->getTotalLines (), &treeMesh, &edges);
       Generate_Buffers ();
 
-      for (unsigned i = 0; i < edges.size (); ++i)
+      if (fsm)
       {
-        GameObject* go = OBJECTSYSTEM->CreateObject ();
-        glm::vec2 pos = glm::mat2 (gameObject->Transform->GetModelMatrix ()) * edges.at (i);
-        Transform* trans = reinterpret_cast<Transform*> (go->AddComponent ("Transform"));
-        trans->Initialize ();
-        go->Transform->SetPosition (gameObject->Transform->GetPosition ().x + pos.x, gameObject->Transform->GetPosition().y + pos.y);
-        glm::vec2 gridPos = go->Transform->GetGridPosition ();
-        std::cout << gridPos.x << "\n";
-        FireStarter* fs = reinterpret_cast<FireStarter*> (go->AddComponent ("FireStarter"));
-        fs->Initialize ();
-        fs->material_type = GRASS;
-        go->FireStarter->initTemp = 400.0f;
-        Physics::THERMODYNAMICS->Add_Object (gridPos.x, gridPos.y, reinterpret_cast<FireStarter*> (go->GetComponent ("FireStarter")));
-        go->Parent = gameObject;
+        FireStarter* fs;;
+        for (unsigned i = 0; i < edges.size (); ++i)
+        {
+          //set the pointer to a new firestarter with the offset position
+          fs = new FireStarter(glm::mat2 (gameObject->Transform->GetModelMatrix ()) * edges.at (i), fsm);
+          fs->manager = fsm;
+          fs->material_type = GRASS;
+          fs->initTemp = 400.0f;
+          fsm->AddFireStarter(fs);
+        }
       }
-
       break;
+
     case Framework::TREE_GRASS:
       Make_Grass (0, -0.1f, 0.1f);
       break;
