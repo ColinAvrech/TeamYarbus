@@ -71,16 +71,16 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 2,
+			uint Id = 8,
 		},
 		Named = 
 		{
-			string Name = "Forest",
+			string Name = "Mountains",
 		},
 		Transform = 
 		{
 			Vec3 Translation = [0, 0, -16],
-			Vec3 Scale = [256, 128, 1],
+			Vec3 Scale = [256, 20, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Terrain2D = 
