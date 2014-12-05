@@ -51,10 +51,10 @@ namespace Framework
     value->GetValue (&color);
   }
 
-  BoundType* PointLight::ZilchGetDerivedType () const
-  {
-    throw std::logic_error ("The method or operation is not implemented.");
-  }
+  //BoundType* PointLight::ZilchGetDerivedType () const
+  //{
+  //  throw std::logic_error ("The method or operation is not implemented.");
+  //}
 
   void PointLight::Draw ()
   {
