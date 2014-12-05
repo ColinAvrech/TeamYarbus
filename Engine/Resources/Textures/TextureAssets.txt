@@ -40,3 +40,4 @@ UIGotItWhite.png
 UIInstructionsScreen.png
 UIKeyboardMovement.png
 LoadingIcon.png
+Loading.png

@@ -52,7 +52,7 @@ Level =
 	  },
     Transform = 
 	  {
-		  Vec3 Translation = [0, 0, -10],
+		  Vec3 Translation = [0, 4, -10],
 		  Vec3 Scale = [1, 1, 1],
 		  Quat Rotation = [0, 0, 0, 1],
 	  },
@@ -188,17 +188,17 @@ Level =
 		},
 		CharacterController = 
 		{
-	      bool Enabled = true,
+	    bool Enabled = true,
 		  Vec2 Acceleration = [400, 0],
 		  Vec2 JumpVelocity = [0, 10],
 		  Vec2 MicrophoneMultiplier = [0, 10],
 		},
 		Health = 
 		{
-		bool alive = true,
-		float maxRadius = 1f,
-		float minRadius = .1f,
-		bool reFueling = false,
+		  bool alive = true,
+		  float maxRadius = 1f,
+		  float minRadius = .1f,
+		  bool reFueling = false,
 		},
     CLParticleRenderer = 
     {
@@ -215,7 +215,7 @@ Level =
     CameraFollow = 
     {
     },
-	GUIText = 
+	  GUIText = 
     {
       string Text = "Ember: Hello World",
       Vec2 Position = [0, 0.8],
