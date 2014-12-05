@@ -56,6 +56,7 @@ namespace Framework
     float StaticFriction;
     float DynamicFriction;
     float Bounciness;
+    glm::vec3 velocity;
 	
 	  // For Polygon shape
 	  Mat2 u; // Orientation matrix from model to world

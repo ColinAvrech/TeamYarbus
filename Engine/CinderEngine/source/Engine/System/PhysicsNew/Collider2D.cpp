@@ -94,6 +94,12 @@ namespace Framework
     std::string Mat;
     value = data->FindElement (data, "Material");
     value->GetValue (&Mat);
+
+    if (value->FindElement (data, "Velocity") != nullptr)
+    {
+      value->GetValue (&velocity);
+    }
+
     SerializeMaterial (Mat);
   }
 
@@ -104,6 +110,7 @@ namespace Framework
     rigidBody = b;
     b->gameObject = this->gameObject;
     gameObject->RigidBody2D = b;
+    b->velocity = Vector2 (velocity.x, velocity.y);
     b->restitution = Bounciness;
     b->dynamicFriction = DynamicFriction;
     b->staticFriction = StaticFriction;

@@ -199,13 +199,6 @@ Level =
 		  Vec2 JumpVelocity = [0, 10],
 		  Vec2 MicrophoneMultiplier = [0, 10],
 		},
-		Health = 
-		{
-		bool alive = true,
-		float maxRadius = 1f,
-		float minRadius = .1f,
-		bool reFueling = false,
-		},
     CLParticleRenderer = 
     {
       int ParticleCount = 10000,

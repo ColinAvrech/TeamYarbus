@@ -150,6 +150,7 @@ namespace Framework
 			PingEvent e;
 			e.Ping = manager->gameObject;
 			EVENTSYSTEM->TriggerEvent(Events::PING_DOUSEPLANT, e);
+      Physics::ThermodynamicsSystem::FIRE->RemoveFire (this);
 		}
 	}
 

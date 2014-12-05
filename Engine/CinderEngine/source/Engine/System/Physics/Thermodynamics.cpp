@@ -380,6 +380,11 @@ namespace Framework
       VelocityMap_PrevX.fill ({ 0 });
       VelocityMap_PrevY.fill ({ 0 });
 
+      for (int i = 0; i < FireMap.size (); ++i)
+      {
+        FireMap.at (i).second->DouseFire ();
+      }
+
       FireMap.clear ();
     }
 

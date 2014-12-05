@@ -119,6 +119,7 @@ namespace Framework
     {
       if (useFlying)
       {
+        gameObject->Health->deathRate *= 2.0f;
         body->velocity.y += jumpVel.y;
       }
       if (onGround)

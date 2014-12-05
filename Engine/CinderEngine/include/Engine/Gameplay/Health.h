@@ -14,6 +14,8 @@ namespace Framework
 {
 	class UpdateEvent;
 	class CollisionEvent;
+  class PlayerEffect;
+
 	class Health : public Component
 	{
 	public:
@@ -32,12 +34,14 @@ namespace Framework
     virtual void Initialize(); 
     void ToggleInvulnerability();
 
-	private:
-		float maxRadius;
-		float minRadius;
-		float currentRadius;
-		bool alive;
-		bool reFueling;
+    float deathRate = 0.1f;
+    float maxRadius;
+    float minRadius;
+    float currentRadius;
+    bool alive;
+    bool reFueling;
     bool invincible;
+    glm::vec3 originalPosition;
+    PlayerEffect* playerEffect;
 	};
 }
