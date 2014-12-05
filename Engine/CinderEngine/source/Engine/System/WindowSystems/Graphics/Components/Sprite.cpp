@@ -243,6 +243,8 @@ namespace Framework
 
 		if (animated || texture->Get_ID() != TEXTURE_NONE)
 		{
+      glm::vec3 scale = gameObject->Transform->GetScale ();
+      gameObject->Transform->Scale (scale.y * texture->Get_Aspect_Ratio (), scale.y, scale.z);
 			GLint texAttrib = shader->attribLocation("texcoord");
 			shader->enableVertexAttribArray(texAttrib);
 			shader->vertexAttribPtr(texAttrib, 2, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), 10 * sizeof(GLfloat));

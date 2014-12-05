@@ -52,7 +52,7 @@ Level =
 	  },
     Transform = 
 	  {
-		  Vec3 Translation = [0, 1.7, -10],
+		  Vec3 Translation = [0, 4, -10],
 		  Vec3 Scale = [1, 1, 1],
 		  Quat Rotation = [0, 0, 0, 1],
 	  },
@@ -79,7 +79,7 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [-150, -90, -16],
+			Vec3 Translation = [0, 0, -16],
 			Vec3 Scale = [256, 128, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
@@ -188,24 +188,24 @@ Level =
 		},
 		CharacterController = 
 		{
-	      bool Enabled = true,
+	    bool Enabled = true,
 		  Vec2 Acceleration = [400, 0],
 		  Vec2 JumpVelocity = [0, 10],
 		  Vec2 MicrophoneMultiplier = [0, 10],
 		},
 		Health = 
 		{
-		bool alive = true,
-		float maxRadius = 1f,
-		float minRadius = .1f,
-		bool reFueling = false,
+		  bool alive = true,
+		  float maxRadius = 1f,
+		  float minRadius = .1f,
+		  bool reFueling = false,
 		},
     CLParticleRenderer = 
     {
-      int ParticleCount = 10000,
-      float ParticleSize = 5,
+      int ParticleCount = 100,
+      float ParticleSize = 100,
       float EffectRadius = 0.2,
-      Vec4 Color = [255, 80, 0, 0.5],
+      Vec4 Color = [255, 80, 0, 0.01],
     },
     PlayerEffect = 
     {
@@ -215,9 +215,9 @@ Level =
     CameraFollow = 
     {
     },
-	GUIText = 
+	  GUIText = 
     {
-      string Text = "Ember: Hello World",
+      string Text = "",
       Vec2 Position = [0, 0.8],
     },
 	},

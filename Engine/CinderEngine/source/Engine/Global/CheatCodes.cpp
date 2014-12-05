@@ -42,7 +42,7 @@ namespace Framework
 
 
       // Enter Debug Mode: Tilda Key ' ` '
-      if (e->KeyDown && e->KeyValue == GLFW_KEY_GRAVE_ACCENT)
+      if (e->KeyDown && e->KeyValue == GLFW_KEY_H)
       {
         OPENGL->ToggleDebugDraw();
 

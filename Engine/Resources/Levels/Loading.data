@@ -79,18 +79,81 @@ Level =
 	  },
     Transform = 
 	  {
-		  Vec3 Translation = [0, 0, 0],
-		  Vec3 Scale = [1, 1, 1],
+		  Vec3 Translation = [0, 0.7, 0],
+		  Vec3 Scale = [0.6, 0.6, 1],
 		  Quat Rotation = [0, 0, 0, 1],
 	  },
-    GUIText = 
+    Sprite = 
+		{
+			string SpriteSource = "LoadingIcon.png",
+			bool FlipX = false,
+			bool FlipY = false,
+			Vec4 Color = [1, 1, 1, 1],
+			bool Visible = true,
+			bool OnTop = false,
+			bool AnimationActive = false,
+			float AnimationSpeed = 1,
+			uint StartFrame = 0,
+			BlendMode BlendMode = Alpha,
+			SpriteGeometryMode GeometryMode = ZPlane,
+			string SpriteLayer = "52ad5fa30d7fcd50:DefaultSpriteLayer",
+			string Shader = "Default",
+		},
+    SpriteColorUpdate = 
     {
-      Vec2 Position = [0, 0],
-      string Text = "Loading",
+      Vec4 MinColor = [0, 0, 0, 0],
+      Vec4 MaxColor = [1, 1, 1, 1],
+      float Multiplier = 1.0,
+      bool Loop = false,
     },
     LevelTimer = 
     {
-      float EndTime = 0.0,
+      float EndTime = 1.0,
+      string NextLevel = "NewPhysics",
+    },
+  },
+  Cog = 
+	  {
+	  LinkId = 
+	  {
+		  uint Id = 0,
+	  },
+	  Named = 
+	  {
+		  string Name = "Loading",
+	  },
+    Transform = 
+	  {
+		  Vec3 Translation = [0, 0, 0],
+		  Vec3 Scale = [0.6, 0.6, 1],
+		  Quat Rotation = [0, 0, 0, 1],
+	  },
+    Sprite = 
+		{
+			string SpriteSource = "Loading.png",
+			bool FlipX = false,
+			bool FlipY = false,
+			Vec4 Color = [1, 1, 1, 1],
+			bool Visible = true,
+			bool OnTop = false,
+			bool AnimationActive = false,
+			float AnimationSpeed = 1,
+			uint StartFrame = 0,
+			BlendMode BlendMode = Alpha,
+			SpriteGeometryMode GeometryMode = ZPlane,
+			string SpriteLayer = "52ad5fa30d7fcd50:DefaultSpriteLayer",
+			string Shader = "Default",
+		},
+    SpriteColorUpdate = 
+    {
+      Vec4 MinColor = [0, 0, 0, 0],
+      Vec4 MaxColor = [1, 1, 1, 1],
+      float Multiplier = 1.0,
+      bool Loop = false,
+    },
+    LevelTimer = 
+    {
+      float EndTime = 1.0,
       string NextLevel = "NewPhysics",
     },
   },
