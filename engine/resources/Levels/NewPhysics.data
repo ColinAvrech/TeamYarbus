@@ -52,11 +52,7 @@ Level =
 	  },
     Transform = 
 	  {
-<<<<<<< HEAD
 		  Vec3 Translation = [0, 4, -10],
-=======
-		  Vec3 Translation = [0, 1.7, -10],
->>>>>>> 7da30c6df1e1a3fd727307de6e8f86019b61edc0
 		  Vec3 Scale = [1, 1, 1],
 		  Quat Rotation = [0, 0, 0, 1],
 	  },
@@ -83,7 +79,7 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [-150, -90, -16],
+			Vec3 Translation = [0, 0, -4],
 			Vec3 Scale = [256, 128, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
@@ -112,7 +108,7 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, 0, -8],
+			Vec3 Translation = [0, 0, -2],
 			Vec3 Scale = [256, 13, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
@@ -221,7 +217,7 @@ Level =
     },
 	  GUIText = 
     {
-      string Text = "Ember: Hello World",
+      string Text = "",
       Vec2 Position = [0, 0.8],
     },
 	},
