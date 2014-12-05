@@ -134,6 +134,7 @@ namespace Framework
           break;
 
         case _LoadLevel:
+          std::cout << "Loading Level:" << currentLevelName.c_str() << std::endl;
           DestroyAllObjects();
           EVENTSYSTEM->DeleteAllEvents();
           data.open(currentLevelName.c_str());
