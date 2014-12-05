@@ -18,6 +18,12 @@ namespace Framework
 {
   class UpdateEvent;
 
+  enum SIDE
+  {
+    LEFT,
+    RIGHT,
+  };
+
   class SpriteColorUpdate : public Component
   {
   public:
@@ -32,6 +38,7 @@ namespace Framework
   const static std::string Name;
 
   private:
+    SIDE side = RIGHT;
     glm::vec4 minColor;
     glm::vec4 maxColor;
     float timer = 0.0f;
