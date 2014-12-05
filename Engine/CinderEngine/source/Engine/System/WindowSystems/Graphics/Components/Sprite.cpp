@@ -39,17 +39,10 @@ namespace Framework
 		ZilchBindFieldGet(Height);
 	}
 
-	VAO* Sprite::vao;
-	VBO* Sprite::vbo;
-	EBO* Sprite::ebo;
-	/*
-	void Sprite::ChangeLayer (int lay)
-	{
-		OPENGL->graphicsObjects[layer].remove(this);
-		layer = LAYER(lay);
-		OPENGL->graphicsObjects[layer].push_back(this);
-	}
-	*/
+	VAO* Sprite::vao = nullptr;
+	VBO* Sprite::vbo = nullptr;
+	EBO* Sprite::ebo = nullptr;
+
 	Sprite::Sprite()
 	{
 		texture = Resources::RS->Get_Texture("Default");
@@ -291,7 +284,7 @@ namespace Framework
 	// Called By Renderer Component
 	void Sprite::Draw()
 	{
-    if (enabled)
+    if (enabled && vao != nullptr)
     {
       vao->bindVAO ();
       shader->Use ();
