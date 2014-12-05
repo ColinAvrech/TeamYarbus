@@ -136,7 +136,8 @@ namespace Framework
           break;
 
         case _LoadLevel:
-          std::cout << "Loading Level:" << currentLevelName.c_str() << std::endl;
+          PHYSICS->Clear ();
+          Physics::THERMODYNAMICS->Reset ();
           DestroyAllObjects();
           EVENTSYSTEM->DeleteAllEvents();
           data.open(currentLevelName.c_str());
@@ -264,8 +265,6 @@ namespace Framework
 
   void ObjectSystem::LoadLevel(const char* name)
   {
-    PHYSICS->Clear ();
-    Physics::THERMODYNAMICS->Reset ();
     CommandList.push(ObjectSystemCommand::_LoadLevel);
     currentLevelName = name;
   }

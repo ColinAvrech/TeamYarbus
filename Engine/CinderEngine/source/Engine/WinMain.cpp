@@ -127,7 +127,7 @@ int main (void)
   //Currently broken;
   //OBJECTSYSTEM->LoadAllLevels("..//..//Resources//Levels//MasterLevelFile.txt");
 
-  OBJECTSYSTEM->LoadLevel("DigipenLogo");
+  OBJECTSYSTEM->LoadLevel("NewPhysics");
  //Initialize Cheat Codes
   Cheats::InitializeCheats();
 

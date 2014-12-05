@@ -41,11 +41,29 @@ namespace Framework
 
   void SpriteColorUpdate::Update (UpdateEvent* update)
   {
-    timer += 0.016f;
-    if (gameObject->Sprite->color.a < 1.0f)
+    switch (side)
     {
-      gameObject->Sprite->color = glm::mix (minColor, maxColor, timer * multiplier);
+    case Framework::LEFT:
+      timer -= multiplier * 0.016f;
+      if (timer < 0)
+      {
+        timer = 0.0f;
+        side = RIGHT;
+      }
+      break;
+    case Framework::RIGHT:
+      timer += multiplier * 0.016f;
+      if (timer > 1)
+      {
+        timer = 1.0f;
+        side = LEFT;
+      }
+      break;
+    default:
+      break;
     }
+
+    gameObject->Sprite->color = glm::mix (minColor, maxColor, timer);
   }
 
   void SpriteColorUpdate::OnApplicationPause (PauseEvent* pause)
