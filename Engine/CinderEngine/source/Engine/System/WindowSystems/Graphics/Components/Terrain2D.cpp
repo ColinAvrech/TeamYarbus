@@ -100,7 +100,7 @@ namespace Framework
     shader->uniMat4 ("mvp", glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix ()));
     shader->uni4f ("color", color.r, color.g, color.b, color.a);
 
-    glDrawArrays (GL_TRIANGLES, 0, vertices.size () / 3);
+    glDrawArrays (GL_QUAD_STRIP, 0, vertices.size () / 3);
 
     vao->unbindVAO ();
     shader->Disable ();
@@ -304,25 +304,30 @@ namespace Framework
     for (unsigned i = 0; i < height_points.size () - 1; ++i)
     {
       // Triangle 1
-      vertices.push_back (height_points [i].x);
-      vertices.push_back (y);
-      vertices.push_back (0);
-      vertices.push_back (height_points [i + 1].x);
-      vertices.push_back (y);
-      vertices.push_back (0);
+
       vertices.push_back (height_points [i].x);
       vertices.push_back (height_points [i].y);
       vertices.push_back (0);
+
+      vertices.push_back (height_points [i].x);
+      vertices.push_back (y);
+      vertices.push_back (0);
+      //vertices.push_back (height_points [i + 1].x);
+      //vertices.push_back (y);
+      //vertices.push_back (0);
+      //vertices.push_back (height_points [i].x);
+      //vertices.push_back (height_points [i].y);
+      //vertices.push_back (0);
       // Triangle 2
-      vertices.push_back (height_points [i + 1].x);
+      /*vertices.push_back (height_points [i + 1].x);
       vertices.push_back (height_points [i + 1].y);
       vertices.push_back (0);
       vertices.push_back (height_points [i].x);
       vertices.push_back (height_points [i].y);
-      vertices.push_back (0);
-      vertices.push_back (height_points [i + 1].x);
-      vertices.push_back (y);
-      vertices.push_back (0);
+      vertices.push_back (0);*/
+      //vertices.push_back (height_points [i + 1].x);
+      //vertices.push_back (y);
+      //vertices.push_back (0);
     }
   }
 
