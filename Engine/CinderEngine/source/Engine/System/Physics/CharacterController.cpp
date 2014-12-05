@@ -90,6 +90,9 @@ namespace Framework
     EVENTSYSTEM->mConnect<UpdateEvent, CharacterController> (Events::UPDATEEVENT, this, &CharacterController::Update);
 
     AUDIOSYSTEM->listener = gameObject->Transform;
+    
+    vec3 pos = gameObject->Transform->GetPosition();
+    Camera::main->gameObject->Transform->SetPosition(pos.x, pos.y);
   }
 
   static void UpdateGroundState(CollisionEvent* collision)

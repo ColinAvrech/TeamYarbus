@@ -1,7 +1,7 @@
 /******************************************************************************/
 /*!
 \file   LevelTimer.h
-\author DarthVader
+\author Manas Kulkarni
 \par    Course: GAM200
 \par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
 \brief  
