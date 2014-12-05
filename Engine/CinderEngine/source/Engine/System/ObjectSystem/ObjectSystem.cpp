@@ -143,10 +143,12 @@ namespace Framework
           Physics::THERMODYNAMICS->Reset ();
           DestroyAllObjects();
           EVENTSYSTEM->DeleteAllEvents();
+
           data.open(currentLevelName.c_str());
           data.CreateArchive();
           Trunk = data.GetTrunk();
           SerializeObject(Trunk);
+          
           Cheats::InitializeCheats();
           AUDIOEVENTS->Initialize();
           PHYSICS->Reset ();
@@ -162,7 +164,6 @@ namespace Framework
 	GameObject* ObjectSystem::CreateObject()
 	{
 		GameObject * obj = new GameObject(LastGameObjectId);
-
 		GameObjects[LastGameObjectId] = obj;
 		++LastGameObjectId;
 		return obj;
