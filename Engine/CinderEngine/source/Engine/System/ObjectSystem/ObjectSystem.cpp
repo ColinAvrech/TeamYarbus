@@ -146,6 +146,7 @@ namespace Framework
           Trunk = data.GetTrunk();
           SerializeObject(Trunk);
           Cheats::InitializeCheats();
+          PHYSICS->Reset ();
           break;
 
         default:
