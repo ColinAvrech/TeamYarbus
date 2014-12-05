@@ -147,11 +147,8 @@ namespace Framework
           Trunk = data.GetTrunk();
           SerializeObject(Trunk);
           Cheats::InitializeCheats();
-<<<<<<< HEAD
           AUDIOEVENTS->Initialize();
-=======
           PHYSICS->Reset ();
->>>>>>> 336264efc13e5f44c89f084a0121fc2319339c52
           break;
 
         default:

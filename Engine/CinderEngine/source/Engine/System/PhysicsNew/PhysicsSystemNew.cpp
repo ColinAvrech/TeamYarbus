@@ -190,6 +190,11 @@ namespace Framework
     rigidBodies.clear ();
   }
 
+  void PhysicsSystemNew::Reset ()
+  {
+    EVENTSYSTEM->mConnect<PauseEvent, PhysicsSystemNew> (Events::PAUSE, this, &PhysicsSystemNew::OnApplicationPause);
+  }
+
   void PhysicsSystemNew::Update (const double& dt)
   {
 	  paused = CORE->IsPaused();
