@@ -173,7 +173,7 @@ namespace Framework
     std::pair<int, unsigned> TerrainCreator::EvaluateSpread(const float *map, unsigned pos)
     {
       unsigned int left = 0, right = MapWidth - 1;
-      for (unsigned i = pos; i >= 0; --i)
+      for (int i = pos; i >= 0; --i)
       {
         if (HeightMapRock[i] + map[i] > HeightMapRock[i + 1] + map[i + 1]){
           left = i + 1;
@@ -206,7 +206,7 @@ namespace Framework
     void TerrainCreator::Evaluate_Flat(float *&map, unsigned int pos)
     {
       unsigned int left = 0, right = MapWidth - 1;
-      for (unsigned i = pos; i >= 0; --i)
+      for (int i = pos; i >= 0; --i)
       {
         if (map[i] > 0.0f){
           left = i;

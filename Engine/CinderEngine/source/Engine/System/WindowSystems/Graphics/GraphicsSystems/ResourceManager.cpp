@@ -244,7 +244,7 @@ namespace Framework
 
   void Resources::Load_Sounds()
   {
-    Framework::Sound::SoundID type;
+    Framework::Sound::SoundID type = Sound::SOUND_2D;
     std::cout << CinderConsole::cyan << "--------------------------------\nLoading Sounds...\n" << CinderConsole::gray;
     std::ifstream audioFile (AudioResourcePath + "SoundAssets.txt");
 
