@@ -37,6 +37,15 @@ namespace Framework
     PROJECTION,
   };
 
+
+  enum SHADER_STATE
+  {
+    SS_DEFAULT,
+    SS_LIGHTING,
+    SS_FADE_IN,
+    SS_FADE_OUT,
+  };
+
   class Pipeline
   {
   public:
@@ -83,6 +92,10 @@ namespace Framework
     static std::list <ShapeCollider*> debugColliders;
     static std::list <GUIText*> textObjects;
     static std::list <PointLight*> pointLights;
+
+    SHADER_STATE shaderState = SS_DEFAULT;
+    float ALPHA = 0.0f;
+    void Change_Shader (std::string sh, int id = 0);
 
   private:
     std::vector <glm::mat4> modelMatrix;

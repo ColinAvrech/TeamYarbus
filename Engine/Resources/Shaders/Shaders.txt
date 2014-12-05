@@ -83,3 +83,8 @@ Passthrough.vs.glsl
 Blur.frag.glsl
 0
 Blur
+>
+Passthrough.vs.glsl
+BlendIn.frag.glsl
+0
+FadeIn

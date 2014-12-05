@@ -34,6 +34,8 @@ namespace Framework
     virtual void Initialize(); 
     void ToggleInvulnerability();
 
+    float timer = 0.0f;
+    bool levelFailed = false;
     float deathRate = 0.1f;
     float maxRadius;
     float minRadius;

@@ -16,6 +16,7 @@
 namespace Framework
 {
   class AllTreesBurnedEvent;
+  class UpdateEvent;
 
   class PlayerStats : public Component
   {
@@ -27,9 +28,12 @@ namespace Framework
   virtual void Serialize (Serializer::DataNode* data);
   virtual void OnApplicationPause (PauseEvent* pause);
   void AllTreesBurned (AllTreesBurnedEvent* atb);
+  void Update (UpdateEvent* update);
 
   private:
+    bool levelComplete = false;
     std::string NextLevel;
+    float timer = 0.0f;
   };  
 }
 
