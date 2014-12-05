@@ -50,10 +50,29 @@ namespace Framework
 
   void CharacterController::Serialize (Serializer::DataNode* data)
   {
-    data->FindElement (data, "MicrophoneMultiplier")->GetValue (&microhponeMultiplier);
-    data->FindElement (data, "Acceleration")->GetValue(&acceleration);
-    data->FindElement (data, "JumpVelocity")->GetValue (&jumpVel);
-    data->FindElement (data, "UseFlying")->GetValue (&useFlying);
+    Serializer::DynamicElement* element = data->FindElement(data, "MicrophoneMultiplier");
+    if (element)
+      element->GetValue(&micMultiplier);
+    else
+      micMultiplier = vec2(0.0f, 10.0f);
+    
+    element = data->FindElement(data, "Acceleration");
+    if (element)
+      element->GetValue(&acceleration);
+    else
+      acceleration = vec2(400.0f, 0.0f);
+    
+    element = data->FindElement(data, "JumpVelocity");
+    if (element)
+      element->GetValue(&jumpVel);
+    else
+      jumpVel = vec2(0.0f, 10.0f);
+    
+    element = data->FindElement(data, "UseFlying");
+    if (element)
+      element->GetValue(&useFlying);
+    else
+      useFlying = false;
   }
 
   void CharacterController::Initialize ()
@@ -143,7 +162,7 @@ namespace Framework
     // Microphone input
     gridPos = gameObject->Transform->GetGridPosition ();
     float micValue = AUDIOSYSTEM->GetMicrophoneValue ();
-    body->ApplyForce(Vector2(micValue * microhponeMultiplier.x * density,micValue * microhponeMultiplier.y * density));
+    body->ApplyForce(Vector2(micValue * micMultiplier.x * density,micValue * micMultiplier.y * density));
     Physics::THERMODYNAMICS->SetCellTemperature (gridPos.x, gridPos.y, 400000, 0.016);
   }
 
