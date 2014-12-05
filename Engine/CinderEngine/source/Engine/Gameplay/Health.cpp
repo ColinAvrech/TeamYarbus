@@ -15,6 +15,7 @@
 #include "ObjectSystem.h"
 #include "Text.h"
 #include "Thermodynamics.h"
+#include "PlayerEffect.h"
 
 namespace Framework
 {
@@ -46,6 +47,8 @@ namespace Framework
 
 		currentRadius = maxRadius;
     invincible = false;
+    originalPosition = gameObject->Transform->GetPosition ();
+    playerEffect = reinterpret_cast<PlayerEffect*>(gameObject->GetComponent ("PlayerEffect"));
 	}
 
 	void Health::Update(UpdateEvent* e)
@@ -55,26 +58,26 @@ namespace Framework
 		int material = Physics::THERMODYNAMICS->GetCellMaterial(currPos.x, currPos.y);
 		float temp = Physics::THERMODYNAMICS->GetCellTemperature(currPos.x, currPos.y);
 
+    playerEffect->size = currentRadius * 100.0f;
+
 		if (temp >= Physics::Constant::BT_Organics && material == GRASS)
 			currentRadius = maxRadius;
-
     if (invincible)
     {
       return;
     }
 
-		float deathRate = .1f;
 		currentRadius -= deathRate * e->Dt;
 		gameObject->Transform->Scale(currentRadius / maxRadius);
 
     if (currentRadius <= minRadius)
     {
-       OBJECTSYSTEM->LoadLevel("LoseScreen");
       //printf("dead");
-      GUIText* guiText = reinterpret_cast<GUIText*>(OBJECTSYSTEM->FindObjectByID(4)->GetComponent("GUIText"));
+      GUIText* guiText = reinterpret_cast<GUIText*>(gameObject->GetComponent("GUIText"));
       if (guiText)
       {
         guiText->text = "You ran out of fuel :(";
+        OBJECTSYSTEM->LoadLevel (OBJECTSYSTEM->currentLevelName.c_str());
         //TODO_AUDIO: Play Death Sound/Music
       }
     }

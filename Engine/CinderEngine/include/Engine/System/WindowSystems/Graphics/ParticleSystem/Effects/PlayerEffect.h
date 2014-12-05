@@ -67,6 +67,7 @@ namespace Framework
     void CreateTrailEmitter (std::shared_ptr<BoxPosGen> trail, bool active, vec3 position, vec3 minVelocity, vec3 maxVelocity, float emitRate);
     void CreateRingEmitter (bool active, vec3 position, vec3 minVelocity, vec3 maxVelocity, float emitRate);
 
+    float size;
     const static string Name;
   };
 }
