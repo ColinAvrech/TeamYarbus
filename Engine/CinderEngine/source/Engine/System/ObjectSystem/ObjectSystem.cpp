@@ -205,7 +205,7 @@ namespace Framework
     //////////////////////////////////////////////////////////////////////////
     RegisterComponent (CharacterController);
     RegisterComponent (Health);
-    RegisterComponent (FireStarter);
+    RegisterComponent (FireStarterManager);
     RegisterComponent (LevelTimer);
     RegisterComponent (Follow);
     RegisterComponent (InterpolateBackground);

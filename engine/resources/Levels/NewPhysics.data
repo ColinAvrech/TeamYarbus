@@ -63,7 +63,7 @@ Level =
       Vec3 Facing = [0, 0, 1],
 			float FieldOfView = 45,
 			float NearPlane = 0,
-			float FarPlane = 100,
+			float FarPlane = 1000,
 			float Size = 128,
 		},
   },
