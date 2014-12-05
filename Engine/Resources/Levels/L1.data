@@ -299,7 +299,7 @@ Level =
       float HPFresonance = 1,
       string SoundID = "2D",
       string SoundName = "Rumble",
-      string FileName = "L1_Rumble.wav",
+      string FileName = "L1_Rumble.ogg",
     },
   },
   Cog = 

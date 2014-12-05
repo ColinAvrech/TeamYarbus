@@ -122,7 +122,7 @@ int main (void)
 
 
   audio->LoadMicData ();
-  Sound *SplashScreenMusic = resourceManager.Get_Sound("SplashScreen.wav");
+  Sound *SplashScreenMusic = resourceManager.Get_Sound("SplashScreen.ogg");
   AUDIOEVENTS->unmanagedSounds.push_back(SplashScreenMusic);
 
   //! activate the window.
