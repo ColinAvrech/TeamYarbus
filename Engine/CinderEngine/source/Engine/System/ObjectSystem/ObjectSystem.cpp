@@ -147,7 +147,11 @@ namespace Framework
           Trunk = data.GetTrunk();
           SerializeObject(Trunk);
           Cheats::InitializeCheats();
+<<<<<<< HEAD
           AUDIOEVENTS->Initialize();
+=======
+          PHYSICS->Reset ();
+>>>>>>> 336264efc13e5f44c89f084a0121fc2319339c52
           break;
 
         default:
@@ -208,7 +212,7 @@ namespace Framework
     //////////////////////////////////////////////////////////////////////////
     RegisterComponent (CharacterController);
     RegisterComponent (Health);
-    RegisterComponent (FireStarter);
+    RegisterComponent (FireStarterManager);
     RegisterComponent (LevelTimer);
     RegisterComponent (Follow);
     RegisterComponent (InterpolateBackground);

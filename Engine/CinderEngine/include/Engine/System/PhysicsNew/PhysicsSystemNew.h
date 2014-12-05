@@ -37,7 +37,7 @@ namespace Framework
     void Clear (void);
 
     virtual const string GetName ();
-
+    void Reset ();
 
 
 	  float m_dt;

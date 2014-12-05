@@ -75,8 +75,11 @@ namespace Framework
     float dist = Physics::Distance(pos, cpos);
     if (rad >= dist)
     {
-      if (gameObject->FireStarter)
-        std::cout << "Sparked!" << std::endl;
+      //for (auto fireStarter : gameObject->FireStarterManager)
+      //if (gameObject->FireStarterManager->)
+      //  std::cout << "Sparked!" << std::endl;
+      //TODO:: have debug for fires
+
       glm::vec3 normalVec = gameObject->Transform->GetPosition() -
         c->gameObject->Transform->GetPosition();
       float penetration = rad - dist;

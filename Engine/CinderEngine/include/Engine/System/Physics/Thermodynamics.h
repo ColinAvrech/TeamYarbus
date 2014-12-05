@@ -121,7 +121,7 @@ namespace Framework
       void ToggleAutoDissipation();
       float SetCellTemperature(const float& x, const float& y, const float& temp, const double& dt);
       void SetCellVelocity (const int x, const int y, vec2 v);
-      void Add_Object(const float x, const float y, FireStarter *obj);
+      void Add_Object(FireStarter *obj);
       void Draw ();
 #pragma endregion
 
