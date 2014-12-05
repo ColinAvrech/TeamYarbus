@@ -153,6 +153,7 @@ class Josh : Component
 			}
 			Console.WriteLine("PAUSED!");
 			ZInterface.TogglePaused();
+			ZInterface.WindowSystem.ToggleCursor();
 		}
 	}
 	
