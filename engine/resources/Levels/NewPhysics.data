@@ -64,7 +64,7 @@ Level =
 			float FieldOfView = 45,
 			float NearPlane = 0,
 			float FarPlane = 1000,
-			float Size = 128,
+			float Size = 28,
 		},
   },
   Cog = 
@@ -159,7 +159,7 @@ Level =
     },
     FireSystem = 
     {
-      bool Enabled = true,
+      bool Enabled = false,
       float ParticleSize = 200,
     },
   },
@@ -178,6 +178,22 @@ Level =
 			Vec3 Translation = [0, 16, 0],
 			Vec3 Scale = [1, 1, 1],
 			Quat Rotation = [0, 0, 0, 1],
+		},
+		Sprite = 
+		{
+			string SpriteSource = "Circle.png",
+			bool FlipX = false,
+			bool FlipY = false,
+			Vec4 Color = [1, 0.5, 0, 0.8],
+			bool Visible = true,
+			bool OnTop = false,
+			bool AnimationActive = false,
+			float AnimationSpeed = 1,
+			uint StartFrame = 0,
+			BlendMode BlendMode = Alpha,
+			SpriteGeometryMode GeometryMode = ZPlane,
+			string SpriteLayer = "52ad5fa30d7fcd50:DefaultSpriteLayer",
+			string Shader = "Default",
 		},
 		CircleCollider2D = 
 		{
@@ -209,7 +225,7 @@ Level =
     },
     PlayerEffect = 
     {
-      bool Enabled = true,
+      bool Enabled = false,
       float ParticleSize = 100,
     },
     CameraFollow = 
@@ -250,22 +266,6 @@ Level =
 			Vec3 Translation = [0, 0, 0],
 			Vec3 Scale = [1, 1, 1],
 			Quat Rotation = [0, 0, 0, 1],
-		},
-    Sprite = 
-		{
-			string SpriteSource = "Circle.png",
-			bool FlipX = false,
-			bool FlipY = false,
-			Vec4 Color = [1, 0.5, 0, 0.8],
-			bool Visible = true,
-			bool OnTop = false,
-			bool AnimationActive = false,
-			float AnimationSpeed = 1,
-			uint StartFrame = 0,
-			BlendMode BlendMode = Alpha,
-			SpriteGeometryMode GeometryMode = ZPlane,
-			string SpriteLayer = "52ad5fa30d7fcd50:DefaultSpriteLayer",
-			string Shader = "Default",
 		},
     Follow = 
     {

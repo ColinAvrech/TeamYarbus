@@ -186,10 +186,10 @@ namespace Framework
     throw std::logic_error ("The method or operation is not implemented.");
   }
 
-  BoundType* FireSystem::ZilchGetDerivedType () const
-  {
-    throw std::logic_error ("The method or operation is not implemented.");
-  }
+  //BoundType* FireSystem::ZilchGetDerivedType () const
+  //{
+  //  throw std::logic_error ("The method or operation is not implemented.");
+  //}
 
   void FireSystem::AddFireEmitter(glm::vec3 position, float emitRate, glm::vec3 minVel, glm::vec3 maxVel)
 {
