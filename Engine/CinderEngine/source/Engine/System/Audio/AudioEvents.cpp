@@ -116,13 +116,6 @@ namespace Framework
 
   void AudioEvents::OnUpdate(UpdateEvent *e)
   {
-    for (auto Sound : unmanagedSounds)
-    {
-      if (!Sound->GetPlaying())
-      {
-        Sound->Stop();
-      }
-    }
   }
 
   void AudioEvents::SetPauseUnmanagedSounds(bool paused)
