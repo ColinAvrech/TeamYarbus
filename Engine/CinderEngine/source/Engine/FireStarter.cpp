@@ -40,6 +40,7 @@ namespace Framework
 
     firePoints.clear();
     numPoints = 0;
+    numTreesLeft = 0;
   }
 
   void FireStarterManager::AddFireStarter(FireStarter *newFirePoint)
