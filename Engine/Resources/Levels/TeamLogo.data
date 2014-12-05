@@ -75,7 +75,7 @@ Level =
 	  },
 	  Named = 
 	  {
-		  string Name = "DigipenLogo",
+		  string Name = "TeamLogo",
 	  },
     Transform = 
 	  {
@@ -91,5 +91,16 @@ Level =
 			string Shader = "Animation",
 			Vec4 Color = [1, 1, 1, 1],
 		},
+    SpriteColorUpdate = 
+    {
+      Vec4 MinColor = [0, 0, 0, 0],
+      Vec4 MaxColor = [1, 1, 1, 1],
+      float Multiplier = 1.0,
+    },
+    LevelTimer = 
+    {
+      float EndTime = 3.0f,
+      string NextLevel = "Loading",
+    },
   },
 },
