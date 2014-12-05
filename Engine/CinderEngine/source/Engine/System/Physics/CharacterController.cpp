@@ -56,6 +56,31 @@ namespace Framework
     PLAYER = nullptr;
   }
 
+  void CharacterController::Serialize (Serializer::DataNode* data)
+  {
+    data->FindElement (data, "MicrophoneMultiplier")->GetValue (&microhponeMultiplier);
+    data->FindElement (data, "Acceleration")->GetValue(&acceleration);
+    data->FindElement (data, "JumpVelocity")->GetValue (&jumpVel);
+    data->FindElement (data, "UseFlying")->GetValue (&useFlying);
+  }
+
+  void CharacterController::Initialize ()
+  {
+    OBJECTSYSTEM->ptrPlayer = this->gameObject;
+    PLAYER = this;
+    //accel = { 0 , 0 };
+    //maxAcceleration = { 50, 100 };
+    maxVel = 20.0f;
+    //drag = 5;
+    //currentforce = 0;
+    density = gameObject->ShapeCollider2D->Density;
+
+    EVENTSYSTEM->mConnect<CollisionEvent, CharacterController> (Events::COLLISION, this, &CharacterController::OnCollisionEnter);
+    EVENTSYSTEM->mConnect<UpdateEvent, CharacterController> (Events::UPDATEEVENT, this, &CharacterController::Update);
+
+    AUDIOSYSTEM->listener = gameObject->Transform;
+  }
+
   static void UpdateGroundState(CollisionEvent* collision)
   {
     glm::vec2 normal = glm::vec2(collision->normal);
@@ -128,38 +153,6 @@ namespace Framework
     float micValue = AUDIOSYSTEM->GetMicrophoneValue ();
     body->ApplyForce(Vector2(micValue * microhponeMultiplier.x * density,micValue * microhponeMultiplier.y * density));
     Physics::THERMODYNAMICS->SetCellTemperature (gridPos.x, gridPos.y, 400000, 0.016);
-
-  }
-
-
-  /*!Telegraph that the component is active*/
-  void CharacterController::Initialize ()
-  {
-    OBJECTSYSTEM->ptrPlayer = this->gameObject;
-    PLAYER = this;
-    //accel = { 0 , 0 };
-    //maxAcceleration = { 50, 100 };
-    maxVel = 20.0f;
-    //drag = 5;
-    //currentforce = 0;
-    density = gameObject->ShapeCollider2D->Density;
-
-    EVENTSYSTEM->mConnect<CollisionEvent, CharacterController> (Events::COLLISION, this, &CharacterController::OnCollisionEnter);
-    EVENTSYSTEM->mConnect<UpdateEvent, CharacterController> (Events::UPDATEEVENT, this, &CharacterController::Update);
-
-    AUDIOSYSTEM->listener = gameObject->Transform;
-  }
-
-  void CharacterController::Serialize (Serializer::DataNode* data)
-  {
-    Serializer::DataNode* value = data->FindElement (data, "MicrophoneMultiplier");
-    value->GetValue (&microhponeMultiplier);
-
-    value = data->FindElement (data, "Acceleration");
-    value->GetValue (&acceleration);
-
-    value = data->FindElement (data, "JumpVelocity");
-    value->GetValue (&jumpVel);
   }
 
   void CharacterController::ToggleFlying()

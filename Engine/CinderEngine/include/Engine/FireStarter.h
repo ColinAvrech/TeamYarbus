@@ -22,7 +22,6 @@ using std::vector;
 
 namespace Framework
 {
-  static int numTreesLeft = 0;
 
   using namespace Physics;
   class FireStarter;
@@ -74,7 +73,7 @@ namespace Framework
 
     const static std::string Name;
     bool onFire;
-
+    static int numTreesLeft;
   //private:
     vector<const FireStarter *> firePoints;
   };

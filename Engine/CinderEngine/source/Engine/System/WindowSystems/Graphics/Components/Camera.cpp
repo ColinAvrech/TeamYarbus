@@ -48,30 +48,30 @@ namespace Framework
   void Camera::OnKeyPressed (KeyEvent* key)
   {
     float camSpeed = 1.0f;
-    float zoomSpeed = 100.0f;
+    float zoomSpeed = 1.0f;
     if (key->KeyDown)
       switch (key->KeyValue)
     {
-      //case GLFW_KEY_A:
-      //  OPENGL->MatrixMode (VIEW);
-      //  Camera::main->gameObject->Transform->Translate (-camSpeed, 0, 0);
-      //  Camera::main->matricesReady = false;
-      //  break;
-      //case GLFW_KEY_D:
-      //  OPENGL->MatrixMode (VIEW);
-      //  Camera::main->gameObject->Transform->Translate (camSpeed, 0, 0);
-      //  Camera::main->matricesReady = false;
-      //  break;
-      //case GLFW_KEY_S:
-      //  OPENGL->MatrixMode (VIEW);
-      //  Camera::main->gameObject->Transform->Translate (0, -camSpeed, 0);
-      //  Camera::main->matricesReady = false;
-      //  break;
-      //case GLFW_KEY_W:
-      //  OPENGL->MatrixMode (VIEW);
-      //  Camera::main->gameObject->Transform->Translate (0, camSpeed, 0);
-      //  Camera::main->matricesReady = false;
-      //  break;
+      case GLFW_KEY_A:
+        OPENGL->MatrixMode (VIEW);
+        Camera::main->gameObject->Transform->Translate (-camSpeed, 0, 0);
+        Camera::main->matricesReady = false;
+        break;
+      case GLFW_KEY_D:
+        OPENGL->MatrixMode (VIEW);
+        Camera::main->gameObject->Transform->Translate (camSpeed, 0, 0);
+        Camera::main->matricesReady = false;
+        break;
+      case GLFW_KEY_S:
+        OPENGL->MatrixMode (VIEW);
+        Camera::main->gameObject->Transform->Translate (0, -camSpeed, 0);
+        Camera::main->matricesReady = false;
+        break;
+      case GLFW_KEY_W:
+        OPENGL->MatrixMode (VIEW);
+        Camera::main->gameObject->Transform->Translate (0, camSpeed, 0);
+        Camera::main->matricesReady = false;
+        break;
       case GLFW_KEY_Z:
         Camera::main->Zoom (zoomSpeed);
         break;
@@ -92,7 +92,7 @@ namespace Framework
     if (mainCamera)
     {
       Camera::main = this;
-      Camera::main->Zoom(-100.0f);
+      //Camera::main->Zoom(-100.0f);
       worldToView = glm::lookAt(size * viewDirection + vec3 (gameObject->Transform->GetPosition().x, gameObject->Transform->GetPosition().y, 0.0), gameObject->Transform->GetPosition(), up);
       viewToProjection = glm::perspective(fov * M_PI / 180, aspect, nearPlane, farPlane);
     }
@@ -188,11 +188,11 @@ namespace Framework
 
   void Camera::Zoom(float zoom)
   {
-    if (size + zoom > 0 && (size + zoom) < farPlane)
-    {
+    //if (size + zoom > 0 && (size + zoom) < farPlane)
+    //{
       size += zoom;
       matricesReady = false;
-    }
+    //}
   }
 
   glm::mat4 Camera::GetWorldToViewMatrix ()

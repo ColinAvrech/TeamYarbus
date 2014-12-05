@@ -60,6 +60,7 @@ deleted.
 #include "InterpolateBackground.h"
 #include "SpriteColorUpdate.h"
 #include "Rotator.h"
+#include "PlayerStats.h"
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 
@@ -215,6 +216,7 @@ namespace Framework
     RegisterComponent (InterpolateBackground);
     RegisterComponent (SpriteColorUpdate);
     RegisterComponent (Rotator);
+    RegisterComponent (PlayerStats);
     //////////////////////////////////////////////////////////////////////////
   }
 	void ObjectSystem::AddComponentCreator(string name, ComponentCreator* creator)

@@ -130,7 +130,7 @@ int main (void)
   //OBJECTSYSTEM->LoadAllLevels("..//..//Resources//Levels//MasterLevelFile.txt");
 
   //SplashScreenMusic->Play();
-  OBJECTSYSTEM->LoadLevel("NewPhysics");
+  OBJECTSYSTEM->LoadLevel("L2");
 
  //Initialize Cheat Codes
   Cheats::InitializeCheats();
