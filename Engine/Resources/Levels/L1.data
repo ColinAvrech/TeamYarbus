@@ -281,6 +281,22 @@ Level =
     {
       string Target = "Player",
     },
+    AudioComponent = 
+    {
+      bool Positional = false,
+      bool MicEffect = false,
+      bool Play = true,
+      bool Mute = false,
+      bool LowPassFilter = false,
+      float LPFcutoff = 6000,
+      float LPFresonance = 1,
+      bool HighPassFilter = false,
+      float HPFcutoff = 150,
+      float HPFresonance = 1,
+      string SoundID = "2D",
+      string SoundName = "Rumble",
+      string FileName = "L1_Rumble.wav",
+    },
   },
   Cog = 
 	{

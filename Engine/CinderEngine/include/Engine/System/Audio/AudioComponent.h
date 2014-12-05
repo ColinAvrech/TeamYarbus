@@ -120,6 +120,7 @@ namespace Framework
       string         _soundID;
       string         _soundName;
       Sound::SoundID _type;
+      bool           _played = false;
 
       #pragma endregion
 

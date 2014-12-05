@@ -151,7 +151,17 @@ namespace Framework
       _newSound->SetPosition(gameObject->Transform->GetPosition());
 
     if (_playing)
-      _newSound->Play();
+    {
+      if (_type != Sound::SOUND_2D)
+      {
+        _newSound->Play();
+      }
+      else if (_type == Sound::SOUND_2D && _played == false)
+      {
+        _newSound->Play();
+        _played = true;
+      }
+    }
 
     if (_lowpassed && _playing)
     {
@@ -172,7 +182,7 @@ namespace Framework
     if (_micEffect && _playing)
       _newSound->micEffectUpdate();
 
-    if (_playing)
+    if (_playing && _type != Sound::SOUND_2D)
       _newSound->SetMute(_mute);
   }
 
