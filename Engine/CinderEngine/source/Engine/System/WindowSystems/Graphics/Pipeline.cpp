@@ -52,8 +52,6 @@ namespace Framework
   std::list <Text*> Pipeline::textObjects;
   std::list <ShapeCollider*> Pipeline::debugColliders;
 
-  static Text textDrawer;
-
   Pipeline::Pipeline ()
   {
     useDebugDraw = false;
@@ -165,8 +163,7 @@ namespace Framework
     //////////////////////////////////////////////////////////////////////////
     // UI DRAW
     //////////////////////////////////////////////////////////////////////////
-    textDrawer.Draw();
-
+    
     for (auto* i : graphicsObjects [PAUSE])
     {
       i->Draw ();
