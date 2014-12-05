@@ -30,6 +30,12 @@ namespace Framework
   static SplineCollider* spline;
   DefineComponentName (Terrain2D);
 
+  ZilchDefineType (Terrain2D, CinderZilch)
+  {
+    type->HandleManager = ZilchManagerId (Zilch::PointerManager);
+    ZilchBindConstructor (Terrain2D);
+  }
+
   // Constructor
   Terrain2D::Terrain2D ()
   {}
@@ -37,8 +43,17 @@ namespace Framework
   // Destructor
   Terrain2D::~Terrain2D ()
   {
+    gameObject->Terrain2D = nullptr;
     delete vao, vbo, tc, spline;
     delete vao1, vbo1;
+
+    for (auto* i : edges)
+    {
+      delete i;
+      i = nullptr;
+    }
+
+    edges.clear ();
   }
 
 
@@ -119,11 +134,6 @@ namespace Framework
   int Terrain2D::GetWidth()
   { 
     return MapSize;
-  }
-
-  std::vector <std::pair <vec2, vec2>>& Terrain2D::Get_Edges()
-  {
-    return edges;
   }
 
   void Terrain2D::Generate_Height_Points ()
@@ -254,6 +264,7 @@ namespace Framework
     for (unsigned i = 0; i < height_points.size () - 1; ++i)
     {
       PolygonCollider2D* poly = new PolygonCollider2D ();
+      edges.push_back (poly);
       glm::dvec2 center;
       glm::vec2 p0 = (glm::mat2)gameObject->Transform->GetModelMatrix () * glm::vec2 (height_points [i].x, y);
       glm::vec2 p1 = (glm::mat2)gameObject->Transform->GetModelMatrix () * glm::vec2 (height_points [i + 1].x, y);

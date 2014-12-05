@@ -8,18 +8,9 @@
 */
 /******************************************************************************/
 
-#include "Common.h"
 #include "CharacterController.h"
-#include "ComponentInclude.h"
-#include "ResourceManager.h"
-#include "WindowSystem.h"
-#include "TimeQuery.h"
-#include "glmOverloads.h"
-#include "PhysicsLibrary.h"
-#include "IncludeForAllCollision.h"
 #include "Thermodynamics.h"
 #include "GameObject.h"
-#include "RigidBody.h"
 #include "EventSystem.h"
 #include "CollisionEvent.h"
 #include "KeyEvent.h"
@@ -27,6 +18,7 @@
 #include "RigidBody2D.h"
 #include "Collider2D.h"
 #include "InputManager.h"
+#include "glfw3.h"
 
 
 namespace Framework
@@ -58,10 +50,29 @@ namespace Framework
 
   void CharacterController::Serialize (Serializer::DataNode* data)
   {
-    data->FindElement (data, "MicrophoneMultiplier")->GetValue (&microhponeMultiplier);
-    data->FindElement (data, "Acceleration")->GetValue(&acceleration);
-    data->FindElement (data, "JumpVelocity")->GetValue (&jumpVel);
-    data->FindElement (data, "UseFlying")->GetValue (&useFlying);
+    Serializer::DynamicElement* element = data->FindElement(data, "MicrophoneMultiplier");
+    if (element)
+      element->GetValue(&micMultiplier);
+    else
+      micMultiplier = vec2(0.0f, 10.0f);
+    
+    element = data->FindElement(data, "Acceleration");
+    if (element)
+      element->GetValue(&acceleration);
+    else
+      acceleration = vec2(400.0f, 0.0f);
+    
+    element = data->FindElement(data, "JumpVelocity");
+    if (element)
+      element->GetValue(&jumpVel);
+    else
+      jumpVel = vec2(0.0f, 10.0f);
+    
+    element = data->FindElement(data, "UseFlying");
+    if (element)
+      element->GetValue(&useFlying);
+    else
+      useFlying = false;
   }
 
   void CharacterController::Initialize ()
@@ -151,7 +162,7 @@ namespace Framework
     // Microphone input
     gridPos = gameObject->Transform->GetGridPosition ();
     float micValue = AUDIOSYSTEM->GetMicrophoneValue ();
-    body->ApplyForce(Vector2(micValue * microhponeMultiplier.x * density,micValue * microhponeMultiplier.y * density));
+    body->ApplyForce(Vector2(micValue * micMultiplier.x * density,micValue * micMultiplier.y * density));
     Physics::THERMODYNAMICS->SetCellTemperature (gridPos.x, gridPos.y, 400000, 0.016);
   }
 

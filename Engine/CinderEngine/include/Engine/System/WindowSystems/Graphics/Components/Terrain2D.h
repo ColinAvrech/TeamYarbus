@@ -15,13 +15,18 @@
 #include "TerrainCreator.h"
 #include "JSONSerializer.h"
 #include "IGraphicsObject.h"
+#include "ZilchCompiledlib.h"
+#include "Zilch.hpp"
 
 namespace Framework
 {
+  class PolygonCollider2D;
 
   class Terrain2D : public IGraphicsObject
   {
   public:
+    ZilchDeclareDerivedType (Terrain2D, IGraphicsObject);
+
   Terrain2D ();
   virtual ~Terrain2D ();
   
@@ -53,7 +58,7 @@ namespace Framework
     VAO* vao;
     VBO* vbo;
 
-    std::vector <std::pair <vec2, vec2>> edges;
+    std::vector <PolygonCollider2D*> edges;
     std::vector <vec2> height_points;
     std::vector <float> vertices;
     int PeakHeight;

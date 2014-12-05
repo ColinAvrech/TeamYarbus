@@ -44,7 +44,10 @@ namespace Framework
 	
 	RigidBody2D::~RigidBody2D ()
 	{
-    gameObject->RigidBody2D = nullptr;
+    if (gameObject != nullptr)
+    {
+      gameObject->RigidBody2D = nullptr;
+    }
 	}
 	
 	
