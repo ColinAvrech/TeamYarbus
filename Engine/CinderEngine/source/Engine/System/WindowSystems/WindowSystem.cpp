@@ -40,6 +40,7 @@ namespace Framework
 	  ZilchBindFieldGet(IsMouseDown);
 	  ZilchBindMethodAs(Get_Width, "GetWidth");
 	  ZilchBindMethodAs(Get_Height, "GetHeight");
+	  ZilchBindMethodAs(ToggleCursorVisibility, "ToggleCursor");
 
   }
 
