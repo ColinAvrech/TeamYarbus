@@ -1,11 +1,12 @@
-///////////////////////////////////////////////////////////////////////////////////////
-///
-///	\file ComponentCreator.h Defines IComponentCreator interface.
-///
-///	Authors: Chris Peters
-///	Copyright 2010, Digipen Institute of Technology
-///
-///////////////////////////////////////////////////////////////////////////////////////
+/******************************************************************************/
+/*!
+\file   ComponentCreator.h
+\author Micah Rust
+\par    Course: GAM200
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+\brief
+*/
+/******************************************************************************/
 #pragma once
 
 #include "Common.h"
@@ -17,7 +18,7 @@ namespace Framework
   class GameObject;
 
   ///Game Component Creator Interface.
-  ///Used to create components in data driven method in the GameObjectFactory.
+  ///Used to create components in data driven method in the ObjectSystem.
   class ComponentCreator
   {
   public:

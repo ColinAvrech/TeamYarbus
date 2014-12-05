@@ -1,3 +1,12 @@
+/******************************************************************************/
+/*!
+\file   CharacterController.h
+\author Anna Pearson
+\par    Course: GAM200
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+\brief  Gamelogic for the character controller
+*/
+/******************************************************************************/
 #pragma once
 #include "Component.h"
 #include "Zilch.hpp"

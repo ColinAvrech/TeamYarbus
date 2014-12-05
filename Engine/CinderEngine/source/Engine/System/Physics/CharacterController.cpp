@@ -1,3 +1,13 @@
+/******************************************************************************/
+/*!
+\file   CharacterController.h
+\author Anna Pearson
+\par    Course: GAM200
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+\brief  Gamelogic for the player character
+*/
+/******************************************************************************/
+
 #include "Common.h"
 #include "CharacterController.h"
 #include "ComponentInclude.h"
