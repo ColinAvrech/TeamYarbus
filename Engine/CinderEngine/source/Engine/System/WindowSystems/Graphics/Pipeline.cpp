@@ -33,50 +33,13 @@
 namespace Framework
 {
   using namespace Physics;
-  enum COLOR_STATE
-  {
-    IDLE,
-    INTERPOLATE,
-  };
-
-  COLOR_STATE cState = IDLE;
 
   static float t = 0.0f;
-  glm::vec4 startColor, endColor;
-  glm::vec4 color;
   VAO* vao;
   VBO* vbo;
   FBO* fbo;
   Shader* sceneShader;
   GLuint renderTexture;
-
-  void Interpolate_Background ()
-  {
-    switch (cState)
-    {
-    case Framework::IDLE:
-      t += 0.016f;
-      if (t > 1.0f)
-      {
-        cState = INTERPOLATE;
-        t = 0.0f;
-        startColor = color;
-        endColor = glm::linearRand (glm::vec4 (0, 0, 0, 0), glm::vec4 (0.4f, 0.4f, 0.4f, 1.0f));
-      }
-      break;
-    case Framework::INTERPOLATE:
-      t += 0.016f;
-      color = glm::mix (startColor, endColor, t * 5);
-      if (t > 0.2f)
-      {
-        t = 0.0f;
-        cState = IDLE;
-      }
-      break;
-    default:
-      break;
-    }
-  }
 
   //! Global pointer to  the Pipeline.
   Pipeline* OPENGL = NULL;
@@ -167,10 +130,8 @@ namespace Framework
   void Pipeline::Update ()
   {
     fbo->bind ();
-    Interpolate_Background ();
 
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glClearColor (color.r, color.g, color.b, 1.0f);
     glEnable (GL_BLEND);
     sFactor = GL_SRC_ALPHA;
     dFactor = GL_ONE_MINUS_SRC_ALPHA;
@@ -208,7 +169,6 @@ namespace Framework
 
     for (auto* i : graphicsObjects [PAUSE])
     {
-      i->Update ();
       i->Draw ();
     }
 
@@ -224,10 +184,10 @@ namespace Framework
     //////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////
     // DEBUG DRAW
-    //if (useDebugDraw)
+    if (useDebugDraw)
     {
-      //THERMODYNAMICS->Draw ();
-      //PHYSICS->Render ();
+      THERMODYNAMICS->Draw ();
+      PHYSICS->Render ();
     }
   }
 
@@ -467,6 +427,21 @@ namespace Framework
   void Pipeline::ResetBlendMode ()
   {
     glBlendFunc (sFactor, dFactor);
+  }
+
+
+  void Pipeline::ToggleDebugDraw ()
+  {
+    if (useDebugDraw)
+    {
+      std::cout << "Ending DebugDraw" << std::endl;
+      useDebugDraw = false;
+    }
+    else
+    {
+      std::cout << "Starting DebugDraw" << std::endl;
+      useDebugDraw = true;
+    }
   }
 
   void Pipeline::RenderToTexture(FBO* fbo, GLuint tex, Shader* shader)

@@ -4,7 +4,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 1,
+			uint Id = 0,
 		},
 		Named = 
 		{
@@ -44,7 +44,7 @@ Level =
 	{
 	  LinkId = 
 	  {
-		  uint Id = 0,
+		  uint Id = 1,
 	  },
 	  Named = 
 	  {
@@ -71,7 +71,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 8,
+			uint Id = 2,
 		},
 		Named = 
 		{
@@ -100,7 +100,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 8,
+			uint Id = 3,
 		},
 		Named = 
 		{
@@ -129,7 +129,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 8,
+			uint Id = 4,
 		},
 		Named = 
 		{
@@ -172,7 +172,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 4,
+			uint Id = 5,
 		},
 		Named = 
 		{
@@ -225,7 +225,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 8,
+			uint Id = 6,
 		},
 		Named = 
 		{
@@ -262,7 +262,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 9,
+			uint Id = 7,
 		},
 		Named = 
 		{
@@ -287,7 +287,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 9,
+			uint Id = 8,
 		},
 		Named = 
 		{
@@ -312,7 +312,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 8,
+			uint Id = 9,
 		},
 		Named = 
 		{
@@ -337,7 +337,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 9,
+			uint Id = 100,
 		},
 		Named = 
 		{

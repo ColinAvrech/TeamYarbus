@@ -24,7 +24,7 @@ namespace Framework
 		}
 		Health(){}
 
-		~Health(){}
+		~Health();
 		void reFuel();
 		void Update(UpdateEvent* e);
 		void OnCollisionEnter(CollisionEvent* c);

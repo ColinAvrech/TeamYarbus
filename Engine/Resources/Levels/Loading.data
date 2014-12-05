@@ -67,7 +67,7 @@ Level =
 			float Size = 1.5,
 		},
   },
-   Cog = 
+  Cog = 
 	  {
 	  LinkId = 
 	  {
@@ -75,32 +75,23 @@ Level =
 	  },
 	  Named = 
 	  {
-		  string Name = "TeamLogo",
+		  string Name = "Loading",
 	  },
     Transform = 
 	  {
 		  Vec3 Translation = [0, 0, 0],
-		  Vec3 Scale = [3, 3, 1],
+		  Vec3 Scale = [1, 1, 1],
 		  Quat Rotation = [0, 0, 0, 1],
 	  },
-    Sprite = 
-		{
-			bool Visible = true,
-			string SpriteSource = "HighResLogo.jpg",
-      bool AnimationActive = true,
-			string Shader = "Animation",
-			Vec4 Color = [1, 1, 1, 1],
-		},
-    SpriteColorUpdate = 
+    Text = 
     {
-      Vec4 MinColor = [0, 0, 0, 0],
-      Vec4 MaxColor = [1, 1, 1, 1],
-      float Multiplier = 0.5,
+      Vec2 Position = [0, 0],
+      string Text = "Loading",
     },
     LevelTimer = 
     {
-      float EndTime = 4.0f,
-      string NextLevel = "Loading",
+      float EndTime = 0.0,
+      string NextLevel = "NewPhysics",
     },
   },
 },
