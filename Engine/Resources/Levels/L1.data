@@ -240,7 +240,9 @@ Level =
       bool HighPassFilter = true,
       float HPFcutoff = 150,
       float HPFresonance = 1,
-      string SoundID = "FireA.ogg",
+      string SoundID = "3D",
+      string SoundName = "Fire",
+      string FileName = "FireA.ogg",
     },
 	},
   Cog = 
@@ -278,6 +280,22 @@ Level =
     Follow = 
     {
       string Target = "Player",
+    },
+    AudioComponent = 
+    {
+      bool Positional = false,
+      bool MicEffect = false,
+      bool Play = true,
+      bool Mute = false,
+      bool LowPassFilter = false,
+      float LPFcutoff = 6000,
+      float LPFresonance = 1,
+      bool HighPassFilter = false,
+      float HPFcutoff = 150,
+      float HPFresonance = 1,
+      string SoundID = "2D",
+      string SoundName = "Rumble",
+      string FileName = "L1_Rumble.wav",
     },
   },
   Cog = 
