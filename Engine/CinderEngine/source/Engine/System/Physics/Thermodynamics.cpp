@@ -127,15 +127,20 @@ namespace Framework
 
     // Getters
     //Get cell temperature
-    float ThermodynamicsSystem::GetCellTemperature (const float& x, const float& y)
+    float ThermodynamicsSystem::GetCellTemperature (int x, int y)
     {
-      glm::ivec2 sub = GetSubscript(x, y);
-      int sub_x = int (sub.x);
-      int sub_y = int (sub.y);
-      if (sub_x < 0 || sub_x >= MapSize.x || sub_y < 0 || sub_y >= MapSize.y)
-        return 0.f;
-      return TemperatureMap.Get(sub_x, sub_y);
+      if (x < 0 || x >= MapSize.x || y < 0 || y >= MapSize.y)
+        return AtmosphericTemperature;
+      return TemperatureMap.Get(x, y);
     }
+
+	//Get Terrain material
+	int ThermodynamicsSystem::GetCellMaterial(int x, int y)
+	{
+	  if (x < 0 || x >= MapSize.x || y < 0 || y >= MapSize.y)
+	  	return AIR;
+	  return Terrain.Get(x, y);
+	}
 
     //Get cell oxygen content
     float ThermodynamicsSystem::GetCellOxygen (const float& x, const float& y)

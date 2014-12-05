@@ -43,7 +43,7 @@ namespace Framework
     virtual int numAllParticles ();
     virtual int numAliveParticles ();
     virtual void Draw ();
-    virtual BoundType* ZilchGetDerivedType () const;
+    //virtual BoundType* ZilchGetDerivedType () const;
 
     void OnKeyPressed (KeyEvent* key);
     void AddFire (float x, float y, float emitRate);
