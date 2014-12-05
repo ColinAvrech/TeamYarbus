@@ -66,6 +66,12 @@ Level =
 			float FarPlane = 100,
 			float Size = 17,
 		},
+    CameraShake = 
+    {
+      bool Enabled = true,
+      Vec2 Intensity = [0.5, 1.0],
+      float Duration = 2.0,
+    },
   },
   Cog = 
 	{

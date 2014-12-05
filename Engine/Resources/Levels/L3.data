@@ -215,7 +215,7 @@ Level =
     },
     PlayerEffect = 
     {
-      bool Enabled = false,
+      bool Enabled = true,
       float ParticleSize = 100,
     },
     CameraFollow = 
