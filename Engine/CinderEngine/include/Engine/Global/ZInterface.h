@@ -43,13 +43,14 @@ namespace Framework
 		static ObjectSystem* ObjectSys;
 		static WindowSystem* WindowSys;
 		static Resources* ResourceSystem;
-		
+		static Pipeline* ZInterface::GraphicsPipeline;
+
 		static void QuitGame();
 
 		static Sound* GetSound(String soundName);
 		static void TogglePaused();
-		static void IsPaused();
-		;
+		static Boolean IsPaused();
+		static void SetSceneShader(String shader);
 
 		static ZilchFile* OpenFile(Zilch::String filepath);
 		

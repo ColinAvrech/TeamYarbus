@@ -12,12 +12,15 @@
 #include "Core.h"
 #include "WindowSystem.h"
 #include "ResourceManager.h"
+#include "Pipeline.h"
 
 namespace Framework
 {
 	ObjectSystem* ZInterface::ObjectSys = OBJECTSYSTEM;
 	WindowSystem* ZInterface::WindowSys = WINDOWSYSTEM;
 	Resources* ZInterface::ResourceSystem = nullptr;
+	Pipeline* ZInterface::GraphicsPipeline = OPENGL;
+	
 	
 	ZilchDefineType(ZilchFile, CinderZilch)
 	{
@@ -44,6 +47,7 @@ namespace Framework
 		ZilchBindStaticFieldGet(ResourceSystem);
 		ZilchBindStaticMethod(TogglePaused);
 		ZilchBindStaticMethod(IsPaused);
+		ZilchBindStaticMethod(SetSceneShader);
 		
 		
 	}
@@ -70,6 +74,15 @@ namespace Framework
 
 		return new ZilchFile(&myfile);
 
+
+	}
+
+	void ZInterface::SetSceneShader(String shader)
+	{
+		if (CORE)
+		{
+			OPENGL->sceneShader = Resources::RS->Get_Shader(shader.c_str());
+		}
 	}
 
 	
@@ -79,9 +92,9 @@ namespace Framework
 		CORE->TogglePaused();
 	}
 
-	void ZInterface::IsPaused()
+	Boolean ZInterface::IsPaused()
 	{
-		CORE->IsPaused();
+		return CORE->IsPaused();
 	}
 
 	ZilchFile::ZilchFile(ifstream* file)

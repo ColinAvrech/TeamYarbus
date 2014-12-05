@@ -17,13 +17,13 @@ class Josh : Component
 	function Initialize(owner:GameObject)
 	{
 	this.Owner = owner;
-	
+	ZInterface.WindowSystem.ToggleCursor();
 	//this.Detector = new MouseDetector(this.Owner, this.OnMouseEvent);
 	
 	//var obj = new Dot();
 	
 	//this.ObjectSys
-	Console.WriteLine(ZInterface.WindowSystem);
+	//Console.WriteLine(ZInterface.WindowSystem);
 	this.MenuObjects = ZInterface.ObjectSystem.LoadLevelAdditive("HowToPlay");
 	this.MenuObjects = ZInterface.ObjectSystem.LoadLevelAdditive("MainMenu");
 	var scale = this.Owner.Transform.GetScale();
@@ -153,6 +153,14 @@ class Josh : Component
 			}
 			Console.WriteLine("PAUSED!");
 			ZInterface.TogglePaused();
+			if (ZInterface.IsPaused())
+			{
+				ZInterface.SetSceneShader("Blur");
+			}
+			else
+			{
+				ZInterface.SetSceneShader("Passthrough");
+			}
 			ZInterface.WindowSystem.ToggleCursor();
 		}
 	}

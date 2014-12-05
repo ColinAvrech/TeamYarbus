@@ -38,7 +38,7 @@ namespace Framework
   VAO* vao;
   VBO* vbo;
   FBO* fbo;
-  Shader* sceneShader;
+  //moved scene shader to Pipeline.cpp
   GLuint renderTexture;
 
   //! Global pointer to  the Pipeline.
@@ -65,7 +65,7 @@ namespace Framework
     matricesReady = true;
     currentMatrix = 0;
 
-    EVENTSYSTEM->mConnect<PauseEvent, Pipeline> (Events::PAUSE, this, &Pipeline::OnApplicationPause);
+    //EVENTSYSTEM->mConnect<UpdateEvent, Pipeline> (Events::UPDATEEVENT, this, &Pipeline::OnApplicationPause);
 
     GLfloat vertices [] =
     {
@@ -460,18 +460,6 @@ namespace Framework
     glBindTexture (GL_TEXTURE_2D, renderTexture);
     glTexImage2D (GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
     glBindTexture (GL_TEXTURE_2D, 0);
-  }
-
-  void Pipeline::OnApplicationPause (PauseEvent* pause)
-  {
-    if (pause->Paused)
-    {
-      sceneShader = Resources::RS->Get_Shader ("Blur");
-    }
-    else
-    {
-      sceneShader = Resources::RS->Get_Shader ("Passthrough");
-    }
   }
 
 }
