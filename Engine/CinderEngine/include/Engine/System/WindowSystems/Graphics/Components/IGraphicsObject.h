@@ -13,6 +13,7 @@
 
 #include "Component.h"
 #include "JSONSerializer.h"
+#include "ZilchCompiledLib.h"
 
 namespace Framework
 {
@@ -23,10 +24,11 @@ namespace Framework
   };
 
   class Shader;
-
+  
   class IGraphicsObject : public Component
   {
   public:
+  ZilchDeclareDerivedType(IGraphicsObject, Component);
   IGraphicsObject ();
   virtual ~IGraphicsObject ();
   

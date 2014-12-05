@@ -41,6 +41,7 @@ namespace Framework
 	  ZilchBindMethodAs(Get_Width, "GetWidth");
 	  ZilchBindMethodAs(Get_Height, "GetHeight");
     ZilchBindMethodAs(ToggleCursorVisibility, "ToggleCursor");
+	ZilchBindMethodAs(SetCursorVisibility, "SetCursor");
   }
 
   static glm::vec2 mouseOffset;
@@ -387,6 +388,7 @@ namespace Framework
     glfwSetInputMode(window, GLFW_STICKY_MOUSE_BUTTONS, GL_FALSE);
   }
 
+  //Fcuck da Toggle
   void WindowSystem::ToggleCursorVisibility()
   {
     cursorVisible = !cursorVisible;
@@ -400,6 +402,18 @@ namespace Framework
     }
   }
 
+  void WindowSystem::SetCursorVisibility(bool set)
+  {
+	  cursorVisible = set;
+	  if (cursorVisible)
+	  {
+		  glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	  }
+	  else
+	  {
+		  glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	  }
+  }
 
   void WindowSystem::KeyFunction (KeyEvent* key)
   {

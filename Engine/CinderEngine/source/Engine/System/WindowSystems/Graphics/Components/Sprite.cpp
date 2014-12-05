@@ -15,6 +15,7 @@
 #include "ResourceManager.h"
 #include "ShapeGenerator.h"
 #include "WindowSystem.h"
+#include "Pipeline.h"
 
 namespace Framework
 {
@@ -31,16 +32,16 @@ namespace Framework
 		ZilchBindMethod(GetCurrentFrame);
 		ZilchBindMethod(GetAnimationSpeed);
 		ZilchBindMethod(Initialize);
+		
 		ZilchBindMethod(LoadSprite);
-    ZilchBindMethod (Change_Layer);
 		ZilchBindFieldGetAs(texture, "Texture");
 		ZilchBindFieldGet(Width);
 		ZilchBindFieldGet(Height);
 	}
 
-	VAO* Sprite::vao;
-	VBO* Sprite::vbo;
-	EBO* Sprite::ebo;
+	VAO* Sprite::vao = nullptr;
+	VBO* Sprite::vbo = nullptr;
+	EBO* Sprite::ebo = nullptr;
 
 	Sprite::Sprite()
 	{
@@ -242,6 +243,8 @@ namespace Framework
 
 		if (animated || texture->Get_ID() != TEXTURE_NONE)
 		{
+      glm::vec3 scale = gameObject->Transform->GetScale ();
+      gameObject->Transform->Scale (scale.y * texture->Get_Aspect_Ratio (), scale.y, scale.z);
 			GLint texAttrib = shader->attribLocation("texcoord");
 			shader->enableVertexAttribArray(texAttrib);
 			shader->vertexAttribPtr(texAttrib, 2, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), 10 * sizeof(GLfloat));
@@ -283,7 +286,7 @@ namespace Framework
 	// Called By Renderer Component
 	void Sprite::Draw()
 	{
-    if (enabled)
+    if (enabled && vao != nullptr)
     {
       vao->bindVAO ();
       shader->Use ();

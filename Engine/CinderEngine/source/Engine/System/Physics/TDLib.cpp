@@ -32,10 +32,11 @@ namespace Framework
     float ConvectiveHeatTransfer(float Hc, float T1, float T2, const double dt)
     {
       float dTemp = T2 - T1;
+      if (dTemp > 0.0f)
+        return 0.0f;
+
       float dQ = Hc * dTemp * (float)dt;
-      if (dQ > 0)
-        return dQ;
-      else return 0;
+      return dQ;
     }
     //Change of temperature caused by heat transfer
     float dTemp(float dQ, float m, float c)

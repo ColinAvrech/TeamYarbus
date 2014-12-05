@@ -286,9 +286,9 @@ namespace Framework
               }
             }
           }
-          if (j <= MapSize.y)
+          if (j < MapSize.y - 1)
           {
-            if (materialList[Terrain.Get(i, j)].isFluid && materialList[Terrain.Get(i, j)].isFluid)
+            if (materialList[Terrain.Get(i, j)].isFluid && materialList[Terrain.Get(i, j + 1)].isFluid)
             {
               float dQConv = ConvectiveHeatTransfer(materialList[Terrain.Get(i, j)].Hc,
                 TemperatureMap.Get(i, j), TemperatureMap.Get(i, j + 1), dt);
@@ -492,20 +492,20 @@ namespace Framework
       //glScalef (64, 64, 1.0f);
       glBegin (GL_QUADS);
       {
-      for (int i = 0; i < Terrain.getSize ().y; ++i)
-      {
-      for (int j = 0; j < Terrain.getSize ().x; ++j)
-      {
-      glColor4f (TemperatureMap.Get (j, i) / Constant::BT_Organics,
-      TemperatureMap.Get (j, i) / Constant::BT_Organics,
-      TemperatureMap.Get (j, i) / Constant::BT_Organics,
-      TemperatureMap.Get (j, i) / Constant::BT_Organics * 0.4f);
-      glVertex2f (j - (MapSize.x * 0.5f) - 1, i - (MapSize.y * 0.5f) - 1);
-      glVertex2f (j - (MapSize.x * 0.5f) - 2, i - (MapSize.y * 0.5f) - 1);
-      glVertex2f (j - (MapSize.x * 0.5f) - 2, i - (MapSize.y * 0.5f) - 2);
-      glVertex2f (j - (MapSize.x * 0.5f) - 1, i - (MapSize.x * 0.5f) - 2);
-      }
-      }
+        for (int i = 0; i < Terrain.getSize ().y; ++i)
+        {
+          for (int j = 0; j < Terrain.getSize ().x; ++j)
+          {
+            glColor4f (TemperatureMap.Get (j, i) / Constant::BT_Organics,
+              TemperatureMap.Get (j, i) / Constant::BT_Organics,
+              TemperatureMap.Get (j, i) / Constant::BT_Organics,
+              TemperatureMap.Get (j, i) / Constant::BT_Organics * 0.4f);
+            glVertex2f (j - (MapSize.x * 0.5f) - 1, i - (MapSize.y * 0.5f) - 1);
+            glVertex2f (j - (MapSize.x * 0.5f) - 2, i - (MapSize.y * 0.5f) - 1);
+            glVertex2f (j - (MapSize.x * 0.5f) - 2, i - (MapSize.y * 0.5f) - 2);
+            glVertex2f (j - (MapSize.x * 0.5f) - 1, i - (MapSize.x * 0.5f) - 2);
+          }
+        }
       }
       glEnd ();
 

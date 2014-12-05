@@ -18,12 +18,13 @@ class Josh : Component
 	{
 	this.Owner = owner;
 	
+	ZInterface.WindowSystem.SetCursor(false);
 	//this.Detector = new MouseDetector(this.Owner, this.OnMouseEvent);
 	
 	//var obj = new Dot();
 	
 	//this.ObjectSys
-	Console.WriteLine(ZInterface.WindowSystem);
+	//Console.WriteLine(ZInterface.WindowSystem);
 	this.MenuObjects = ZInterface.ObjectSystem.LoadLevelAdditive("HowToPlay");
 	this.MenuObjects = ZInterface.ObjectSystem.LoadLevelAdditive("MainMenu");
 	var scale = this.Owner.Transform.GetScale();
@@ -153,6 +154,14 @@ class Josh : Component
 			}
 			Console.WriteLine("PAUSED!");
 			ZInterface.TogglePaused();
+			if (ZInterface.IsPaused())
+			{
+				ZInterface.SetSceneShader("Blur");
+			}
+			else
+			{
+				ZInterface.SetSceneShader("Passthrough");
+			}
 			ZInterface.WindowSystem.ToggleCursor();
 		}
 	}
@@ -214,7 +223,7 @@ class Cinder
 		var cameraPos = Camera.Main.Owner.Transform.GetTranslation();
 		position.X += cameraPos.X;
 		position.Y += cameraPos.Y;
-		Console.WriteLine(position);
+		//Console.WriteLine(position);
 		
 		return position;
 	}

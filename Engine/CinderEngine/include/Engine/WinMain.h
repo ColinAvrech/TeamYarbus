@@ -26,7 +26,7 @@ namespace Framework
   class EventSystem;
   class ScriptSystem;
   class ObjectSystem;
-
+  /*
  class Cinder
   {
     ZilchDeclareBaseType(Cinder, Zilch::TypeCopyMode::ReferenceType);
@@ -34,5 +34,5 @@ namespace Framework
     EventSystem* GetEventSystem();
     ObjectSystem* GetObjectSystem();
   };
-
+  */
 }
