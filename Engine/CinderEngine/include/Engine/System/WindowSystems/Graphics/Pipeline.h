@@ -62,6 +62,7 @@ namespace Framework
     void ResetBlendMode ();
     void PushMatrix ();
     void PopMatrix ();
+    void ToggleDebugDraw();
 
     void ResizeBuffer (const int w, const int h);
     void OnApplicationPause (PauseEvent* pause);

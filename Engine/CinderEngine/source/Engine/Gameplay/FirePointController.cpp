@@ -30,7 +30,7 @@ namespace Framework
 
   FirePointController::~FirePointController()
   {
-
+	  EVENTSYSTEM->mDisconnect<UpdateEvent, FirePointController>(Events::UPDATEEVENT, this, &FirePointController::Update);
   }
 
   void FirePointController::Initialize()
