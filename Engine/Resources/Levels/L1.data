@@ -52,11 +52,7 @@ Level =
 	  },
     Transform = 
 	  {
-<<<<<<< HEAD
 		  Vec3 Translation = [0, 7, -10],
-=======
-		  Vec3 Translation = [0, 2, -10],
->>>>>>> 0363af3167d3edd9fa70374aae3e067a4e22f28f
 		  Vec3 Scale = [1, 1, 1],
 		  Quat Rotation = [0, 0, 0, 1],
 	  },
@@ -75,7 +71,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 8,
+			uint Id = 1,
 		},
 		Named = 
 		{
@@ -83,7 +79,7 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, 0, -16],
+			Vec3 Translation = [0, 0, -8],
 			Vec3 Scale = [256, 20, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
@@ -104,7 +100,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 8,
+			uint Id = 2,
 		},
 		Named = 
 		{
@@ -112,7 +108,7 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, 0, -8],
+			Vec3 Translation = [0, 0, -4],
 			Vec3 Scale = [256, 10, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
@@ -133,7 +129,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 8,
+			uint Id = 3,
 		},
 		Named = 
 		{
@@ -184,13 +180,8 @@ Level =
 		},
 		Transform = 
 		{
-<<<<<<< HEAD
 			Vec3 Translation = [0, 16, 0],
 			Vec3 Scale = [0.5, 0.5, 1],
-=======
-			Vec3 Translation = [0, 26, 0],
-			Vec3 Scale = [1, 1, 1],
->>>>>>> 0363af3167d3edd9fa70374aae3e067a4e22f28f
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		CircleCollider2D = 
@@ -250,7 +241,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 8,
+			uint Id = 5,
 		},
 		Named = 
 		{
@@ -287,7 +278,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 9,
+			uint Id = 6,
 		},
 		Named = 
 		{
@@ -312,7 +303,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 9,
+			uint Id = 7,
 		},
 		Named = 
 		{

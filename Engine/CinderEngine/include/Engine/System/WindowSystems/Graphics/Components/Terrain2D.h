@@ -15,6 +15,8 @@
 #include "TerrainCreator.h"
 #include "JSONSerializer.h"
 #include "IGraphicsObject.h"
+#include "ZilchCompiledlib.h"
+#include "Zilch.hpp"
 
 namespace Framework
 {
@@ -22,6 +24,8 @@ namespace Framework
   class Terrain2D : public IGraphicsObject
   {
   public:
+    ZilchDeclareDerivedType (Terrain2D, IGraphicsObject);
+
   Terrain2D ();
   virtual ~Terrain2D ();
   

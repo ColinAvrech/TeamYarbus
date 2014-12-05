@@ -30,6 +30,12 @@ namespace Framework
   static SplineCollider* spline;
   DefineComponentName (Terrain2D);
 
+  ZilchDefineType (Terrain2D, CinderZilch)
+  {
+    type->HandleManager = ZilchManagerId (Zilch::PointerManager);
+    ZilchBindConstructor (Terrain2D);
+  }
+
   // Constructor
   Terrain2D::Terrain2D ()
   {}
@@ -37,6 +43,7 @@ namespace Framework
   // Destructor
   Terrain2D::~Terrain2D ()
   {
+    gameObject->Terrain2D = nullptr;
     delete vao, vbo, tc, spline;
     delete vao1, vbo1;
   }
