@@ -17,16 +17,16 @@ namespace Framework
 {
 
   // Constructor
-  Text::Text ()
+  GUIText::GUIText()
   {}
   
   // Destructor
-  Text::~Text ()
+  GUIText::~GUIText()
   {
     OPENGL->textObjects.remove (this);
   }
 
-  void Text::Draw ()
+  void GUIText::Draw()
   {
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity ();
@@ -47,12 +47,12 @@ namespace Framework
     glLoadIdentity ();
   }
 
-  void Text::Initialize ()
+  void GUIText::Initialize()
   {
     OPENGL->textObjects.push_back (this);
   }
 
-  void Text::Serialize (Serializer::DataNode* data)
+  void GUIText::Serialize(Serializer::DataNode* data)
   {
     Serializer::DataNode* value = data->FindElement (data, "Position");
     value->GetValue (&position);
@@ -61,7 +61,7 @@ namespace Framework
     value->GetValue (&text);
   }
 
-  void Text::OnApplicationPause (PauseEvent* pause)
+  void GUIText::OnApplicationPause(PauseEvent* pause)
   {
     throw std::logic_error ("The method or operation is not implemented.");
   }

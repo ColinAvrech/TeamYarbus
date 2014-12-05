@@ -35,7 +35,8 @@ namespace Framework
 
   ZilchDefineType (CharacterController, CinderZilch)
   {
-    ZilchBindStaticFieldGetAs (PLAYER, "Player");
+    ZilchBindStaticFieldGetAs(PLAYER, "Player");
+    ZilchBindMethodAs(ToggleFlying, "ToggleFlying");
     //type->HandleManager = ZilchManagerId (Zilch::PointerManager);
     //ZilchBindStaticMethodAs(ZGetCameraMousePosition, "GetCameraMousePosition");
   }
@@ -45,6 +46,7 @@ namespace Framework
   CharacterController::CharacterController ()
   {
     PLAYER = this;
+    useFlying = false;
   }
 
   CharacterController::~CharacterController ()
@@ -75,14 +77,14 @@ namespace Framework
 
     if (InputManager::IsKeyDown(GLFW_KEY_UP))
     {
-#ifdef _DEBUG
-      gameObject->RigidBody2D->velocity.y += jumpVel.y;
-#else
+      if (useFlying)
+      {
+        gameObject->RigidBody2D->velocity.y += jumpVel.y;
+      }
       if (onGround)
       {
         gameObject->RigidBody2D->velocity.y += jumpVel.y;
       }
-#endif
 
       onGround = false;
     }
@@ -128,6 +130,7 @@ namespace Framework
   /*!Telegraph that the component is active*/
   void CharacterController::Initialize ()
   {
+    OBJECTSYSTEM->ptrPlayer = this->gameObject;
     PLAYER = this;
     //accel = { 0 , 0 };
     //maxAcceleration = { 50, 100 };
@@ -152,6 +155,11 @@ namespace Framework
 
     value = data->FindElement (data, "JumpVelocity");
     value->GetValue (&jumpVel);
+  }
+
+  void CharacterController::ToggleFlying()
+  {
+    useFlying = !useFlying;
   }
 
   DefineComponentName (CharacterController);

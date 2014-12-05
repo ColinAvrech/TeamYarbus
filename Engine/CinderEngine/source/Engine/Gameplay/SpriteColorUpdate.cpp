@@ -31,6 +31,7 @@ namespace Framework
     data->FindElement (data, "MinColor")->GetValue (&minColor);
     data->FindElement (data, "MaxColor")->GetValue (&maxColor);
     data->FindElement (data, "Multiplier")->GetValue (&multiplier);
+    data->FindElement (data, "Loop")->GetValue (&loop);
   }
 
   void SpriteColorUpdate::Initialize ()
@@ -43,12 +44,21 @@ namespace Framework
   {
     switch (side)
     {
+    case Framework::NONE:
+      break;
     case Framework::LEFT:
       timer -= multiplier * 0.016f;
       if (timer < 0)
       {
         timer = 0.0f;
-        side = RIGHT;
+        if (loop)
+        {
+          side = LEFT;
+        }
+        else
+        {
+          side = NONE;
+        }
       }
       break;
     case Framework::RIGHT:

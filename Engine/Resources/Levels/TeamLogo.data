@@ -80,7 +80,7 @@ Level =
     Transform = 
 	  {
 		  Vec3 Translation = [0, 0, 0],
-		  Vec3 Scale = [3, 3, 1],
+		  Vec3 Scale = [2, 2, 1],
 		  Quat Rotation = [0, 0, 0, 1],
 	  },
     Sprite = 
@@ -95,11 +95,44 @@ Level =
     {
       Vec4 MinColor = [0, 0, 0, 0],
       Vec4 MaxColor = [1, 1, 1, 1],
-      float Multiplier = 0.5,
+      float Multiplier = 0.25,
+      bool Loop = false,
+    },
+  },
+  Cog = 
+	  {
+	  LinkId = 
+	  {
+		  uint Id = 0,
+	  },
+	  Named = 
+	  {
+		  string Name = "TeamYarbus",
+	  },
+    Transform = 
+	  {
+		  Vec3 Translation = [0, -1.2, 0],
+		  Vec3 Scale = [1.8, 0.25, 1],
+		  Quat Rotation = [0, 0, 0, 1],
+	  },
+    Sprite = 
+		{
+			bool Visible = true,
+			string SpriteSource = "TeamYarbus.png",
+      bool AnimationActive = false,
+			string Shader = "Default",
+			Vec4 Color = [1, 1, 1, 1],
+		},
+    SpriteColorUpdate = 
+    {
+      Vec4 MinColor = [0, 0, 0, 0],
+      Vec4 MaxColor = [1, 1, 1, 1],
+      float Multiplier = 0.25,
+      bool Loop = false,
     },
     LevelTimer = 
     {
-      float EndTime = 4.0f,
+      float EndTime = 9.0f,
       string NextLevel = "Loading",
     },
   },

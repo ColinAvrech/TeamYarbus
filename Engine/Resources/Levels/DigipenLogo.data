@@ -95,11 +95,12 @@ Level =
     {
       Vec4 MinColor = [0, 0, 0, 0],
       Vec4 MaxColor = [1, 1, 1, 1],
-      float Multiplier = 0.5,
+      float Multiplier = 0.2,
+      bool Loop = false,
     },
     LevelTimer = 
     {
-      float EndTime = 4.0f,
+      float EndTime = 10.5f,
       string NextLevel = "TeamLogo",
     },
   },
