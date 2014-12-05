@@ -61,7 +61,7 @@ namespace Framework
 
   void EventSystem::DeleteAllEvents()
   {
-    for each(auto e in RegisteredEvents)
+    for(auto e : RegisteredEvents)
     {
       e.second->DisconnectAll();
     }

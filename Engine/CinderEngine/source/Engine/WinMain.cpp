@@ -40,7 +40,6 @@ starts the game loop.
 #include "Zilch.hpp"
 //#include "ZInterface.h"
 
-#define _DEGUB
 using namespace Framework;
 
 //! Window title

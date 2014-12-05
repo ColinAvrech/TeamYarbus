@@ -1,3 +1,13 @@
+/******************************************************************************/
+/*!
+\file   MathExtensionLibrary.h
+\author Manas Sudhir Kulkarni
+\par    Course: GAM200
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+\brief
+*/
+/******************************************************************************/
+
 // Reference http://gamedevtutsplusplus.com
 
 #ifndef _MATH_EXT_H

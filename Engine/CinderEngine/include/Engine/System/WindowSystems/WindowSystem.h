@@ -1,7 +1,7 @@
 /******************************************************************************/
 /*!
 \file   WindowSystem.h
-\author Micah
+\author Micah Rust, Manas Sudhir Kulkarni
 \par    Course: GAM200
 \par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
 \brief  Contains all of the framework for creating and maintaining a window.
@@ -42,6 +42,9 @@ namespace Framework
 
     void WindowsUpdate(const double& dt);
     void GraphicsUpdate(const double& dt);
+
+    void ToggleCursorVisibility();
+
 	void KeyFunction(KeyEvent* key);
     // GLFW callbacks
     void GLFWMessageHandler(GLFWwindow* window, const int key, const int scanCode, const int state, const int mod);
@@ -71,6 +74,7 @@ namespace Framework
     GLFWwindow* window;
     int WindowHeight;
     int WindowWidth;
+    bool cursorVisible;
   };
 
   extern WindowSystem* WINDOWSYSTEM;

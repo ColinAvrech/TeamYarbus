@@ -1,6 +1,6 @@
 /******************************************************************************/
 /*!
-\file   Factory.cpp
+\file   ObjectSystem.cpp
 \author Micah Rust
 \par    Course: GAM200
 \par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
@@ -221,7 +221,7 @@ namespace Framework
 
   void ObjectSystem::DestroyObjectNow(GameObject* obj)
   {
-    for each(auto object in GameObjects)
+    for(auto object : GameObjects)
     {
       if (object.second == obj)
       {
@@ -239,7 +239,7 @@ namespace Framework
 	void ObjectSystem::DestroyAllObjects()
   {
     //EVENTSYSTEM->DeleteAllEvents();
-    for each(auto obj in GameObjects)
+    for(auto obj : GameObjects)
     {
       delete obj.second;
       obj.second = nullptr;
@@ -249,7 +249,7 @@ namespace Framework
 
 	void ObjectSystem::DestroyGameObjectsToBeDestroyed()
 	{
-		for each(auto obj in GameObjectsToBeDestroyed)
+		for(auto obj : GameObjectsToBeDestroyed)
 		{
 		  delete obj;
 			obj = NULL;
@@ -296,7 +296,7 @@ namespace Framework
 
 	GameObject* ObjectSystem::FindObjectByName(Zilch::String name)
 	{
-		for each (auto i in GameObjects)
+		for(auto i : GameObjects)
 		{
 			if (name.c_str() == i.second->GetName().c_str())
 			{
@@ -308,7 +308,7 @@ namespace Framework
 
   GameObject* ObjectSystem::FindObjectByName (std::string name)
   {
-    for each (auto& i in GameObjects)
+    for(auto& i : GameObjects)
     {
       if (name.compare(i.second->Name) == 0)
       {
@@ -374,7 +374,7 @@ namespace Framework
 		}
 
 		//Initializing Zilch Components
-		for each (auto i in scripts)
+		for(auto i : scripts)
 		{
 			i.first->Initialize();
 		}

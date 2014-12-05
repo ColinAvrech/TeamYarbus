@@ -1,6 +1,6 @@
 /******************************************************************************/
 /*!
-\file   GOC.cpp
+\file   GameObject.cpp
 \author Micah Rust
 \par    Course: GAM200
 \par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
@@ -58,7 +58,7 @@ namespace Framework
 
   GameObject::~GameObject()
   {
-    for each (auto comp in Components)
+    for(auto comp : Components)
     {
       delete comp.second;
     }

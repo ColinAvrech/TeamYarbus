@@ -1,3 +1,13 @@
+/******************************************************************************/
+/*!
+\file   Manifold.cpp
+\author Manas Sudhir Kulkarni
+\par    Course: GAM200
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+\brief
+*/
+/******************************************************************************/
+
 #include "GameObject.h"
 #include "Manifold.h"
 #include "CollisionNew.h"

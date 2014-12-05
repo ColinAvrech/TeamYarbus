@@ -108,7 +108,7 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [-100, 0, -8],
+			Vec3 Translation = [0, 0, -8],
 			Vec3 Scale = [256, 13, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
@@ -116,8 +116,8 @@ Level =
 		{
       bool Enabled = true,
       int MapSize = 128,
-      int BaseHeight = 32,
-      int PeakHeight = 64,
+      int BaseHeight = 64,
+      int PeakHeight = 0,
       int Passes = 0,
       int Waves = 1,
       int Water = 0,
@@ -143,6 +143,7 @@ Level =
 		},
 		Terrain2D = 
 		{
+      string MapPreset = "Valley",
       bool Enabled = true,
       int MapSize = 128,
       int BaseHeight = 32,
@@ -158,13 +159,13 @@ Level =
     },
     FireSystem = 
     {
-      bool Enabled = true,
+      bool Enabled = false,
       float ParticleSize = 200,
     },
     Text = 
     {
-      string Text = "Hello World",
-      Vec2 Position = [-1.0, 0.8],
+      string Text = "Ember: Hello World",
+      Vec2 Position = [0, 0.8],
     },
   },
   Cog = 
@@ -213,7 +214,7 @@ Level =
     },
     PlayerEffect = 
     {
-      bool Enabled = true,
+      bool Enabled = false,
       float ParticleSize = 100,
     },
     CameraFollow = 

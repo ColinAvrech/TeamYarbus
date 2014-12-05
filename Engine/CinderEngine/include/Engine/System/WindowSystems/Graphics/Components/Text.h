@@ -30,11 +30,10 @@ namespace Framework
     virtual void OnApplicationPause (PauseEvent* pause);
 
     // X, Y BETWEEN -1 to +1
-    void Draw (std::string text, float x, float y);
     void Draw ();
 
-    glm::vec2 position;
-    std::string text;
+    vec2 position;
+    string text;
   };  
 }
 

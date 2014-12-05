@@ -20,7 +20,7 @@ namespace Framework
 
   void EventDeployer::TriggerEvent(BaseEvent& e)
   {
-    for each(auto del in Delegates)
+    for(auto del : Delegates)
     {
       del->Invoke(&e);
     }
@@ -28,7 +28,7 @@ namespace Framework
 
   void EventDeployer::DisconnectAll()
   {
-    for each(auto del in Delegates)
+    for (auto del : Delegates)
     {
       delete del;
     }

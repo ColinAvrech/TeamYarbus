@@ -52,7 +52,7 @@ namespace Framework
   std::list <Text*> Pipeline::textObjects;
   std::list <ShapeCollider*> Pipeline::debugColliders;
 
-  static Text text;
+  static Text textDrawer;
 
   Pipeline::Pipeline ()
   {
@@ -165,7 +165,7 @@ namespace Framework
     //////////////////////////////////////////////////////////////////////////
     // UI DRAW
     //////////////////////////////////////////////////////////////////////////
-    text.Draw ("HELLO WORLD", -1.0f, 0.9f);
+    textDrawer.Draw();
 
     for (auto* i : graphicsObjects [PAUSE])
     {
