@@ -116,7 +116,7 @@ namespace Framework
   void CharacterController::Update (UpdateEvent* e)
   {
     RigidBody2D* body = gameObject->RigidBody2D;
-
+    
 
     if (!body)
       return;
@@ -124,6 +124,9 @@ namespace Framework
     if (InputManager::IsKeyDown(GLFW_KEY_UP))
     {
       Health* hp = gameObject->Health;
+      
+      //if (hp)
+        //hp->currentDeathRate = hp->startDeathRate;
       //if (hp)
       //  hp->currentDeathRate = hp->startDeathRate;
 
