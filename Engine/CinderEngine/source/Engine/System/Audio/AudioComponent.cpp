@@ -244,7 +244,7 @@ namespace Framework
   AudioComponent::~AudioComponent()
   {
     if (_newSound != nullptr && _newSound->Get_Channel() != nullptr)
-      _newSound->VolumeFade(0, 2);
+      _newSound->Stop();
     AUDIOSYSTEM->DeleteAudioComponent(this);
   }
 
