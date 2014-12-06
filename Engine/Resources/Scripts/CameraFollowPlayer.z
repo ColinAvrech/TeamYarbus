@@ -24,15 +24,15 @@ class CameraFollow : Component
 	
 	function LogicUpdate(e: UpdateEvent)
 	{
-		if(this.Owner == null)
+		if (this.Owner == null)
 		{
 			return;
 		}
 		var pos1 = Camera.Main.Owner.Transform.GetTranslation();
 		var pos2 = this.Owner.Transform.GetTranslation();
-		pos2.Y += 4;
+		pos2.Y += 2;
 		var distance = Math.LengthSq(Real2(pos2.X - pos1.X, pos2.Y - pos2.Y));
-		var newpos = Math.Lerp(pos1, pos2, distance * 0.016);
+		var newpos = Math.Lerp(pos1, pos2, distance * 0.014);
 		
 		if(newpos.X + Camera.Main.Size > 64 || newpos.X - Camera.Main.Size < -64)
 		{

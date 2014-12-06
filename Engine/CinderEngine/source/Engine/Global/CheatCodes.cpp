@@ -46,9 +46,9 @@ namespace Framework
       {
         OPENGL->ToggleDebugDraw();
 
-        if (OBJECTSYSTEM->ptrPlayer && OBJECTSYSTEM->ptrPlayer->CharacterController)
+        if (CharacterController::PLAYER)
         {
-          OBJECTSYSTEM->ptrPlayer->CharacterController->ToggleFlying();
+          CharacterController::PLAYER->ToggleFlying();
         }
       }
     }

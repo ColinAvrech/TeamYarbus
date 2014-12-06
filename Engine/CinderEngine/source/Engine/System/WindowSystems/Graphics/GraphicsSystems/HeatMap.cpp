@@ -281,7 +281,7 @@ namespace Framework
       for (int j = 0; j < 129; ++j)
       {
         //std::cout << x << ", " << y << "\n";
-        temperatures [i][j] = Physics::THERMODYNAMICS->GetCellTemperature (x, y);
+        temperatures[i][j] = Physics::THERMODYNAMICS->GetCellTemperature((int)x, (int)y);
         x += 1.f / 64;
       }
 

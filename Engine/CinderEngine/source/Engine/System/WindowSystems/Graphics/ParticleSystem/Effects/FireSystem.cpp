@@ -1,6 +1,6 @@
 /******************************************************************************/
 /*!
-\file   FireEffect.cpp
+\file   FireSystem.cpp
 \author Manas Sudhir Kulkarni
 \par    Course: GAM200
 \par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
@@ -230,4 +230,8 @@ namespace Framework
     paused = pause->Paused;
   }
 
+  void FireSystem::RemoveFire (FireStarter* param1)
+  {
+    m_system->reset();
+  }
 }

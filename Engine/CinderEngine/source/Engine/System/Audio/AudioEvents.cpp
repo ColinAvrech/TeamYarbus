@@ -72,8 +72,8 @@ namespace Framework
     EVENTSYSTEM->mConnect<KeyEvent, AudioEvents>(Events::KEY_ANY, this, &AudioEvents::OnKeyPressed);
     EVENTSYSTEM->mConnect<UpdateEvent, AudioEvents>(Events::UPDATEEVENT, this, &AudioEvents::OnUpdate);
 
-    //test = AUDIOSYSTEM->LoadSound("CreditsMusic.wav", "NOISE", Sound::MUSIC, 1.0f);
-    //test2 = AUDIOSYSTEM->LoadSound("MainMenuScroll.wav", "meh", Sound::SOUND_2D, 1.0f);
+    //test = AUDIOSYSTEM->LoadSound("CreditsMusic.ogg", "NOISE", Sound::MUSIC, 1.0f);
+    //test2 = AUDIOSYSTEM->LoadSound("MainMenuScroll.ogg", "meh", Sound::SOUND_2D, 1.0f);
     //test->Play();
   }
 
