@@ -122,7 +122,7 @@ int main (void)
 
 
   audio->LoadMicData ();
-  Sound *SplashScreenMusic = resourceManager.Get_Sound("SplashScreen.wav");
+  Sound *SplashScreenMusic = resourceManager.Get_Sound("SplashScreen.ogg");
   AUDIOEVENTS->unmanagedSounds.push_back(SplashScreenMusic);
 
   //! activate the window.
@@ -130,7 +130,7 @@ int main (void)
   //OBJECTSYSTEM->LoadAllLevels("..//..//Resources//Levels//MasterLevelFile.txt");
 
   SplashScreenMusic->Play();
-  OBJECTSYSTEM->LoadLevel("L1");
+  OBJECTSYSTEM->LoadLevel("L2");
 
  //Initialize Cheat Codes
   Cheats::InitializeCheats();
