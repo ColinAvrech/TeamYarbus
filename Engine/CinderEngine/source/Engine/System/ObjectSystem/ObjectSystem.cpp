@@ -287,6 +287,11 @@ namespace Framework
     currentLevelName = name;
   }
 
+  void ObjectSystem::NextLevel()
+  {
+    LoadLevel(ptrPlayer->PlayerStats->NextLevel.c_str());
+  }
+
   void ObjectSystem::RestartLevel()
   {
     CommandList.push(ObjectSystemCommand::_LoadLevel);

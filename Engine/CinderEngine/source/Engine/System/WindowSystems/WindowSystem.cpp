@@ -408,7 +408,7 @@ namespace Framework
 	  cursorVisible = set;
 	  if (cursorVisible)
 	  {
-		  glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+      glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 	  }
 	  else
 	  {

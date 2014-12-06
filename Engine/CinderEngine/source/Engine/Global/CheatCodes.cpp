@@ -26,35 +26,34 @@ namespace Framework
 
     void CheckToEnableCheats(KeyEvent * e)
     {
-		// Toggle Invincibility:   Shift + I
-		if (e->SHIFTPressed && e->KeyDown && e->KeyValue == GLFW_KEY_I)
-		{
-			std::cout << "Toggle Invincibility Cheat!" << std::endl;
-
-			GameObject* player = OBJECTSYSTEM->FindObjectByName(std::string("Player"));
-			if (player != nullptr)
-			{
-				player->Health->ToggleInvulnerability();
-			}
-
-		}
-
-		// Goto NextLevel: Shift + N
-		if (e->SHIFTPressed && e->KeyDown && e->KeyValue == GLFW_KEY_N)
-		{
-			std::cout << "Goto NextLevel Cheat!" << std::endl;
-			OBJECTSYSTEM->LoadLevel(CharacterController::PLAYER->gameObject->PlayerStats->NextLevel.c_str());
-		}
-
-
-      // Enter Debug Mode: Tilda Key ' ` '
-      if (e->KeyDown && e->KeyValue == GLFW_KEY_H)
+      if (e->KeyDown && e->SHIFTPressed)
       {
-        OPENGL->ToggleDebugDraw();
-
-        if (CharacterController::PLAYER)
+        GameObject* player;
+        switch (e->KeyValue)
         {
-          CharacterController::PLAYER->ToggleFlying();
+          case GLFW_KEY_I: // Toggle Invincibility:   Shift + I
+		  	    std::cout << "Toggle Invincibility Cheat!" << std::endl;
+
+		  	    player = OBJECTSYSTEM->ptrPlayer;
+		  	    if (player && player->Health)
+		  	    {
+		  		    player->Health->ToggleInvulnerability();
+		  	    }
+            break;
+
+          case GLFW_KEY_N: // Goto NextLevel: Shift + N
+		  	    std::cout << "Goto NextLevel Cheat!" << std::endl;
+            OBJECTSYSTEM->NextLevel();
+            break;
+
+          case GLFW_KEY_H: // Enter Debug Mode: H
+            OPENGL->ToggleDebugDraw();
+
+            if (CharacterController::PLAYER)
+            {
+              CharacterController::PLAYER->ToggleFlying();
+            }
+            break;
         }
       }
     }

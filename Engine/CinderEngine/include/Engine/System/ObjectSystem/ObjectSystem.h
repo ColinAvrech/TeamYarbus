@@ -71,6 +71,7 @@ namespace Framework
 
     void ZilchLoadLevel(Zilch::String level);
     void LoadLevel(const char* name);
+    void NextLevel();
     
 
     // Adds more objects to an existing level
