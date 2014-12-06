@@ -14,6 +14,7 @@
 #include "GameEvent.h"
 #include "UpdateEvent.h"
 #include "Pipeline.h"
+#include "Text.h"
 
 namespace Framework
 {
@@ -47,6 +48,7 @@ namespace Framework
   {
     OPENGL->Change_Shader ("FadeIn", (int) SS_FADE_OUT);
     levelComplete = true;
+    reinterpret_cast<GUIText*> (gameObject->GetComponent ("GUIText"))->text = "Great Job! Keep Em Burning!";
   }
 
   void PlayerStats::Update (UpdateEvent* update)

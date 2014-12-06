@@ -64,7 +64,7 @@ Level =
 			float FieldOfView = 45,
 			float NearPlane = 0,
 			float FarPlane = 100,
-			float Size = 128,
+			float Size = 28,
 		},
   },
   Cog = 
@@ -218,8 +218,8 @@ Level =
 		{
       bool Enabled = true,
       bool UseFlying = true,
-		  Vec2 Acceleration = [400, 0],
-		  Vec2 JumpVelocity = [0, 10],
+		  Vec2 Acceleration = [200, 0],
+		  Vec2 JumpVelocity = [0, 8],
 		  Vec2 MicrophoneMultiplier = [0, 10],
 		},
     CLParticleRenderer = 

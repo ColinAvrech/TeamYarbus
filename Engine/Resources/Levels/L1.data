@@ -64,7 +64,7 @@ Level =
 			float FieldOfView = 45,
 			float NearPlane = 0,
 			float FarPlane = 100,
-			float Size = 17,
+			float Size = 28,
 		},
     CameraShake = 
     {
@@ -120,15 +120,15 @@ Level =
 		},
 		Terrain2D = 
 		{
-      bool Enabled = true,
-      int MapSize = 128,
-      int BaseHeight = 64,
-      int PeakHeight = 0,
-      int Passes = 0,
-      int Waves = 1,
-      int Water = 0,
-      Vec4 Color = [0.1, 0.1, 0.1, 1],
-      bool AddCollider = false,
+          bool Enabled = true,
+          int MapSize = 128,
+          int BaseHeight = 64,
+          int PeakHeight = 0,
+          int Passes = 0,
+          int Waves = 1,
+          int Water = 0,
+          Vec4 Color = [0.1, 0.1, 0.1, 1],
+          bool AddCollider = false,
 		},
   },
   Cog = 
@@ -149,29 +149,35 @@ Level =
 		},
 		Terrain2D = 
 		{
-      string MapPreset = "Valley_Small",
-      bool Enabled = true,
-      int MapSize = 128,
-      int BaseHeight = 32,
-      int PeakHeight = 40,
-      int Passes = 3,
-      int Waves = 5,
-      int Water = 5,
-      Vec4 Color = [0.0, 0.0, 0.0, 1],
-      bool AddCollider = true,
+          string MapPreset = "Valley_Small",
+          bool Enabled = true,
+          int MapSize = 128,
+          int BaseHeight = 32,
+          int PeakHeight = 40,
+          int Passes = 3,
+          int Waves = 5,
+          int Water = 5,
+          Vec4 Color = [0.0, 0.0, 0.0, 1],
+          bool AddCollider = true,
 		},
-    EcoSystem = 
-    {
+        EcoSystem = 
+        {
+        },
+        FireSystem = 
+        {
+          bool Enabled = true,
+          float ParticleSize = 100,
+        },
+        GUIText = 
+        {
+          string Text = "Hello World",
+          Vec2 Position = [-1.0, 0.8],
+        },
     },
     FireSystem = 
     {
       bool Enabled = true,
       float ParticleSize = 100,
-    },
-    GUIText = 
-    {
-      string Text = "Hello World",
-      Vec2 Position = [-1.0, 0.8],
     },
   },
   Cog = 
@@ -199,10 +205,10 @@ Level =
 		},
 		CharacterController = 
 		{
-      bool Enabled = true,
-      bool UseFlying = false,
-		  Vec2 Acceleration = [30, 0],
-		  Vec2 JumpVelocity = [0, 0],
+          bool Enabled = true,
+          bool UseFlying = false,
+		  Vec2 Acceleration = [200, 0],
+		  Vec2 JumpVelocity = [0, 8],
 		  Vec2 MicrophoneMultiplier = [0, 10],
 		},
     CLParticleRenderer = 
@@ -253,6 +259,11 @@ Level =
 			string SpriteLayer = "52ad5fa30d7fcd50:DefaultSpriteLayer",
 			string Shader = "Default",
 		},
+    GUIText = 
+    {
+      string Text = "",
+      Vec2 Position = [0, 0],
+    },
 	},
   Cog = 
 	{
@@ -288,7 +299,7 @@ Level =
       float HPFresonance = 1,
       string SoundID = "2D",
       string SoundName = "Rumble",
-      string FileName = "L1_Rumble.wav",
+      string FileName = "L1_Rumble.ogg",
     },
   },
   Cog = 
