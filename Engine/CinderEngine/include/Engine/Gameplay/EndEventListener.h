@@ -17,7 +17,7 @@ namespace Framework
 {
   class UpdateEvent;
   class EndEvent;
-  class Sprite;
+  class UIBox;
 
   enum END_EVENT_STATE
   {
@@ -47,7 +47,7 @@ namespace Framework
     glm::vec3 endPosition;
     float startSize;
     float endSize;
-    Sprite* exitGame = nullptr;
+    UIBox* exitGame = nullptr;
     END_EVENT_STATE ees = EES_NONE;
   };  
 }

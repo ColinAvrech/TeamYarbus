@@ -14,6 +14,7 @@
 #include "UpdateEvent.h"
 #include "GameObject.h"
 #include "Sprite.h"
+#include "CinderEngine_UI.h"
 #include "CharacterController.h"
 #include "ObjectSystem.h"
 
@@ -81,10 +82,10 @@ namespace Framework
         if (exitGame == nullptr)
         {
           std::string name = "ExitButton";
-          exitGame = OBJECTSYSTEM->FindObjectByName (name)->Sprite;
+          exitGame = reinterpret_cast<UIBox*> (OBJECTSYSTEM->FindObjectByName (name)->GetComponent("UIBox"));
           if (exitGame != nullptr)
           {
-            exitGame->gameObject->Transform->SetPosition (40, 0);
+            //exitGame->gameObject->Transform->SetPosition (40, 0);
             exitGame->enabled = true;
           }
         }

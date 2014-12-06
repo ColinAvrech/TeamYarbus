@@ -58,56 +58,33 @@ namespace Framework
 
   void UIListener::MessageHandler (UIEvent* ui)
   {
-    if (CORE->IsPaused())
+    if (ui->Message == "Exit")
     {
-      /*
-      switch (ui->eventid)
+      CORE->QuitGame();
+    }
+    else if (ui->Message == "Restart")
+    {
+      OBJECTSYSTEM->RestartLevel();
+    }
+    else if (ui->Message == "Resume")
+    {
+      CORE->TogglePaused();
+    }
+    else if (ui->Message == "How To Play")
+    {
+      //Set how to play pane visibility to true
+      //Set other panes visibility to false
+    }
+    else if (ui->Message == "Mute")
+    {
+      //TODO: Change this to set volume to 0
+      if(AUDIOSYSTEM->GetMuted())
       {
-        case EI_EXIT:
-          break;
-        
-        case EI_RESTART:
-          break;
-
-        case EI_RESUME:
-          break;
-
-        case EI_HOWTOPLAY:
-          break;
-
-        default:
-          break:
+        AUDIOSYSTEM->SetPaused(false);
       }
-      */
-
-      if (ui->Message == "Exit")
+      else
       {
-        CORE->QuitGame();
-      }
-      else if (ui->Message == "Restart")
-      {
-        OBJECTSYSTEM->RestartLevel();
-      }
-      else if (ui->Message == "Resume")
-      {
-        CORE->TogglePaused();
-      }
-      else if (ui->Message == "How To Play")
-      {
-        //Set how to play pane visibility to true
-        //Set other panes visibility to false
-      }
-      else if (ui->Message == "Mute")
-      {
-        //TODO: Change this to set volume to 0
-        if(AUDIOSYSTEM->GetMuted())
-        {
-          AUDIOSYSTEM->SetPaused(false);
-        }
-        else
-        {
-          AUDIOSYSTEM->SetPaused();
-        }
+        AUDIOSYSTEM->SetPaused();
       }
     }
   }

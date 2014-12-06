@@ -36,8 +36,12 @@ namespace Framework
 
     float timer = 0.0f;
     bool levelFailed = false;
+<<<<<<< HEAD
+    float deathRate = 0.2f;
+=======
     float currentDeathRate;
     float startDeathRate = 0.02f;
+>>>>>>> be0571b82dddc73c07ab5f9dc35d2ad7aa73454b
     float maxRadius;
     float minRadius;
     float currentRadius;
