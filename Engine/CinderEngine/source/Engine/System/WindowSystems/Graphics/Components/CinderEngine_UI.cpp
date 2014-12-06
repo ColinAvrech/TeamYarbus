@@ -127,7 +127,7 @@ namespace Framework
   void UIBox::UIUpdate (UpdateEvent* update)
   {
     if (enabled)
-    {
+    {      
       glm::vec2 normPos = WINDOWSYSTEM->Get_Normalized_Mouse_Position ();
       box.S_Min = gameObject->Transform->GetNDCPosition (box.Min);
       box.S_Max = gameObject->Transform->GetNDCPosition (box.Max);

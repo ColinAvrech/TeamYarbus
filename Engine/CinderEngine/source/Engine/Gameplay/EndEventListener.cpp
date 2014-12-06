@@ -18,6 +18,8 @@
 #include "CharacterController.h"
 #include "ObjectSystem.h"
 #include "WindowSystem.h"
+#include "Pipeline.h"
+#include "ResourceManager.h"
 
 namespace Framework
 {
@@ -39,6 +41,7 @@ namespace Framework
     gameObject->Transform->SetPosition (pos.x, pos.y - (Camera::main->GetSize() * 4.0f));
     gameObject->Sprite->enabled = false;
     endPosition = { -30, 110, -10 };
+    OPENGL->textObjects.clear();
   }
 
   void EndEventListener::Serialize (Serializer::DataNode* data)
@@ -72,13 +75,13 @@ namespace Framework
       }
       else
       {
-        gameObject->Transform->SetPosition (pos.x, pos.y - 300);
+        gameObject->Transform->SetPosition (pos.x, pos.y - 400);
         ees = EES_CREDITS;
       }}
         break;
       case Framework::EES_CREDITS:
         WINDOWSYSTEM->SetCursorVisibility(true);
-        gameObject->Transform->Scale (250 * gameObject->Sprite->Get_Texture ()->Get_Aspect_Ratio(), 250, 1);
+        gameObject->Transform->Scale (300 * gameObject->Sprite->Get_Texture ()->Get_Aspect_Ratio(), 300, 1);
         gameObject->Sprite->enabled = true;
         gameObject->Transform->Translate (0, 0.016f * 10, 0);
         if (exitGame == nullptr)
@@ -101,6 +104,8 @@ namespace Framework
 
   void EndEventListener::EndEventHandler (EndEvent* endEvent)
   {
+    Sound *creditsMusic = Resources::RS->Get_Sound("CreditsMusic.ogg");
+    creditsMusic->Play();
     loadCredits = true;
   }
 

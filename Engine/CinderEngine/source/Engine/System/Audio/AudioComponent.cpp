@@ -243,6 +243,7 @@ namespace Framework
 
   AudioComponent::~AudioComponent()
   {
+    _newSound->Stop();
     AUDIOSYSTEM->DeleteAudioComponent(this);
   }
 

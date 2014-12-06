@@ -14,6 +14,7 @@
 #include "GameEvent.h"
 #include "UpdateEvent.h"
 #include "Pipeline.h"
+#include "FireStarter.h"
 #include "Text.h"
 
 namespace Framework
@@ -33,7 +34,7 @@ namespace Framework
   {
     EVENTSYSTEM->mConnect<AllTreesBurnedEvent, PlayerStats> (Events::ALLLTREESBURNED, this, &PlayerStats::AllTreesBurned);
     EVENTSYSTEM->mConnect<UpdateEvent, PlayerStats> (Events::UPDATEEVENT, this, &PlayerStats::Update);
-	gameObject->PlayerStats = this;
+	  gameObject->PlayerStats = this;
   }
 
   void PlayerStats::Serialize (Serializer::DataNode* data)
@@ -50,7 +51,6 @@ namespace Framework
   {
     OPENGL->Change_Shader ("FadeIn", (int) SS_FADE_OUT);
     levelComplete = true;
-    reinterpret_cast<GUIText*> (gameObject->GetComponent ("GUIText"))->text = "Great Job! Keep Em Burning!";
   }
 
   void PlayerStats::Update (UpdateEvent* update)

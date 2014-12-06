@@ -242,11 +242,6 @@ Level =
     {
       string NextLevel = "L2.2",
     },
-    GUIText = 
-    {
-      string Text = "Hello World",
-      Vec2 Position = [-1.0, 0.8],
-    },
     Sprite = 
 		{
 			string SpriteSource = "Circle.png",
@@ -262,7 +257,7 @@ Level =
 			SpriteGeometryMode GeometryMode = ZPlane,
 			string SpriteLayer = "52ad5fa30d7fcd50:DefaultSpriteLayer",
 			string Shader = "Default",
-		},    
+		},
     AudioComponent = 
     {
       bool Positional = false,
@@ -273,9 +268,9 @@ Level =
       float LPFcutoff = 6000,
       float LPFresonance = 1,
       bool HighPassFilter = true,
-      float HPFcutoff = 150,
+      float HPFcutoff = 600,
       float HPFresonance = 1,
-      string SoundID = "MUSIC",
+      string SoundID = "BG",
       string SoundName = "Pads",
       string FileName = "Pads.ogg",
     },
@@ -305,6 +300,22 @@ Level =
       float Orientation = 0,
     },
   },
+  AudioComponent = 
+    {
+      bool Positional = false,
+      bool MicEffect = true,
+      bool Play = true,
+      bool Mute = false,
+      bool LowPassFilter = true,
+      float LPFcutoff = 6000,
+      float LPFresonance = 1,
+      bool HighPassFilter = true,
+      float HPFcutoff = 150,
+      float HPFresonance = 1,
+      string SoundID = "3D",
+      string SoundName = "Fire",
+      string FileName = "FireA.ogg",
+    },
   Cog = 
 	{
 		LinkId = 

@@ -220,11 +220,6 @@ Level =
     {
       string NextLevel = "L2.3",
     },
-    GUIText = 
-    {
-      string Text = "Hello World",
-      Vec2 Position = [-1.0, 0.8],
-    },
     Sprite = 
 		{
 			string SpriteSource = "Circle.png",
