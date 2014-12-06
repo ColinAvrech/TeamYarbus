@@ -313,7 +313,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 10,
+			uint Id = 8,
 		},
 		Named = 
 		{
@@ -340,7 +340,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 8,
+			uint Id = 9,
 		},
 		Named = 
 		{
@@ -348,7 +348,7 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [-200, 0, 0],
+			Vec3 Translation = [-200, 50, 0],
 			Vec3 Scale = [1, 1, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
@@ -358,6 +358,56 @@ Level =
 		  bool Static = true,
 		  string Material = "4de020863e872da8:DefaultPhysicsMaterial",
       Vec2 Dimensions = [5, 150],
+      float Orientation = 0,
+    },
+  },
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 10,
+		},
+		Named = 
+		{
+			string Name = "RightWall",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [200, 50, 0],
+			Vec3 Scale = [1, 1, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+    PolygonCollider2D = 
+    {
+      bool Enabled = true,
+		  bool Static = true,
+		  string Material = "4de020863e872da8:DefaultPhysicsMaterial",
+      Vec2 Dimensions = [5, 150],
+      float Orientation = 0,
+    },
+  },
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 11,
+		},
+		Named = 
+		{
+			string Name = "TopWall",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0, 200, 0],
+			Vec3 Scale = [1, 1, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+    PolygonCollider2D = 
+    {
+      bool Enabled = true,
+		  bool Static = true,
+		  string Material = "4de020863e872da8:DefaultPhysicsMaterial",
+      Vec2 Dimensions = [500, 5],
       float Orientation = 0,
     },
   },
