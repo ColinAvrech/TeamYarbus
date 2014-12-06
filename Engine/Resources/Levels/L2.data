@@ -264,7 +264,7 @@ Level =
     },
     GUIText = 
     {
-      string Text = "Hello World",
+      string Text = "",
       Vec2 Position = [-1.0, 0.8],
     },
     Sprite = 
