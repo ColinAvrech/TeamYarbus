@@ -64,7 +64,17 @@ namespace Framework
       }
       return;
     }
+ 
+    if (FireStarterManager::numTreesLeft == 0)
+    {
+      timer += 0.016f;
+      if (timer > 2.0f)
+      {
+        
+      }
 
+      return;
+    }
 
 		//check if player is colliding with node on fire -- for refuel
 		glm::ivec2 currPos = gameObject->Transform->GetGridPosition();
@@ -75,14 +85,16 @@ namespace Framework
 
 		if (temp >= Physics::Constant::BT_Organics && material == GRASS)
 			currentRadius = maxRadius;
-    if (invincible)
+    
+    if (invincible || CORE->IsPaused())
     {
       return;
     }
-	//if (deathRate != .1f)
-	//	deathRate = .1f;
+	
+    //if (deathRate != .1f)
+	  //	deathRate = .1f;
 
-		currentRadius -= deathRate * .016;
+    currentRadius -= deathRate * .016;
 		gameObject->Transform->Scale(currentRadius / maxRadius);
 
     if (currentRadius <= minRadius)
