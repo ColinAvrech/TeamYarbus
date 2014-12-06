@@ -1,0 +1,144 @@
+=====================
+Digipen
+=====================
+
+As a condition of your accessing this area, you agree to be bound by the following terms and conditions: 
+
+The games software was created by students of DigiPen Institute of Technology (DigiPen), and all copyright and other
+rights in such is owned by DigiPen. While DigiPen allows you to access, download and use the software for 
+non-commercial, home use you hereby expressly agree that you will not otherwise copy, distribute, modify, 
+or (to the extent not otherwise permitted by law) decompile, disassemble or reverse engineer the games software. 
+
+THE GAMES SOFTWARE IS MADE AVAILABLE BY DIGIPEN AS-IS AND WITHOUT WARRANTY OF ANY KIND BY DIGIPEN. DIGIPEN HEREBY 
+EXPRESSLY DISCLAIMS ANY SUCH WARRANTY, INCLUDING, WITHOUT LIMITATION, ANY IMPLIED WARRANTY OF MERCHANTABILITY OR 
+FITNESS FOR A PARTICULAR PURPOSE. 
+
+WITHOUT LIMITING THE GENERALITY OF THE FOREGOING, DIGIPEN SHALL NOT BE LIABLE IN DAMAGES OR OTHERWISE FOR ANY DAMAGE 
+OR INJURY FROM DOWNLOADING, DECOMPRESSING, RUNNING OR ATTEMPTING TO RUN, USING OR OTHERWISE DEALING WITH, IN ANY WAY, 
+THE GAMES SOFTWARE CONTAINED IN THIS AREA, NOR SHALL DIGIPEN BE LIABLE FOR ANY INCIDENTAL, CONSEQUENTIAL, EXEMPLARY 
+OR OTHER TYPES OF DAMAGES ARISING FROM ACCESS TO OR USE OF THE GAMES SOFTWARE. 
+
+YOU HEREBY AGREE TO INDEMNIFY, DEFEND AND HOLD HARMLESS DIGIPEN AND ITS DIRECTORS, OFFICERS, EMPLOYEES, AGENTS, 
+CONSULTANTS AND CONTRACTORS AGAINST ALL LIABILITY OF ANY KIND ARISING OUT OF YOUR DOWNLOADING, DECOMPRESSING, RUNNING 
+OR ATTEMPTING TO RUN, USING OR OTHERWISE DEALING WITH, IN ANY WAY, THE GAMES SOFTWARE. 
+
+DIGIPEN MAKES NO WARRANTIES OR REPRESENTATIONS THAT THE GAMES SOFTWARE IS FREE OF MALICIOUS PROGRAMMING, INCLUDING, 
+WITHOUT LIMITATION, VIRUSES, TROJAN HORSE PROGRAMS, WORMS, MACROS AND THE LIKE. AS THE PARTY ACCESSING THE GAMES 
+SOFTWARE IT IS YOUR RESPONSIBILITY TO GUARD AGAINST AND DEAL WITH THE EFFECTS OF ANY SUCH MALICIOUS PROGRAMMING. 
+
+
+External Libraries
+
+=====================
+Anttweakbar
+=====================
+Copyright © 2005-2013 Philippe Decaudin
+
+This software is provided ‘as-is’, without any express or implied warranty. 
+In no event will the authors be held liable for any damages arising from 
+the use of this software.
+
+Permission is granted to anyone to use this software for any purpose, 
+including commercial applications, and to alter it and redistribute it 
+freely, subject to the following restrictions:
+
+The origin of this software must not be misrepresented; you must not claim 
+that you wrote the original software. If you use this software in a product, 
+an acknowledgment in the product documentation would be appreciated but is 
+not required.
+
+Altered source versions must be plainly marked as such, and must not be 
+misrepresented as being the original software.
+
+This notice may not be removed or altered from any source distribution.
+
+=====================
+FMOD
+=====================
+“FMOD Studio by Firelight Technologies”
+
+=====================
+GLEW
+=====================
+GLEW was developed by Milan Ikits and Marcelo Magallon. They also perform 
+occasional maintainance to make sure that GLEW stays in mint condition. 
+Aaron Lefohn, Joe Kniss, and Chris Wyman were the first users and also 
+assisted with the design and debugging process. The acronym GLEW 
+originates from Aaron Lefohn. Pasi Kärkkäinen identified and fixed 
+several problems with GLX and SDL. Nate Robins created the wglinfo 
+utility, to which modifications were made by Michael Wimmer.
+
+Copyright (c) 2007 The Khronos Group Inc.
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and/or associated documentation files (the
+"Materials"), to deal in the Materials without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Materials, and to
+permit persons to whom the Materials are furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be included
+in all copies or substantial portions of the Materials.
+
+THE MATERIALS ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+MATERIALS OR THE USE OR OTHER DEALINGS IN THE MATERIALS.
+
+=====================
+GLFW
+=====================
+Copyright © 2002-2006 Marcus Geelnard
+
+Copyright © 2006-2011 Camilla Berglund
+
+This software is provided ‘as-is’, without any express or implied 
+warranty. In no event will the authors be held liable for any damages 
+arising from the use of this software.
+
+Permission is granted to anyone to use this software for any purpose, 
+including commercial applications, and to alter it and redistribute it 
+freely, subject to the following restrictions:
+
+The origin of this software must not be misrepresented; you must not 
+claim that you wrote the original software. If you use this software 
+in a product, an acknowledgment in the product documentation would be 
+appreciated but is not required.
+
+Altered source versions must be plainly marked as such, and must not 
+be misrepresented as being the original software.
+
+This notice may not be removed or altered from any source distribution.
+
+=====================
+GLM
+=====================
+The MIT License
+
+Copyright (c) 2005 - 2013 G-Truc Creation
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+=====================
+OpenGL
+=====================
+Graphics Engine utilizes OpenGL®
