@@ -172,11 +172,11 @@ namespace Framework
       string          GetSoundName(){ return _soundName;}
       float*          GetVolumePtr();
 
-      inline FMOD::Channel* Get_Channel() {return pChannel;}
-      inline FMOD::DSP*     Get_LPF ()    {return objects_DSP.dsp_lpf;}
-      inline FMOD::DSP*     Get_HPF()     {return objects_DSP.dsp_hpf;}
-      inline FMOD::DSP*     Get_RVRB()    {return objects_DSP.dsp_reverb;}
-      inline FMOD::DSP*     Get_NOISE()   {return objects_DSP.dsp_noise;}
+      FMOD::Channel* Get_Channel() {return pChannel;}
+      FMOD::DSP*     Get_LPF ()    {return objects_DSP.dsp_lpf;}
+      FMOD::DSP*     Get_HPF()     {return objects_DSP.dsp_hpf;}
+      FMOD::DSP*     Get_RVRB()    {return objects_DSP.dsp_reverb;}
+      FMOD::DSP*     Get_NOISE()   {return objects_DSP.dsp_noise;}
 
       #pragma endregion
 
