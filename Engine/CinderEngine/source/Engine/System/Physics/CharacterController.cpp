@@ -123,8 +123,8 @@ namespace Framework
     if (InputManager::IsKeyDown(GLFW_KEY_UP))
     {
       Health* hp = gameObject->Health;
-      if (hp)
-        hp->currentDeathRate = hp->startDeathRate;
+      //if (hp)
+      //  hp->currentDeathRate = hp->startDeathRate;
 
       if (onGround)
       {
@@ -134,7 +134,7 @@ namespace Framework
       {
         if (hp)
         {
-          hp->currentDeathRate *= 0.016f;
+          hp->deathRate *= 0.016f;
 //        hp->currentDeathRate = 2 * hp->startDeathRate;
         }
         body->velocity.y += jumpVel.y;
