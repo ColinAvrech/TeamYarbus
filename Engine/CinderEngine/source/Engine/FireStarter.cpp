@@ -20,11 +20,13 @@
 #include "Events.h"
 #include "GameEvent.h"
 #include "EventSystem.h"
+#include "Text.h"
 
 namespace Framework
 {
   int FireStarterManager::numTreesLeft = 0;
   int FireStarterManager::numTreesStart = 0;
+  GUIText* FireStarterManager::guiText = nullptr;
 
   FireStarterManager::FireStarterManager()
   {
@@ -45,6 +47,18 @@ namespace Framework
     firePoints.clear();
     numPoints = 0;
     //numTreesLeft = 0;
+  }
+
+  void FireStarterManager::Initialize()
+  {
+    gameObject->FireStarterManager = this;
+    if (guiText == nullptr)
+    {
+      GameObject* go = new GameObject(10000);
+      guiText = reinterpret_cast<GUIText*> (go->AddComponent("GUIText"));
+      guiText->position = { -0.2f, -0.9f };
+      guiText->Initialize();
+    }
   }
 
   void FireStarterManager::AddFireStarter(FireStarter *newFirePoint)
@@ -126,6 +140,7 @@ namespace Framework
           std::cout << CinderConsole::green;
           printf ("Percentage of fuel unused: %f\n", (manager->numTreesLeft/(float)manager->numTreesStart));
           printf("Trees Remaining: %d, Total Trees: %d", manager->numTreesLeft, manager->numTreesStart);
+          FireStarterManager::guiText->text = "Trees Remaining: " + std::to_string(FireStarterManager::numTreesLeft);
           std::cout << CinderConsole::red;
         }
         if (FireStarterManager::numTreesLeft <= 0)

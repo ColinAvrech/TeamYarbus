@@ -17,6 +17,7 @@ namespace Framework
 {
   class AllTreesBurnedEvent;
   class UpdateEvent;
+  class GUIText;
 
   class PlayerStats : public Component
   {
@@ -35,6 +36,7 @@ namespace Framework
   private:
     bool levelComplete = false;
     float timer = 0.0f;
+
   };  
 }
 

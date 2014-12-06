@@ -13,16 +13,28 @@ class HowToPlayStart : Component
 	{
 
 	}
-
+	var Time:Real = 8;
+	var Triggered:Boolean = false;
 	function Initialize(owner:GameObject)
 	{
 		this.Owner = owner;
 		
 		
-		ZInterface.ObjectSystem.FindObjectByID(15).Sprite.ChangeColor(1,1,1,1);
-		ZInterface.SetSceneShader("Blur");
-		ZInterface.WindowSystem.SetCursor(true);
-		ZInterface.SetPaused(true);
+		
+		EventSystem.Connect(Events.UpdateEvent, this.LogicUpdate);
+	}
+	function LogicUpdate(e: UpdateEvent)
+	{
+		this.Time -= e.Dt;
+		if (this.Time <= 0 && !this.Triggered)
+		{
+			ZInterface.ObjectSystem.FindObjectByID(15).Sprite.ChangeColor(1,1,1,1);
+			ZInterface.SetSceneShader("Blur");
+			ZInterface.WindowSystem.SetCursor(true);
+			ZInterface.SetPaused(true);
+			this.Triggered  = true;
+				
+		}
 	}
 }
 
@@ -170,10 +182,6 @@ class ResumeButton : Component
 		{
 			return;
 		}
-		else
-		{
-			ZInterface.WindowSystem.SetCursor(true);
-		}
 		if (e.State == MouseState.MouseInside)
 		{
 			if (InputManager.IsMouseTriggered(Mouse.LEFT))
@@ -183,6 +191,7 @@ class ResumeButton : Component
 					obj.Sprite.ChangeColor(1,1,1,0);
 				}
 				ZInterface.SetPaused(false);
+				ZInterface.WindowSystem.SetCursor(false);
 				if (ZInterface.IsPaused())
 				{
 					ZInterface.SetSceneShader("Blur");
@@ -191,7 +200,7 @@ class ResumeButton : Component
 				{
 					ZInterface.SetSceneShader("Passthrough");
 				}
-				ZInterface.WindowSystem.ToggleCursor();
+				
 			}
 			this.Owner.Sprite.ChangeTexture("UIResumeWhite.png");
 		}

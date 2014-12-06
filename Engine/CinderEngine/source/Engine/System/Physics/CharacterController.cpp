@@ -124,7 +124,7 @@ namespace Framework
     if (InputManager::IsKeyDown(GLFW_KEY_UP) && (onGround || useFlying))
     {
       onGround = false;
-      body->velocity.y = jumpVel.y;
+      body->velocity.y += jumpVel.y;
       
       if (hp)
       {

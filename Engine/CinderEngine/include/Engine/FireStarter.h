@@ -39,6 +39,8 @@ namespace Framework
   */
 
   class FireStarterManager;
+  class GUIText;
+
   class FireStarter
   {
     public:
@@ -67,7 +69,8 @@ namespace Framework
     FireStarterManager();
     ~FireStarterManager();
 
-    virtual void Initialize(){ gameObject->FireStarterManager = this; }
+    virtual void Initialize();
+
     virtual void Serialize(Serializer::DataNode* data);
     void AddFireStarter(FireStarter* newFirePoint);
 
@@ -78,6 +81,7 @@ namespace Framework
     int numPoints = 0;
   //private:
     vector<const FireStarter *> firePoints;
+    static GUIText* guiText;
   };
 }
 
