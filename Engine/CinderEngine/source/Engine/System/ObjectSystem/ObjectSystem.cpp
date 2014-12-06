@@ -105,6 +105,7 @@ namespace Framework
 	{
 		ErrorIf(OBJECTSYSTEM != NULL, "Factory Already Created");
 		OBJECTSYSTEM = this;
+    ptrPlayer = nullptr;
 		RegisterComponents();
 	}
 
@@ -289,7 +290,22 @@ namespace Framework
 
   void ObjectSystem::NextLevel()
   {
-    LoadLevel(ptrPlayer->PlayerStats->NextLevel.c_str());
+    bool loadSuccess = true;
+    if (ptrPlayer)
+    {
+      LoadLevel(ptrPlayer->PlayerStats->NextLevel.c_str());
+    }
+    else
+    {
+      GameObject* go = FindObjectByID(2);//Hack for splash screens
+      if (go)
+        LoadLevel(reinterpret_cast<LevelTimer*>(go->GetComponent("LevelTimer"))->nextLevel.c_str());
+      else
+        loadSuccess = false;
+    }
+
+    if (loadSuccess)
+      FireStarterManager::numTreesLeft = FireStarterManager::numTreesStart = 0;
   }
 
   void ObjectSystem::RestartLevel()

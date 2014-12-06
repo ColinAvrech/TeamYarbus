@@ -74,6 +74,7 @@ namespace Framework
     const static std::string Name;
     bool onFire;
     static int numTreesLeft;
+    static int numTreesStart;
     int numPoints = 0;
   //private:
     vector<const FireStarter *> firePoints;
