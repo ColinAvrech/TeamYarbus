@@ -550,12 +550,20 @@ namespace Framework
       FireStarter* firePoint;
       for (auto i = FireMap.begin (); i != FireMap.end (); ++i)
       {
-        glColor4f (0, 1, 0, 1.0f);
+
 
         firePoint = (*i).second;
 
         if (firePoint)
         {
+          if (firePoint->onFire)
+          {
+            glColor4f(1, 0, 0, 1.0f);
+          }
+          else
+          {
+            glColor4f(0, 1, 0, 1.0f);
+          }
           vec2 pos = firePoint->GetPosition();
 
           glVertex2f(pos.x, pos.y);
