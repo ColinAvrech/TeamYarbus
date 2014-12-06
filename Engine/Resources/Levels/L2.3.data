@@ -52,7 +52,7 @@ Level =
 	  },
     Transform = 
 	  {
-		  Vec3 Translation = [0, 7, -10],
+		  Vec3 Translation = [-45, 2, -10],
 		  Vec3 Scale = [1, 1, 1],
 		  Quat Rotation = [0, 0, 0, 1],
 	  },
@@ -64,14 +64,8 @@ Level =
 			float FieldOfView = 45,
 			float NearPlane = 0,
 			float FarPlane = 100,
-			float Size = 17,
+			float Size = 16,
 		},
-    CameraShake = 
-    {
-      bool Enabled = true,
-      Vec2 Intensity = [0.5, 1.0],
-      float Duration = 1.0,
-    },
   },
   Cog = 
 	{
@@ -81,20 +75,20 @@ Level =
 		},
 		Named = 
 		{
-			string Name = "Mountains",
+			string Name = "Forest",
 		},
 		Transform = 
 		{
 			Vec3 Translation = [0, 0, -8],
-			Vec3 Scale = [256, 20, 1],
+			Vec3 Scale = [256, 25, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Terrain2D = 
 		{
       bool Enabled = true,
       int MapSize = 64,
-      int BaseHeight = 0,
-      int PeakHeight = 50,
+      int BaseHeight = 64,
+      int PeakHeight = 64,
       int Passes = 0,
       int Waves = 1,
       int Water = 0,
@@ -115,7 +109,7 @@ Level =
 		Transform = 
 		{
 			Vec3 Translation = [0, 0, -4],
-			Vec3 Scale = [256, 10, 1],
+			Vec3 Scale = [256, 20, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Terrain2D = 
@@ -123,11 +117,11 @@ Level =
       bool Enabled = true,
       int MapSize = 128,
       int BaseHeight = 64,
-      int PeakHeight = 0,
+      int PeakHeight = 35,
       int Passes = 0,
       int Waves = 1,
       int Water = 0,
-      Vec4 Color = [0.2, 0.2, 0.2, 1],
+      Vec4 Color = [0.1, 0.1, 0.1, 1],
       bool AddCollider = false,
 		},
   },
@@ -149,15 +143,15 @@ Level =
 		},
 		Terrain2D = 
 		{
-      string MapPreset = "Valley_Small",
+      string MapPreset = "JaggedAF",
       bool Enabled = true,
       int MapSize = 128,
       int BaseHeight = 32,
       int PeakHeight = 40,
-      int Passes = 3,
+      int Passes = 1,
       int Waves = 5,
       int Water = 5,
-      Vec4 Color = [0.05, 0.062, 0.05, 1],
+      Vec4 Color = [0.0, 0.0, 0.0, 1],
       bool AddCollider = true,
 		},
     EcoSystem = 
@@ -181,7 +175,7 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, 100, 0],
+			Vec3 Translation = [-45, 8, 0],
 			Vec3 Scale = [1, 1, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
@@ -195,35 +189,34 @@ Level =
 		CharacterController = 
 		{
       bool Enabled = true,
-      bool UseFlying = false,
-		  Vec2 Acceleration = [30, 0],
-		  Vec2 JumpVelocity = [0, 0],
+      bool UseFlying = true,
+		  Vec2 Acceleration = [100, 0],
+		  Vec2 JumpVelocity = [0, 2],
 		  Vec2 MicrophoneMultiplier = [0, 10],
 		},
     PlayerEffect = 
     {
       bool Enabled = true,
-      float ParticleSize = 60,
+      float ParticleSize = 100,
+    },
+    Health = 
+		{
+		bool alive = true,
+		float maxRadius = 1.0f,
+		float minRadius = 0.1f,
+		bool reFueling = false,
+		},
+    CameraFollow = 
+    {
     },
     PlayerStats = 
     {
-      string NextLevel = "L2",
+      string NextLevel = "L3",
     },
-    AudioComponent = 
+    GUIText = 
     {
-      bool Positional = true,
-      bool MicEffect = true,
-      bool Play = true,
-      bool Mute = false,
-      bool LowPassFilter = true,
-      float LPFcutoff = 6000,
-      float LPFresonance = 1,
-      bool HighPassFilter = true,
-      float HPFcutoff = 150,
-      float HPFresonance = 1,
-      string SoundID = "3D",
-      string SoundName = "Fire",
-      string FileName = "FireA.ogg",
+      string Text = "Hello World",
+      Vec2 Position = [-1.0, 0.8],
     },
     Sprite = 
 		{
@@ -241,49 +234,7 @@ Level =
 			string SpriteLayer = "52ad5fa30d7fcd50:DefaultSpriteLayer",
 			string Shader = "Default",
 		},
-    GUIText = 
-    {
-      string Text = "",
-      Vec2 Position = [0, 0],
-    },
 	},
-  Cog = 
-	{
-		LinkId = 
-		{
-			uint Id = 5,
-		},
-		Named = 
-		{
-			string Name = "FollowPlayer",
-		},
-		Transform = 
-		{
-			Vec3 Translation = [0, 0, 0],
-			Vec3 Scale = [1, 1, 1],
-			Quat Rotation = [0, 0, 0, 1],
-		},
-    Follow = 
-    {
-      string Target = "Player",
-    },
-    AudioComponent = 
-    {
-      bool Positional = false,
-      bool MicEffect = false,
-      bool Play = true,
-      bool Mute = false,
-      bool LowPassFilter = false,
-      float LPFcutoff = 6000,
-      float LPFresonance = 1,
-      bool HighPassFilter = false,
-      float HPFcutoff = 150,
-      float HPFresonance = 1,
-      string SoundID = "2D",
-      string SoundName = "Rumble",
-      string FileName = "L1_Rumble.ogg",
-    },
-  },
   Cog = 
 	{
 		LinkId = 
@@ -331,6 +282,31 @@ Level =
 		  bool Static = true,
 		  string Material = "4de020863e872da8:DefaultPhysicsMaterial",
       Vec2 Dimensions = [5, 150],
+      float Orientation = 0,
+    },
+  },
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 8,
+		},
+		Named = 
+		{
+			string Name = "RightWall",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0, 32, 0],
+			Vec3 Scale = [1, 1, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+    PolygonCollider2D = 
+    {
+      bool Enabled = true,
+		  bool Static = true,
+		  string Material = "4de020863e872da8:DefaultPhysicsMaterial",
+      Vec2 Dimensions = [150, 5],
       float Orientation = 0,
     },
   },
