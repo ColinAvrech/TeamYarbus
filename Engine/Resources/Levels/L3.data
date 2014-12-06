@@ -325,7 +325,7 @@ Level =
 			Vec3 Scale = [8, 8, 8],
 			Quat Rotation = [0, 0, 0, 1],
 		},
-    UIBox = 
+    Sprite = 
 		{
 			string SpriteSource = "UIExitWhite.png",
 			bool FlipX = false,

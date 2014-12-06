@@ -133,7 +133,7 @@ int main (void)
   //Currently broken;
   //OBJECTSYSTEM->LoadAllLevels("..//..//Resources//Levels//MasterLevelFile.txt");
 
-  OBJECTSYSTEM->LoadLevel("L1");
+  OBJECTSYSTEM->LoadLevel("L3");
 
  //Initialize Cheat Codes
   Cheats::InitializeCheats();
