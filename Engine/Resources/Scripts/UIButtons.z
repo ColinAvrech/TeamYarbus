@@ -25,7 +25,7 @@ class ExitButton : Component
 		
 		this.Confirmation = ZInterface.ObjectSystem.LoadLevelAdditive("Confirmation");
 		
-		this.EnterSound = ZInterface.ResourceSystem.LoadSound("MainMenuScroll.wav");
+		this.EnterSound = ZInterface.ResourceSystem.LoadSound("MainMenuScroll.ogg");
 		this.Owner.Sprite.ChangeLayer(1);
 		this.Detector = new MouseDetector(this.Owner, this.OnMouseEvent);
 		
@@ -99,7 +99,7 @@ class ExitButton : Component
 class ResumeButton : Component
 {
 	var Detector: MouseDetector = null;
-	var EnterSound:Sound = ZInterface.ResourceSystem.LoadSound("MainMenuScroll.wav");
+	var EnterSound:Sound = ZInterface.ResourceSystem.LoadSound("MainMenuScroll.ogg");
 	var MenuObjects:Array[GameObject] = new Array[GameObject]();
   
 	constructor() : base()
@@ -201,7 +201,7 @@ class HowToPlayButton : Component
 	var MenuObjects:Array[GameObject] = new Array[GameObject]();
 	var HowToPlay:GameObject = null;
 	
-	var EnterSound:Sound = ZInterface.ResourceSystem.LoadSound("MainMenuScroll.wav");
+	var EnterSound:Sound = ZInterface.ResourceSystem.LoadSound("MainMenuScroll.ogg");
 	
 	constructor() : base()
 	{
@@ -278,7 +278,7 @@ class InstructionsMenu : Component
 	var SpawnedObject:GameObject = null;
 	
 	var IsMicrophone:Boolean = false;
-	var EnterSound:Sound = ZInterface.ResourceSystem.LoadSound("MainMenuScroll.wav");
+	var EnterSound:Sound = ZInterface.ResourceSystem.LoadSound("MainMenuScroll.ogg");
 	var MenuObjects:Array[GameObject] = new Array[GameObject]();
   
 	constructor() : base()
@@ -399,7 +399,7 @@ class Yes : Component
 	var Background:GameObject = null;
 	var Title:GameObject = null;
 	
-	var EnterSound:Sound = ZInterface.ResourceSystem.LoadSound("MainMenuScroll.wav");
+	var EnterSound:Sound = ZInterface.ResourceSystem.LoadSound("MainMenuScroll.ogg");
   
 	constructor() : base()
 	{
@@ -464,7 +464,7 @@ class No : Component
 	var Background:GameObject = null;
 	var Title:GameObject = null;
 	
-	var EnterSound:Sound = ZInterface.ResourceSystem.LoadSound("MainMenuScroll.wav");
+	var EnterSound:Sound = ZInterface.ResourceSystem.LoadSound("MainMenuScroll.ogg");
   
 	constructor() : base()
 	{
