@@ -154,7 +154,11 @@ namespace Framework
     for (auto* i : graphicsObjects [DEFAULT])
     {
       i->Draw ();
-    }
+	}    
+	for (auto* i : textObjects)
+	{
+		i->Draw();
+	}
 
     sFactor = GL_SRC_ALPHA;
     dFactor = GL_ONE_MINUS_SRC_ALPHA;
@@ -176,10 +180,7 @@ namespace Framework
       i->UIDraw ();
     }
 
-    for (auto* i : textObjects)
-    {
-      i->Draw ();
-    }
+
     //////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////
     // DEBUG DRAW

@@ -52,7 +52,7 @@ namespace Framework
     {
       GameObject* go = new GameObject(10000);
       guiText = reinterpret_cast<GUIText*> (go->AddComponent("GUIText"));
-      guiText->position = { 0, -0.8f };
+      guiText->position = { -0.2f, -0.9f };
       guiText->Initialize();
     }
   }
