@@ -136,6 +136,7 @@ namespace Framework
         {
           hp->deathRate *= 0.016f;
 //        hp->currentDeathRate = 2 * hp->startDeathRate;
+		  //
         }
         body->velocity.y += jumpVel.y;
       }
