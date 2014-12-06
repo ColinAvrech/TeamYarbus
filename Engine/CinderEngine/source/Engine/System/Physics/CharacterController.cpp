@@ -117,6 +117,7 @@ namespace Framework
   {
     RigidBody2D* body = gameObject->RigidBody2D;
 
+
     if (!body)
       return;
 
@@ -128,7 +129,7 @@ namespace Framework
 
       if (onGround)
       {
-        body->velocity.y += jumpVel.y;
+        body->velocity.y = jumpVel.y;
       }
       else if (useFlying)
       {

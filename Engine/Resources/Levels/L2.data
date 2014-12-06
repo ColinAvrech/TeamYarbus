@@ -37,7 +37,7 @@ Level =
 		},
 		ForwardRenderer = 
 		{
-			Vec4 ClearColor = [0.278431, 0.278431, 0.278431, 1],
+			Vec4 ClearColor = [0.933, 0.749, 0.403, 1],
 		},
 	},
   Cog = 
@@ -64,7 +64,36 @@ Level =
 			float FieldOfView = 45,
 			float NearPlane = 0,
 			float FarPlane = 100,
-			float Size = 28,
+			float Size = 16,
+		},
+  },
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 10,
+		},
+		Named = 
+		{
+			string Name = "Forest",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0, 0, -8],
+			Vec3 Scale = [256, 10, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Terrain2D = 
+		{
+      bool Enabled = true,
+      int MapSize = 64,
+      int BaseHeight = 104,
+      int PeakHeight = 104,
+      int Passes = 0,
+      int Waves = 1,
+      int Water = 0,
+      Vec4 Color = [0.933, 0.749, 0.403, 1],
+      bool AddCollider = false,
 		},
   },
   Cog = 
@@ -92,7 +121,7 @@ Level =
       int Passes = 0,
       int Waves = 1,
       int Water = 0,
-      Vec4 Color = [0.2, 0.2, 0.2, 1],
+      Vec4 Color = [0.396, 0.196, 0.215, 1],
       bool AddCollider = false,
 		},
   },
@@ -121,7 +150,7 @@ Level =
       int Passes = 0,
       int Waves = 1,
       int Water = 0,
-      Vec4 Color = [0.1, 0.1, 0.1, 1],
+      Vec4 Color = [0.149, 0.09, 0.101, 1],
       bool AddCollider = false,
 		},
   },
@@ -151,7 +180,7 @@ Level =
       int Passes = 1,
       int Waves = 5,
       int Water = 5,
-      Vec4 Color = [0.0, 0.0, 0.0, 1],
+      Vec4 Color = [0.067f, 0.043f, 0.043f, 1],
       bool AddCollider = true,
 		},
     EcoSystem = 
@@ -190,17 +219,10 @@ Level =
 		{
       bool Enabled = true,
       bool UseFlying = true,
-		  Vec2 Acceleration = [200, 0],
-		  Vec2 JumpVelocity = [0, 8],
+		  Vec2 Acceleration = [100, 0],
+		  Vec2 JumpVelocity = [0, 4],
 		  Vec2 MicrophoneMultiplier = [0, 10],
 		},
-    CLParticleRenderer = 
-    {
-      int ParticleCount = 10000,
-      float ParticleSize = 5,
-      float EffectRadius = 0.2,
-      Vec4 Color = [255, 80, 0, 0.5],
-    },
     PlayerEffect = 
     {
       bool Enabled = true,
@@ -218,7 +240,7 @@ Level =
     },
     PlayerStats = 
     {
-      string NextLevel = "L3",
+      string NextLevel = "L2.2",
     },
     GUIText = 
     {
@@ -240,7 +262,23 @@ Level =
 			SpriteGeometryMode GeometryMode = ZPlane,
 			string SpriteLayer = "52ad5fa30d7fcd50:DefaultSpriteLayer",
 			string Shader = "Default",
-		},
+		},    
+    AudioComponent = 
+    {
+      bool Positional = false,
+      bool MicEffect = false,
+      bool Play = true,
+      bool Mute = false,
+      bool LowPassFilter = false,
+      float LPFcutoff = 6000,
+      float LPFresonance = 1,
+      bool HighPassFilter = true,
+      float HPFcutoff = 150,
+      float HPFresonance = 1,
+      string SoundID = "MUSIC",
+      string SoundName = "Pads",
+      string FileName = "Pads.ogg",
+    },
 	},
   Cog = 
 	{
@@ -329,7 +367,7 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, 0, -20],
+			Vec3 Translation = [0, 0, -16],
 			Vec3 Scale = [8, 8, 8],
 			Quat Rotation = [0, 0, 0, 1],
 		},

@@ -17,6 +17,7 @@
 #include "CinderEngine_UI.h"
 #include "CharacterController.h"
 #include "ObjectSystem.h"
+#include "WindowSystem.h"
 
 namespace Framework
 {
@@ -76,6 +77,7 @@ namespace Framework
       }}
         break;
       case Framework::EES_CREDITS:
+        WINDOWSYSTEM->SetCursorVisibility(true);
         gameObject->Transform->Scale (250 * gameObject->Sprite->Get_Texture ()->Get_Aspect_Ratio(), 250, 1);
         gameObject->Sprite->enabled = true;
         gameObject->Transform->Translate (0, 0.016f * 10, 0);
