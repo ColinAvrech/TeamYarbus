@@ -44,8 +44,8 @@ namespace Framework
     void GraphicsUpdate(const double& dt);
 
     void ToggleCursorVisibility();
-	void SetCursorVisibility(bool set);
-	void KeyFunction(KeyEvent* key);
+	  void SetCursorVisibility(bool set);
+	  void KeyFunction(KeyEvent* key);
     // GLFW callbacks
     void GLFWMessageHandler(GLFWwindow* window, const int key, const int scanCode, const int state, const int mod);
     void GLFWMouseButtonFunction(GLFWwindow *, const int button, const int action, const int mod);
@@ -72,6 +72,9 @@ namespace Framework
 
   private:
     GLFWwindow* window;
+
+    glm::dvec2 lastCursorPos;
+
     int WindowHeight;
     int WindowWidth;
     bool cursorVisible;
