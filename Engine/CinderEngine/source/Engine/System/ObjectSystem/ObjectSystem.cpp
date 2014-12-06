@@ -63,6 +63,8 @@ deleted.
 #include "Rotator.h"
 #include "PlayerStats.h"
 #include "CameraShake.h"
+#include "EndTrigger.h"
+#include "EndEventListener.h"
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 
@@ -222,6 +224,8 @@ namespace Framework
     RegisterComponent (Rotator);
     RegisterComponent (PlayerStats);
     RegisterComponent (CameraShake);
+    RegisterComponent (EndTrigger);
+    RegisterComponent (EndEventListener);
     //////////////////////////////////////////////////////////////////////////
   }
 	void ObjectSystem::AddComponentCreator(string name, ComponentCreator* creator)

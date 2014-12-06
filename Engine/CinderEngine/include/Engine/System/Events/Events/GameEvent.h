@@ -46,4 +46,10 @@ namespace Framework
   public:
     ZilchDeclareBaseType (AllTreesBurnedEvent, Zilch::TypeCopyMode::ReferenceType);
   };
+
+  class EndEvent : public BaseEvent
+  {
+  public:
+    ZilchDeclareBaseType (AllTreesBurnedEvent, Zilch::TypeCopyMode::ReferenceType);
+  };
 }

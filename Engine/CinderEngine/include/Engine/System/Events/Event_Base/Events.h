@@ -137,5 +137,5 @@ namespace Framework
 		DeclareEvent(UI, I)
 		DeclareEvent(PAUSE, P)
     DeclareEvent (ALLLTREESBURNED, G)
-
+    DeclareEvent (END_EVENT, G)
 }

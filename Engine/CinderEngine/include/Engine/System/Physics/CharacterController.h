@@ -45,8 +45,9 @@ namespace Framework
 
     void ToggleFlying();
 
-  private:
     bool useFlying;
+
+  private:
     glm::vec2 gridPos;
     glm::vec2 accel;
     glm::vec2 jumpVel;
