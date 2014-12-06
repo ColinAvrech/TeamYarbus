@@ -19,6 +19,7 @@ deleted.
 #include "EventSystem.h"
 #include "Core.h"
 #include "PhysicsSystem.h"
+#include "UISystem.h"
 #include "ZInterface.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -156,6 +157,7 @@ namespace Framework
           Cheats::InitializeCheats();
           AUDIOEVENTS->Initialize();
           PHYSICS->Reset ();
+          UISystem::listener.Initialize ();
           break;
 
         default:

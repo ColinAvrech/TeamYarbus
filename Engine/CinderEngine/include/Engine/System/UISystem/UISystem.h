@@ -37,9 +37,7 @@ namespace Framework
   virtual void Update(const double& dt);
   virtual const std::string GetName() { return "UISystem"; }
 
-  private:
-    static UIListener listener;
-
+  static UIListener listener;
   };
 
   extern UISystem* UISYSTEM;
