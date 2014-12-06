@@ -396,11 +396,9 @@ namespace Framework
     if (cursorVisible)
     {
       glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-      glfwSetCursorPos(window, lastCursorPos.x, lastCursorPos.y);
     }
     else
     {
-      lastCursorPos = cursorPosition;
       glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     }
   }
@@ -411,11 +409,9 @@ namespace Framework
 	  if (cursorVisible)
 	  {
       glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-      glfwSetCursorPos(window, lastCursorPos.x, lastCursorPos.y);
 	  }
 	  else
 	  {
-      lastCursorPos = cursorPosition;
 		  glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	  }
   }
