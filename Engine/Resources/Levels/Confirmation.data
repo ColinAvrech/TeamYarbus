@@ -4,7 +4,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 19,
+			uint Id = 190,
 		},
 		Named = 
 		{
@@ -29,7 +29,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 20,
+			uint Id = 200,
 		},
 		Named = 
 		{
@@ -54,7 +54,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 21,
+			uint Id = 210,
 		},
 		Named = 
 		{
@@ -82,7 +82,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 22,
+			uint Id = 220,
 		},
 		Named = 
 		{

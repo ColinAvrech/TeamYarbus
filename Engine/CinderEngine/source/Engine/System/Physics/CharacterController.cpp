@@ -113,51 +113,35 @@ namespace Framework
 
   static float t = 1;
 
-  void CharacterController::Update (UpdateEvent* e)
+  void CharacterController::Update(UpdateEvent* e)
   {
     RigidBody2D* body = gameObject->RigidBody2D;
     
-
     if (!body)
       return;
 
-    if (InputManager::IsKeyDown(GLFW_KEY_UP))
+    Health* hp = gameObject->Health;
+    if (InputManager::IsKeyDown(GLFW_KEY_UP) && (onGround || useFlying))
     {
-      Health* hp = gameObject->Health;
-      
-      //if (hp)
-        //hp->currentDeathRate = hp->startDeathRate;
-      //if (hp)
-      //  hp->currentDeathRate = hp->startDeathRate;
-
-      if (onGround)
-      {
-        body->velocity.y = jumpVel.y;
-      }
-      else if (useFlying)
-      {
-        if (hp)
-        {
-          hp->deathRate *= 0.016f;
-//        hp->currentDeathRate = 2 * hp->startDeathRate;
-		  //
-        }
-        body->velocity.y += jumpVel.y;
-      }
-
       onGround = false;
-      if (gameObject->Health != nullptr)
-        gameObject->Health->deathRate = .2f;
+      body->velocity.y += jumpVel.y;
+      
+      if (hp)
+      {
+        hp->currentDeathRate *= 0.016f;
+      }
     }
+    else if (onGround && hp)
+    {
+      hp->currentDeathRate = hp->startingDeathRate;
+    }
+
+    if ((body->force.x < 0.4f && body->force.x > -0.4f))
+    {
+      if (InputManager::IsKeyDown(GLFW_KEY_RIGHT))
+        body->ApplyForce(Vector2(acceleration.x * density, acceleration.y * density));
     
-    if (InputManager::IsKeyDown(GLFW_KEY_RIGHT))
-    {
-      if (body->force.x < 0.4f && body->force.x > -0.4f)
-        body->ApplyForce(Vector2(acceleration.x * density,acceleration.y * density));
-    }
-    if (InputManager::IsKeyDown(GLFW_KEY_LEFT))
-    {
-      if (body->force.x < 0.4f && body->force.x > -0.4f)
+      if (InputManager::IsKeyDown(GLFW_KEY_LEFT))
         body->ApplyForce(Vector2(-acceleration.x * density,acceleration.y * density));
     }
     

@@ -25,12 +25,16 @@
 namespace Framework
 {
   int FireStarterManager::numTreesLeft = 0;
+  int FireStarterManager::numTreesStart = 0;
   GUIText* FireStarterManager::guiText = nullptr;
 
   FireStarterManager::FireStarterManager()
   {
     onFire = false; 
+    
     ++numTreesLeft;
+    if(numTreesLeft > numTreesStart)
+      numTreesStart = numTreesLeft;
   }
 
   FireStarterManager::~FireStarterManager()
@@ -42,7 +46,7 @@ namespace Framework
 
     firePoints.clear();
     numPoints = 0;
-    numTreesLeft = 0;
+    //numTreesLeft = 0;
   }
 
   void FireStarterManager::Initialize()
@@ -132,9 +136,10 @@ namespace Framework
         if (manager->numPoints <= 0)
         {
           manager->onFire = true;
-          --FireStarterManager::numTreesLeft;
+          --manager->numTreesLeft;
           std::cout << CinderConsole::green;
-          //printf ("Number of trees remaining: %d\n", FireStarterManager::numTreesLeft);
+          printf ("Percentage of fuel unused: %f\n", (manager->numTreesLeft/(float)manager->numTreesStart));
+          printf("Trees Remaining: %d, Total Trees: %d", manager->numTreesLeft, manager->numTreesStart);
           FireStarterManager::guiText->text = "Trees Remaining: " + std::to_string(FireStarterManager::numTreesLeft);
           std::cout << CinderConsole::red;
         }

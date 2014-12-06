@@ -188,8 +188,8 @@ Level =
 		},
 		CharacterController = 
 		{
-      bool Enabled = true,
-      bool UseFlying = true,
+          bool Enabled = true,
+          bool UseFlying = true,
 		  Vec2 Acceleration = [100, 0],
 		  Vec2 JumpVelocity = [0, 2],
 		  Vec2 MicrophoneMultiplier = [0, 10],
