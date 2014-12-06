@@ -129,7 +129,7 @@ int main (void)
   //Currently broken;
   //OBJECTSYSTEM->LoadAllLevels("..//..//Resources//Levels//MasterLevelFile.txt");
 
-  //SplashScreenMusic->Play();
+  SplashScreenMusic->Play();
   OBJECTSYSTEM->LoadLevel("DigipenLogo");
 
  //Initialize Cheat Codes
