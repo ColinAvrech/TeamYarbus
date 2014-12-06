@@ -72,7 +72,7 @@ int main (void)
   // TODO (EXTRA): make a window to show while the game is loading
   CinderConsole::Create_Cinder_Console ("CinderEngineConsole");
 #else
-  bool launchFullScreen = false;
+  bool launchFullScreen = true;
 #endif
 
   // TODO Make console accept input by pressing '`', if '`' is pressed again return to game
