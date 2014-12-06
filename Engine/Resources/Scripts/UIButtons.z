@@ -7,6 +7,24 @@
 \brief  UIButtons.z contains the different classes for all of the different UI buttons in the game.
 */
 /******************************************************************************/
+class HowToPlayStart : Component
+{
+	constructor() : base()
+	{
+
+	}
+
+	function Initialize(owner:GameObject)
+	{
+		this.Owner = owner;
+		
+		
+		ZInterface.ObjectSystem.FindObjectByID(15).Sprite.ChangeColor(1,1,1,1);
+		ZInterface.SetSceneShader("Blur");
+		ZInterface.WindowSystem.SetCursor(true);
+		ZInterface.SetPaused(true);
+	}
+}
 
 class ExitButton : Component
 {

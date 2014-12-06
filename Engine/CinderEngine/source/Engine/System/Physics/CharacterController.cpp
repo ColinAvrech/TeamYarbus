@@ -146,8 +146,10 @@ namespace Framework
       }
 
       onGround = false;
-      if (hp)
-	      hp->deathRate = .2f;
+	  if (hp)
+	  {
+		  gameObject->Health->deathRate = 0.2f;
+	  }
     }
     
     if (InputManager::IsKeyDown(GLFW_KEY_RIGHT))

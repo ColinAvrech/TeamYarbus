@@ -158,6 +158,26 @@ Level =
 	{
 		LinkId = 
 		{
+			uint Id = 9,
+		},
+		Named = 
+		{
+			string Name = "MainMenu",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0, 0, -16],
+			Vec3 Scale = [8, 8, 8],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Josh = 
+		{
+		},
+	},
+  Cog = 
+	{
+		LinkId = 
+		{
 			uint Id = 3,
 		},
 		Named = 
@@ -244,7 +264,7 @@ Level =
     },
     GUIText = 
     {
-      string Text = "Hello World",
+      string Text = "",
       Vec2 Position = [-1.0, 0.8],
     },
     Sprite = 
@@ -355,24 +375,4 @@ Level =
       float Orientation = 0,
     },
   },
-  Cog = 
-	{
-		LinkId = 
-		{
-			uint Id = 9,
-		},
-		Named = 
-		{
-			string Name = "MainMenu",
-		},
-		Transform = 
-		{
-			Vec3 Translation = [0, 0, -16],
-			Vec3 Scale = [8, 8, 8],
-			Quat Rotation = [0, 0, 0, 1],
-		},
-		Josh = 
-		{
-		},
-	},
 },
