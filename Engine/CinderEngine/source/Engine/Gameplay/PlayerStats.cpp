@@ -1,7 +1,7 @@
 /******************************************************************************/
 /*!
 \file   PlayerStats.cpp
-\author DarthVader
+\author Manas Sudhir Kulkarni
 \par    Course: GAM200
 \par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
 \brief  
@@ -18,11 +18,12 @@
 
 namespace Framework
 {
-
+	DefineComponentName(PlayerStats);
 
   // Constructor
   PlayerStats::PlayerStats ()
-  {}
+  {
+  }
   
   // Destructor
   PlayerStats::~PlayerStats ()
@@ -32,6 +33,7 @@ namespace Framework
   {
     EVENTSYSTEM->mConnect<AllTreesBurnedEvent, PlayerStats> (Events::ALLLTREESBURNED, this, &PlayerStats::AllTreesBurned);
     EVENTSYSTEM->mConnect<UpdateEvent, PlayerStats> (Events::UPDATEEVENT, this, &PlayerStats::Update);
+	gameObject->PlayerStats = this;
   }
 
   void PlayerStats::Serialize (Serializer::DataNode* data)

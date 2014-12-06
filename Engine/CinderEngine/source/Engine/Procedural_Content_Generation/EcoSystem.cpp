@@ -100,7 +100,7 @@ namespace Framework
 		Component* c = grass->AddComponent("Transform");
 		if (c)
 		{
-			static_cast<Transform*>(c)->Translate(x, y, 0);
+			static_cast<Transform*>(c)->Translate(x, y, z);
 			static_cast<Transform*>(c)->Scale(10, 10, 1);
       static_cast<Transform*>(c)->Rotate(1.f);
 			c->Initialize();

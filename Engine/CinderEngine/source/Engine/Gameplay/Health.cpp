@@ -46,7 +46,7 @@ namespace Framework
 		EVENTSYSTEM->mConnect<UpdateEvent, Health>(Events::UPDATEEVENT, this, &Health::Update);
 		gameObject->Health = this;
 
-    currentDeathRate = startDeathRate;
+//    currentDeathRate = startDeathRate;
 		currentRadius = maxRadius;
     invincible = false;
     originalPosition = gameObject->Transform->GetPosition ();
@@ -79,8 +79,10 @@ namespace Framework
     {
       return;
     }
+	//if (deathRate != .1f)
+	//	deathRate = .1f;
 
-		currentRadius -= currentDeathRate * e->Dt;
+		currentRadius -= deathRate * .016;
 		gameObject->Transform->Scale(currentRadius / maxRadius);
 
     if (currentRadius <= minRadius)
