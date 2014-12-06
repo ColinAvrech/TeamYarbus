@@ -68,7 +68,7 @@ namespace Framework
     //
     // emitter:
     //
-    auto particleEmitter = std::make_shared<ParticleEmitter> ();
+    {auto particleEmitter = std::make_shared<ParticleEmitter> ();
 
     particleEmitter->m_emitRate = (float) NUM_PARTICLES * 0.05f;
     glm::vec3 pos = gameObject->Transform->GetPosition ();
@@ -76,7 +76,7 @@ namespace Framework
     // pos:
     m_posGenerator = std::make_shared<BoxPosGen> ();
     m_posGenerator->m_pos = glm::vec4{ pos.x, pos.y, pos.z, 0.0 };
-    m_posGenerator->m_maxStartPosOffset = glm::vec4{ 0.0, 0.0, 0.0, 0.0 };
+    m_posGenerator->m_maxStartPosOffset = glm::vec4{ 10.0, 0.0, 0.0, 0.0 };
     particleEmitter->addGenerator (m_posGenerator);
 
     m_colGenerator = std::make_shared<BasicColorGen> ();
@@ -87,16 +87,60 @@ namespace Framework
     particleEmitter->addGenerator (m_colGenerator);
 
     auto velGenerator = std::make_shared<BasicVelGen> ();
-    velGenerator->m_minStartVel = glm::vec4{ -0.05f * 90.0f, 0.22f * 60.0f, -0.05f * 5.0f, 0.0f };
-    velGenerator->m_maxStartVel = glm::vec4{ 0.05f * 90.0f, 0.25f * 60.0f, 0.05f * 5.0f, 0.0f };
+    velGenerator->m_minStartVel = glm::vec4{ -0.05f * 100.0f, 0.0f * 40.0f, -0.05f * 5.0f, 0.0f };
+    velGenerator->m_maxStartVel = glm::vec4{ 0.05f * 100.0f, 0.25f * 40.0f, 0.05f * 5.0f, 0.0f };
     particleEmitter->addGenerator (velGenerator);
 
     auto timeGenerator = std::make_shared<BasicTimeGen> ();
-    timeGenerator->m_minTime = 2.0f;
-    timeGenerator->m_maxTime = 4.0f;
+    timeGenerator->m_minTime = 0.0f;
+    timeGenerator->m_maxTime = 1.0f;
     particleEmitter->addGenerator (timeGenerator);
 
+    //auto generator = std::make_shared<VelFromPosGen> ();
+    //generator->m_maxScale = 5.0f;
+    //generator->m_minScale = -3.0f;
+    //generator->m_offset = glm::vec4 (0, -1, 1, 1);
+    //particleEmitter->addGenerator (generator);
+
     m_system->addEmitter (particleEmitter);
+    }
+    {
+      auto particleEmitter = std::make_shared<ParticleEmitter> ();
+
+      particleEmitter->m_emitRate = (float) NUM_PARTICLES * 0.05f;
+      glm::vec3 pos = gameObject->Transform->GetPosition ();
+      particleEmitter->position = pos;
+      // pos:
+      auto m_posGenerator = std::make_shared<BoxPosGen> ();
+      m_posGenerator->m_pos = glm::vec4{ pos.x, pos.y, pos.z, 0.0 };
+      m_posGenerator->m_maxStartPosOffset = glm::vec4{ 10.0, 0.0, 0.0, 0.0 };
+      particleEmitter->addGenerator (m_posGenerator);
+
+      auto m_colGenerator = std::make_shared<BasicColorGen> ();
+      m_colGenerator->m_minStartCol = vec4{ 255.0 / 255, 64.0 / 255, 00.0 / 255, 0.0 };
+      m_colGenerator->m_maxStartCol = vec4{ 255.0 / 255, 64.0 / 255, 0.0 / 255, 0.4 };
+      m_colGenerator->m_minEndCol = vec4{ 0.0, 0.0, 0.0, 1.0 };
+      m_colGenerator->m_maxEndCol = vec4{ 0.0, 0.0, 0.0, 0.0 };
+      particleEmitter->addGenerator (m_colGenerator);
+
+      auto velGenerator = std::make_shared<BasicVelGen> ();
+      velGenerator->m_minStartVel = glm::vec4{ -0.05f * 200.0f, 0.0f * 100.0f, -0.05f * 5.0f, 0.0f };
+      velGenerator->m_maxStartVel = glm::vec4{ 0.05f * 200.0f, 0.25f * 200.0f, 0.05f * 5.0f, 0.0f };
+      particleEmitter->addGenerator (velGenerator);
+
+      auto timeGenerator = std::make_shared<BasicTimeGen> ();
+      timeGenerator->m_minTime = 1.0f;
+      timeGenerator->m_maxTime = 2.0f;
+      particleEmitter->addGenerator (timeGenerator);
+
+      //auto generator = std::make_shared<VelFromPosGen> ();
+      //generator->m_maxScale = 5.0f;
+      //generator->m_minScale = -3.0f;
+      //generator->m_offset = glm::vec4 (0, -1, 1, 1);
+      //particleEmitter->addGenerator (generator);
+
+      m_system->addEmitter (particleEmitter);
+    }
 
     auto timeUpdater = std::make_shared<BasicTimeUpdater> ();
     m_system->addUpdater (timeUpdater);
@@ -105,7 +149,7 @@ namespace Framework
     m_system->addUpdater (colorUpdater);
 
     m_eulerUpdater = std::make_shared<EulerUpdater> ();
-    m_eulerUpdater->m_globalAcceleration = glm::vec4{ 0.0, -10.0, 0.0, 0.0 };
+    m_eulerUpdater->m_globalAcceleration = glm::vec4{ 0.0, -100.0, 0.0, 0.0 };
     m_system->addUpdater (m_eulerUpdater);
 
     m_floorUpdater = std::make_shared<FloorUpdater> ();
@@ -186,8 +230,8 @@ namespace Framework
     static double time = 0.0;
     time += dt;
 
-    m_posGenerator->m_pos.x = gameObject->Transform->GetPosition ().x + 0.1f *sin ((float) time*2.5f * 10.0f);
-    m_posGenerator->m_pos.z = gameObject->Transform->GetPosition ().z + 0.1f*cos ((float) time*2.5f * 10.0f);
+    m_posGenerator->m_pos.x = gameObject->Transform->GetPosition ().x + 10.0f * sin ((float) time * 2.5f * 2.5f);
+    m_posGenerator->m_pos.z = gameObject->Transform->GetPosition ().z + 10.0f * cos ((float) time * 2.5f * 2.5f);
 
     m_system->update (dt);
   }

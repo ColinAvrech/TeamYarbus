@@ -192,7 +192,7 @@ namespace Framework
       timer += 0.016f;
       if (size < 28.0f)
       {
-        size = glm::mix (16.0f, 28.0f, timer);
+        size = glm::mix (size, 28.0f, timer);
         std::cout << originalSize << "\n";
       }
       break;
@@ -200,7 +200,7 @@ namespace Framework
       timer += 0.016f;
       if (size > 16.0f)
       {
-        size = glm::mix (28.0f, 16.0f, timer);
+        size = glm::mix (size, 16.0f, timer);
       }
       if (timer >= 1.0f)
       {

@@ -20,6 +20,7 @@
 #include "RigidBody2D.h"
 #include "Thermodynamics.h"
 #include "TDLib.h"
+#include "Pipeline.h"
 
 namespace Framework
 {
@@ -110,6 +111,7 @@ namespace Framework
 
   void Terrain2D::Draw ()
   { 
+    glDisable (GL_BLEND);
     shader->Use ();
     vao->bindVAO ();
     shader->uniMat4 ("mvp", glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix ()));
@@ -119,6 +121,7 @@ namespace Framework
 
     vao->unbindVAO ();
     shader->Disable ();
+    OPENGL->ResetBlendMode ();
   }
 
   const float* Terrain2D::GetTerrain()

@@ -117,10 +117,10 @@ namespace Framework
     glMatrixMode (GL_MODELVIEW);
     glLoadIdentity ();
     glBegin (GL_QUADS);
-    glColor4d (0.2f, 0.2f, 0.5, 0.8f);
+    glColor4d (1, 1, 1, 1);
     glVertex2f (-1, -1);
     glVertex2f (1, -1);
-    glColor4d (0, 0, 0.3, 0.5f);
+    glColor4d (1, 1, 1, 1);
     glVertex2f (1, 1);
     glVertex2f (-1, 1);
     glEnd ();
@@ -150,6 +150,7 @@ namespace Framework
     //////////////////////////////////////////////////////////////////////////
     // SCENE DRAW
     //////////////////////////////////////////////////////////////////////////
+
     for (auto* i : graphicsObjects [DEFAULT])
     {
       i->Draw ();
@@ -164,7 +165,7 @@ namespace Framework
     //////////////////////////////////////////////////////////////////////////
     // UI DRAW
     //////////////////////////////////////////////////////////////////////////
-    
+
     for (auto* i : graphicsObjects [PAUSE])
     {
       i->Draw ();
@@ -449,6 +450,7 @@ namespace Framework
   {
     vao->bindVAO ();
     fbo->unBind ();
+
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     shader->Use ();
     glBindTexture (GL_TEXTURE_2D, renderTexture);

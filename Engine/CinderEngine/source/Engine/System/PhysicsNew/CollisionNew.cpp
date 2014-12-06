@@ -42,7 +42,16 @@ namespace Framework
 	    m->contact_count = 0;
 	    return;
 	  }
-	
+	  
+    //has collided
+    CollisionEvent collisionEvent;
+    collisionEvent.thisObject = B->gameObject;
+    collisionEvent.OtherObject = A->gameObject;
+    //collisionEvent.normal.x = B->m_normals [faceNormal].x;
+    //collisionEvent.normal.y = B->m_normals [faceNormal].y;
+    //collisionEvent.normal.z = 0.0f;
+    EVENTSYSTEM->TriggerEvent (Events::COLLISION, collisionEvent);
+
 	  float distance = std::sqrt( dist_sqr );
 	
 	  m->contact_count = 1;
@@ -91,6 +100,8 @@ namespace Framework
 	  }
 	  //has collided
 	  CollisionEvent collisionEvent;
+    collisionEvent.thisObject = B->gameObject;
+    collisionEvent.OtherObject = A->gameObject;
 	  collisionEvent.normal.x = B->m_normals[faceNormal].x;
 	  collisionEvent.normal.y = B->m_normals[faceNormal].y;
 	  collisionEvent.normal.z = 0.0f;
