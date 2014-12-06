@@ -258,6 +258,22 @@ Level =
 			string SpriteLayer = "52ad5fa30d7fcd50:DefaultSpriteLayer",
 			string Shader = "Default",
 		},
+    AudioComponent = 
+    {
+      bool Positional = false,
+      bool MicEffect = true,
+      bool Play = true,
+      bool Mute = false,
+      bool LowPassFilter = true,
+      float LPFcutoff = 6000,
+      float LPFresonance = 1,
+      bool HighPassFilter = true,
+      float HPFcutoff = 150,
+      float HPFresonance = 1,
+      string SoundID = "3D",
+      string SoundName = "Fire",
+      string FileName = "FireA.ogg",
+    },
 	},
   Cog = 
 	{
@@ -283,23 +299,23 @@ Level =
       Vec2 Dimensions = [5, 150],
       float Orientation = 0,
     },
-  },
-  AudioComponent = 
+    AudioComponent = 
     {
       bool Positional = false,
-      bool MicEffect = true,
+      bool MicEffect = false,
       bool Play = true,
       bool Mute = false,
       bool LowPassFilter = true,
-      float LPFcutoff = 6000,
+      float LPFcutoff = 2000,
       float LPFresonance = 1,
       bool HighPassFilter = true,
       float HPFcutoff = 150,
       float HPFresonance = 1,
-      string SoundID = "3D",
-      string SoundName = "Fire",
-      string FileName = "FireA.ogg",
+      string SoundID = "BG",
+      string SoundName = "Pads",
+      string FileName = "Pads.ogg",
     },
+  },
   Cog = 
 	{
 		LinkId = 
