@@ -118,10 +118,6 @@ namespace Framework
 			static_cast<Tree2D*>(c)->Set(color, Tree_Type(type));
 			c->Initialize();
 		}
-
-    Component* ac = grass->AddComponent("AudioComponent");
-    ac->Initialize();
-    static_cast<AudioComponent*>(ac)->position = glm::vec3(x, y, z);
 	}
 }
 
