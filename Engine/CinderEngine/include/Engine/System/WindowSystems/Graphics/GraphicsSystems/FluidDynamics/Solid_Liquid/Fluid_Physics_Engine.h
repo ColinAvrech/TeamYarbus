@@ -67,6 +67,7 @@ namespace Framework
     virtual ~Fluid_Physics_Engine ()
     {
       delete PhysicsIntegrationEngine;
+      PhysicsIntegrationEngine = nullptr;
     }
 
 

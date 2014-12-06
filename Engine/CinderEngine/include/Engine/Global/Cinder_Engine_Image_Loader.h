@@ -29,6 +29,7 @@ namespace Framework
     virtual ~Cinder_Image_Loader ()
     {
       delete [] pixels;
+      pixels = nullptr;
     }
 
     Cinder_Image_Loader (const Cinder_Image_Loader& source)

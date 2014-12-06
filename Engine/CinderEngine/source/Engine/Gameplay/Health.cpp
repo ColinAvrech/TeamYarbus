@@ -53,6 +53,7 @@ namespace Framework
     playerEffect = reinterpret_cast<PlayerEffect*>(gameObject->GetComponent ("PlayerEffect"));
 	}
 
+#include "PlayerStats.h"
 	void Health::Update(UpdateEvent* e)
 	{
     if (levelFailed)
@@ -103,9 +104,10 @@ namespace Framework
       OPENGL->Change_Shader ("FadeIn", (int) SS_FADE_OUT);
       //printf("dead");
       GUIText* guiText = reinterpret_cast<GUIText*>(gameObject->GetComponent("GUIText"));
-      if (guiText)
+      //PlayerStats* stats = reinterpret_cast<PlayerStats*>(gameObject->GetComponent("PlayerStats"));
+      if (guiText)// && stats)
       {
-        guiText->text = "You ran out of fuel :(";
+        guiText->text = "You ran out of fuel :(. Restarting Level: ";// +stats->NextLevel.c_str();
         //TODO_AUDIO: Play Death Sound/Music
       }
     }

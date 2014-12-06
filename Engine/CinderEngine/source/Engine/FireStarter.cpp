@@ -46,7 +46,8 @@ namespace Framework
 
     firePoints.clear();
     numPoints = 0;
-    //numTreesLeft = 0;
+    numTreesLeft = 0;
+    numTreesStart = 0;
   }
 
   void FireStarterManager::Initialize()

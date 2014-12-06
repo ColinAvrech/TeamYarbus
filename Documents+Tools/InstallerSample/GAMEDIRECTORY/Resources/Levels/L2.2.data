@@ -218,7 +218,7 @@ Level =
     },
     PlayerStats = 
     {
-      string NextLevel = "L2.3",
+      string NextLevel = "L3",
     },
     Sprite = 
 		{

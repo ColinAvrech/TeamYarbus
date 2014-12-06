@@ -31,6 +31,7 @@ namespace Framework
         if (_data != nullptr)
         {
           delete [] _data;
+          _data = nullptr;
         }
       }
 
@@ -76,7 +77,10 @@ namespace Framework
       void clean ()
       {
         if (_data != nullptr)
+        {
           delete [] _data;
+          _data = nullptr;
+        }
       }
 
       Grid2D<T>& operator+=(T rhs)
