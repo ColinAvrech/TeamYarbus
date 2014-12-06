@@ -116,6 +116,7 @@ namespace Framework
   void CharacterController::Update (UpdateEvent* e)
   {
     RigidBody2D* body = gameObject->RigidBody2D;
+    
 
     if (!body)
       return;
@@ -123,19 +124,23 @@ namespace Framework
     if (InputManager::IsKeyDown(GLFW_KEY_UP))
     {
       Health* hp = gameObject->Health;
-      if (hp)
-        hp->currentDeathRate = hp->startDeathRate;
+      
+      //if (hp)
+        //hp->currentDeathRate = hp->startDeathRate;
+      //if (hp)
+      //  hp->currentDeathRate = hp->startDeathRate;
 
       if (onGround)
       {
-        body->velocity.y += jumpVel.y;
+        body->velocity.y = jumpVel.y;
       }
       else if (useFlying)
       {
         if (hp)
         {
-          hp->currentDeathRate *= 0.016f;
+          hp->deathRate *= 0.016f;
 //        hp->currentDeathRate = 2 * hp->startDeathRate;
+		  //
         }
         body->velocity.y += jumpVel.y;
       }

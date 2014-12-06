@@ -122,15 +122,15 @@ int main (void)
 
 
   audio->LoadMicData ();
-  Sound *SplashScreenMusic = resourceManager.Get_Sound("SplashScreen.wav");
-  AUDIOEVENTS->unmanagedSounds.push_back(SplashScreenMusic);
+  Sound *SplashScreenMusic = resourceManager.Get_Sound("SplashScreen.ogg");
+    AUDIOEVENTS->unmanagedSounds.push_back(SplashScreenMusic);
 
   //! activate the window.
   //Currently broken;
   //OBJECTSYSTEM->LoadAllLevels("..//..//Resources//Levels//MasterLevelFile.txt");
 
   SplashScreenMusic->Play();
-  OBJECTSYSTEM->LoadLevel("L1");
+  OBJECTSYSTEM->LoadLevel("DigipenLogo");
 
  //Initialize Cheat Codes
   Cheats::InitializeCheats();
