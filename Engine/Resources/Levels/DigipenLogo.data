@@ -71,11 +71,11 @@ Level =
 	  {
 	  LinkId = 
 	  {
-		  uint Id = 0,
+		  uint Id = 2,
 	  },
 	  Named = 
 	  {
-		  string Name = "DigipenLogo",
+		  string Name = "Logo",
 	  },
     Transform = 
 	  {
