@@ -13,6 +13,7 @@
 #include "KeyEvent.h"
 #include "GLFW3.h"
 #include "Pipeline.h"
+#include "PlayerStats.h"
 
 namespace Framework
 {
@@ -30,14 +31,19 @@ namespace Framework
       {
         std::cout << "Toggle Invincibility Cheat!" << std::endl;
 
-        OBJECTSYSTEM->FindObjectByID(5)->Health->ToggleInvulnerability();
+		GameObject* player = OBJECTSYSTEM->FindObjectByName(std::string("Player"));
+		if (player != nullptr)
+		{
+			player->Health->ToggleInvulnerability();
+		}
+
       }
 
       // Goto NextLevel: Shift + N
       if (e->SHIFTPressed && e->KeyDown && e->KeyValue == GLFW_KEY_N)
       {
         std::cout << "Goto NextLevel Cheat!" << std::endl;
-
+		OBJECTSYSTEM->LoadLevel(CharacterController::PLAYER->gameObject->PlayerStats->NextLevel.c_str());
       }
 
 

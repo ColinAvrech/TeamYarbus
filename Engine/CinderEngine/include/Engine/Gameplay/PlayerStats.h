@@ -23,7 +23,9 @@ namespace Framework
   public:
   PlayerStats ();
   ~PlayerStats ();
+  std::string NextLevel;
 
+  const static std::string Name;
   virtual void Initialize ();
   virtual void Serialize (Serializer::DataNode* data);
   virtual void OnApplicationPause (PauseEvent* pause);
@@ -32,7 +34,6 @@ namespace Framework
 
   private:
     bool levelComplete = false;
-    std::string NextLevel;
     float timer = 0.0f;
   };  
 }

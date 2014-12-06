@@ -56,6 +56,7 @@ namespace Framework
   class RigidBody2D;
   class Health;
   class AudioComponent;
+  class PlayerStats;
 
   class GameObject
   {
@@ -100,6 +101,7 @@ namespace Framework
     ComponentPointer(Terrain2D);
     ComponentPointer(Terrain3D);
     ComponentPointer(AudioComponent);
+	ComponentPointer(PlayerStats);
 
    // Menu Components
    ComponentPointer(MenuController);
