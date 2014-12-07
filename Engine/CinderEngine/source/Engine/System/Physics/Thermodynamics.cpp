@@ -16,6 +16,8 @@
 #include "WindowSystem.h"
 #include "Camera.h"
 #include "solver.c"
+#include "EventSystem.h"
+#include "GameEvent.h"
 
 #define SIZE 10
 
@@ -387,7 +389,7 @@ namespace Framework
       if (numTreesLeft == 0)
       {
         BaseEvent b;
-        //EVENTSYSTEM->TriggerEvent(Events::ALLLTREESBURNED, b);
+        EVENTSYSTEM->TriggerEvent(Events::ALLLTREESBURNED, b);
         return;
       }
 

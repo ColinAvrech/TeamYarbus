@@ -11,16 +11,21 @@
 #include "FireStarter.h"
 #include "Thermodynamics.h"
 #include "GameObject.h"
-#include "PingEvent.h"
 #include "ComponentInclude.h"
-#include "CollisionEvent.h"
-#include "EventSystem.h"
 #include "Tree2D.h"
 #include "AudioComponent.h"
+#include "EventSystem.h"
+#include "PingEvent.h"
+
+/*
+#include "CollisionEvent.h"
+#include "EventSystem.h"
 #include "Events.h"
 #include "GameEvent.h"
-#include "EventSystem.h"
 #include "GUIText.h"
+#include "EventSystem.h"
+#include "PingEvent.h"
+*/
 
 namespace Framework
 {

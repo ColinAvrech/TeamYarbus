@@ -79,11 +79,11 @@ int main (void)
   
   //! Create the core engine which manages all systems.
   CoreEngine                    * engine      = new CoreEngine ();
+  EventSystem                   * events      = new EventSystem ();
   Physics::ThermodynamicsSystem * thermo      = new Physics::ThermodynamicsSystem ();
   PhysicsSystemNew              * physNew     = new PhysicsSystemNew (1.0f / 60.0f, 10);
   WindowSystem                  * windows     = new WindowSystem (WindowTitle, ClientWidth, ClientHeight, launchFullScreen);
   AudioSystem                   * audio       = new AudioSystem ();
-  EventSystem                   * events      = new EventSystem ();
   AudioEvents                   * audioEvents = new AudioEvents();
   ScriptSystem                  * zilch       = new ScriptSystem();
   ObjectSystem                  * objsys      = new ObjectSystem ();
