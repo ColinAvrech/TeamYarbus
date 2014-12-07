@@ -159,6 +159,8 @@ int main (void)
   //! Delete engine
   delete engine;
   delete audioEvents;
+  engine = nullptr;
+  audioEvents = nullptr;
 
   //! Free console
   CinderConsole::Free_Cinder_Console ();

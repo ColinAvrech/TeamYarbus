@@ -152,7 +152,11 @@ namespace Framework
           recursiveFree(Obj->branch);
         }
         delete Obj;
-        Obj = temp;
+
+        if (temp)
+          Obj = temp;
+        else
+          Obj = nullptr;
       }
     }
   } // serializer

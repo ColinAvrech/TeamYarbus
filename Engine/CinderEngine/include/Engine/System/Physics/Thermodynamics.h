@@ -191,8 +191,6 @@ namespace Framework
       
 
       static GUIText* guiText;
-      int numTreesStart;
-      int numTreesLeft;
 
       vector<FireGroup*> fireGroups;
       vector<pair<glm::ivec2, FireStarter*>> FireMap;

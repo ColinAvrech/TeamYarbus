@@ -34,18 +34,22 @@ namespace Framework
     for (auto i : shaders)
     {
       delete (i.second);
+      i.second = nullptr;
     }
     for (auto i : computeShaders)
     {
       delete (i.second);
+      i.second = nullptr;
     }
     for (auto i : textures)
     {
       delete (i.second);
+      i.second = nullptr;
     }
     for (auto i : spriteSheets)
     {
       delete (i.second);
+      i.second = nullptr;
     }
   }
   Sound* Resources::ZGetSound(String soundName)
@@ -216,6 +220,7 @@ namespace Framework
 
       // Free memory
       delete s;
+      s = nullptr;
     }
 
     //////////////////////////////////////////////////////////////////////////

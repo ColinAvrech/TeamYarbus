@@ -47,6 +47,12 @@ namespace Framework
     gameObject->Terrain2D = nullptr;
     delete vao, vbo, tc, spline;
     delete vao1, vbo1;
+    vao = nullptr;
+    vbo = nullptr;
+    tc = nullptr;
+    spline = nullptr;
+    vao1 = nullptr;
+    vbo1 = nullptr;
 
     for (auto* i : edges)
     {
@@ -309,6 +315,7 @@ namespace Framework
       b->dynamicFriction = 1.0f;
     }
     delete [] p;
+    p = nullptr;
   }
 
   void Terrain2D::Generate_Vertices ()

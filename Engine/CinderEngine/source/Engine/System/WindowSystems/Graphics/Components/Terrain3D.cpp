@@ -32,6 +32,11 @@ namespace Framework
   {
     delete vao, vbo, tc;
     delete vao1, vbo1;
+    vao = nullptr;
+    vbo = nullptr;
+    tc = nullptr;
+    vao1 = nullptr;
+    vbo1 = nullptr;
   }
 
   void Terrain3D::Serialize(Serializer::DataNode* data)

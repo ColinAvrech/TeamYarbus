@@ -32,26 +32,24 @@ namespace Framework
     GUIText* ThermodynamicsSystem::guiText = nullptr;
     namespace Const = Constant;
     //Constructor
-    ThermodynamicsSystem::ThermodynamicsSystem ()
+    ThermodynamicsSystem::ThermodynamicsSystem()
     {
       //Do stuff
       CellSize = 0.1f;
       THERMODYNAMICS = this;
-      numTreesStart = 0;
-      numTreesLeft = 0;
     }
 
     //Destructor
-    ThermodynamicsSystem::~ThermodynamicsSystem ()
+    ThermodynamicsSystem::~ThermodynamicsSystem()
     {
-      ReleaseThreads ();
+      ReleaseThreads();
     }
 
     /*-----------------------------------------------------------------------
     // Public Functions
     -----------------------------------------------------------------------*/
 
-    bool ThermodynamicsSystem::Initialize ()
+    bool ThermodynamicsSystem::Initialize()
     {
       if (guiText == nullptr)
       {
@@ -69,24 +67,24 @@ namespace Framework
       MapOffset = { -MapSize.x / 2, MapSize.y / 2 };
       AtmosphericTemperature = 300.f;
       //Allocate heatmap
-      TemperatureMap.allocate (MapSize.x, MapSize.y);
+      TemperatureMap.allocate(MapSize.x, MapSize.y);
       TemperatureMap.fill(300.f);
 
       //Allocate Oxygen/Density map
-      DensityMap.allocate (MapSize.x + 2, MapSize.y + 2);
-      DensityMap_Prev.allocate (MapSize.x + 2, MapSize.y + 2);
-      DensityMap.fill (Constant::K_Air);
+      DensityMap.allocate(MapSize.x + 2, MapSize.y + 2);
+      DensityMap_Prev.allocate(MapSize.x + 2, MapSize.y + 2);
+      DensityMap.fill(Constant::K_Air);
       DensityMap_Prev.fill(Constant::K_Air);
 
       //Allocate Velocity map
-      VelocityMapX.allocate (MapSize.x + 2, MapSize.y + 2);
-      VelocityMapY.allocate (MapSize.x + 2, MapSize.y + 2);
-      VelocityMap_PrevX.allocate (MapSize.x + 2, MapSize.y + 2);
-      VelocityMap_PrevY.allocate (MapSize.x + 2, MapSize.y + 2);
-      VelocityMapX.fill ({ 0 });
-      VelocityMapY.fill ({ 0 });
-      VelocityMap_PrevX.fill ({ 0 });
-      VelocityMap_PrevY.fill ({ 0 });
+      VelocityMapX.allocate(MapSize.x + 2, MapSize.y + 2);
+      VelocityMapY.allocate(MapSize.x + 2, MapSize.y + 2);
+      VelocityMap_PrevX.allocate(MapSize.x + 2, MapSize.y + 2);
+      VelocityMap_PrevY.allocate(MapSize.x + 2, MapSize.y + 2);
+      VelocityMapX.fill({ 0 });
+      VelocityMapY.fill({ 0 });
+      VelocityMap_PrevX.fill({ 0 });
+      VelocityMap_PrevY.fill({ 0 });
 
       //Allocate Terrain map
       Terrain.allocate(MapSize.x, MapSize.y);
@@ -95,7 +93,7 @@ namespace Framework
       WaterMap.allocate(MapSize.x, MapSize.y);
       WaterMap.fill(0.0f);
 
-      SpawnThreads ();
+      SpawnThreads();
 
       std::cout << "Thermodynamics Initialized." << std::endl;
       return true;
@@ -123,15 +121,14 @@ namespace Framework
 
         //Add the group if it isn't listed
         fireGroups.push_back(obj);
-        ++numTreesStart;
       }
     }
 
     // Called every frame
-    void ThermodynamicsSystem::Update (const double& dt)
+    void ThermodynamicsSystem::Update(const double& dt)
     {
-      UpdateMultiThreaded ();
-      UpdateFire (0.016);
+      UpdateMultiThreaded();
+      UpdateFire(0.016);
       //solver.vel_step
       //  (
       //  MapSize.x,
@@ -153,23 +150,23 @@ namespace Framework
 
     // Getters
     //Get cell temperature
-    float ThermodynamicsSystem::GetCellTemperature (int x, int y)
+    float ThermodynamicsSystem::GetCellTemperature(int x, int y)
     {
       if (x < 0 || x >= MapSize.x || y < 0 || y >= MapSize.y)
         return AtmosphericTemperature;
       return TemperatureMap.Get(x, y);
     }
 
-	//Get Terrain material
-	int ThermodynamicsSystem::GetCellMaterial(int x, int y)
-	{
-	  if (x < 0 || x >= MapSize.x || y < 0 || y >= MapSize.y)
-	  	return AIR;
-	  return Terrain.Get(x, y);
-	}
+    //Get Terrain material
+    int ThermodynamicsSystem::GetCellMaterial(int x, int y)
+    {
+      if (x < 0 || x >= MapSize.x || y < 0 || y >= MapSize.y)
+        return AIR;
+      return Terrain.Get(x, y);
+    }
 
     //Get cell oxygen content
-    float ThermodynamicsSystem::GetCellOxygen (const float& x, const float& y)
+    float ThermodynamicsSystem::GetCellOxygen(const float& x, const float& y)
     {
       glm::ivec2 sub = GetSubscript(x, y);
       int sub_x = int(sub.x);
@@ -186,13 +183,13 @@ namespace Framework
       int sub_y = int(sub.y);
       if (sub_x < 0 || sub_x > MapSize.x || sub_y < 0 || sub_y > MapSize.y)
       {
-        return vec2 (0, 0);
+        return vec2(0, 0);
       }
-      return vec2 (VelocityMapX.Get(sub_x, sub_y), VelocityMapY.Get(sub_x, sub_y));
+      return vec2(VelocityMapX.Get(sub_x, sub_y), VelocityMapY.Get(sub_x, sub_y));
     }
 
     // Setters
-    void ThermodynamicsSystem::ToggleAutoDissipation ()
+    void ThermodynamicsSystem::ToggleAutoDissipation()
     {
       EqualizePressure = !EqualizePressure;
     }
@@ -203,11 +200,11 @@ namespace Framework
       int sub_y = int(y);
       float dQ;
       if (sub_x < 0 || sub_x > MapSize.x || sub_y < 0 || sub_y > MapSize.y)
-        dQ = ConductiveHeatTransfer (Const::K_Wood, AtmosphericTemperature, temp, dt, 1);
+        dQ = ConductiveHeatTransfer(Const::K_Wood, AtmosphericTemperature, temp, dt, 1);
       else
       {
-        dQ = ConductiveHeatTransfer (Const::K_Air, TemperatureMap.Get(sub_x, sub_y), temp, dt, 1);
-        float deltaTemp = dTemp (dQ, DensityMap.Get(sub_x, sub_y) * 0.001f, /*Const::c_Air*/100);
+        dQ = ConductiveHeatTransfer(Const::K_Air, TemperatureMap.Get(sub_x, sub_y), temp, dt, 1);
+        float deltaTemp = dTemp(dQ, DensityMap.Get(sub_x, sub_y) * 0.001f, /*Const::c_Air*/100);
         TemperatureMap.Set(sub_x, sub_y, TemperatureMap.Get(sub_x, sub_y) + deltaTemp);
       }
       return dQ;
@@ -217,8 +214,8 @@ namespace Framework
     {
       if (x < 0 || x > MapSize.x || y < 0 || y > MapSize.y)
         return;
-      VelocityMapX.Set (x, y, v.x);
-      VelocityMapY.Set (x, y, v.y);
+      VelocityMapX.Set(x, y, v.x);
+      VelocityMapY.Set(x, y, v.y);
     }
 
     /*-----------------------------------------------------------------------
@@ -289,7 +286,7 @@ namespace Framework
         for (int i = 0; i < MapSize.x; ++i)
         {
           float netdQ = 0.f;
-          float oTemp = TemperatureMap.Get (i, j);
+          float oTemp = TemperatureMap.Get(i, j);
           //Loop through surrounding cells
           for (int y = j - 1; y <= j + 1; ++y)
           {
@@ -302,10 +299,10 @@ namespace Framework
                   float dQ = ConductiveHeatTransfer(materialList[Terrain.Get(i, j)].K,
                     TemperatureMap.Get(i, j), TemperatureMap.Get(x, y), dt, 1.0f);
                   netdQ += dQ;
-                  float oTemp = TemperatureMap.Get (x, y);
-                  TemperatureMap.Set (x, y, TemperatureMap.Get (x, y) - dTemp (dQ, DensityMap.Get (x, y) * 1.0f, Const::c_Air));
+                  float oTemp = TemperatureMap.Get(x, y);
+                  TemperatureMap.Set(x, y, TemperatureMap.Get(x, y) - dTemp(dQ, DensityMap.Get(x, y) * 1.0f, Const::c_Air));
 
-                  float factor = TemperatureMap.Get (x, y) / oTemp;
+                  float factor = TemperatureMap.Get(x, y) / oTemp;
                   //DensityMap.Set (x, y, DensityMap.Get (x, y) / factor);
                 }
                 else
@@ -325,7 +322,7 @@ namespace Framework
                 TemperatureMap.Get(i, j), TemperatureMap.Get(i, j + 1), dt);
               float oTempConv = TemperatureMap.Get(i, j + 1);
               netdQ += dQConv;
-              TemperatureMap.Set(i, j + 1, TemperatureMap.Get(i, j + 1) - dTemp (dQConv, DensityMap.Get(i, j + 1) * 1.0f, Const::c_Air));
+              TemperatureMap.Set(i, j + 1, TemperatureMap.Get(i, j + 1) - dTemp(dQConv, DensityMap.Get(i, j + 1) * 1.0f, Const::c_Air));
               float factor2 = TemperatureMap.Get(i, j + 1) / oTempConv;
               //DensityMap.Set(i, j + 1, DensityMap.Get(i, j) / factor2);
             }
@@ -334,12 +331,12 @@ namespace Framework
           {
             if (Terrain.Get(i, j) == 0 && Terrain.Get(i, j + 1) == 0)
             {
-              float dQConv = ConvectiveHeatTransfer(materialList[Terrain.Get(i, j)].Hc, 
+              float dQConv = ConvectiveHeatTransfer(materialList[Terrain.Get(i, j)].Hc,
                 TemperatureMap.Get(i, j), AtmosphericTemperature, dt);
               netdQ += dQConv;
             }
           }
-          TemperatureMap.Set(i, j, TemperatureMap.Get(i, j) + dTemp (netdQ, DensityMap.Get(i, j) * 1.0f, Const::c_Air));
+          TemperatureMap.Set(i, j, TemperatureMap.Get(i, j) + dTemp(netdQ, DensityMap.Get(i, j) * 1.0f, Const::c_Air));
           float factor1 = TemperatureMap.Get(i, j) / oTemp;
           //DensityMap.Set(i, j, DensityMap.Get(i, j) / factor1);
         }//for
@@ -349,26 +346,31 @@ namespace Framework
     //Update velocity vectors
     void ThermodynamicsSystem::ComputeVelocity(const int& start_index, const int& end_index, const double& dt)
     {
-      
+
     }
 
-   /* glm::vec2 ThermodynamicsSystem::GetConvecDir(const unsigned i, const unsigned j)
-    {
+    /* glm::vec2 ThermodynamicsSystem::GetConvecDir(const unsigned i, const unsigned j)
+     {
 
-    }*/
+     }*/
 
     //Update fire
     void ThermodynamicsSystem::UpdateFire(const double& dt)
     {
-      if (numTreesStart == 0)
+      if (fireGroups.size() == 0)
         return;
 
-      numTreesLeft = 0;
+      int numTreesLeft = 0;
+      int numTreesStart = 0;
       for (auto fg : fireGroups)
       {
         //printf("Percentage of fuel unused: %f\n", (manager->numTreesLeft / (float)manager->numTreesStart));
-        if (!fg->onFire)
-          ++numTreesLeft;
+        if (fg && fg->gameObject && fg->firePoints.size())
+        {
+          ++numTreesStart;
+          if (!fg->onFire)
+            ++numTreesLeft;
+        }
       }
 
       std::cout << CinderConsole::green;
@@ -384,13 +386,6 @@ namespace Framework
 
       if (numTreesLeft == 0)
       {
-        while (fireGroups.size())
-        {
-          fireGroups.pop_back();
-        }
-        fireGroups.clear();
-        numTreesStart = 0;
-        
         BaseEvent b;
         //EVENTSYSTEM->TriggerEvent(Events::ALLLTREESBURNED, b);
         return;
@@ -430,24 +425,25 @@ namespace Framework
       } //for
     }//function
 
-    void ThermodynamicsSystem::Reset ()
+    void ThermodynamicsSystem::Reset()
     {
       AtmosphericTemperature = 300.f;
-      TemperatureMap.fill (300.f);
+      TemperatureMap.fill(300.f);
 
-      DensityMap.fill (Const::p_Air);
+      DensityMap.fill(Const::p_Air);
 
-      VelocityMapX.fill ({ 0 });
-      VelocityMapY.fill ({ 0 });
-      VelocityMap_PrevX.fill ({ 0 });
-      VelocityMap_PrevY.fill ({ 0 });
+      VelocityMapX.fill({ 0 });
+      VelocityMapY.fill({ 0 });
+      VelocityMap_PrevX.fill({ 0 });
+      VelocityMap_PrevY.fill({ 0 });
 
-      for (unsigned i = 0; i < FireMap.size (); ++i)
+      fireGroups.clear();
+
+      for (unsigned i = 0; i < FireMap.size(); ++i)
       {
-        FireMap.at (i).second->DouseFire ();
+        FireMap.at(i).second->DouseFire();
       }
-
-      FireMap.clear ();
+      FireMap.clear();
     }
 
     glm::ivec2 ThermodynamicsSystem::GetSubscript(const float &x, const float &y)
@@ -458,128 +454,128 @@ namespace Framework
       return res;
     }
 
-    void ThermodynamicsSystem::SpawnThreads ()
+    void ThermodynamicsSystem::SpawnThreads()
     {
       // Temperature Threads
       for (int i = 0; i < kNumThreads; ++i)
       {
-        eventStartTemperature [i] = CreateEvent (NULL, false, NULL, NULL);
-        eventEndTemperature [i] = CreateEvent (NULL, true, NULL, NULL);
-        m_TemperatureThreads [i] = CreateThread (NULL, 0, UpdateTemperatureFunc, NULL, 0, NULL);
+        eventStartTemperature[i] = CreateEvent(NULL, false, NULL, NULL);
+        eventEndTemperature[i] = CreateEvent(NULL, true, NULL, NULL);
+        m_TemperatureThreads[i] = CreateThread(NULL, 0, UpdateTemperatureFunc, NULL, 0, NULL);
       }
 
       // Velocity Threads
       for (int i = 0; i < kNumThreads; ++i)
       {
-        eventStartVelocity [i] = CreateEvent (NULL, false, NULL, NULL);
-        eventEndFire [i] = CreateEvent (NULL, true, NULL, NULL);
-        m_VelocityThreads [i] = CreateThread (NULL, 0, UpdateVelocityFunc, NULL, 0, NULL);
+        eventStartVelocity[i] = CreateEvent(NULL, false, NULL, NULL);
+        eventEndFire[i] = CreateEvent(NULL, true, NULL, NULL);
+        m_VelocityThreads[i] = CreateThread(NULL, 0, UpdateVelocityFunc, NULL, 0, NULL);
       }
 
       // Fire Threads
       for (int i = 0; i < kNumThreads; ++i)
       {
-        eventStartFire [i] = CreateEvent (NULL, false, NULL, NULL);
-        eventEndFire [i] = CreateEvent (NULL, true, NULL, NULL);
-        m_FireThreads [i] = CreateThread (NULL, 0, UpdateFireFunc, NULL, 0, NULL);
+        eventStartFire[i] = CreateEvent(NULL, false, NULL, NULL);
+        eventEndFire[i] = CreateEvent(NULL, true, NULL, NULL);
+        m_FireThreads[i] = CreateThread(NULL, 0, UpdateFireFunc, NULL, 0, NULL);
       }
     }
 
-    void ThermodynamicsSystem::ReleaseThreads ()
+    void ThermodynamicsSystem::ReleaseThreads()
     {
       for (int i = 0; i < kNumThreads; ++i)
       {
-        CloseHandle (eventStartTemperature [i]);
-        CloseHandle (eventEndTemperature [i]);
-        CloseHandle (m_TemperatureThreads [i]);
+        CloseHandle(eventStartTemperature[i]);
+        CloseHandle(eventEndTemperature[i]);
+        CloseHandle(m_TemperatureThreads[i]);
       }
 
       for (int i = 0; i < kNumThreads; ++i)
       {
-        CloseHandle (eventStartVelocity [i]);
-        CloseHandle (eventEndVelocity [i]);
-        CloseHandle (m_VelocityThreads [i]);
+        CloseHandle(eventStartVelocity[i]);
+        CloseHandle(eventEndVelocity[i]);
+        CloseHandle(m_VelocityThreads[i]);
       }
 
       for (int i = 0; i < kNumThreads; ++i)
       {
-        CloseHandle (eventStartFire [i]);
-        CloseHandle (eventEndFire [i]);
-        CloseHandle (m_FireThreads [i]);
+        CloseHandle(eventStartFire[i]);
+        CloseHandle(eventEndFire[i]);
+        CloseHandle(m_FireThreads[i]);
       }
     }
 
-    void ThermodynamicsSystem::UpdateMultiThreaded ()
+    void ThermodynamicsSystem::UpdateMultiThreaded()
     {
       // Start Temperature Threads
       for (int i = 0; i < kNumThreads; ++i)
       {
-        SetEvent (eventStartTemperature [i]);
+        SetEvent(eventStartTemperature[i]);
       }
 
       // Start Temperature Threads
       for (int i = 0; i < kNumThreads; ++i)
       {
-        SetEvent (eventStartVelocity [i]);
+        SetEvent(eventStartVelocity[i]);
       }
 
       // Start Temperature Threads
       /*for (int i = 0; i < kNumThreads; ++i)
       {
-        SetEvent (eventStartFire [i]);
+      SetEvent (eventStartFire [i]);
       }*/
 
-      WaitForMultipleObjects (kNumThreads, eventEndTemperature, true, INFINITE);
-      WaitForMultipleObjects (kNumThreads, eventEndVelocity, true, INFINITE);
+      WaitForMultipleObjects(kNumThreads, eventEndTemperature, true, INFINITE);
+      WaitForMultipleObjects(kNumThreads, eventEndVelocity, true, INFINITE);
       //WaitForMultipleObjects (kNumThreads, eventEndFire, true, INFINITE);
 
       for (int i = 0; i < kNumThreads; ++i)
       {
-        ResetEvent (eventEndTemperature [i]);
+        ResetEvent(eventEndTemperature[i]);
       }
       for (int i = 0; i < kNumThreads; ++i)
       {
-        ResetEvent (eventEndVelocity [i]);
+        ResetEvent(eventEndVelocity[i]);
       }
       /*for (int i = 0; i < kNumThreads; ++i)
       {
-        ResetEvent (eventEndFire [i]);
+      ResetEvent (eventEndFire [i]);
       }*/
     }
 
-    void ThermodynamicsSystem::Draw ()
+    void ThermodynamicsSystem::Draw()
     {
-      glUseProgram (0);
-      glMatrixMode (GL_PROJECTION);
-      glLoadIdentity ();
-      gluPerspective (Camera::main->GetFOV (), (float) WINDOWSYSTEM->Get_Width () / WINDOWSYSTEM->Get_Height (), 0, 100.0f);
-      glMatrixMode (GL_MODELVIEW);
-      glLoadIdentity ();
+      glUseProgram(0);
+      glMatrixMode(GL_PROJECTION);
+      glLoadIdentity();
+      gluPerspective(Camera::main->GetFOV(), (float)WINDOWSYSTEM->Get_Width() / WINDOWSYSTEM->Get_Height(), 0, 100.0f);
+      glMatrixMode(GL_MODELVIEW);
+      glLoadIdentity();
 
-      glm::vec3 eye = glm::vec3 (0, 0, 1) * Camera::main->GetSize () + glm::vec3 (Camera::main->gameObject->Transform->GetPosition ().x, Camera::main->gameObject->Transform->GetPosition ().y, 0);
-      glm::vec3 center = Camera::main->gameObject->Transform->GetPosition ();
-      glm::vec3 up = glm::vec3 (0, 1, 0);
-      gluLookAt (eye.x, eye.y, eye.z, center.x, center.y, center.z, up.x, up.y, up.z);
+      glm::vec3 eye = glm::vec3(0, 0, 1) * Camera::main->GetSize() + glm::vec3(Camera::main->gameObject->Transform->GetPosition().x, Camera::main->gameObject->Transform->GetPosition().y, 0);
+      glm::vec3 center = Camera::main->gameObject->Transform->GetPosition();
+      glm::vec3 up = glm::vec3(0, 1, 0);
+      gluLookAt(eye.x, eye.y, eye.z, center.x, center.y, center.z, up.x, up.y, up.z);
       //glTranslatef (0, 32, 0);
       //glScalef (64, 64, 1.0f);
-      glBegin (GL_QUADS);
+      glBegin(GL_QUADS);
       {
-        for (int i = 0; i < Terrain.getSize ().y; ++i)
+        for (int i = 0; i < Terrain.getSize().y; ++i)
         {
-          for (int j = 0; j < Terrain.getSize ().x; ++j)
+          for (int j = 0; j < Terrain.getSize().x; ++j)
           {
-            glColor4f (TemperatureMap.Get (j, i) / Constant::BT_Organics,
-              TemperatureMap.Get (j, i) / Constant::BT_Organics,
-              TemperatureMap.Get (j, i) / Constant::BT_Organics,
-              TemperatureMap.Get (j, i) / Constant::BT_Organics * 0.4f);
-            glVertex2f (j - (MapSize.x * 0.5f) - 1, i - (MapSize.y * 0.5f) - 1);
-            glVertex2f (j - (MapSize.x * 0.5f) - 2, i - (MapSize.y * 0.5f) - 1);
-            glVertex2f (j - (MapSize.x * 0.5f) - 2, i - (MapSize.y * 0.5f) - 2);
-            glVertex2f (j - (MapSize.x * 0.5f) - 1, i - (MapSize.x * 0.5f) - 2);
+            glColor4f(TemperatureMap.Get(j, i) / Constant::BT_Organics,
+              TemperatureMap.Get(j, i) / Constant::BT_Organics,
+              TemperatureMap.Get(j, i) / Constant::BT_Organics,
+              TemperatureMap.Get(j, i) / Constant::BT_Organics * 0.4f);
+            glVertex2f(j - (MapSize.x * 0.5f) - 1, i - (MapSize.y * 0.5f) - 1);
+            glVertex2f(j - (MapSize.x * 0.5f) - 2, i - (MapSize.y * 0.5f) - 1);
+            glVertex2f(j - (MapSize.x * 0.5f) - 2, i - (MapSize.y * 0.5f) - 2);
+            glVertex2f(j - (MapSize.x * 0.5f) - 1, i - (MapSize.x * 0.5f) - 2);
           }
         }
       }
-      glEnd ();
+      glEnd();
 
       //glColor4f (1, 1, 1, 0.2f);
       //glBegin (GL_QUADS);
@@ -607,10 +603,10 @@ namespace Framework
       //      glVertex2f (j, i - 1);
       //    }
       //  }
-      glPointSize (10.0f);
-      glBegin (GL_POINTS);
+      glPointSize(10.0f);
+      glBegin(GL_POINTS);
       FireStarter* firePoint;
-      for (auto i = FireMap.begin (); i != FireMap.end (); ++i)
+      for (auto i = FireMap.begin(); i != FireMap.end(); ++i)
       {
 
 
@@ -634,11 +630,11 @@ namespace Framework
         //glVertex2f ((*i).first.x - 1, (*i).first.y - 1);
         //glVertex2f ((*i).first.x, (*i).first.y - 1);
       }
-    glEnd ();
-    glMatrixMode (GL_PROJECTION);
-    glLoadIdentity ();
-    glMatrixMode (GL_MODELVIEW);
-    glLoadIdentity ();
+      glEnd();
+      glMatrixMode(GL_PROJECTION);
+      glLoadIdentity();
+      glMatrixMode(GL_MODELVIEW);
+      glLoadIdentity();
     } //draw function
 
   }//namespace Physics

@@ -28,6 +28,7 @@ namespace Framework
     TerrainCreator::~TerrainCreator()
     {
       delete[] HeightMapRock;
+      HeightMapRock = nullptr;
       //delete soil and water once implemented
     }
 
@@ -86,6 +87,10 @@ namespace Framework
       delete[] x2;
       delete[] x4;
       delete[] x8;
+      x1 = nullptr;
+      x2 = nullptr;
+      x4 = nullptr;
+      x8 = nullptr;
       //delete[] WaveBuffer;
     } //function
 

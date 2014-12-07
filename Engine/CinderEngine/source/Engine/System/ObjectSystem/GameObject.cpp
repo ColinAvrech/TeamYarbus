@@ -61,6 +61,7 @@ namespace Framework
     for(auto comp : Components)
     {
       delete comp.second;
+      comp.second = nullptr;
     }
   }
 	

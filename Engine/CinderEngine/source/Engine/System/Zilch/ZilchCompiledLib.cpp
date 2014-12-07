@@ -87,6 +87,8 @@ namespace Framework
   {
     delete LinkedLibs;
     delete LibList;
+    LinkedLibs = nullptr;
+    LibList = nullptr;
     Zilch::ZilchShutdown();
   }
 

@@ -39,11 +39,10 @@ namespace Framework
   Tree2D::~Tree2D ()
   {
     delete vao, vbo;
-    if (tree != nullptr)
-    {
-      delete tree;
-      tree = nullptr;
-    }
+    delete tree;
+    vao = nullptr;
+    vbo = nullptr;
+    tree = nullptr;
   }
 
   void Tree2D::Serialize (Serializer::DataNode* data)

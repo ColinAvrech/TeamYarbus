@@ -79,6 +79,7 @@ namespace Framework
     while (Systems.size() != 0)
     {
       delete Systems[Systems.size() - 1];
+      Systems[Systems.size() - 1] = nullptr;
       Systems.pop_back();
     }
   }

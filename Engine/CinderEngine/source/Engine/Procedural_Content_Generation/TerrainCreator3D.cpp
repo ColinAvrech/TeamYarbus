@@ -22,6 +22,7 @@ namespace Framework
     TerrainCreator3D::~TerrainCreator3D()
     {
       delete[] HeightMapRock;
+      HeightMapRock = nullptr;
     }
 
     void TerrainCreator3D::GenerateHeightMap(int base, int height)

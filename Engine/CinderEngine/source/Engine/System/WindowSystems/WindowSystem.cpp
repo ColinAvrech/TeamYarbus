@@ -444,6 +444,7 @@ namespace Framework
   WindowSystem::~WindowSystem ()
   {
     delete OPENGL;
+    OPENGL = nullptr;
     glfwTerminate ();
   }
 

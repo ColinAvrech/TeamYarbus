@@ -119,6 +119,7 @@ namespace Framework
 		for (auto level : levelList)
 		{
 			delete level;
+      level = nullptr;
 		}
 		levelList.clear();
 	}
@@ -245,7 +246,7 @@ namespace Framework
       if (object.second == obj)
       {
         delete object.second;
-        object.second = NULL;
+        object.second = nullptr;
       }
     }
   }
@@ -271,7 +272,7 @@ namespace Framework
 		for(auto obj : GameObjectsToBeDestroyed)
 		{
 		  delete obj;
-			obj = NULL;
+			obj = nullptr;
 		}
 	}
 

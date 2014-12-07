@@ -72,5 +72,7 @@ namespace Framework
     image = Cinder_Image_Loader (pixels2, width, height);
     delete [] pixels2;
     delete [] pixels3;
+    pixels2 = nullptr;
+    pixels3 = nullptr;
   }
 }

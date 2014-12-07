@@ -24778,6 +24778,7 @@ namespace Zilch
 
               // Delete the while-node
               delete node;
+              node = nullptr;
             }
           }
         }
@@ -24836,6 +24837,7 @@ namespace Zilch
 
         // Delete the while-node
         delete node;
+        node = nullptr;
       }
     }
 
@@ -24880,6 +24882,7 @@ namespace Zilch
 
       // If we got here, we failed
       delete condition;
+      condition = nullptr;
     }
 
     // We didn't successfully parse an expression, so just recall the token position and return null
@@ -25033,12 +25036,14 @@ namespace Zilch
                 // We didn't successfully parse an expression, so just recall the token position and return null
                 RecallTokenPosition();
                 delete node;
+                node = nullptr;
                 return nullptr;
               }
             }
 
             // We failed, so delete anything we've created up to this point
             delete range;
+            range = nullptr;
           }
           else
           {
@@ -25048,6 +25053,7 @@ namespace Zilch
 
           // We failed, so delete anything we've created up to this point
           delete valueVariable;
+          valueVariable = nullptr;
         }
       }
     }
@@ -25159,6 +25165,7 @@ namespace Zilch
 
                     // Delete the node since we failed
                     delete node;
+                    node = nullptr;
                   }
                 }
               }
@@ -25170,10 +25177,12 @@ namespace Zilch
 
               // We failed, so delete anything we've created up to this point
               delete iterator;
+              iterator = nullptr;
             }
 
             // We failed, so delete anything we've created up to this point
             delete condition;
+            condition = nullptr;
           }
           else
           {
@@ -25184,6 +25193,8 @@ namespace Zilch
           // We failed, so delete anything we've created up to this point
           delete variable;
           delete initialization;
+          variable = nullptr;
+          initialization = nullptr;
         }
       }
     }
@@ -25250,11 +25261,13 @@ namespace Zilch
 
               // Delete the while-node
               delete node;
+              node = nullptr;
             }
           }
 
           // Delete the conditional expression node
           delete condition;
+          condition = nullptr;
         }
         else
         {
@@ -25329,6 +25342,7 @@ namespace Zilch
 
                 // Delete the conditional expression node
                 delete condition;
+                condition = nullptr;
               }
               else
               {
@@ -25341,6 +25355,7 @@ namespace Zilch
 
         // Delete the while-node
         delete node;
+        node = nullptr;
       }
     }
 
@@ -25391,6 +25406,7 @@ namespace Zilch
 
         // Delete the while-node
         delete node;
+        node = nullptr;
       }
     }
 
@@ -25454,6 +25470,7 @@ namespace Zilch
 
       // We allocated the type, free it now since we failed
       delete type;
+      type = nullptr;
     }
     
     // We did not parse it
@@ -25576,6 +25593,7 @@ namespace Zilch
 
                   // Deleting the initializer should delete the constructor call and the creation node, and the type we parsed
                   delete initializer;
+                  initializer = nullptr;
                   return nullptr;
                 }
               }
@@ -25606,6 +25624,7 @@ namespace Zilch
 
                       // Deleting the initializer should delete the constructor call and the creation node, and the type we parsed
                       delete initializer;
+                      initializer = nullptr;
                       return nullptr;
                     }
 
@@ -25620,6 +25639,7 @@ namespace Zilch
                   {
                     // Deleting the initializer should delete the constructor call and the creation node, and the type we parsed
                     delete initializer;
+                    initializer = nullptr;
                     this->RecallTokenPosition();
                     return nullptr;
                   }
@@ -25644,6 +25664,7 @@ namespace Zilch
 
                 // Deleting the initializer should delete the constructor call and the creation node, and the type we parsed
                 delete initializer;
+                initializer = nullptr;
                 return nullptr;
               }
 
@@ -25689,6 +25710,7 @@ namespace Zilch
             {
               // Deleting the constructor call should delete the creation node, all initializers, and the type we parsed
               delete initializer;
+              initializer = nullptr;
               this->RecallTokenPosition();
               return nullptr;
             }
@@ -25717,6 +25739,7 @@ namespace Zilch
 
       // We allocated the type, free it now since we didn't parse
       delete type;
+      type = nullptr;
     }
     // If we didn't read a type, but we did have a new/local...
     else if (creationMode != CreationMode::Inferred)
@@ -25858,6 +25881,7 @@ namespace Zilch
           ErrorHere(ErrorCode::StringInterpolantExpectedExpression);
           RecallTokenPosition();
           delete node;
+          node = nullptr;
           return nullptr;
         }
 
@@ -25883,6 +25907,7 @@ namespace Zilch
           ErrorHere(ErrorCode::StringInterpolantNotComplete);
           RecallTokenPosition();
           delete node;
+          node = nullptr;
           return nullptr;
         }
       }
@@ -25982,6 +26007,7 @@ namespace Zilch
 
         // If we got here, we failed to finish the grouping operator
         delete expression;
+        expression = nullptr;
       }
     }
 
@@ -29401,6 +29427,7 @@ namespace Zilch
 
       // Delete the node (free's all the memory even of children)
       delete templateClassNode;
+      templateClassNode = nullptr;
     }
   }
 
@@ -30263,6 +30290,7 @@ namespace Zilch
             // Free all the template argument nodes
             // (what we're instantiating this template with)
             delete dataType->TemplateArguments[i];
+            dataType->TemplateArguments[i] = nullptr;
           }
 
           // Clear out the template arguments and point it to the new class name
@@ -33027,6 +33055,7 @@ namespace Zilch
   SyntaxTree::~SyntaxTree()
   {
     delete this->Root;
+    this->Root = nullptr;
   }
 
   //***************************************************************************
@@ -33044,6 +33073,7 @@ namespace Zilch
 
       // Destroy all of that child's type children
       delete childType;
+      childType = nullptr;
     }
   }
   
@@ -42238,6 +42268,7 @@ namespace Zilch
       {
         // Any failure to connect should destroy the connection
         delete connection;
+        connection = nullptr;
 
         // If the extended error code was set, it means we ran into a true socket error (or the socket was closed) so terminate the connection
         if (acceptEvent.ErrorStatus.ExtendedErrorCode != 0 && Socket::IsAcceptRemoteError(acceptEvent.ErrorStatus.ExtendedErrorCode) == false)
@@ -42276,6 +42307,7 @@ namespace Zilch
       // Grab the current connection
       ThreadedWebSocketConnection* connection = this->Connections[i];
       delete connection;
+      connection = nullptr;
     }
   }
 
@@ -43058,9 +43090,9 @@ void Stats::Accumulate(const Stats& right)
   PeakAllocated += right.PeakAllocated;
 }
 
-Root* Root::RootGraph = NULL;
-Heap* Root::GloblHeap = NULL;
-Heap* Root::StaticHeap = NULL;
+Root* Root::RootGraph = nullptr;
+Heap* Root::GloblHeap = nullptr;
+Heap* Root::StaticHeap = nullptr;
 
 void Shutdown()
 {
@@ -43072,10 +43104,10 @@ void Root::Shutdown()
   //Only delete the root
   //the root graph node will delete all child graph
   //nodes and clean up memory.
-  if(RootGraph != NULL)
+  if (RootGraph != nullptr)
   {
     delete RootGraph;
-    RootGraph = NULL;
+    RootGraph = nullptr;
   }
 }
 
@@ -54058,6 +54090,7 @@ byte * ReadFileIntoMemory(cstr filePath, size_t& fileSize, size_t extra)
             filePath); 
 
     delete fileBuffer;
+    fileBuffer = nullptr;
     ::CloseHandle(fileHandle);
     return NULL;
   }

@@ -48,20 +48,28 @@ namespace Framework
       {
         CINDER_LOOP_THROUGH_INDEX (temp_index, 0, INDEX (Width) * 2)
         {
-          delete [] SurfaceValueTable [temp_index];
+          delete[] SurfaceValueTable[temp_index];
+          SurfaceValueTable[temp_index] = nullptr;
         }
       }
       if (IsInsideSurface != nullptr)
       {
         CINDER_LOOP_THROUGH_INDEX (temp_index, 0, INDEX (Width) * 2 - 1)
         {
-          delete [] IsInsideSurface [temp_index];
+          delete[] IsInsideSurface[temp_index];
+          IsInsideSurface[temp_index] = nullptr;
         }
       }
       if (SurfaceValueTable != nullptr)
+      {
         delete SurfaceValueTable;
+        SurfaceValueTable = nullptr;
+      }
       if (IsInsideSurface != nullptr)
+      {
         delete IsInsideSurface;
+        IsInsideSurface = nullptr;
+      }
     }
 
 

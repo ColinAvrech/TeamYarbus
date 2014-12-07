@@ -33,8 +33,7 @@ namespace Framework
   {
     for (auto firePoint : firePoints)
     {
-      delete firePoint;
-      firePoint = nullptr;
+      firePoint->manager = nullptr;
     }
 
     firePoints.clear();

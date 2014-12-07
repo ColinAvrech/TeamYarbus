@@ -119,6 +119,7 @@ namespace Framework
 		File->close();
 
 		delete File;
+    File = nullptr;
 	}
 
 	Zilch::String ZilchFile::ReadLine(Zilch::Integer line)

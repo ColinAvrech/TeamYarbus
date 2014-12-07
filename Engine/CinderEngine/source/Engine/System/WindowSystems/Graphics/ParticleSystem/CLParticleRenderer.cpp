@@ -65,6 +65,9 @@ namespace Framework
   CLParticleRenderer::~CLParticleRenderer ()
   {
     delete SSBOPos, SSBOVel, vao;
+    SSBOPos = nullptr;
+    SSBOVel = nullptr;
+    vao = nullptr;
     EVENTSYSTEM->mDisconnect<KeyEvent, CLParticleRenderer> (Events::KEY_ANY, this, &CLParticleRenderer::OnKeyPressed);
   }
 

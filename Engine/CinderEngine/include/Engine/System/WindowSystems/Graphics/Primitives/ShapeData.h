@@ -56,6 +56,8 @@ namespace Framework
     {
       delete [] vertices;
       delete [] indices;
+      vertices = nullptr;
+      indices = nullptr;
       numIndices = numVertices = 0;
     }
 
