@@ -13,7 +13,7 @@
 #include "CollisionEvent.h"
 #include "Core.h"
 #include "ObjectSystem.h"
-#include "Text.h"
+#include "GUIText.h"
 #include "Thermodynamics.h"
 #include "PlayerEffect.h"
 #include "Pipeline.h"
@@ -63,17 +63,6 @@ namespace Framework
       {
         OBJECTSYSTEM->LoadLevel (OBJECTSYSTEM->currentLevelName.c_str ());
       }
-      return;
-    }
- 
-    if (FireStarterManager::numTreesLeft == 0)
-    {
-      timer += 0.016f;
-      if (timer > 2.0f)
-      {
-        
-      }
-
       return;
     }
 

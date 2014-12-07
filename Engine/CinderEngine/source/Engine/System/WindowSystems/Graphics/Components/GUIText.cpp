@@ -8,7 +8,7 @@
 */
 /******************************************************************************/
 
-#include "Text.h"
+#include "GUIText.h"
 #include "ZilchCompiledLib.h"
 #include "Pipeline.h"
 #include "glut.h"

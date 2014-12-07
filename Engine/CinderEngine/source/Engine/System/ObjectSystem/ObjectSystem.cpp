@@ -42,7 +42,7 @@ deleted.
 #include "FireSystem.h"
 #include "VolcanoEffect.h"
 #include "CLParticleRenderer.h"
-#include "Text.h"
+#include "GUIText.h"
 //////////////////////////////////////////////////////////////////////////
 // AUDIO
 //////////////////////////////////////////////////////////////////////////
@@ -219,7 +219,7 @@ namespace Framework
     //////////////////////////////////////////////////////////////////////////
     RegisterComponent (CharacterController);
     RegisterComponent (Health);
-    RegisterComponent (FireStarterManager);
+    RegisterComponent (FireGroup);
     RegisterComponent (LevelTimer);
     RegisterComponent (Follow);
     RegisterComponent (InterpolateBackground);
@@ -303,9 +303,6 @@ namespace Framework
       else
         loadSuccess = false;
     }
-
-    if (loadSuccess)
-      FireStarterManager::numTreesLeft = FireStarterManager::numTreesStart = 0;
   }
 
   void ObjectSystem::RestartLevel()

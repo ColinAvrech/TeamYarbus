@@ -75,8 +75,8 @@ namespace Framework
     float dist = Physics::Distance(pos, cpos);
     if (rad >= dist)
     {
-      //for (auto fireStarter : gameObject->FireStarterManager)
-      //if (gameObject->FireStarterManager->)
+      //for (auto fireStarter : gameObject->FireGroup)
+      //if (gameObject->FireGroup->)
       //  std::cout << "Sparked!" << std::endl;
       //TODO:: have debug for fires
 

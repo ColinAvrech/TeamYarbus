@@ -28,7 +28,7 @@
 #include "HeatMap.h"
 #include "EventSystem.h"
 #include "GameEvent.h"
-#include "Text.h"
+#include "GUIText.h"
 
 
 namespace Framework

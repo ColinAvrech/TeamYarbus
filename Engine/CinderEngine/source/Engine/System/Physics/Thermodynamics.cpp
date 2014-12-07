@@ -29,6 +29,7 @@ namespace Framework
 
     //!Null untill the ObjectSystem has been created
     ThermodynamicsSystem * THERMODYNAMICS = NULL;
+    GUIText* ThermodynamicsSystem::guiText = nullptr;
     namespace Const = Constant;
     //Constructor
     ThermodynamicsSystem::ThermodynamicsSystem ()
@@ -36,6 +37,8 @@ namespace Framework
       //Do stuff
       CellSize = 0.1f;
       THERMODYNAMICS = this;
+      numTreesStart = 0;
+      numTreesLeft = 0;
     }
 
     //Destructor
@@ -50,6 +53,14 @@ namespace Framework
 
     bool ThermodynamicsSystem::Initialize ()
     {
+      if (guiText == nullptr)
+      {
+        GameObject* go = new GameObject(10000);
+        guiText = reinterpret_cast<GUIText*> (go->AddComponent("GUIText"));
+        guiText->position = { -0.2f, -0.9f };
+        guiText->Initialize();
+      }
+
       //Initialize material list
       Init_Materials();
       //Scan level
@@ -98,6 +109,21 @@ namespace Framework
         FireMap.push_back(std::make_pair(sub, obj));
         Terrain.Set(sub.x, sub.y, Physics::Material(obj->material_type));
         TemperatureMap.Set(sub.x, sub.y, obj->initTemp);
+      }
+    }
+
+    void ThermodynamicsSystem::Add_Group(FireGroup *obj)
+    {
+      if (obj)
+      {
+        for (auto fs : obj->firePoints)
+        {
+          Add_Object(fs);
+        }
+
+        //Add the group if it isn't listed
+        fireGroups.push_back(obj);
+        ++numTreesStart;
       }
     }
 
@@ -334,6 +360,42 @@ namespace Framework
     //Update fire
     void ThermodynamicsSystem::UpdateFire(const double& dt)
     {
+      if (numTreesStart == 0)
+        return;
+
+      numTreesLeft = 0;
+      for (auto fg : fireGroups)
+      {
+        //printf("Percentage of fuel unused: %f\n", (manager->numTreesLeft / (float)manager->numTreesStart));
+        if (!fg->onFire)
+          ++numTreesLeft;
+      }
+
+      std::cout << CinderConsole::green;
+      if (numTreesLeft == numTreesStart)
+      {
+        guiText->text = "Burn things to keep the flame alive.";
+      }
+      else
+      {
+        guiText->text = "Trees Remaining: " + std::to_string(numTreesLeft);
+      }
+      std::cout << CinderConsole::red;
+
+      if (numTreesLeft == 0)
+      {
+        while (fireGroups.size())
+        {
+          fireGroups.pop_back();
+        }
+        fireGroups.clear();
+        numTreesStart = 0;
+        
+        BaseEvent b;
+        //EVENTSYSTEM->TriggerEvent(Events::ALLLTREESBURNED, b);
+        return;
+      }
+
       for (auto i = FireMap.begin(); i != FireMap.end(); ++i)
       {
         if ((*i).second->onFire)

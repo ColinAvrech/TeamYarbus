@@ -20,56 +20,37 @@
 #include "Events.h"
 #include "GameEvent.h"
 #include "EventSystem.h"
-#include "Text.h"
+#include "GUIText.h"
 
 namespace Framework
 {
-  int FireStarterManager::numTreesLeft = 0;
-  int FireStarterManager::numTreesStart = 0;
-  GUIText* FireStarterManager::guiText = nullptr;
-
-  FireStarterManager::FireStarterManager()
+  FireGroup::FireGroup()
   {
     onFire = false; 
-    
-    ++numTreesLeft;
-    if(numTreesLeft > numTreesStart)
-      numTreesStart = numTreesLeft;
   }
 
-  FireStarterManager::~FireStarterManager()
+  FireGroup::~FireGroup()
   {
     for (auto firePoint : firePoints)
     {
       delete firePoint;
+      firePoint = nullptr;
     }
 
     firePoints.clear();
-    numPoints = 0;
-    numTreesLeft = 0;
-    numTreesStart = 0;
   }
 
-  void FireStarterManager::Initialize()
+  void FireGroup::Initialize()
   {
-    gameObject->FireStarterManager = this;
-    if (guiText == nullptr)
-    {
-      GameObject* go = new GameObject(10000);
-      guiText = reinterpret_cast<GUIText*> (go->AddComponent("GUIText"));
-      guiText->position = { -0.2f, -0.9f };
-      guiText->Initialize();
-    }
+    gameObject->FireGroup = this;
   }
 
-  void FireStarterManager::AddFireStarter(FireStarter *newFirePoint)
+  void FireGroup::AddFireStarter(FireStarter *newFirePoint)
   {
     firePoints.push_back(newFirePoint);
-    Physics::THERMODYNAMICS->Add_Object(newFirePoint);
-    ++numPoints;
   }
 
-	void FireStarterManager::Serialize(Serializer::DataNode* data)
+	void FireGroup::Serialize(Serializer::DataNode* data)
 	{
     //TODO:: Serialize in FSM instead of here once we switch away from procedural
 		//Component::Get_Enabled(data);
@@ -94,7 +75,7 @@ namespace Framework
 			Fuel -= (float)dt;
 	}
 
-	FireStarter::FireStarter(const vec2& pos, FireStarterManager* fsm)
+	FireStarter::FireStarter(const vec2& pos, FireGroup* fsm)
 	{
 		//manager->gameObject->FireStarter = this;
     positionOffset = pos;
@@ -130,38 +111,17 @@ namespace Framework
 		if (!onFire)
 		{
 			onFire = true;
+      vec2 pos = GetPosition();
+      Physics::ThermodynamicsSystem::FIRE->AddFire( pos.x, pos.y, 60);
 
       if (manager && !manager->onFire)
       {
-        --manager->numPoints;
-        if (manager->numPoints <= 0)
+        manager->onFire = true;
+        for (auto fs : manager->firePoints)
         {
-          manager->onFire = true;
-          --manager->numTreesLeft;
-          std::cout << CinderConsole::green;
-          printf ("Percentage of fuel unused: %f\n", (manager->numTreesLeft/(float)manager->numTreesStart));
-          printf("Trees Remaining: %d, Total Trees: %d", manager->numTreesLeft, manager->numTreesStart);
-          FireStarterManager::guiText->text = "Trees Remaining: " + std::to_string(FireStarterManager::numTreesLeft);
-          std::cout << CinderConsole::red;
-        }
-        if (FireStarterManager::numTreesLeft <= 0)
-        {
-          BaseEvent b;
-          EVENTSYSTEM->TriggerEvent (Events::ALLLTREESBURNED, b);
-          return;
+          fs->LightOnFire();
         }
       }
-
-      vec2 pos = GetPosition();
-      Physics::ThermodynamicsSystem::FIRE->AddFire( pos.x, pos.y, 60);
-      /*
-			Physics::ThermodynamicsSystem::FIRE->AddFire
-				(
-				gameObject->Transform->GetPosition().x,
-				gameObject->Transform->GetPosition().y,
-				30
-				);
-      */
 		}
 	}
 
@@ -178,7 +138,7 @@ namespace Framework
 		}
 	}
 
-	DefineComponentName(FireStarterManager);
+	DefineComponentName(FireGroup);
   /* TODO:: Use Firegrid
   void FireGrid::Create(FireStarter* fs)
 	{

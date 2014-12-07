@@ -106,7 +106,7 @@ namespace Framework
 			c->Initialize();
 		}
 		////Add firestarter component here
-		c = grass->AddComponent("FireStarterManager");
+		c = grass->AddComponent("FireGroup");
 		if (c)
 		{
 			c->Initialize();

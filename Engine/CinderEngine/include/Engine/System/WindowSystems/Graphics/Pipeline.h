@@ -14,6 +14,7 @@
 #include "glew.h"
 #include "CinderMath.h"
 #include "FrameBufferObject.h"
+#include "GUIText.h"
 #include <vector>
 #include <unordered_map>
 #include <list>

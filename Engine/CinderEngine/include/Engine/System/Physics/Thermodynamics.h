@@ -25,6 +25,7 @@
 #include "Terrain2D.h"
 #include "FireStarter.h"
 #include "TDLib.h"
+#include "GUIText.h"
 
 #pragma endregion
 
@@ -124,6 +125,7 @@ namespace Framework
       float SetCellTemperature(const float& x, const float& y, const float& temp, const double& dt);
       void SetCellVelocity (const int x, const int y, vec2 v);
       void Add_Object(FireStarter *obj);
+      void Add_Group(FireGroup *obj);
       void Draw ();
 #pragma endregion
 
@@ -187,7 +189,13 @@ namespace Framework
       //Water and moisture content
       Grid2D<float> WaterMap;
       
-      std::vector<std::pair<glm::ivec2, FireStarter*>> FireMap;
+
+      static GUIText* guiText;
+      int numTreesStart;
+      int numTreesLeft;
+
+      vector<FireGroup*> fireGroups;
+      vector<pair<glm::ivec2, FireStarter*>> FireMap;
       static FireSystem* FIRE;
 
       FluidSolver solver;

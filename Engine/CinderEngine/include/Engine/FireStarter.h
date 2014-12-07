@@ -38,13 +38,12 @@ namespace Framework
   };
   */
 
-  class FireStarterManager;
-  class GUIText;
+  class FireGroup;
 
   class FireStarter
   {
     public:
-      FireStarter(const vec2& pos, FireStarterManager* fsm);
+      FireStarter(const vec2& pos, FireGroup* fsm);
       ~FireStarter(){}
       void LightOnFire();
       void DouseFire();
@@ -60,14 +59,14 @@ namespace Framework
       float Fuel;
       float initTemp;
       //FireGrid grid;
-      FireStarterManager* manager;
+      FireGroup* manager;
   };
 
-  class FireStarterManager : public Component
+  class FireGroup : public Component
   {
   public:
-    FireStarterManager();
-    ~FireStarterManager();
+    FireGroup();
+    ~FireGroup();
 
     virtual void Initialize();
 
@@ -76,12 +75,8 @@ namespace Framework
 
     const static std::string Name;
     bool onFire;
-    static int numTreesLeft;
-    static int numTreesStart;
-    int numPoints = 0;
   //private:
-    vector<const FireStarter *> firePoints;
-    static GUIText* guiText;
+    vector<FireStarter *> firePoints;
   };
 }
 

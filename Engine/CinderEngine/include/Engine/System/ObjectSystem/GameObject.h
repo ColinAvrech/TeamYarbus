@@ -48,7 +48,7 @@ namespace Framework
   class ButtonController;
   class MenuController;
   class Component;
-  class FireStarterManager;
+  class FireGroup;
   class Microphone;
   class Terrain2D;
   class Terrain3D;
@@ -96,7 +96,7 @@ namespace Framework
     ComponentPointer(Camera);
     ComponentPointer(RigidBody);
     ComponentPointer(CharacterController);
-	  ComponentPointer(FireStarterManager);
+	  ComponentPointer(FireGroup);
     ComponentPointer(Microphone);
     ComponentPointer(Terrain2D);
     ComponentPointer(Terrain3D);

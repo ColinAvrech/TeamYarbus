@@ -57,7 +57,7 @@ namespace Framework
 
   void Tree2D::Initialize ()
   {
-    FireStarterManager* fsm = gameObject->FireStarterManager;
+    FireGroup* fsm = nullptr;
     switch (type)
     {
     case Framework::TREE_0:
@@ -82,6 +82,7 @@ namespace Framework
       tree->Create_Mesh (tree->getTotalLines (), &treeMesh, &edges);
       Generate_Buffers ();
 
+      fsm = gameObject->FireGroup;
       if (fsm)
       {
         FireStarter* fs;;
@@ -102,6 +103,11 @@ namespace Framework
       break;
     default:
       break;
+    }
+
+    if (fsm != nullptr && fsm->firePoints.size())
+    {
+      Physics::THERMODYNAMICS->Add_Group(fsm);
     }
 
     if (type != TREE_5)

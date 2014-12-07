@@ -15,7 +15,7 @@
 #include "UpdateEvent.h"
 #include "Pipeline.h"
 #include "FireStarter.h"
-#include "Text.h"
+#include "GUIText.h"
 
 namespace Framework
 {
