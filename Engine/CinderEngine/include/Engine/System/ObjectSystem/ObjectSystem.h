@@ -82,7 +82,9 @@ namespace Framework
     
 	  GameObject* FindObjectByName(Zilch::String name);
     GameObject* FindObjectByName (const char *name);
+
     GameObject* FindObjectByID (Zilch::Integer id);
+    GameObject* FindObjectByID(unsigned id);
 	  
     static unsigned LastGameObjectId;
     static unsigned ZilchLastGameObjectId;

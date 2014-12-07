@@ -18,3 +18,6 @@ Engine/CinderEngine/include/Engine/System/Physics/ShapeCollider.h
 /Engine/CinderEngine/obj
 /Engine/CinderEngine/bin
 /Builds/Fall_Submission_Build
+/Engine/Resources/SpriteSheets/Thumbs.db
+/Engine/Resources/Textures/Thumbs.db
+/Engine/CinderEngine/premake/CinderEngine.vcxproj.user
