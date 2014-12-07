@@ -466,6 +466,7 @@ namespace Framework
       shader->uni1i ("image", 0);
       break;
 
+    /*TODO: FIX THIS SHIT YEAHH
     case Framework::SS_FADE_IN:
       ALPHA += 0.016f;
       if (ALPHA >= 1.0f)
@@ -483,7 +484,7 @@ namespace Framework
         Change_Shader ("Passthrough", (int) SS_DEFAULT);
       }
       break;
-
+    */
     default:
       break;
     }
@@ -506,10 +507,12 @@ namespace Framework
   {
     sceneShader = Resources::RS->Get_Shader (sh);
     shaderState = (SHADER_STATE)id;
+    /*
     if (id == (int) SS_FADE_IN)
       ALPHA = 0.0f;
     else if (id == (int) SS_FADE_OUT)
       ALPHA = 1.0f;
+    */
   }
 
 
