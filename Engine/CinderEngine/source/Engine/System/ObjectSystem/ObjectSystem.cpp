@@ -95,7 +95,7 @@ namespace Framework
 		ZilchBindMethodOverload(LoadLevelAdditive, ZArray*, Zilch::String);
 		ZilchBindMethodAs(ZilchLoadLevel, "LoadLevel");
 		ZilchBindMethodOverload(FindObjectByName, GameObject*, Zilch::String);
-		ZilchBindMethod(FindObjectByID);
+		ZilchBindMethodAs(ZilchFindObjectByID, "FindObjectByID");
 		ZilchBindMethod(DestroyObject);
 		//ZilchBindMethod(LoadLevel);
 		//ZilchBindConstructor(Transform);
@@ -348,7 +348,7 @@ namespace Framework
 	{
 		for(auto i : ZilchGameObjects)
 		{
-			if (name.c_str() == i.second->GetName().c_str())
+			if (name == i.second->GetName().c_str())
 			{
 				return i.second;
 			}
@@ -369,10 +369,15 @@ namespace Framework
     return nullptr;
   }
 
-	GameObject* ObjectSystem::FindObjectByID(Zilch::Integer id)
+	GameObject* ObjectSystem::ZilchFindObjectByID(Zilch::Integer id)
 	{
 		return ZilchGameObjects[unsigned(id)];
 	}
+
+  GameObject* ObjectSystem::FindObjectByID(unsigned id)
+  {
+    return GameObjects[id];
+  }
 
 	//Private function to create and serilize an object
   //#########   ERROR THIS FUNCTION'S will always cause a memory leak
