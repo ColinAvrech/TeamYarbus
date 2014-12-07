@@ -90,7 +90,7 @@ namespace Framework
     if (currentRadius <= minRadius)
     {
       levelFailed = true;
-      OPENGL->Change_Shader ("FadeIn", (int) SS_FADE_OUT);
+      //OPENGL->Change_Shader ("FadeIn", (int) SS_FADE_OUT);
       //printf("dead");
       GUIText* guiText = reinterpret_cast<GUIText*>(gameObject->GetComponent("GUIText"));
       //PlayerStats* stats = reinterpret_cast<PlayerStats*>(gameObject->GetComponent("PlayerStats"));

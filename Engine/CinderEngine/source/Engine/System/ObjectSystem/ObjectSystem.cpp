@@ -291,19 +291,25 @@ namespace Framework
 
   void ObjectSystem::NextLevel()
   {
-    bool loadSuccess = true;
+    bool loadSuccess = false;
+    string nextLevel;
     if (ptrPlayer)
     {
-      LoadLevel(ptrPlayer->PlayerStats->NextLevel.c_str());
+      loadSuccess = true;
+      nextLevel = ptrPlayer->PlayerStats->NextLevel.c_str();
     }
     else
     {
-      GameObject* go = FindObjectByID(2);//Hack for splash screens
+      GameObject* go = FindObjectByID(2);//HACK for splash screens
       if (go)
-        LoadLevel(reinterpret_cast<LevelTimer*>(go->GetComponent("LevelTimer"))->nextLevel.c_str());
-      else
-        loadSuccess = false;
+      {
+        loadSuccess = true;
+        nextLevel = reinterpret_cast<LevelTimer*>(go->GetComponent("LevelTimer"))->nextLevel.c_str();
+      }
     }
+
+    assert(loadSuccess && "No next level found.\n");
+    LoadLevel(nextLevel.c_str());
   }
 
   void ObjectSystem::RestartLevel()
