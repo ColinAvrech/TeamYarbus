@@ -81,7 +81,7 @@ namespace Framework
     void RestartLevel();
     
 	  GameObject* FindObjectByName(Zilch::String name);
-    GameObject* FindObjectByName (std::string name);
+    GameObject* FindObjectByName (const char *name);
     GameObject* FindObjectByID (Zilch::Integer id);
 	  
     static unsigned LastGameObjectId;

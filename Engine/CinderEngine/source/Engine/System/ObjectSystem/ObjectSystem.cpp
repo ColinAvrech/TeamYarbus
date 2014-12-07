@@ -315,10 +315,13 @@ namespace Framework
     }
     else
     {
-      GameObject* go = FindObjectByID(2);//HACK for splash screens
+      GameObject* go = FindObjectByName("LevelTimer");//HACK for splash screens
       if (go)
       {
         loadSuccess = true;
+        cout << CinderConsole::green;
+        printf("%s completed. Loading next level: %s\n", currentLevelName.c_str(), nextLevel.c_str());
+        cout << CinderConsole::red;
         nextLevel = reinterpret_cast<LevelTimer*>(go->GetComponent("LevelTimer"))->nextLevel.c_str();
       }
     }
@@ -356,11 +359,11 @@ namespace Framework
 		return nullptr;
 	}
 
-  GameObject* ObjectSystem::FindObjectByName (std::string name)
+  GameObject* ObjectSystem::FindObjectByName (const char* name)
   {
     for(auto& i : GameObjects)
     {
-      if (name.compare(i.second->Name) == 0)
+      if (i.second && i.second->Name.compare(name) == 0)
       {
         return i.second;
       }
