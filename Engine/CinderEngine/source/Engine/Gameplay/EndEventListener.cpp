@@ -87,7 +87,7 @@ namespace Framework
         if (exitGame == nullptr)
         {
           std::string name = "ExitButton";
-          exitGame = reinterpret_cast<UIBox*> (OBJECTSYSTEM->FindObjectByName (name)->GetComponent("UIBox"));
+          exitGame = reinterpret_cast<UIBox*> (OBJECTSYSTEM->FindObjectByName (name.c_str())->GetComponent("UIBox"));
           if (exitGame != nullptr)
           {
             //exitGame->gameObject->Transform->SetPosition (40, 0);

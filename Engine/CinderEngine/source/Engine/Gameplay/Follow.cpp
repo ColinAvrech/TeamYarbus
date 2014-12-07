@@ -33,7 +33,7 @@ namespace Framework
 
   void Follow::Initialize ()
   {
-    target = OBJECTSYSTEM->FindObjectByName (targetName)->Transform;
+    target = OBJECTSYSTEM->FindObjectByName (targetName.c_str())->Transform;
     EVENTSYSTEM->mConnect<UpdateEvent, Follow> (Events::UPDATEEVENT, this, &Follow::Update);
   }
 

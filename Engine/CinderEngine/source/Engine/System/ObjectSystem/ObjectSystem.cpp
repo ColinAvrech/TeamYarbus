@@ -315,7 +315,7 @@ namespace Framework
     }
     else
     {
-      GameObject* go = FindObjectByName("LevelTimer");//HACK for splash screens
+      GameObject* go = FindObjectByName("Logo");//HACK for splash screens
       if (go)
       {
         loadSuccess = true;

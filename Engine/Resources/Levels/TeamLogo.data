@@ -107,7 +107,7 @@ Level =
 	  },
 	  Named = 
 	  {
-		  string Name = "TeamYarbus",
+		  string Name = "Logo",
 	  },
     Transform = 
 	  {
