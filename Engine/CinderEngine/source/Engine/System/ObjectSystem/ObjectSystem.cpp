@@ -76,8 +76,11 @@ namespace Framework
 {
 	//!Null untill the ObjectSystem has been created
 	ObjectSystem * OBJECTSYSTEM = NULL;
+
 	//!Set first object's id to zero
-	unsigned ObjectSystem::LastGameObjectId = 0;
+  unsigned ObjectSystem::LastGameObjectId = 0;
+  unsigned ObjectSystem::ZilchLastGameObjectId = 0;
+
 	int ObjectSystem::currentLevel = 0;
 	ZilchDefineType(BaseSystem, CinderZilch)
 	{
@@ -111,10 +114,7 @@ namespace Framework
 
 	ObjectSystem::~ObjectSystem()
 	{
-		if (GameObjects.size() > 0)
-		{
-			DestroyAllObjects();
-		}
+		DestroyAllObjects();
 
 		for (auto level : levelList)
 		{
@@ -177,6 +177,14 @@ namespace Framework
 		return obj;
 	}
 
+
+  GameObject* ObjectSystem::ZilchCreateObject()
+  {
+    GameObject * obj = new GameObject(ZilchLastGameObjectId);
+    ZilchGameObjects[ZilchLastGameObjectId] = obj;
+    ++ZilchLastGameObjectId;
+    return obj;
+  }
   
   //Called When the ObjectSystem is created
   void ObjectSystem::RegisterComponents(void)
@@ -265,6 +273,13 @@ namespace Framework
       obj.second = nullptr;
     }
     GameObjects.clear();
+
+    for (auto obj : ZilchGameObjects)
+    {
+      delete obj.second;
+      obj.second = nullptr;
+    }
+    ZilchGameObjects.clear();
   }
 
 	void ObjectSystem::DestroyGameObjectsToBeDestroyed()
@@ -319,21 +334,13 @@ namespace Framework
     data.open(level.c_str());
     data.CreateArchive();
     Serializer::DataNode* Trunk = data.GetTrunk();
-    return new ZArray(SerializeObject(Trunk));
+    return new ZArray(ZilchSerializeObject(Trunk));
   }
   
-  void ObjectSystem::LoadLevelAdditive(const char* name)
-  {
-    Serializer::ZeroSerializer data;
-
-    data.open(name);
-    data.CreateArchive();
-    Serializer::DataNode* Trunk = data.GetTrunk();
-  }
 
 	GameObject* ObjectSystem::FindObjectByName(Zilch::String name)
 	{
-		for(auto i : GameObjects)
+		for(auto i : ZilchGameObjects)
 		{
 			if (name.c_str() == i.second->GetName().c_str())
 			{
@@ -358,7 +365,7 @@ namespace Framework
 
 	GameObject* ObjectSystem::FindObjectByID(Zilch::Integer id)
 	{
-		return GameObjects[unsigned(id)];
+		return ZilchGameObjects[unsigned(id)];
 	}
 
 	//Private function to create and serilize an object
@@ -376,14 +383,14 @@ namespace Framework
 			if (it->objectName.compare("Cog") == 0 &&
 				it->branch->next->branch->value_.String_->compare("EditorCamera") != 0)
 			{
-				GameObject* newobj = new GameObject(it->branch->branch->value_.UInt_);
+				GameObject* newobj = OBJECTSYSTEM->CreateObject();
+        
 
         if (LastGameObjectId <= it->branch->branch->value_.UInt_)
         { LastGameObjectId = it->branch->branch->value_.UInt_ + 1; } // Makes sure that every created object has a unique ID.
 
 				newobj->Name = *it->branch->next->branch->value_.String_;
 				
-				GameObjects[newobj->GameObjectID] = newobj;
 				auto ct = it->branch->next->next;
 				while (ct)
 				{
@@ -418,6 +425,58 @@ namespace Framework
 
 		return objectlist;
 	}
+
+Zilch::Array<GameObject*>* ObjectSystem::ZilchSerializeObject(Serializer::DataNode* data)
+{
+  std::cout << "SERIALIZING" << std::endl;
+
+  Zilch::Array<GameObject*>* objectlist = new Zilch::Array<GameObject*>();
+  vector<std::pair<ZilchComponent*, Serializer::DynamicElement*> > scripts;
+
+  auto it = data->branch;
+  while (it)
+  {
+    if (it->objectName.compare("Cog") == 0 &&
+        it->branch->next->branch->value_.String_->compare("EditorCamera") != 0)
+    {
+      GameObject* newobj = new GameObject(it->branch->branch->value_.UInt_);
+      ZilchGameObjects[newobj->GameObjectID] = newobj;
+      newobj->Name = *it->branch->next->branch->value_.String_;
+
+      auto ct = it->branch->next->next;
+      while (ct)
+      {
+        Component* newcomp = newobj->AddComponent(ct->objectName);
+        if (newcomp)
+        {
+          newcomp->gameObject = newobj;
+          newcomp->Serialize(ct->branch);
+          newcomp->Initialize(); //Set pointer to GameObject, Setup Component
+        }
+        else
+        {
+          ZilchComponent* zilchComp = newobj->AddZilchComponent(ct->objectName);
+          newcomp = zilchComp;
+          newcomp->gameObject = newobj;
+          scripts.push_back(std::pair<ZilchComponent*, Serializer::DynamicElement*>(zilchComp, ct->branch));
+        }
+        ct = ct->next;
+      }
+      objectlist->append(newobj);
+
+      ErrorIf(newobj->Transform == nullptr, (string("Transform component missing on GameObject ") + newobj->Name).c_str());
+    }
+    it = it->next;
+  }
+
+  //Initializing Zilch Components
+  for (auto i : scripts)
+  {
+    i.first->Initialize();
+  }
+
+  return objectlist;
+}
 }
 
 
