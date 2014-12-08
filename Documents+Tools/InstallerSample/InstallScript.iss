@@ -19,9 +19,9 @@ AppSupportURL=http://www.digipen.edu/
 ; !!! AppUpdatesURL=http://www.attackofthe50ftrobot.com/ !!!
 ; Default path to the file storage directory.
 ; {pf} is the default program files directory set by Windows
-DefaultDirName={pf}\DigiPen\Team Yarbus\
+DefaultDirName={pf}\DigiPen\Ember\
 ; Start menu directory
-DefaultGroupName=DigiPen\Team Yarbus\Ember
+DefaultGroupName=DigiPen\Ember
 ; Output directory for the installer.
 OutputDir=.\INSTALLER
 ; Setup executable installer
@@ -68,9 +68,9 @@ Source: .\REDIST\vcredist_x86.exe; DestDir: {tmp}; Flags: ignoreversion
 ;   {group} is the start menu location that the game will install shortcuts to.
 ;   {commondesktop} is your Windows desktop directory.
 [Icons]
-Name: {group}\GameTest; Filename: .\Files\SetupIcon.ico; WorkingDir: {app}
-Name: {group}\{cm:UninstallProgram,GameTest}; Filename: {uninstallexe}
-Name: {commondesktop}\GameTest; Filename: .\Files\SetupIcon.ico; Tasks: desktopicon; WorkingDir: {app}
+Name: {group}\Ember; Filename: .\Files\SetupIcon.ico; WorkingDir: {app}
+Name: {group}\{cm:UninstallProgram,Ember}; Filename: {uninstallexe}
+Name: {commondesktop}\Ember; Filename: .\Files\SetupIcon.ico; Tasks: desktopicon; WorkingDir: {app}
 
 ; List of items to execute in the installer.
 ; Note that this will run all executables in their silent versions as required by the TCRs.
@@ -79,4 +79,4 @@ Name: {commondesktop}\GameTest; Filename: .\Files\SetupIcon.ico; Tasks: desktopi
 ;   the installer exits as required by the TCRs.
 [Run]
 Filename: {tmp}\vcredist_x86.exe; Parameters: /q; StatusMsg: Installing Visual C++ 2013 Redistributable...
-Filename: {app}\GameTest.exe; Description: {cm:LaunchProgram,GameTest}; Flags: nowait postinstall skipifsilent
+Filename: {app}\Ember.exe; Description: {cm:LaunchProgram,Ember}; Flags: nowait postinstall skipifsilent
