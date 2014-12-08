@@ -66,7 +66,7 @@ namespace Framework
         ees = EES_CAMERA;
         break;
       case Framework::EES_CAMERA:
-      {timer += 0.016f * 0.5f;
+      {timer += update->Dt * 0.5f;
       glm::vec3 pos = glm::mix (startPosition, endPosition, timer);
       Camera::main->size = glm::mix (startSize, endSize, timer);
       if (timer < 1.0f)
@@ -83,7 +83,7 @@ namespace Framework
         WINDOWSYSTEM->SetCursorVisibility(true);
         gameObject->Transform->Scale (300 * gameObject->Sprite->Get_Texture ()->Get_Aspect_Ratio(), 300, 1);
         gameObject->Sprite->enabled = true;
-        gameObject->Transform->Translate (0, 0.016f * 10, 0);
+        gameObject->Transform->Translate (0, update->Dt * 10, 0);
         if (exitGame == nullptr)
         {
           std::string name = "ExitButton";

@@ -131,7 +131,7 @@ namespace Framework
   }
 
   /*!Deletes all objects int eh ObjectsToBeDelted List.*/
-  void ObjectSystem::Update(const double &dt)
+  void ObjectSystem::Update(const float &dt)
   {
     DestroyGameObjectsToBeDestroyed();
 
@@ -308,26 +308,44 @@ namespace Framework
   {
     bool loadSuccess = false;
     string nextLevel;
-    if (ptrPlayer)
+    if (ptrPlayer && ptrPlayer->PlayerStats)
     {
       loadSuccess = true;
       nextLevel = ptrPlayer->PlayerStats->NextLevel.c_str();
     }
-    else
+    else//HACK for splash screens
     {
-      GameObject* go = FindObjectByName("Logo");//HACK for splash screens
+      GameObject* go = FindObjectByName("Logo");
       if (go)
       {
-        loadSuccess = true;
-        cout << CinderConsole::green;
-        printf("%s completed. Loading next level: %s\n", currentLevelName.c_str(), nextLevel.c_str());
-        cout << CinderConsole::red;
-        nextLevel = reinterpret_cast<LevelTimer*>(go->GetComponent("LevelTimer"))->nextLevel.c_str();
+        LevelTimer* lt = reinterpret_cast<LevelTimer*>(go->GetComponent("LevelTimer"));
+        if (lt)
+        {
+          loadSuccess = true;
+          nextLevel = lt->nextLevel.c_str();
+        }
+        else
+        {
+          __debugbreak();
+        }
+      }
+      else
+      {
+        __debugbreak();
       }
     }
 
-    assert(loadSuccess && "No next level found.\n");
-    LoadLevel(nextLevel.c_str());
+    if (loadSuccess)
+    {
+        cout << CinderConsole::green;
+      printf("%s completed. Loading next level: %s\n", currentLevelName.c_str(), nextLevel.c_str());
+        cout << CinderConsole::red;
+      LoadLevel(nextLevel.c_str());
+    }
+    else
+    {
+      assert(loadSuccess && "No next level found.\n");
+    }
   }
 
   void ObjectSystem::RestartLevel()
@@ -389,7 +407,7 @@ namespace Framework
     std::cout << "SERIALIZING" << std::endl;
 
     Zilch::Array<GameObject*>* objectlist = new Zilch::Array<GameObject*>();
-    vector<std::pair<ZilchComponent*, Serializer::DynamicElement*> > scripts;
+    vector<std::pair<ZilchComponent*, Serializer::DataNode*> > scripts;
 
     auto it = data->branch;
     while (it)
@@ -420,7 +438,7 @@ namespace Framework
             ZilchComponent* zilchComp = newobj->AddZilchComponent(ct->objectName);
             newcomp = zilchComp;
             newcomp->gameObject = newobj;
-            scripts.push_back(std::pair<ZilchComponent*, Serializer::DynamicElement*>(zilchComp, ct->branch));
+            scripts.push_back(std::pair<ZilchComponent*, Serializer::DataNode*>(zilchComp, ct->branch));
           }
           ct = ct->next;
         }
@@ -445,7 +463,7 @@ Zilch::Array<GameObject*>* ObjectSystem::ZilchSerializeObject(Serializer::DataNo
   std::cout << "SERIALIZING" << std::endl;
 
   Zilch::Array<GameObject*>* objectlist = new Zilch::Array<GameObject*>();
-  vector<std::pair<ZilchComponent*, Serializer::DynamicElement*> > scripts;
+  vector<std::pair<ZilchComponent*, Serializer::DataNode*> > scripts;
 
   auto it = data->branch;
   while (it)
@@ -472,7 +490,7 @@ Zilch::Array<GameObject*>* ObjectSystem::ZilchSerializeObject(Serializer::DataNo
           ZilchComponent* zilchComp = newobj->AddZilchComponent(ct->objectName);
           newcomp = zilchComp;
           newcomp->gameObject = newobj;
-          scripts.push_back(std::pair<ZilchComponent*, Serializer::DynamicElement*>(zilchComp, ct->branch));
+          scripts.push_back(std::pair<ZilchComponent*, Serializer::DataNode*>(zilchComp, ct->branch));
         }
         ct = ct->next;
       }

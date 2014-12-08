@@ -57,7 +57,7 @@ namespace Framework
 
     virtual bool Initialize ();
     //!Update the factory, Destroying dead objects
-    virtual void Update(const double& dt);
+    virtual void Update(const float& dt);
 
     //!name of the system if the Factory, duh.
     virtual const string GetName(){ return "ObjectSystem"; }

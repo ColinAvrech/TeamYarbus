@@ -49,7 +49,7 @@ namespace Framework
 
   void PlayerStats::AllTreesBurned (AllTreesBurnedEvent* atb)
   {
-    //OPENGL->Change_Shader ("FadeIn", (int) SS_FADE_OUT);
+    OPENGL->Change_Shader ("FadeIn", (int) SS_FADE_OUT);
     levelComplete = true;
   }
 

@@ -31,6 +31,8 @@ class CameraFollow : Component
 		var pos1 = Camera.Main.Owner.Transform.GetTranslation();
 		var pos2 = this.Owner.Transform.GetTranslation();
 		pos2.Y += 2;
+		var newpos = Real3(pos2.X, pos2.Y, -10.0);
+		/*
 		var distance = Math.LengthSq(Real2(pos2.X - pos1.X, pos2.Y - pos2.Y));
 		var newpos = Math.Lerp(pos1, pos2, distance * 0.014);
 		
@@ -42,8 +44,9 @@ class CameraFollow : Component
 				newpos.Y = pos1.Y;
 			}*/
 		}
-		//Console.WriteLine(pos1, pos2, distance);
-		Camera.Main.Owner.Transform.SetTranslation(Real3(newpos.X, newpos.Y, -10)) ;
+		*/
+		Console.WriteLine("Position1: `pos1`, Position2: `pos2`");//, Distance: `distance`");
+		Camera.Main.Owner.Transform.SetTranslation(newpos) ;
 			
 	} 
 }

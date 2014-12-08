@@ -174,11 +174,11 @@ namespace Framework
 	/******************************************/
 
 	/* The Update Function which is called in the main loop*/
-	void EventSystem::Update(const double &dt)
+	void EventSystem::Update(const float &dt)
 	{
 		UpdateEvent updateEvent;
-		updateEvent.Dt = static_cast<float>(dt);
-		_TotalTimePassed += static_cast<float>(dt);
+		updateEvent.Dt = dt;
+		_TotalTimePassed += dt;
 		updateEvent.TimePassed = static_cast<float>(_TotalTimePassed);
 
 		TriggerEvent(Events::UPDATEEVENT, updateEvent);

@@ -51,16 +51,19 @@ namespace Framework
     ErrCheck(result);
 
     // If no microphone is detected
-    if (_recordnumdrivers <= 0)
+    if (_recordnumdrivers == 0)
     {
       std::cout << CinderConsole::red << "No recording devices found/plugged in!" << std::endl;
     }
+    else
+    {
+      // Get microphone driver information
+      result = pFMODAudioSystem->getRecordDriverInfo(0, NULL, 0, 0,
+                                          &_recordrate, 0, &_recordchannels);
+      ErrCheck(result);
+    }
 
-    // Get microphone drivcer information
-    result = pFMODAudioSystem->getRecordDriverInfo(0, NULL, 0, 0,
-                                        &_recordrate, 0, &_recordchannels);
-    ErrCheck(result);
-
+    
     // Calculates the samplerate after applying possible latency
     _adjustedlatency = (_recordrate * LATENCY_MS) / 1000;
     _driftthreshold = _adjustedlatency / 2;
@@ -75,27 +78,31 @@ namespace Framework
   /***************************************************************************/
   void AudioSystem::LoadMicData()
   {  
-    FMOD_RESULT result;
-
-    // Allocates a block of memory to _exinfo
-    memset(&_exinfo, 0, sizeof(FMOD_CREATESOUNDEXINFO));
-    _exinfo.cbsize = sizeof(FMOD_CREATESOUNDEXINFO);
-    _exinfo.numchannels = 1;
-    _exinfo.format = FMOD_SOUND_FORMAT_PCM16;
-    _exinfo.defaultfrequency = _recordrate;
-    _exinfo.length = _exinfo.defaultfrequency * sizeof(short) * _exinfo.numchannels * 5;    
-    
-    // Creates a new sound object dedicated to the microphone
-    result = pFMODAudioSystem->createSound(0, FMOD_LOOP_NORMAL | FMOD_OPENUSER, &_exinfo, &micSound);
-    ErrCheck(result);
-
     // Starts recording the microphone input
-    result = pFMODAudioSystem->recordStart(0, micSound, true);
-    ErrCheck(result);
+    if (_recordnumdrivers)
+    {
+      FMOD_RESULT result;
 
-    // Gets length in PCM samples
-    result = micSound->getLength(&_soundlength, FMOD_TIMEUNIT_PCM);
-    ErrCheck(result);
+      // Allocates a block of memory to _exinfo
+      memset(&_exinfo, 0, sizeof(FMOD_CREATESOUNDEXINFO));
+      _exinfo.cbsize = sizeof(FMOD_CREATESOUNDEXINFO);
+      _exinfo.numchannels = 1;
+      _exinfo.format = FMOD_SOUND_FORMAT_PCM16;
+      _exinfo.defaultfrequency = _recordrate;
+      _exinfo.length = _exinfo.defaultfrequency * sizeof(short) * _exinfo.numchannels * 5;    
+    
+      // Creates a new sound object dedicated to the microphone
+      result = pFMODAudioSystem->createSound(0, FMOD_LOOP_NORMAL | FMOD_OPENUSER, &_exinfo, &micSound);
+      ErrCheck(result);
+
+
+      result = pFMODAudioSystem->recordStart(0, micSound, true);
+      ErrCheck(result);
+
+      // Gets length in PCM samples
+      result = micSound->getLength(&_soundlength, FMOD_TIMEUNIT_PCM);
+      ErrCheck(result);
+    }
   }
 
   /***************************************************************************/

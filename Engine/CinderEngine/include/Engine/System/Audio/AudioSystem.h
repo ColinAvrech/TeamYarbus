@@ -80,7 +80,7 @@ namespace Framework
       // Pause Menu Effect
       void          InitPauseMenuEffect();
       void          SetPauseMenuEffect(float cutoff, float resonance, float time);
-      void          UpdatePauseMenuEffect(const double dt);
+      void          UpdatePauseMenuEffect(const float& dt);
 
       // Microphone Functions
       void          InitMicData();
@@ -95,7 +95,7 @@ namespace Framework
       bool          checkMicrophone();
 
       // Called every frame
-      virtual void  Update(const double &dt);
+      virtual void  Update(const float &dt);
       
 
       // Returns name of System

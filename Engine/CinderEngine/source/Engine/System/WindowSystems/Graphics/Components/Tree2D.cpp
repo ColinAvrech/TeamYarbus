@@ -38,11 +38,23 @@ namespace Framework
   // Destructor
   Tree2D::~Tree2D ()
   {
-    delete vao, vbo;
-    delete tree;
-    vao = nullptr;
-    vbo = nullptr;
-    tree = nullptr;
+    if (vao)
+    {
+      delete vao;
+      vao = nullptr;
+    }
+
+    if (vbo)
+    {
+      delete vbo;
+      vbo = nullptr;
+    }
+
+    if (tree)
+    {
+      delete tree;
+      tree = nullptr;
+    }
   }
 
   void Tree2D::Serialize (Serializer::DataNode* data)

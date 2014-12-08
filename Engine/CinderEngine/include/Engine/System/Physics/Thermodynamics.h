@@ -73,15 +73,17 @@ namespace Framework
       //!Initialize the system
       bool Initialize();
 
+      virtual bool UpdatesOnPaused();
+
       // Called every frame
-      void Update(const double& dt);
+      void Update(const float& dt);
 
       //Update temperatures
-      void UpdateTemp(const int& start_index, const int& end_index, const double& dt);
+      void UpdateTemp(const int& start_index, const int& end_index, const float& dt);
       //Calculate velocity vectors
-      void ComputeVelocity(const int& start_index, const int& end_index, const double& dt);
+      void ComputeVelocity(const int& start_index, const int& end_index, const float& dt);
       //Update fire
-      void UpdateFire(const double& dt);
+      void UpdateFire(const float& dt);
 
       void Reset ();
 
@@ -122,7 +124,7 @@ namespace Framework
 
       // Setters
       void ToggleAutoDissipation();
-      float SetCellTemperature(const float& x, const float& y, const float& temp, const double& dt);
+      float SetCellTemperature(const float& x, const float& y, const float& temp, const float& dt);
       void SetCellVelocity (const int x, const int y, vec2 v);
       void Add_Object(FireStarter *obj);
       void Add_Group(FireGroup *obj);

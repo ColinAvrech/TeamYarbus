@@ -195,7 +195,7 @@ namespace Framework
     EVENTSYSTEM->mConnect<PauseEvent, PhysicsSystemNew> (Events::PAUSE, this, &PhysicsSystemNew::OnApplicationPause);
   }
 
-  void PhysicsSystemNew::Update (const double& dt)
+  void PhysicsSystemNew::Update (const float& dt)
   {
 	  paused = CORE->IsPaused();
     if (!paused)

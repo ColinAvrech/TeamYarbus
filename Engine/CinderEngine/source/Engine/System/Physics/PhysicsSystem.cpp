@@ -84,13 +84,13 @@ namespace Framework
 		}
 
 		// DETERMINISTIC - Physics will run the same on every system
-		void PhysicsSystem::Update(const double &dt)
+		void PhysicsSystem::Update(const float &dt)
 		{
 			const float TimeStep = 1.0f / 60.0f;
 
 			if (!StepModeActive)
 			{
-				accumulator += (float)dt;
+				accumulator += dt;
 				accumulator = std::min(accumulator, TimeStep * 5);
 				if (accumulator > TimeStep)
 				{

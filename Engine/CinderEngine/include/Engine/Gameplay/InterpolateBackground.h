@@ -46,7 +46,7 @@ namespace Framework
     glm::vec4 endColor;
     COLOR_STATE cState = BACKGROUND_IDLE;
 
-    void Interpolate_Background ();
+    void Interpolate_Background (const float &dt);
   };  
 }
 

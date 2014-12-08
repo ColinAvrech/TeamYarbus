@@ -78,9 +78,9 @@ namespace Framework
       return result;
     }
 
-    glm::vec3 applyAccel(const glm::vec3& accel, double dt)
+    glm::vec3 applyAccel(const glm::vec3& accel, const float& dt)
     {
-      glm::vec3 velChange = accel * (float)dt;
+      glm::vec3 velChange = accel * dt;
       return velChange;
     }
 

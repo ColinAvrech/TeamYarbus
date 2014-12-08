@@ -34,7 +34,7 @@ namespace Framework
   ~UISystem ();
   
   virtual bool Initialize ();
-  virtual void Update(const double& dt);
+  virtual void Update(const float& dt);
   virtual const std::string GetName() { return "UISystem"; }
 
   static UIListener listener;

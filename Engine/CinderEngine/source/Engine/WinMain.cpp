@@ -146,7 +146,7 @@ int main (void)
 
 	//ZInterface::OpenFile();
   // Update the ObjectManager to load in the first level
-  OBJECTSYSTEM->Update(0.016);
+  OBJECTSYSTEM->Update(0.016f);
 
   //! Run the game! NOW!
   engine->GameLoop ();

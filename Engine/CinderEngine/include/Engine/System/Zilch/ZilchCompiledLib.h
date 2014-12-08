@@ -34,7 +34,7 @@ namespace Framework
     virtual bool Initialize(void) override;
 
     // Called every frame
-    virtual void Update(const double& dt) override;
+    virtual void Update(const float& dt) override;
 
     // Returns name of System
     virtual const string GetName();

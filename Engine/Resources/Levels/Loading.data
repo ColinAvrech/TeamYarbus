@@ -75,7 +75,7 @@ Level =
 	  },
 	  Named = 
 	  {
-		  string Name = "Loading",
+		  string Name = "Logo",
 	  },
     Transform = 
 	  {
@@ -109,7 +109,7 @@ Level =
     LevelTimer = 
     {
       float EndTime = 1.0,
-      string NextLevel = "NewPhysics",
+      string NextLevel = "L1",
     },
   },
   Cog = 

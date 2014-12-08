@@ -20,6 +20,31 @@ namespace Framework
 {
   namespace Serializer
   {
+    DataNode::DataNode(TYPE type, const char* name) 
+      : previous(nullptr)
+      , next(nullptr)
+      , branch(nullptr)
+      , dataType(type)
+      , objectName(string(name))
+    {}
+
+    DataNode::~DataNode()
+    {
+      if (dataType == TYPE_STRING)
+      {
+        delete value_.String_;
+        value_.String_ = nullptr;
+      }
+      else if ( dataType == TYPE_VEC2
+             || dataType == TYPE_VEC3
+             || dataType == TYPE_VEC4
+             || dataType == TYPE_QUAT)
+      {
+        delete value_.VecN_;
+        value_.VecN_ = nullptr;
+      }
+    }
+
     //////////////////////////////////////////////////////////////////
     //SetValue
     //////////////////////////////////////////////////////////////////

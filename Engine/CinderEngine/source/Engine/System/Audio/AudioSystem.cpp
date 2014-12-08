@@ -234,7 +234,7 @@ namespace Framework
   \return Returns nothing
   */
   /***************************************************************************/
-  void AudioSystem::Update(const double &dt)
+  void AudioSystem::Update(const float &dt)
   {
     FMOD_RESULT result;
 
@@ -248,7 +248,12 @@ namespace Framework
     result = pFMODAudioSystem->update();
     ErrCheck(result);
 
-    UpdateMicData();
+    //Update mic only if plugged in -CA
+    if (_recordnumdrivers)
+    {
+      UpdateMicData();
+    }
+
     UpdatePauseMenuEffect(dt);
 
     // Updates all the Sound Object Instances
@@ -447,7 +452,7 @@ namespace Framework
     _fadeValB = fadeSpeedB;    
   }
 
-  void AudioSystem::UpdatePauseMenuEffect(const double dt)
+  void AudioSystem::UpdatePauseMenuEffect(const float& dt)
   {
     FMOD_RESULT result;
     float currentCutoff;
@@ -487,7 +492,7 @@ namespace Framework
       if (_cutoffVal != currentCutoff)
       {
         float newParam;
-        newParam = (float)(currentCutoff + ((double)_fadeValA * dt));
+        newParam = currentCutoff + (_fadeValA * dt);
 
         if (newParam > _cutoffVal && _fadeValA > 0.0f)
         {
@@ -505,7 +510,7 @@ namespace Framework
       if (_resonanceVal != currentResonance)
       {
         float newParam;
-        newParam = (float)(currentResonance + ((double)_fadeValB * dt));
+        newParam = currentResonance + (_fadeValB * dt);
 
         if (newParam > _resonanceVal && _fadeValB > 0.0f)
         {

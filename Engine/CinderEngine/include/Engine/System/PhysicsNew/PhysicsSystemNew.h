@@ -27,7 +27,7 @@ namespace Framework
     PhysicsSystemNew (float dt, unsigned iterations);
 
     virtual bool Initialize ();
-    virtual void Update (const double& dt);
+    virtual void Update (const float& dt);
     virtual void OnApplicationPause (PauseEvent* pause);
 
     RigidBody2D *Add (ShapeCollider2D *shape, float x, float y);

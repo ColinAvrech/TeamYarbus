@@ -42,16 +42,16 @@ namespace Framework
 
   void InterpolateBackground::Update (UpdateEvent* update)
   {
-    Interpolate_Background ();
+    Interpolate_Background (update->Dt);
     glClearColor (color.r, color.g, color.b, color.a);
   }
 
-  void InterpolateBackground::Interpolate_Background ()
+  void InterpolateBackground::Interpolate_Background (const float& dt)
   {
+    time += dt;
     switch (cState)
     {
     case Framework::BACKGROUND_IDLE:
-      time += 0.016f;
       if (time > 1.0f)
       {
         cState = BACKGROUND_INTERPOLATE;
@@ -61,7 +61,6 @@ namespace Framework
       }
       break;
     case Framework::BACKGROUND_INTERPOLATE:
-      time += 0.016f;
       color = glm::mix (startColor, endColor, time * 5);
       if (time > 0.2f)
       {

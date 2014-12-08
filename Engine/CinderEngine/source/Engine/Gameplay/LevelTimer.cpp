@@ -57,7 +57,7 @@ namespace Framework
 
     if (time >= endTime)
     {
-      OBJECTSYSTEM->LoadLevel (nextLevel.c_str());
+      OBJECTSYSTEM->NextLevel();
     }
   }
 

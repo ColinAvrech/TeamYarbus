@@ -71,7 +71,7 @@ namespace Framework
     while (true)
     {
       WaitForSingleObject (eventStartVelocity [threadIndex], INFINITE);
-      THERMODYNAMICS->ComputeVelocity (startIndex, endIndex, 0.016);
+      THERMODYNAMICS->ComputeVelocity (startIndex, endIndex, 0.016f);//HACK should use CORE->DT
       SetEvent (eventEndVelocity [threadIndex]);
     }
 

@@ -37,11 +37,11 @@ namespace Framework
     ~WindowSystem();
 
     virtual bool Initialize ();
-    virtual void Update(const double& dt);
+    virtual void Update(const float& dt);
     virtual const string GetName() { return "WindowSystem"; }
 
-    void WindowsUpdate(const double& dt);
-    void GraphicsUpdate(const double& dt);
+    void WindowsUpdate(const float& dt);
+    void GraphicsUpdate(const float& dt);
 
     void ToggleCursorVisibility();
 	  void SetCursorVisibility(bool set);

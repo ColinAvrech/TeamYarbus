@@ -40,7 +40,7 @@ namespace Framework
   }
   
   // Called Every Frame
-  void UISystem::Update (const double& dt)
+  void UISystem::Update (const float& dt)
   {}
 
   UIListener::UIListener ()

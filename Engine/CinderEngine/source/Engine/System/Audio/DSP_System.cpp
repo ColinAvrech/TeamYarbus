@@ -505,7 +505,7 @@ namespace Framework
   \return Returns nothing
   */
   /***************************************************************************/
-  void Sound::UpdateFrequency1(const double dt)
+  void Sound::UpdateFrequency1(const float &dt)
   {
     FMOD_RESULT result;
     float currentCenter;
@@ -544,7 +544,7 @@ namespace Framework
       {
         float newParameter;
 
-        newParameter = (float)(currentCenter + ((double)_fadeValA1 * dt));
+        newParameter = currentCenter + (_fadeValA1 * dt);
         if (newParameter > _centerValA && _fadeValA1 > 0.0f)
         {
           newParameter = _centerValA;
@@ -562,7 +562,7 @@ namespace Framework
       {
         float newParameter;
 
-        newParameter = (float)(currentBandwidth + ((double)_fadeValA2 * dt));
+        newParameter = currentBandwidth + (_fadeValA2 * dt);
         if (newParameter > _bandwidthValA && _fadeValA2 > 0.0f)
         {
           newParameter = _bandwidthValA;
@@ -580,7 +580,7 @@ namespace Framework
       {
         float newParameter;
 
-        newParameter = (float)(currentGain + ((double)_fadeValA3 * dt));
+        newParameter = currentGain + (_fadeValA3 * dt);
         if (newParameter > _gainValA && _fadeValA3 > 0.0f)
         {
           newParameter = _gainValA;
@@ -701,7 +701,7 @@ namespace Framework
   \return Returns nothing
   */
   /***************************************************************************/
-  void Sound::UpdateFrequency2(const double dt)
+  void Sound::UpdateFrequency2(const float &dt)
   {
     FMOD_RESULT result;
     float currentCenter;
@@ -742,7 +742,7 @@ namespace Framework
       {
         float newParameter;
 
-        newParameter = (float)(currentCenter + ((double)_fadeValB1 * dt));
+        newParameter = currentCenter + (_fadeValB1 * dt);
         if (newParameter > _centerValB && _fadeValB1 > 0.0f)
         {
           newParameter = _centerValB;
@@ -760,7 +760,7 @@ namespace Framework
       {
         float newParameter;
 
-        newParameter = (float)(currentBandwidth + ((double)_fadeValB2 * dt));
+        newParameter = currentBandwidth + (_fadeValB2 * dt);
         if (newParameter > _bandwidthValB && _fadeValB2 > 0.0f)
         {
           newParameter = _bandwidthValB;
@@ -778,7 +778,7 @@ namespace Framework
       {
         float newParameter;
 
-        newParameter = (float)(currentGain + ((double)_fadeValB3 * dt));
+        newParameter = currentGain + (_fadeValB3 * dt);
         if (newParameter > _gainValB && _fadeValB3 > 0.0f)
         {
           newParameter = _gainValB;

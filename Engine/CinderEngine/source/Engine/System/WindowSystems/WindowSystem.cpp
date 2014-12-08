@@ -448,7 +448,7 @@ namespace Framework
     glfwTerminate ();
   }
 
-  void WindowSystem::Update (const double& dt)
+  void WindowSystem::Update (const float& dt)
   {
     WindowsUpdate (dt);
     GraphicsUpdate (dt);
@@ -457,12 +457,12 @@ namespace Framework
   }
 
 
-  void WindowSystem::WindowsUpdate (const double& dt)
+  void WindowSystem::WindowsUpdate (const float& dt)
   {
     glfwPollEvents ();
   }
 
-  void WindowSystem::GraphicsUpdate (const double& dt)
+  void WindowSystem::GraphicsUpdate (const float& dt)
   {
     OPENGL->Update ();
 

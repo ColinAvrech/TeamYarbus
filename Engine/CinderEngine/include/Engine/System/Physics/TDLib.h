@@ -71,8 +71,8 @@ namespace Framework
     } //namespace Constant
 
     float Buoyancy(float density, float mass, float CellSize);
-    float ConductiveHeatTransfer(float K, float T1, float T2, const double dt, float Size);
-    float ConvectiveHeatTransfer(float Hc, float T1, float T2, const double dt);
+    float ConductiveHeatTransfer(float K, float T1, float T2, const float& dt, float Size);
+    float ConvectiveHeatTransfer(float Hc, float T1, float T2, const float& dt);
     float dTemp(float dQ, float m, float c);
 
     //Possible materials used in terrain

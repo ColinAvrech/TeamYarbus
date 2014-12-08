@@ -29,7 +29,7 @@ namespace Framework
 	ZilchDeclareBaseType(BaseSystem, Zilch::TypeCopyMode::ReferenceType);
 
     //!All systems are updated every frame.
-    virtual void Update(const double& dt) = 0;
+    virtual void Update(const float& dt) = 0;
     virtual void OnApplicationPause (PauseEvent* pause) {}
     virtual bool UpdatesOnPaused() { return m_ShouldUpdateOnPaused; }
 

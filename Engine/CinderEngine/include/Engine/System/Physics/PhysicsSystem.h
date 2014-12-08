@@ -38,7 +38,7 @@ namespace Framework
       ~PhysicsSystem(){};
 
       bool Initialize(void);
-	  virtual void Update(const double& dt);
+	  virtual void Update(const float& dt);
 	  void addContact(BodyContact* contact);
 
 	  //Containers

@@ -45,30 +45,11 @@ namespace Framework
     }; //enum TYPE
     //////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////
-    typedef struct DynamicElement {
-      DynamicElement(TYPE type, const char* name)
-        : previous(NULL), next(NULL), branch(NULL),
-        dataType(type), objectName(string(name)){};
+    class DataNode {
+    public://methods
+      DataNode(TYPE type, const char* name);
+      ~DataNode();
 
-      DynamicElement* previous;
-      TYPE dataType;
-      string typeString;
-      string objectName;
-      union
-      {
-        int Int_;
-        unsigned int UInt_;
-        long Long_;
-        float Float_;
-        double Double_;
-        bool Bool_;
-        string* String_;
-        std::vector<float>* VecN_; //2, 3 or 4
-        string* Enum_;
-        string* Custom_;
-      } value_;
-      DynamicElement* branch;
-      DynamicElement* next;
       //Overloaded setter/////////////////////////////////////
       void SetValue(unsigned int& value);
       void SetValue(int& value);
@@ -89,11 +70,33 @@ namespace Framework
       void GetValue(vec2* store);
       void GetValue(vec3* store);
       void GetValue(vec4* store);
+      
       //Find specific object
-      DynamicElement* FindElement(DynamicElement* branch, const char* name);
-    private:
+      DataNode* FindElement(DataNode* branch, const char* name);
 
-    }DataNode;
+    public://data
+      DataNode* previous;
+      TYPE dataType;
+      string typeString;
+      string objectName;
+      DataNode* branch;
+      DataNode* next;
+      union
+      {
+        int Int_;
+        unsigned int UInt_;
+        long Long_;
+        float Float_;
+        double Double_;
+        bool Bool_;
+        string* String_;
+        std::vector<float>* VecN_; //2, 3 or 4
+        string* Enum_;
+        string* Custom_;
+      } value_;
+    private://data
+
+    };
   } //namespace serializer
 } //namespace framework
 

@@ -266,14 +266,16 @@ namespace Framework
     {
       bool playing = false;
 
-      result = pChannel->isPlaying(&playing);
+      result = pChannel->isPlaying(&playing); //CRASHLOC invalid handle for pChannel
       ErrCheck(result);
 
       if (playing)
       {
-        ErrCheck(pChannel->stop());
-        pChannel = NULL;
+        result = pChannel->stop();
+        ErrCheck(result);
       }
+      
+      pChannel = nullptr;
     }
   }
 
@@ -779,7 +781,7 @@ namespace Framework
   \return Returns nothing
   */
   /***************************************************************************/
-  void Sound::Update(const double &dt)
+  void Sound::Update(const float &dt)
   {
     FMOD_RESULT result;
 
@@ -847,7 +849,7 @@ namespace Framework
   \return Returns nothing
   */
   /***************************************************************************/
-  void Sound::UpdateVolumeFade(const double dt)
+  void Sound::UpdateVolumeFade(const float& dt)
   {
     float currentVolume = 0;    
 
@@ -861,7 +863,7 @@ namespace Framework
       {
         float newVolume;
 
-        newVolume = (float)(currentVolume + (_fadeValue * dt));
+        newVolume = currentVolume + _fadeValue * dt;
 
         // Check bounds
         if (newVolume > _volValue && _fadeValue > 0.0f)

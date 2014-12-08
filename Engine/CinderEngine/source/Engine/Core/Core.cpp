@@ -59,7 +59,7 @@ namespace Framework
     for (unsigned i = 0; i < Systems.size(); ++i)
     {
       if (!GamePaused || GamePaused && Systems[i]->UpdatesOnPaused())
-        Systems[i]->Update(_dt);
+        Systems[i]->Update(0.016f);//_dt);
 
     }
 

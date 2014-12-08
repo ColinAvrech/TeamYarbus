@@ -53,15 +53,18 @@ namespace Framework
   GameObject::GameObject(unsigned gameObjectID)
   :GameObjectID(gameObjectID)
   {
-    Parent = NULL;
+    Parent = nullptr;
   }
 
   GameObject::~GameObject()
   {
     for(auto comp : Components)
     {
-      delete comp.second;
-      comp.second = nullptr;
+      if (comp.second != nullptr)
+      {
+        delete comp.second;
+        comp.second = nullptr;
+      }
     }
   }
 	
@@ -114,6 +117,7 @@ namespace Framework
 
     //not sure about error handling
     ZilchComponent* zc = new ZilchComponent(stdname);
+    Components[name.c_str()] = zc;
     return zc;
   }
   ZilchComponent* GameObject::AddZilchComponent(string name)

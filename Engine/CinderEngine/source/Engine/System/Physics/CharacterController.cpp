@@ -52,7 +52,7 @@ namespace Framework
 
   void CharacterController::Serialize (Serializer::DataNode* data)
   {
-    Serializer::DynamicElement* element = data->FindElement(data, "MicrophoneMultiplier");
+    Serializer::DataNode* element = data->FindElement(data, "MicrophoneMultiplier");
     if (element)
       element->GetValue(&micMultiplier);
     else
@@ -168,7 +168,7 @@ namespace Framework
     gridPos = gameObject->Transform->GetGridPosition ();
     float micValue = AUDIOSYSTEM->GetMicrophoneValue ();
     body->ApplyForce(Vector2(micValue * micMultiplier.x * density,micValue * micMultiplier.y * density));
-    Physics::THERMODYNAMICS->SetCellTemperature (gridPos.x, gridPos.y, 400000, 0.016);
+    Physics::THERMODYNAMICS->SetCellTemperature (gridPos.x, gridPos.y, 400000, e->Dt);
   }
 
   void CharacterController::ToggleFlying()

@@ -25,7 +25,7 @@ namespace Framework
   ~SceneManager ();
   
   virtual bool Initialize ();
-  virtual void Update(const double& dt);
+  virtual void Update(const float& dt);
   virtual const string GetName() { return "SceneManager"; }
 
   void Load_Scene (Scene* scene);

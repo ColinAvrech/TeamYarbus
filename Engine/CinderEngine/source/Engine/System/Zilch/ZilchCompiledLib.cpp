@@ -78,7 +78,7 @@ namespace Framework
     return "ScriptSystem";
   }
 
-  void ScriptSystem::Update(const double &dt)
+  void ScriptSystem::Update(const float &dt)
   {
       
   }

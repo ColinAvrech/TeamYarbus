@@ -82,7 +82,7 @@ namespace Framework
 		virtual void Serialize(Serializer::DataNode* data);
 
 		// Called every frame
-		void Update(const double dt);
+		void Update(const float &dt);
 
 		int GetTotalObjects();
 

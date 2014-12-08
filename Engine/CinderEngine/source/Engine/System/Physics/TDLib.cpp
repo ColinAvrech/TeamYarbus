@@ -22,20 +22,20 @@ namespace Framework
       return Fb / mass;
     }
     //Heat transfer by conduction
-    float ConductiveHeatTransfer(float K, float T1, float T2, const double dt, float Size)
+    float ConductiveHeatTransfer(float K, float T1, float T2, const float& dt, float Size)
     {
       float dTemp = T2 - T1;
-      float dQ = K * dTemp * (float)dt;
+      float dQ = K * dTemp * dt;
       return dQ;
     }
     //Heat transfer by radiation
-    float ConvectiveHeatTransfer(float Hc, float T1, float T2, const double dt)
+    float ConvectiveHeatTransfer(float Hc, float T1, float T2, const float& dt)
     {
       float dTemp = T2 - T1;
       if (dTemp > 0.0f)
         return 0.0f;
 
-      float dQ = Hc * dTemp * (float)dt;
+      float dQ = Hc * dTemp * dt;
       return dQ;
     }
     //Change of temperature caused by heat transfer

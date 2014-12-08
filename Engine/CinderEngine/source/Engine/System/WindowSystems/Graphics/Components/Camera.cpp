@@ -35,11 +35,15 @@ namespace Framework
   DefineComponentName(Camera);
 
   std::list<Camera*> Camera::allCameras;
-  Camera* Camera::current = NULL;
-  Camera* Camera::main = NULL;
+  Camera* Camera::current = nullptr;
+  Camera* Camera::main = nullptr;
 
   Camera::~Camera ()
   {
+    if (mainCamera)
+    {
+      Camera::main = nullptr;
+    }
     allCameras.remove (this);
     gameObject->Camera = nullptr;
     OPENGL->cameras.remove (this);
@@ -141,12 +145,14 @@ namespace Framework
     //////////////////////////////////////////////////////////////////////////
 
     // Main?
-    mainCamera = data->value_.Bool_;
+	  Serializer::DataNode* value;// = data->FindElement(data, "Facing");
 
-	Serializer::DataNode* value;// = data->FindElement(data, "Facing");
-	//value->GetValue(&viewDirection);
+    value = data->FindElement(data, "main");
+    value->GetValue(&mainCamera);
 
-	viewDirection = { 0, 0, 1 };
+	  //value->GetValue(&viewDirection);
+
+	  viewDirection = { 0, 0, 1 };
 
     value = data->FindElement(data, "FieldOfView");
     value->GetValue(&fov);
@@ -215,10 +221,8 @@ namespace Framework
     {
       //gameObject->Transform->SetPosition (PLAYER->gameObject->Transform->GetPosition ().x, PLAYER->gameObject->Transform->GetPosition ().y);
       OPENGL->Perspective (fov, aspect, nearPlane, farPlane);
-      OPENGL->LookAt
-        (size * viewDirection +
-        glm::vec3 (gameObject->Transform->GetPosition ().x, gameObject->Transform->GetPosition ().y, 0.0),
-        gameObject->Transform->GetPosition(), up);
+      vec3 eye = size * viewDirection + glm::vec3(gameObject->Transform->GetPosition().x, gameObject->Transform->GetPosition().y, 0.0);
+      OPENGL->LookAt( eye, gameObject->Transform->GetPosition(), up);
       OPENGL->MatrixMode (MODEL);
       OPENGL->LoadIdentity ();
     }
@@ -242,13 +246,11 @@ namespace Framework
   glm::mat4 Camera::GetWorldToViewMatrix ()
   {
     //if (!Camera::main->matricesReady)
+    if (Camera::main)
     {
-      Camera::main->worldToView = glm::lookAt
-        (
-        Camera::main->size * Camera::main->viewDirection + vec3 (Camera::main->gameObject->Transform->GetPosition ().x, Camera::main->gameObject->Transform->GetPosition ().y, 0.0),
-        Camera::main->gameObject->Transform->GetPosition (),
-        Camera::main->up
-        );
+      vec3 eye = Camera::main->size * Camera::main->viewDirection + vec3(Camera::main->gameObject->Transform->GetPosition().x, Camera::main->gameObject->Transform->GetPosition().y, 0.0);
+      vec3 center = Camera::main->gameObject->Transform->GetPosition();
+      Camera::main->worldToView = glm::lookAt( eye, center, Camera::main->up);
     }
 
     return Camera::main->worldToView;

@@ -108,7 +108,7 @@ namespace Framework
       bool exitted;
 
       //Data tree
-      DynamicElement* trunk;
+      DataNode* trunk;
       DataNode* CurrentNode;
       DataNode* CurrentStem;
 
@@ -117,8 +117,8 @@ namespace Framework
 
 #pragma region Private Functions    
       //recursively free the entire tree
-      void recursiveFree(DynamicElement* Obj);
-      //void FindElement(DynamicElement* list, const char* key);
+      void recursiveFree(DataNode* Obj);
+      //void FindElement(DataNode* list, const char* key);
       void ReadLine();
       void ParseLine();
 

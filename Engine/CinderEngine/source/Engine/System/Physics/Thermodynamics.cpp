@@ -16,7 +16,9 @@
 #include "WindowSystem.h"
 #include "Camera.h"
 #include "solver.c"
-#include "EventSystem.h"
+
+//Used for sending all trees event
+#include "EventSystem.h" 
 #include "GameEvent.h"
 
 #define SIZE 10
@@ -39,6 +41,11 @@ namespace Framework
       //Do stuff
       CellSize = 0.1f;
       THERMODYNAMICS = this;
+    }
+
+    bool ThermodynamicsSystem::UpdatesOnPaused()
+    {
+      return false;
     }
 
     //Destructor
@@ -127,10 +134,11 @@ namespace Framework
     }
 
     // Called every frame
-    void ThermodynamicsSystem::Update(const double& dt)
+    void ThermodynamicsSystem::Update(const float& dt)
     {
       UpdateMultiThreaded();
-      UpdateFire(0.016);
+      UpdateFire(dt);
+     
       //solver.vel_step
       //  (
       //  MapSize.x,
@@ -196,7 +204,7 @@ namespace Framework
       EqualizePressure = !EqualizePressure;
     }
 
-    float ThermodynamicsSystem::SetCellTemperature(const float& x, const float& y, const float& temp, const double& dt)
+    float ThermodynamicsSystem::SetCellTemperature(const float& x, const float& y, const float& temp, const float& dt)
     {
       int sub_x = int(x);
       int sub_y = int(y);
@@ -279,7 +287,7 @@ namespace Framework
     }
 
     //Update temperatures
-    void ThermodynamicsSystem::UpdateTemp(const int& start_index, const int& end_index, const double& dt)
+    void ThermodynamicsSystem::UpdateTemp(const int& start_index, const int& end_index, const float& dt)
     {
       //std::cout << start_index << "\n";
       //std::cout << "Updated Temperature/Density/Pressure" << std::endl;
@@ -346,7 +354,7 @@ namespace Framework
     }//function
 
     //Update velocity vectors
-    void ThermodynamicsSystem::ComputeVelocity(const int& start_index, const int& end_index, const double& dt)
+    void ThermodynamicsSystem::ComputeVelocity(const int& start_index, const int& end_index, const float& dt)
     {
 
     }
@@ -357,7 +365,7 @@ namespace Framework
      }*/
 
     //Update fire
-    void ThermodynamicsSystem::UpdateFire(const double& dt)
+    void ThermodynamicsSystem::UpdateFire(const float& dt)
     {
       if (fireGroups.size() == 0)
         return;
@@ -400,7 +408,7 @@ namespace Framework
           if (TemperatureMap.Get((*i).first.x, (*i).first.y) < Const::BT_Organics)
           {
             TemperatureMap.Set((*i).first.x, (*i).first.y,
-              TemperatureMap.Get((*i).first.x, (*i).first.y) + (float)dt);
+              TemperatureMap.Get((*i).first.x, (*i).first.y) + dt);
           }
           (*i).second->Update(dt);
         }

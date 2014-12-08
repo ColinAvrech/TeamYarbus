@@ -125,8 +125,8 @@ namespace Framework
       void            Stop();
       void            PlayNew();
       void            AddSound(char* filename);
-      virtual void    Update(const double &dt);
-      void            UpdateVolumeFade(const double dt);
+      virtual void    Update(const float &dt);
+      void            UpdateVolumeFade(const float& dt);
       void            micEffectUpdate();
 
       // DSP
@@ -138,10 +138,10 @@ namespace Framework
       void            AddReverbPreset(Sound::ReverbPresetName preset);
       void            SetFrequency1();
       void            SweepEQ1(float center, float bandwidth, float gain, float sweepTime);
-      void            UpdateFrequency1(const double dt);
+      void            UpdateFrequency1(const float& dt);
       void            SetFrequency2();
       void            SweepEQ2(float center, float bandwidth, float gain, float sweepTime);
-      void            UpdateFrequency2(const double dt);
+      void            UpdateFrequency2(const float& dt);
       void            EQConsoleOut(float currentCenter, float currentBandwidth, float currentGain);
 
       // Procedural Audio
