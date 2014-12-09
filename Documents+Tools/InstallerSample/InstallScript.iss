@@ -8,7 +8,7 @@
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{99612BF2-3DA1-45E8-9086-75D4E4760CBF}
+AppId={{1A677BD0-4996-4DCF-AD64-D224B86B1DDB}
 ; Standard app data stuff
 ; Change GameTestInstall to your game name
 AppName=Ember
@@ -27,12 +27,13 @@ OutputDir=.\INSTALLER
 ; Setup executable installer
 OutputBaseFilename=Ember_Setup
 ; Path to the DigiPen EULA (Needed to pass TCRs)
-LicenseFile=EULA\DigiPen_EULA.txt
+LicenseFile=FILES\DigiPen_EULA.txt
 ; Compression scheme for the installer. Check Inno Setup help files for more options.
 Compression=lzma
 SolidCompression=yes
 ; Path to the icon for the installer (TCR check requires custom icon)
-;SetupIconFile=.\Files\SetupIcon.ico
+SetupIconFile=.\FILES\SetupIcon.ico
+PrivilegesRequired=none
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -79,4 +80,4 @@ Name: {commondesktop}\Ember; Filename: .\Files\SetupIcon.ico; Tasks: desktopicon
 ;   the installer exits as required by the TCRs.
 [Run]
 Filename: {tmp}\vcredist_x86.exe; Parameters: /q; StatusMsg: Installing Visual C++ 2013 Redistributable...
-Filename: {app}\Ember.exe; Description: {cm:LaunchProgram,Ember}; Flags: nowait postinstall skipifsilent
+Filename: {app}\CinderEngine\bin\CinderEngine.exe; Description: {cm:LaunchProgram,Ember}; Flags: nowait postinstall skipifsilent
