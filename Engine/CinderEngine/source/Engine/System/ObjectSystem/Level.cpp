@@ -9,24 +9,43 @@
 /******************************************************************************/
 
 #include "Level.h"
+#include "ObjectSystem.h"
 
 namespace Framework
 {
-  Level::Level(const string& newname, const string& newfile)
+  Level::Level(const char* newname, const char* newfile)
   {
-    if (newname != "")
+    loaded = false;
+    if (newname != "" || newfile != "")
     {
-      SetName(newname);
-    }
-    if (newfile != "")
-    {
-      if (name == "")
+      if (newname == "")
       {
-        name = newfile;
+        SetName(newfile);
       }
-
-      SetFile(newfile);
+      else
+      {
+        SetName(newname);
+      }
+    
+      if (newfile == "")
+      {
+        SetFile(name.c_str());
+      }
+      else
+      {
+        SetFile(newfile);
+      }
     }
+  }
+
+  string Level::GetFileName() const
+  {
+    return fn_level;
+  }
+
+  Serializer::ZeroSerializer* Level::GetData()
+  {
+    return &data;
   }
 
   string Level::GetName() const
@@ -34,21 +53,29 @@ namespace Framework
     return name;
   }
 
-  void Level::SetName(const string& newname)
+  Serializer::DataNode* Level::GetTrunk()
+  {
+    return trunk;
+  }
+
+  bool Level::IsLoaded() const
+  {
+    return loaded;
+  }
+
+  void Level::SetName(const char* newname)
   {
     name = newname;
   }
 
-  void Level::SetFile(const string& filename)
+  void Level::SetFile(const char* filename)
   {
     fn_level = filename;
-    data.open(fn_level.c_str());
+    data.open(filename);
     data.CreateArchive();
-  }
-
-  Serializer::ZeroSerializer* Level::GetData()
-  {
-    return &data;
+    trunk = data.GetTrunk();
+    OBJECTSYSTEM->SerializeObject(trunk);
+    loaded = true;
   }
 }
 
