@@ -77,6 +77,7 @@ namespace Framework
 
   void UIBox::Serialize (Serializer::DataNode* data)
   {
+    Component::Get_Enabled(data);
     Serializer::DataNode* value = data->FindElement (data, "SpriteSource");
     std::string texName;
     value->GetValue (&texName);

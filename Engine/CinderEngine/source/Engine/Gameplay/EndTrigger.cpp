@@ -10,8 +10,10 @@
 
 #include "EndTrigger.h"
 #include "EventSystem.h"
+#include "UpdateEvent.h"
 #include "GameEvent.h"
 #include "CollisionEvent.h"
+#include "CharacterController.h"
 
 namespace Framework
 {
@@ -25,9 +27,22 @@ namespace Framework
   EndTrigger::~EndTrigger ()
   {}
 
+  
+
   void EndTrigger::Initialize ()
   {
     EVENTSYSTEM->mConnect<CollisionEvent, EndTrigger> (Events::COLLISION, this, &EndTrigger::OnCollisionEnter);
+    EVENTSYSTEM->mConnect <UpdateEvent, EndTrigger>(Events::UPDATEEVENT, this, &EndTrigger::Update);
+  }
+
+  void EndTrigger::Update(UpdateEvent* update)
+  {
+    if (!triggered && CharacterController::PLAYER->gameObject->Transform->GetPosition().x >= gameObject->Transform->GetPosition().x)
+    {
+      triggered = true;
+      BaseEvent b;
+      EVENTSYSTEM->TriggerEvent(Events::END_EVENT, b);
+    }
   }
 
   void EndTrigger::Serialize (Serializer::DataNode* data)
@@ -41,13 +56,16 @@ namespace Framework
 
   void EndTrigger::OnCollisionEnter (CollisionEvent* coll)
   {
-    if ( !triggered && coll && coll->thisObject && coll->OtherObject
-      && coll->thisObject->Name == gameObject->Name && coll->OtherObject->Name == "Player")
-    {
-      triggered = true;
-      std::cout << "CREDITS TRIGGERED\n";
-      BaseEvent b;
-      EVENTSYSTEM->TriggerEvent(Events::END_EVENT, b);
-    }
+    //if (!triggered && coll->thisObject != nullptr && coll->OtherObject->Name == "Player")
+    //{
+    //  if (coll->thisObject->Name == gameObject->Name)
+    //  {
+    //    triggered = true;
+    //    std::cout << "TRIGGERED\n";
+    //    BaseEvent b;
+    //    EVENTSYSTEM->TriggerEvent (Events::END_EVENT, b);
+    //  }
+    //}
   }
+
 }

@@ -175,7 +175,7 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [-45, 8, 0],
+			Vec3 Translation = [-45, 50, 0],
 			Vec3 Scale = [1, 1, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
@@ -327,11 +327,11 @@ Level =
 		},
 		Named = 
 		{
-			string Name = "RightWall",
+			string Name = "TopWall",
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, 32, 0],
+			Vec3 Translation = [0, 64, 0],
 			Vec3 Scale = [1, 1, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},

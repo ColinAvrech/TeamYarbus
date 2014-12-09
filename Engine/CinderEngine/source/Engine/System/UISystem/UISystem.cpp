@@ -11,6 +11,7 @@
 #include "UISystem.h"
 #include "Eventsystem.h"
 #include "GameEvent.h"
+#include "CinderEngine_UI.h"
 #include "Core.h"
 
 namespace Framework
@@ -60,7 +61,25 @@ namespace Framework
   {
     if (ui->Message == "Exit")
     {
+      Sprite* dialog = reinterpret_cast<Sprite*> (OBJECTSYSTEM->FindObjectByName("Dialog")->GetComponent("Sprite"));
+      UIBox* yes = reinterpret_cast<UIBox*> (OBJECTSYSTEM->FindObjectByName("Yes")->GetComponent("UIBox"));
+      UIBox* no = reinterpret_cast<UIBox*> (OBJECTSYSTEM->FindObjectByName("No")->GetComponent("UIBox"));
+      dialog->enabled = true;
+      yes->enabled = true;
+      no->enabled = true;
+    }
+    else if (ui->Message == "Yes")
+    {
       CORE->QuitGame();
+    }
+    else if (ui->Message == "No")
+    {
+      Sprite* dialog = reinterpret_cast<Sprite*> (OBJECTSYSTEM->FindObjectByName("Dialog")->GetComponent("Sprite"));
+      UIBox* yes = reinterpret_cast<UIBox*> (OBJECTSYSTEM->FindObjectByName("Yes")->GetComponent("UIBox"));
+      UIBox* no = reinterpret_cast<UIBox*> (OBJECTSYSTEM->FindObjectByName("No")->GetComponent("UIBox"));
+      dialog->enabled = false;
+      yes->enabled = false;
+      no->enabled = false;
     }
     else if (ui->Message == "Restart")
     {

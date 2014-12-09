@@ -16,6 +16,7 @@
 namespace Framework
 {
   class CollisionEvent;
+  class UpdateEvent;
 
 
   class EndTrigger : public Component
@@ -27,6 +28,7 @@ namespace Framework
   virtual void Serialize (Serializer::DataNode* data);
   virtual void Initialize ();
   virtual void OnApplicationPause (PauseEvent* pause);
+  void Update(UpdateEvent* update);
   void OnCollisionEnter (CollisionEvent* coll);
 
   const static std::string Name;

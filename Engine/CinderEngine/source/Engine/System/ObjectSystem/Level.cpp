@@ -74,7 +74,7 @@ namespace Framework
     data.open(filename);
     data.CreateArchive();
     trunk = data.GetTrunk();
-    OBJECTSYSTEM->SerializeObject(trunk);
+    //OBJECTSYSTEM->SerializeObject(trunk);
     loaded = true;
   }
 }

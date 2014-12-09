@@ -182,7 +182,7 @@ Level =
     },
     FireSystem = 
     {
-      bool Enabled = false,
+      bool Enabled = true,
       float ParticleSize = 200,
     },
   },
@@ -298,13 +298,6 @@ Level =
 			Vec3 Scale = [1, 1, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
-		CircleCollider2D = 
-		{
-      bool Enabled = true,
-		  float Radius = 10.0,
-		  bool Static = true,
-		  string Material = "4de020863e872da8:DefaultPhysicsMaterial",
-		},
     EndTrigger = 
     {
     },
@@ -336,6 +329,93 @@ Level =
 		  string Message = "Exit",
 		},
 	},
+	 Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 8,
+		},
+		Named = 
+		{
+			string Name = "Dialog",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [-20, 150, 0],
+			Vec3 Scale = [200, 200, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+    Sprite = 
+		{
+			string SpriteSource = "UIConfirmationTitle.png",
+			bool FlipX = false,
+			bool FlipY = false,
+			Vec4 Color = [1.0, 1.0, 1.0, 1.0],
+			bool Visible = false,
+			bool OnTop = false,
+			bool AnimationActive = false,
+			float AnimationSpeed = 1,
+			uint StartFrame = 0,
+			BlendMode BlendMode = Alpha,
+			SpriteGeometryMode GeometryMode = ZPlane,
+			string SpriteLayer = "52ad5fa30d7fcd50:DefaultSpriteLayer",
+			string Shader = "Default",
+		},
+	},
+	  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 8,
+		},
+		Named = 
+		{
+			string Name = "Yes",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [-120, 55, 0],
+			Vec3 Scale = [50, 50, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+    UIBox = 
+		{
+      bool Enabled = false,
+		  Vec2 Dimension = [3, 1],
+		  string SpriteSource = "UIYesWhite.png",
+		  Vec4 NormalColor = [1, 1, 1, 1],
+		  Vec4 HoverColor = [1, 0, 0, 1],
+		  Vec4 DownColor = [1, 0, 0, 1],
+		  string Message = "Yes",
+		},
+	},
+		  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 8,
+		},
+		Named = 
+		{
+			string Name = "No",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [80, 55, 0],
+			Vec3 Scale = [50, 50, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+    UIBox = 
+		{
+      bool Enabled = false,
+		  Vec2 Dimension = [3, 1],
+		  string SpriteSource = "UINoWhite.png",
+		  Vec4 NormalColor = [1, 1, 1, 1],
+		  Vec4 HoverColor = [1, 0, 0, 1],
+		  Vec4 DownColor = [1, 0, 0, 1],
+		  string Message = "No",
+		},
+	},
   Cog = 
 	{
 		LinkId = 
@@ -348,7 +428,7 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [-200, 50, 0],
+			Vec3 Translation = [-300, 10, 0],
 			Vec3 Scale = [1, 1, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
@@ -373,7 +453,7 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [200, 50, 0],
+			Vec3 Translation = [200, 10, 0],
 			Vec3 Scale = [1, 1, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
@@ -398,7 +478,7 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, 200, 0],
+			Vec3 Translation = [0, 300, 0],
 			Vec3 Scale = [1, 1, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
