@@ -8,26 +8,31 @@
 */
 /******************************************************************************/
 
+#pragma once
 #include "Common.h"
 #include "JSONSerializer.h"
 
-#pragma once
 namespace Framework
 {
   class Level
   {
     public:
-      Level(const string& newname = "", const string& newfile = "");
-
-      void SetName(const string& levelname);
-      void SetFile(const string& filename);
+      Level(const char* newname = "", const char* newfile = "");
 
       Serializer::ZeroSerializer* GetData();
+      string GetFileName() const;
       string GetName() const;
+      Serializer::DataNode* GetTrunk();
+      void SetName(const char* levelname);
+      void SetFile(const char* filename);
+      bool IsLoaded() const;
+
 
     private:
       string name;
       string fn_level;
       Serializer::ZeroSerializer data;
+      Serializer::DataNode* trunk;
+      bool loaded;
   };
 }

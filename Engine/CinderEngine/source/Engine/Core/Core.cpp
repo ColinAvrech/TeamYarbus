@@ -59,7 +59,10 @@ namespace Framework
     for (unsigned i = 0; i < Systems.size(); ++i)
     {
       if (!GamePaused || GamePaused && Systems[i]->UpdatesOnPaused())
+      {
+        printf("%s updating. \n", Systems[i]->GetName().c_str());
         Systems[i]->Update(0.016f);//_dt);
+      }
 
     }
 

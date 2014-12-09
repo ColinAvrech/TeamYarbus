@@ -41,16 +41,13 @@ namespace Framework
 
   void EndTrigger::OnCollisionEnter (CollisionEvent* coll)
   {
-    if (!triggered && coll->thisObject != nullptr && coll->OtherObject->Name == "Player")
+    if ( !triggered && coll && coll->thisObject && coll->OtherObject
+      && coll->thisObject->Name == gameObject->Name && coll->OtherObject->Name == "Player")
     {
-      if (coll->thisObject->Name == gameObject->Name)
-      {
-        triggered = true;
-        std::cout << "TRIGGERED\n";
-        BaseEvent b;
-        EVENTSYSTEM->TriggerEvent (Events::END_EVENT, b);
-      }
+      triggered = true;
+      std::cout << "CREDITS TRIGGERED\n";
+      BaseEvent b;
+      EVENTSYSTEM->TriggerEvent(Events::END_EVENT, b);
     }
   }
-
 }

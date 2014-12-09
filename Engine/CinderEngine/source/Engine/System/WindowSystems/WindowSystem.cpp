@@ -450,7 +450,9 @@ namespace Framework
 
   void WindowSystem::Update (const float& dt)
   {
-    WindowsUpdate (dt);
+    printf("Windows Update\n");
+    WindowsUpdate(dt);
+    printf("Graphics Update\n");
     GraphicsUpdate (dt);
 	
     //std::cout << "{ " << Camera::GetWorldMousePosition ().x << ", " << Camera::GetWorldMousePosition ().y << " }\n";
