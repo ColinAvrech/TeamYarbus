@@ -81,11 +81,21 @@ namespace Framework
 	    float j = -(1.0f + e) * contactVel;
 	    j /= invMassSum;
 	    j /= (float)contact_count;
-	
-	    // Apply impulse
+
+      // ***** SUPER BUG AHEAD
+      if ((OBJECTSYSTEM->ptrPlayer != nullptr) && (OBJECTSYSTEM->ptrPlayer->RigidBody2D->velocity.Len()) > 1000)
+        __debugbreak();
+      //
+      
+	    // Apply impulse         !!  SUPER BUG IS HERE  !
 	    Vector2 impulse = normal * j;
 	    A->ApplyImpulse( -impulse, ra );
 	    B->ApplyImpulse(  impulse, rb );
+
+      // ***** SUPER BUG ABOVE
+      if ((OBJECTSYSTEM->ptrPlayer != nullptr) && (OBJECTSYSTEM->ptrPlayer->RigidBody2D->velocity.Len()) > 1000)
+        __debugbreak();
+      //
 	
 	    // Friction impulse
 	    rv = B->velocity + Cross( B->angularVelocity, rb ) -
