@@ -309,6 +309,7 @@ namespace Framework
     {
       WindowFocusEvent e;
       e.InFocus = focus;
+      WINDOWSYSTEM->focused = focus == 0 ? false : true;
       EVENTSYSTEM->TriggerEvent(Events::WINDOWFOCUSEVENT, e);
     }
 
@@ -450,10 +451,8 @@ namespace Framework
 
   void WindowSystem::Update (const float& dt)
   {
-    printf("Windows Update\n");
     WindowsUpdate(dt);
-    printf("Graphics Update\n");
-    GraphicsUpdate (dt);
+    GraphicsUpdate(dt);
 	
     //std::cout << "{ " << Camera::GetWorldMousePosition ().x << ", " << Camera::GetWorldMousePosition ().y << " }\n";
   }
@@ -466,6 +465,7 @@ namespace Framework
 
   void WindowSystem::GraphicsUpdate (const float& dt)
   {
+    if (focused)
     OPENGL->Update ();
 
     glfwSwapBuffers (window);
