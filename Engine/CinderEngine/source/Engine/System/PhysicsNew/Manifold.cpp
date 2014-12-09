@@ -83,8 +83,8 @@ namespace Framework
 	    j /= (float)contact_count;
 
       // ***** SUPER BUG AHEAD
-      if ((OBJECTSYSTEM->ptrPlayer != nullptr) && (OBJECTSYSTEM->ptrPlayer->RigidBody2D->velocity.Len()) > 1000)
-        __debugbreak();
+      //if ((OBJECTSYSTEM->ptrPlayer != nullptr) && (OBJECTSYSTEM->ptrPlayer->RigidBody2D->velocity.Len()) > 1000)
+      //  __debugbreak();
       //
       
 	    // Apply impulse         !!  SUPER BUG IS HERE  !
@@ -93,8 +93,8 @@ namespace Framework
 	    B->ApplyImpulse(  impulse, rb );
 
       // ***** SUPER BUG ABOVE
-      if ((OBJECTSYSTEM->ptrPlayer != nullptr) && (OBJECTSYSTEM->ptrPlayer->RigidBody2D->velocity.Len()) > 1000)
-        __debugbreak();
+      //if ((OBJECTSYSTEM->ptrPlayer != nullptr) && (OBJECTSYSTEM->ptrPlayer->RigidBody2D->velocity.Len()) > 1000)
+      //  __debugbreak();
       //
 	
 	    // Friction impulse
