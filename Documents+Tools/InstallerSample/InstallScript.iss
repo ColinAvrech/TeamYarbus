@@ -32,7 +32,7 @@ LicenseFile=FILES\DigiPen_EULA.txt
 Compression=lzma
 SolidCompression=yes
 ; Path to the icon for the installer (TCR check requires custom icon)
-SetupIconFile=.\FILES\SetupIcon.ico
+SetupIconFile=.\FILES\Icon.ico
 PrivilegesRequired=none
 
 [Languages]
@@ -69,9 +69,9 @@ Source: .\REDIST\vcredist_x86.exe; DestDir: {tmp}; Flags: ignoreversion
 ;   {group} is the start menu location that the game will install shortcuts to.
 ;   {commondesktop} is your Windows desktop directory.
 [Icons]
-Name: {group}\Ember; Filename: .\Files\SetupIcon.ico; WorkingDir: {app}
+Name: {group}\Ember; Filename: {app}\CinderEngine\bin\CinderEngine.exe; WorkingDir: {app}; IconFilename: "{app}\Icon.ico"
 Name: {group}\{cm:UninstallProgram,Ember}; Filename: {uninstallexe}
-Name: {commondesktop}\Ember; Filename: .\Files\SetupIcon.ico; Tasks: desktopicon; WorkingDir: {app}
+Name: {commondesktop}\Ember; Filename: {app}\CinderEngine\bin\CinderEngine.exe; Tasks: desktopicon; WorkingDir: {app}\CinderEngine\bin\ IconFilename:{app}Icon.ico
 
 ; List of items to execute in the installer.
 ; Note that this will run all executables in their silent versions as required by the TCRs.
