@@ -69,9 +69,9 @@ Source: .\REDIST\vcredist_x86.exe; DestDir: {tmp}; Flags: ignoreversion
 ;   {group} is the start menu location that the game will install shortcuts to.
 ;   {commondesktop} is your Windows desktop directory.
 [Icons]
-Name: {group}\Ember; Filename: {app}\CinderEngine\bin\CinderEngine.exe; WorkingDir: {app}; IconFilename: "{app}\Icon.ico"
+Name: {group}\Ember; Filename: {app}\CinderEngine\bin\CinderEngine.exe; WorkingDir: {app}\CinderEngine\bin; IconFilename: {app}\Resources\Textures\Icon.ico
 Name: {group}\{cm:UninstallProgram,Ember}; Filename: {uninstallexe}
-Name: {commondesktop}\Ember; Filename: {app}\CinderEngine\bin\CinderEngine.exe; Tasks: desktopicon; WorkingDir: {app}\CinderEngine\bin\ IconFilename:{app}Icon.ico
+Name: {commondesktop}\Ember; Filename: {app}\CinderEngine\bin\CinderEngine.exe; Tasks: desktopicon; WorkingDir: {app}\CinderEngine\bin; IconFilename:{app}\Resources\Textures\Icon.ico
 
 ; List of items to execute in the installer.
 ; Note that this will run all executables in their silent versions as required by the TCRs.
