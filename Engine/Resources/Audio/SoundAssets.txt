@@ -12,3 +12,7 @@ L1_Collision.ogg
 2D
 L1_Rumble.ogg
 2D
+fx_win.ogg
+2D
+fx_lose.ogg
+2D

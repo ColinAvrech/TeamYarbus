@@ -17,6 +17,7 @@
 #include "Thermodynamics.h"
 #include "PlayerEffect.h"
 #include "Pipeline.h"
+#include "ResourceManager.h"
 
 namespace Framework
 {
@@ -62,9 +63,9 @@ namespace Framework
       if (levelFailed)
       {
         timer += e->Dt;
-        if (timer > 1.0f)
+        if (timer > 2.24f)
         {
-          OBJECTSYSTEM->LoadLevel(OBJECTSYSTEM->currentLevelName.c_str());
+          OBJECTSYSTEM->RestartLevel();
           timer = 0.0f;
         }
         return;
@@ -102,6 +103,7 @@ namespace Framework
           //TODO_AUDIO: Play Hud update sound
         }
         //TODO_AUDIO: Play Death Sound/Music
+        Resources::RS->Get_Sound("fx_lose.ogg")->Play();
         OPENGL->Change_Shader("FadeIn", (int)SS_FADE_OUT);
         levelFailed = true;
       }
