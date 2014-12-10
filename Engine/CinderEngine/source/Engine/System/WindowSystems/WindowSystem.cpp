@@ -309,7 +309,7 @@ namespace Framework
     {
       WindowFocusEvent e;
       e.InFocus = focus;
-      if (WINDOWSYSTEM->focused != focus)
+      if (WINDOWSYSTEM->focused != reinterpret_cast<bool>(focus))
       {
         if (focus == GL_FALSE)
         {

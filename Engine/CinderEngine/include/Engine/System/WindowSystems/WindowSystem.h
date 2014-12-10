@@ -33,7 +33,7 @@ namespace Framework
 	ZilchDeclareBaseType(WindowSystem, Zilch::TypeCopyMode::ReferenceType);
 	  unsigned IsMouseDown;
     glm::dvec2 cursorPosition;
-    WindowSystem(const char* WindowTitle, const int& ClientWidth = 1920, const int& ClientHeight = 1080, const bool& fullscreen = true);
+    WindowSystem(const char* WindowTitle, const int& ClientWidth = 1024, const int& ClientHeight = 768, const bool& fullscreen = true);
     ~WindowSystem();
 
     virtual bool Initialize ();
