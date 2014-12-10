@@ -34,7 +34,8 @@ namespace Framework
   {
     EVENTSYSTEM->mConnect<AllTreesBurnedEvent, PlayerStats> (Events::ALLLTREESBURNED, this, &PlayerStats::AllTreesBurned);
     EVENTSYSTEM->mConnect<UpdateEvent, PlayerStats> (Events::UPDATEEVENT, this, &PlayerStats::Update);
-	  gameObject->PlayerStats = this;
+    gameObject->PlayerStats = this;
+    OPENGL->Change_Shader("FadeIn", (int)SS_FADE_IN);
   }
 
   void PlayerStats::Serialize (Serializer::DataNode* data)
@@ -58,9 +59,8 @@ namespace Framework
     if (levelComplete)
     {
       timer += 0.016f;
-      if (timer > 1.0f)
+      if (timer > 2.24f)
       {
-        timer = 0;
         OBJECTSYSTEM->NextLevel();
         timer = 0.0f;
       }

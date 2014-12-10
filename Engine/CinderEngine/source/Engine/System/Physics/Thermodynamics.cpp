@@ -16,6 +16,9 @@
 #include "WindowSystem.h"
 #include "Camera.h"
 #include "solver.c"
+#include "AudioEvents.h"
+
+#include "ResourceManager.h" //Used for playing victory sound
 
 //Used for sending all trees event
 #include "EventSystem.h" 
@@ -387,10 +390,12 @@ namespace Framework
       if (numTreesLeft == numTreesStart)
       {
         guiText->text = "Burn things to keep the flame alive.";
+        //TODO_AUDIO: Play HUD update sound.
       }
       else
       {
         guiText->text = "Trees Remaining: " + std::to_string(numTreesLeft);
+        //TODO_AUDIO: Play HUD update sound.
       }
       std::cout << CinderConsole::red;
 
@@ -399,6 +404,10 @@ namespace Framework
       {
         if (treesburned == false)
         {
+          //TODO_AUDIO: play victory sound;
+          Sound* winFX = Resources::RS->Get_Sound("fx_win.ogg");
+          AUDIOEVENTS->unmanagedSounds.push_back(winFX);
+          winFX->Play();
           treesburned = true;
           BaseEvent b;
           EVENTSYSTEM->TriggerEvent(Events::ALLLTREESBURNED, b);

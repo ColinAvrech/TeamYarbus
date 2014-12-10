@@ -17,6 +17,8 @@
 #include "Thermodynamics.h"
 #include "PlayerEffect.h"
 #include "Pipeline.h"
+#include "ResourceManager.h"
+#include "AudioEvents.h"
 
 namespace Framework
 {
@@ -62,9 +64,9 @@ namespace Framework
       if (levelFailed)
       {
         timer += e->Dt;
-        if (timer > 1.0f)
+        if (timer > 2.24f)
         {
-          OBJECTSYSTEM->LoadLevel(OBJECTSYSTEM->currentLevelName.c_str());
+          OBJECTSYSTEM->RestartLevel();
           timer = 0.0f;
         }
         return;
@@ -88,7 +90,7 @@ namespace Framework
       //if (deathRate != .1f)
       //	deathRate = .1f;
 
-      currentRadius -= currentDeathRate * .016;
+      currentRadius -= currentDeathRate * e->Dt;
       gameObject->Transform->Scale(currentRadius / maxRadius);
 
       if (currentRadius <= minRadius)
@@ -99,8 +101,12 @@ namespace Framework
         if (guiText)// && stats)
         {
           guiText->text = "You ran out of fuel :(. Restarting Level: ";// +stats->NextLevel.c_str();
-          //TODO_AUDIO: Play Death Sound/Music
+          //TODO_AUDIO: Play Hud update sound
         }
+        //TODO_AUDIO: Play Death Sound/Music
+        Sound* loseFX = Resources::RS->Get_Sound("fx_lose.ogg");
+        AUDIOEVENTS->unmanagedSounds.push_back(loseFX);
+        loseFX->Play();
         OPENGL->Change_Shader("FadeIn", (int)SS_FADE_OUT);
         levelFailed = true;
       }

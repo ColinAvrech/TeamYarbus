@@ -176,7 +176,6 @@ namespace Framework
 			delete ebo;
 			ebo = nullptr;
 		}
-
     gameObject->Sprite = nullptr;
 	}
 

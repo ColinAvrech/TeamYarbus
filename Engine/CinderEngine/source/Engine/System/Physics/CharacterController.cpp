@@ -145,25 +145,11 @@ namespace Framework
         body->ApplyForce(Vector2(-acceleration.x * density,acceleration.y * density));
     }
     
-    if (InputManager::IsKeyDown(GLFW_KEY_R))
+    if (InputManager::IsKeyTriggered(GLFW_KEY_R))
     {
-      glm::vec2 position = glm::vec2(0, 500);
-      body->position = Vector2(position.x, position.y);
-      body->angularVelocity = 0.0f;
-      body->velocity = Vector2(0, 0);
-      body->force = Vector2(0, 0);
-      Camera::main->gameObject->Transform->SetPosition(position.x, position.y);
+      OBJECTSYSTEM->RestartLevel();
     }
-
-    /*
-    Vector2* vel = &body->velocity;
-    if (vel->Len() > maxVel)
-    {
-      vel->Normalize();
-      *vel = *vel * maxVel;
-    }
-    */
-
+    
     // Microphone input
     gridPos = gameObject->Transform->GetGridPosition ();
     float micValue = AUDIOSYSTEM->GetMicrophoneValue ();

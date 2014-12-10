@@ -13,7 +13,7 @@ class HowToPlayStart : Component
 	{
 
 	}
-	var Time:Real = 8;
+	var Time:Real = 3;
 	var Triggered:Boolean = false;
 	function Initialize(owner:GameObject)
 	{

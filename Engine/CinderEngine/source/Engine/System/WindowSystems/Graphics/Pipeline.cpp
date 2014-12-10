@@ -55,6 +55,7 @@ namespace Framework
 
   Pipeline::Pipeline ()
   {
+    glViewport (0, 0, WINDOWSYSTEM->Get_Width(), WINDOWSYSTEM->Get_Height());
     useDebugDraw = false;
     OPENGL = this;
     modelMatrix.push_back (glm::mat4 (1.0));
@@ -473,16 +474,16 @@ namespace Framework
       break;
 
     case Framework::SS_FADE_IN:
-      ALPHA += 0.006f;
+      ALPHA += 0.007f;
       if (ALPHA >= 1.0f)
       {
         ALPHA = 1.0f;
-        shaderState = SS_FADE_OUT;
+        Change_Shader("Passthrough", (int)SS_DEFAULT);
       }
       break;
 
     case Framework::SS_FADE_OUT:
-      ALPHA -= 0.006f;
+      ALPHA -= 0.007f;
       if (ALPHA <= 0.0f)
       {
         ALPHA = 0.0f;
@@ -503,6 +504,7 @@ namespace Framework
 
   void Pipeline::ResizeBuffer (const int w, const int h)
   {
+    glViewport (0, 0, w, h);
     glBindTexture (GL_TEXTURE_2D, renderTexture);
     glTexImage2D (GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
     glBindTexture (GL_TEXTURE_2D, 0);

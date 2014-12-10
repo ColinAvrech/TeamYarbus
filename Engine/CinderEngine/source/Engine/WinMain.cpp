@@ -46,7 +46,7 @@ using namespace Framework;
 //! Window title
 const char WindowTitle [] = "CinderEngine";
 const int ClientWidth = 1024;
-const int ClientHeight = 1024;
+const int ClientHeight = 576;
 
 //class MyClass
 //{
@@ -131,6 +131,7 @@ int main (void)
 
   SplashScreenMusic->Play();
   OBJECTSYSTEM->LoadLevel("L5");
+  //OBJECTSYSTEM->LoadLevel("DigipenLogo");
 
  //Initialize Cheat Codes
   Cheats::InitializeCheats();

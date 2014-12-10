@@ -329,11 +329,11 @@ namespace Framework
           __debugbreak();
         }
       }
-      else // couldn't load beyond last level
+      else
       {
         __debugbreak();
       }
-    } // End HACK
+    }
 
     if (loadSuccess)
     {

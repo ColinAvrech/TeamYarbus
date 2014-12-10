@@ -831,10 +831,12 @@ namespace Framework
       if (CORE->IsPaused() == true)
       {
         AUDIOSYSTEM->SetPauseMenuEffect(500.0f, 2.5f, 0.5f);
+        this->VolumeFade(0.2f, 2.0f);
       }
       else
       {
         AUDIOSYSTEM->SetPauseMenuEffect(22000.0f, 0.0f, 4.0f);
+        this->VolumeFade(1.0f, 2.0f);
       }
     }    
   }
