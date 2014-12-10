@@ -85,7 +85,7 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, 0, -8],
+			Vec3 Translation = [0, 0, 0],
 			Vec3 Scale = [256, 20, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
@@ -114,7 +114,7 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, 0, -4],
+			Vec3 Translation = [0, 0, 0],
 			Vec3 Scale = [256, 10, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
@@ -181,7 +181,7 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, 100, 0],
+			Vec3 Translation = [0, 75, 0],
 			Vec3 Scale = [1, 1, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
@@ -208,6 +208,9 @@ Level =
     PlayerStats = 
     {
       string NextLevel = "L2",
+    },
+    CameraFollow = 
+    {
     },
     AudioComponent = 
     {

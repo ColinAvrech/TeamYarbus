@@ -477,7 +477,7 @@ namespace Framework
       if (ALPHA >= 1.0f)
       {
         ALPHA = 1.0f;
-        shaderState = SS_FADE_OUT;
+        Change_Shader("Passthrough", (int)SS_DEFAULT);
       }
       break;
 
