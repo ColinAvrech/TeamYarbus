@@ -28,17 +28,23 @@ namespace Framework
     {
       if (e->KeyDown && e->SHIFTPressed)
       {
-        GameObject* player;
+        GameObject* player = OBJECTSYSTEM->ptrPlayer;
+        
         switch (e->KeyValue)
         {
-          case GLFW_KEY_I: // Toggle Invincibility:   Shift + I
-		  	    std::cout << "Toggle Invincibility Cheat!" << std::endl;
+          case GLFW_KEY_F:
+            if (player && player->CharacterController)
+            {
+              player->CharacterController->ToggleFlying();
+            }
+            break;
 
-		  	    player = OBJECTSYSTEM->ptrPlayer;
-		  	    if (player && player->Health)
-		  	    {
-		  		    player->Health->ToggleInvulnerability();
-		  	    }
+          case GLFW_KEY_I: // Toggle Invincibility:   Shift + I
+            if (player && player->Health)
+    	      {
+    	        std::cout << "Toggle Invincibility Cheat!" << std::endl;
+              player->Health->ToggleInvulnerability();
+            }
             break;
 
           case GLFW_KEY_N: // Goto NextLevel: Shift + N
@@ -48,11 +54,6 @@ namespace Framework
 
           case GLFW_KEY_H: // Enter Debug Mode: H
             OPENGL->ToggleDebugDraw();
-
-            if (CharacterController::PLAYER)
-            {
-              CharacterController::PLAYER->ToggleFlying();
-            }
             break;
         }
       }

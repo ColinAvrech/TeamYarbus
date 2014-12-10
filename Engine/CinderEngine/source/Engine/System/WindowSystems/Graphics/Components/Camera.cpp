@@ -201,16 +201,23 @@ namespace Framework
         size = glm::mix (size, 28.0f, timer);
         std::cout << originalSize << "\n";
       }
+      if (timer >= 1.0f)
+      {
+        czs = CZ_NONE;
+        timer = 0.0f;
+      }
       break;
     case Framework::CZ_ZOOMIN:
       timer += 0.016f;
       if (size > 16.0f)
       {
-        size = glm::mix (size, 16.0f, timer);
+        size = glm::mix(size, 16.0f, timer);
+        std::cout << originalSize << "\n";
       }
       if (timer >= 1.0f)
       {
         czs = CZ_NONE;
+        timer = 0.0f;
       }
       break;
     default:

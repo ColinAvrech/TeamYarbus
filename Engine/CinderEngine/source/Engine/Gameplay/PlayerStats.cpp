@@ -61,6 +61,7 @@ namespace Framework
       if (timer > 1.0f)
       {
         OBJECTSYSTEM->NextLevel();
+        timer = 0.0f;
       }
     }
   }

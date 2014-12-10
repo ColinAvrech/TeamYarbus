@@ -16,8 +16,6 @@ namespace Framework
 
   namespace Cheats
   {
-    extern bool PlayerIsInvincible;
-
     void InitializeCheats();
 
     void CheckToEnableCheats(KeyEvent * e);

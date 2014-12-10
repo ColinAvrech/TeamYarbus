@@ -432,6 +432,10 @@ namespace Framework
     glBlendFunc (sFactor, dFactor);
   }
 
+  bool Pipeline::IsDebugDrawEnabled() const
+  {
+    return useDebugDraw;
+  }
 
   void Pipeline::ToggleDebugDraw ()
   {
@@ -459,11 +463,13 @@ namespace Framework
     switch (shaderState)
     {
     case Framework::SS_DEFAULT:
-      shader->uni1i ("image", 0);
+      ALPHA = 1.0f;
+      shader->uni1i("image", 0);
       break;
 
     case Framework::SS_LIGHTING:
-      shader->uni1i ("image", 0);
+      ALPHA = 1.0f;
+      shader->uni1i("image", 0);
       break;
 
     case Framework::SS_FADE_IN:
@@ -484,6 +490,7 @@ namespace Framework
       }
       break;
     default:
+      ALPHA = 1.0f;
       break;
     }
     shader->uni1i ("image", 0);
@@ -505,13 +512,11 @@ namespace Framework
   {
     sceneShader = Resources::RS->Get_Shader (sh);
     shaderState = (SHADER_STATE)id;
-    ALPHA = 0.0f;
-    /*
+
     if (id == (int) SS_FADE_IN)
       ALPHA = 0.0f;
     else if (id == (int) SS_FADE_OUT)
       ALPHA = 1.0f;
-    */
   }
 
 

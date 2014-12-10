@@ -151,8 +151,6 @@ int main (void)
   //! Run the game! NOW!
   engine->GameLoop ();
 
-  
-
   //! Delete all systems
   engine->DestroySystems ();
 

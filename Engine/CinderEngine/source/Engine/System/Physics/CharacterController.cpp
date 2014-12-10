@@ -171,6 +171,11 @@ namespace Framework
     Physics::THERMODYNAMICS->SetCellTemperature (gridPos.x, gridPos.y, 400000, e->Dt);
   }
 
+  bool CharacterController::CanFly() const
+  {
+    return useFlying;
+  }
+
   void CharacterController::ToggleFlying()
   {
     useFlying = !useFlying;
