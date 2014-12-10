@@ -62,7 +62,7 @@ namespace Framework
     if (element)
       element->GetValue(&acceleration);
     else
-      acceleration = vec2(400.0f, 0.0f);
+      acceleration = vec2(400.0f, 6000.0f);
     
     element = data->FindElement(data, "JumpVelocity");
     if (element)
@@ -117,33 +117,45 @@ namespace Framework
   {
     RigidBody2D* body = gameObject->RigidBody2D;
     
-    if (!body)
-      return;
+    ErrorIf(body == nullptr, "ERROR, Character controller is missing RigidBody2D");
 
     Health* hp = gameObject->Health;
-    if (InputManager::IsKeyDown(GLFW_KEY_UP) && (onGround || useFlying))
+    // if we have died
+    if (hp && !hp->alive)
     {
-      onGround = false;
-      body->velocity.y += jumpVel.y;
-      
-      if (hp)
-      {
-        hp->currentDeathRate *= 0.016f;
-      }
-    }
-    else if (onGround && hp)
-    {
-      hp->currentDeathRate = hp->startingDeathRate;
+      return;
     }
 
-    if ((body->force.x < 0.4f && body->force.x > -0.4f))
+    // Fly up
+    if (InputManager::IsKeyDown(GLFW_KEY_UP) && (onGround || useFlying) && (body->velocity.y < 9.5f))
     {
-      if (InputManager::IsKeyDown(GLFW_KEY_RIGHT))
-        body->ApplyForce(Vector2(acceleration.x * density, acceleration.y * density));
-    
-      if (InputManager::IsKeyDown(GLFW_KEY_LEFT))
-        body->ApplyForce(Vector2(-acceleration.x * density,acceleration.y * density));
+      onGround = false;
+      body->ApplyForce(Vector2(0, 4000 * density));
+        
+      if (hp)
+      {
+        hp->currentDeathRate = hp->startingDeathRate * 20.0f; // only when you jump
+      }
     }
+    else // we are not flying
+    {
+      if (hp)
+      {
+        hp->currentDeathRate = hp->startingDeathRate;
+      }
+    }
+
+    // Go down
+    if (InputManager::IsKeyDown(GLFW_KEY_DOWN) && (body->velocity.y > -9.5f))
+    {
+      body->ApplyForce(Vector2(0, -2000 * density));
+    }
+
+    if (InputManager::IsKeyDown(GLFW_KEY_RIGHT) && body->velocity.x < 50.0f)
+      body->ApplyForce(Vector2(acceleration.x * density, 0));
+ 
+    if (InputManager::IsKeyDown(GLFW_KEY_LEFT) && body->velocity.x > -50.0f)
+      body->ApplyForce(Vector2(-acceleration.x * density,0));
     
     if (InputManager::IsKeyTriggered(GLFW_KEY_R))
     {

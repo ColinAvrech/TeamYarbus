@@ -48,7 +48,7 @@ namespace Framework
 
 //    currentDeathRate = startDeathRate;
 		currentRadius = maxRadius;
-    invincible = false;
+    invincible = true; // Player Starts in invincible for 3.5 seconds
     originalPosition = gameObject->Transform->GetPosition ();
     playerEffect = reinterpret_cast<PlayerEffect*>(gameObject->GetComponent ("PlayerEffect"));
 	}
@@ -56,55 +56,57 @@ namespace Framework
 #include "PlayerStats.h"
 	void Health::Update(UpdateEvent* e)
 	{
-    levelTimer += 0.016f;
-    if (levelTimer > 5.0f)
+    if (e->TimePassed > 3.5f) // Player Starts in invincible for 3.5 seconds
     {
-      if (levelFailed)
+      invincible = false;
+    }
+
+    if (levelFailed)
+    {
+      timer += e->Dt;
+      if (timer > 1.0f)
       {
-        timer += e->Dt;
-        if (timer > 1.0f)
-        {
-          OBJECTSYSTEM->LoadLevel(OBJECTSYSTEM->currentLevelName.c_str());
-          timer = 0.0f;
-        }
-        return;
+        OBJECTSYSTEM->LoadLevel(OBJECTSYSTEM->currentLevelName.c_str());
+        timer = 0.0f;
       }
+      return;
+    }
 
-      //check if player is colliding with node on fire -- for refuel
-      glm::ivec2 currPos = gameObject->Transform->GetGridPosition();
-      int material = Physics::THERMODYNAMICS->GetCellMaterial(currPos.x, currPos.y);
-      float temp = Physics::THERMODYNAMICS->GetCellTemperature(currPos.x, currPos.y);
+    //check if player is colliding with node on fire -- for refuel
+    glm::ivec2 currPos = gameObject->Transform->GetGridPosition();
+    int material = Physics::THERMODYNAMICS->GetCellMaterial(currPos.x, currPos.y);
+    float temp = Physics::THERMODYNAMICS->GetCellTemperature(currPos.x, currPos.y);
 
-      playerEffect->size = currentRadius * 100.0f;
+    playerEffect->size = currentRadius * 100.0f;
 
-      if (temp >= Physics::Constant::BT_Organics && material == GRASS)
-        currentRadius = maxRadius;
+    if (temp >= Physics::Constant::BT_Organics && material == GRASS)
+      currentRadius = maxRadius;
 
-      if (invincible || CORE->IsPaused())
+    if (invincible || CORE->IsPaused())
+    {
+      return;
+    }
+
+    //if (deathRate != .1f)
+    //	deathRate = .1f;
+
+    currentRadius -= currentDeathRate * e->Dt;
+    gameObject->Transform->Scale(currentRadius / maxRadius);
+
+    if (currentRadius <= minRadius)
+    {
+      //printf("dead");
+      //PlayerStats* stats = reinterpret_cast<PlayerStats*>(gameObject->GetComponent("PlayerStats"));
+      GUIText* guiText = reinterpret_cast<GUIText*>(gameObject->GetComponent("GUIText"));
+      if (guiText)// && stats)
       {
-        return;
+        guiText->text = "You ran out of fuel :(. Restarting Level: ";// +stats->NextLevel.c_str();
+        //TODO_AUDIO: Play Hud update sound
       }
-
-      //if (deathRate != .1f)
-      //	deathRate = .1f;
-
-      currentRadius -= currentDeathRate * e->Dt;
-      gameObject->Transform->Scale(currentRadius / maxRadius);
-
-      if (currentRadius <= minRadius)
-      {
-        //printf("dead");
-        //PlayerStats* stats = reinterpret_cast<PlayerStats*>(gameObject->GetComponent("PlayerStats"));
-        GUIText* guiText = reinterpret_cast<GUIText*>(gameObject->GetComponent("GUIText"));
-        if (guiText)// && stats)
-        {
-          guiText->text = "You ran out of fuel :(. Restarting Level: ";// +stats->NextLevel.c_str();
-          //TODO_AUDIO: Play Hud update sound
-        }
-        //TODO_AUDIO: Play Death Sound/Music
-        OPENGL->Change_Shader("FadeIn", (int)SS_FADE_OUT);
-        levelFailed = true;
-      }
+      //TODO_AUDIO: Play Death Sound/Music
+      OPENGL->Change_Shader("FadeIn", (int)SS_FADE_OUT);
+      alive = false;
+      levelFailed = true;
     }
 	}
 
