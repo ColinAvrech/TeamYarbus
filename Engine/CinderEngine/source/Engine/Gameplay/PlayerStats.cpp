@@ -58,9 +58,8 @@ namespace Framework
     if (levelComplete)
     {
       timer += 0.016f;
-      if (timer > 1.0f)
+      if (timer > 2.24f)
       {
-        timer = 0;
         OBJECTSYSTEM->NextLevel();
         timer = 0.0f;
       }
