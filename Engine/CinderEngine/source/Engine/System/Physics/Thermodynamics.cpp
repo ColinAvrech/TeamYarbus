@@ -394,11 +394,20 @@ namespace Framework
       }
       std::cout << CinderConsole::red;
 
+      static bool treesburned = false; // Make this event only happen once per level swtich
       if (numTreesLeft == 0)
       {
-        BaseEvent b;
-        EVENTSYSTEM->TriggerEvent(Events::ALLLTREESBURNED, b);
-        return;
+        if (treesburned == false)
+        {
+          treesburned = true;
+          BaseEvent b;
+          EVENTSYSTEM->TriggerEvent(Events::ALLLTREESBURNED, b);
+          return;
+        }
+      }
+      else
+      {
+        treesburned = false;
       }
 
       for (auto i = FireMap.begin(); i != FireMap.end(); ++i)

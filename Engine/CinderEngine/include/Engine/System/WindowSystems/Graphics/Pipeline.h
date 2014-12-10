@@ -73,7 +73,8 @@ namespace Framework
     void Draw ();
     void ResetBlendMode ();
     void PushMatrix ();
-    void PopMatrix ();
+    void PopMatrix();
+    bool IsDebugDrawEnabled() const;
     void ToggleDebugDraw();
 
     void ResizeBuffer (const int w, const int h);
