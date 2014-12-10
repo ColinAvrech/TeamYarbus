@@ -32,12 +32,16 @@ namespace Framework
         
         switch (e->KeyValue)
         {
-          case GLFW_KEY_F:
+          case GLFW_KEY_F: // Toggle Flying
             if (player && player->CharacterController)
             {
               player->CharacterController->ToggleFlying();
             }
             break;
+
+          case GLFW_KEY_R: // Restart Level
+            OBJECTSYSTEM->RestartLevel();
+            break;            
 
           case GLFW_KEY_I: // Toggle Invincibility:   Shift + I
             if (player && player->Health)

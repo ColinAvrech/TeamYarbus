@@ -157,11 +157,6 @@ namespace Framework
     if (InputManager::IsKeyDown(GLFW_KEY_LEFT) && body->velocity.x > -50.0f)
       body->ApplyForce(Vector2(-acceleration.x * density,0));
     
-    if (InputManager::IsKeyTriggered(GLFW_KEY_R))
-    {
-      OBJECTSYSTEM->RestartLevel();
-    }
-    
     // Microphone input
     gridPos = gameObject->Transform->GetGridPosition ();
     float micValue = AUDIOSYSTEM->GetMicrophoneValue ();
