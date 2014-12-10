@@ -299,7 +299,7 @@ namespace Framework
     
     //
     /*
-        destPosX = (float) (cursorX / (windowWidth) -0.5f) * 2.0f;
+        destPosX = (float) (cursorX / (windowWidth) -0.5f) * 2.0f;//1.47
         destPosY = (float) ((windowHeight - cursorY) / windowHeight - 0.5f) * 2.0f;
     */
     //
