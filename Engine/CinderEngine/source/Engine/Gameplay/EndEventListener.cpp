@@ -20,6 +20,7 @@
 #include "WindowSystem.h"
 #include "Pipeline.h"
 #include "ResourceManager.h"
+#include "AudioEvents.h"
 
 namespace Framework
 {
@@ -112,6 +113,7 @@ namespace Framework
 
   void EndEventListener::EndEventHandler(EndEvent* endEvent)
   {
+    AUDIOEVENTS->unmanagedSounds.push_back(creditsMusic);
     creditsMusic->Play();
     loadCredits = true;
   }
