@@ -387,10 +387,12 @@ namespace Framework
       if (numTreesLeft == numTreesStart)
       {
         guiText->text = "Burn things to keep the flame alive.";
+        //TODO_AUDIO: Play HUD update sound.
       }
       else
       {
         guiText->text = "Trees Remaining: " + std::to_string(numTreesLeft);
+        //TODO_AUDIO: Play HUD update sound.
       }
       std::cout << CinderConsole::red;
 
@@ -399,6 +401,7 @@ namespace Framework
       {
         if (treesburned == false)
         {
+          //TODO_AUDIO: play victory sound;
           treesburned = true;
           BaseEvent b;
           EVENTSYSTEM->TriggerEvent(Events::ALLLTREESBURNED, b);
