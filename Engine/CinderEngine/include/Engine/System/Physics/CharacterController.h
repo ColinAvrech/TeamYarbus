@@ -43,6 +43,7 @@ namespace Framework
 
     static CharacterController* PLAYER;
 
+    bool CanFly() const;
     void ToggleFlying();
 
     bool useFlying;

@@ -43,6 +43,10 @@ namespace Framework
     void WindowsUpdate(const float& dt);
     void GraphicsUpdate(const float& dt);
 
+    bool IsInFocus() const;
+    void Restore();
+    void Minimize();
+
     void ToggleCursorVisibility();
 	  void SetCursorVisibility(bool set);
 	  void KeyFunction(KeyEvent* key);

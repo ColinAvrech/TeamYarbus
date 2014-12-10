@@ -65,6 +65,7 @@ namespace Framework
         if (timer > 1.0f)
         {
           OBJECTSYSTEM->LoadLevel(OBJECTSYSTEM->currentLevelName.c_str());
+          timer = 0.0f;
         }
         return;
       }
@@ -92,16 +93,16 @@ namespace Framework
 
       if (currentRadius <= minRadius)
       {
-        levelFailed = true;
-        OPENGL->Change_Shader("FadeIn", (int)SS_FADE_OUT);
         //printf("dead");
-        GUIText* guiText = reinterpret_cast<GUIText*>(gameObject->GetComponent("GUIText"));
         //PlayerStats* stats = reinterpret_cast<PlayerStats*>(gameObject->GetComponent("PlayerStats"));
+        GUIText* guiText = reinterpret_cast<GUIText*>(gameObject->GetComponent("GUIText"));
         if (guiText)// && stats)
         {
           guiText->text = "You ran out of fuel :(. Restarting Level: ";// +stats->NextLevel.c_str();
           //TODO_AUDIO: Play Death Sound/Music
         }
+        OPENGL->Change_Shader("FadeIn", (int)SS_FADE_OUT);
+        levelFailed = true;
       }
     }
 	}

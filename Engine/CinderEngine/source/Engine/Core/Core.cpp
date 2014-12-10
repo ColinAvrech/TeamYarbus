@@ -18,6 +18,7 @@ Main Game Loop.
 #include "Core.h"
 #include "EventSystem.h"
 #include "GameEvent.h"
+#include "WindowSystem.h"
 
 namespace Framework
 {
@@ -46,30 +47,38 @@ namespace Framework
   //!Update all the systems
   void CoreEngine::GameLoop()
   {
-  //required for deterministic physics
-  float accumulator = 0;
-  float frameStart = (float)GetCurrentTime();
-
+    //required for deterministic physics
+    float accumulator = 0;
+    float frameStart = (float)GetCurrentTime();
+    float dt = 0.016f;
+    
     //!Gameloop
     while (GameActive)
     {
-      //! Marks the begining of a frame
-      StartGameLoop_dt();
-      
-    for (unsigned i = 0; i < Systems.size(); ++i)
-    {
-      if (!GamePaused || GamePaused && Systems[i]->UpdatesOnPaused())
+      if (WINDOWSYSTEM->IsInFocus())
       {
-        //printf("%s updating. \n", Systems[i]->GetName().c_str());
-        Systems[i]->Update(0.016f);//_dt);
+        //! Marks the begining of a frame
+        StartGameLoop_dt();
+     
+        for (unsigned i = 0; i < Systems.size(); ++i)
+        {
+          if (!GamePaused || GamePaused && Systems[i]->UpdatesOnPaused())
+          {
+            printf("%s updating. \n", Systems[i]->GetName().c_str());
+            Systems[i]->Update(dt);//_dt);
+          }
+
+        }
+
+        //!FPS limiter, FPS define can be found in Core.h
+        FrameLimiter();
+        //! marks the end of a frame and calculates the dt, average dt
+        EndGameLoop_dt();
       }
-
-    }
-
-      //!FPS limiter, FPS define can be found in Core.h
-      FrameLimiter();
-      //! marks the end of a frame and calculates the dt, average dt
-      EndGameLoop_dt();
+      else
+      {
+        WINDOWSYSTEM->Update(dt);
+      }
     }
   }
 

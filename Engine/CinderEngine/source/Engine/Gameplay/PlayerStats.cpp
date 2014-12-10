@@ -62,6 +62,7 @@ namespace Framework
       {
         timer = 0;
         OBJECTSYSTEM->NextLevel();
+        timer = 0.0f;
       }
     }
   }

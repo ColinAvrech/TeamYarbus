@@ -9,7 +9,7 @@ function to handle windows Messages.
 */
 /******************************************************************************/
 
-#include "Windowsystem.h"
+#include "WindowSystem.h"
 #include "GraphicsCommon.h"
 #include "Resources.h"
 #include "ResourceManager.h"
@@ -309,7 +309,17 @@ namespace Framework
     {
       WindowFocusEvent e;
       e.InFocus = focus;
-      WINDOWSYSTEM->focused = focus == 0 ? false : true;
+      if (WINDOWSYSTEM->focused != focus)
+      {
+        if (focus == GL_FALSE)
+        {
+          WINDOWSYSTEM->Minimize();
+        }
+        else
+        {
+          WINDOWSYSTEM->Restore();
+        }
+      }
       EVENTSYSTEM->TriggerEvent(Events::WINDOWFOCUSEVENT, e);
     }
 
@@ -388,6 +398,23 @@ namespace Framework
     //Disables Sticky Keys - Colin
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_FALSE);
     glfwSetInputMode(window, GLFW_STICKY_MOUSE_BUTTONS, GL_FALSE);
+  }
+
+  void WindowSystem::Minimize()
+  {
+    glfwIconifyWindow(window);
+    focused = false;
+  }
+
+  void WindowSystem::Restore()
+  {
+    glfwRestoreWindow(window);
+    focused = true;
+  }
+
+  bool WindowSystem::IsInFocus() const
+  {
+    return focused;
   }
 
   //Fcuck da Toggle
