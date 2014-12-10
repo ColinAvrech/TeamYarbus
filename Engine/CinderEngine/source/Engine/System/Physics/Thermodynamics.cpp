@@ -16,6 +16,7 @@
 #include "WindowSystem.h"
 #include "Camera.h"
 #include "solver.c"
+#include "AudioEvents.h"
 
 #include "ResourceManager.h" //Used for playing victory sound
 
@@ -404,7 +405,9 @@ namespace Framework
         if (treesburned == false)
         {
           //TODO_AUDIO: play victory sound;
-          Resources::RS->Get_Sound("fx_win.ogg")->Play();
+          Sound* winFX = Resources::RS->Get_Sound("fx_win.ogg");
+          AUDIOEVENTS->unmanagedSounds.push_back(winFX);
+          winFX->Play();
           treesburned = true;
           BaseEvent b;
           EVENTSYSTEM->TriggerEvent(Events::ALLLTREESBURNED, b);

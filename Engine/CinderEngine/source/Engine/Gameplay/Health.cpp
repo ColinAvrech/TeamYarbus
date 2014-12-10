@@ -18,6 +18,7 @@
 #include "PlayerEffect.h"
 #include "Pipeline.h"
 #include "ResourceManager.h"
+#include "AudioEvents.h"
 
 namespace Framework
 {
@@ -103,7 +104,9 @@ namespace Framework
           //TODO_AUDIO: Play Hud update sound
         }
         //TODO_AUDIO: Play Death Sound/Music
-        Resources::RS->Get_Sound("fx_lose.ogg")->Play();
+        Sound* loseFX = Resources::RS->Get_Sound("fx_lose.ogg");
+        AUDIOEVENTS->unmanagedSounds.push_back(loseFX);
+        loseFX->Play();
         OPENGL->Change_Shader("FadeIn", (int)SS_FADE_OUT);
         levelFailed = true;
       }
