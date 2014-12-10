@@ -27,11 +27,14 @@ namespace Framework
 
   // Constructor
   EndEventListener::EndEventListener()
-  {}
+  {
+    creditsMusic = Resources::RS->Get_Sound("CreditsMusic.ogg");
+  }
 
   // Destructor
   EndEventListener::~EndEventListener()
   {
+    creditsMusic->Stop();
     EVENTSYSTEM->mDisconnect<UpdateEvent, EndEventListener>(Events::UPDATEEVENT, this, &EndEventListener::Update);
     EVENTSYSTEM->mDisconnect<EndEvent, EndEventListener>(Events::END_EVENT, this, &EndEventListener::EndEventHandler);
   }
@@ -109,7 +112,6 @@ namespace Framework
 
   void EndEventListener::EndEventHandler(EndEvent* endEvent)
   {
-    Sound *creditsMusic = Resources::RS->Get_Sound("CreditsMusic.ogg");
     creditsMusic->Play();
     loadCredits = true;
   }
