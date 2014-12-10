@@ -467,7 +467,7 @@ namespace Framework
       break;
 
     case Framework::SS_FADE_IN:
-      ALPHA += 0.016f;
+      ALPHA += 0.006f;
       if (ALPHA >= 1.0f)
       {
         ALPHA = 1.0f;
@@ -476,7 +476,7 @@ namespace Framework
       break;
 
     case Framework::SS_FADE_OUT:
-      ALPHA -= 0.016f;
+      ALPHA -= 0.006f;
       if (ALPHA <= 0.0f)
       {
         ALPHA = 0.0f;
