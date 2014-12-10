@@ -31,7 +31,10 @@ namespace Framework
   
   // Destructor
   EndEventListener::~EndEventListener ()
-  {}
+  {
+	  EVENTSYSTEM->mDisconnect<UpdateEvent, EndEventListener>(Events::UPDATEEVENT, this, &EndEventListener::Update);
+	  EVENTSYSTEM->mDisconnect<EndEvent, EndEventListener>(Events::END_EVENT, this, &EndEventListener::EndEventHandler);
+  }
 
   void EndEventListener::Initialize ()
   {
@@ -87,12 +90,11 @@ namespace Framework
         if (exitGame == nullptr)
         {
           std::string name = "ExitButton";
-          exitGame = reinterpret_cast<UIBox*> (OBJECTSYSTEM->FindObjectByName (name.c_str())->GetComponent("UIBox"));
-          if (exitGame != nullptr)
-          {
-            //exitGame->gameObject->Transform->SetPosition (40, 0);
-            exitGame->enabled = true;
-          }
+          exitGame = OBJECTSYSTEM->FindObjectByName (name.c_str());
+		  exitGame->Sprite->Change_Color(1.0f, 1.0f, 1.0f, 1.0f);
+		  string name2 = "RestartButton";
+		  GameObject* restartGame = OBJECTSYSTEM->FindObjectByName(name2.c_str());
+		  restartGame->Sprite->Change_Color(1.0f, 1.0f, 1.0f, 1.0f);
         }
         CharacterController::PLAYER->useFlying = true;
         break;
