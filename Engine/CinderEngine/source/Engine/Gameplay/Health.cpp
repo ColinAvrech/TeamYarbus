@@ -108,6 +108,7 @@ namespace Framework
       loseFX->Play();
       OPENGL->Change_Shader("FadeIn", (int)SS_FADE_OUT);
       levelFailed = true;
+      alive = false;
     }
 	}
 
