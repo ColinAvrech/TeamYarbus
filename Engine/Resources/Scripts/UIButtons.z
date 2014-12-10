@@ -615,7 +615,7 @@ class ExitButtonEnd : Component
 		
 		this.Detector.Rect.Width = 28 * 1.5;
 		this.Detector.Rect.Height = 1.2 * 8;
-		this.Detector.Offset = Real2(0, -0.2 * 10);
+		//this.Detector.Offset = Real2(0, -0.2 * 10);
 		
 	}
 	
@@ -789,10 +789,6 @@ class NoEnd : Component
 	
 	function OnMouseEvent(e: MouseEvent)
 	{
-		if (this.Owner.Sprite.GetColor().W == 0)
-		{
-			return;
-		}
 		if (e.State == MouseState.MouseInside)
 		{	
 			if (InputManager.IsMouseTriggered(Mouse.LEFT))
@@ -840,7 +836,7 @@ class RestartButtonEnd : Component
 		
 		this.Detector.Rect.Width = 28 * 1.5;
 		this.Detector.Rect.Height = 1.2 * 8;
-		this.Detector.Offset = Real2(0, -0.2 * 10);
+		//this.Detector.Offset = Real2(0, -0.2 * 10);
 		
 	}
 	
@@ -1012,10 +1008,6 @@ class NoRestartEnd : Component
 	
 	function OnMouseEvent(e: MouseEvent)
 	{
-		if (this.Owner.Sprite.GetColor().W == 0)
-		{
-			return;
-		}
 		if (e.State == MouseState.MouseInside)
 		{	
 			if (InputManager.IsMouseTriggered(Mouse.LEFT))

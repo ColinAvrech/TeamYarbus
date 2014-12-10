@@ -58,7 +58,7 @@ Level =
 		},
 		Named = 
 		{
-			string Name = "Yes",
+			string Name = "YesRestart",
 		},
 		Transform = 
 		{
@@ -86,7 +86,7 @@ Level =
 		},
 		Named = 
 		{
-			string Name = "No",
+			string Name = "NoRestart",
 		},
 		Transform = 
 		{
