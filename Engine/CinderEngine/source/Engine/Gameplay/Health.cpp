@@ -99,8 +99,9 @@ namespace Framework
         if (guiText)// && stats)
         {
           guiText->text = "You ran out of fuel :(. Restarting Level: ";// +stats->NextLevel.c_str();
-          //TODO_AUDIO: Play Death Sound/Music
+          //TODO_AUDIO: Play Hud update sound
         }
+        //TODO_AUDIO: Play Death Sound/Music
         OPENGL->Change_Shader("FadeIn", (int)SS_FADE_OUT);
         levelFailed = true;
       }
