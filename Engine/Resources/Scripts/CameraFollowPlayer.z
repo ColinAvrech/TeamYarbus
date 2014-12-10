@@ -31,22 +31,30 @@ class CameraFollow : Component
 		var pos1 = Camera.Main.Owner.Transform.GetTranslation();
 		var pos2 = this.Owner.Transform.GetTranslation();
 		pos2.Y += 2;
-		var newpos = Real3(pos2.X, pos2.Y, -10.0);
-		/*
-		var distance = Math.LengthSq(Real2(pos2.X - pos1.X, pos2.Y - pos2.Y));
-		var newpos = Math.Lerp(pos1, pos2, distance * 0.014);
+		//var newpos = Real3(pos2.X, pos2.Y, -10.0);
+		var differenceX = Math.Abs(pos2.X - pos1.X); 
+		var differenceY = Math.Abs(pos2.Y - pos1.Y);
+		//var distanceSq = Math.LengthSq(Real2(pos2.X - pos1.X, pos2.Y - pos2.Y));
+		var cameraSpeed = 0.014;
+		//if (distanceSq >= 10)
+		//{
+			//cameraSpeed = 0.005;
+		//}
 		
-		if(newpos.X + Camera.Main.Size > 64 || newpos.X - Camera.Main.Size < -64)
+		var newposX = Math.Lerp(pos1.X, pos2.X, cameraSpeed * differenceX);
+		var newposY = Math.Lerp(pos1.Y, pos2.Y, cameraSpeed * differenceY * 4);
+		
+		if (newposX + Camera.Main.Size > 64 || newposX - Camera.Main.Size < -64)
 		{
-			newpos.X = pos1.X;
+			newposX = pos1.X;
 			/*if(newpos.Y > 10 || newpos.Y < 0)
 			{
 				newpos.Y = pos1.Y;
 			}*/
 		}
-		*/
-		Console.WriteLine("Position1: `pos1`, Position2: `pos2`");//, Distance: `distance`");
-		Camera.Main.Owner.Transform.SetTranslation(newpos) ;
+		
+		//Console.WriteLine("Position1: `pos1`, Position2: `pos2`");//, distanceSq: `distanceSq`");
+		Camera.Main.Owner.Transform.SetTranslation(Real3(newposX, newposY, -10));
 			
 	} 
 }

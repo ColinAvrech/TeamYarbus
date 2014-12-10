@@ -48,8 +48,14 @@ namespace Framework
             break;
 
           case GLFW_KEY_N: // Goto NextLevel: Shift + N
-		  	    std::cout << "Goto NextLevel Cheat!" << std::endl;
-            OBJECTSYSTEM->NextLevel();
+
+            // Check for player and its next level, or splash screen
+            if ((OBJECTSYSTEM->ptrPlayer && OBJECTSYSTEM->ptrPlayer->PlayerStats) ||
+                OBJECTSYSTEM->FindObjectByName("Logo") != nullptr)
+            {
+              std::cout << "Goto NextLevel Cheat!" << std::endl;
+              OBJECTSYSTEM->NextLevel();
+            }
             break;
 
           case GLFW_KEY_H: // Enter Debug Mode: H

@@ -43,6 +43,7 @@ namespace Framework
     void Change_Shader (Zilch::String);
     void Change_Texture (Zilch::String);
     void Update_Shader ();
+	void Change_Color(float r, float g, float b, float a);
 	  Zilch::Real Width;
 	  Zilch::Real Height;
 
@@ -78,7 +79,6 @@ namespace Framework
     void Draw_Texture ();
     void Draw_No_Texture ();
     void Draw_Animated ();
-    void Change_Color (float r, float g, float b, float a);
     int GetCurrentFrame ();
     int GetAnimationSpeed ();
     // Function Pointer - Draw Texture - Draw Solid Color - Draw Animated

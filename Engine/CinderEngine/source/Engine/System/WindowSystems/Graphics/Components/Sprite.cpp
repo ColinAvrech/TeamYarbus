@@ -161,8 +161,6 @@ namespace Framework
 	// Destructor
 	Sprite::~Sprite()
 	{
-		gameObject->Sprite = nullptr;
-
 		if (vao != nullptr)
 		{
 			delete vao;
@@ -178,6 +176,7 @@ namespace Framework
 			delete ebo;
 			ebo = nullptr;
 		}
+    gameObject->Sprite = nullptr;
 	}
 
 

@@ -1,0 +1,109 @@
+Level = 
+{
+	Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 190,
+		},
+		Named = 
+		{
+			string Name = "ConfirmationBackground",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0, 0, 1],
+			Vec3 Scale = [96, 96, 96],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Sprite = 
+		{
+			bool Visible = true,
+			bool AnimationActive = false,
+			string SpriteSource = "UIConfirmationBackground.png",
+			string Shader = "Default",
+			Vec4 Color = [1, 1, 1, 0],
+		},
+	},
+	Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 200,
+		},
+		Named = 
+		{
+			string Name = "ConfirmationTitle",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0, 2.85, 1],
+			Vec3 Scale = [96, 96, 96],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Sprite = 
+		{
+			bool Visible = true,
+			bool AnimationActive = false,
+			string SpriteSource = "UIConfirmationTitle.png",
+			string Shader = "Default",
+			Vec4 Color = [1, 1, 1, 0],
+		},
+	},
+	Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 210,
+		},
+		Named = 
+		{
+			string Name = "Yes",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0, 0, 0],
+			Vec3 Scale = [0.75, 0.75, 0.75],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Sprite = 
+		{
+			bool Visible = true,
+			bool AnimationActive = false,
+			string SpriteSource = "UIYesBlack.png",
+			string Shader = "Default",
+			Vec4 Color = [1, 1, 1, 0],
+		},
+		YesEnd = 
+		{
+		},
+	},
+	Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 220,
+		},
+		Named = 
+		{
+			string Name = "No",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0, 0, 1],
+			Vec3 Scale = [0.75, 0.75, 0.75],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Sprite = 
+		{
+			bool Visible = true,
+			bool AnimationActive = false,
+			string SpriteSource = "UINoBlack.png",
+			string Shader = "Default",
+			Vec4 Color = [1, 1, 1, 0],
+		},
+		NoEnd = 
+		{
+		},
+	},
+},

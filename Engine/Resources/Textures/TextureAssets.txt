@@ -42,3 +42,6 @@ UIKeyboardMovement.png
 LoadingIcon.png
 Loading.png
 Credits.png
+UIRestartTitle.png
+UIRestartWhite.png
+UIRestartBlack.png

@@ -302,33 +302,6 @@ Level =
     {
     },
 	},
-  Cog = 
-	{
-		LinkId = 
-		{
-			uint Id = 8,
-		},
-		Named = 
-		{
-			string Name = "ExitButton",
-		},
-		Transform = 
-		{
-			Vec3 Translation = [170, -8, 0],
-			Vec3 Scale = [20, 20, 1],
-			Quat Rotation = [0, 0, 0, 1],
-		},
-    UIBox = 
-		{
-      bool Enabled = false,
-		  Vec2 Dimension = [3, 1],
-		  string SpriteSource = "UIExitWhite.png",
-		  Vec4 NormalColor = [1, 1, 1, 1],
-		  Vec4 HoverColor = [1, 0, 0, 1],
-		  Vec4 DownColor = [1, 0, 0, 1],
-		  string Message = "Exit",
-		},
-	},
 	 Cog = 
 	{
 		LinkId = 
@@ -362,38 +335,67 @@ Level =
 			string Shader = "Default",
 		},
 	},
-	  Cog = 
+	Cog = 
 	{
 		LinkId = 
 		{
-			uint Id = 8,
+			uint Id = 9,
 		},
 		Named = 
 		{
-			string Name = "Yes",
+			string Name = "ExitButton",
 		},
 		Transform = 
 		{
-			Vec3 Translation = [-120, 55, 0],
-			Vec3 Scale = [50, 50, 1],
+			Vec3 Translation = [170, -8, 0],
+			Vec3 Scale = [20, 20, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
-    UIBox = 
+		Sprite = 
 		{
-      bool Enabled = false,
-		  Vec2 Dimension = [3, 1],
-		  string SpriteSource = "UIYesWhite.png",
-		  Vec4 NormalColor = [1, 1, 1, 1],
-		  Vec4 HoverColor = [1, 0, 0, 1],
-		  Vec4 DownColor = [1, 0, 0, 1],
-		  string Message = "Yes",
+			bool Visible = true,
+			bool AnimationActive = false,
+			string SpriteSource = "UIExitBlack.png",
+			string Shader = "Default",
+			Vec4 Color = [1, 1, 1, 0],
+		},
+		ExitButtonEnd = 
+		{
 		},
 	},
-		  Cog = 
+	Cog = 
 	{
 		LinkId = 
 		{
-			uint Id = 8,
+			uint Id = 10,
+		},
+		Named = 
+		{
+			string Name = "RestartButton",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [125, -8, 0],
+			Vec3 Scale = [20, 20, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Sprite = 
+		{
+			bool Visible = true,
+			bool AnimationActive = false,
+			string SpriteSource = "UIRestartBlack.png",
+			string Shader = "Default",
+			Vec4 Color = [1, 1, 1, 0],
+		},
+		RestartButtonEnd = 
+		{
+		},
+	},
+	Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 11,
 		},
 		Named = 
 		{
@@ -420,7 +422,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 9,
+			uint Id = 12,
 		},
 		Named = 
 		{
@@ -445,7 +447,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 10,
+			uint Id = 13,
 		},
 		Named = 
 		{
@@ -470,7 +472,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 11,
+			uint Id = 14,
 		},
 		Named = 
 		{

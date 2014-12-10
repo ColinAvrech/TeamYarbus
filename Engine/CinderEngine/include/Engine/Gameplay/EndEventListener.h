@@ -47,7 +47,7 @@ namespace Framework
     glm::vec3 endPosition;
     float startSize;
     float endSize;
-    UIBox* exitGame = nullptr;
+    GameObject* exitGame = nullptr;
     END_EVENT_STATE ees = EES_NONE;
   };  
 }
