@@ -53,15 +53,31 @@ namespace Framework
     {
       if (WINDOWSYSTEM->IsInFocus() && w != 0 && h != 0)
       {
-        int aspectHeight = (int)(w / (1.6f / 0.9f));
-        WINDOWSYSTEM->Set_W_H(w, aspectHeight);
-        if (h < aspectHeight)
+        if (WINDOWSYSTEM->Get_Width() != w)
         {
-          mouseOffset.y = float(aspectHeight - h);
+          int aspectHeight = (int)(w / (16.0f / 9.0f));
+          WINDOWSYSTEM->Set_W_H(w, aspectHeight);
+          if (h < aspectHeight)
+          {
+            mouseOffset.y = float(aspectHeight - h);
+          }
+          else
+          {
+            mouseOffset.y = 0.0f;
+          }
         }
-        else
+        else if (WINDOWSYSTEM->Get_Height() != h)
         {
-          mouseOffset.y = 0.0f;
+          int aspectWidth = (int)(h * (16.0f / 9.0f));
+          WINDOWSYSTEM->Set_W_H(aspectWidth, h);
+          if (w < aspectWidth)
+          {
+            mouseOffset.x = float(aspectWidth - w);
+          }
+          else
+          {
+            mouseOffset.x = 0.0f;
+          }
         }
 
         glfwSetWindowSize (window, WINDOWSYSTEM->Get_Width (), WINDOWSYSTEM->Get_Height ());
@@ -358,7 +374,7 @@ namespace Framework
       }
       else
       {
-        WINDOWSYSTEM->Set_W_H (ClientWidth, (int)(ClientWidth / (16.f / 9)));
+        WINDOWSYSTEM->Set_W_H (ClientWidth, ClientHeight);
         *GLFWwindowptr = glfwCreateWindow
           (
             WINDOWSYSTEM->Get_Width(),

@@ -29,9 +29,13 @@ namespace Framework
     virtual void Initialize ();
     virtual void OnApplicationPause (PauseEvent* pause);
 
+
     // X, Y BETWEEN -1 to +1
     void Draw ();
 
+    void ToggleVisibility();
+
+    bool visible;
     vec2 position;
     string text;
   };  

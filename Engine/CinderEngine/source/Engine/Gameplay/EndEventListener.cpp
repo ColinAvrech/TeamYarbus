@@ -30,6 +30,10 @@ namespace Framework
   EndEventListener::EndEventListener()
   {
     creditsMusic = Resources::RS->Get_Sound("CreditsMusic.ogg");
+    for (auto guitext : OPENGL->textObjects)
+    {
+      guitext->ToggleVisibility();
+    }
   }
 
   // Destructor
@@ -38,6 +42,10 @@ namespace Framework
     creditsMusic->Stop();
     EVENTSYSTEM->mDisconnect<UpdateEvent, EndEventListener>(Events::UPDATEEVENT, this, &EndEventListener::Update);
     EVENTSYSTEM->mDisconnect<EndEvent, EndEventListener>(Events::END_EVENT, this, &EndEventListener::EndEventHandler);
+    for (auto guitext : OPENGL->textObjects)
+    {
+      guitext->ToggleVisibility();
+    }
   }
 
   void EndEventListener::Initialize()
@@ -48,8 +56,7 @@ namespace Framework
     vec3 pos = Camera::main->gameObject->Transform->GetPosition();
     gameObject->Transform->SetPosition(worldpos.x, pos.y - (Camera::main->GetSize() * 4.0f));
     gameObject->Sprite->enabled = false;
-    endPosition = { worldpos.x, 110, -10 };
-    OPENGL->textObjects.clear();
+    endPosition = { -20, 110, -10 };
   }
 
   void EndEventListener::Serialize(Serializer::DataNode* data)

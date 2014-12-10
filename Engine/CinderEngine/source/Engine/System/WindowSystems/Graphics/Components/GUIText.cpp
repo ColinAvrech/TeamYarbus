@@ -18,7 +18,9 @@ namespace Framework
 
   // Constructor
   GUIText::GUIText()
-  {}
+  {
+    visible = true;
+  }
   
   // Destructor
   GUIText::~GUIText()
@@ -28,23 +30,26 @@ namespace Framework
 
   void GUIText::Draw()
   {
-    glMatrixMode (GL_PROJECTION);
-    glLoadIdentity ();
-    glMatrixMode (GL_MODELVIEW);
-    glLoadIdentity ();
-    //glScalef (5, 5, 1);
-    const int font = (int) GLUT_BITMAP_TIMES_ROMAN_24;
-    std::string s = text;
-    const char* c = s.c_str ();
-    glRasterPos2f (position.x, position.y);
-    for (unsigned i = 0; i < s.size (); ++i)
+    if (visible)
     {
-      glutBitmapCharacter ((void*) font, *(c + i));
+      glMatrixMode (GL_PROJECTION);
+      glLoadIdentity ();
+      glMatrixMode (GL_MODELVIEW);
+      glLoadIdentity ();
+      //glScalef (5, 5, 1);
+      const int font = (int) GLUT_BITMAP_TIMES_ROMAN_24;
+      std::string s = text;
+      const char* c = s.c_str ();
+      glRasterPos2f (position.x, position.y);
+      for (unsigned i = 0; i < s.size (); ++i)
+      {
+        glutBitmapCharacter ((void*) font, *(c + i));
+      }
+      glMatrixMode (GL_PROJECTION);
+      glLoadIdentity ();
+      glMatrixMode (GL_MODELVIEW);
+      glLoadIdentity ();
     }
-    glMatrixMode (GL_PROJECTION);
-    glLoadIdentity ();
-    glMatrixMode (GL_MODELVIEW);
-    glLoadIdentity ();
   }
 
   void GUIText::Initialize()
@@ -66,4 +71,8 @@ namespace Framework
     throw std::logic_error ("The method or operation is not implemented.");
   }
 
+  void GUIText::ToggleVisibility()
+  {
+    visible = !visible;
+  }
 }
