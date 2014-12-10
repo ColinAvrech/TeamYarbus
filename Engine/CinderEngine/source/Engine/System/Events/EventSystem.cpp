@@ -65,6 +65,7 @@ namespace Framework
     {
       e.second->DisconnectAll();
     }
+    _TotalTimePassed = 0;
   }
 
 	// Function called from Zilch Script to register to events.
