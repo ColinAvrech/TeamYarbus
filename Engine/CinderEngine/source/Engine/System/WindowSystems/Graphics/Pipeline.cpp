@@ -55,8 +55,7 @@ namespace Framework
 
   Pipeline::Pipeline ()
   {
-    int viewHeight = WINDOWSYSTEM->Get_Width () / (16.f / 9);
-    glViewport (0, (WINDOWSYSTEM->Get_Height() - viewHeight) / 2.0f, WINDOWSYSTEM->Get_Width(), viewHeight);
+    glViewport (0, 0, WINDOWSYSTEM->Get_Width(), WINDOWSYSTEM->Get_Height());
     useDebugDraw = false;
     OPENGL = this;
     modelMatrix.push_back (glm::mat4 (1.0));
@@ -505,8 +504,7 @@ namespace Framework
 
   void Pipeline::ResizeBuffer (const int w, const int h)
   {
-    int viewHeight = w / (16.f / 9);
-    glViewport (0, (h - viewHeight) / 2.0f, w, viewHeight);
+    glViewport (0, 0, w, h);
     glBindTexture (GL_TEXTURE_2D, renderTexture);
     glTexImage2D (GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
     glBindTexture (GL_TEXTURE_2D, 0);
