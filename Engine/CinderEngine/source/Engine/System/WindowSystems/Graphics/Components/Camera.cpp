@@ -105,7 +105,9 @@ namespace Framework
 
   void Camera::Initialize ()
   {
+#ifdef _DEBUG // Moving the camera using WASD, ZX for debug
     EVENTSYSTEM->mConnect <KeyEvent, Camera> (Events::KEY_ANY, this, &Camera::OnKeyPressed);
+#endif
     EVENTSYSTEM->mConnect <PauseEvent, Camera> (Events::PAUSE, this, &Camera::OnApplicationPause);
     gameObject->Camera = this;
     allCameras.push_back(this);
