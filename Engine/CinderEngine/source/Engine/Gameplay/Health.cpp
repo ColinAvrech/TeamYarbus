@@ -88,7 +88,7 @@ namespace Framework
       //if (deathRate != .1f)
       //	deathRate = .1f;
 
-      currentRadius -= currentDeathRate * .016;
+      currentRadius -= currentDeathRate * e->Dt;
       gameObject->Transform->Scale(currentRadius / maxRadius);
 
       if (currentRadius <= minRadius)
