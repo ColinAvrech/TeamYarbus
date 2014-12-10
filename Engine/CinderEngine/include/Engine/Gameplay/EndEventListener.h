@@ -18,6 +18,7 @@ namespace Framework
   class UpdateEvent;
   class EndEvent;
   class UIBox;
+  class Sound;
 
   enum END_EVENT_STATE
   {
@@ -38,13 +39,14 @@ namespace Framework
   void Update (UpdateEvent* update);
   void EndEventHandler (EndEvent* endEvent);
 
-  const static std::string Name;
+  const static string Name;
 
   private:
+    Sound* creditsMusic;
     bool loadCredits = false;
     float timer = 0.0f;
-    glm::vec3 startPosition;
-    glm::vec3 endPosition;
+    vec3 startPosition;
+    vec3 endPosition;
     float startSize;
     float endSize;
     GameObject* exitGame = nullptr;

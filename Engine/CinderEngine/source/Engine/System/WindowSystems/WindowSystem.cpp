@@ -54,7 +54,7 @@ namespace Framework
       if (WINDOWSYSTEM->IsInFocus() && w != 0 && h != 0)
       {
         int aspectHeight = (int)(w / (1.6f / 0.9f));
-        WINDOWSYSTEM->Set_W_H(w, h);
+        WINDOWSYSTEM->Set_W_H(w, aspectHeight);
         if (h < aspectHeight)
         {
           mouseOffset.y = float(aspectHeight - h);
@@ -64,6 +64,7 @@ namespace Framework
           mouseOffset.y = 0.0f;
         }
 
+        glfwSetWindowSize (window, WINDOWSYSTEM->Get_Width (), WINDOWSYSTEM->Get_Height ());
         OPENGL->ResizeBuffer (WINDOWSYSTEM->Get_Width (), WINDOWSYSTEM->Get_Height ());
       }
     }
@@ -357,7 +358,7 @@ namespace Framework
       }
       else
       {
-        WINDOWSYSTEM->Set_W_H (ClientWidth, ClientHeight);
+        WINDOWSYSTEM->Set_W_H (ClientWidth, (int)(ClientWidth / (16.f / 9)));
         *GLFWwindowptr = glfwCreateWindow
           (
             WINDOWSYSTEM->Get_Width(),
@@ -420,6 +421,7 @@ namespace Framework
     return focused;
   }
 
+  //Fcuck da Toggle
   void WindowSystem::ToggleCursorVisibility()
   {
     cursorVisible = !cursorVisible;
@@ -512,6 +514,7 @@ namespace Framework
 
   void WindowSystem::Set_W_H (const int& w, const int& h)
   {
+    glViewport (0, 0, w, h);
     WindowWidth = w;
     WindowHeight = h;
   }
