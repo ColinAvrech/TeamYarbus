@@ -27,6 +27,7 @@ namespace Framework
     TREE_2,
     TREE_3,
     TREE_4,
+	TREE_LONG,
     TREE_GRASS,
     TREE_5,
     OPEN,  //Keep this last
@@ -66,6 +67,7 @@ namespace Framework
     void Make_Tree2(float x1, float y1, float length, float angle, int depth);
     void Make_Tree3(float x1, float y1, float length1, float angle1, int depth);
     void Make_Tree4(float x1, float y1, float length, float angle, int depth);
+	void Make_TreeLong(float x1, float y1, float x2, float y2, float angle, int depth, int branchCount);
     void Make_Grass(float x1, float y1, float length1);
 
     //Helper

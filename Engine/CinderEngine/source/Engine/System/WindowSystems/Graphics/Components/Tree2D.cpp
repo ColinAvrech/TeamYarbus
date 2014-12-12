@@ -85,6 +85,9 @@ namespace Framework
       break;
     case Framework::TREE_4:
       Make_Tree4 (0, -0.1f, 0.1f, 1.5, 5);
+	  break;
+	case Framework::TREE_LONG:
+		Make_TreeLong(0, -0.1f, 0.5f, 2.0, 6, 5, 10);
       break;
     case Framework::TREE_5:
       tree = new FractalGenerator ();
@@ -358,6 +361,37 @@ namespace Framework
   void Tree2D::Make_Tree4(float x1, float y1, float length, float angle, int depth)
   {
     //Not yet come up with a type 4.
+  }
+
+  void Tree2D::Make_TreeLong(float x1, float y1, float x2, float y2, float angle, int depth, int branchCount)
+  {
+	  Add_Branch(x1, y1, x2, y2);
+
+	  if (depth < 1)
+	  {
+		  return;
+	  }
+
+	  float treeRatio = glm::linearRand(0.7f, 0.9f);
+	  int nn = depth - 1;
+	  GLfloat x3 = (x2 - x1)*treeRatio + x1 - x2;
+	  GLfloat y3 = (y2 - y1)*treeRatio + y1 - y2;
+	  if (branchCount == 2)
+	  {
+		  // Right Branch
+		  Make_TreeLong(x2, y2, x3 * cos(angle) + y3 * sin(angle) + x2, -x3 * sin(angle) + y3 * cos(angle) + y2, angle, nn, branchCount);
+		  // Left Branch
+		  Make_TreeLong(x2, y2, x3 * cos(-angle) + y3 * sin(-angle) + x2, -x3 * sin(-angle) + y3 * cos(-angle) + y2, angle, nn, branchCount);
+	  }
+	  else
+	  {
+		  GLfloat nowAngle = -angle;
+		  GLfloat angleTone = angle / (branchCount - 1) * 2;
+		  for (int i = 0; i < branchCount; i++, nowAngle += angleTone)
+		  {
+			  Make_TreeLong(x2, y2, x3 * cos(nowAngle) + y3 * sin(nowAngle) + x2, -x3 * sin(nowAngle) + y3 * cos(nowAngle) + y2, angle, nn, branchCount);
+		  }
+	  }
   }
 
   void Tree2D::Make_Grass(float x1, float y1, float length1)
