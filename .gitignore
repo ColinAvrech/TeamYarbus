@@ -21,3 +21,6 @@ Engine/CinderEngine/include/Engine/System/Physics/ShapeCollider.h
 /Engine/Resources/SpriteSheets/Thumbs.db
 /Engine/Resources/Textures/Thumbs.db
 /Engine/CinderEngine/premake/CinderEngine.vcxproj.user
+/Engine/Resources/Levels/Terrain_Easy3(scale_error).terrain
+/Engine/Resources/Levels/Terrain_Easy3.terrain
+/Engine/Resources/Levels/Terrain_EasySlope.terrain
