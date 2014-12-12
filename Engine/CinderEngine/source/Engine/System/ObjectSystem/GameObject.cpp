@@ -159,8 +159,10 @@ namespace Framework
 		  
 	  }
 	  */
-	  
-	  //Components[name] = (Component*) ActiveScript.Type;
+	  //Field* owner = ZilchClass->InstanceFields["Butts"];
+	  //ActiveScript.Type->AddRawField(owner);
+
+	  Components[name] = (Component*) ActiveScript.Type;
 	  //Components.at(name)->gameObject = this;
 	  //Function* ZilchInitialize = ZilchClass->FindFunction("Initialize", args, ZilchTypeId(void), Zilch::FindMemberOptions::None);
 	  //ErrorIf(ZilchInitialize == nullptr, "Failed to find function 'Initialize' on Zilch type ", ZilchClass);

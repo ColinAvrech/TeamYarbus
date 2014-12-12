@@ -476,7 +476,7 @@ namespace Framework
 		
 		{
 			Zilch::ExceptionReport report;
-			// Invoke the Create function, which assigns this object an owner.
+			// Invoke the Initialize function, which Initializes all of the zilch scripts.
 			Zilch::Call call(ZilchInitialize, ZILCH->GetDependencies());
 			call.SetHandle(Zilch::Call::This, *i);
 			call.Invoke(report);
