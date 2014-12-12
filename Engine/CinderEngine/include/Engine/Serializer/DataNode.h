@@ -16,6 +16,7 @@
 #include <vector>
 #include "type_vec.hpp"
 #include "CinderMath.h"
+#include "ZilchCompiledLib.h"
 
 using std::string;
 
@@ -49,7 +50,7 @@ namespace Framework
     public://methods
       DataNode(TYPE type, const char* name);
       ~DataNode();
-
+	  ZilchDeclareBaseType(DataNode, Zilch::TypeCopyMode::ReferenceType);
       //Overloaded setter/////////////////////////////////////
       void SetValue(unsigned int& value);
       void SetValue(int& value);

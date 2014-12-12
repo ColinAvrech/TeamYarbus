@@ -74,7 +74,7 @@ namespace Framework
     Component* AddComponent(string name);
 
    ZilchComponent* ZAddZilchComponent(Zilch::String name);
-   ZilchComponent* AddZilchComponent(string name);
+   Handle AddZilchComponent(string name);
 
     Component* ZGetComponent(Zilch::String component);
     Component* GetComponent(string component);
@@ -102,6 +102,7 @@ namespace Framework
     ComponentPointer(Terrain3D);
     ComponentPointer(AudioComponent);
 	ComponentPointer(PlayerStats);
+	
 
    // Menu Components
    ComponentPointer(MenuController);

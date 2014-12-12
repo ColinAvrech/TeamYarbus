@@ -1,3 +1,29 @@
+class NewZilch : ZilchComponent
+{
+	var Butts:Integer = 8;
+	constructor() : base()
+	{
+		Console.WriteLine("SASA");
+	}
+	
+	function Load()
+	{
+	}
+	
+	function Initialize()
+	{
+		Console.WriteLine("INITIALIZED");
+		var script = this.Owner.GetComponent("NewZilch");
+		Console.WriteLine(script);
+	}
+	
+	function Destroy()
+	{
+	}
+}
+
+
+
 /******************************************************************************/
 /*!
 \file   FullBloom.z

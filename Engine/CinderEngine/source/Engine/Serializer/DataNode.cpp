@@ -18,8 +18,13 @@
 
 namespace Framework
 {
+
   namespace Serializer
   {
+	  ZilchDefineType(DataNode, CinderZilch)
+	  {
+		  type->HandleManager = ZilchManagerId(Zilch::PointerManager);
+	  }
     DataNode::DataNode(TYPE type, const char* name) 
       : previous(nullptr)
       , next(nullptr)

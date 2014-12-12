@@ -407,7 +407,7 @@ namespace Framework
     std::cout << "SERIALIZING" << std::endl;
 
     Zilch::Array<GameObject*>* objectlist = new Zilch::Array<GameObject*>();
-    vector<std::pair<ZilchComponent*, Serializer::DataNode*> > scripts;
+    vector<Handle*> scripts;
 
     auto it = data->branch;
     while (it)
@@ -435,10 +435,27 @@ namespace Framework
           }
           else
           {
-            ZilchComponent* zilchComp = newobj->AddZilchComponent(ct->objectName);
-            newcomp = zilchComp;
-            newcomp->gameObject = newobj;
-            scripts.push_back(std::pair<ZilchComponent*, Serializer::DataNode*>(zilchComp, ct->branch));
+			
+            Handle zilchComp = newobj->AddZilchComponent(ct->objectName);
+			
+			
+			Zilch::Array<Zilch::Type*> args;
+			args.push_back(ZilchTypeId(Serializer::DataNode*));
+			Function* ZilchSerialize = zilchComp.Type->FindFunction("Serialize", args, ZilchTypeId(void), Zilch::FindMemberOptions::None);
+			ErrorIf(ZilchSerialize == nullptr, "Failed to find function 'Serialize' on Zilch type ", zilchComp.Type);
+
+			{
+				Zilch::ExceptionReport report;
+				// Invoke the Create function, which assigns this object an owner.
+				Zilch::Call call(ZilchSerialize, ZILCH->GetDependencies());
+				call.SetHandle(Zilch::Call::This, zilchComp);
+				call.SetHandle(0, ct->branch);
+				call.Invoke(report);
+			}
+			scripts.push_back(&zilchComp);
+            //newcomp = zilchComp->Type;
+            //scripts.push_back(std::pair<ZilchComponent*, Serializer::DataNode*>(zilchComp, ct->branch));
+			
           }
           ct = ct->next;
         }
@@ -450,9 +467,22 @@ namespace Framework
     }
 
     //Initializing Zilch Components
+	Zilch::Array<Zilch::Type*> args;
     for(auto i : scripts)
     {
-      i.first->Initialize();
+		
+		Function* ZilchInitialize = i->Type->FindFunction("Initialize", args, ZilchTypeId(void), Zilch::FindMemberOptions::None);
+		ErrorIf(ZilchInitialize == nullptr, "Failed to find function 'Initialize' on Zilch type ", i->Type);
+		
+		{
+			Zilch::ExceptionReport report;
+			// Invoke the Initialize function, which Initializes all of the zilch scripts.
+			Zilch::Call call(ZilchInitialize, ZILCH->GetDependencies());
+			call.SetHandle(Zilch::Call::This, *i);
+			call.Invoke(report);
+		}
+		
+      //it->Initialize();
     }
 
     return objectlist;
@@ -487,10 +517,10 @@ Zilch::Array<GameObject*>* ObjectSystem::ZilchSerializeObject(Serializer::DataNo
         }
         else
         {
-          ZilchComponent* zilchComp = newobj->AddZilchComponent(ct->objectName);
-          newcomp = zilchComp;
-          newcomp->gameObject = newobj;
-          scripts.push_back(std::pair<ZilchComponent*, Serializer::DataNode*>(zilchComp, ct->branch));
+          ///ZilchComponent* zilchComp = newobj->AddZilchComponent(ct->objectName);
+          ///newcomp = zilchComp;
+          ///newcomp->gameObject = newobj;
+          ///scripts.push_back(std::pair<ZilchComponent*, Serializer::DataNode*>(zilchComp, ct->branch));
         }
         ct = ct->next;
       }

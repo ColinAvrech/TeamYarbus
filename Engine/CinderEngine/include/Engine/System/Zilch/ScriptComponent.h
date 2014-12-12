@@ -46,6 +46,7 @@ AGAINST AND DEAL WITH THE EFFECTS OF ANY SUCH MALICIOUS PROGRAMMING.
 #include "Common.h"
 #include "Component.h"
 #include "Zilch.hpp"
+#include "DataNode.h"
 
 namespace Framework
 {
@@ -61,19 +62,20 @@ namespace Framework
   class ZilchComponent : public Component
   {
   public:
-    ZilchDeclareBaseType(ZilchComponent, Zilch::TypeCopyMode::ReferenceType);
+    ZilchDeclareDerivedType(ZilchComponent, Component);
 
     //Constructor. Initialize with owner and component name.
-    ZilchComponent(string& name);
+    ZilchComponent();
 
     //!Updated every frame.
-    void Update(const double &dt);
+    //void Update(const double &dt);
+
+	virtual void Create(GameObject* owner);
+
+	virtual void Serialize(Serializer::DataNode* data);
 
     //!Initialize the system.
     virtual void Initialize();
-
-    /*!TODO IMPLIMENT SERIALIZATION!*/
-    virtual void Serialize(Serializer::DataNode* componentData);
 
     //Destructor
 	virtual ~ZilchComponent() override;
@@ -83,22 +85,6 @@ namespace Framework
     //Private data ----------------------------------
     //Zilch class name
     Zilch::String* ZilchClassName;
-    //Zilch class (Zilch::BoundType*)
-    Zilch::BoundType* ZilchClass;
-    //Zilch library for this component
-    Zilch::LibraryRef* library;
-    //Zilch functions (Zilch::Function*)
-    //Initialize
-    Zilch::Function* ZilchInitialize;
-    //Update
-    Zilch::Function* Run;
-
-	Zilch::Handle ActiveScript;
-    //Zilch exception handler (Zilch::ExceptionReport)
-    Zilch::ExceptionReport report;
-
-    //Hack!!!!!!!!!!
-    string ohai;
 
   }; //class scriptcomponent
 }  //namespace framework
