@@ -20,24 +20,44 @@ namespace Framework
   ZilchDefineType(ZilchComponent, CinderZilch)
   {
 	  type->HandleManager = ZilchManagerId(Zilch::PointerManager);
+	  ZilchBindConstructor();
+	  ZilchBindDestructor();
+	  ZilchBindMethod(Create);
+	  ZilchBindMethod(Serialize);
+	  ZilchBindMethod(Initialize);
   }
 
   //CONSTRUCTOR
-  ZilchComponent::ZilchComponent(string& name)
+  ZilchComponent::ZilchComponent()
   {
-    ZilchClassName = new Zilch::String(name.c_str());
+    
   }
 
 
   ZilchComponent::~ZilchComponent()
   {
-	  ActiveScript.Delete();
+	  
+  }
+
+  void ZilchComponent::Create(GameObject* owner)
+  {
+	  gameObject = owner;
+	  std::cout << "CREATING ZILCH COMPONENT" << std::endl;
+  }
+
+  void ZilchComponent::Serialize(Serializer::DataNode* owner)
+  {
+	  std::cout << "SERIALIZING ZILCH COMPONENT" << std::endl;
+	  //Serializer::DataNode* temp = componentData->FindElement(componentData, "OHai");
+	  //temp->GetValue(&ohai);
   }
 
   //INITIALIZE
   void ZilchComponent::Initialize()
   {
-    //Get pointer to appropriate library
+	  std::cout << "INITIALIZING ZILCH COMPONENT" << std::endl;
+	  /*
+	  //Get pointer to appropriate library
     library = &(ZILCH->lib);
     //Bind the Zilch class
     ZilchClass = (*library)->BoundTypes.findValue(ZilchClassName->c_str(), nullptr);
@@ -58,7 +78,7 @@ namespace Framework
     Zilch::ExceptionReport report;
     Zilch::ExecutableState* state = ZILCH->GetDependencies();
     ActiveScript = state->AllocateDefaultConstructedHeapObject(ZilchClass, report, Zilch::HeapFlags::NonReferenceCounted);
-	
+	*/
 	//var Owner : GameObject;
 	//owner->PropertyType == ZilchTypeId(Real);
 	/*
@@ -73,24 +93,6 @@ namespace Framework
 	//Trevor touched this stuff
 	//this->gameObject = (GameObject*)0x12345678;
 
-    {
-      // Invoke the SayHello function, which should print out to the console
-      Zilch::Call call(ZilchInitialize, ZILCH->GetDependencies());
-      call.SetHandle(Zilch::Call::This, ActiveScript);
-      //call.Set<Zilch::String>(0, ohai.c_str());
-      //call.SetHandle(1, engineHandle);
-	  //call.SetHandle(0, OBJECTSYSTEM);
-	  call.SetHandle(0, gameObject);
-	  //auto t = this->GetOwner();
-	  
-      call.Invoke(report);
-    }
-  }
-
-  void ZilchComponent::Serialize(Serializer::DataNode* componentData)
-  {
-    Serializer::DataNode* temp = componentData->FindElement(componentData, "OHai");
-    temp->GetValue(&ohai);
   }
    
 }

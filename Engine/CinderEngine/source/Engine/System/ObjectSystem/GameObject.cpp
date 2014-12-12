@@ -111,24 +111,68 @@ namespace Framework
     }
   }
 
+  //DOES NOT WORK!!!
   ZilchComponent* GameObject::ZAddZilchComponent(Zilch::String name)
   {
     string stdname = name.c_str();
-
+	//DOES NOT WORK
     //not sure about error handling
-    ZilchComponent* zc = new ZilchComponent(stdname);
-    Components[name.c_str()] = zc;
-    return zc;
+    //ZilchComponent* zc = new ZilchComponent(stdname);
+    //Components[name.c_str()] = zc;
+    return nullptr;
   }
-  ZilchComponent* GameObject::AddZilchComponent(string name)
+  Zilch::Handle GameObject::AddZilchComponent(string name)
   {
 	  
     //bob = state->AllocateDefaultConstructedHeapObject(ZilchClass, report, Zilch::HeapFlags::NonReferenceCounted);
+	  //Get pointer to appropriate library
+	  Zilch::LibraryRef* library = &(ZILCH->lib);
+	  //Bind the Zilch class
+	  Zilch::BoundType* ZilchClass = (*library)->BoundTypes.findValue(name.c_str(), nullptr);
+	  ErrorIf(ZilchClass == nullptr, "Failed to find a Zilch type named ", name);
+	  
+	  Zilch::ExceptionReport report;
+	  Zilch::ExecutableState* state = ZILCH->GetDependencies();
+	  Zilch::Handle ActiveScript = state->AllocateDefaultConstructedHeapObject(ZilchClass, report, Zilch::HeapFlags::NonReferenceCounted);
+	  
+	  //Create an array of arguments
+	  Zilch::Array<Zilch::Type*> args;
+	  args.push_back(ZilchTypeId(GameObject*));
+	  //Find the Create function
+	  // We pass in an array of types to specify the arguments we want, in this case its an empty array
+	  // We also pass in the void type because we don't expect a return value
+	  
+	  Function* ZilchCreate = ZilchClass->FindFunction("Create", args, ZilchTypeId(void), Zilch::FindMemberOptions::None);
+	  ErrorIf(ZilchCreate == nullptr, "Failed to find function 'Create' on Zilch type ", ZilchClass);
 
+	  {
+		  // Invoke the Create function, which assigns this object an owner.
+		  Zilch::Call call(ZilchCreate, ZILCH->GetDependencies());
+		  call.SetHandle(Zilch::Call::This, ActiveScript);
+		  call.SetHandle(0, this);
+		  call.Invoke(report);
+	  }
+	  
+	  /*
+	  for (int i; i < ActiveScript.Type->GetFieldMap(false).count; ++i)
+	  {
+		  
+	  }
+	  */
+	  
+	  //Components[name] = (Component*) ActiveScript.Type;
+	  //Components.at(name)->gameObject = this;
+	  //Function* ZilchInitialize = ZilchClass->FindFunction("Initialize", args, ZilchTypeId(void), Zilch::FindMemberOptions::None);
+	  //ErrorIf(ZilchInitialize == nullptr, "Failed to find function 'Initialize' on Zilch type ", ZilchClass);
+
+	  
+	  // The exception report stores any exceptions that may have occurred while executing code
+	  // Exceptions include accessing arrays out of bounds, dereferencing null, etc
+	  
     //not sure about error handling
-    ZilchComponent* zc = new ZilchComponent(name);
+    //ZilchComponent* zc = new ZilchComponent(name);
     //zc->Initialize();
-    return zc;
+    return ActiveScript;
   }
 
   Component* GameObject::GetComponent(string component)
