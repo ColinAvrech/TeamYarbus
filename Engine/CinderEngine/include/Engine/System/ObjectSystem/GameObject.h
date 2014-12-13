@@ -57,6 +57,7 @@ namespace Framework
   class Health;
   class AudioComponent;
   class PlayerStats;
+  class SparkCollector;
 
   class GameObject
   {
@@ -96,6 +97,7 @@ namespace Framework
     ComponentPointer(Camera);
     ComponentPointer(RigidBody);
     ComponentPointer(CharacterController);
+	ComponentPointer(SparkCollector);
 	  ComponentPointer(FireGroup);
     ComponentPointer(Microphone);
     ComponentPointer(Terrain2D);

@@ -13,8 +13,7 @@
 namespace Framework
 {
 	class UpdateEvent;
-	class CollisionEvent;
-  class PlayerEffect;
+	class PlayerEffect;
 
 	class Health : public Component
 	{
@@ -29,22 +28,21 @@ namespace Framework
 		~Health();
 		void reFuel();
 		void Update(UpdateEvent* e);
-		void OnCollisionEnter(CollisionEvent* c);
 		virtual void Serialize(Serializer::DataNode* data);
-    virtual void Initialize(); 
-    void ToggleInvulnerability();
+		virtual void Initialize();
+		void ToggleInvulnerability();
 
-    float timer = 0.0f;
-    bool levelFailed = false;
-    float startingDeathRate = 0.2f;
-    float currentDeathRate;
-    float maxRadius;
-    float minRadius;
-    float currentRadius;
-    bool alive;
-    bool reFueling;
-    bool invincible;
-    glm::vec3 originalPosition;
-    PlayerEffect* playerEffect;
+		float timer = 0.0f;
+		bool levelFailed = false;
+		float startingDeathRate = 0.2f;
+		float currentDeathRate;
+		float maxRadius;
+		float minRadius;
+		float currentRadius;
+		bool alive;
+		bool reFueling;
+		bool invincible;
+		glm::vec3 originalPosition;
+		PlayerEffect* playerEffect;
 	};
 }

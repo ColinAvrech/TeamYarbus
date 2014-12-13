@@ -130,7 +130,8 @@ int main (void)
   //OBJECTSYSTEM->LoadAllLevels("..//..//Resources//Levels//MasterLevelFile.txt");
 
   SplashScreenMusic->Play();
-  OBJECTSYSTEM->LoadLevel("ZilchTestLevel");
+  OBJECTSYSTEM->LoadLevel("L3");
+  //OBJECTSYSTEM->ZilchLoadLevel(Zilch::String("ZilchTestLevel"));
 
  //Initialize Cheat Codes
   Cheats::InitializeCheats();

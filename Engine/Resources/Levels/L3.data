@@ -188,7 +188,7 @@ Level =
     },
     FireSystem = 
     {
-      bool Enabled = true,
+      bool Enabled = false,
       float ParticleSize = 100,
     },
   },
@@ -232,7 +232,7 @@ Level =
     },
     PlayerEffect = 
     {
-      bool Enabled = true,
+      bool Enabled = false,
       float ParticleSize = 100,
     },
     Health = 
@@ -242,9 +242,6 @@ Level =
 		float minRadius = 0.1f,
 		bool reFueling = false,
 		},
-    CameraFollow = 
-    {
-    },
     PlayerStats = 
     {
       string NextLevel = "L4",
@@ -373,24 +370,4 @@ Level =
       float Orientation = 0,
     },
   },
-  Cog = 
-	{
-		LinkId = 
-		{
-			uint Id = 9,
-		},
-		Named = 
-		{
-			string Name = "MainMenu",
-		},
-		Transform = 
-		{
-			Vec3 Translation = [0, 0, -20],
-			Vec3 Scale = [8, 8, 8],
-			Quat Rotation = [0, 0, 0, 1],
-		},
-		Josh = 
-		{
-		},
-	},
 },
