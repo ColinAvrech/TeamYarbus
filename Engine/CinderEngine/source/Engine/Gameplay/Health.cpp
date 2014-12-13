@@ -50,7 +50,7 @@ namespace Framework
 
 //    currentDeathRate = startDeathRate;
 		currentRadius = maxRadius;
-    invincible = true;
+    invincible = false;
     originalPosition = gameObject->Transform->GetPosition ();
     playerEffect = reinterpret_cast<PlayerEffect*>(gameObject->GetComponent ("PlayerEffect"));
 	}
@@ -58,10 +58,10 @@ namespace Framework
 #include "PlayerStats.h"
 	void Health::Update(UpdateEvent* e)
 	{
-    if (e->TimePassed > 3.5f)
-    {
-      invincible = false;
-    }
+    //if (e->TimePassed > 3.5f)
+    //{
+    //  invincible = false;
+    //}
 
     if (levelFailed)
     {

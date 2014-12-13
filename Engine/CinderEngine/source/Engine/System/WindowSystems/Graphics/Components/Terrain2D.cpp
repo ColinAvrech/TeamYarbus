@@ -168,15 +168,28 @@ namespace Framework
         /*height_points.push_back ({ offsetX, offsetY });
         offsetY = -1.0f;
         break;*/
-        if (previousHeight != offsetY || i == t.Get_Width () - 1)
-        {
-          height_points.push_back ({ offsetX, offsetY});
-          previousHeight = offsetY;
-        }
 
-        offsetY = (Map [i] * nY) / 2.0f;
-        if (offsetY < 0)
-          offsetY = 0.0f;
+
+		//FOR MAKING UPSIDE_DOWN TERRAINS(caverns)
+        //if (previousHeight != offsetY || i == t.Get_Width () - 1)
+        //{
+        //  height_points.push_back ({ offsetX, -offsetY});
+        //  previousHeight = -offsetY;
+        //}
+
+        //offsetY = (Map [i] * nY) / 2.0f;
+        /*if (offsetY < 0)
+          offsetY = 0.0f;*/
+		  if (previousHeight != offsetY || i == t.Get_Width() - 1)
+		  {
+			  height_points.push_back({ offsetX, offsetY });
+			  previousHeight = offsetY;
+		  }
+
+		  offsetY = (Map[i] * nY) / 2.0f;
+		  if (offsetY < 0)
+			  offsetY = 0.0f;
+
 
         if(offsetX > 0.95 && !endcreated)
         {
@@ -311,6 +324,7 @@ namespace Framework
       b->SetOrient (0);
       b->SetStatic ();
       b->restitution = 0.5f;
+
       b->staticFriction = 1.0f;
       b->dynamicFriction = 1.0f;
     }

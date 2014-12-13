@@ -1,0 +1,496 @@
+Level = 
+{
+	LevelSettings = 
+	{
+		LinkId = 
+		{
+			uint Id = 1,
+		},
+		Named = 
+		{
+			string Name = "LevelSettings",
+		},
+		GravityEffect = 
+		{
+			bool Active = true,
+			bool WakeUpOnChange = false,
+			bool LocalSpaceDirection = true,
+			float Strength = 10,
+			Vec3 Direction = [0, -1, 0],
+		},
+		DragEffect = 
+		{
+			bool Active = true,
+			bool WakeUpOnChange = false,
+			float Drag = 0.7,
+		},
+		CameraViewport = 
+		{
+			bool Background = true,
+			Vec2 Offset = [0, 0],
+			Vec2 Size = [1, 1],
+			uint Layer = 0,
+			bool Active = true,
+			bool Blocking = true,
+			uint Renderer = 1,
+			uint Camera = 2,
+		},
+		ForwardRenderer = 
+		{
+			Vec4 ClearColor = [0.278431, 0.278431, 0.278431, 1],
+		},
+	},
+  Cog = 
+	{
+	  LinkId = 
+	  {
+		  uint Id = 560,
+	  },
+	  Named = 
+	  {
+		  string Name = "Camera",
+	  },
+    Transform = 
+	  {
+		  Vec3 Translation = [-150, 110, -10],
+		  Vec3 Scale = [1, 1, 1],
+		  Quat Rotation = [0, 0, 0, 1],
+	  },
+    Camera = 
+		{
+      bool Enabled = true,
+      bool main = true,
+      Vec3 Facing = [0, 0, 1],
+			float FieldOfView = 45,
+			float NearPlane = 0,
+			float FarPlane = 100,
+			float Size = 110,
+		},
+  },
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 1,
+		},
+		Named = 
+		{
+			string Name = "Volcano",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0, 0, -16],
+			Vec3 Scale = [200, 20, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Terrain2D = 
+		{
+      string MapPreset = "Volcano",
+      bool Enabled = true,
+      int MapSize = 64,
+      int BaseHeight = 0,
+      int PeakHeight = 64,
+      int Passes = 2,
+      int Waves = 1,
+      int Water = 0,
+      Vec4 Color = [0.15, 0.15, 0.15, 1],
+      bool AddCollider = false,
+		},
+  },
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 2,
+		},
+		Named = 
+		{
+			string Name = "VolcanoEffect",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [18, 127, -16],
+			Vec3 Scale = [1, 1, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+    FountainEffect = 
+    {
+      bool Enabled = true,
+      float ParticleSize = 200,
+    },
+  },
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 3,
+		},
+		Named = 
+		{
+			string Name = "Mountain",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0, 5, -16],
+			Vec3 Scale = [256, 40, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Terrain2D = 
+		{
+      bool Enabled = true,
+      int MapSize = 128,
+      int BaseHeight = 64,
+      int PeakHeight = 32,
+      int Passes = 0,
+      int Waves = 1,
+      int Water = 0,
+      Vec4 Color = [0.15, 0.15, 0.15, 1],
+      bool AddCollider = false,
+		},
+  },
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 4,
+		},
+		Named = 
+		{
+			string Name = "Terrain",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0, 0, 0],
+			Vec3 Scale = [256, 20, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Terrain2D = 
+		{
+      string MapPreset = "Lake_Shore",
+      bool Enabled = true,
+      int MapSize = 128,
+      int BaseHeight = 32,
+      int PeakHeight = 40,
+      int Passes = 10,
+      int Waves = 5,
+      int Water = 5,
+      Vec4 Color = [0.0, 0.0, 0.0, 1],
+      bool AddCollider = true,
+		},
+    EcoSystem = 
+    {
+    },
+    FireSystem = 
+    {
+      bool Enabled = false,
+      float ParticleSize = 200,
+    },
+  },
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 5,
+		},
+		Named = 
+		{
+			string Name = "Player",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [-150, 40, 0],
+			Vec3 Scale = [1, 1, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		CircleCollider2D = 
+		{
+      bool Enabled = true,
+		  float Radius = 1.0,
+		  bool Static = false,
+		  string Material = "4de020863e872da8:DefaultPhysicsMaterial",
+		},
+		CharacterController = 
+		{
+      bool Enabled = true,
+      bool UseFlying = false,
+		  Vec2 Acceleration = [400, 0],
+		  Vec2 JumpVelocity = [0, 10],
+		  Vec2 MicrophoneMultiplier = [0, 10],
+		},
+    CLParticleRenderer = 
+    {
+      int ParticleCount = 10000,
+      float ParticleSize = 5,
+      float EffectRadius = 0.2,
+      Vec4 Color = [255, 80, 0, 0.5],
+    },
+    PlayerEffect = 
+    {
+      bool Enabled = false,
+      float ParticleSize = 100,
+    },
+    Sprite = 
+		{
+			string SpriteSource = "Circle.png",
+			bool FlipX = false,
+			bool FlipY = false,
+			Vec4 Color = [1, 0.5, 0, 0.8],
+			bool Visible = true,
+			bool OnTop = false,
+			bool AnimationActive = false,
+			float AnimationSpeed = 1,
+			uint StartFrame = 0,
+			BlendMode BlendMode = Alpha,
+			SpriteGeometryMode GeometryMode = ZPlane,
+			string SpriteLayer = "52ad5fa30d7fcd50:DefaultSpriteLayer",
+			string Shader = "Default",
+		},
+	},
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 6,
+		},
+		Named = 
+		{
+			string Name = "EndListener",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [38, 0, 0],
+			Vec3 Scale = [150, 150, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+    Sprite = 
+		{
+			string SpriteSource = "Credits.png",
+			bool FlipX = false,
+			bool FlipY = false,
+			Vec4 Color = [1.0, 1.0, 1.0, 1.0],
+			bool Visible = false,
+			bool OnTop = false,
+			bool AnimationActive = false,
+			float AnimationSpeed = 1,
+			uint StartFrame = 0,
+			BlendMode BlendMode = Alpha,
+			SpriteGeometryMode GeometryMode = ZPlane,
+			string SpriteLayer = "52ad5fa30d7fcd50:DefaultSpriteLayer",
+			string Shader = "Default",
+		},
+    EndEventListener = 
+    {
+    },
+	},
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 7,
+		},
+		Named = 
+		{
+			string Name = "EndTrigger",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [-90, 30, 0],
+			Vec3 Scale = [1, 1, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+    EndTrigger = 
+    {
+    },
+	},
+	 Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 8,
+		},
+		Named = 
+		{
+			string Name = "Dialog",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [-20, 150, 0],
+			Vec3 Scale = [200, 200, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+    Sprite = 
+		{
+			string SpriteSource = "UIConfirmationTitle.png",
+			bool FlipX = false,
+			bool FlipY = false,
+			Vec4 Color = [1.0, 1.0, 1.0, 1.0],
+			bool Visible = false,
+			bool OnTop = false,
+			bool AnimationActive = false,
+			float AnimationSpeed = 1,
+			uint StartFrame = 0,
+			BlendMode BlendMode = Alpha,
+			SpriteGeometryMode GeometryMode = ZPlane,
+			string SpriteLayer = "52ad5fa30d7fcd50:DefaultSpriteLayer",
+			string Shader = "Default",
+		},
+	},
+	Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 9,
+		},
+		Named = 
+		{
+			string Name = "ExitButton",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [100, 75, 0],
+			Vec3 Scale = [20, 20, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Sprite = 
+		{
+			bool Visible = true,
+			bool AnimationActive = false,
+			string SpriteSource = "UIExitBlack.png",
+			string Shader = "Default",
+			Vec4 Color = [1, 1, 1, 0],
+		},
+		ExitButtonEnd = 
+		{
+		},
+	},
+	Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 10,
+		},
+		Named = 
+		{
+			string Name = "RestartButton",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [100, 90, 0],
+			Vec3 Scale = [20, 20, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Sprite = 
+		{
+			bool Visible = true,
+			bool AnimationActive = false,
+			string SpriteSource = "UIRestartBlack.png",
+			string Shader = "Default",
+			Vec4 Color = [1, 1, 1, 0],
+		},
+		RestartButtonEnd = 
+		{
+		},
+	},
+	Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 11,
+		},
+		Named = 
+		{
+			string Name = "No",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [80, 55, 0],
+			Vec3 Scale = [50, 50, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+    UIBox = 
+		{
+      bool Enabled = false,
+		  Vec2 Dimension = [3, 1],
+		  string SpriteSource = "UINoWhite.png",
+		  Vec4 NormalColor = [1, 1, 1, 1],
+		  Vec4 HoverColor = [1, 0, 0, 1],
+		  Vec4 DownColor = [1, 0, 0, 1],
+		  string Message = "No",
+		},
+	},
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 12,
+		},
+		Named = 
+		{
+			string Name = "LeftWall",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [-175, 10, 0],
+			Vec3 Scale = [1, 1, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+    PolygonCollider2D = 
+    {
+      bool Enabled = true,
+		  bool Static = true,
+		  string Material = "4de020863e872da8:DefaultPhysicsMaterial",
+      Vec2 Dimensions = [5, 150],
+      float Orientation = 0,
+    },
+  },
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 13,
+		},
+		Named = 
+		{
+			string Name = "RightWall",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [200, 10, 0],
+			Vec3 Scale = [1, 1, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+    PolygonCollider2D = 
+    {
+      bool Enabled = true,
+		  bool Static = true,
+		  string Material = "4de020863e872da8:DefaultPhysicsMaterial",
+      Vec2 Dimensions = [5, 150],
+      float Orientation = 0,
+    },
+  },
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 14,
+		},
+		Named = 
+		{
+			string Name = "TopWall",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0, 300, 0],
+			Vec3 Scale = [1, 1, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+    PolygonCollider2D = 
+    {
+      bool Enabled = true,
+		  bool Static = true,
+		  string Material = "4de020863e872da8:DefaultPhysicsMaterial",
+      Vec2 Dimensions = [500, 5],
+      float Orientation = 0,
+    },
+  },
+},

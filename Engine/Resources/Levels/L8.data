@@ -4,7 +4,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 1,
+			uint Id = 572,
 		},
 		Named = 
 		{
@@ -44,7 +44,7 @@ Level =
 	{
 	  LinkId = 
 	  {
-		  uint Id = 560,
+		  uint Id = 0,
 	  },
 	  Named = 
 	  {
@@ -80,7 +80,7 @@ Level =
 		Transform = 
 		{
 			Vec3 Translation = [0, 0, -8],
-			Vec3 Scale = [256, 45, 1],
+			Vec3 Scale = [256, 25, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Terrain2D = 
@@ -92,7 +92,7 @@ Level =
       int Passes = 0,
       int Waves = 1,
       int Water = 0,
-      Vec4 Color = [1.0, .862, .596, 1],
+      Vec4 Color = [0.2, 0.2, 0.2, 1],
       bool AddCollider = false,
 		},
   },
@@ -108,7 +108,7 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, -2, -2],
+			Vec3 Translation = [0, 0, -4],
 			Vec3 Scale = [256, 20, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
@@ -116,41 +116,12 @@ Level =
 		{
       bool Enabled = true,
       int MapSize = 128,
-      int BaseHeight = 84,
-      int PeakHeight = 84,
+      int BaseHeight = 64,
+      int PeakHeight = 35,
       int Passes = 0,
       int Waves = 1,
       int Water = 0,
-      Vec4 Color = [0.366, .101, 0.166, 1],
-      bool AddCollider = false,
-		},
-  },
-    Cog = 
-	{
-		LinkId = 
-		{
-			uint Id = 1,
-		},
-		Named = 
-		{
-			string Name = "Forest",
-		},
-		Transform = 
-		{
-			Vec3 Translation = [0, 0, -1],
-			Vec3 Scale = [256, 45, 1],
-			Quat Rotation = [0, 0, 0, 1],
-		},
-		Terrain2D = 
-		{
-      bool Enabled = true,
-      int MapSize = 64,
-      int BaseHeight = 20,
-      int PeakHeight = 45,
-      int Passes = 0,
-      int Waves = 1,
-      int Water = 0,
-      Vec4 Color = [.2, .2, .2, 1],
+      Vec4 Color = [0.1, 0.1, 0.1, 1],
       bool AddCollider = false,
 		},
   },
@@ -167,20 +138,20 @@ Level =
 		Transform = 
 		{
 			Vec3 Translation = [0, 0, 0],
-			Vec3 Scale = [256, 40, 1],
-			Quat Rotation = [0, 0, 1, 0],
+			Vec3 Scale = [64, 10, 1],
+			Quat Rotation = [0, 0, 0, 1],
 		},
 		Terrain2D = 
 		{
-      string MapPreset = "Terrain_EasySlope",
+      string MapPreset = "Terrain_Hard1",
       bool Enabled = true,
       int MapSize = 128,
       int BaseHeight = 32,
-      int PeakHeight = 10,
-      int Passes = 5,
+      int PeakHeight = 40,
+      int Passes = 1,
       int Waves = 5,
       int Water = 5,
-      Vec4 Color = [0.05, 0.033, 0.066, 1],
+      Vec4 Color = [0.0, 0.0, 0.0, 1],
       bool AddCollider = true,
 		},
     EcoSystem = 
@@ -196,7 +167,7 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 5,
+			uint Id = 4,
 		},
 		Named = 
 		{
@@ -217,19 +188,12 @@ Level =
 		},
 		CharacterController = 
 		{
-      bool Enabled = true,
-      bool UseFlying = true,
+          bool Enabled = true,
+          bool UseFlying = true,
 		  Vec2 Acceleration = [100, 0],
 		  Vec2 JumpVelocity = [0, 2],
 		  Vec2 MicrophoneMultiplier = [0, 10],
 		},
-    CLParticleRenderer = 
-    {
-      int ParticleCount = 10000,
-      float ParticleSize = 5,
-      float EffectRadius = 0.2,
-      Vec4 Color = [255, 80, 0, 0.5],
-    },
     PlayerEffect = 
     {
       bool Enabled = true,
@@ -247,7 +211,7 @@ Level =
     },
     PlayerStats = 
     {
-      string NextLevel = "L4",
+      string NextLevel = "L9",
     },
     Sprite = 
 		{
@@ -306,6 +270,22 @@ Level =
       Vec2 Dimensions = [5, 150],
       float Orientation = 0,
     },
+    AudioComponent = 
+    {
+      bool Positional = false,
+      bool MicEffect = false,
+      bool Play = true,
+      bool Mute = false,
+      bool LowPassFilter = true,
+      float LPFcutoff = 2000,
+      float LPFresonance = 1,
+      bool HighPassFilter = true,
+      float HPFcutoff = 150,
+      float HPFresonance = 1,
+      string SoundID = "BG",
+      string SoundName = "Pads",
+      string FileName = "Pads.ogg",
+    },
   },
   Cog = 
 	{
@@ -330,22 +310,6 @@ Level =
 		  string Material = "4de020863e872da8:DefaultPhysicsMaterial",
       Vec2 Dimensions = [5, 150],
       float Orientation = 0,
-    },
-    AudioComponent = 
-    {
-      bool Positional = false,
-      bool MicEffect = false,
-      bool Play = true,
-      bool Mute = false,
-      bool LowPassFilter = true,
-      float LPFcutoff = 2000,
-      float LPFresonance = 1,
-      bool HighPassFilter = true,
-      float HPFcutoff = 150,
-      float HPFresonance = 1,
-      string SoundID = "BG",
-      string SoundName = "Pads",
-      string FileName = "Pads.ogg",
     },
   },
   Cog = 
