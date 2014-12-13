@@ -48,6 +48,7 @@ namespace Framework
     // 
     ZilchBindMethodOverloadAs(ZAddComponent, "AddComponent", Component*, Zilch::String);
     ZilchBindMethodOverloadAs(ZAddZilchComponent, "AddZilchComponent", ZilchComponent*, Zilch::String);
+	
   }
 
   GameObject::GameObject(unsigned gameObjectID)
@@ -161,8 +162,11 @@ namespace Framework
 	  */
 	  //Field* owner = ZilchClass->InstanceFields["Butts"];
 	  //ActiveScript.Type->AddRawField(owner);
-
+	  //LibraryBuilder::AddExtensionProperty((*library)->BoundTypes.findValue("GameObject", nullptr), String(name.c_str()), ActiveScript, nullptr, nullptr, MemberOptions::None);
 	  Components[name] = (Component*) ActiveScript.Type;
+	  //Zilch::PropertyArray
+	  //ExtenstionPropery
+	  
 	  //Components.at(name)->gameObject = this;
 	  //Function* ZilchInitialize = ZilchClass->FindFunction("Initialize", args, ZilchTypeId(void), Zilch::FindMemberOptions::None);
 	  //ErrorIf(ZilchInitialize == nullptr, "Failed to find function 'Initialize' on Zilch type ", ZilchClass);
