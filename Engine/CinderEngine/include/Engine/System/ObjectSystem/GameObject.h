@@ -79,7 +79,7 @@ namespace Framework
 
     Component* ZGetComponent(Zilch::String component);
     Component* GetComponent(string component);
-
+	
     //Public Variables
     string Name;
 	  String GetName();

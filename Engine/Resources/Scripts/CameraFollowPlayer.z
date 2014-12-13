@@ -7,7 +7,7 @@
 \brief  This script causes the Main camera to follow it's owner.
 */
 /******************************************************************************/
-class CameraFollow : Component
+class CameraFollow : ZilchComponent
 {
   
 	constructor() : base()
@@ -15,9 +15,8 @@ class CameraFollow : Component
 
 	}
 
-	function Initialize(owner:GameObject)
+	function Initialize()
 	{
-		this.Owner = owner;
 		
 		EventSystem.Connect(Events.UpdateEvent, this.LogicUpdate);
 	}
