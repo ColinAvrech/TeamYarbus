@@ -13,7 +13,7 @@ class NewZilch : ZilchComponent
 	function Initialize()
 	{
 		Console.WriteLine("INITIALIZED");
-		var script = this.Owner.GetComponent("NewZilch");
+		var script = this.Owner.GetComponent("NewZilch") as NewZilch;
 		Console.WriteLine(script);
 	}
 	
