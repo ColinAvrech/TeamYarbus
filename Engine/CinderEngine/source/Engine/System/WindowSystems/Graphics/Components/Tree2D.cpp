@@ -119,10 +119,10 @@ namespace Framework
       break;
     }
 
-    if (fsm != nullptr && fsm->firePoints.size())
+   /* if (fsm != nullptr && fsm->firePoints.size())
     {
       Physics::THERMODYNAMICS->Add_Group(fsm);
-    }
+    }*/
 
     if (type != TREE_5)
     {

@@ -15,6 +15,7 @@
 #include "ObjectSystem.h"
 #include "FireStarter.h"
 #include "AudioComponent.h"
+#include "Thermodynamics.h"
 
 namespace Framework
 { 
@@ -96,6 +97,13 @@ namespace Framework
     GameObject *newobj = OBJECTSYSTEM->LoadArchetype("Tree5.Archetype");
 
 		newobj->Transform->Translate(x, y, z);
+
+    FireGroup* fsm = nullptr;
+    fsm = newobj->FireGroup;
+    if (fsm != nullptr && fsm->firePoints.size())
+    {
+      Physics::THERMODYNAMICS->Add_Group(fsm);
+    }
 	}
 }
 

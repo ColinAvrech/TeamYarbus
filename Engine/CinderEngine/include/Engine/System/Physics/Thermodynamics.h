@@ -72,8 +72,6 @@ namespace Framework
       //!Initialize the system
       bool Initialize();
 
-      void Allocate(int x, int y);
-
       virtual bool UpdatesOnPaused();
 
       // Called every frame
@@ -120,10 +118,11 @@ namespace Framework
       float GetCellOxygen(const float& x, const float& y);
       //Get cell velocity
       vec2 GetCellVelocity(const float& x, const float& y);
-	  //Return Terrain binary map value
-	  int GetCellMaterial(int x, int y);
+	    //Return Terrain binary map value
+	    int GetCellMaterial(int x, int y);
 
       // Setters
+      void SetMapSize(int size);
       void ToggleAutoDissipation();
       float SetCellTemperature(const float& x, const float& y, const float& temp, const float& dt);
       void SetCellVelocity (const int x, const int y, vec2 v);
@@ -173,6 +172,7 @@ namespace Framework
 #pragma region Private Variables
       //Automatically equalize pressure over time
       bool EqualizePressure;
+      bool Allocated;
       float CellSize;
       vec2 MapOffset;
       float AtmosphericTemperature;
@@ -230,6 +230,7 @@ namespace Framework
       //Determine subscript from position
       glm::ivec2 GetSubscript(const float& x, const float& y);
       glm::vec2 GetConvecDir(const unsigned i, const unsigned j);
+      void Clear();
       void Init_Materials();
 #pragma endregion
 

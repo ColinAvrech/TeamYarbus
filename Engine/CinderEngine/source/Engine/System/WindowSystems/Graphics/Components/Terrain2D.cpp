@@ -204,19 +204,24 @@ namespace Framework
 
     if (AddCollider)
     {
+      int w_size = 2 * (int)this->gameObject->Transform->GetScale().x;
+      THERMODYNAMICS->SetMapSize(w_size);
+
+      float t_height = this->gameObject->Transform->GetScale().y * 0.5f;
+      float max_peak = t.GetPeakHeight();
+      int num_height_points = t.Get_Width();
+      int size_factor = w_size / num_height_points;
       for (int x = 0; x < THERMODYNAMICS->MapSize.x; ++x)
       {
-        for (int y = 0; y < THERMODYNAMICS->MapSize.y && y < Map[x]; ++y)
+        ErrorIf(size_factor == 0, "Terrain size must be greater than terrain's heightpoints.");
+        float cur_peak = Map[x / size_factor];
+        float height = t_height * (cur_peak / max_peak);
+        for (int y = 0; y < THERMODYNAMICS->MapSize.y && y < height / 2; ++y)
         {
           THERMODYNAMICS->Terrain.Set (x, y, STONE);
-        }
-      }
-    }
-
-    ////THERMODYNAMICS->Terrain.Set (64, 64, WOOD);
-    //THERMODYNAMICS->TemperatureMap.Set (64, 64, 1000000000000000.0f);
-    //THERMODYNAMICS->TemperatureMap.Set (68, 64, 1000000000000000.0f);
-    //THERMODYNAMICS->TemperatureMap.Set (72, 64, 1000000000000000.0f);
+        } //for y
+      } //for x
+    } //if main terrain
   }
 
 

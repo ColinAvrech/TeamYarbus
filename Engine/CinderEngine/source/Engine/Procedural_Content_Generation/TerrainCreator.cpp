@@ -72,7 +72,7 @@ namespace Framework
         x8[i] = rand() % 2;
 
       for (unsigned i = 0; i < MapWidth; ++i)
-        (*Array)[i] = base + height * (0.03125f * x1[i] + 0.0625f * x2[i / 2] + 0.125f * x4[i / 4] + 0.25f * x8[i / 8] + 0.5f * WaveBuffer[(i * 2 * waves) / MapWidth]);
+        (*Array)[i] = height * (0.03125f * x1[i] + 0.0625f * x2[i / 2] + 0.125f * x4[i / 4] + 0.25f * x8[i / 8] + 0.5f * WaveBuffer[(i * 2 * waves) / MapWidth]);
 
       for (int i = 0; i < passes; ++i)
       {

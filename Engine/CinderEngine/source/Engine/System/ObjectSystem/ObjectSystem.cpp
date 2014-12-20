@@ -148,7 +148,7 @@ namespace Framework
 
         case _LoadLevel:
           PHYSICS->Clear ();
-          Physics::THERMODYNAMICS->Reset ();
+          //Physics::THERMODYNAMICS->Reset ();
           DestroyAllObjects();
           EVENTSYSTEM->DeleteAllEvents();
 
@@ -435,30 +435,30 @@ namespace Framework
             newcomp->Serialize(ct->branch);
             newcomp->Initialize(); //Set pointer to GameObject, Setup Component
           }
-          else
-          {
-			
-            Handle zilchComp = newobj->AddZilchComponent(ct->objectName);
-			
-			
-			Zilch::Array<Zilch::Type*> args;
-			args.push_back(ZilchTypeId(Serializer::DataNode*));
-			Function* ZilchSerialize = zilchComp.Type->FindFunction("Serialize", args, ZilchTypeId(void), Zilch::FindMemberOptions::None);
-			ErrorIf(ZilchSerialize == nullptr, "Failed to find function 'Serialize' on Zilch type ", zilchComp.Type);
+   //       else
+   //       {
+			//
+   //         Handle zilchComp = newobj->AddZilchComponent(ct->objectName);
+			//
+			//
+			//Zilch::Array<Zilch::Type*> args;
+			//args.push_back(ZilchTypeId(Serializer::DataNode*));
+			//Function* ZilchSerialize = zilchComp.Type->FindFunction("Serialize", args, ZilchTypeId(void), Zilch::FindMemberOptions::None);
+			//ErrorIf(ZilchSerialize == nullptr, "Failed to find function 'Serialize' on Zilch type ", zilchComp.Type);
 
-			{
-				Zilch::ExceptionReport report;
-				// Invoke the Create function, which assigns this object an owner.
-				Zilch::Call call(ZilchSerialize, ZILCH->GetDependencies());
-				call.SetHandle(Zilch::Call::This, zilchComp);
-				call.SetHandle(0, ct->branch);
-				call.Invoke(report);
-			}
-			scripts.push_back(&zilchComp);
-            //newcomp = zilchComp->Type;
-            //scripts.push_back(std::pair<ZilchComponent*, Serializer::DataNode*>(zilchComp, ct->branch));
-			
-          }
+			//{
+			//	Zilch::ExceptionReport report;
+			//	// Invoke the Create function, which assigns this object an owner.
+			//	Zilch::Call call(ZilchSerialize, ZILCH->GetDependencies());
+			//	call.SetHandle(Zilch::Call::This, zilchComp);
+			//	call.SetHandle(0, ct->branch);
+			//	call.Invoke(report);
+			//}
+			//scripts.push_back(&zilchComp);
+   //         //newcomp = zilchComp->Type;
+   //         //scripts.push_back(std::pair<ZilchComponent*, Serializer::DataNode*>(zilchComp, ct->branch));
+			//
+   //       }
           ct = ct->next;
         }
         objectlist->append(newobj);

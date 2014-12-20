@@ -197,8 +197,8 @@ namespace Framework
   {
     return glm::vec2
     (
-      position.x + (Physics::THERMODYNAMICS->MapSize.x * 0.5f) - 1,
-      position.y + (Physics::THERMODYNAMICS->MapSize.y * 0.5f) - 1
+      position.x + (Physics::THERMODYNAMICS->MapSize.x * 0.5f) - 2,
+      position.y
     );
   }
 
@@ -206,8 +206,8 @@ namespace Framework
   {
     return glm::vec2
       (
-      pos.x + (Physics::THERMODYNAMICS->MapSize.x * 0.5f) - 1,
-      pos.y + (Physics::THERMODYNAMICS->MapSize.y * 0.5f) - 1
+      pos.x + (Physics::THERMODYNAMICS->MapSize.x),
+      pos.y
       );
   }
 

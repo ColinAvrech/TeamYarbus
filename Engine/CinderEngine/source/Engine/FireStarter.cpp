@@ -101,7 +101,7 @@ namespace Framework
 
   vec2 FireStarter::GetGridPosition()
   {
-    manager->gameObject->Transform->GetGridPosition(positionOffset + (glm::vec2) manager->gameObject->Transform->GetPosition ());
+    //manager->gameObject->Transform->GetGridPosition(positionOffset + (glm::vec2) manager->gameObject->Transform->GetPosition ());
     return manager->gameObject->Transform->GetGridPosition() + positionOffset;
   }
 

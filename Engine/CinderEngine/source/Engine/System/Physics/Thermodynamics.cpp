@@ -73,37 +73,39 @@ namespace Framework
 
       //Initialize material list
       Init_Materials();
-      //Scan level
-      MapSize = { 128, 128 };
-      std::cout << "Grid " << MapSize.x << "x " << MapSize.y << std::endl;
-      MapOffset = { -MapSize.x / 2, MapSize.y / 2 };
-      AtmosphericTemperature = 300.f;
-      //Allocate heatmap
-      TemperatureMap.allocate(MapSize.x, MapSize.y);
-      TemperatureMap.fill(300.f);
 
-      //Allocate Oxygen/Density map
-      DensityMap.allocate(MapSize.x + 2, MapSize.y + 2);
-      DensityMap_Prev.allocate(MapSize.x + 2, MapSize.y + 2);
-      DensityMap.fill(Constant::K_Air);
-      DensityMap_Prev.fill(Constant::K_Air);
+      Allocated = false;
+      ////Scan level
+      //MapSize = { 128, 128 };
+      //std::cout << "Grid " << MapSize.x << "x " << MapSize.y << std::endl;
+      //MapOffset = { -MapSize.x / 2, MapSize.y / 2 };
+      //AtmosphericTemperature = 300.f;
+      ////Allocate heatmap
+      //TemperatureMap.allocate(MapSize.x, MapSize.y);
+      //TemperatureMap.fill(300.f);
 
-      //Allocate Velocity map
-      VelocityMapX.allocate(MapSize.x + 2, MapSize.y + 2);
-      VelocityMapY.allocate(MapSize.x + 2, MapSize.y + 2);
-      VelocityMap_PrevX.allocate(MapSize.x + 2, MapSize.y + 2);
-      VelocityMap_PrevY.allocate(MapSize.x + 2, MapSize.y + 2);
-      VelocityMapX.fill({ 0 });
-      VelocityMapY.fill({ 0 });
-      VelocityMap_PrevX.fill({ 0 });
-      VelocityMap_PrevY.fill({ 0 });
+      ////Allocate Oxygen/Density map
+      //DensityMap.allocate(MapSize.x + 2, MapSize.y + 2);
+      //DensityMap_Prev.allocate(MapSize.x + 2, MapSize.y + 2);
+      //DensityMap.fill(Constant::K_Air);
+      //DensityMap_Prev.fill(Constant::K_Air);
 
-      //Allocate Terrain map
-      Terrain.allocate(MapSize.x, MapSize.y);
-      Terrain.fill(AIR);
+      ////Allocate Velocity map
+      //VelocityMapX.allocate(MapSize.x + 2, MapSize.y + 2);
+      //VelocityMapY.allocate(MapSize.x + 2, MapSize.y + 2);
+      //VelocityMap_PrevX.allocate(MapSize.x + 2, MapSize.y + 2);
+      //VelocityMap_PrevY.allocate(MapSize.x + 2, MapSize.y + 2);
+      //VelocityMapX.fill({ 0 });
+      //VelocityMapY.fill({ 0 });
+      //VelocityMap_PrevX.fill({ 0 });
+      //VelocityMap_PrevY.fill({ 0 });
 
-      WaterMap.allocate(MapSize.x, MapSize.y);
-      WaterMap.fill(0.0f);
+      ////Allocate Terrain map
+      //Terrain.allocate(MapSize.x, MapSize.y);
+      //Terrain.fill(AIR);
+
+      //WaterMap.allocate(MapSize.x, MapSize.y);
+      //WaterMap.fill(0.0f);
 
       SpawnThreads();
 
@@ -139,26 +141,8 @@ namespace Framework
     // Called every frame
     void ThermodynamicsSystem::Update(const float& dt)
     {
-      UpdateMultiThreaded();
+      UpdateTemp(0, 63, 10 * dt);
       UpdateFire(dt);
-     
-      //solver.vel_step
-      //  (
-      //  MapSize.x,
-      //  VelocityMapX.GetArray(), VelocityMapY.GetArray(),
-      //  VelocityMap_PrevX.GetArray(), VelocityMap_PrevY.GetArray(),
-      //  0.0f,
-      //  0.1f
-      //  );
-
-      //solver.dens_step
-      //  (
-      //  MapSize.x,
-      //  DensityMap.GetArray(), DensityMap_Prev.GetArray(),
-      //  VelocityMapX.GetArray(), VelocityMapY.GetArray(),
-      //  0.0f,
-      //  0.1f
-      //  );
     }
 
     // Getters
@@ -202,6 +186,44 @@ namespace Framework
     }
 
     // Setters
+    void ThermodynamicsSystem::SetMapSize(int size)
+    {
+      Clear();
+      //Scan level
+      MapSize = { size, GRID_Y_SIZE };
+      std::cout << "Grid " << MapSize.x << "x " << MapSize.y << std::endl;
+      MapOffset = { -MapSize.x / 2, MapSize.y / 2 };
+      AtmosphericTemperature = 300.f;
+      //Allocate heatmap
+      TemperatureMap.allocate(MapSize.x, MapSize.y);
+      TemperatureMap.fill(300.f);
+
+      //Allocate Oxygen/Density map
+      DensityMap.allocate(MapSize.x + 2, MapSize.y + 2);
+      DensityMap_Prev.allocate(MapSize.x + 2, MapSize.y + 2);
+      DensityMap.fill(Constant::K_Air);
+      DensityMap_Prev.fill(Constant::K_Air);
+
+      //Allocate Velocity map
+      VelocityMapX.allocate(MapSize.x + 2, MapSize.y + 2);
+      VelocityMapY.allocate(MapSize.x + 2, MapSize.y + 2);
+      VelocityMap_PrevX.allocate(MapSize.x + 2, MapSize.y + 2);
+      VelocityMap_PrevY.allocate(MapSize.x + 2, MapSize.y + 2);
+      VelocityMapX.fill({ 0 });
+      VelocityMapY.fill({ 0 });
+      VelocityMap_PrevX.fill({ 0 });
+      VelocityMap_PrevY.fill({ 0 });
+
+      //Allocate Terrain map
+      Terrain.allocate(MapSize.x, MapSize.y);
+      Terrain.fill(AIR);
+
+      WaterMap.allocate(MapSize.x, MapSize.y);
+      WaterMap.fill(0.0f);
+
+      Allocated = true;
+    }
+
     void ThermodynamicsSystem::ToggleAutoDissipation()
     {
       EqualizePressure = !EqualizePressure;
@@ -456,14 +478,17 @@ namespace Framework
     void ThermodynamicsSystem::Reset()
     {
       AtmosphericTemperature = 300.f;
-      TemperatureMap.fill(300.f);
+      if (Allocated)
+      {
+        TemperatureMap.fill(300.f);
 
-      DensityMap.fill(Const::p_Air);
+        DensityMap.fill(Const::p_Air);
 
-      VelocityMapX.fill({ 0 });
-      VelocityMapY.fill({ 0 });
-      VelocityMap_PrevX.fill({ 0 });
-      VelocityMap_PrevY.fill({ 0 });
+        VelocityMapX.fill({ 0 });
+        VelocityMapY.fill({ 0 });
+        VelocityMap_PrevX.fill({ 0 });
+        VelocityMap_PrevY.fill({ 0 });
+      }
 
       fireGroups.clear();
 
@@ -480,6 +505,22 @@ namespace Framework
       int sub_y = int(std::abs(((y)* (MapSize.y / 2 - 1) + MapOffset.y - 1)));
       glm::ivec2 res(sub_x, sub_y);
       return res;
+    }
+
+    void ThermodynamicsSystem::Clear()
+    {
+      TemperatureMap.clean();
+      DensityMap.clean();
+      DensityMap_Prev.clean();
+      VelocityMapX.clean();
+      VelocityMap_PrevX.clean();
+      VelocityMapY.clean();
+      VelocityMap_PrevY.clean();
+      Terrain.clean();
+      WaterMap.clean();
+      fireGroups.clear();
+      FireMap.clear();
+      Allocated = false;
     }
 
     void ThermodynamicsSystem::SpawnThreads()
@@ -584,54 +625,47 @@ namespace Framework
       glm::vec3 center = Camera::main->gameObject->Transform->GetPosition();
       glm::vec3 up = glm::vec3(0, 1, 0);
       gluLookAt(eye.x, eye.y, eye.z, center.x, center.y, center.z, up.x, up.y, up.z);
-      //glTranslatef (0, 32, 0);
-      //glScalef (64, 64, 1.0f);
+      
+      //draw Terrain
       glBegin(GL_QUADS);
       {
-        for (int i = 0; i < Terrain.getSize().y; ++i)
+        for (int i = 0; i < MapSize.y; ++i)
         {
-          for (int j = 0; j < Terrain.getSize().x; ++j)
+          for (int j = 0; j < MapSize.x; ++j)
           {
-            glColor4f(TemperatureMap.Get(j, i) / Constant::BT_Organics,
-              TemperatureMap.Get(j, i) / Constant::BT_Organics,
-              TemperatureMap.Get(j, i) / Constant::BT_Organics,
+            glColor4f(float(Terrain.Get(j, i) / STONE),
+              float(Terrain.Get(j, i)) / STONE,
+              float(Terrain.Get(j, i)) / STONE,
+              0.5f);
+            glVertex2f(j - (MapSize.x * 0.5f) + 2, i - 0);
+            glVertex2f(j - (MapSize.x * 0.5f) + 3, i - 0);
+            glVertex2f(j - (MapSize.x * 0.5f) + 3, i + 1);
+            glVertex2f(j - (MapSize.x * 0.5f) + 2, i + 1);
+          }
+        }
+      }
+      glEnd();
+      //draw temperature
+      glBegin(GL_QUADS);
+      {
+        for (int i = 0; i < MapSize.y; ++i)
+        {
+          for (int j = 0; j < MapSize.x; ++j)
+          {
+            glColor4f(TemperatureMap.Get(j, i) / Constant::BT_Organics, 0.f, 0.f,
               TemperatureMap.Get(j, i) / Constant::BT_Organics * 0.4f);
-            glVertex2f(j - (MapSize.x * 0.5f) - 1, i - (MapSize.y * 0.5f) - 1);
-            glVertex2f(j - (MapSize.x * 0.5f) - 2, i - (MapSize.y * 0.5f) - 1);
-            glVertex2f(j - (MapSize.x * 0.5f) - 2, i - (MapSize.y * 0.5f) - 2);
-            glVertex2f(j - (MapSize.x * 0.5f) - 1, i - (MapSize.x * 0.5f) - 2);
+            glVertex2f(j - (MapSize.x * 0.5f) + 2, i - 0);
+            glVertex2f(j - (MapSize.x * 0.5f) + 3, i - 0);
+            glVertex2f(j - (MapSize.x * 0.5f) + 3, i + 1);
+            glVertex2f(j - (MapSize.x * 0.5f) + 2, i + 1);
           }
         }
       }
       glEnd();
 
-      //glColor4f (1, 1, 1, 0.2f);
-      //glBegin (GL_QUADS);
-      //{
-      //  for (unsigned i = 0; i < TerrainPoints.size (); i+=4)
-      //  {
-      //    glVertex2f (TerrainPoints.at (i).x, TerrainPoints.at (i).y);
-      //    glVertex2f (TerrainPoints.at (i + 1).x, TerrainPoints.at (i + 1).y);
-      //    glVertex2f (TerrainPoints.at (i + 2).x, TerrainPoints.at (i + 2).y);
-      //    glVertex2f (TerrainPoints.at (i + 3).x, TerrainPoints.at (i + 3).y);
-      //  }
-      //}
-      //glEnd ();
 
-      //glBegin (GL_QUADS);
-      //{
-      //  for (int i = 0; i < MapSize.y; ++i)
-      //  {
-      //    for (int j = 0; j < MapSize.x; ++j)
-      //    {
-      //      glColor4f (0, 0, 0, 0);
-      //      glVertex2f (j, i);
-      //      glVertex2f (j - 1, i);
-      //      glVertex2f (j - 1, i - 1);
-      //      glVertex2f (j, i - 1);
-      //    }
-      //  }
       glPointSize(10.0f);
+      //draw fire starters
       glBegin(GL_POINTS);
       FireStarter* firePoint;
       for (auto i = FireMap.begin(); i != FireMap.end(); ++i)
