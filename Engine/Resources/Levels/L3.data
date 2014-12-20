@@ -242,6 +242,9 @@ Level =
 		float minRadius = 0.1f,
 		bool reFueling = false,
 		},
+	SparkCollector = 
+		{
+		},
     PlayerStats = 
     {
       string NextLevel = "L4",
@@ -279,6 +282,53 @@ Level =
       string FileName = "FireA.ogg",
     },
 	},
+	  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 20,
+		},
+		Named = 
+		{
+			string Name = "Spark",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [-25, 55, 0],
+			Vec3 Scale = [1, 1, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		CircleCollider2D = 
+		{
+      bool Enabled = true,
+		  float Radius = 1.0,
+		  bool Static = true,
+		  string Material = "4de020863e872da8:DefaultPhysicsMaterial",
+		},
+    CLParticleRenderer = 
+    {
+      int ParticleCount = 10000,
+      float ParticleSize = 5,
+      float EffectRadius = 0.2,
+      Vec4 Color = [255, 80, 0, 0.5],
+    },
+    Sprite = 
+		{
+			string SpriteSource = "Circle.png",
+			bool FlipX = false,
+			bool FlipY = false,
+			Vec4 Color = [1, 0.9, 0.9, 0.8],
+			bool Visible = true,
+			bool OnTop = false,
+			bool AnimationActive = false,
+			float AnimationSpeed = 1,
+			uint StartFrame = 0,
+			BlendMode BlendMode = Alpha,
+			SpriteGeometryMode GeometryMode = ZPlane,
+			string SpriteLayer = "52ad5fa30d7fcd50:DefaultSpriteLayer",
+			string Shader = "Default",
+		},
+		},
   Cog = 
 	{
 		LinkId = 
