@@ -161,7 +161,8 @@ namespace Framework
     gridPos = gameObject->Transform->GetGridPosition ();
     float micValue = AUDIOSYSTEM->GetMicrophoneValue ();
     body->ApplyForce(Vector2(micValue * micMultiplier.x * density,micValue * micMultiplier.y * density));
-    Physics::THERMODYNAMICS->SetCellTemperature (gridPos.x, gridPos.y, 400000, e->Dt);
+    Physics::THERMODYNAMICS->SetCellTemperature (gridPos.x, gridPos.y, 
+      /*micValue **/ 10 * Constant::BT_Organics, e->Dt);
   }
 
   bool CharacterController::CanFly() const

@@ -192,6 +192,8 @@ namespace Framework
       //Water and moisture content
       Grid2D<float> WaterMap;
       
+      //Stores the time spent not updating for each column
+      //float *dt_Tracker = nullptr;
 
       static GUIText* guiText;
 

@@ -54,7 +54,8 @@ namespace Framework
     //Destructor
     ThermodynamicsSystem::~ThermodynamicsSystem()
     {
-      ReleaseThreads();
+      Clear();
+      //ReleaseThreads();
     }
 
     /*-----------------------------------------------------------------------
@@ -75,39 +76,8 @@ namespace Framework
       Init_Materials();
 
       Allocated = false;
-      ////Scan level
-      //MapSize = { 128, 128 };
-      //std::cout << "Grid " << MapSize.x << "x " << MapSize.y << std::endl;
-      //MapOffset = { -MapSize.x / 2, MapSize.y / 2 };
-      //AtmosphericTemperature = 300.f;
-      ////Allocate heatmap
-      //TemperatureMap.allocate(MapSize.x, MapSize.y);
-      //TemperatureMap.fill(300.f);
 
-      ////Allocate Oxygen/Density map
-      //DensityMap.allocate(MapSize.x + 2, MapSize.y + 2);
-      //DensityMap_Prev.allocate(MapSize.x + 2, MapSize.y + 2);
-      //DensityMap.fill(Constant::K_Air);
-      //DensityMap_Prev.fill(Constant::K_Air);
-
-      ////Allocate Velocity map
-      //VelocityMapX.allocate(MapSize.x + 2, MapSize.y + 2);
-      //VelocityMapY.allocate(MapSize.x + 2, MapSize.y + 2);
-      //VelocityMap_PrevX.allocate(MapSize.x + 2, MapSize.y + 2);
-      //VelocityMap_PrevY.allocate(MapSize.x + 2, MapSize.y + 2);
-      //VelocityMapX.fill({ 0 });
-      //VelocityMapY.fill({ 0 });
-      //VelocityMap_PrevX.fill({ 0 });
-      //VelocityMap_PrevY.fill({ 0 });
-
-      ////Allocate Terrain map
-      //Terrain.allocate(MapSize.x, MapSize.y);
-      //Terrain.fill(AIR);
-
-      //WaterMap.allocate(MapSize.x, MapSize.y);
-      //WaterMap.fill(0.0f);
-
-      SpawnThreads();
+      //SpawnThreads();
 
       std::cout << "Thermodynamics Initialized." << std::endl;
       return true;
@@ -141,12 +111,26 @@ namespace Framework
     // Called every frame
     void ThermodynamicsSystem::Update(const float& dt)
     {
+      if (paused)
+        return;
+
+      /*for (int i = 0; i < MapSize.x; ++i)
+        dt_Tracker[i] += dt;*/
+
       int center = Camera::main->gameObject->Transform->GetGridPosition().x;
       float fov = Camera::main->GetFOV();
       int start = center - fov;
+      if (start < 0)
+        start = 0;
       int end = center + fov;
+      if (end >= MapSize.x)
+        end = MapSize.x - 1;
+
       UpdateTemp(start, end, dt);
       UpdateFire(dt);
+
+      /*for (int i = start; i < end; ++i)
+        dt_Tracker[i] = 0.0f;*/
     }
 
     // Getters
@@ -224,6 +208,10 @@ namespace Framework
 
       WaterMap.allocate(MapSize.x, MapSize.y);
       WaterMap.fill(0.0f);
+
+      //dt_Tracker = new float[MapSize.x];
+      /*for (int i = 0; i < MapSize.x; ++i)
+        dt_Tracker[i] = 0.0f;*/
 
       Allocated = true;
     }
@@ -316,7 +304,7 @@ namespace Framework
     }
 
     //Update temperatures
-    void ThermodynamicsSystem::UpdateTemp(const int& start_index, const int& end_index, const float& dt)
+    void ThermodynamicsSystem::UpdateTemp(const int& start_index, const int& end_index, const float &dt)
     {
       //std::cout << start_index << "\n";
       //std::cout << "Updated Temperature/Density/Pressure" << std::endl;
@@ -324,6 +312,7 @@ namespace Framework
       {
         for (int i = start_index; i < end_index; ++i)
         {
+          //float dt = dt_Tracker[i];
           float netdQ = 0.f;
           float oTemp = TemperatureMap.Get(i, j);
           //Loop through surrounding cells
@@ -368,7 +357,7 @@ namespace Framework
           }
           else
           {
-            if (Terrain.Get(i, j) == 0 && Terrain.Get(i, j + 1) == 0)
+            if (materialList[Terrain.Get(i, j)].isFluid)
             {
               float dQConv = ConvectiveHeatTransfer(materialList[Terrain.Get(i, j)].Hc,
                 TemperatureMap.Get(i, j), AtmosphericTemperature, dt);
@@ -524,6 +513,8 @@ namespace Framework
       WaterMap.clean();
       fireGroups.clear();
       FireMap.clear();
+      /*if (dt_Tracker != nullptr)
+        delete [] dt_Tracker;*/
       Allocated = false;
     }
 
@@ -618,6 +609,20 @@ namespace Framework
 
     void ThermodynamicsSystem::Draw()
     {
+      glm::vec2 c_center = Camera::main->gameObject->Transform->GetGridPosition();
+      float fov = Camera::main->GetFOV();
+      int h_start = c_center.x - fov;
+      if (h_start < 0)
+        h_start = 0;
+      int h_end = c_center.x + fov;
+      if (h_end >= MapSize.x)
+        h_end = MapSize.x - 1;
+      int v_start = c_center.y - fov;
+      if (v_start < 0)
+        v_start = 0;
+      int v_end = c_center.y + fov;
+      if (v_end >= MapSize.y)
+        v_end = MapSize.y - 1;
       glUseProgram(0);
       glMatrixMode(GL_PROJECTION);
       glLoadIdentity();
@@ -633,9 +638,9 @@ namespace Framework
       //draw Terrain
       glBegin(GL_QUADS);
       {
-        for (int i = 0; i < MapSize.y; ++i)
+        for (int i = v_start; i < v_end; ++i)
         {
-          for (int j = 0; j < MapSize.x; ++j)
+          for (int j = h_start; j < h_end; ++j)
           {
             glColor4f(float(Terrain.Get(j, i) / STONE),
               float(Terrain.Get(j, i)) / STONE,
@@ -652,9 +657,9 @@ namespace Framework
       //draw temperature
       glBegin(GL_QUADS);
       {
-        for (int i = 0; i < MapSize.y; ++i)
+        for (int i = v_start; i < v_end; ++i)
         {
-          for (int j = 0; j < MapSize.x; ++j)
+          for (int j = h_start; j < h_end; ++j)
           {
             glColor4f(TemperatureMap.Get(j, i) / Constant::BT_Organics, 0.f, 0.f,
               TemperatureMap.Get(j, i) / Constant::BT_Organics * 0.4f);
