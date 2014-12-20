@@ -53,7 +53,7 @@ deleted.
 // GAMEPLAY
 //////////////////////////////////////////////////////////////////////////
 #include "CharacterController.h"
-//#include "SparkCollector.h"
+#include "SparkCollector.h"
 #include "ScriptComponent.h"
 #include "FireStarter.h"
 #include "Health.h"
@@ -228,7 +228,7 @@ namespace Framework
     // GAMEPLAY
     //////////////////////////////////////////////////////////////////////////
     RegisterComponent (CharacterController);
-	//RegisterComponent (SparkCollector);
+	RegisterComponent (SparkCollector);
     RegisterComponent (Health);
     RegisterComponent (FireGroup);
     RegisterComponent (LevelTimer);

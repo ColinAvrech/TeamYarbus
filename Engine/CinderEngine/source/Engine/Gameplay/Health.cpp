@@ -25,7 +25,6 @@ namespace Framework
 	Health::~Health()
 	{
 		EVENTSYSTEM->mDisconnect<UpdateEvent, Health>(Events::UPDATEEVENT, this, &Health::Update);
-		//EVENTSYSTEM->mDisconnect<CollisionEvent, Health>("CollisionEvent", this, &Health::OnCollisionEnter);
 	}
 
 	void Health::Serialize(Serializer::DataNode* data)
@@ -48,68 +47,68 @@ namespace Framework
 		EVENTSYSTEM->mConnect<UpdateEvent, Health>(Events::UPDATEEVENT, this, &Health::Update);
 		gameObject->Health = this;
 
-//    currentDeathRate = startDeathRate;
+		//currentDeathRate = startDeathRate;
 		currentRadius = maxRadius;
-    invincible = false;
-    originalPosition = gameObject->Transform->GetPosition ();
-    playerEffect = reinterpret_cast<PlayerEffect*>(gameObject->GetComponent ("PlayerEffect"));
+		invincible = false;
+		originalPosition = gameObject->Transform->GetPosition();
+		playerEffect = reinterpret_cast<PlayerEffect*>(gameObject->GetComponent("PlayerEffect"));
 	}
 
 #include "PlayerStats.h"
 	void Health::Update(UpdateEvent* e)
 	{
-    //if (e->TimePassed > 3.5f)
-    //{
-    //  invincible = false;
-    //}
+		//if (e->TimePassed > 3.5f)
+		//{
+		//  invincible = false;
+		//}
 
-    if (levelFailed)
-    {
-      timer += e->Dt;
-      if (timer > 2.24f)
-      {
-        OBJECTSYSTEM->RestartLevel();
-        timer = 0.0f;
-      }
-      return;
-    }
+		if (levelFailed)
+		{
+			timer += e->Dt;
+			if (timer > 2.24f)
+			{
+				OBJECTSYSTEM->RestartLevel();
+				timer = 0.0f;
+			}
+			return;
+		}
 
-    //check if player is colliding with node on fire -- for refuel
-    glm::ivec2 currPos = gameObject->Transform->GetGridPosition();
-    int material = Physics::THERMODYNAMICS->GetCellMaterial(currPos.x, currPos.y);
-    float temp = Physics::THERMODYNAMICS->GetCellTemperature(currPos.x, currPos.y);
+		//check if player is colliding with node on fire -- for refuel
+		glm::ivec2 currPos = gameObject->Transform->GetGridPosition();
+		int material = Physics::THERMODYNAMICS->GetCellMaterial(currPos.x, currPos.y);
+		float temp = Physics::THERMODYNAMICS->GetCellTemperature(currPos.x, currPos.y);
 
-    playerEffect->size = currentRadius * 100.0f;
+		playerEffect->size = currentRadius * 100.0f;
 
-    if (temp >= Physics::Constant::BT_Organics && material == GRASS)
-      currentRadius = maxRadius;
+		if (temp >= Physics::Constant::BT_Organics && material == GRASS)
+			currentRadius = maxRadius;
 
-    if (invincible || CORE->IsPaused())
-    {
-      return;
-    }
+		if (invincible || CORE->IsPaused())
+		{
+			return;
+		}
 
-    currentRadius -= currentDeathRate * e->Dt;
-    gameObject->Transform->Scale(currentRadius / maxRadius);
+		currentRadius -= currentDeathRate * e->Dt;
+		gameObject->Transform->Scale(currentRadius / maxRadius);
 
-    if (currentRadius <= minRadius)
-    {
-      //printf("dead");
-      //PlayerStats* stats = reinterpret_cast<PlayerStats*>(gameObject->GetComponent("PlayerStats"));
-      GUIText* guiText = reinterpret_cast<GUIText*>(gameObject->GetComponent("GUIText"));
-      if (guiText)// && stats)
-      {
-        guiText->text = "You ran out of fuel :(. Restarting Level: ";// +stats->NextLevel.c_str();
-        //TODO_AUDIO: Play Hud update sound
-      }
-      //TODO_AUDIO: Play Death Sound/Music
-      Sound* loseFX = Resources::RS->Get_Sound("fx_lose.ogg");
-      AUDIOEVENTS->unmanagedSounds.push_back(loseFX);
-      loseFX->Play();
-      OPENGL->Change_Shader("FadeIn", (int)SS_FADE_OUT);
-      levelFailed = true;
-      alive = false;
-    }
+		if (currentRadius <= minRadius)
+		{
+			//printf("dead");
+			//PlayerStats* stats = reinterpret_cast<PlayerStats*>(gameObject->GetComponent("PlayerStats"));
+			GUIText* guiText = reinterpret_cast<GUIText*>(gameObject->GetComponent("GUIText"));
+			if (guiText)// && stats)
+			{
+				guiText->text = "You ran out of fuel :(. Restarting Level: ";// +stats->NextLevel.c_str();
+				//TODO_AUDIO: Play Hud update sound
+			}
+			//TODO_AUDIO: Play Death Sound/Music
+			Sound* loseFX = Resources::RS->Get_Sound("fx_lose.ogg");
+			AUDIOEVENTS->unmanagedSounds.push_back(loseFX);
+			loseFX->Play();
+			OPENGL->Change_Shader("FadeIn", (int)SS_FADE_OUT);
+			levelFailed = true;
+			alive = false;
+		}
 	}
 
 	void Health::reFuel()
@@ -117,10 +116,10 @@ namespace Framework
 		reFueling = true;
 	}
 
-  void Health::ToggleInvulnerability()
-  {
-    invincible = !invincible;
-  }
+	void Health::ToggleInvulnerability()
+	{
+		invincible = !invincible;
+	}
 
 	DefineComponentName(Health);
 }
