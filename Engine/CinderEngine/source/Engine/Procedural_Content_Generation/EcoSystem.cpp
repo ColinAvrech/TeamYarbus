@@ -93,31 +93,9 @@ namespace Framework
 
 	void EcoSystem::GenerateType(float x, float y, float z, int type, unsigned ID)
 	{
-		GameObject* grass = new GameObject(ID);
-		grass->Name = "Plant";
-		OBJECTSYSTEM->GameObjects[ID] = grass;
+    GameObject *newobj = OBJECTSYSTEM->LoadArchetype("Tree5.Archetype");
 
-		Component* c = grass->AddComponent("Transform");
-		if (c)
-		{
-			static_cast<Transform*>(c)->Translate(x, y, z);
-			static_cast<Transform*>(c)->Scale(15, 15, 1);
-      static_cast<Transform*>(c)->Rotate(1.f);
-			c->Initialize();
-		}
-		////Add firestarter component here
-		c = grass->AddComponent("FireGroup");
-		if (c)
-		{
-			c->Initialize();
-		}
-		c = grass->AddComponent("Tree2D");
-		if (c)
-		{
-			glm::vec4 color = { 1.f, 1.f, 1.f, 1.f };
-			static_cast<Tree2D*>(c)->Set(color, Tree_Type(type));
-			c->Initialize();
-		}
+		newobj->Transform->Translate(x, y, z);
 	}
 }
 

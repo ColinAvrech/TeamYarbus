@@ -24,7 +24,7 @@
 #include "EventSystem.h" 
 #include "GameEvent.h"
 
-#define SIZE 10
+#define GRID_Y_SIZE 64
 
 namespace Framework
 {

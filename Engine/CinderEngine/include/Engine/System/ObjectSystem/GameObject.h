@@ -97,7 +97,7 @@ namespace Framework
     ComponentPointer(Camera);
     ComponentPointer(RigidBody);
     ComponentPointer(CharacterController);
-	ComponentPointer(SparkCollector);
+	//ComponentPointer(SparkCollector);
 	  ComponentPointer(FireGroup);
     ComponentPointer(Microphone);
     ComponentPointer(Terrain2D);
