@@ -141,7 +141,11 @@ namespace Framework
     // Called every frame
     void ThermodynamicsSystem::Update(const float& dt)
     {
-      UpdateTemp(0, 63, 10 * dt);
+      int center = Camera::main->gameObject->Transform->GetGridPosition().x;
+      float fov = Camera::main->GetFOV();
+      int start = center - fov;
+      int end = center + fov;
+      UpdateTemp(start, end, dt);
       UpdateFire(dt);
     }
 
@@ -316,9 +320,9 @@ namespace Framework
     {
       //std::cout << start_index << "\n";
       //std::cout << "Updated Temperature/Density/Pressure" << std::endl;
-      for (int j = start_index; j < end_index; ++j)
+      for (int j = 0; j < MapSize.y; ++j)
       {
-        for (int i = 0; i < MapSize.x; ++i)
+        for (int i = start_index; i < end_index; ++i)
         {
           float netdQ = 0.f;
           float oTemp = TemperatureMap.Get(i, j);
