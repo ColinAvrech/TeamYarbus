@@ -19,13 +19,12 @@
 
 #include "BaseSystem.h"
 #include <unordered_map>
-#include "Grid2D.h"
 #include "FluidSolver.h"
 #include "FireSystem.h"
 #include "Terrain2D.h"
 #include "FireStarter.h"
-#include "TDLib.h"
 #include "GUIText.h"
+#include "GridManager.h"
 
 #pragma endregion
 
@@ -72,6 +71,8 @@ namespace Framework
 #pragma region Public Functions
       //!Initialize the system
       bool Initialize();
+
+      void Allocate(int x, int y);
 
       virtual bool UpdatesOnPaused();
 

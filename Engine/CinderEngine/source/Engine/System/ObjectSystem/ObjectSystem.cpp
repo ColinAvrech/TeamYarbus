@@ -53,7 +53,7 @@ deleted.
 // GAMEPLAY
 //////////////////////////////////////////////////////////////////////////
 #include "CharacterController.h"
-#include "SparkCollector.h"
+//#include "SparkCollector.h"
 #include "ScriptComponent.h"
 #include "FireStarter.h"
 #include "Health.h"
@@ -228,7 +228,7 @@ namespace Framework
     // GAMEPLAY
     //////////////////////////////////////////////////////////////////////////
     RegisterComponent (CharacterController);
-	RegisterComponent (SparkCollector);
+	//RegisterComponent (SparkCollector);
     RegisterComponent (Health);
     RegisterComponent (FireGroup);
     RegisterComponent (LevelTimer);
@@ -420,8 +420,8 @@ namespace Framework
         GameObject* newobj = OBJECTSYSTEM->CreateObject();
         
 
-        if (LastGameObjectId <= it->branch->branch->value_.UInt_)
-        { LastGameObjectId = it->branch->branch->value_.UInt_ + 1; } // Makes sure that every created object has a unique ID.
+        //if (LastGameObjectId <= it->branch->branch->value_.UInt_)
+        //{ LastGameObjectId = it->branch->branch->value_.UInt_ + 1; } // Makes sure that every created object has a unique ID.
 
         newobj->Name = *it->branch->next->branch->value_.String_;
         
@@ -488,6 +488,30 @@ namespace Framework
     }
 
     return objectlist;
+  }
+
+  GameObject* ObjectSystem::LoadArchetype(const char *archtype_file)
+  {
+    Serializer::ZeroSerializer file;
+    file.open(archtype_file);
+    file.CreateArchive();
+    Serializer::DataNode* Trunk = file.GetTrunk();
+    GameObject* newobj = this->CreateObject();
+    newobj->Name = *Trunk->branch->next->branch->value_.String_;
+
+    auto ct = Trunk->branch->next->next->next;
+    while (ct)
+    {
+      Component* newcomp = newobj->AddComponent(ct->objectName);
+      if (newcomp)
+      {
+        newcomp->gameObject = newobj;
+        newcomp->Serialize(ct->branch);
+        newcomp->Initialize();
+      }
+      ct = ct->next;
+    } //while
+    return newobj;
   }
 
 Zilch::Array<GameObject*>* ObjectSystem::ZilchSerializeObject(Serializer::DataNode* data)
