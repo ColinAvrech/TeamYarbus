@@ -17,6 +17,8 @@ namespace Framework
 {
 	namespace Serializer
 	{
+    static int line_number = 0;
+
 		ZeroSerializer::ZeroSerializer()
 		{
 			//Create data type tree
@@ -57,6 +59,7 @@ namespace Framework
 			std::getline(dataFile, dummy2);
 			std::getline(dataFile, dummy2);
 			++inObject;
+      line_number = 2;
 			trunk = AddNode(trunk, TYPE_OBJECT, dummy.c_str(), 0);
 			CurrentNode = CurrentStem = trunk;
 			return true;
@@ -79,6 +82,7 @@ namespace Framework
 		{
 			for (int it = 0; inObject > 0; ++it)
 			{
+        ++line_number;
 				ReadLine();
 				ParseLine();
 			}
@@ -93,10 +97,25 @@ namespace Framework
 
 		void ZeroSerializer::ParseLine()
 		{
+      //Error message
+      std::string err_msg("Syntax error on line ");
+      err_msg.append(std::to_string(line_number));
+      ErrorIf(CurrentLine.empty(), err_msg.c_str());
+
 			std::string currentname;
 			std::vector<std::string> tokens = Tokenize();
+
+      //Skip commented line
+      if (tokens[0][0] == '/')
+      {
+        if (tokens[0][1] == '/')
+          return;
+        ErrorIf(true, err_msg.c_str());
+      }
+
 			if (CurrentLine.back() == ' ')
 			{
+        ErrorIf(tokens.size() > 2, err_msg.c_str());
 				//Encountered new object
 				currentname = tokens[0];
 				if (!exitted) //Entering new object
@@ -119,6 +138,7 @@ namespace Framework
 				//Skip the next line
 				std::string dummy;
 				std::getline(dataFile, dummy);
+        ++line_number;
 			}
 			//if the line ends in a ','
 			else if (CurrentLine.back() == ',')
@@ -158,6 +178,10 @@ namespace Framework
 					}
 				}
 			}
+      else
+      {
+        ErrorIf(true, err_msg.c_str());
+      }
 			prev = CurrentLine.back();
 		}
 

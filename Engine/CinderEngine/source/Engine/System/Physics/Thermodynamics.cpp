@@ -118,7 +118,7 @@ namespace Framework
         dt_Tracker[i] += dt;*/
 
       int center = Camera::main->gameObject->Transform->GetGridPosition().x;
-      float fov = Camera::main->GetFOV();
+      float fov = Camera::main->GetSize();
       int start = center - fov;
       if (start < 0)
         start = 0;
@@ -610,7 +610,7 @@ namespace Framework
     void ThermodynamicsSystem::Draw()
     {
       glm::vec2 c_center = Camera::main->gameObject->Transform->GetGridPosition();
-      float fov = Camera::main->GetFOV();
+      float fov = Camera::main->GetSize();
       int h_start = c_center.x - fov;
       if (h_start < 0)
         h_start = 0;

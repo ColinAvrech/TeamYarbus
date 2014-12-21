@@ -12,7 +12,7 @@ Level =
 		},
 		GravityEffect = 
 		{
-			bool Active = true,
+			//bool Active = true,
 			bool WakeUpOnChange = false,
 			bool LocalSpaceDirection = true,
 			float Strength = 10,
@@ -192,6 +192,7 @@ Level =
       float ParticleSize = 100,
     },
   },
+  //Player object--------------------------------------------------
   Cog = 
 	{
 		LinkId = 
@@ -282,6 +283,7 @@ Level =
       string FileName = "FireA.ogg",
     },
 	},
+	//Spark---------------
 	  Cog = 
 	{
 		LinkId = 
