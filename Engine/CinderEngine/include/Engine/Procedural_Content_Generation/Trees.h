@@ -97,6 +97,7 @@ namespace Framework
 		int *tree_list;
 		std::pair<int, int>Min_Space; //Implement later
 		int MapWidth;
+    int MapHeight;
 		glm::vec3 Translation;
 		glm::vec3 Scale;
 		int Total_Objects = 0;

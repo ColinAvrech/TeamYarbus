@@ -31,6 +31,7 @@ namespace Framework
 		terrain = gameObject->Terrain2D->GetTerrain();
 		water = gameObject->Terrain2D->GetWater();
 		MapWidth = gameObject->Terrain2D->GetWidth();
+    MapHeight = gameObject->Terrain2D->GetPeakHeight();
 		//Set up barren ground
 		tree_list = new int[MapWidth];
 		for (int i = 0; i < MapWidth; ++i)
@@ -67,7 +68,7 @@ namespace Framework
 	void EcoSystem::GenerateVegetation()
 	{
 		float nX = 2.f * Scale.x / (MapWidth - 1);
-		float nY = 2.f * Scale.y / (MapWidth - 1);
+		float nY = 2.f * Scale.y / (MapHeight - 1);
 		float offsetX = -Scale.x;
 		float offsetY = nY;
 		float previousHeight = -1.f;

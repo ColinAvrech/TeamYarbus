@@ -143,6 +143,11 @@ namespace Framework
   void Transform::Scale (float x, float y, float z)
   {
     scale = vec3 (x, y, z);
+    //Update model matrix
+    OPENGL->Scalefv(glm::value_ptr(scale));
+    OPENGL->Rotatef(rotation, 0, 0, 1);
+    OPENGL->Translatefv(glm::value_ptr(position));
+    modelMatrix = OPENGL->GetModelMatrix();
     matricesReady = false;
   }
 

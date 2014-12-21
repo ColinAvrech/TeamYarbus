@@ -42,6 +42,7 @@ namespace Framework
   const float* GetTerrain();
   const float* GetWater();
   int GetWidth();
+  int GetPeakHeight();
   const static string Name;
 
   private:

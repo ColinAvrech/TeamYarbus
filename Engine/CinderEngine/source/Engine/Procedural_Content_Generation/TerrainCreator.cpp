@@ -50,7 +50,7 @@ namespace Framework
       {
         WaveBuffer = new int[2 * waves];
         for (int i = 0; i < 2 * waves; ++i)
-          WaveBuffer[i] = rand() % 2;
+          WaveBuffer[i] = rand() % height;
       }
       
       *Array = new float[MapWidth];
@@ -60,19 +60,19 @@ namespace Framework
       int *x1/*[100]*/, *x2/*[50]*/, *x4/*[25]*/, *x8/*[12]*/;
       x1 = new int[MapWidth];
       for (unsigned i = 0; i < MapWidth; ++i)
-        x1[i] = rand() % 2;
+        x1[i] = rand() % height;
       x2 = new int[MapWidth / 2];
       for (unsigned i = 0; i < MapWidth / 2; ++i)
-        x2[i] = rand() % 2;
+        x2[i] = rand() % height;
       x4 = new int[MapWidth / 4];
       for (unsigned i = 0; i < MapWidth / 4; ++i)
-        x4[i] = rand() % 2;
+        x4[i] = rand() % height;
       x8 = new int[MapWidth / 8];
       for (unsigned i = 0; i < MapWidth / 8; ++i)
-        x8[i] = rand() % 2;
+        x8[i] = rand() % height;
 
       for (unsigned i = 0; i < MapWidth; ++i)
-        (*Array)[i] = height * (0.03125f * x1[i] + 0.0625f * x2[i / 2] + 0.125f * x4[i / 4] + 0.25f * x8[i / 8] + 0.5f * WaveBuffer[(i * 2 * waves) / MapWidth]);
+        (*Array)[i] = (0.03125f * x1[i] + 0.0625f * x2[i / 2] + 0.125f * x4[i / 4] + 0.25f * x8[i / 8] + 0.5f * WaveBuffer[(i * 2 * waves) / MapWidth]);
 
       for (int i = 0; i < passes; ++i)
       {
@@ -268,12 +268,15 @@ namespace Framework
       std::ifstream t(path);
       if (!t.is_open())
         return false;
-
+      //If file was successfully opened
+      PeakHeight = 0;
       t >> waves;
       *Buffer = new int[2 * waves];
       for (int i = 0; i < 2 * waves; ++i)
       {
         t >> (*Buffer)[i];
+        if ((*Buffer)[i] > PeakHeight)
+          PeakHeight = (*Buffer)[i];
       }
       return true;
     }

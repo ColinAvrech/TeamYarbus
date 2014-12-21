@@ -33,7 +33,7 @@ namespace Framework
 
       float GetPeakHeight () const
       {
-        return float(BaseHeight + PeakHeight);
+        return float(PeakHeight);
       }
 
       inline int Get_Width ();

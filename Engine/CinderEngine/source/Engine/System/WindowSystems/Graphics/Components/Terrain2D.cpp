@@ -145,6 +145,11 @@ namespace Framework
     return MapSize;
   }
 
+  int Terrain2D::GetPeakHeight()
+  {
+    return tc->GetPeakHeight();
+  }
+
   void Terrain2D::Generate_Height_Points ()
   {
     std::vector <float> heights;
@@ -152,71 +157,50 @@ namespace Framework
     Procedural::TerrainCreator& t = *tc;
     float* Map = t.GetRockMap ();
     //float* W_Map = t.GetWaterMap();
-    float peak = t.GetPeakHeight () / t.Get_Width();
+    //float peak = t.GetPeakHeight () / t.Get_Width();
 
     {
       float offsetX = -1.0f;
       float offsetY = -1.0f;
       float nX = 2.f / (t.Get_Width () - 1);
-      float nY = 2.f / (t.Get_Width () - 1);
+      float nY = 2.f / (t.GetPeakHeight () - 1);
       float previousHeight = -1.f;
 
-      bool endcreated = false;
-
-      for (int i = 0; i < t.Get_Width (); ++i)
+      for (int i = 0; i < t.Get_Width(); ++i)
       {
-        /*height_points.push_back ({ offsetX, offsetY });
-        offsetY = -1.0f;
-        break;*/
-
-
-		//FOR MAKING UPSIDE_DOWN TERRAINS(caverns)
-        //if (previousHeight != offsetY || i == t.Get_Width () - 1)
-        //{
-        //  height_points.push_back ({ offsetX, -offsetY});
-        //  previousHeight = -offsetY;
-        //}
-
-        //offsetY = (Map [i] * nY) / 2.0f;
-        /*if (offsetY < 0)
-          offsetY = 0.0f;*/
-		  if (previousHeight != offsetY || i == t.Get_Width() - 1)
-		  {
-			  height_points.push_back({ offsetX, offsetY });
-			  previousHeight = offsetY;
-		  }
-
-		  offsetY = (Map[i] * nY) / 2.0f;
-		  if (offsetY < 0)
-			  offsetY = 0.0f;
-
-
-        if(offsetX > 0.95 && !endcreated)
+        if (previousHeight != offsetY || i == t.Get_Width() - 1)
         {
-          //TODO: Create end object
-          endcreated = true;
+          height_points.push_back({ offsetX, offsetY });
+          previousHeight = offsetY;
         }
 
+        offsetY = (Map[i] * nY) / 2.0f;
+        if (offsetY < 0)
+          offsetY = 0.0f;
 
         offsetX += nX;
       }
     }
 
+    //Set y scale to match terrain height
+    float x_scale = this->gameObject->Transform->GetScale().x;
+    float y_scale = t.GetPeakHeight();
+    this->gameObject->Transform->Scale(x_scale, y_scale, 1.f);
+
     if (AddCollider)
     {
+      //Allocate thermo grid
       int w_size = 2 * (int)this->gameObject->Transform->GetScale().x;
       THERMODYNAMICS->SetMapSize(w_size);
 
-      float t_height = this->gameObject->Transform->GetScale().y * 0.5f;
-      float max_peak = t.GetPeakHeight();
       int num_height_points = t.Get_Width();
       int size_factor = w_size / num_height_points;
       for (int x = 0; x < THERMODYNAMICS->MapSize.x; ++x)
       {
         ErrorIf(size_factor == 0, "Terrain size must be greater than terrain's heightpoints.");
         float cur_peak = Map[x / size_factor];
-        float height = t_height * (cur_peak / max_peak);
-        for (int y = 0; y < THERMODYNAMICS->MapSize.y && y < height / 2; ++y)
+        
+        for (int y = 0; y < THERMODYNAMICS->MapSize.y && y < cur_peak; ++y)
         {
           THERMODYNAMICS->Terrain.Set (x, y, STONE);
         } //for y
@@ -339,7 +323,7 @@ namespace Framework
 
   void Terrain2D::Generate_Vertices ()
   {
-    float y = -1.0f;
+    float y = -BaseHeight;
     // Vertices
     for (unsigned i = 0; i < height_points.size () - 1; ++i)
     {

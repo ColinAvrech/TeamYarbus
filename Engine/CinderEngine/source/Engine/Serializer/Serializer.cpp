@@ -100,6 +100,7 @@ namespace Framework
       //Error message
       std::string err_msg("Syntax error on line ");
       err_msg.append(std::to_string(line_number));
+      //Blank lines are not allowed
       ErrorIf(CurrentLine.empty(), err_msg.c_str());
 
 			std::string currentname;
@@ -110,11 +111,13 @@ namespace Framework
       {
         if (tokens[0][1] == '/')
           return;
+        //Use '//' to comment
         ErrorIf(true, err_msg.c_str());
       }
 
 			if (CurrentLine.back() == ' ')
 			{
+        //White space character after line ending
         ErrorIf(tokens.size() > 2, err_msg.c_str());
 				//Encountered new object
 				currentname = tokens[0];
@@ -180,6 +183,7 @@ namespace Framework
 			}
       else
       {
+        //Most likely missing a ',' at the end
         ErrorIf(true, err_msg.c_str());
       }
 			prev = CurrentLine.back();
