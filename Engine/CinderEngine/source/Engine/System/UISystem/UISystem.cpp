@@ -13,6 +13,7 @@
 #include "GameEvent.h"
 #include "CinderEngine_UI.h"
 #include "Core.h"
+#include "Events.h"
 
 namespace Framework
 {

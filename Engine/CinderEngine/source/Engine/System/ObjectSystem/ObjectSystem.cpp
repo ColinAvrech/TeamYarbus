@@ -11,14 +11,12 @@ deleted.
 /******************************************************************************/
 
 #include "ObjectSystem.h"
-#include "PhysicsSystemNew.h"
+#include "PhysicsSystem.h"
 #include "Thermodynamics.h"
 #include "BaseSystem.h"
-#include "IncludeForAllCollision.h"
 #include "GameEvent.h"
 #include "EventSystem.h"
 #include "Core.h"
-#include "PhysicsSystem.h"
 #include "UISystem.h"
 #include "ZInterface.h"
 
@@ -193,15 +191,11 @@ namespace Framework
     //////////////////////////////////////////////////////////////////////////
     // PHYSICS
     //////////////////////////////////////////////////////////////////////////
-    RegisterComponent (RigidBody);
     RegisterComponent (RigidBody2D);
     RegisterComponent (ShapeCollider2D);
     RegisterComponent (CircleCollider2D);
     RegisterComponent (PolygonCollider2D);
     //RegisterComponent (SplineCollider);
-    AddComponentCreator ("SplineCollider", new ComponentCreatorType<SplineCollider> ("SplineCollider"));
-    AddComponentCreator ("SphereCollider", new ComponentCreatorType<CircleCollider> ("SphereCollider"));
-    AddComponentCreator ("BoxCollider", new ComponentCreatorType<LineCollider> ("BoxCollider"));
     //////////////////////////////////////////////////////////////////////////
     // GRAPHICS
     //////////////////////////////////////////////////////////////////////////

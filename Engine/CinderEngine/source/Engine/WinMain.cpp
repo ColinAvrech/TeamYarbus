@@ -22,9 +22,8 @@ starts the game loop.
 #include "AudioEvents.h"
 #include "ZilchCompiledLib.h"
 #include "Core.h"
-#include "Physics/Thermodynamics.h"
-#include "Physics/PhysicsSystem.h"
-#include "PhysicsSystemNew.h"
+#include "Thermodynamics.h"
+#include "PhysicsSystem.h"
 #include "ResourceManager.h"
 #include "Serializer/JSONSerializer.h"
 #include "UISystem.h"
@@ -33,8 +32,6 @@ starts the game loop.
 
 //testing includes
 #include "ComponentInclude.h"
-#include "RigidBody.h"
-#include "IncludeForAllCollision.h"
 
 #include "UpdateEvent.h"
 #include "Zilch.hpp"
@@ -81,7 +78,7 @@ int main (void)
   CoreEngine                    * engine      = new CoreEngine ();
   EventSystem                   * events      = new EventSystem ();
   Physics::ThermodynamicsSystem * thermo      = new Physics::ThermodynamicsSystem ();
-  PhysicsSystemNew              * physNew     = new PhysicsSystemNew (1.0f / 60.0f, 10);
+  PhysicsSystem                 * phys        = new PhysicsSystem (1.0f / 60.0f, 10);
   WindowSystem                  * windows     = new WindowSystem (WindowTitle, ClientWidth, ClientHeight, launchFullScreen);
   AudioSystem                   * audio       = new AudioSystem ();
   AudioEvents                   * audioEvents = new AudioEvents();
@@ -96,7 +93,7 @@ int main (void)
   ZInterface::WindowSys = windows;
 
 
-  engine->AddSystem (physNew);
+  engine->AddSystem (phys);
   engine->AddSystem (windows);
   engine->AddSystem (audio);
   engine->AddSystem (events);

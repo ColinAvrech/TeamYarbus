@@ -15,6 +15,7 @@
 #include "Zilch.hpp"
 #include "InputManager.h"
 #include "WindowSystem.h"
+#include "Events.h"
 
 namespace Framework
 {

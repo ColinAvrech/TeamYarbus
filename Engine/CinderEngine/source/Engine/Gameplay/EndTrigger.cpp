@@ -14,6 +14,7 @@
 #include "GameEvent.h"
 #include "CollisionEvent.h"
 #include "CharacterController.h"
+#include "Events.h"
 
 namespace Framework
 {

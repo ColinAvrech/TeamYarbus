@@ -20,6 +20,7 @@
 #include "ObjectSystem.h"
 #include "AudioSystem.h"
 #include "PingEvent.h"
+#include "Events.h"
 
 namespace Framework
 {

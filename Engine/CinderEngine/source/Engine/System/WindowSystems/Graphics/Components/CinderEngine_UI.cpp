@@ -16,6 +16,7 @@
 #include "UpdateEvent.h"
 #include "Pipeline.h"
 #include "Core.h"
+#include "Events.h"
 
 namespace Framework
 {

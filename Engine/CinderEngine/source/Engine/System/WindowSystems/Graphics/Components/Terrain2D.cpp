@@ -12,10 +12,8 @@
 #include "ResourceManager.h"
 #include "WindowSystem.h"
 #include "Thermodynamics.h"
-#include "IncludeForAllCollision.h"
-#include "PhysicsSystem.h"
 #include "random.hpp"
-#include "PhysicsSystemNew.h"
+#include "PhysicsSystem.h"
 #include "Collider2D.h"
 #include "RigidBody2D.h"
 #include "Thermodynamics.h"
@@ -28,7 +26,6 @@ namespace Framework
   static std::vector <float> lineVertices;
   static VAO* vao1;
   static VBO* vbo1;
-  static SplineCollider* spline;
   DefineComponentName (Terrain2D);
 
   ZilchDefineType (Terrain2D, CinderZilch)
@@ -45,12 +42,10 @@ namespace Framework
   Terrain2D::~Terrain2D ()
   {
     gameObject->Terrain2D = nullptr;
-    delete vao, vbo, tc, spline;
     delete vao1, vbo1;
     vao = nullptr;
     vbo = nullptr;
     tc = nullptr;
-    spline = nullptr;
     vao1 = nullptr;
     vbo1 = nullptr;
 

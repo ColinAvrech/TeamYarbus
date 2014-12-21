@@ -22,6 +22,7 @@
 #include "PingEvent.h"
 #include "UpdateEvent.h"
 #include "KeyEvent.h"
+#include "Events.h"
 
 namespace Framework
 {

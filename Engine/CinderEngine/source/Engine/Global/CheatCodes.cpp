@@ -14,6 +14,7 @@
 #include "GLFW3.h"
 #include "Pipeline.h"
 #include "PlayerStats.h"
+#include "Events.h"
 
 namespace Framework
 {

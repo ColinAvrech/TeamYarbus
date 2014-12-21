@@ -10,7 +10,7 @@
 
 #include "GameObject.h"
 #include "Collider2D.h"
-#include "PhysicsSystemNew.h"
+#include "PhysicsSystem.h"
 
 namespace Framework
 {
@@ -26,7 +26,7 @@ namespace Framework
 
   ShapeCollider2D::~ShapeCollider2D ()
   {
-    PHYSICS->Remove (rigidBody);
+    Physics::PHYSICS->Remove (rigidBody);
     delete rigidBody;
     rigidBody = nullptr;
     if (gameObject != nullptr)
@@ -106,7 +106,7 @@ namespace Framework
   void CircleCollider2D::Initialize ()
   {
     gameObject->ShapeCollider2D = this;
-    RigidBody2D* b = PHYSICS->Add (this, gameObject->Transform->GetPosition ().x, gameObject->Transform->GetPosition ().y);
+    RigidBody2D* b = Physics::PHYSICS->Add (this, gameObject->Transform->GetPosition ().x, gameObject->Transform->GetPosition ().y);
     rigidBody = b;
     b->gameObject = this->gameObject;
     gameObject->RigidBody2D = b;
@@ -221,7 +221,7 @@ namespace Framework
     SetBox (dimensions.x, dimensions.y);
     SetOrient (orientation);
     gameObject->ShapeCollider2D = this;
-    RigidBody2D* b = PHYSICS->Add (this, gameObject->Transform->GetPosition ().x, gameObject->Transform->GetPosition ().y);
+    RigidBody2D* b = Physics::PHYSICS->Add (this, gameObject->Transform->GetPosition ().x, gameObject->Transform->GetPosition ().y);
     rigidBody = b;
     b->gameObject = this->gameObject;
     gameObject->RigidBody2D = b;

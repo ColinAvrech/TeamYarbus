@@ -8,10 +8,11 @@
 */
 /******************************************************************************/
 
-#include "CollisionNew.h"
+#include "Collision.h"
 #include "Manifold.h"
 #include "CollisionEvent.h"
 #include "EventSystem.h"
+#include "Events.h"
 
 namespace Framework
 {

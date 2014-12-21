@@ -15,6 +15,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "Thermodynamics.h"
+#include "Events.h"
 
 namespace Framework
 {

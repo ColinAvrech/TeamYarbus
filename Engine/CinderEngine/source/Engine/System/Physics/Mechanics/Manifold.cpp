@@ -10,7 +10,7 @@
 
 #include "GameObject.h"
 #include "Manifold.h"
-#include "CollisionNew.h"
+#include "Collision.h"
 #include "MathExtensionLibrary.h"
 
 namespace Framework

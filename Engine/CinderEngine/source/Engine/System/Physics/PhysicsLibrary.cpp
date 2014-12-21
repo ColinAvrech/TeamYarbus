@@ -7,7 +7,6 @@
 */
 /******************************************************************************/
 #include "PhysicsLibrary.h"
-#include "RigidBody.h"
 #include "GraphicsCommon.h"
 
 namespace Framework
@@ -15,17 +14,17 @@ namespace Framework
   namespace Physics
   {
 
-    float DetermineRestitution(GameObject* a, GameObject* b)
-    {
-      //return std::min(a->RigidBody->Restitution, b->Restitution);
-      return 0;
-    }
+    //float DetermineRestitution(GameObject* a, GameObject* b)
+    //{
+    //  //return std::min(a->RigidBody->Restitution, b->Restitution);
+    //  return 0;
+    //}
 
-    float DetermineFriction(GameObject* a, GameObject* b)
-    {
-      //return sqrt(a->Friction * b->Friction);
-      return 0;
-    }
+    //float DetermineFriction(GameObject* a, GameObject* b)
+    //{
+    //  //return sqrt(a->Friction * b->Friction);
+    //  return 0;
+    //}
 
     glm::vec3 applyNetForce(const glm::vec3& sumForce, double InvMass)
     {

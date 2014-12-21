@@ -35,7 +35,6 @@ factory in the next loop.
 #include "ObjectSystem.h"
 #include "Component.h"
 #include "Vec2.h"
-#include "IncludeForAllCollision.h"
 #include "CharacterController.h"
 #include "Zilch.hpp"
 #include "ScriptComponent.h"
@@ -93,9 +92,7 @@ namespace Framework
 	  ComponentPointer(Health);
     ComponentPointer (ShapeCollider2D);
     ComponentPointer (RigidBody2D);
-	  ComponentPointer(ShapeCollider);
     ComponentPointer(Camera);
-    ComponentPointer(RigidBody);
     ComponentPointer(CharacterController);
 	ComponentPointer(SparkCollector);
 	  ComponentPointer(FireGroup);

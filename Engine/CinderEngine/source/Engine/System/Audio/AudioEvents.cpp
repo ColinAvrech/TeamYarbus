@@ -21,6 +21,7 @@
 #include "KeyEvent.h"
 #include "WindowSystem.h"
 #include "Core.h"
+#include "Events.h"
 
 
 #pragma endregion

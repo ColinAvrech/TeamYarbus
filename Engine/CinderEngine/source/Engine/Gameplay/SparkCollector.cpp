@@ -17,6 +17,7 @@
 #include "ObjectSystem.h"
 #include "Core.h"
 #include "GUIText.h"
+#include "Events.h"
 
 namespace Framework
 {

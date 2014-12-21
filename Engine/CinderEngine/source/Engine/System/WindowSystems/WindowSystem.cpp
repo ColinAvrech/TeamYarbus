@@ -26,6 +26,7 @@ function to handle windows Messages.
 #include "Pipeline.h"
 #include "WindowFocusEvent.h"
 #include "InputManager.h"
+#include "Events.h"
 
 namespace Framework
 {

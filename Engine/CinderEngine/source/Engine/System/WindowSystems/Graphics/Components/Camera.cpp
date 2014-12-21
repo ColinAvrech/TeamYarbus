@@ -18,6 +18,7 @@
 #include "GameEvent.h"
 #include "CharacterController.h"
 #include "Core.h"
+#include "Events.h"
 
 
 namespace Framework

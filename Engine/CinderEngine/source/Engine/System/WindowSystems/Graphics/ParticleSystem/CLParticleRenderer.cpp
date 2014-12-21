@@ -17,6 +17,7 @@
 #include "Thermodynamics.h"
 #include "CharacterController.h"
 #include "GameObject.h"
+#include "Events.h"
 
 namespace Framework
 {

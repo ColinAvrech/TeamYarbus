@@ -42,7 +42,6 @@ namespace Framework
     
 	//ZilchBindFieldGetSet(ShapeCollider);
     //ZilchBindFieldGetSet(Camera);
-    ZilchBindFieldGet(RigidBody);
     //ZilchBindFieldGetSet(CharacterController);
 
     // 

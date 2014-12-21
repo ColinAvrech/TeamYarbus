@@ -16,6 +16,7 @@
 #include "Thermodynamics.h"
 #include "GameEvent.h"
 #include "glfw3.h"
+#include "Events.h"
 
 namespace Framework
 {

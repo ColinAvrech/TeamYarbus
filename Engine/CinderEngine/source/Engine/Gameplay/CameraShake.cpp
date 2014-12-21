@@ -13,6 +13,7 @@
 #include "UpdateEvent.h"
 #include "GameEvent.h"
 #include "Camera.h"
+#include "Events.h"
 
 namespace Framework
 {

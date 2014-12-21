@@ -21,6 +21,7 @@
 #include "Pipeline.h"
 #include "ResourceManager.h"
 #include "AudioEvents.h"
+#include "Events.h"
 
 namespace Framework
 {

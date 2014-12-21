@@ -19,6 +19,8 @@
 #include "Collider2D.h"
 #include "InputManager.h"
 #include "glfw3.h"
+#include "Events.h"
+#include "PhysicsLibrary.h"
 
 
 namespace Framework

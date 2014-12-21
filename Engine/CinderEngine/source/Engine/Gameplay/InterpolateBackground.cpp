@@ -11,6 +11,7 @@
 #include "InterpolateBackground.h"
 #include "EventSystem.h"
 #include "UpdateEvent.h"
+#include "Events.h"
 
 namespace Framework
 {

@@ -25,6 +25,7 @@
 #include "Cinder_Engine_Delta_Time.h"
 #include "Fluid_Engine.h"
 #include "Camera.h"
+#include "Events.h"
 
 namespace Framework
 {

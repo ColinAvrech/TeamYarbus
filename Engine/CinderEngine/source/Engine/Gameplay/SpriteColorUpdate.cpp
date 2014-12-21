@@ -13,6 +13,7 @@
 #include "UpdateEvent.h"
 #include "GameObject.h"
 #include "Sprite.h"
+#include "Events.h"
 
 namespace Framework
 {
