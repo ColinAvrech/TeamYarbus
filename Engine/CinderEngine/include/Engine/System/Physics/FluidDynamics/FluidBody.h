@@ -49,7 +49,7 @@ namespace Framework
     std::vector<float> speeds;
     std::vector <float> vertices;
 
-    void Splash(int index, float speed);
+    void Splash(unsigned int index, float speed);
     void DepthUpdate(const float dt);
     void WaveUpdate(const float dt);
   };
