@@ -8,6 +8,7 @@
 /******************************************************************************/
 
 #include "FluidDynamics.h"
+#include "FluidBody.h"
 
 
 #define GRID_Y_SIZE 64
@@ -45,7 +46,20 @@ namespace Framework
     // Called every frame
     void FluidDynamicsSystem::Update(const float& dt)
     {
-      
+      for (auto i : fluid_bodies)
+      {
+        i->Update(dt);
+      }
+    }
+
+    bool FluidDynamicsSystem::UpdatesOnPaused()
+    {
+      return false;
+    }
+
+    void FluidDynamicsSystem::AddFluid(FluidBody* fluid)
+    {
+      this->fluid_bodies.push_back(fluid);
     }
 
     void FluidDynamicsSystem::Draw()

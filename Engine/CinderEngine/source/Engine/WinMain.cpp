@@ -29,6 +29,7 @@ starts the game loop.
 #include "UISystem.h"
 #include "ZInterface.h"
 #include "CheatCodes.h"
+#include "FluidDynamics.h"
 
 //testing includes
 #include "ComponentInclude.h"
@@ -78,6 +79,7 @@ int main (void)
   CoreEngine                    * engine      = new CoreEngine ();
   EventSystem                   * events      = new EventSystem ();
   Physics::ThermodynamicsSystem * thermo      = new Physics::ThermodynamicsSystem ();
+  Physics::FluidDynamicsSystem  * fluid       = new Physics::FluidDynamicsSystem();
   PhysicsSystem                 * phys        = new PhysicsSystem (1.0f / 60.0f, 10);
   WindowSystem                  * windows     = new WindowSystem (WindowTitle, ClientWidth, ClientHeight, launchFullScreen);
   AudioSystem                   * audio       = new AudioSystem ();
@@ -99,6 +101,7 @@ int main (void)
   engine->AddSystem (events);
   engine->AddSystem (zilch);
   engine->AddSystem (thermo);
+  engine->AddSystem(fluid);
   engine->AddSystem(objsys);
   engine->AddSystem (ui);
   ////Cinder.PhysicsSystem = phys;

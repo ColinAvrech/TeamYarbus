@@ -192,6 +192,30 @@ Level =
       float ParticleSize = 100,
     },
   },
+  Cog = 
+  {
+	LinkId = 
+	{
+		uint Id = 23,
+	},
+	Named = 
+	{
+		string Name = "Water",
+	},
+	Transform = 
+	{
+		Vec3 Translation = [0, 0, 0],
+		Vec3 Scale = [10, 10, 1],
+		Quat Rotation = [0, 0, 1, 0],
+	},
+	//These values seem to work best
+	FluidBody = 
+	{
+		float k = 0.5,
+		float d = 0.0025,
+		float Spread = 0.0125,
+	},
+  },
   //Player object--------------------------------------------------
   Cog = 
 	{

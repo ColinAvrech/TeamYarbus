@@ -57,6 +57,7 @@ namespace Framework
   class AudioComponent;
   class PlayerStats;
   class SparkCollector;
+  class FluidBody;
 
   class GameObject
   {
@@ -101,6 +102,7 @@ namespace Framework
     ComponentPointer(Terrain3D);
     ComponentPointer(AudioComponent);
 	ComponentPointer(PlayerStats);
+  ComponentPointer(FluidBody);
 	
 
    // Menu Components

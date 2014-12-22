@@ -8,76 +8,50 @@
 */
 /******************************************************************************/
 
-#ifndef _FIRE_STARTER_H
-#define _FIRE_STARTER_H
+#pragma once
 
-#include "Component.h"
-#include "GameObject.h"
-#include "DataNode.h"
-#include "TDLib.h"
-#include "Grid2D.h"
-#include <vector>
+#include "GraphicsCommon.h"
+#include "IGraphicsObject.h"
 
 using std::vector;
 
 namespace Framework
 {
-
-  using namespace Physics;
-  class FireStarter;
-  /*
-  class FireGrid
+  class FluidBody : public IGraphicsObject
   {
   public:
-    void Create (FireStarter* transform);
-    void Destroy ();
-    void Update ();
-    void Draw ();
-    Grid2D <float> temperatures;
-    Grid2D <glm::vec2> positions;
-  };
-  */
-
-  class FireGroup;
-
-  class FireStarter
-  {
-    public:
-      FireStarter(const vec2& pos, FireGroup* fsm);
-      ~FireStarter(){}
-      void LightOnFire();
-      void DouseFire();
-      void Update(const double dt);
-      vec2 GetPosition();
-      vec2 GetGridPosition();
-
-
-      int material_type;
-
-      vec2 positionOffset;
-      bool onFire;	
-      float Fuel;
-      float initTemp;
-      //FireGrid grid;
-      FireGroup* manager;
-  };
-
-  class FireGroup : public Component
-  {
-  public:
-    FireGroup();
-    ~FireGroup();
-
+    FluidBody();
+    virtual ~FluidBody();
+    virtual void Serialize(Serializer::DataNode*);
     virtual void Initialize();
+    virtual void Draw();
+    void Update(const float dt);
 
-    virtual void Serialize(Serializer::DataNode* data);
-    void AddFireStarter(FireStarter* newFirePoint);
+    void Generate_Height_Points();
+    void Generate_Vertices();
+    void Generate_Buffers();
+    float GetWidth();
+    float GetDepth();
+    const static string Name;
 
-    const static std::string Name;
-    bool onFire;
-  //private:
-    vector<FireStarter *> firePoints;
+  private:
+    glm::vec2 position;
+    glm::vec2 scale;
+    float Base_Level;
+    float k = 0.025f;
+    float d = 0.5f;
+    float Spread = 0.5f;
+    Texture* texture;
+    glm::vec4 color;
+    VAO* vao;
+    VBO* vbo;
+    std::vector <vec2> height_points;
+    std::vector<float> speeds;
+    std::vector <float> vertices;
+
+    void Splash(int index, float speed);
+    void DepthUpdate(const float dt);
+    void WaveUpdate(const float dt);
   };
-}
 
-#endif _FIRE_STARTER_H
+}

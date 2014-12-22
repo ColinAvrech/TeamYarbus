@@ -31,11 +31,12 @@
 
 namespace Framework
 {
+  //Forward declarations
+  class FluidBody;
+
+
   namespace Physics
   {
-    //Forward declarations
-    class FluidBody;
-
     /*---------------------------------------------------------------------------
     // Class
     ---------------------------------------------------------------------------*/
@@ -49,10 +50,16 @@ namespace Framework
       FluidDynamicsSystem();
 
       //!Initialize the system
-      bool Initialize();
+      virtual bool Initialize();
 
       // Called every frame
-      void Update(const float& dt);
+      virtual void Update(const float& dt);
+
+      virtual bool UpdatesOnPaused();
+
+      virtual const string GetName() { return "FluidDynamicsSystem"; }
+
+      void AddFluid(FluidBody* fluid);
 
       //Draw water bodies
       void Draw();
