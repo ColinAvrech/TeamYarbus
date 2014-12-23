@@ -8,6 +8,7 @@
 */
 /******************************************************************************/
 
+#include <Precompiled.h>
 #include "ParticleEditor.h"
 #include "ComponentInclude.h"
 #include "ResourceManager.h"

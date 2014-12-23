@@ -8,11 +8,8 @@
 */
 /******************************************************************************/
 
-
 //!makes sure this is only included once
 #pragma once
-
-#include "Common.h"
 
 #ifdef _DEBUG
 using namespace std::chrono;

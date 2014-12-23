@@ -11,8 +11,6 @@
 #ifndef _LEVEL_TIMER_H
 #define _LEVEL_TIMER_H
 
-#include <string>
-#include "Component.h"
 
 namespace Framework
 {

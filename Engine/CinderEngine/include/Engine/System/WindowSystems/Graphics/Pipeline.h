@@ -11,14 +11,6 @@
 #ifndef _PIPELINE_H
 #define _PIPELINE_H
 
-#include "glew.h"
-#include "CinderMath.h"
-#include "FrameBufferObject.h"
-#include "GUIText.h"
-#include <vector>
-#include <unordered_map>
-#include <list>
-
 namespace Framework
 {
   class Transform;

@@ -11,11 +11,6 @@
 #ifndef _PARTICLES_H
 #define _PARTICLES_H
 
-#include <vector>
-#include <memory>
-#include "glm.hpp"
-#include "ShaderStorageBufferObject.h"
-
 namespace Framework
 {
 

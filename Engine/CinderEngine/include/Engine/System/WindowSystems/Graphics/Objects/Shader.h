@@ -7,12 +7,9 @@
 \brief
 */
 /******************************************************************************/
-#ifndef _SHADER_H
-#define _SHADER_H
 
+#pragma once
 
-#include "GraphicsCommon.h"
-#include <string>
 
 namespace Framework
 {
@@ -239,5 +236,3 @@ namespace Framework
     return shaderProgram;
   }
 }
-
-#endif // !_SHADER_H

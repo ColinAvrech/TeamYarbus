@@ -11,8 +11,6 @@
 #ifndef _SPRITE_SHEET_H
 #define _SPRITE_SHEET_H
 
-#include "Texture.h"
-
 namespace Framework
 {
 

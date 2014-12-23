@@ -8,6 +8,7 @@
 */
 /******************************************************************************/
 
+#include <Precompiled.h>
 #include "Terrain2D.h"
 #include "ResourceManager.h"
 #include "WindowSystem.h"

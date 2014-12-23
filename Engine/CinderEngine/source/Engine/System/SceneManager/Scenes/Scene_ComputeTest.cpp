@@ -8,6 +8,8 @@
 //*/
 ///******************************************************************************/
 //
+
+#include <Precompiled.h>
 //#include "Scene_ComputeTest.h"
 //#include "ComponentInclude.h"
 //#include "ResourceManager.h"

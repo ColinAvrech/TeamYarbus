@@ -8,9 +8,8 @@
 */
 /******************************************************************************/
 
-#include "Common.h"
+#include <Precompiled.h>
 #include "ZilchCompiledLib.h"
-#include <iostream>
 
 
 #define ScriptFileList "../../Resources/Scripts/ScriptFiles.txt"
@@ -36,12 +35,11 @@ namespace Framework
     //Zilch::Debugger debugger;
     //debugger.Host(8000);
 
-
 	// Setup the console so that when we call 'Console.WriteLine' it outputs to stdio
-	Zilch::EventConnect(&Console::Events, Events::ConsoleWrite, DefaultWriteText);
+	//Zilch::EventConnect(&Console::Events, Events::ConsoleWrite, DefaultWriteText);
 
 	// We can also setup the console so that any 'Read' functions will attempt to read from stdin
-	Zilch::EventConnect(&Console::Events, Events::ConsoleRead, DefaultReadText);
+	//Zilch::EventConnect(&Console::Events, Events::ConsoleRead, DefaultReadText);
 
     // This class encompasses all compilation errors that can occur when compiling Zilch code
     // Its responsibility is to provide friendly error messages, error codes, and callbacks to the user

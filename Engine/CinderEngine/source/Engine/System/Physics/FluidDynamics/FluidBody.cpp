@@ -8,6 +8,7 @@
 */
 /******************************************************************************/
 
+#include <Precompiled.h>
 #include "FluidBody.h"
 #include "FluidDynamics.h"
 #include "ResourceManager.h"

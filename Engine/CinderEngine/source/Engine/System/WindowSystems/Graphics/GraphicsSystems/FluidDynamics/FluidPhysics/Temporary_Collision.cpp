@@ -8,6 +8,7 @@
 */
 /******************************************************************************/
 
+#include <Precompiled.h>
 #include "Temporary_Collision.h"
 #include "Cinder_Engine_Data_Types.h"
 #include "Fluid_Physics_Object.h"

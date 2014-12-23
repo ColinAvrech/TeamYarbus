@@ -1,4 +1,4 @@
-#include "Zilch.hpp"
+#include <Precompiled.h>
 /**************************************************************\
 * Author: Trevor Sundberg
 * Copyright 2012-2014, DigiPen Institute of Technology
@@ -55420,7 +55420,7 @@ void Socket::Initialize(Status& status, SocketAddressFamily::Enum addressFamily,
 
 void Socket::Bind(Status& status, const SocketAddress& address)
 {
-  int wasError = bind((SOCKET)mHandle, (sockaddr*)address.mPrivateData, address.mSize);
+  int wasError = ::bind((SOCKET)mHandle, (sockaddr*)address.mPrivateData, address.mSize);
   if(wasError != 0)
     return FailOnWsaLastError(status);
 }

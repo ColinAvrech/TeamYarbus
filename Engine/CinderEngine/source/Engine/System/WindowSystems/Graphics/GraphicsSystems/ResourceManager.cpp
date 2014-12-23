@@ -8,6 +8,7 @@
 */
 /******************************************************************************/
 
+#include <Precompiled.h>
 #include "ResourceManager.h"
 #include <algorithm>
 #include <fstream>
@@ -58,7 +59,7 @@ namespace Framework
   }
   void Resources::Load_Resources ()
   {
-    Load_Textures ();
+    //Load_Textures ();
     Load_Shaders ();
     Load_Sounds();
     Load_SpriteSheets ();

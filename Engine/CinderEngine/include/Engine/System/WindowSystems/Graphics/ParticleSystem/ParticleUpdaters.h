@@ -11,10 +11,6 @@
 #ifndef _PARTICLE_UPDATERS_H
 #define _PARTICLE_UPDATERS_H
 
-#include "Particles.h"
-#include "ShaderStorageBufferObject.h"
-#include "ComputeShader.h"
-
 namespace Framework
 {
 

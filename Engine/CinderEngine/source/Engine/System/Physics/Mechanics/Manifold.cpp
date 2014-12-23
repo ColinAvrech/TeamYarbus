@@ -8,6 +8,7 @@
 */
 /******************************************************************************/
 
+#include <Precompiled.h>
 #include "GameObject.h"
 #include "Manifold.h"
 #include "Collision.h"

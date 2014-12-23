@@ -43,10 +43,6 @@ AGAINST AND DEAL WITH THE EFFECTS OF ANY SUCH MALICIOUS PROGRAMMING.
 //!makes sure this is only included once
 #pragma once
 
-#include "Common.h"
-#include "Component.h"
-#include "Zilch.hpp"
-#include "DataNode.h"
 
 namespace Framework
 {

@@ -11,13 +11,8 @@
 #ifndef _END_TRIGGER_H
 #define _END_TRIGGER_H
 
-#include "Component.h"
-
 namespace Framework
 {
-  class CollisionEvent;
-  class UpdateEvent;
-
 
   class EndTrigger : public Component
   {

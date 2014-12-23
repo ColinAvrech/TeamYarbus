@@ -8,20 +8,7 @@
 */
 /******************************************************************************/
 
-#include "EndEventListener.h"
-#include "EventSystem.h"
-#include "GameEvent.h"
-#include "UpdateEvent.h"
-#include "GameObject.h"
-#include "Sprite.h"
-#include "CinderEngine_UI.h"
-#include "CharacterController.h"
-#include "ObjectSystem.h"
-#include "WindowSystem.h"
-#include "Pipeline.h"
-#include "ResourceManager.h"
-#include "AudioEvents.h"
-#include "Events.h"
+#include <Precompiled.h>
 
 namespace Framework
 {

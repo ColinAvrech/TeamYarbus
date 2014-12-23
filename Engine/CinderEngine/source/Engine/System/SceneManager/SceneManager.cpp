@@ -8,6 +8,7 @@
 */
 /******************************************************************************/
 
+#include <Precompiled.h>
 #include "EditorUI.h"
 #include "SceneManager.h"
 #include <ctime>

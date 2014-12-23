@@ -10,7 +10,6 @@
 #ifndef _VAO_H
 #define _VAO_H
 
-#include "glew.h"
 
 namespace Framework
 {

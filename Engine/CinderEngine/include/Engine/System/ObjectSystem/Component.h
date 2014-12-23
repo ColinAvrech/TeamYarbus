@@ -20,9 +20,6 @@ relaying information)
 
 */
 #pragma once
-#include "Common.h"
-#include "Serializer/DataNode.h"
-#include "Zilch.hpp"
 
 #define DefineComponentName(Component) const string Component::Name("Component")
 

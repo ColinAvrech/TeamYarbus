@@ -7,13 +7,7 @@
 \brief  The overloaded functions for setting the value of a node.
 */
 /*****************************************************************************/
-
-#ifndef DATANODE_CPP
-
-#define DATANODE_CPP
-
-#include "Serializer/DataNode.h"
-#include "GraphicsCommon.h"
+#include <Precompiled.h>
 
 
 namespace Framework
@@ -155,5 +149,3 @@ namespace Framework
     /////////////////////////////////////////////////////////////////
   }
 }
-
-#endif

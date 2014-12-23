@@ -11,8 +11,6 @@
 #ifndef _GRAPHICS_TIME_H
 #define _GRAPHICS_TIME_H
 
-#include <chrono>
-#include "GraphicsCommon.h"
 
 namespace Framework
 {

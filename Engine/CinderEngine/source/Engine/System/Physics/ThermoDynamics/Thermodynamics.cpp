@@ -7,6 +7,7 @@
 */
 /******************************************************************************/
 
+#include <Precompiled.h>
 #include "Thermodynamics.h"
 #include "TDLib.h"
 #include "AudioSystem.h"
@@ -15,7 +16,6 @@
 #include "ThreadFunctions.h"
 #include "WindowSystem.h"
 #include "Camera.h"
-#include "solver.c"
 #include "AudioEvents.h"
 #include "Events.h"
 

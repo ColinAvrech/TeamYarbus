@@ -9,6 +9,7 @@ function to handle windows Messages.
 */
 /******************************************************************************/
 
+#include <Precompiled.h>
 #include "WindowSystem.h"
 #include "GraphicsCommon.h"
 #include "Resources.h"

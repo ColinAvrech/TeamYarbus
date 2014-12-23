@@ -8,16 +8,15 @@
 */
 /*****************************************************************************/
 
-#ifndef _AUDIO_H
-#define _AUDIO_H
+#pragma once
 
 /*-----------------------------------------------------------------------------
 // Includes
 -----------------------------------------------------------------------------*/
 #pragma region Includes
 
-#include "BaseSystem.h"
 #include "Sound.h"
+#include "BaseSystem.h"
 
 #pragma endregion
 
@@ -25,8 +24,6 @@
 
 namespace Framework
 {
-
-  class Resources;
   class AudioComponent;
   class Transform;
 
@@ -211,5 +208,3 @@ namespace Framework
 }
 
 //-----------------------------------------------------------------------------
-
-#endif				// _AUDIO_H

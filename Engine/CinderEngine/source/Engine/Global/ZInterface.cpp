@@ -7,6 +7,8 @@
 \brief  This file contains several helper macros for programming in ZILCH!
 */
 /******************************************************************************/
+
+#include <Precompiled.h>
 #include "ZInterface.h"
 #include "Zilch.hpp"
 #include "Core.h"

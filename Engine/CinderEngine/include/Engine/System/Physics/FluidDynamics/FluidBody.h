@@ -10,9 +10,6 @@
 
 #pragma once
 
-#include "GraphicsCommon.h"
-#include "IGraphicsObject.h"
-
 using std::vector;
 
 namespace Framework

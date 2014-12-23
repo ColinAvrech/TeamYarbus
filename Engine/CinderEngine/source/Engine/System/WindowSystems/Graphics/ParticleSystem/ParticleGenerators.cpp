@@ -8,9 +8,7 @@
 */
 /******************************************************************************/
 
-#include "ParticleGenerators.h"
-#include "glm\gtc\random.hpp"
-#include "CinderMath.h"
+#include <Precompiled.h>
 
 namespace Framework
 {

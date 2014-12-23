@@ -14,12 +14,7 @@ Main Game Loop.
 */
 /******************************************************************************/
 
-
-#include "Core.h"
-#include "EventSystem.h"
-#include "GameEvent.h"
-#include "WindowSystem.h"
-#include "Events.h"
+#include <Precompiled.h>
 
 namespace Framework
 {

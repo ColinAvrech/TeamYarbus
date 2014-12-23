@@ -8,12 +8,7 @@
 */
 /******************************************************************************/
 
-#include "Effect.h"
-#include <string>
-#include "TunnelEffect.h"
-#include "PlayerEffect.h"
-#include "AttractorEffect.h"
-#include "ExplosionEffect.h"
+#include <Precompiled.h>
 
 namespace Framework
 {

@@ -10,18 +10,3 @@ from externals, and stable elements within the engine.
 /******************************************************************************/
 
 
-//#include "Comtainers.h"
-#pragma once
-
-#include "Precompiled.cpp"
-
-//! Global Headers
-#include "Console.h"
-#include "DebugCode.h"
-#include "Helpers.h"
-
-
-// Engine Pointers
-#include "WinMain.h"
-
-

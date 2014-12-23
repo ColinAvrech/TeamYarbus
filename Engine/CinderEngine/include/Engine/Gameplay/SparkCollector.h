@@ -8,13 +8,11 @@
 */
 /******************************************************************************/
 #pragma once
-#include "Component.h"
+
 
 namespace Framework
 {
-	class CollisionEvent;
-	class UpdateEvent;
-	class GUIText;
+
 	class SparkCollector : public Component
 	{
 	public:

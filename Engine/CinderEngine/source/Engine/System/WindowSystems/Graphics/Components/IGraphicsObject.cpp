@@ -8,9 +8,7 @@
 */
 /******************************************************************************/
 
-#include "IGraphicsObject.h"
-#include "WindowSystem.h"
-#include "Pipeline.h"
+#include <Precompiled.h>
 
 namespace Framework
 {

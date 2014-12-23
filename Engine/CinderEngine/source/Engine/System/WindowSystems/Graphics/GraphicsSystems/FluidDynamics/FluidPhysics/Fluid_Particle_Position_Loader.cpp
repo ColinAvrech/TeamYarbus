@@ -8,6 +8,7 @@
 */
 /******************************************************************************/
 
+#include <Precompiled.h>
 #include "Fluid_Particle_Position_Loader.h"
 #include "Cinder_Engine_Data_Types.h"
 #include "Math_Point2D.h"

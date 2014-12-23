@@ -9,18 +9,7 @@
 */
 /******************************************************************************/
 
-
-#include "Common.h"
-#include "FirePointController.h"
-#include "EventSystem.h"
-#include "WindowSystem.h"
-#include "AudioSystem.h"
-#include "UpdateEvent.h"
-#include "KeyEvent.h"
-#include "ObjectSystem.h"
-#include "AudioSystem.h"
-#include "PingEvent.h"
-#include "Events.h"
+#include <Precompiled.h>
 
 namespace Framework
 {

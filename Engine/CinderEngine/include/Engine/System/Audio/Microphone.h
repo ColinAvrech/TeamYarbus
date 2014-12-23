@@ -7,8 +7,9 @@
 \brief  Microphone active
 */
 /******************************************************************************/
-#include "Component.h"
-#include "DataNode.h"
+
+#pragma once
+
 
 namespace Framework
 {

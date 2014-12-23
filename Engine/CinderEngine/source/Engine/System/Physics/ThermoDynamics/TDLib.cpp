@@ -8,6 +8,7 @@
 */
 /******************************************************************************/
 
+#include <Precompiled.h>
 #include "TDLib.h"
 #include "PhysicsLibrary.h"
 

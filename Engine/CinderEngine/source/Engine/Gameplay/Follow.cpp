@@ -8,11 +8,7 @@
 */
 /******************************************************************************/
 
-#include "Follow.h"
-#include "ObjectSystem.h"
-#include "EventSystem.h"
-#include "UpdateEvent.h"
-#include "Events.h"
+#include <Precompiled.h>
 
 namespace Framework
 {

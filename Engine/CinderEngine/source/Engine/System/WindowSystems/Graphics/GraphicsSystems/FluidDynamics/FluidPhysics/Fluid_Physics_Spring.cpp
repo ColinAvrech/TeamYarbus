@@ -8,6 +8,7 @@
 */
 /******************************************************************************/
 
+#include <Precompiled.h>
 #include "Fluid_Physics_Spring.h"
 
 namespace Framework

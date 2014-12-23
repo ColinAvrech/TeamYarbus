@@ -8,7 +8,7 @@
 */
 /******************************************************************************/
 
-
+#include <Precompiled.h>
 #include "Common.h"
 #include "Delegates.h"
 

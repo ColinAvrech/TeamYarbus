@@ -13,10 +13,6 @@
 #pragma once
 
 
-#include "Common.h"
-#include "Component.h"
-#include "GraphicsCommon.h"
-
 namespace Framework
 {
   class GameObject;

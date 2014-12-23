@@ -6,6 +6,8 @@
 \par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
 */
 /******************************************************************************/
+
+#include <Precompiled.h>
 #include "PhysicsLibrary.h"
 #include "GraphicsCommon.h"
 

@@ -8,6 +8,7 @@
 */
 /******************************************************************************/
 
+#include <Precompiled.h>
 #include "Collision.h"
 #include "Manifold.h"
 #include "CollisionEvent.h"

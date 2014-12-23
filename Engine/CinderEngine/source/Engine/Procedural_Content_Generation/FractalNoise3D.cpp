@@ -7,6 +7,8 @@
 \brief  Generate a simplex fractal noise texture
 */
 /*****************************************************************************/
+
+#include <Precompiled.h>
 #include "FractalNoise.h"
 #include "CinderMath.h"
 #include <stdlib.h>

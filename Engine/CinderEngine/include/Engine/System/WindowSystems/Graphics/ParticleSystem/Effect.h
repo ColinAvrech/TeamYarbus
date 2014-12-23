@@ -11,11 +11,7 @@
 #ifndef _EFFECT_H
 #define _EFFECT_H
 
-#include <memory>
 #include "AntTweakBar.h"
-#include "Texture.h"
-#include "Shader.h"
-#include "IGraphicsObject.h"
 
 namespace Framework
 {

@@ -8,6 +8,7 @@
 */
 /*****************************************************************************/
 
+#include <Precompiled.h>
 #include "TerrainCreator.h"
 #include <stdlib.h>
 #include <iostream>

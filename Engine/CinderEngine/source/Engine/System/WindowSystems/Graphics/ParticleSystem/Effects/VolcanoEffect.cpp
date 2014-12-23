@@ -8,6 +8,7 @@
 */
 /******************************************************************************/
 
+#include <Precompiled.h>
 #include "glew.h"
 #include "EditorUI.h"
 #include "VolcanoEffect.h"

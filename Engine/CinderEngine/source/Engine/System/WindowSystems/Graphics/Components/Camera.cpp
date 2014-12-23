@@ -8,6 +8,7 @@
 */
 /******************************************************************************/
 
+#include <Precompiled.h>
 #include "Camera.h"
 #include "EventSystem.h"
 #include "KeyEvent.h"

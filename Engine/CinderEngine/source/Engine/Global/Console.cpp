@@ -9,6 +9,7 @@ Also has functions to create the console.
 */
 /******************************************************************************/
 
+#include <Precompiled.h>
 #include "Common.h"
 
 namespace CinderConsole

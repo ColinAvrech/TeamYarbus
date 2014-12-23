@@ -8,6 +8,7 @@
 */
 /******************************************************************************/
 
+#include <Precompiled.h>
 #include "Fluid_SPH_Elastic.h"
 #include "Cinder_Engine_Data_Types.h"
 #include "Fluid_Physics_Particle.h"

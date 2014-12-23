@@ -9,14 +9,7 @@
 /*****************************************************************************/
 //!make sure this is only included once
 #ifndef SERIALIZER_H
-
 #define SERIALIZER_H
-#include <fstream>
-#include <string>
-#include <unordered_map>
-#include <vector>
-#include <initializer_list>
-#include "DataNode.h"
 
 namespace Framework
 {

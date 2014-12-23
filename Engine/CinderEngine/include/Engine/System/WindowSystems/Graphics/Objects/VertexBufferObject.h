@@ -10,9 +10,6 @@
 #ifndef _VBO_H
 #define _VBO_H
 
-#include "glew.h"
-#include <vector>
-
 namespace Framework
 {
 

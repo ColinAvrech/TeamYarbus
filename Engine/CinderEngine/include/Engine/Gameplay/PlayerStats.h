@@ -11,7 +11,6 @@
 #ifndef _PLAYER_STATS_H
 #define _PLAYER_STATS_H
 
-#include "Component.h"
 
 namespace Framework
 {

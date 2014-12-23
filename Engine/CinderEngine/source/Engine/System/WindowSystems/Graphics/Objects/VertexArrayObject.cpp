@@ -8,7 +8,7 @@
 */
 /******************************************************************************/
 
-//#include "VertexArrayObject.h"
+#include <Precompiled.h>
 //
 //
 //VertexArrayObject::VertexArrayObject ()

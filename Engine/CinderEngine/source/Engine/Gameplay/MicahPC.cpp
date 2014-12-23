@@ -9,20 +9,7 @@
 */
 /******************************************************************************/
 
-
-#include "Common.h"
-#include "MicahPC.h"
-#include "EventSystem.h"
-#include "WindowSystem.h"
-#include "AudioSystem.h"
-#include "ObjectSystem.h"
-#include "AudioSystem.h"
-
-// Events
-#include "PingEvent.h"
-#include "UpdateEvent.h"
-#include "KeyEvent.h"
-#include "Events.h"
+#include <Precompiled.h>
 
 namespace Framework
 {

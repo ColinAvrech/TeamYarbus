@@ -8,6 +8,7 @@
 */
 /******************************************************************************/
 
+#include <Precompiled.h>
 #include "Cinder_Engine_Image_Loader.h"
 #include "Cinder_Engine_File_Reader.h"
 #include "Cinder_Engine_Data_Types.h"

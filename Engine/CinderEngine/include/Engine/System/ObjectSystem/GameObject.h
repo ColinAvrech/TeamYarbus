@@ -44,6 +44,7 @@ factory in the next loop.
 
 namespace Framework
 {
+  class Camera;
   class ButtonController;
   class MenuController;
   class Component;

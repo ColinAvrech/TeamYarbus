@@ -8,11 +8,7 @@
 */
 /******************************************************************************/
 
-#include "GLParticleRenderer.h"
-#include "Particles.h"
-#include "glew.h"
-#include "ResourceManager.h"
-#include <assert.h>
+#include <Precompiled.h>
 
 namespace Framework
 {

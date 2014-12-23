@@ -8,6 +8,7 @@
 */
 /******************************************************************************/
 
+#include <Precompiled.h>
 #include "GUIText.h"
 #include "ZilchCompiledLib.h"
 #include "Pipeline.h"

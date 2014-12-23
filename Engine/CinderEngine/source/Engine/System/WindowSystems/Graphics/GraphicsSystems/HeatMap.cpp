@@ -8,6 +8,7 @@
 */
 /******************************************************************************/
 
+#include <Precompiled.h>
 #include "HeatMap.h"
 #include "ResourceManager.h"
 #include "Thermodynamics.h"

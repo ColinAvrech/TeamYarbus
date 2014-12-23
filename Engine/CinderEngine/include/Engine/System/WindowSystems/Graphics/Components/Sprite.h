@@ -8,46 +8,47 @@
 */
 /******************************************************************************/
 
-#ifndef _SPRITE_H
-#define _SPRITE_H
-
-#include "GraphicsCommon.h"
-#include "IGraphicsObject.h"
-#include "SpriteSheet.h"
-#include "JSONSerializer.h"
-#include "ZilchCompiledlib.h"
-#include "Zilch.hpp"
+#pragma once
 
 #define TEXTURE_NONE -100
 
+#include "IGraphicsObject.h"
+#include "Zilch.hpp"
+#include "ZilchCompiledLib.h"
+#include "VertexArrayObject.h"
+#include "VertexBufferObject.h"
+#include "ElementBufferObject.h"
+
 namespace Framework
 {
+  class Texture;
+  class SpriteSheet;
 
   class Sprite : public IGraphicsObject
   {
   public:
-    ZilchDeclareDerivedType(Sprite, IGraphicsObject);
+    ZilchDeclareDerivedType (Sprite, IGraphicsObject);
 
-	Sprite();
-	virtual ~Sprite();
+    Sprite ();
+    virtual ~Sprite ();
 
     virtual void Initialize ();
     virtual void Serialize (Serializer::DataNode* data);
     virtual void Draw ();
 
-	  void LoadSprite(Zilch::String texturename, Zilch::String shadername);
+    void LoadSprite (Zilch::String texturename, Zilch::String shadername);
     void Create_Sprite (Shader* _shader, Texture* _texture = NULL);
     void Create_Sprite (Shader* _shader, SpriteSheet* _atlas);
     void Change_Shader (Shader* _shaderID);
-	  void Change_Texture(Texture* _texture);
+    void Change_Texture (Texture* _texture);
     void Change_Shader (Zilch::String);
     void Change_Texture (Zilch::String);
     void Update_Shader ();
-	void Change_Color(float r, float g, float b, float a);
-	  Zilch::Real Width;
-	  Zilch::Real Height;
+    void Change_Color (float r, float g, float b, float a);
+    Zilch::Real Width;
+    Zilch::Real Height;
 
-	  Zilch::Real4 GetColor();
+    Zilch::Real4 GetColor ();
 
     Shader* Get_Shader ();
     Texture* Get_Texture ();
@@ -92,4 +93,3 @@ namespace Framework
   };
 
 }
-#endif

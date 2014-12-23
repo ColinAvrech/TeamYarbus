@@ -8,6 +8,7 @@
 */
 /******************************************************************************/
 
+#include <Precompiled.h>
 #include "SpriteBatcher.h"
 
 namespace Framework

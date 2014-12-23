@@ -11,12 +11,8 @@
 #ifndef _SPRITE_COLOR_UPDATE_H
 #define _SPRITE_COLOR_UPDATE_H
 
-#include "Component.h"
-#include "glm.hpp"
-
 namespace Framework
 {
-  class UpdateEvent;
 
   enum SIDE
   {

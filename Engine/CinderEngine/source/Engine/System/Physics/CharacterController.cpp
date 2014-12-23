@@ -8,6 +8,7 @@
 */
 /******************************************************************************/
 
+#include <Precompiled.h>
 #include "CharacterController.h"
 #include "Thermodynamics.h"
 #include "GameObject.h"

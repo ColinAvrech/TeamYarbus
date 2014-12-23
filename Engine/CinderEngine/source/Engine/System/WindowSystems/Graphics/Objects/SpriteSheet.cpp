@@ -8,7 +8,7 @@
 */
 /******************************************************************************/
 
-#include "SpriteSheet.h"
+#include <Precompiled.h>
 
 namespace Framework
 {

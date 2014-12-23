@@ -11,8 +11,6 @@
 #ifndef _ROTATOR_H
 #define _ROTATOR_H
 
-#include "Component.h"
-
 namespace Framework
 {
   class UpdateEvent;

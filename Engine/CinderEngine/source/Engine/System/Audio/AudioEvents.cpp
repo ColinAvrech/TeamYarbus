@@ -13,15 +13,7 @@
 -----------------------------------------------------------------------------*/
 #pragma region Includes
 
-#include "AudioEvents.h"
-#include "KeyEvent.h"
-#include "EventSystem.h"
-#include "WindowFocusEvent.h"
-#include "UpdateEvent.h"
-#include "KeyEvent.h"
-#include "WindowSystem.h"
-#include "Core.h"
-#include "Events.h"
+#include <Precompiled.h>
 
 
 #pragma endregion

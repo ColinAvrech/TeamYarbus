@@ -11,9 +11,6 @@
 #ifndef _INTERPOLATE_BACK_H
 #define _INTERPOLATE_BACK_H
 
-#include "GraphicsCommon.h"
-#include "Component.h"
-
 namespace Framework
 {
   enum COLOR_STATE

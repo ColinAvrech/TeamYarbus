@@ -8,6 +8,7 @@
 */
 /*****************************************************************************/
 
+#include <Precompiled.h>
 #include "Serializer/JSONSerializer.h"
 #include "GraphicsCommon.h"
 
