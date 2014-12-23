@@ -211,9 +211,9 @@ Level =
 	//These values seem to work best
 	FluidBody = 
 	{
-		float k = 0.5,
+		float k = 0.025,
 		float d = 0.0025,
-		float Spread = 0.0125,
+		float Spread = 0.25,
 	},
   },
   Cog = 

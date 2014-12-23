@@ -78,17 +78,19 @@ namespace Framework
     //Allocate helper arrays
     leftDeltas = new float[height_points.size()];
     rightDeltas = new float[height_points.size()];
+    //Splash(height_points.size() * 0.5f, -0.5f);
   }
 
   void FluidBody::Update(const float dt)
   {
     time += dt;
     //test splash
-    if (time >= 0.25f)
+    if (time >= 1.f)
     {
       time = 0.0f;
-      int rand_index = rand() % height_points.size();
-      Splash(rand_index, -0.05f);
+      //int rand_index = rand() % height_points.size();
+      int index1 = height_points.size() * 0.5f;
+      Splash(index1, -10.f);
     }
 
     WaveUpdate(dt);
@@ -175,10 +177,10 @@ namespace Framework
     vao->unbindVAO();
   }
 
-  void FluidBody::Splash(int index, float speed)
+  void FluidBody::Splash(unsigned int index, float speed)
   {
-    if (index >= 0 && index < speeds.size())
-      speeds[index] += speed;
+    if (index < speeds.size())
+      speeds[index] += speed / scale.y;
   }
 
   void FluidBody::DepthUpdate(const float dt)
@@ -186,7 +188,6 @@ namespace Framework
     for (unsigned i = 0; i < height_points.size(); ++i)
     {
       float x = height_points[i].y - Base_Level;
-      x /= scale.y;
       float a = -k * x - d * speeds[i];
       
       speeds[i] += a;
@@ -198,7 +199,7 @@ namespace Framework
   {
     DepthUpdate(dt);
 
-    for (int i = 0; i < height_points.size(); i++)
+    for (unsigned int i = 0; i < height_points.size(); i++)
     {
       if (i > 0)
       {
@@ -212,7 +213,7 @@ namespace Framework
       }
     }
 
-    for (int i = 0; i < height_points.size(); i++)
+    for (unsigned int i = 0; i < height_points.size(); i++)
     {
       if (i > 0)
         height_points[i - 1].y += leftDeltas[i];
