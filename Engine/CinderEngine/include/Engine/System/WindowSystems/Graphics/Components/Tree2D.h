@@ -61,8 +61,11 @@ namespace Framework
     // Resources
     FractalGenerator* tree;
     glm::vec4 color;
+    float base_radius = 0.05f;
+    float decay_rate = 0.5f;
+    int depth = 10;
 
-    void Make_Tree0(float x1, float y1, float length1, float angle1, int depth);
+    void Make_Tree0(float x1, float y1, float length1, float angle1, int depth, float rad);
     void Make_Tree1(float x1, float y1, float x2, float y2, float angle, int depth, int branchCount);
     void Make_Tree2(float x1, float y1, float length, float angle, int depth);
     void Make_Tree3(float x1, float y1, float length1, float angle1, int depth);
@@ -78,7 +81,7 @@ namespace Framework
     void Make_Grass_Blade(float x1, float y1, float length, float angle);
     void Make_Stalk_Head(float x1, float y1, float length, float angle);
     //call for adding a line
-    void Add_Branch(float x1, float y1, float x2, float y2);
+    void Add_Branch(float x1, float y1, float x2, float y2, float rad);
     void Generate_Buffers ();
   };
 }

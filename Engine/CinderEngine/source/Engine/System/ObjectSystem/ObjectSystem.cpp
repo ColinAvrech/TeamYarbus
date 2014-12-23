@@ -13,6 +13,7 @@ deleted.
 #include "ObjectSystem.h"
 #include "PhysicsSystem.h"
 #include "Thermodynamics.h"
+#include "FluidDynamics.h"
 #include "BaseSystem.h"
 #include "GameEvent.h"
 #include "EventSystem.h"
@@ -147,7 +148,8 @@ namespace Framework
 
         case _LoadLevel:
           PHYSICS->Clear ();
-          //Physics::THERMODYNAMICS->Reset ();
+          Physics::THERMODYNAMICS->Clear();
+          Physics::FLUIDDYNAMICS->Clear();
           DestroyAllObjects();
           EVENTSYSTEM->DeleteAllEvents();
 
@@ -494,7 +496,7 @@ namespace Framework
     Serializer::DataNode* Trunk = file.GetTrunk();
     GameObject* newobj = this->CreateObject();
     newobj->Name = *Trunk->branch->next->branch->value_.String_;
-
+    //Skip 1st 3 objects
     auto ct = Trunk->branch->next->next->next;
     while (ct)
     {

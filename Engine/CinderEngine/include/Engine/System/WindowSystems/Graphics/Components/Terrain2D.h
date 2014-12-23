@@ -50,10 +50,11 @@ namespace Framework
     int BaseHeight;
     int Passes;
     int Waves;
-    int WaterDepth;
-    bool AddCollider;
+    int WaterDepth = 0;
+    bool AddCollider = false;
     std::string MapFile;
-    glm::vec4 color;
+    glm::vec4 color1;
+    glm::vec4 color2;
     Procedural::TerrainCreator* tc;
 
     VAO* vao;

@@ -64,6 +64,18 @@ namespace Framework
 
     value = data->FindElement (data, "Color");
     value->GetValue (&color);
+
+    //trunk thickness
+    value = data->FindElement(data, "Thickness");
+    if (value != nullptr) value->GetValue(&base_radius);
+    else base_radius = 1.f;
+    //scale size down for mesh creation
+    base_radius *= 0.05f;
+
+    //rate at which branch thickness reduces
+    value = data->FindElement(data, "Decay");
+    if (value != nullptr) value->GetValue(&decay_rate);
+    else decay_rate = 0.75f;
   }
 
   void Tree2D::Initialize ()
@@ -72,7 +84,7 @@ namespace Framework
     switch (type)
     {
     case Framework::TREE_0:
-      Make_Tree0 (0, -0.1f, 0.1f, 1.5, 10);
+      Make_Tree0 (0, -0.1f, 0.1f, 1.5, 10, base_radius);
       break;
     case Framework::TREE_1:
       Make_Tree1 (0, -0.5f, 0.0f, 0.25f, 45, 5, 3);
@@ -94,7 +106,6 @@ namespace Framework
       tree->Generate_Tree ();
       shader = Resources::RS->Get_Shader ("Tree");
       tree->Create_Mesh (tree->getTotalLines (), &treeMesh, &edges);
-      Generate_Buffers ();
 
       fsm = gameObject->FireGroup;
       if (fsm)
@@ -124,31 +135,19 @@ namespace Framework
       Physics::THERMODYNAMICS->Add_Group(fsm);
     }*/
 
-    if (type != TREE_5)
-    {
-      shader = Resources::RS->Get_Shader ("Tree");
-      vao = new VAO ();
-      vbo = new VBO (treeMesh.size () * sizeof (float), treeMesh.data ());
-      GLint posAttrib = shader->attribLocation ("position");
-      shader->enableVertexAttribArray (posAttrib);
-      shader->vertexAttribPtr (posAttrib, 2, GL_FLOAT, GL_FALSE, 2 * sizeof (float), 0);
-      vao->unbindVAO ();
-    }
+    Generate_Buffers();
   }
 
 
   void Tree2D::Generate_Buffers ()
   {
-    shader = Resources::RS->Get_Shader ("Tree");
-    vao = new VAO ();
-    vbo = new VBO (treeMesh.size () * sizeof (float), treeMesh.data ());
-    GLint posAttrib = shader->attribLocation ("position");
-    shader->enableVertexAttribArray (posAttrib);
-    shader->vertexAttribPtr (posAttrib, 2, GL_FLOAT, GL_FALSE, 6 * sizeof (float), 0);
-    GLint colAttrib = shader->attribLocation ("color");
-    shader->enableVertexAttribArray (colAttrib);
-    shader->vertexAttribPtr (colAttrib, 4, GL_FLOAT, GL_FALSE, 6 * sizeof (float), 2 * sizeof (float));
-    vao->unbindVAO ();
+    shader = Resources::RS->Get_Shader("Tree");
+    vao = new VAO();
+    vbo = new VBO(treeMesh.size() * sizeof(float), treeMesh.data());
+    GLint posAttrib = shader->attribLocation("position");
+    shader->enableVertexAttribArray(posAttrib);
+    shader->vertexAttribPtr(posAttrib, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
+    vao->unbindVAO();
   }
 
   void Tree2D::Draw ()
@@ -197,13 +196,16 @@ namespace Framework
     }
     else
     {
-      shader->Use ();
+      glDisable(GL_BLEND);
+      shader->Use();
+      vao->bindVAO();
       shader->uniMat4 ("mvp", glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix ()));
-      shader->uni4fv ("color", glm::value_ptr (color));
-      vao->bindVAO ();
-      glDrawArrays (GL_LINES, 0, treeMesh.size () / 2);
-      vao->unbindVAO ();
-      shader->Disable ();
+      shader->uni4f("color", color.r, color.g, color.b, color.a);
+      glDrawArrays(GL_QUAD_STRIP, 0, treeMesh.size() / 2);
+
+      vao->unbindVAO();
+      shader->Disable();
+      OPENGL->ResetBlendMode();
     }
   }
 
@@ -213,8 +215,9 @@ namespace Framework
     type = _type;
   }
 
-  void Tree2D::Make_Tree0 (float x1, float y1, float length1, float angle1, int depth)
+  void Tree2D::Make_Tree0 (float x1, float y1, float length1, float angle1, int depth, float rad)
   {
+    //rad = 0.001f;
     float SCALE = 1.0f;
     float ANGLE = 0.3f;
     float RAND = 0.1f;
@@ -223,7 +226,9 @@ namespace Framework
       float x2 = x1 + length1 * cos (angle1);
       float y2 = y1 + length1 * sin (angle1);
 
-      Add_Branch(x1, y1, x2, y2);
+      Add_Branch(x1, y1, x2, y2, rad);
+
+      float newrad = rad * decay_rate;
 
       float length2 = length1 * (SCALE + myrand (RAND));
       float angle2 = angle1 + ANGLE + myrand (RAND);
@@ -235,7 +240,7 @@ namespace Framework
       else
         fork = (rand() % 10) * (rand() % 10);
       if (fork > 20 - depth * 2)
-        Make_Tree0 (x2, y2, length2 * f, angle2, depth - 1);
+        Make_Tree0 (x2, y2, length2 * f, angle2, depth - 1, newrad);
       length2 = length1 * (SCALE + myrand (RAND));
       angle2 = angle1 - ANGLE + myrand (RAND);
       if (depth % 2 == 0)
@@ -243,14 +248,14 @@ namespace Framework
       else
         fork = (rand() % 10) * (rand() % 10);
       if (fork > 20 - depth * 2)
-        Make_Tree0 (x2, y2, length2 * f, angle2, depth - 1);
+        Make_Tree0 (x2, y2, length2 * f, angle2, depth - 1, newrad);
     }
   }
 
 
   void Tree2D::Make_Tree1 (float x1, float y1, float x2, float y2, float angle, int depth, int branchCount)
   {
-    Add_Branch(x1, y1, x2, y2);
+    //Add_Branch(x1, y1, x2, y2);
 
     if (depth < 1)
     {
@@ -289,7 +294,7 @@ namespace Framework
       float x2 = x1 + length * cos(angle);
       float y2 = y1 + length * sin(angle);
 
-      Add_Branch(x1, y1, x2, y2);
+      //Add_Branch(x1, y1, x2, y2);
 
       x1 = x1 + length / 2 * cos(angle);
       y1 = y1 + length / 2 * sin(angle);
@@ -332,7 +337,7 @@ namespace Framework
       float x2 = x1 + length * cos(angle);
       float y2 = y1 + length * sin(angle);
 
-      Add_Branch(x1, y1, x2, y2);
+      //Add_Branch(x1, y1, x2, y2);
 
       x1 = x1 + length / 2 * cos(angle);
       y1 = y1 + length / 2 * sin(angle);
@@ -350,11 +355,11 @@ namespace Framework
       Make_Tree3(x2, y2, length * f, angle2, depth - 1);
 
       int r = rand() % 100;
-      if (r > 20 - depth)
-        Make_Tree0(x2, y2, length2, angle/2 + angle2, depth/2);
+      //if (r > 20 - depth)
+       // Make_Tree0(x2, y2, length2, angle/2 + angle2, depth/2);
       r = rand() % 100;
-      if (r > 20 - depth)
-        Make_Tree0(x2, y2, length2, -angle/2 + angle2, depth/2);
+      //if (r > 20 - depth)
+        //Make_Tree0(x2, y2, length2, -angle/2 + angle2, depth/2);
     }
   }
 
@@ -365,7 +370,7 @@ namespace Framework
 
   void Tree2D::Make_TreeLong(float x1, float y1, float x2, float y2, float angle, int depth, int branchCount)
   {
-	  Add_Branch(x1, y1, x2, y2);
+	 // Add_Branch(x1, y1, x2, y2);
 
 	  if (depth < 1)
 	  {
@@ -417,7 +422,7 @@ namespace Framework
     float x2 = x1 + length * cos(angle);
     float y2 = y1 + length * sin(angle);
 
-    Add_Branch(x1, y1, x2, y2);
+   // Add_Branch(x1, y1, x2, y2);
   }
 
   void Tree2D::Make_Grass_Stalk(float x1, float y1, float length, float angle, int depth, int curve)
@@ -430,7 +435,7 @@ namespace Framework
       float x2 = x1 + length * cos(angle);
       float y2 = y1 + length * sin(angle);
 
-      Add_Branch(x1, y1, x2, y2);
+      //Add_Branch(x1, y1, x2, y2);
 
       x1 = x1 + length * cos(angle);
       y1 = y1 + length * sin(angle);
@@ -463,7 +468,7 @@ namespace Framework
       float x2 = x1 + length * cos(angle);
       float y2 = y1 + length * sin(angle);
 
-      Add_Branch(x1, y1, x2, y2);
+      //Add_Branch(x1, y1, x2, y2);
 
       x1 = x1 + length / 2 * cos(angle);
       y1 = y1 + length / 2 * sin(angle);
@@ -485,12 +490,16 @@ namespace Framework
     }
   }
 
-  void Tree2D::Add_Branch(float x1, float y1, float x2, float y2)
-  {
-    treeMesh.push_back(x1);
+  void Tree2D::Add_Branch(float x1, float y1, float x2, float y2, float rad)
+  {    
+    //0 1 2 - 0 2 3
+    //0
+    treeMesh.push_back(x1 - rad);
     treeMesh.push_back(y1);
-    treeMesh.push_back(x2);
-    treeMesh.push_back(y2);
+    //1
+    treeMesh.push_back(x1 + rad);
+    treeMesh.push_back(y1);
+    //2 and 3 added on next call
   }
 
 }

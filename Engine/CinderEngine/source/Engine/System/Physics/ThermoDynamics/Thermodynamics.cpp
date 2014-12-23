@@ -607,7 +607,7 @@ namespace Framework
       ResetEvent (eventEndFire [i]);
       }*/
     }
-
+    //Debug draw
     void ThermodynamicsSystem::Draw()
     {
       glm::vec2 c_center = Camera::main->gameObject->Transform->GetGridPosition();

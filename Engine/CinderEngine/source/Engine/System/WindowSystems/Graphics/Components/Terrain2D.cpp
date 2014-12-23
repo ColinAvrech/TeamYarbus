@@ -61,29 +61,35 @@ namespace Framework
 
   void Terrain2D::Serialize (Serializer::DataNode* data)
   {
-    Serializer::DataNode* value = data->FindElement(data, "MapSize");
-    value->GetValue (&MapSize);
+    Serializer::DataNode* value;
+    data->FindElement(data, "MapSize")->GetValue (&MapSize);
 
-    value = data->FindElement (data, "BaseHeight");
-    value->GetValue (&BaseHeight);
+    data->FindElement (data, "BaseHeight")->GetValue (&BaseHeight);
 
-    value = data->FindElement (data, "PeakHeight");
-    value->GetValue (&PeakHeight);
+    data->FindElement (data, "PeakHeight")->GetValue (&PeakHeight);
 
-    value = data->FindElement (data, "Passes");
-    value->GetValue (&Passes);
+    data->FindElement (data, "Passes")->GetValue (&Passes);
 
-    value = data->FindElement (data, "Waves");
-    value->GetValue (&Waves);
+    data->FindElement (data, "Waves")->GetValue (&Waves);
 
+    //waterdepth defaults to 0 if not specified
     value = data->FindElement(data, "Water");
-    value->GetValue(&WaterDepth);
+    if (value != nullptr)
+      value->GetValue(&WaterDepth);
 
+    //addcollider defaults to false if not specified
     value = data->FindElement(data, "AddCollider");
-    value->GetValue(&AddCollider);
+    if (value != nullptr)
+      value->GetValue(&AddCollider);
 
-    value = data->FindElement(data, "Color");
-    value->GetValue(&color);
+    //color1 is mandatory
+    data->FindElement(data, "Color1")->GetValue(&color1);
+    //color2 defaults to color1 if not given by level file
+    value = data->FindElement(data, "Color2");
+    if (value != nullptr)
+      value->GetValue(&color2);
+    else
+      color2 = color1;
 
     value = data->FindElement(data, "MapPreset");
     if (value)
@@ -102,10 +108,6 @@ namespace Framework
     if (AddCollider)
     {
       Generate_Edges ();
-      //spline = new SplineCollider ();
-      //spline->gameObject = this->gameObject;
-      //Physics::PHYSICSSYSTEM->SplineColliders.push_back (spline);
-      //spline->AddLineCollider (edges);
     }
   }
 
@@ -116,7 +118,8 @@ namespace Framework
     shader->Use ();
     vao->bindVAO ();
     shader->uniMat4 ("mvp", glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix ()));
-    shader->uni4f ("color", color.r, color.g, color.b, color.a);
+    shader->uni4f ("color1", color1.r, color1.g, color1.b, color1.a);
+    shader->uni4f ("color2", color2.r, color2.g, color2.b, color2.a);
 
     glDrawArrays (GL_QUAD_STRIP, 0, vertices.size () / 3);
 

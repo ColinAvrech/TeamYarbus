@@ -92,7 +92,7 @@ Level =
       int Passes = 0,
       int Waves = 1,
       int Water = 0,
-      Vec4 Color = [1.0, .862, .596, 1],
+      Vec4 Color1 = [1.0, .862, .596, 1],
       bool AddCollider = false,
 		},
   },
@@ -121,7 +121,7 @@ Level =
       int Passes = 0,
       int Waves = 1,
       int Water = 0,
-      Vec4 Color = [0.366, .101, 0.166, 1],
+      Vec4 Color1 = [0.366, .101, 0.166, 1],
       bool AddCollider = false,
 		},
   },
@@ -150,7 +150,7 @@ Level =
       int Passes = 0,
       int Waves = 1,
       int Water = 0,
-      Vec4 Color = [.2, .2, .2, 1],
+      Vec4 Color1 = [.2, .2, .2, 1],
       bool AddCollider = false,
 		},
   },
@@ -180,7 +180,8 @@ Level =
       int Passes = 5,
       int Waves = 5,
       int Water = 5,
-      Vec4 Color = [0.05, 0.033, 0.066, 1],
+      Vec4 Color1 = [0.05, 0.33, 0.066, 1],
+	  Vec4 Color2 = [0.05, 0.033, 0.066, 1],
       bool AddCollider = true,
 		},
     EcoSystem = 
@@ -204,8 +205,8 @@ Level =
 	},
 	Transform = 
 	{
-		Vec3 Translation = [0, 0, 0],
-		Vec3 Scale = [10, 10, 1],
+		Vec3 Translation = [0, 7, 0],
+		Vec3 Scale = [10, 1, 1],
 		Quat Rotation = [0, 0, 1, 0],
 	},
 	//These values seem to work best
@@ -214,6 +215,8 @@ Level =
 		float k = 0.025,
 		float d = 0.0025,
 		float Spread = 0.25,
+		Vec4 Color1 = [0.25, 0.5, 1, 1],
+		Vec4 Color2 = [0, 0, 0, 0],
 	},
   },
   //Player object--------------------------------------------------

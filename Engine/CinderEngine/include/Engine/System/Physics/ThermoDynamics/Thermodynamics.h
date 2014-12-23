@@ -85,6 +85,7 @@ namespace Framework
       void UpdateFire(const float& dt);
 
       void Reset ();
+      void Clear();
 
       //////////////////////////////////////////////////////////////////////////
       // MULTI THREADING
@@ -232,7 +233,7 @@ namespace Framework
       //Determine subscript from position
       glm::ivec2 GetSubscript(const float& x, const float& y);
       glm::vec2 GetConvecDir(const unsigned i, const unsigned j);
-      void Clear();
+      
       void Init_Materials();
 #pragma endregion
 

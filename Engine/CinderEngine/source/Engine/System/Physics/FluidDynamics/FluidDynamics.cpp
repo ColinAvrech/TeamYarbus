@@ -29,8 +29,12 @@ namespace Framework
     //Destructor
     FluidDynamicsSystem::~FluidDynamicsSystem()
     {
+      Clear();
+    }
+
+    void FluidDynamicsSystem::Clear()
+    {
       fluid_bodies.clear();
-      //ReleaseThreads();
     }
 
     /*-----------------------------------------------------------------------

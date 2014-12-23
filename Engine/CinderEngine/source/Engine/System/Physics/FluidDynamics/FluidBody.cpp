@@ -22,11 +22,8 @@
 namespace Framework
 {
   static float time = 0.0f;
-  static std::vector <float> lineVertices;
   static VAO* vao1;
   static VBO* vbo1;
-  static float *leftDeltas;
-  static float *rightDeltas;
 
   DefineComponentName(FluidBody);
 
@@ -34,7 +31,6 @@ namespace Framework
   FluidBody::FluidBody()
   {
     scale = glm::vec2(10, 10);
-    color = glm::vec4(0.f, 0.f, 1.f, 1.f);
   }
 
   // Destructor
@@ -49,6 +45,9 @@ namespace Framework
 
     delete[] leftDeltas;
     delete[] rightDeltas;
+    vertices.clear();
+    speeds.clear();
+    height_points.clear();
   }
 
 
@@ -61,6 +60,13 @@ namespace Framework
     if(temp) temp->GetValue(&d);
     temp = data->FindElement(data, "Spread");
     if (temp) temp->GetValue(&Spread);
+
+    //color1 is mandatory
+    data->FindElement(data, "Color1")->GetValue(&color1);
+
+    //color2 defaults to color1 if not specified
+    temp = data->FindElement(data, "Color2");
+    if (temp) temp->GetValue(&color2);
   }
 
   void FluidBody::Initialize()
@@ -110,7 +116,8 @@ namespace Framework
     shader->Use();
     vao->bindVAO();
     shader->uniMat4("mvp", glm::value_ptr(gameObject->Transform->GetModelViewProjectionMatrix()));
-    shader->uni4f("color", color.r, color.g, color.b, color.a);
+    shader->uni4f("color1", color1.r, color1.g, color1.b, color1.a);
+    shader->uni4f("color2", color2.r, color2.g, color2.b, color2.a);
 
     glDrawArrays(GL_QUAD_STRIP, 0, vertices.size() / 3);
 
