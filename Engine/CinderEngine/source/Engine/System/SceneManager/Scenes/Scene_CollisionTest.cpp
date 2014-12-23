@@ -9,6 +9,8 @@
 //*/
 ///******************************************************************************/
 //
+
+#include <Precompiled.h>
 //#include "Scene_CollisionTest.h"
 //#include "ComponentInclude.h"
 //#include "ResourceManager.h"

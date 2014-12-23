@@ -8,16 +8,8 @@
 */
 /******************************************************************************/
 
-#include "Material.h"
+#include <Precompiled.h>
 
 namespace Framework
 {
-
-  // Constructor
-  Material::Material ()
-  {}
-  
-  // Destructor
-  Material::~Material ()
-  {}
 }

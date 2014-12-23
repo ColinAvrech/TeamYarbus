@@ -7,12 +7,8 @@
 \brief
 */
 /******************************************************************************/
-#ifndef _TEXTURE_H
-#define _TEXTURE_H
 
-#include "GraphicsCommon.h"
-#include "SOIL.h"
-#include "ZilchCompiledLib.h"
+#pragma once
 
 namespace Framework
 {
@@ -46,6 +42,3 @@ namespace Framework
   };
 
 }
-
-#endif
-

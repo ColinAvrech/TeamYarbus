@@ -8,6 +8,7 @@
 */
 /******************************************************************************/
 
+#include <Precompiled.h>
 #include "UISystem.h"
 #include "Eventsystem.h"
 #include "GameEvent.h"

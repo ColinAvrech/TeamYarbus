@@ -8,13 +8,7 @@
 */
 /******************************************************************************/
 
-#include "EndTrigger.h"
-#include "EventSystem.h"
-#include "UpdateEvent.h"
-#include "GameEvent.h"
-#include "CollisionEvent.h"
-#include "CharacterController.h"
-#include "Events.h"
+#include <Precompiled.h>
 
 namespace Framework
 {

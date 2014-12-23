@@ -7,10 +7,8 @@
 \brief  Microphone active
 */
 /******************************************************************************/
-#include "Microphone.h"
-#include "JSONSerializer.h"
-#include "GameObject.h"
-#include "ComponentInclude.h"
+
+#include <Precompiled.h>
 
 namespace Framework
 {

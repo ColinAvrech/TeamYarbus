@@ -9,7 +9,8 @@ the temaplted Component creators. The factory also cleans up when an object is
 deleted.
 */
 /******************************************************************************/
-
+ 
+#include <Precompiled.h>
 #include "ObjectSystem.h"
 #include "PhysicsSystem.h"
 #include "Thermodynamics.h"

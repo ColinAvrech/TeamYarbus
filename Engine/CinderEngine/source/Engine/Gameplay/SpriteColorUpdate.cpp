@@ -8,12 +8,7 @@
 */
 /******************************************************************************/
 
-#include "SpriteColorUpdate.h"
-#include "EventSystem.h"
-#include "UpdateEvent.h"
-#include "GameObject.h"
-#include "Sprite.h"
-#include "Events.h"
+#include <Precompiled.h>
 
 namespace Framework
 {

@@ -13,11 +13,7 @@
 -----------------------------------------------------------------------------*/
 #pragma region Includes
 
-#include "AudioComponent.h"
-#include "GameObject.h"
-#include "ResourceManager.h"
-#include "AudioSystem.h"
-#include "Core.h"
+#include <Precompiled.h>
 
 #pragma endregion
 

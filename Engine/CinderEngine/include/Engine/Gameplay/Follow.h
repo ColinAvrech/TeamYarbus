@@ -11,9 +11,6 @@
 #ifndef _FOLLOW_H
 #define _FOLLOW_H
 
-#include <string>
-#include "Component.h"
-
 namespace Framework
 {
   class UpdateEvent;

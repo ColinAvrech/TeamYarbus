@@ -16,16 +16,6 @@
 -----------------------------------------------------------------------------*/
 #pragma region Includes
 
-
-#include "BaseSystem.h"
-#include <unordered_map>
-#include "FluidSolver.h"
-#include "FireSystem.h"
-#include "Terrain2D.h"
-#include "FireStarter.h"
-#include "GUIText.h"
-#include "GridManager.h"
-
 #pragma endregion
 
 
@@ -199,7 +189,7 @@ namespace Framework
       static GUIText* guiText;
 
       vector<FireGroup*> fireGroups;
-      vector<pair<glm::ivec2, FireStarter*>> FireMap;
+      vector<std::pair<glm::ivec2, FireStarter*>> FireMap;
       static FireSystem* FIRE;
 
       FluidSolver solver;

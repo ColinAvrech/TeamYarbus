@@ -11,10 +11,6 @@
 #ifndef _I_GRAPHICS_OBJ_H
 #define _I_GRAPHICS_OBJ_H
 
-#include "Component.h"
-#include "JSONSerializer.h"
-#include "ZilchCompiledLib.h"
-
 namespace Framework
 {
   enum LAYER

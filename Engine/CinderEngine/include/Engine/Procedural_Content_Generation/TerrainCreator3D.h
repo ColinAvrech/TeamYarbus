@@ -7,7 +7,8 @@
 \brief  Procedurally generate 3d terrains (for thermo testing)
 */
 /*****************************************************************************/
-#include "TerrainCreator.h"
+
+#pragma once
 
 namespace Framework
 {

@@ -8,14 +8,7 @@
 */
 /******************************************************************************/
 
-#include "LevelTimer.h"
-#include "EventSystem.h"
-#include "UpdateEvent.h"
-#include "ObjectSystem.h"
-#include "Zilch.hpp"
-#include "InputManager.h"
-#include "WindowSystem.h"
-#include "Events.h"
+#include <Precompiled.h>
 
 namespace Framework
 {

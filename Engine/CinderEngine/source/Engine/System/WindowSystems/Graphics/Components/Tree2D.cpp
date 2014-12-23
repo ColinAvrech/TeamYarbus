@@ -8,6 +8,7 @@
 */
 /******************************************************************************/
 
+#include <Precompiled.h>
 #include "FractalGenerator.h"
 #include "Tree2D.h"
 #include "VertexArrayObject.h"

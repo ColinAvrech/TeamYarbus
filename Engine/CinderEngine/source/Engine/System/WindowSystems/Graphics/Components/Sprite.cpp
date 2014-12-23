@@ -8,14 +8,8 @@
 */
 /******************************************************************************/
 
-#include "Sprite.h"
-#include "Camera.h"
-#include "Transform.h"
-#include "GameObject.h"
+#include <Precompiled.h>
 #include "ResourceManager.h"
-#include "ShapeGenerator.h"
-#include "WindowSystem.h"
-#include "Pipeline.h"
 
 namespace Framework
 {

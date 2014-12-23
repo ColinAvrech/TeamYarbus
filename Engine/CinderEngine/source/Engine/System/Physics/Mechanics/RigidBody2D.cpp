@@ -8,6 +8,7 @@
 */
 /******************************************************************************/
 
+#include <Precompiled.h>
 #include "GameObject.h"
 #include "RigidBody2D.h"
 #include "Collider2D.h"

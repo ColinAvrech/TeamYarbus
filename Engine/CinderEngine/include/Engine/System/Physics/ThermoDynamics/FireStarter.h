@@ -11,13 +11,6 @@
 #ifndef _FIRE_STARTER_H
 #define _FIRE_STARTER_H
 
-#include "Component.h"
-#include "GameObject.h"
-#include "DataNode.h"
-#include "TDLib.h"
-#include "Grid2D.h"
-#include <vector>
-
 using std::vector;
 
 namespace Framework

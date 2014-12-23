@@ -8,6 +8,7 @@
 */
 /******************************************************************************/
 
+#include <Precompiled.h>
 #include "LightingShader.h"
 
 namespace Framework

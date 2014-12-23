@@ -7,19 +7,8 @@
 \brief  The players health
 */
 /******************************************************************************/
-#include "Health.h"
-#include "EventSystem.h"
-#include "UpdateEvent.h"
-#include "CollisionEvent.h"
-#include "Core.h"
-#include "ObjectSystem.h"
-#include "GUIText.h"
-#include "Thermodynamics.h"
-#include "PlayerEffect.h"
-#include "Pipeline.h"
-#include "ResourceManager.h"
-#include "AudioEvents.h"
-#include "Events.h"
+
+#include <Precompiled.h>
 
 namespace Framework
 {

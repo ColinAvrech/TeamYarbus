@@ -11,7 +11,6 @@
 #ifndef _CAMERA_SHAKE_H
 #define _CAMERA_SHAKE_H
 
-#include "Component.h"
 
 namespace Framework
 {

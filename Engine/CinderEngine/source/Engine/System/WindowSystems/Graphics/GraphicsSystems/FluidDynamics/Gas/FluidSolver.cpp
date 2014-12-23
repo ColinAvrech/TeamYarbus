@@ -14,6 +14,7 @@
 // http://www.dgp.toronto.edu/people/stam/reality/Research/pdf/GDC03.pdf
 //////////////////////////////////////////////////////////////////////////
 
+#include <Precompiled.h>
 #include "FluidSolver.h"
 
 #define IX(i,j) ((i)+(N+2)*(j))

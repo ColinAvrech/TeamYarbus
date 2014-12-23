@@ -8,6 +8,7 @@
 */
 /******************************************************************************/
 
+#include <Precompiled.h>
 #include "Marching_Squares.h"
 #include "Cinder_Engine_Data_Types.h"
 #include "Math_Vector2D.h"

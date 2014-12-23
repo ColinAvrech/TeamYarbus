@@ -11,8 +11,6 @@
 #ifndef _PARTICLE_GENERATORS_H
 #define _PARTICLE_GENERATORS_H
 
-#include "Particles.h"
-
 namespace Framework
 {
 

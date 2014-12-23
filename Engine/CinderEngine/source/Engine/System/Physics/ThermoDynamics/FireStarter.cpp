@@ -8,6 +8,7 @@
 */
 /******************************************************************************/
 
+#include <Precompiled.h>
 #include "FireStarter.h"
 #include "Thermodynamics.h"
 #include "GameObject.h"

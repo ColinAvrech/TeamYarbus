@@ -8,14 +8,7 @@
 */
 /******************************************************************************/
 
-#include "Smoke_Grid.h"
-#include "WindowSystem.h"
-#include "EventSystem.h"
-#include "KeyEvent.h"
-#include <stdlib.h>
-#include <stdio.h>
-#include "Thermodynamics.h"
-#include "Events.h"
+#include <Precompiled.h>
 
 namespace Framework
 {

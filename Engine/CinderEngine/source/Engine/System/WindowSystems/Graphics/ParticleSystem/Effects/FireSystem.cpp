@@ -8,6 +8,7 @@
 */
 /******************************************************************************/
 
+#include <Precompiled.h>
 #include "FireSystem.h"
 #include "ResourceManager.h"
 #include "GameObject.h"

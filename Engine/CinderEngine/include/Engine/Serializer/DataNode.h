@@ -12,14 +12,6 @@
 
 #define DATANODE_H
 
-#include <string>
-#include <vector>
-#include "type_vec.hpp"
-#include "CinderMath.h"
-#include "ZilchCompiledLib.h"
-
-using std::string;
-
 namespace Framework
 {
   namespace Serializer

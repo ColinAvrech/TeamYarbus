@@ -8,10 +8,7 @@
 */
 /*****************************************************************************/
 
-#include "Serializer/JSONSerializer.h"
-#include <iostream>
-#include "Common.h"
-#include <cstdarg> //for variadic crap
+#include <Precompiled.h>
 
 namespace Framework
 {

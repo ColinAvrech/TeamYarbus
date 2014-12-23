@@ -11,10 +11,6 @@
 #ifndef _CAMERA_H
 #define _CAMERA_H
 
-#include "ComponentInclude.h"
-#include "CinderMath.h"
-#include "ZilchCompiledLib.h"
-
 namespace Framework
 {
   class KeyEvent;

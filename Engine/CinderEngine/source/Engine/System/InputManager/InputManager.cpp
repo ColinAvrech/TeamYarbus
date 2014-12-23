@@ -8,6 +8,7 @@
 */
 /******************************************************************************/
 
+#include <Precompiled.h>
 #include "InputManager.h"
 #include "WindowSystem.h"
 

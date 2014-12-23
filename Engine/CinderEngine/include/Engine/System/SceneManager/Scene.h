@@ -30,7 +30,7 @@ namespace Framework
 
   friend class SceneManager;
   protected:
-    Camera camera;
+    //Camera camera;
     std::vector <GameObject*> sceneObjectList;
     virtual void Update (const double dt) = 0;
     virtual void Draw () = 0;

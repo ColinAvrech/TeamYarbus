@@ -16,8 +16,6 @@
 -----------------------------------------------------------------------------*/
 #pragma region Includes
 
-#include "Common.h"
-
 #pragma endregion
 
 namespace Framework

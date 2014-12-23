@@ -8,6 +8,7 @@
 */
 /******************************************************************************/
 
+#include <Precompiled.h>
 #include "PointLight.h"
 #include "GameObject.h"
 #include "Pipeline.h"

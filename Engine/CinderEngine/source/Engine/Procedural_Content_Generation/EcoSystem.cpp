@@ -8,6 +8,7 @@
 */
 /*****************************************************************************/
 
+#include <Precompiled.h>
 #include "Trees.h"
 #include "GameObject.h"
 #include "Terrain2d.h"

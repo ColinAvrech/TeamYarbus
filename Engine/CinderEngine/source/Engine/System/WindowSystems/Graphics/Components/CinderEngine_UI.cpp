@@ -8,6 +8,7 @@
 */
 /******************************************************************************/
 
+#include <Precompiled.h>
 #include "CinderEngine_UI.h"
 #include "WindowSystem.h"
 #include "ResourceManager.h"

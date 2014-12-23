@@ -8,13 +8,13 @@
 */
 /******************************************************************************/
 
+#include "Events.h"
+#include "BaseSystem.h"
+
 #pragma once
 /*------------------------------------------------------------------------------
 // Includes
 ------------------------------------------------------------------------------*/
-#include "Common.h"
-#include "Zilch.hpp"
-#include "BaseSystem.h"
 
 using namespace Zilch;
 ZilchStaticLibrary(CinderZilch);

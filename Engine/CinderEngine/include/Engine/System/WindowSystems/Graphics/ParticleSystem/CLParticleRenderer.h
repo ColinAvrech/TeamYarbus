@@ -11,11 +11,6 @@
 #ifndef _CL_PARTICLE_RENDERER
 #define _CL_PARTICLE_RENDERER
 
-#include "glew.h"
-#include "ResourceManager.h"
-#include "ShaderStorageBufferObject.h"
-#include "IGraphicsObject.h"
-
 #define MILLION 1000000
 #define HT       100000
 

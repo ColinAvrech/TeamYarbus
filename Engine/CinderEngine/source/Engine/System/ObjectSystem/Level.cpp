@@ -8,6 +8,7 @@
 */
 /******************************************************************************/
 
+#include <Precompiled.h>
 #include "Level.h"
 #include "ObjectSystem.h"
 

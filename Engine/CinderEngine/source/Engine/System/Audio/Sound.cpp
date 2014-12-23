@@ -13,6 +13,7 @@
 -----------------------------------------------------------------------------*/
 #pragma region Includes
 
+#include <Precompiled.h>
 #include "Sound.h"
 #include "AudioSystem.h"
 #include "Transform.h"

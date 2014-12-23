@@ -33,6 +33,7 @@ Functions include:
 */
 /*****************************************************************************/
 
+#include <Precompiled.h>
 #include "Affine.h"
 
 // Default constructor

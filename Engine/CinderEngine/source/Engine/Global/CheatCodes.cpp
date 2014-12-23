@@ -8,6 +8,7 @@
 */
 /******************************************************************************/
 
+#include <Precompiled.h>
 #include "CheatCodes.h"
 #include "EventSystem.h"
 #include "KeyEvent.h"

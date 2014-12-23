@@ -16,16 +16,6 @@
 -----------------------------------------------------------------------------*/
 #pragma region Includes
 
-
-#include "BaseSystem.h"
-#include <unordered_map>
-#include "FluidSolver.h"
-#include "FireSystem.h"
-#include "Terrain2D.h"
-#include "FireStarter.h"
-#include "GUIText.h"
-#include "GridManager.h"
-
 #pragma endregion
 
 

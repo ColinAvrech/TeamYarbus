@@ -8,6 +8,7 @@
 */
 /******************************************************************************/
 
+#include <Precompiled.h>
 #include "ShaderStorageBufferObject.h"
 
 namespace Framework

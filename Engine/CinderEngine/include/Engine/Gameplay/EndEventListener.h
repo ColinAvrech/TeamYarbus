@@ -11,8 +11,6 @@
 #ifndef _END_EVENT_LISTENER_H
 #define _END_EVENT_LISTENER_H
 
-#include "Component.h"
-
 namespace Framework
 {
   class UpdateEvent;

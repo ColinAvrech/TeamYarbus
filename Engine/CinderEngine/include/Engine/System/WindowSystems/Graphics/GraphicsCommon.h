@@ -11,6 +11,7 @@
 #ifndef _GRAPHICS_COMMON_H
 #define _GRAPHICS_COMMON_H
 #include "Common.h"
+#include "glfw3.h"
 #include "glew.h"
 #include "CinderMath.h"
 #include "VertexArrayObject.h"

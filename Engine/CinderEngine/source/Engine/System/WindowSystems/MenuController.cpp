@@ -8,6 +8,7 @@
 */
 /******************************************************************************/
 
+#include <Precompiled.h>
 #include "Common.h"
 #include "MenuController.h"
 #include "EventSystem.h"

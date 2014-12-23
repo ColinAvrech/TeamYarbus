@@ -10,15 +10,14 @@
 
 #pragma once
 
-#include <iostream>
-#include <fstream>
-#include <string>
 #include "ZilchCompiledLib.h"
-#include "GameObject.h"
 
 using namespace std;
 namespace Framework
 {
+  class Resources;
+  class Sound;
+
 	class ZilchFile
 	{
 	public:

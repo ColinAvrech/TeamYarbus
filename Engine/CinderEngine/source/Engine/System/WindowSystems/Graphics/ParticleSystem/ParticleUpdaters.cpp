@@ -8,9 +8,7 @@
 */
 /******************************************************************************/
 
-#include "ParticleUpdaters.h"
-#include "ResourceManager.h"
-#include "AudioSystem.h"
+#include <Precompiled.h>
 
 namespace Framework
 {

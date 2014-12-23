@@ -20,6 +20,8 @@ solution "CinderEngine"
     language "C++"
     objdir "../obj"
     kind "WindowedApp"
+    pchheader "Precompiled.h"
+    pchsource "../source/Engine/_Utilities/Precompiled.cpp"
 
     -- source files
     files

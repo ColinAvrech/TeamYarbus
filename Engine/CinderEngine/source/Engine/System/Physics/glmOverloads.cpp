@@ -6,7 +6,8 @@
 \par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
 */
 /******************************************************************************/
-#include "glmOverloads.h"
+
+#include <Precompiled.h>
 
 namespace Framework
 {

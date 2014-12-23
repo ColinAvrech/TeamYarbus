@@ -10,16 +10,6 @@
 
 #pragma once
 
-
-//#ifndef WIN32_LEAN_AND_MEAN
-//#define WIN32_LEAN_AND_MEAN
-//#endif
-#include <stdio.h>    //! sprintf_s, vsnprintf_s
-#include <stdarg.h>   //! va_start, va_end
-#include <string.h>   //! strcpy_s, str_cat_s
-#include <debugapi.h> //! OutputDebugString
-#include <crtdbg.h>   //! EnableMemoryLeakChecking
-
 /*!
 ***********************************************************
 Assert, ErrorIf, Trace

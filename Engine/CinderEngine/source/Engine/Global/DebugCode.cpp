@@ -12,6 +12,7 @@
 */
 /******************************************************************************/
 
+#include <Precompiled.h>
 #include "Common.h"
 #include "DebugCode.h"
 

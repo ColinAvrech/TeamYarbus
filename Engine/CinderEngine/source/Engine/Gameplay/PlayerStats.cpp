@@ -8,15 +8,7 @@
 */
 /******************************************************************************/
 
-#include "PlayerStats.h"
-#include "EventSystem.h"
-#include "ObjectSystem.h"
-#include "GameEvent.h"
-#include "UpdateEvent.h"
-#include "Pipeline.h"
-#include "FireStarter.h"
-#include "GUIText.h"
-#include "Events.h"
+#include <Precompiled.h>
 
 namespace Framework
 {

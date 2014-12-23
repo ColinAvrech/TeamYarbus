@@ -16,10 +16,6 @@
 -----------------------------------------------------------------------------*/
 #pragma region Includes
 
-#include "Component.h"
-#include "JSONSerializer.h"
-#include "Sound.h"
-
 #pragma endregion
 
 namespace Framework

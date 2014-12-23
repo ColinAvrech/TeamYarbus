@@ -8,16 +8,7 @@
 */
 /******************************************************************************/
 
-#include "CLParticleRenderer.h"
-#include "WindowSystem.h"
-#include "EventSystem.h"
-#include "BaseEvent.h"
-#include "KeyEvent.h"
-#include "GameEvent.h"
-#include "Thermodynamics.h"
-#include "CharacterController.h"
-#include "GameObject.h"
-#include "Events.h"
+#include <Precompiled.h>
 
 namespace Framework
 {
@@ -25,11 +16,11 @@ namespace Framework
 
   enum MOVEMENT
   {
-    LEFT,
-    RIGHT,
+    CL_LEFT,
+    CL_RIGHT,
   };
 
-  MOVEMENT move = LEFT;
+  MOVEMENT move = CL_LEFT;
 
   static bool borderEnabled = true;
   static bool colorFade = false;

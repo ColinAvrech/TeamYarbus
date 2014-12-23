@@ -8,26 +8,7 @@
 */
 /******************************************************************************/
 
-#include "Pipeline.h"
-#include "Transform.h"
-#include "IGraphicsObject.h"
-#include "Camera.h"
-#include "CinderEngine_UI.h"
-#include "PhysicsSystem.h"
-#include "RigidBody2D.h"
-#include "Collider2D.h"
-#include "MathExtensionLibrary.h"
-#include "WindowSystem.h"
-#include "PointLight.h"
-#include "FrameBufferObject.h"
-#include "ResourceManager.h"
-#include "glut.h"
-#include "Thermodynamics.h"
-#include "CLParticleRenderer.h"
-#include "HeatMap.h"
-#include "EventSystem.h"
-#include "GameEvent.h"
-#include "GUIText.h"
+#include <Precompiled.h>
 
 
 namespace Framework

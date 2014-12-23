@@ -9,10 +9,6 @@
 /******************************************************************************/
 #pragma once
 
-#include "Common.h"
-#include "TDLib.h"
-#include "Grid2D.h"
-
 #define GRID_X_SIZE 64
 
 namespace Framework

@@ -8,6 +8,7 @@
 */
 /******************************************************************************/
 
+#include <Precompiled.h>
 #include "Test_Mouse.h"
 #include "Fluid_Physics_Particle_Array.h"
 

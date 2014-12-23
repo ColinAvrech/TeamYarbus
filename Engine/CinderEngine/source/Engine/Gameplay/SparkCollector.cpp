@@ -7,17 +7,8 @@
 \brief
 */
 /******************************************************************************/
-#include "SparkCollector.h"
-#include "RigidBody2D.h"
-#include "Collider2D.h"
-#include "CollisionEvent.h"
-#include "UpdateEvent.h"
-#include "EventSystem.h"
-#include "GameObject.h"
-#include "ObjectSystem.h"
-#include "Core.h"
-#include "GUIText.h"
-#include "Events.h"
+
+#include <Precompiled.h>
 
 namespace Framework
 {

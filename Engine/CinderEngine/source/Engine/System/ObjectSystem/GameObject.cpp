@@ -8,12 +8,7 @@
 */
 /******************************************************************************/
 
-#pragma once
-
-#include "GameObject.h"
-#include "ScriptComponent.h"
-#include "Component.h"
-#include "Zilch.hpp"
+#include <Precompiled.h>
 
 
 namespace Framework

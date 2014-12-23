@@ -8,7 +8,7 @@
 */
 /******************************************************************************/
 
-#include "Shader.h"
+#include <Precompiled.h>
 
 namespace Framework
 {

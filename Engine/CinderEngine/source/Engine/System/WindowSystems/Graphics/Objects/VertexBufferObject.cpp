@@ -8,6 +8,7 @@
 */
 /******************************************************************************/
 
+#include <Precompiled.h>
 #include "VertexBufferObject.h"
 
 namespace Framework

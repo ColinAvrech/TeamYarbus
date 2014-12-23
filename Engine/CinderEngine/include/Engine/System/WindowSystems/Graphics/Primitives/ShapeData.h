@@ -43,7 +43,6 @@ AGAINST AND DEAL WITH THE EFFECTS OF ANY SUCH MALICIOUS PROGRAMMING.
 #ifndef _SHAPE_DATA_H
 #define _SHAPE_DATA_H
 
-#include "GraphicsCommon.h"
 #include "VertexData.h"
 
 namespace Framework

@@ -8,6 +8,7 @@
 */
 /******************************************************************************/
 
+#include <Precompiled.h>
 #include "TimeQuery.h"
 #include "GraphicsCommon.h"
 #include "glfw3.h"

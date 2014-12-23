@@ -8,8 +8,7 @@
 */
 /******************************************************************************/
 
-#ifndef _CINDER_MATH_H
-#define _CINDER_MATH_H
+#pragma once
 
 #define  GLM_FORCE_RADIANS
 #include "glm.hpp"
@@ -31,8 +30,4 @@ using glm::vec4;
 #ifndef M_PI
 #define M_PI 		  3.1415926535897932384626433832795f
 #define M_2_PI 		6.28318530717958647692528676655901f		// PI*2
-#endif
-
-
-
 #endif

@@ -8,6 +8,7 @@
 */
 /******************************************************************************/
 
+#include <Precompiled.h>
 #include "EventSystem.h"
 #include "BaseEvent.h"
 

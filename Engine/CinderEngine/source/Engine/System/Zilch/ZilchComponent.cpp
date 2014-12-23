@@ -8,9 +8,7 @@
 */
 /******************************************************************************/
 
-#include "ScriptComponent.h"
-#include "ZilchCompiledLib.h"
-#include "ObjectSystem.h"
+#include <Precompiled.h>
 
 #pragma warning(disable:4413)
 

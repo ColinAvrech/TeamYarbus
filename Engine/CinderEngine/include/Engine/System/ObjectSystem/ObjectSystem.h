@@ -19,18 +19,15 @@ namespace Framework
   extern ObjectSystem * OBJECTSYSTEM;
 }
 
-#include "Common.h"
-#include "ComponentInclude.h"
-#include "BaseSystem.h"
+
 #include "ComponentCreator.h"
-#include "GameObject.h"
-#include "JSONSerializer.h"
-#include "Level.h"
-#include "ZInterface.h"
 
 
 namespace Framework
 {
+  class Level;
+
+
   enum ObjectSystemCommand
   {
     _Idle,

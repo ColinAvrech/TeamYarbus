@@ -8,9 +8,7 @@
 */
 /******************************************************************************/
 
-#include "Particles.h"
-#include <assert.h>
-#include <algorithm>
+#include <Precompiled.h>
 
 namespace Framework
 {

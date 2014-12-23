@@ -7,11 +7,9 @@
 \brief  Generate a simplex fractal noise texture
 */
 /*****************************************************************************/
-#include "FractalNoise.h"
-#include "glm/gtc/random.hpp"
-#include "glm/gtc/noise.hpp"
-#include <stdlib.h>
-#include <iostream>
+
+#include <Precompiled.h>
+
 namespace Framework
 {
   namespace Procedural

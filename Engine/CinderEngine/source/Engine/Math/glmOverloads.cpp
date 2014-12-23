@@ -7,7 +7,8 @@
 \brief
 */
 /******************************************************************************/
-#include "GraphicsCommon.h"
+
+#include <Precompiled.h>
 
 namespace Framework
 {

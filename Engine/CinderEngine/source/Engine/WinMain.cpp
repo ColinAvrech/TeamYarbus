@@ -9,34 +9,11 @@ starts the game loop.
 */
 /******************************************************************************/
 
-
-#define WINDOWSBUILD
-#ifdef WINDOWSBUILD
-
-#include "Common.h"
-#include "WinMain.h"
-#include "WindowSystem.h"
-#include "EventSystem.h"
-#include "SceneManager.h"
-#include "AudioSystem.h"
-#include "AudioEvents.h"
-#include "ZilchCompiledLib.h"
-#include "Core.h"
-#include "Thermodynamics.h"
-#include "PhysicsSystem.h"
-#include "ResourceManager.h"
-#include "Serializer/JSONSerializer.h"
-#include "UISystem.h"
+#include <Precompiled.h>
 #include "ZInterface.h"
 #include "CheatCodes.h"
-#include "FluidDynamics.h"
-
-//testing includes
-#include "ComponentInclude.h"
-
-#include "UpdateEvent.h"
-#include "Zilch.hpp"
-//#include "ZInterface.h"
+#define WINDOWSBUILD
+#ifdef WINDOWSBUILD
 
 #define _DEGUB
 using namespace Framework;

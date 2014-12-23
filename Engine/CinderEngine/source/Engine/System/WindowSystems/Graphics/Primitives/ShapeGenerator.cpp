@@ -8,7 +8,8 @@
 */
 /******************************************************************************/
 
-#include "ShapeGenerator.h"
+#include <Precompiled.h>
+
 #define ARRAY_SIZE(a) sizeof (a) / sizeof (*a)
 
 namespace Framework

@@ -11,9 +11,6 @@
 #define _EBO_H
 
 
-
-#include "glew.h"
-
 class ElementBufferObject
 {
 public:
