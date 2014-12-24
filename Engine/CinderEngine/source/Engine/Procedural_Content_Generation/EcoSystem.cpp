@@ -28,7 +28,7 @@ namespace Framework
 	void EcoSystem::Initialize()
 	{
 		ErrorIf(!gameObject->Terrain2D, "Can't have no trees with no ground, YO!");
-
+    Initialize_Archetype_List();
 		terrain = gameObject->Terrain2D->GetTerrain();
 		water = gameObject->Terrain2D->GetWater();
 		MapWidth = gameObject->Terrain2D->GetWidth();
@@ -42,6 +42,18 @@ namespace Framework
 		Scale = gameObject->Transform->GetScale();
 		GenerateVegetation();
 	}
+
+  void EcoSystem::Initialize_Archetype_List()
+  {
+    Archetype_List[TREE_0] = "Tree0.Archetype";
+    Archetype_List[TREE_1] = "Tree1.Archetype";
+    Archetype_List[TREE_2] = "Tree2.Archetype";
+    Archetype_List[TREE_3] = "Tree3.Archetype";
+    Archetype_List[TREE_4] = "Tree4.Archetype";
+    Archetype_List[TREE_5] = "Tree5.Archetype";
+    Archetype_List[TREE_SHORT_GRASS] = "TreeGrass.Archetype";
+    Archetype_List[TREE_TALL_GRASS] = "TreeReed.Archetype";
+  }
 
 	int EcoSystem::Evaluate_Compatibility(int pos)
 	{
@@ -74,51 +86,45 @@ namespace Framework
 		float offsetY = nY;
 		float previousHeight = -1.f;
 		unsigned int ID = OBJECTSYSTEM->GameObjects.size() + 1;
-		for (int i = 0; i < MapWidth; ++i, ++ID)
-		{
-			offsetY = (terrain[i] * nY) / 2.f;
-			if (offsetY < 0)
-				offsetY = 0.0f;
-			offsetX += nX;
+    for (int i = 0; i < MapWidth; ++i, ++ID)
+    {
+      offsetY = (terrain[i] * nY) / 2.f;
+      if (offsetY < 0)
+        offsetY = 0.0f;
+      offsetX += nX;
 
-			//tree_list[i] = Evaluate_Compatibility(i);
-			//Hack!!
-			//if (tree_list[i] != OPEN)
-			if (i % (rand () % 6 + 2) == 0 && terrain[i] <= 72)
-				GenerateType(
-				offsetX + Translation.x,
-				offsetY + Translation.y,
-				Translation.z,
-				TREE_0, ID
-				);
+      //tree_list[i] = Evaluate_Compatibility(i);
+      //Hack!!
+      //if (tree_list[i] != OPEN)
+      if (i % (rand() % 6 + 2) == 0 && terrain[i] <= 72)
+        GenerateType(
+        offsetX + Translation.x,
+        offsetY + Translation.y,
+        Translation.z,
+        TREE_3, ID
+        );
+      else if(rand() % 2)
+        GenerateType(
+        offsetX + Translation.x,
+        offsetY + Translation.y,
+        Translation.z,
+        TREE_SHORT_GRASS, ID
+        );
+      else if (rand() % 2)
+        GenerateType(
+        offsetX + Translation.x,
+        offsetY + Translation.y,
+        Translation.z,
+        TREE_0, ID
+        );
 		}
 	}
 
-	void EcoSystem::GenerateType(float x, float y, float z, int type, unsigned ID)
+	void EcoSystem::GenerateType(float x, float y, float z, Tree_Type type, unsigned ID)
 	{
     GameObject *newobj;
-    switch (type)
-    {
-    case 0:
-      newobj = OBJECTSYSTEM->LoadArchetype("Tree0.Archetype");
-      break;
-    case 1:
-      newobj = OBJECTSYSTEM->LoadArchetype("Tree1.Archetype");
-      break;
-    case 2:
-      newobj = OBJECTSYSTEM->LoadArchetype("Tree2.Archetype");
-      break;
-    case 3:
-      newobj = OBJECTSYSTEM->LoadArchetype("Tree3.Archetype");
-      break;
-    case 4:
-      newobj = OBJECTSYSTEM->LoadArchetype("Tree4.Archetype");
-      break;
-    case 6:
-      newobj = OBJECTSYSTEM->LoadArchetype("TreeGrass.Archetype");
-      break;
-    }
     
+    newobj = OBJECTSYSTEM->LoadArchetype(Archetype_List[type]);
 
 		newobj->Transform->Translate(x, y, z);
 

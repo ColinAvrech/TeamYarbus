@@ -10,6 +10,7 @@
 
 #pragma once
 #include "Component.h"
+#include "Tree2D.h"
 
 namespace Framework
 {
@@ -101,6 +102,7 @@ namespace Framework
 		glm::vec3 Translation;
 		glm::vec3 Scale;
 		int Total_Objects = 0;
+    std::unordered_map<Tree_Type, const char *> Archetype_List;
 #pragma endregion
 
 
@@ -118,9 +120,11 @@ namespace Framework
 #pragma region Private Functions
 		void GenerateVegetation();
 
-		void GenerateType(float x, float y, float z, int type, unsigned ID);
+		void GenerateType(float x, float y, float z, Tree_Type type, unsigned ID);
 
 		int Evaluate_Compatibility(int pos);
+
+    void Initialize_Archetype_List();
 #pragma endregion
 
 

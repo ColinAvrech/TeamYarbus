@@ -28,7 +28,8 @@ namespace Framework
     TREE_3,
     TREE_4,
 	TREE_LONG,
-    TREE_GRASS,
+    TREE_SHORT_GRASS,
+    TREE_TALL_GRASS,
     TREE_5,
     OPEN,  //Keep this last
   };
@@ -66,23 +67,23 @@ namespace Framework
     int segments = 10;
     float length;
 
-    void Make_Tree0(float x1, float y1, float length1, float angle1, int depth, float rad);
+    void Make_Tree0(float x1, float y1, float length1, float angle1, int depth, float rad, unsigned parent = 0);
     void Make_Tree1(float x1, float y1, float x2, float y2, float angle, int depth, int branchCount);
-    void Make_Tree2(float x1, float y1, float length, float angle, int depth, float rad);
-    void Make_Tree3(float x1, float y1, float length1, float angle1, int depth, float rad);
+    void Make_Tree2(float x1, float y1, float length, float angle, int depth, float rad, unsigned parent = 0);
+    void Make_Tree3(float x1, float y1, float length1, float angle1, int depth, float rad, unsigned parent = 0);
     void Make_Tree4(float x1, float y1, float length, float angle, int depth, float rad);
 	void Make_TreeLong(float x1, float y1, float x2, float y2, float angle, int depth, int branchCount);
     void Make_Grass(float x1, float y1, float length1, int depth);
 
     //Helper
     //Pine stuff
-    void Make_Pine_Branch(float x1, float y1, float length1, float angle1, int depth, int curve, float rad);
+    void Make_Pine_Branch(float x1, float y1, float length1, float angle1, int depth, int curve, float rad, unsigned parent = 0);
     //Grass stuff
-    void Make_Grass_Stalk(float x1, float y1, float length1, float angle1, int depth, int curve);
-    void Make_Grass_Blade(float x1, float y1, float length, float angle, int depth, float width);
+    void Make_Grass_Stalk(float x1, float y1, float length1, float angle1, int depth, int curve, unsigned parent = 0);
+    void Make_Grass_Blade(float x1, float y1, float length, float angle, int depth, float width, unsigned parent = 0);
     void Make_Stalk_Head(float x1, float y1, float length, float angle);
     //call for adding a line
-    void Add_Branch(float x1, float y1, float x2, float y2, float rad);
+    unsigned Add_Branch(float x1, float y1, float x2, float y2, float rad, unsigned parent = 0);
     void Generate_Buffers ();
   };
 }
