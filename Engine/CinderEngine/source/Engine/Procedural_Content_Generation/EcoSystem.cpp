@@ -89,14 +89,36 @@ namespace Framework
 				offsetX + Translation.x,
 				offsetY + Translation.y,
 				Translation.z,
-				TREE_5, ID
+				TREE_GRASS, ID
 				);
 		}
 	}
 
 	void EcoSystem::GenerateType(float x, float y, float z, int type, unsigned ID)
 	{
-    GameObject *newobj = OBJECTSYSTEM->LoadArchetype("Tree5.Archetype");
+    GameObject *newobj;
+    switch (type)
+    {
+    case 0:
+      newobj = OBJECTSYSTEM->LoadArchetype("Tree0.Archetype");
+      break;
+    case 1:
+      newobj = OBJECTSYSTEM->LoadArchetype("Tree1.Archetype");
+      break;
+    case 2:
+      newobj = OBJECTSYSTEM->LoadArchetype("Tree2.Archetype");
+      break;
+    case 3:
+      newobj = OBJECTSYSTEM->LoadArchetype("Tree3.Archetype");
+      break;
+    case 4:
+      newobj = OBJECTSYSTEM->LoadArchetype("Tree4.Archetype");
+      break;
+    case 6:
+      newobj = OBJECTSYSTEM->LoadArchetype("TreeGrass.Archetype");
+      break;
+    }
+    
 
 		newobj->Transform->Translate(x, y, z);
 

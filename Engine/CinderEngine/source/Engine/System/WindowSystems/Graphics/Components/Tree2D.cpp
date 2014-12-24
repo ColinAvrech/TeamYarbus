@@ -62,6 +62,8 @@ namespace Framework
   {
     Serializer::DataNode* value = data->FindElement (data, "Tree_Type");
     value->GetValue ((int*)&type);
+    //mandatory
+    data->FindElement(data, "Segments")->GetValue(&depth);
 
     value = data->FindElement (data, "Color");
     value->GetValue (&color);
@@ -85,22 +87,22 @@ namespace Framework
     switch (type)
     {
     case Framework::TREE_0:
-      Make_Tree0 (0, -0.1f, 0.1f, 1.5, 10, base_radius);
+      Make_Tree0 (0, -0.1f, 0.1f, 1.5, depth, base_radius);
       break;
     case Framework::TREE_1:
-      Make_Tree1 (0, -0.5f, 0.0f, 0.25f, 45, 5, 3);
+      Make_Tree1 (0, -0.5f, 0.0f, 0.25f, 45, depth, 3);
       break;
     case Framework::TREE_2:
-      Make_Tree2 (0, -0.1f, 0.1f, 1.5, 15);
+      Make_Tree2 (0, -0.1f, 0.1f, 1.5, depth, base_radius);
       break;
     case Framework::TREE_3:
-      Make_Tree3 (0, -0.1f, 0.1f, 1.5, 15);
+      Make_Tree3 (0, -0.1f, 0.1f, 1.5, depth, base_radius);
       break;
     case Framework::TREE_4:
-      Make_Tree4 (0, -0.1f, 0.1f, 1.5, 5);
+      Make_Tree4 (0, -0.1f, 0.1f, 1.5, depth, base_radius);
 	  break;
 	case Framework::TREE_LONG:
-		Make_TreeLong(0, -0.1f, 0.5f, 2.0, 6, 5, 10);
+		Make_TreeLong(0, -0.1f, 0.5f, 2.0, 6, depth, 10);
       break;
     case Framework::TREE_5:
       tree = new FractalGenerator ();
@@ -125,7 +127,7 @@ namespace Framework
       break;
 
     case Framework::TREE_GRASS:
-      Make_Grass (0, -0.1f, 0.1f);
+      Make_Grass (0, -0.1f, 0.25f, depth);
       break;
     default:
       break;
@@ -153,61 +155,16 @@ namespace Framework
 
   void Tree2D::Draw ()
   {
-    if (type == TREE_5)
-    {
-      ////glBlendFunc (GL_SRC_COLOR, GL_ONE_MINUS_SRC_COLOR);
-      //static bool newTree = false;
-      //static int counter = 0;
-      //static unsigned timer = unsigned (glfwGetTime () * 1000);
+    glDisable(GL_BLEND);
+    shader->Use();
+    vao->bindVAO();
+    shader->uniMat4("mvp", glm::value_ptr(gameObject->Transform->GetModelViewProjectionMatrix()));
+    shader->uni4fv("color", glm::value_ptr(color));
+    glDrawArrays(GL_QUAD_STRIP, 0, treeMesh.size() / 2);
 
-      //// Tree Growth
-      //if (counter < tree->getTotalLines ())
-      //{
-      //  tree->Create_Mesh (counter);
-      //  counter += int (0.005f * tree->getTotalLines ());
-      //}
-      //else
-      //{
-      //  if (!newTree)
-      //    timer = unsigned (glfwGetTime () * 1000);
-      //  tree->Create_Mesh (tree->getTotalLines ());
-      //  newTree = true;
-      //}
-
-      //if (newTree && float (glfwGetTime ()) * 1000 - timer > 500)
-      //{
-      //  do
-      //  {
-      //    tree->Generate_Tree ();
-      //  }
-      //  while (0.0001*tree->getTotalLines () < 1);
-
-      //  counter = 0;
-      //  newTree = false;
-      //}
-      glLineWidth (7.0f);
-      shader->Use ();
-      shader->uniMat4 ("mvp", glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix ()));
-      vao->bindVAO ();
-      //shader->uniMat4 ("mvp", glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix ()));
-      glDrawArrays (GL_LINE_STRIP, 0, treeMesh.size () / 6);
-      vao->unbindVAO ();
-      shader->Disable ();
-      OPENGL->ResetBlendMode ();
-    }
-    else
-    {
-      glDisable(GL_BLEND);
-      shader->Use();
-      vao->bindVAO();
-      shader->uniMat4 ("mvp", glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix ()));
-      shader->uni4f("color", color.r, color.g, color.b, color.a);
-      glDrawArrays(GL_QUAD_STRIP, 0, treeMesh.size() / 2);
-
-      vao->unbindVAO();
-      shader->Disable();
-      OPENGL->ResetBlendMode();
-    }
+    vao->unbindVAO();
+    shader->Disable();
+    OPENGL->ResetBlendMode();
   }
 
   void Tree2D::Set(glm::vec4& _color, Tree_Type _type)
@@ -227,7 +184,7 @@ namespace Framework
       float x2 = x1 + length1 * cos (angle1);
       float y2 = y1 + length1 * sin (angle1);
 
-      Add_Branch(x1, y1, x2, y2, rad);
+      Add_Branch(x1, y1, rad);
 
       float newrad = rad * decay_rate;
 
@@ -285,7 +242,7 @@ namespace Framework
     }
   }
 
-  void Tree2D::Make_Tree2(float x1, float y1, float length, float angle, int depth)
+  void Tree2D::Make_Tree2(float x1, float y1, float length, float angle, int depth, float rad)
   {
     float SCALE = 1.0f;
     float ANGLE = 0.0f;
@@ -295,7 +252,7 @@ namespace Framework
       float x2 = x1 + length * cos(angle);
       float y2 = y1 + length * sin(angle);
 
-      //Add_Branch(x1, y1, x2, y2);
+      Add_Branch(x1, y1, rad);
 
       x1 = x1 + length / 2 * cos(angle);
       y1 = y1 + length / 2 * sin(angle);
@@ -309,26 +266,27 @@ namespace Framework
 
       int factor = 80 + rand() % 20;
       float f = factor / 100.f;
+      float newrad = rad * decay_rate;
 
-      Make_Tree2(x2, y2, length2 * f, angle2, depth - 1);
+      Make_Tree2(x2, y2, length2 * f, angle2, depth - 1, newrad);
 
       y2 = y1 + length * (2 * (SCALE + myrand(RAND))) * sin(-((15 - depth) / 10.f)*angle);
      
       x2 = x1 + length * (2 * (SCALE + 3*myrand(RAND))) * cos(angle - angle2);
       
       //Add_Branch(x1, y1, x2, y2);
-      Make_Pine_Branch(x1, y1, length, angle - 1.2f * angle2, depth - 1, 1);
+      Make_Pine_Branch(x1, y1, length * 0.75f, angle - 1.2f * angle2, depth - 1, 1, newrad);
 
       x2 = x1 + length * (2 * (SCALE + 3*myrand(RAND))) * cos(angle + angle2);
 
       y2 = y1 + length * (2 * (SCALE + myrand(RAND))) * sin(-((15 - depth)/10.f)*angle);
 
       //Add_Branch(x1, y1, x2, y2);
-      Make_Pine_Branch(x1, y1, length, angle + 1.2f * angle2, depth - 1, 0);
+      Make_Pine_Branch(x1, y1, length * 0.75f, angle + 1.2f * angle2, depth - 1, 0, newrad);
     }
   }
 
-  void Tree2D::Make_Tree3(float x1, float y1, float length, float angle, int depth)
+  void Tree2D::Make_Tree3(float x1, float y1, float length, float angle, int depth, float rad)
   {
     float SCALE = 1.0f;
     float ANGLE = 0.0f;
@@ -338,7 +296,7 @@ namespace Framework
       float x2 = x1 + length * cos(angle);
       float y2 = y1 + length * sin(angle);
 
-      //Add_Branch(x1, y1, x2, y2);
+      Add_Branch(x1, y1, rad);
 
       x1 = x1 + length / 2 * cos(angle);
       y1 = y1 + length / 2 * sin(angle);
@@ -352,19 +310,20 @@ namespace Framework
 
       int factor = 80 + rand() % 20;
       float f = factor / 100.f;
+      float newrad = rad * decay_rate;
 
-      Make_Tree3(x2, y2, length * f, angle2, depth - 1);
+      Make_Tree3(x2, y2, length * f, angle2, depth - 1, newrad);
 
       int r = rand() % 100;
-      //if (r > 20 - depth)
-       // Make_Tree0(x2, y2, length2, angle/2 + angle2, depth/2);
+      if (r > 20 - depth)
+        Make_Tree0(x2, y2, length2, angle/2 + angle2, depth/2, newrad);
       r = rand() % 100;
-      //if (r > 20 - depth)
-        //Make_Tree0(x2, y2, length2, -angle/2 + angle2, depth/2);
+      if (r > 20 - depth)
+        Make_Tree0(x2, y2, length2, -angle/2 + angle2, depth/2, newrad);
     }
   }
 
-  void Tree2D::Make_Tree4(float x1, float y1, float length, float angle, int depth)
+  void Tree2D::Make_Tree4(float x1, float y1, float length, float angle, int depth, float rad)
   {
     //Not yet come up with a type 4.
   }
@@ -400,30 +359,34 @@ namespace Framework
 	  }
   }
 
-  void Tree2D::Make_Grass(float x1, float y1, float length1)
+  void Tree2D::Make_Grass(float x1, float y1, float length1, int depth)
   {
     float ANGLE = 0.2f;
     float RAND = 0.2f;
-    int tuft = rand() % 10;
-    if (tuft >= 7)
-      Make_Grass_Stalk(x1, y1, 0.1f, 1.5f, 2 + rand() % 3, rand() % 2);
-    float angle = 1.5f + ANGLE + myrand(RAND);
-    float x = x1 - myrand(RAND);
+    int tuft = 10 + rand() % 10;
+    //if (tuft >= 15)
+     // Make_Grass_Stalk(x1, y1, 0.1f, 1.5f, 2 + rand() % 3, rand() % 2);
+    float angle = 2.f + myrand(ANGLE);
+    float x = -1.f;
     for (int i = 0; i < tuft - 1; ++i)
     {
-      float angle2 = angle + i * myrand(RAND);
+      float angle2 = angle - (float(i) / tuft) + myrand(ANGLE);
       float length2 = length1 * (1 + std::sin(i * 3.14f / (tuft - 2)));
-      Make_Grass_Blade(x1, y1, length2, angle2);
-      x1 += myrand(RAND) / (tuft/2);
+      Make_Grass_Blade(x1, y1, length2, angle2, depth, base_radius);
+      x1 += 2 * base_radius;
     }
   }
 
-  void Tree2D::Make_Grass_Blade(float x1, float y1, float length, float angle)
+  void Tree2D::Make_Grass_Blade(float x1, float y1, float length, float angle, int depth, float width)
   {
-    float x2 = x1 + length * cos(angle);
-    float y2 = y1 + length * sin(angle);
+    if (depth > 0)
+    {
+      float x2 = x1 + length * cos(angle);
+      float y2 = y1 + length * sin(angle);
 
-   // Add_Branch(x1, y1, x2, y2);
+      Add_Branch(x1, y1, width);
+      Make_Grass_Blade(x2, y2, length, angle + myrand(0.3f) - 0.15f, depth - 1, width * decay_rate * std::cos(depth));
+    }
   }
 
   void Tree2D::Make_Grass_Stalk(float x1, float y1, float length, float angle, int depth, int curve)
@@ -436,7 +399,7 @@ namespace Framework
       float x2 = x1 + length * cos(angle);
       float y2 = y1 + length * sin(angle);
 
-      //Add_Branch(x1, y1, x2, y2);
+      Add_Branch(x1, y1, base_radius);
 
       x1 = x1 + length * cos(angle);
       y1 = y1 + length * sin(angle);
@@ -459,7 +422,7 @@ namespace Framework
     //Make a fluffy head
   }
 
-  void Tree2D::Make_Pine_Branch(float x1, float y1, float length, float angle, int depth, int curve)
+  void Tree2D::Make_Pine_Branch(float x1, float y1, float length, float angle, int depth, int curve, float rad)
   {
     float SCALE = 1.0f;
     float ANGLE = 0.3f;
@@ -469,29 +432,31 @@ namespace Framework
       float x2 = x1 + length * cos(angle);
       float y2 = y1 + length * sin(angle);
 
-      //Add_Branch(x1, y1, x2, y2);
+      Add_Branch(x1, y1, rad);
 
       x1 = x1 + length / 2 * cos(angle);
       y1 = y1 + length / 2 * sin(angle);
 
+      float newrad = rad * decay_rate;
+
       float length2 = length / 2;
       float angle2;
       if (curve == 0)
-        angle2 = angle - ANGLE + myrand(RAND);
+        angle2 = angle - ANGLE - myrand(RAND);
       else
         angle2 = angle + ANGLE + myrand(RAND);
 
-      Make_Pine_Branch(x2, y2, length / 1.5f, angle2, depth - 2, curve);
+      Make_Pine_Branch(x2, y2, length / 1.5f, angle2, depth - 2, curve, newrad);
       if (curve == 0) //Right side
         angle2 = -angle2 + angle / 8;
       else            //Left side
         angle2 = -angle2 + angle / 8;
 
-      Make_Pine_Branch(x1, y1, length / 2, angle2, depth / 2, curve);
+      Make_Pine_Branch(x1, y1, length / 2, angle2, depth / 2, curve, newrad);
     }
   }
 
-  void Tree2D::Add_Branch(float x1, float y1, float x2, float y2, float rad)
+  void Tree2D::Add_Branch(float x1, float y1, float rad)
   {    
     //0 1 2 - 0 2 3
     //0

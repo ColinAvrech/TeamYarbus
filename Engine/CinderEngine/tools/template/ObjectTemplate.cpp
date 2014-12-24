@@ -7,7 +7,7 @@
 \brief  
 */
 /******************************************************************************/
-
+#include <Precompiled.h>
 #include "Object.h"
 
 namespace Framework

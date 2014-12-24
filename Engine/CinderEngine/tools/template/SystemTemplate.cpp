@@ -7,7 +7,7 @@
 \brief  
 */
 /******************************************************************************/
-
+#include <Precompiled.h>
 #include "TemplateSystem.h"
 
 namespace Framework

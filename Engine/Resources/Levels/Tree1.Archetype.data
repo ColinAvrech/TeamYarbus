@@ -1,0 +1,30 @@
+Cog = 
+{
+	LinkId = 
+	{
+		uint Id = 1,
+	},
+	Named = 
+	{
+		string Name = "Tree1",
+	},
+	Archetyped = 
+	{
+		string Name = "521dcb3845577d9d:EnemyProjectile",
+	},
+	Transform = 
+	{
+		Vec3 Translation = [0, 0, 0],
+		Vec3 Scale = [15, 15, 1],
+		Quat Rotation = [0, 0, 0, 1],
+	},
+	FireGroup = 
+	{
+	},
+	Tree2D = 
+	{
+		Vec4 Color = [1, 1, 1, 1],
+		int Tree_Type = 1,
+		int Segments = 5,
+	},
+},
