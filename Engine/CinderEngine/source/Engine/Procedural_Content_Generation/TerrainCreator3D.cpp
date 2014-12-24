@@ -22,27 +22,42 @@ namespace Framework
 
     TerrainCreator3D::~TerrainCreator3D()
     {
-      delete[] HeightMapRock;
-      HeightMapRock = nullptr;
+      HeightMapRock.clean();
     }
 
     void TerrainCreator3D::GenerateHeightMap(int base, int height)
     {
-      HeightMapRock = new TerrainCreator*[MapDepth];
-      for (int i = 0; i < MapDepth; ++i)
+      HeightMapRock.allocate(MapWidth, MapDepth);
+      float weight = 0.5f;
+      
+      for (unsigned int i = 0; i < MapWidth; ++i)
       {
-        HeightMapRock[i] = new TerrainCreator(MapWidth, BaseHeight, passes, waves, PeakHeight);
-      }
+        for (unsigned int j = 0; j < MapDepth; ++j)
+        {
+          HeightMapRock.Set(i, j, weight * (rand() % PeakHeight));
+        } //for j
+      } // for i
 
+      int factor = 1;
+      for (int p = 0; p < passes; ++p)
+      {
+        weight *= 0.5f;
+        factor *= 2;
+        for (unsigned int i = 0; i < MapWidth; ++i)
+        {
+          for (unsigned int j = 0; j < MapDepth; ++j)
+          {
+            float value = HeightMapRock.Get(i, j);
+            value += weight * HeightMapRock.Get(i / factor, j / factor);
+            HeightMapRock.Set(i, j, value);
+          } //for j
+        } // for i
+      } // for p
     }
 
-    float **const TerrainCreator3D::GetMap()
+    float *const TerrainCreator3D::GetMap()
     {
-      float **const HeightMap = new float*[MapDepth];
-      for (int i = 0; i < MapDepth; ++i)
-        HeightMap[i] = HeightMapRock[i]->GetRockMap();
-
-      return HeightMap;
+      return HeightMapRock.GetArray();
     }
   } //Procedural
 }  //Framework

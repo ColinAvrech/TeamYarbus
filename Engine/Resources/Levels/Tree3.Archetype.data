@@ -27,6 +27,7 @@ Cog =
 		int Tree_Type = 3,
 		int Segments = 15,
 		float Thickness = 0.25,
-		float Decay = 0.8,
+		float Decay = 0.85,
+		float Length = 0.1,
 	},
 },

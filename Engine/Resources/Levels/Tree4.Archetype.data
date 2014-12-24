@@ -25,6 +25,9 @@ Cog =
 	{
 		Vec4 Color = [1, 1, 1, 1],
 		int Tree_Type = 4,
-		int Segments = 5,
+		int Segments = 4,
+		float Thickness = 0.3,
+		float Decay = 0.95,
+		float Length = 0.1,
 	},
 },

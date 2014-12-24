@@ -63,7 +63,8 @@ namespace Framework
     glm::vec4 color;
     float base_radius = 0.05f;
     float decay_rate = 0.5f;
-    int depth = 10;
+    int segments = 10;
+    float length;
 
     void Make_Tree0(float x1, float y1, float length1, float angle1, int depth, float rad);
     void Make_Tree1(float x1, float y1, float x2, float y2, float angle, int depth, int branchCount);
@@ -81,7 +82,7 @@ namespace Framework
     void Make_Grass_Blade(float x1, float y1, float length, float angle, int depth, float width);
     void Make_Stalk_Head(float x1, float y1, float length, float angle);
     //call for adding a line
-    void Add_Branch(float x1, float y1, float rad);
+    void Add_Branch(float x1, float y1, float x2, float y2, float rad);
     void Generate_Buffers ();
   };
 }

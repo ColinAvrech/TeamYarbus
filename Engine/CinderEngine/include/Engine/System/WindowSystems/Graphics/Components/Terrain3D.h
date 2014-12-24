@@ -28,9 +28,7 @@ namespace Framework
     virtual void Initialize();
     virtual void Draw();
 
-    std::vector <vec3[3]>& Get_Edges();
     void Generate_Height_Points();
-    void Generate_Edges();
     void Generate_Vertices();
     void Generate_Buffers();
     const float** GetTerrain();
@@ -42,6 +40,7 @@ namespace Framework
     int MapSize;
     int MapDepth;
     int BaseHeight;
+    int PeakHeight;
     int Passes;
     int Waves;
     glm::vec4 color;
@@ -50,10 +49,8 @@ namespace Framework
     VAO* vao;
     VBO* vbo;
 
-    std::vector<vec3[3]> polygons;
     std::vector<vec3> height_points;
     std::vector<float> vertices;
-    int PeakHeight;
   };
 }
 

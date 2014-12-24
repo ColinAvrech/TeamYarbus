@@ -94,9 +94,9 @@ namespace Framework
     if (time >= 1.f)
     {
       time = 0.0f;
-      //int rand_index = rand() % height_points.size();
+      int rand_index = rand() % height_points.size();
       int index1 = height_points.size() * 0.5f;
-      Splash(index1, -10.f);
+      Splash(rand_index, -10.f);
     }
 
     WaveUpdate(dt);

@@ -9,6 +9,7 @@
 /*****************************************************************************/
 
 #pragma once
+#include "Grid2D.h"
 
 namespace Framework
 {
@@ -23,10 +24,10 @@ namespace Framework
       TerrainCreator3D(int width, int depth, int baseHeight, int passes = 3, int waves = 2, int peak = 100);
       //Destructor
       ~TerrainCreator3D();
-      float **const GetMap();
+      float* const GetMap();
 
-      inline int Get_Width();
-      inline int Get_Depth();
+      int Get_Width();
+      int Get_Depth();
 
       void Generate();
       void Save(const char *file);
@@ -39,7 +40,7 @@ namespace Framework
       int MapWidth;
       int MapDepth;
       int BaseHeight;
-      TerrainCreator **HeightMapRock;
+      Physics::Grid2D<float> HeightMapRock;
       int PeakHeight;
 
       void GenerateHeightMap(int base, int height);

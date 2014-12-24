@@ -26,5 +26,6 @@ Cog =
 		Vec4 Color = [1, 1, 1, 1],
 		int Tree_Type = 1,
 		int Segments = 5,
+		float Length = 0.1,
 	},
 },

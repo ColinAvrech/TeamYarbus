@@ -65,7 +65,7 @@ Terrain.frag.glsl
 Terrain
 >
 Terrain3D.vs.glsl
-Lighting.frag.glsl
+Terrain3D.frag.glsl
 0
 Terrain3D
 >

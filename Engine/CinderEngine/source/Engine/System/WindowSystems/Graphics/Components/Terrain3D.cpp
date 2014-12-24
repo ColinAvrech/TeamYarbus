@@ -92,21 +92,24 @@ namespace Framework
 
   void Terrain3D::Draw()
   {
+    glDisable(GL_BLEND);
     shader->Use();
     vao->bindVAO();
 
+    shader->uniMat4("mvp", glm::value_ptr(gameObject->Transform->GetModelViewProjectionMatrix()));
     shader->uni4f("color", color.r, color.g, color.b, color.a);
 
     glDrawArrays(GL_TRIANGLES, 0, vertices.size() / 2);
 
     vao->unbindVAO();
 
-    vao1->bindVAO();
+    /*vao1->bindVAO();
 
     shader->uni4f("color", 1, 1, 1, 1.0f);
 
-    vao1->unbindVAO();
+    vao1->unbindVAO();*/
     shader->Disable();
+    OPENGL->ResetBlendMode();
   }
 
   void Terrain3D::Generate_Height_Points()
@@ -114,7 +117,7 @@ namespace Framework
     std::vector<float> heights;
     tc = new Procedural::TerrainCreator3D(MapSize, MapDepth, BaseHeight, Passes, Waves, PeakHeight);
     Procedural::TerrainCreator3D& t = *tc;
-    float** Map = t.GetMap();
+    float* Map = t.GetMap();
    
     float offsetX = -1.0f;
     float offsetY = -1.0f;
@@ -124,7 +127,7 @@ namespace Framework
     float nY = 2.0f / (MapSize - 1);
     float nZ = 2.0f / (MapDepth - 1);
     float previousHeight = -1.0f;
-    float MaxHeight = (float)(BaseHeight + PeakHeight);
+    //float MaxHeight = (float)PeakHeight;
 
     for (int i = 0; i < MapSize; ++i)
     {
@@ -132,11 +135,11 @@ namespace Framework
       {
         if (previousHeight != offsetY || i == MapSize - 1 || j == MapDepth - 1)
         {
-          height_points.push_back({ offsetX, offsetY / MaxHeight, offsetZ });
+          height_points.push_back({ offsetX, offsetY / PeakHeight, offsetZ });
           previousHeight = offsetY;
         }
 
-        offsetY = (Map[j][i]) / 2.0f;
+        offsetY = (Map[j * MapSize + i]) / 2.0f;
         if (offsetY < 0)
           offsetY = 0.0f;
 
