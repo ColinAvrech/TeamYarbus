@@ -330,7 +330,7 @@ namespace Framework
     }
   }
 
-  void Tree2D::Make_Tree4(float x1, float y1, float length, float angle, int depth, float rad)
+  void Tree2D::Make_Tree4(float x1, float y1, float length, float angle, int depth, float rad, unsigned parent)
   {
     float SCALE = 1.0f;
     float ANGLE = 0.0f;
@@ -340,7 +340,7 @@ namespace Framework
       float x2 = x1 + length * cos(angle);
       float y2 = y1 + length * sin(angle);
 
-      Add_Branch(x1, y1, x2, y2, rad);
+      parent = Add_Branch(x1, y1, x2, y2, rad, parent);
 
       float angle2;
       if (depth % 2 == 0)
@@ -352,7 +352,7 @@ namespace Framework
       float f = factor / 100.f;
       float newrad = rad * decay_rate;
 
-      Make_Tree4(x2, y2, length * f, angle2, depth - 1, newrad);
+      Make_Tree4(x2, y2, length * f, angle2, depth - 1, newrad, parent);
     }
     else
     {
@@ -362,8 +362,8 @@ namespace Framework
       decay_rate *= 0.75f;
       for (int i = 0; i < branches; ++i)
       {
-        Make_Tree0(x1 * 0.75f, y1 * 0.75f, 0.05f, spawn_angle, 1.5f * segments, 1.5f * rad);
-        spawn_angle -= (2 * PI / 3) / branches - myrand(0.1f);
+        Make_Tree0(x1, y1, 0.05f, spawn_angle, 1.5f * segments, rad, parent);
+        spawn_angle -= (2 * PI / 3) / branches;
       }
     }
   }

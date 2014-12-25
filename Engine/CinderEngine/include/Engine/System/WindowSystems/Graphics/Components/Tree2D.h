@@ -71,7 +71,7 @@ namespace Framework
     void Make_Tree1(float x1, float y1, float x2, float y2, float angle, int depth, int branchCount);
     void Make_Tree2(float x1, float y1, float length, float angle, int depth, float rad, unsigned parent = 0);
     void Make_Tree3(float x1, float y1, float length1, float angle1, int depth, float rad, unsigned parent = 0);
-    void Make_Tree4(float x1, float y1, float length, float angle, int depth, float rad);
+    void Make_Tree4(float x1, float y1, float length, float angle, int depth, float rad, unsigned parent = 0);
 	void Make_TreeLong(float x1, float y1, float x2, float y2, float angle, int depth, int branchCount);
     void Make_Grass(float x1, float y1, float length1, int depth);
 
