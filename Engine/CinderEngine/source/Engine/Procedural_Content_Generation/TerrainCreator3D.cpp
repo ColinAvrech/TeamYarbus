@@ -57,22 +57,24 @@ namespace Framework
         } // for i
       } // for p
 
-      for (unsigned int i = 0; i < MapWidth - 1; ++i)
+      for (int p = 0; p < passes; ++p)
       {
-        for (unsigned int j = 0; j < MapDepth - 1; ++j)
+        for (unsigned int i = 0; i < MapWidth - 1; ++i)
         {
-          float value_o = HeightMapRock.Get(i, j);
-          float value_r = HeightMapRock.Get(i + 1, j);
-          float value_d = HeightMapRock.Get(i, j + 1);
-          float diff_r = value_r - value_o;
-          float diff_d = value_d - value_o;
-          //value += weight * HeightMapRock.Get(i / factor, j / factor);
-          HeightMapRock.Set(i, j, value_o + diff_r / 3.f + diff_d / 3.f);
-          HeightMapRock.Set(i + 1, j, value_r - diff_r / 6.f);
-          HeightMapRock.Set(i, j + 1, value_d - diff_d / 6.f);
-        } //for j
-      } // for i
-
+          for (unsigned int j = 0; j < MapDepth - 1; ++j)
+          {
+            float value_o = HeightMapRock.Get(i, j);
+            float value_r = HeightMapRock.Get(i + 1, j);
+            float value_d = HeightMapRock.Get(i, j + 1);
+            float diff_r = value_r - value_o;
+            float diff_d = value_d - value_o;
+            //value += weight * HeightMapRock.Get(i / factor, j / factor);
+            HeightMapRock.Set(i, j, value_o + diff_r / 3.f + diff_d / 3.f);
+            HeightMapRock.Set(i + 1, j, value_r - diff_r / 6.f);
+            HeightMapRock.Set(i, j + 1, value_d - diff_d / 6.f);
+          } //for j
+        } // for i
+      } //for p
     }
 
     float *const TerrainCreator3D::GetMap()
