@@ -18,7 +18,6 @@
 
 namespace Framework
 {
-  static std::vector<float> surfaceVertices;
   static VAO* vao1;
   static VBO* vbo1;
 
@@ -47,7 +46,10 @@ namespace Framework
     value->GetValue(&MapSize);
 
     value = data->FindElement(data, "MapDepth");
-    value->GetValue(&MapDepth);
+    if (value != nullptr)
+      value->GetValue(&MapDepth);
+    else
+      MapDepth = MapSize;
 
     value = data->FindElement(data, "BaseHeight");
     value->GetValue(&BaseHeight);
@@ -73,7 +75,7 @@ namespace Framework
     Generate_Buffers();
 
     vao1 = new VAO();
-    for (unsigned i = 0; i < height_points.size() - 1; ++i)
+    /*for (unsigned i = 0; i < height_points.size() - 1; ++i)
     {
       surfaceVertices.push_back(height_points[i].x);
       surfaceVertices.push_back(height_points[i].y);
@@ -81,17 +83,20 @@ namespace Framework
       surfaceVertices.push_back(height_points[i + 1].x);
       surfaceVertices.push_back(height_points[i + 1].y);
       surfaceVertices.push_back(height_points[i + 1].z);
-    }
+    }*/
 
-    vbo1 = new VBO(surfaceVertices.size() * sizeof(float), surfaceVertices.data());
-    GLint posAttrib = shader->attribLocation("position");
+    //vbo1 = new VBO(surfaceVertices.size() * sizeof(float), surfaceVertices.data());
+    /*GLint posAttrib = shader->attribLocation("position");
     shader->enableVertexAttribArray(posAttrib);
     shader->vertexAttribPtr(posAttrib, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
-    vao1->unbindVAO();
+    vao1->unbindVAO();*/
   }
 
   void Terrain3D::Draw()
   {
+    glEnable(GL_DEPTH_TEST);
+    //glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
     glDisable(GL_BLEND);
     shader->Use();
     vao->bindVAO();
@@ -110,6 +115,8 @@ namespace Framework
     vao1->unbindVAO();*/
     shader->Disable();
     OPENGL->ResetBlendMode();
+    //glDisable(GL_CULL_FACE);
+    glDisable(GL_DEPTH_TEST);
   }
 
   void Terrain3D::Generate_Height_Points()
@@ -124,28 +131,31 @@ namespace Framework
     float offsetZ = -1.0f;
 
     float nX = 2.0f / (MapSize - 1);
-    float nY = 2.0f / (MapSize - 1);
+    //float nY = 1.0f / (PeakHeight);
     float nZ = 2.0f / (MapDepth - 1);
-    float previousHeight = -1.0f;
+    //float previousHeight = -1.0f;
     //float MaxHeight = (float)PeakHeight;
 
-    for (int i = 0; i < MapSize; ++i)
+    for (int j = 0; j < MapDepth; ++j)
     {
-      for (int j = 0; j < MapDepth; ++j)
+      offsetX = -1.f;
+      for (int i = 0; i < MapSize; ++i)
       {
-        if (previousHeight != offsetY || i == MapSize - 1 || j == MapDepth - 1)
-        {
-          height_points.push_back({ offsetX, offsetY / PeakHeight, offsetZ });
-          previousHeight = offsetY;
-        }
+        //if (previousHeight != offsetY || i == MapSize - 1 || j == MapDepth - 1)
+        //{
+          
+          //previousHeight = offsetY;
+       // }
 
-        offsetY = (Map[j * MapSize + i]) / 2.0f;
-        if (offsetY < 0)
-          offsetY = 0.0f;
+        offsetY = (Map[j * MapDepth + i]);
+        //offsetY = std::sin(6.14f * i / MapSize) * ((MapSize - j) / 30.f) *((MapSize - j) / 30.f);
+        //if (offsetY < 0)
+        //  offsetY = 0.0f;
+        height_points.push_back({ offsetX, offsetY, offsetZ });
 
-        offsetZ += 4 * nZ;
+        offsetX += nX;
       }
-      offsetX += 4 * nX;
+      offsetZ += nZ;
     } //for
   } //function generate height points
 
@@ -166,54 +176,60 @@ namespace Framework
     //Vertices
     for (unsigned i = 0; i < height_points.size() - (MapDepth + 1); ++i)
     {
-      glm::vec3 surfaceNormal = Physics::Normal (height_points [i], height_points [i + 1], height_points [i + MapDepth]);
-      //Triangle 1
-      //pt1
-      vertices.push_back(height_points[i].x);
-      vertices.push_back(height_points[i].y);
-      vertices.push_back(height_points[i].z);
-      vertices.push_back (surfaceNormal.x);
-      vertices.push_back (surfaceNormal.y);
-      vertices.push_back (surfaceNormal.z);
-      //pt2
-      vertices.push_back(height_points[i + 1].x);
-      vertices.push_back(height_points[i + 1].y);
-      vertices.push_back(height_points[i + 1].z);
-      vertices.push_back (surfaceNormal.x);
-      vertices.push_back (surfaceNormal.y);
-      vertices.push_back (surfaceNormal.z);
-      //pt3
-      vertices.push_back(height_points[i + MapDepth].x);
-      vertices.push_back(height_points[i + MapDepth].y);
-      vertices.push_back(height_points[i + MapDepth].z);
-      vertices.push_back (surfaceNormal.x);
-      vertices.push_back (surfaceNormal.y);
-      vertices.push_back (surfaceNormal.z);
+      if (i == 0 || (i + 1) % MapDepth != 0)
+      {
+        glm::vec3 surfaceNormal = Physics::Normal(height_points[i], height_points[i + MapDepth], height_points[i + 1]);
+        surfaceNormal = glm::normalize(surfaceNormal);
+        //Triangle 1
+        //pt1
+        vertices.push_back(height_points[i].x);
+        vertices.push_back(height_points[i].y);
+        vertices.push_back(height_points[i].z);
+        vertices.push_back(surfaceNormal.x);
+        vertices.push_back(surfaceNormal.y);
+        vertices.push_back(surfaceNormal.z);
+        //pt2
+        vertices.push_back(height_points[i + 1].x);
+        vertices.push_back(height_points[i + 1].y);
+        vertices.push_back(height_points[i + 1].z);
+        vertices.push_back(surfaceNormal.x);
+        vertices.push_back(surfaceNormal.y);
+        vertices.push_back(surfaceNormal.z);
+        //pt3
+        vertices.push_back(height_points[i + MapDepth].x);
+        vertices.push_back(height_points[i + MapDepth].y);
+        vertices.push_back(height_points[i + MapDepth].z);
+        vertices.push_back(surfaceNormal.x);
+        vertices.push_back(surfaceNormal.y);
+        vertices.push_back(surfaceNormal.z);
 
-      surfaceNormal = Physics::Normal (height_points [i], height_points [i + 1], height_points [i + MapDepth]);
-
-      //Triangle 2
-      //pt1
-      vertices.push_back(height_points[i + MapDepth + 1].x);
-      vertices.push_back(height_points[i + MapDepth + 1].y);
-      vertices.push_back(height_points[i + MapDepth + 1].z);
-      vertices.push_back (surfaceNormal.x);
-      vertices.push_back (surfaceNormal.y);
-      vertices.push_back (surfaceNormal.z);
-      //pt2
-      vertices.push_back(height_points[i + MapDepth].x);
-      vertices.push_back(height_points[i + MapDepth].y);
-      vertices.push_back(height_points[i + MapDepth].z);
-      vertices.push_back (surfaceNormal.x);
-      vertices.push_back (surfaceNormal.y);
-      vertices.push_back (surfaceNormal.z);
-      //pt3
-      vertices.push_back(height_points[i + 1].x);
-      vertices.push_back(height_points[i + 1].y);
-      vertices.push_back(height_points[i + 1].z);
-      vertices.push_back (surfaceNormal.x);
-      vertices.push_back (surfaceNormal.y);
-      vertices.push_back (surfaceNormal.z);
+        surfaceNormal = Physics::Normal(height_points[i + 1], height_points[i + MapDepth], height_points[i + MapDepth + 1]);
+        surfaceNormal = glm::normalize(surfaceNormal);
+        //Triangle 2
+        //pt1
+        vertices.push_back(height_points[i + MapDepth + 1].x);
+        vertices.push_back(height_points[i + MapDepth + 1].y);
+        vertices.push_back(height_points[i + MapDepth + 1].z);
+        vertices.push_back(surfaceNormal.x);
+        vertices.push_back(surfaceNormal.y);
+        vertices.push_back(surfaceNormal.z);
+        //pt2
+        vertices.push_back(height_points[i + MapDepth].x);
+        vertices.push_back(height_points[i + MapDepth].y);
+        vertices.push_back(height_points[i + MapDepth].z);
+        vertices.push_back(surfaceNormal.x);
+        vertices.push_back(surfaceNormal.y);
+        vertices.push_back(surfaceNormal.z);
+        //pt3
+        vertices.push_back(height_points[i + 1].x);
+        vertices.push_back(height_points[i + 1].y);
+        vertices.push_back(height_points[i + 1].z);
+        vertices.push_back(surfaceNormal.x);
+        vertices.push_back(surfaceNormal.y);
+        vertices.push_back(surfaceNormal.z);
+      }/*
+      else
+        std::cout << i << std::endl;*/
     }
   }
 

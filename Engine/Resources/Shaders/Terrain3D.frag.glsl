@@ -8,5 +8,5 @@ out vec4 outColor;
 
 void main ()
 {
-  outColor = vec4(Normal.r, Normal.g, Normal.b, 1);
+  outColor = vec4(Normal.r - Position.x, Normal.g - Position.y, Normal.b - Position.z, 1);
 }

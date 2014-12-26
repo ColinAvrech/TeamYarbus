@@ -79,8 +79,8 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, 0, -8],
-			Vec3 Scale = [256, 45, 1],
+			Vec3 Translation = [0, 128, -1024],
+			Vec3 Scale = [1280, 128, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Terrain2D = 
@@ -88,7 +88,7 @@ Level =
       bool Enabled = true,
       int MapSize = 64,
       int BaseHeight = 64,
-      int PeakHeight = 64,
+      int PeakHeight = 1280,
       int Passes = 0,
       int Waves = 1,
       int Water = 0,
@@ -108,8 +108,8 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, -2, -2],
-			Vec3 Scale = [256, 20, 1],
+			Vec3 Translation = [0, -2, -760],
+			Vec3 Scale = [1280, 20, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Terrain2D = 
@@ -137,14 +137,14 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, 0, -1],
-			Vec3 Scale = [256, 45, 1],
+			Vec3 Translation = [0, 0, -640],
+			Vec3 Scale = [1280, 10, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Terrain2D = 
 		{
       bool Enabled = true,
-      int MapSize = 64,
+      int MapSize = 128,
       int BaseHeight = 20,
       int PeakHeight = 45,
       int Passes = 0,
@@ -166,9 +166,49 @@ Level =
 		},
 		Transform = 
 		{
+			Vec3 Translation = [0, -128, 0],
+			Vec3 Scale = [1280, 32, 640],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Terrain3D = 
+		{
+      string MapPreset = "Terrain_EasySlope",
+      bool Enabled = true,
+      int MapSize = 128,
+      int BaseHeight = 10,
+      int PeakHeight = 20,
+      int Passes = 5,
+      int Waves = 5,
+      int Water = 5,
+      Vec4 Color1 = [0.0, 0.0, 0.0, 1],
+	  Vec4 Color2 = [0.05, 0.033, 0.066, 1],
+	  Vec4 Color = [0.05, 0.033, 0.066, 1],
+      bool AddCollider = true,
+		},
+    //EcoSystem = 
+    //{
+    //},
+    FireSystem = 
+    {
+      bool Enabled = false,
+      float ParticleSize = 100,
+    },
+  },
+  Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 3,
+		},
+		Named = 
+		{
+			string Name = "Terrain",
+		},
+		Transform = 
+		{
 			Vec3 Translation = [0, 0, 0],
-			Vec3 Scale = [256, 40, 1],
-			Quat Rotation = [0, 0, 1, 0],
+			Vec3 Scale = [1280, 64, 640],
+			Quat Rotation = [0, 0, 0, 1],
 		},
 		Terrain2D = 
 		{
@@ -182,6 +222,7 @@ Level =
       int Water = 5,
       Vec4 Color1 = [0.0, 0.0, 0.0, 1],
 	  Vec4 Color2 = [0.05, 0.033, 0.066, 1],
+	  //Vec4 Color = [0.05, 0.033, 0.066, 1],
       bool AddCollider = true,
 		},
     EcoSystem = 

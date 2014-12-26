@@ -28,7 +28,8 @@ namespace Framework
     void TerrainCreator3D::GenerateHeightMap(int base, int height)
     {
       HeightMapRock.allocate(MapWidth, MapDepth);
-      float weight = 0.5f;
+      float weight = 1.f;
+      for (int i = 0; i < passes; ++i, weight *= 0.25f);
       
       for (unsigned int i = 0; i < MapWidth; ++i)
       {
@@ -39,10 +40,12 @@ namespace Framework
       } // for i
 
       int factor = 1;
-      for (int p = 0; p < passes; ++p)
+      for (int i = 0; i < passes; ++i, factor *= 4);
+
+      for (int p = 0; p < passes && factor > 0; ++p)
       {
-        weight *= 0.5f;
-        factor *= 2;
+        weight *= 6.5f;
+        factor *= 0.25f;
         for (unsigned int i = 0; i < MapWidth; ++i)
         {
           for (unsigned int j = 0; j < MapDepth; ++j)
