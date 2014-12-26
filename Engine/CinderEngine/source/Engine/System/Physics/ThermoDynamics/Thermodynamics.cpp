@@ -115,11 +115,12 @@ namespace Framework
       if (paused)
         return;
 
-      /*for (int i = 0; i < MapSize.x; ++i)
-        dt_Tracker[i] += dt;*/
-
       int center = Camera::main->gameObject->Transform->GetGridPosition().x;
       float fov = Camera::main->GetSize();
+      //if zoomed out by more than 128 stop updating
+      //as its most likely a cutscene
+      if (fov > 128)
+        return;
       int start = center - fov;
       if (start < 0)
         start = 0;
@@ -129,9 +130,6 @@ namespace Framework
 
       UpdateTemp(start, end, dt);
       UpdateFire(dt);
-
-      /*for (int i = start; i < end; ++i)
-        dt_Tracker[i] = 0.0f;*/
     }
 
     // Getters

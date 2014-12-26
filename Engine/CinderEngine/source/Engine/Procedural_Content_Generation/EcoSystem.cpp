@@ -101,7 +101,7 @@ namespace Framework
         offsetX + Translation.x,
         offsetY + Translation.y,
         Translation.z,
-        TREE_3, ID
+        TREE_0, ID
         );
       else if(rand() % 2)
         GenerateType(

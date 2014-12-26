@@ -75,27 +75,10 @@ namespace Framework
     Generate_Buffers();
 
     vao1 = new VAO();
-    /*for (unsigned i = 0; i < height_points.size() - 1; ++i)
-    {
-      surfaceVertices.push_back(height_points[i].x);
-      surfaceVertices.push_back(height_points[i].y);
-      surfaceVertices.push_back(height_points[i].z);
-      surfaceVertices.push_back(height_points[i + 1].x);
-      surfaceVertices.push_back(height_points[i + 1].y);
-      surfaceVertices.push_back(height_points[i + 1].z);
-    }*/
-
-    //vbo1 = new VBO(surfaceVertices.size() * sizeof(float), surfaceVertices.data());
-    /*GLint posAttrib = shader->attribLocation("position");
-    shader->enableVertexAttribArray(posAttrib);
-    shader->vertexAttribPtr(posAttrib, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
-    vao1->unbindVAO();*/
   }
 
   void Terrain3D::Draw()
   {
-    glEnable(GL_DEPTH_TEST);
-    //glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
     glDisable(GL_BLEND);
     shader->Use();
@@ -115,8 +98,6 @@ namespace Framework
     vao1->unbindVAO();*/
     shader->Disable();
     OPENGL->ResetBlendMode();
-    //glDisable(GL_CULL_FACE);
-    glDisable(GL_DEPTH_TEST);
   }
 
   void Terrain3D::Generate_Height_Points()
@@ -133,24 +114,14 @@ namespace Framework
     float nX = 2.0f / (MapSize - 1);
     //float nY = 1.0f / (PeakHeight);
     float nZ = 2.0f / (MapDepth - 1);
-    //float previousHeight = -1.0f;
-    //float MaxHeight = (float)PeakHeight;
 
     for (int j = 0; j < MapDepth; ++j)
     {
       offsetX = -1.f;
       for (int i = 0; i < MapSize; ++i)
       {
-        //if (previousHeight != offsetY || i == MapSize - 1 || j == MapDepth - 1)
-        //{
-          
-          //previousHeight = offsetY;
-       // }
-
         offsetY = (Map[j * MapDepth + i]);
-        //offsetY = std::sin(6.14f * i / MapSize) * ((MapSize - j) / 30.f) *((MapSize - j) / 30.f);
-        //if (offsetY < 0)
-        //  offsetY = 0.0f;
+
         height_points.push_back({ offsetX, offsetY, offsetZ });
 
         offsetX += nX;
