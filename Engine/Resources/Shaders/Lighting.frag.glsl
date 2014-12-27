@@ -32,7 +32,7 @@ uniform float shininess = 2;
 ////////////////////////////////////////////
 
 // MATERIAL PROPERTIES OF LIGHT
-uniform vec3 lambient = vec3 (0.5, 0.5, 0.5);
+uniform vec3 lambient = vec3 (0.75, 0.75, 0.75);
 uniform vec3 ldiffuse = vec3 (0.6, 0.6, 0.6);
 uniform vec3 lspecular = vec3 (1, 1, 1);
 uniform vec4 color;
