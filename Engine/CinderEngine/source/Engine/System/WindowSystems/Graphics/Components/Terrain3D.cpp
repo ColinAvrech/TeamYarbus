@@ -86,7 +86,7 @@ namespace Framework
   void Terrain3D::Draw()
   {
     glCullFace(GL_BACK);
-    glDisable(GL_BLEND);
+    glEnable(GL_BLEND);
     shader->Use();
     vao->bindVAO();
 
@@ -98,11 +98,6 @@ namespace Framework
 
     vao->unbindVAO();
 
-    /*vao1->bindVAO();
-
-    shader->uni4f("color", 1, 1, 1, 1.0f);
-
-    vao1->unbindVAO();*/
     shader->Disable();
     OPENGL->ResetBlendMode();
   }
@@ -136,18 +131,6 @@ namespace Framework
       offsetZ += nZ;
     } //for
   } //function generate height points
-
-  /*bool CalculateIntersectionPoint
-    (
-    double Ax, double Ay, double Az,
-    double Bx, double By, double Bz,
-    double Cx, double Cy, double Cz,
-    double Dx, double Dy, double Dz,
-    double *X, double *Y, double *Z
-    )
-  {
-
-  }*/
 
   void Terrain3D::Generate_Vertices()
   {

@@ -113,7 +113,7 @@ namespace Framework
 
   void FluidBody::Draw()
   {
-    glDisable(GL_BLEND);
+    glEnable(GL_BLEND);
     shader->Use();
     vao->bindVAO();
     shader->uniMat4("mvp", glm::value_ptr(gameObject->Transform->GetModelViewProjectionMatrix()));
@@ -124,7 +124,7 @@ namespace Framework
 
     vao->unbindVAO();
     shader->Disable();
-    OPENGL->ResetBlendMode();
+    //OPENGL->ResetBlendMode();
   }
 
   float FluidBody::GetWidth()

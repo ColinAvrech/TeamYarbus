@@ -278,15 +278,18 @@ namespace Framework
      
       x2 = x1 + length * (2 * (SCALE + 3*myrand(RAND))) * cos(angle - angle2);
       
-      //Add_Branch(x1, y1, x2, y2);
-      Make_Pine_Branch(x1, y1, length, angle - 1.2f * angle2, depth - 1, 1, newrad, parent);
+      if (depth < segments - 2)
+      {
+        //Add_Branch(x1, y1, x2, y2);
+        Make_Tree2(x1, y1, length, angle - 1.2f * angle2, depth / 3, newrad, parent);
 
-      x2 = x1 + length * (2 * (SCALE + 3*myrand(RAND))) * cos(angle + angle2);
+        x2 = x1 + length * (2 * (SCALE + 3 * myrand(RAND))) * cos(angle + angle2);
 
-      y2 = y1 + length * (2 * (SCALE + myrand(RAND))) * sin(-((15 - depth)/10.f)*angle);
+        y2 = y1 + length * (2 * (SCALE + myrand(RAND))) * sin(-((15 - depth) / 10.f)*angle);
 
-      //Add_Branch(x1, y1, x2, y2);
-      Make_Pine_Branch(x1, y1, length, angle + 1.2f * angle2, depth - 1, 0, newrad, parent);
+        //Add_Branch(x1, y1, x2, y2);
+        Make_Tree2(x1, y1, length, angle + 1.2f * angle2, depth / 3, newrad, parent);
+      }
     }
   }
 
