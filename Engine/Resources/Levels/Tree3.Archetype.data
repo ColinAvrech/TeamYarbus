@@ -23,7 +23,7 @@ Cog =
 	},
 	Tree2D = 
 	{
-		Vec4 Color = [1, 1, 1, 1],
+		Vec4 Color = [0.659, 0.596, 0.533, 1],
 		int Tree_Type = 3,
 		int Segments = 15,
 		float Thickness = 0.25,

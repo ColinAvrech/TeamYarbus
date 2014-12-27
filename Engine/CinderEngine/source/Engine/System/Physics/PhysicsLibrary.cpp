@@ -69,7 +69,7 @@ namespace Framework
     {
       glm::vec3 edge_A = v2 - v1;
       glm::vec3 edge_B = v3 - v1;
-      glm::vec3 x_product = glm::cross(edge_B, edge_A);
+      glm::vec3 x_product = glm::cross(edge_A, edge_B);
       return x_product;
     }
 

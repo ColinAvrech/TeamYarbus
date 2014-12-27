@@ -40,12 +40,12 @@ namespace Framework
       } // for i
 
       int factor = 1;
-      for (int i = 0; i < passes; ++i, factor *= 4);
+      for (int i = 0; i < passes; ++i, factor *= 2);
 
       for (int p = 0; p < passes && factor > 0; ++p)
       {
-        weight *= 6.5f;
-        factor *= 0.25f;
+        weight *= 6.2f;
+        factor *= 0.5f;
         for (unsigned int i = 0; i < MapWidth; ++i)
         {
           for (unsigned int j = 0; j < MapDepth; ++j)

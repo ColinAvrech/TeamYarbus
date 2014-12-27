@@ -1,7 +1,6 @@
 #version 430
 
 out vec4 outColor;
-//in vec3 original_pos;
 in vec3 Position;
 
 uniform vec4 color1;

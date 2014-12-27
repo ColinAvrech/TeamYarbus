@@ -63,8 +63,14 @@ namespace Framework
     value = data->FindElement(data, "Waves");
     value->GetValue(&Waves);
 
-    value = data->FindElement(data, "Color");
-    value->GetValue(&color);
+    value = data->FindElement(data, "Color1");
+    value->GetValue(&color1);
+
+    value = data->FindElement(data, "Color2");
+    if (value != nullptr)
+      value->GetValue(&color2);
+    else
+      color2 = color1;
   }
 
   void Terrain3D::Initialize()
@@ -85,7 +91,8 @@ namespace Framework
     vao->bindVAO();
 
     shader->uniMat4("mvp", glm::value_ptr(gameObject->Transform->GetModelViewProjectionMatrix()));
-    shader->uni4f("color", color.r, color.g, color.b, color.a);
+    shader->uni4f("color1", color1.r, color1.g, color1.b, color1.a);
+    shader->uni4f("color2", color2.r, color2.g, color2.b, color2.a);
 
     glDrawArrays(GL_TRIANGLES, 0, vertices.size() / 2);
 

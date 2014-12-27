@@ -43,7 +43,8 @@ namespace Framework
     int PeakHeight;
     int Passes;
     int Waves;
-    glm::vec4 color;
+    glm::vec4 color1;
+    glm::vec4 color2;
     Procedural::TerrainCreator3D* tc;
 
     VAO* vao;

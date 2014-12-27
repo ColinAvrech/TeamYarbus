@@ -71,87 +71,31 @@ Level =
 	{
 		LinkId = 
 		{
-			uint Id = 1,
+			uint Id = 3,
 		},
 		Named = 
 		{
-			string Name = "Forest",
+			string Name = "Mountain",
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, 128, -1024],
-			Vec3 Scale = [1280, 128, 1],
+			Vec3 Translation = [0, -712, -3200],
+			Vec3 Scale = [10000, 300, 640],
 			Quat Rotation = [0, 0, 0, 1],
 		},
-		Terrain2D = 
+		Terrain3D = 
 		{
-      bool Enabled = true,
-      int MapSize = 64,
-      int BaseHeight = 64,
-      int PeakHeight = 1280,
-      int Passes = 0,
-      int Waves = 1,
-      int Water = 0,
-      Vec4 Color1 = [1.0, .862, .596, 1],
-      bool AddCollider = false,
-		},
-  },
-  Cog = 
-	{
-		LinkId = 
-		{
-			uint Id = 2,
-		},
-		Named = 
-		{
-			string Name = "Forest",
-		},
-		Transform = 
-		{
-			Vec3 Translation = [0, -2, -1440],
-			Vec3 Scale = [1280, 20, 1],
-			Quat Rotation = [0, 0, 0, 1],
-		},
-		Terrain2D = 
-		{
+      string MapPreset = "Terrain_EasySlope",
       bool Enabled = true,
       int MapSize = 128,
-      int BaseHeight = 84,
-      int PeakHeight = 84,
-      int Passes = 0,
-      int Waves = 1,
-      int Water = 0,
-      Vec4 Color1 = [0.366, .101, 0.166, 1],
-      bool AddCollider = false,
-		},
-  },
-    Cog = 
-	{
-		LinkId = 
-		{
-			uint Id = 1,
-		},
-		Named = 
-		{
-			string Name = "Forest",
-		},
-		Transform = 
-		{
-			Vec3 Translation = [0, 0, -1280],
-			Vec3 Scale = [1280, 10, 1],
-			Quat Rotation = [0, 0, 0, 1],
-		},
-		Terrain2D = 
-		{
-      bool Enabled = true,
-      int MapSize = 128,
-      int BaseHeight = 20,
-      int PeakHeight = 45,
-      int Passes = 0,
-      int Waves = 1,
-      int Water = 0,
-      Vec4 Color1 = [.2, .2, .2, 1],
-      bool AddCollider = false,
+      int BaseHeight = 10,
+      int PeakHeight = 20,
+      int Passes = 3,
+      int Waves = 5,
+      int Water = 5,
+      Vec4 Color1 = [0.945, 0.725, 0.502, 1],
+	  Vec4 Color2 = [0.235, 0.223, 0.816, 1],
+      bool AddCollider = true,
 		},
   },
   Cog = 
@@ -166,33 +110,24 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, -192, -640],
-			Vec3 Scale = [1280, 64, 640],
+			Vec3 Translation = [0, -200, -1280],
+			Vec3 Scale = [2560, 32, 1280],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Terrain3D = 
 		{
       string MapPreset = "Terrain_EasySlope",
       bool Enabled = true,
-      int MapSize = 128,
+      int MapSize = 256,
       int BaseHeight = 10,
       int PeakHeight = 20,
       int Passes = 5,
       int Waves = 5,
       int Water = 5,
-      Vec4 Color1 = [0.0, 0.0, 0.0, 1],
-	  Vec4 Color2 = [0.05, 0.033, 0.066, 1],
-	  Vec4 Color = [0.05, 0.033, 0.066, 1],
+      Vec4 Color1 = [0.945, 0.725, 0.502, 1],
+	  Vec4 Color2 = [0.54, 0.603, 0.463, 1],
       bool AddCollider = true,
 		},
-    //EcoSystem = 
-    //{
-    //},
-    FireSystem = 
-    {
-      bool Enabled = false,
-      float ParticleSize = 100,
-    },
   },
   Cog = 
 	{
@@ -220,8 +155,8 @@ Level =
       int Passes = 5,
       int Waves = 5,
       int Water = 5,
-      Vec4 Color1 = [0.0, 0.0, 0.0, 1],
-	  Vec4 Color2 = [0.05, 0.033, 0.066, 1],
+      Vec4 Color1 = [0, 0, 0, 1],
+	  Vec4 Color2 = [0, 0, 0, 1],
 	  //Vec4 Color = [0.05, 0.033, 0.066, 1],
       bool AddCollider = true,
 		},
