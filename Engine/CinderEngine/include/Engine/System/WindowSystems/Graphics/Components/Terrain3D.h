@@ -27,6 +27,7 @@ namespace Framework
     virtual void Serialize(Serializer::DataNode*);
     virtual void Initialize();
     virtual void Draw();
+    virtual bool Draw_Last() { return false; }
 
     void Generate_Height_Points();
     void Generate_Vertices();

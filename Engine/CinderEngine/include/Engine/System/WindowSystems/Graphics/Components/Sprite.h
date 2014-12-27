@@ -35,6 +35,7 @@ namespace Framework
     virtual void Initialize ();
     virtual void Serialize (Serializer::DataNode* data);
     virtual void Draw ();
+    virtual bool Draw_Last() { return false; }
 
     void LoadSprite (Zilch::String texturename, Zilch::String shadername);
     void Create_Sprite (Shader* _shader, Texture* _texture = NULL);

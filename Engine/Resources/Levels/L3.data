@@ -79,7 +79,7 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, -712, -3200],
+			Vec3 Translation = [0, -700, -3200],
 			Vec3 Scale = [10000, 300, 640],
 			Quat Rotation = [0, 0, 0, 1],
 		},
@@ -106,7 +106,7 @@ Level =
 		},
 		Named = 
 		{
-			string Name = "Terrain",
+			string Name = "Background",
 		},
 		Transform = 
 		{
@@ -157,7 +157,6 @@ Level =
       int Water = 5,
       Vec4 Color1 = [0, 0, 0, 1],
 	  Vec4 Color2 = [0, 0, 0, 1],
-	  //Vec4 Color = [0.05, 0.033, 0.066, 1],
       bool AddCollider = true,
 		},
     EcoSystem = 
@@ -181,7 +180,7 @@ Level =
 	},
 	Transform = 
 	{
-		Vec3 Translation = [0, 7, 0],
+		Vec3 Translation = [0, 8.5, 0],
 		Vec3 Scale = [10, 1, 1],
 		Quat Rotation = [0, 0, 1, 0],
 	},

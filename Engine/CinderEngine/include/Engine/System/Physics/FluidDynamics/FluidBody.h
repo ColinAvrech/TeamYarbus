@@ -1,10 +1,10 @@
 /******************************************************************************/
 /*!
-\file   FireStarter.h
+\file   FluidBody.h
 \author Anna Pearson
 \par    Course: GAM200
 \par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
-\brief  The logic for burning gameObjects
+\brief  Fluid object
 */
 /******************************************************************************/
 
@@ -22,6 +22,8 @@ namespace Framework
     virtual void Serialize(Serializer::DataNode*);
     virtual void Initialize();
     virtual void Draw();
+    virtual bool Draw_Last() { return false; }
+
     void Update(const float dt);
 
     void Generate_Height_Points();

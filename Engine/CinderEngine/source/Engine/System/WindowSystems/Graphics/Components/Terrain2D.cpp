@@ -112,7 +112,6 @@ namespace Framework
     }
   }
 
-
   void Terrain2D::Draw ()
   { 
     glDisable (GL_BLEND);

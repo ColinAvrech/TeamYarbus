@@ -30,6 +30,8 @@ namespace Framework
     virtual void Serialize (Serializer::DataNode* data);
     virtual void Initialize ();
     virtual void Draw ();
+    virtual bool Draw_Last() { return false; }
+
     void OnApplicationPause (PauseEvent* pause);
 
     void GenerateShaders ();

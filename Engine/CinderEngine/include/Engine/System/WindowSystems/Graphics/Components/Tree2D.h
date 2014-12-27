@@ -44,6 +44,8 @@ namespace Framework
   virtual void Serialize (Serializer::DataNode* data);
   virtual void Initialize ();
   virtual void Draw ();
+  virtual bool Draw_Last() { return false; }
+
   std::vector <glm::vec2>& Get_Edges ()
   {
     return edges;

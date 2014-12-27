@@ -1,10 +1,10 @@
 /*****************************************************************************/
 /*!
-\file   Thermodynamics.h
+\file   FluidDynamics.h
 \author Sagnik Chowdhury
 \par    Course: GAM200
 \par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
-\brief  The thermodynamics system controls the flow of fluids around the level.
+\brief  Fluid physics manager.
 */
 /*****************************************************************************/
 

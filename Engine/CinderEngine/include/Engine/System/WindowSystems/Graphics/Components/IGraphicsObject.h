@@ -36,6 +36,7 @@ namespace Framework
   void Register ();
   void Deregister ();
   void Change_Layer (int lay);
+  virtual bool Draw_Last() = 0;
 
   LAYER layer;
 

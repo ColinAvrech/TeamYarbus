@@ -115,7 +115,7 @@ namespace Framework
         offsetX + Translation.x,
         offsetY + Translation.y,
         Translation.z,
-        TREE_4, ID
+        TREE_TALL_GRASS, ID
         );
 		}
 	}

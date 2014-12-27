@@ -132,15 +132,23 @@ namespace Framework
     //////////////////////////////////////////////////////////////////////////
     // SCENE DRAW
     //////////////////////////////////////////////////////////////////////////
-
+    std::vector<IGraphicsObject *>last;
     for (auto* i : graphicsObjects [DEFAULT])
     {
-      i->Draw ();
-	}    
-	for (auto* i : textObjects)
-	{
-		i->Draw();
-	}
+      if (i->Draw_Last())
+        last.push_back(i);
+      else
+        i->Draw ();
+	  }   
+    for (auto* i : last)
+    {
+      i->Draw();
+    }
+
+	  for (auto* i : textObjects)
+	  {
+	  	i->Draw();
+	  }
 
     sFactor = GL_SRC_ALPHA;
     dFactor = GL_ONE_MINUS_SRC_ALPHA;
