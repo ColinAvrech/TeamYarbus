@@ -95,7 +95,7 @@ namespace Framework
     shader->uniMat4("mvp", glm::value_ptr(gameObject->Transform->GetModelViewProjectionMatrix()));
     shader->uni4f("color1", color1.r, color1.g, color1.b, color1.a);
     shader->uni4f("color2", color2.r, color2.g, color2.b, color2.a);
-    shader->uni3f("lightDir", std::sin(time / 10.f), std::cos(time / 10.f), 0.f);
+    shader->uni3f("lightDir", std::sin(time / 10.f), std::cos(time / 10.f), -2.f);
 
     glDrawArrays(GL_TRIANGLES, 0, vertices.size() / 2);
 
