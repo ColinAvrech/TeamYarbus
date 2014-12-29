@@ -75,6 +75,7 @@ namespace Framework
 
       //Initialize material list
       Init_Materials();
+      y_offset = nullptr;
 
       Allocated = false;
 
@@ -119,7 +120,7 @@ namespace Framework
       float fov = Camera::main->GetSize();
       //if zoomed out by more than 128 stop updating
       //as its most likely a cutscene
-      if (fov > 128)
+      if (fov > 64)
         return;
       int start = center - fov;
       if (start < 0)
@@ -205,8 +206,9 @@ namespace Framework
       Terrain.allocate(MapSize.x, MapSize.y);
       Terrain.fill(AIR);
 
-      WaterMap.allocate(MapSize.x, MapSize.y);
-      WaterMap.fill(0.0f);
+      y_offset = new int[MapSize.x];
+      //WaterMap.allocate(MapSize.x, MapSize.y);
+      //WaterMap.fill(0.0f);
 
       //dt_Tracker = new float[MapSize.x];
       /*for (int i = 0; i < MapSize.x; ++i)
@@ -305,6 +307,7 @@ namespace Framework
     //Update temperatures
     void ThermodynamicsSystem::UpdateTemp(const int& start_index, const int& end_index, const float &dt)
     {
+      TemperatureMap.Set(50, 30, 10000.f);
       //std::cout << start_index << "\n";
       //std::cout << "Updated Temperature/Density/Pressure" << std::endl;
       for (int j = 0; j < MapSize.y; ++j)
@@ -319,17 +322,18 @@ namespace Framework
           {
             for (int x = i - 1; x <= i + 1; ++x)
             {
-              if (x != i || y != j)
+              int _y = y + y_offset[i] - y_offset[x];
+              if (x != i || _y != j)
               {
-                if (x < MapSize.x && x >= 0 && y < MapSize.y && y >= 0)
+                if (x < MapSize.x && x >= 0 && _y < MapSize.y && _y >= 0)
                 {
                   float dQ = ConductiveHeatTransfer(materialList[Terrain.Get(i, j)].K,
-                    TemperatureMap.Get(i, j), TemperatureMap.Get(x, y), dt, 1.0f);
+                    TemperatureMap.Get(i, j), TemperatureMap.Get(x, _y), dt, 1.0f);
                   netdQ += dQ;
-                  float oTemp = TemperatureMap.Get(x, y);
-                  TemperatureMap.Set(x, y, TemperatureMap.Get(x, y) - dTemp(dQ, DensityMap.Get(x, y) * 1.0f, Const::c_Air));
+                  float oTemp = TemperatureMap.Get(x, _y);
+                  TemperatureMap.Set(x, _y, TemperatureMap.Get(x, _y) - dTemp(dQ, DensityMap.Get(x, _y) * 1.0f, Const::c_Air));
 
-                  float factor = TemperatureMap.Get(x, y) / oTemp;
+                  float factor = TemperatureMap.Get(x, _y) / oTemp;
                   //DensityMap.Set (x, y, DensityMap.Get (x, y) / factor);
                 }
                 else
@@ -384,54 +388,56 @@ namespace Framework
     //Update fire
     void ThermodynamicsSystem::UpdateFire(const float& dt)
     {
-      if (fireGroups.size() == 0)
-        return;
+      //This needs to be somewhere else. Not in thermo.
+      //-----------------------------------------------
+      //if (fireGroups.size() == 0)
+      //  return;
 
-      int numTreesLeft = 0;
-      int numTreesStart = 0;
-      for (auto fg : fireGroups)
-      {
-        //printf("Percentage of fuel unused: %f\n", (manager->numTreesLeft / (float)manager->numTreesStart));
-        if (fg && fg->gameObject && fg->firePoints.size())
-        {
-          ++numTreesStart;
-          if (!fg->onFire)
-            ++numTreesLeft;
-        }
-      }
+      //int numTreesLeft = 0;
+      //int numTreesStart = 0;
+      //for (auto fg : fireGroups)
+      //{
+      //  //printf("Percentage of fuel unused: %f\n", (manager->numTreesLeft / (float)manager->numTreesStart));
+      //  if (fg && fg->gameObject && fg->firePoints.size())
+      //  {
+      //    ++numTreesStart;
+      //    if (!fg->onFire)
+      //      ++numTreesLeft;
+      //  }
+      //}
 
-      std::cout << CinderConsole::green;
-      if (numTreesLeft == numTreesStart)
-      {
-        guiText->text = "Burn things to keep the flame alive.";
-        //TODO_AUDIO: Play HUD update sound.
-      }
-      else
-      {
-        guiText->text = "Trees Remaining: " + std::to_string(numTreesLeft);
-        //TODO_AUDIO: Play HUD update sound.
-      }
-      std::cout << CinderConsole::red;
+      //std::cout << CinderConsole::green;
+      //if (numTreesLeft == numTreesStart)
+      //{
+      //  guiText->text = "Burn things to keep the flame alive.";
+      //  //TODO_AUDIO: Play HUD update sound.
+      //}
+      //else
+      //{
+      //  guiText->text = "Trees Remaining: " + std::to_string(numTreesLeft);
+      //  //TODO_AUDIO: Play HUD update sound.
+      //}
+      //std::cout << CinderConsole::red;
 
-      static bool treesburned = false; // Make this event only happen once per level swtich
-      if (numTreesLeft == 0)
-      {
-        if (treesburned == false)
-        {
-          //TODO_AUDIO: play victory sound;
-          Sound* winFX = Resources::RS->Get_Sound("fx_win.ogg");
-          AUDIOEVENTS->unmanagedSounds.push_back(winFX);
-          winFX->Play();
-          treesburned = true;
-          BaseEvent b;
-          EVENTSYSTEM->TriggerEvent(Events::ALLLTREESBURNED, b);
-          return;
-        }
-      }
-      else
-      {
-        treesburned = false;
-      }
+      //static bool treesburned = false; // Make this event only happen once per level swtich
+      //if (numTreesLeft == 0)
+      //{
+      //  if (treesburned == false)
+      //  {
+      //    //TODO_AUDIO: play victory sound;
+      //    Sound* winFX = Resources::RS->Get_Sound("fx_win.ogg");
+      //    AUDIOEVENTS->unmanagedSounds.push_back(winFX);
+      //    winFX->Play();
+      //    treesburned = true;
+      //    BaseEvent b;
+      //    EVENTSYSTEM->TriggerEvent(Events::ALLLTREESBURNED, b);
+      //    return;
+      //  }
+      //}
+      //else
+      //{
+      //  treesburned = false;
+      //}
 
       for (auto i = FireMap.begin(); i != FireMap.end(); ++i)
       {
@@ -509,11 +515,13 @@ namespace Framework
       VelocityMapY.clean();
       VelocityMap_PrevY.clean();
       Terrain.clean();
-      WaterMap.clean();
+      //WaterMap.clean();
       fireGroups.clear();
       FireMap.clear();
-      /*if (dt_Tracker != nullptr)
-        delete [] dt_Tracker;*/
+
+      if (y_offset != nullptr)
+        delete[] y_offset;
+
       Allocated = false;
     }
 
@@ -645,10 +653,10 @@ namespace Framework
               float(Terrain.Get(j, i)) / STONE,
               float(Terrain.Get(j, i)) / STONE,
               0.5f);
-            glVertex2f(j - (MapSize.x * 0.5f) + 2, i - 0);
-            glVertex2f(j - (MapSize.x * 0.5f) + 3, i - 0);
-            glVertex2f(j - (MapSize.x * 0.5f) + 3, i + 1);
-            glVertex2f(j - (MapSize.x * 0.5f) + 2, i + 1);
+            glVertex2f(j - (MapSize.x * 0.5f) + 2, i - 0 + y_offset[j]);
+            glVertex2f(j - (MapSize.x * 0.5f) + 3, i - 0 + y_offset[j]);
+            glVertex2f(j - (MapSize.x * 0.5f) + 3, i + 1 + y_offset[j]);
+            glVertex2f(j - (MapSize.x * 0.5f) + 2, i + 1 + y_offset[j]);
           }
         }
       }
@@ -662,10 +670,10 @@ namespace Framework
           {
             glColor4f(TemperatureMap.Get(j, i) / Constant::BT_Organics, 0.f, 0.f,
               TemperatureMap.Get(j, i) / Constant::BT_Organics * 0.4f);
-            glVertex2f(j - (MapSize.x * 0.5f) + 2, i - 0);
-            glVertex2f(j - (MapSize.x * 0.5f) + 3, i - 0);
-            glVertex2f(j - (MapSize.x * 0.5f) + 3, i + 1);
-            glVertex2f(j - (MapSize.x * 0.5f) + 2, i + 1);
+            glVertex2f(j - (MapSize.x * 0.5f) + 2, i - 0 + y_offset[j]);
+            glVertex2f(j - (MapSize.x * 0.5f) + 3, i - 0 + y_offset[j]);
+            glVertex2f(j - (MapSize.x * 0.5f) + 3, i + 1 + y_offset[j]);
+            glVertex2f(j - (MapSize.x * 0.5f) + 2, i + 1 + y_offset[j]);
           }
         }
       }

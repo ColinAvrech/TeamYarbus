@@ -31,7 +31,7 @@ namespace Framework
   // Constructor
   FluidBody::FluidBody()
   {
-    scale = glm::vec2(10, 10);
+    //scale = glm::vec2(10, 10);
   }
 
   // Destructor
@@ -74,6 +74,7 @@ namespace Framework
   {
     position.x = this->gameObject->Transform->GetPosition().x;
     position.y = this->gameObject->Transform->GetPosition().y;
+    scale = glm::vec2(gameObject->Transform->GetScale());
     Base_Level = 1.f;
     gameObject->FluidBody = this;
     Generate_Height_Points();
@@ -89,6 +90,7 @@ namespace Framework
 
   void FluidBody::Update(const float dt)
   {
+    scale = glm::vec2(gameObject->Transform->GetScale());
     time += dt;
     //test splash
     if (time >= 1.f)
@@ -109,6 +111,11 @@ namespace Framework
         sizeof(float), &height_points[i].y);
       vbo->unBindVBO();
     }
+  }
+
+  bool FluidBody::InViewport()
+  {
+    return true;
   }
 
   void FluidBody::Draw()

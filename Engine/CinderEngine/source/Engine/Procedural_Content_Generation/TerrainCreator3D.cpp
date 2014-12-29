@@ -35,7 +35,10 @@ namespace Framework
       {
         for (unsigned int j = 0; j < MapDepth; ++j)
         {
-          HeightMapRock.Set(i, j, weight * (rand() % PeakHeight));
+          if (i == 0 || i == MapWidth - 1 || j == 0 || j == MapDepth - 1)
+            HeightMapRock.Set(i, j, -1.0f);
+          else
+            HeightMapRock.Set(i, j, weight * (rand() % PeakHeight));
         } //for j
       } // for i
 

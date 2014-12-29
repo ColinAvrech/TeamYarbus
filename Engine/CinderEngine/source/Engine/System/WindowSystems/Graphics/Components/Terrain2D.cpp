@@ -197,11 +197,8 @@ namespace Framework
       {
         ErrorIf(size_factor == 0, "Terrain size must be greater than terrain's heightpoints.");
         float cur_peak = Map[x / size_factor];
-        
-        for (int y = 0; y < THERMODYNAMICS->MapSize.y && y < cur_peak; ++y)
-        {
-          THERMODYNAMICS->Terrain.Set (x, y, STONE);
-        } //for y
+        THERMODYNAMICS->Terrain.Set (x, 0, STONE);
+        THERMODYNAMICS->y_offset[x] = (int)cur_peak;
       } //for x
     } //if main terrain
   }
@@ -334,22 +331,6 @@ namespace Framework
       vertices.push_back (height_points [i].x);
       vertices.push_back (y);
       vertices.push_back (0);
-      //vertices.push_back (height_points [i + 1].x);
-      //vertices.push_back (y);
-      //vertices.push_back (0);
-      //vertices.push_back (height_points [i].x);
-      //vertices.push_back (height_points [i].y);
-      //vertices.push_back (0);
-      // Triangle 2
-      /*vertices.push_back (height_points [i + 1].x);
-      vertices.push_back (height_points [i + 1].y);
-      vertices.push_back (0);
-      vertices.push_back (height_points [i].x);
-      vertices.push_back (height_points [i].y);
-      vertices.push_back (0);*/
-      //vertices.push_back (height_points [i + 1].x);
-      //vertices.push_back (y);
-      //vertices.push_back (0);
     }
   }
 

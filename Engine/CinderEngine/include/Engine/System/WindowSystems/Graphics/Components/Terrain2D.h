@@ -34,6 +34,7 @@ namespace Framework
   virtual void Initialize ();
   virtual void Draw ();
   virtual bool Draw_Last() { return AddCollider; }
+  virtual bool InViewport() { return true; }
 
   std::vector <std::pair <vec2, vec2>>& Get_Edges ();
   void Generate_Height_Points ();

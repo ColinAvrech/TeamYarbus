@@ -181,7 +181,8 @@ namespace Framework
       //Terrain. Simple collision table using enums.
       Grid2D<Material> Terrain;
       //Water and moisture content
-      Grid2D<float> WaterMap;
+      //Grid2D<float> WaterMap;
+      int *y_offset;
       
       //Stores the time spent not updating for each column
       //float *dt_Tracker = nullptr;

@@ -28,6 +28,7 @@ namespace Framework
     virtual void Initialize();
     virtual void Draw();
     virtual bool Draw_Last() { return false; }
+    virtual bool InViewport() { return true; }
 
     void Generate_Height_Points();
     void Generate_Vertices();

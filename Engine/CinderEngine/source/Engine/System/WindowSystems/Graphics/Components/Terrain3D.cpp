@@ -191,10 +191,9 @@ namespace Framework
         vertices.push_back(surfaceNormal.x);
         vertices.push_back(surfaceNormal.y);
         vertices.push_back(surfaceNormal.z);
-      }/*
-      else
-        std::cout << i << std::endl;*/
+      }
     }
+    height_points.clear();
   }
 
   void Terrain3D::Generate_Buffers()

@@ -31,6 +31,7 @@ namespace Framework
     virtual void Initialize ();
     virtual void Draw ();
     virtual bool Draw_Last() { return false; }
+    virtual bool InViewport() { return true; }
 
     void OnApplicationPause (PauseEvent* pause);
 

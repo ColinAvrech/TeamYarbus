@@ -79,7 +79,7 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, -700, -3200],
+			Vec3 Translation = [0, -800, -2560],
 			Vec3 Scale = [10000, 300, 640],
 			Quat Rotation = [0, 0, 0, 1],
 		},
@@ -90,7 +90,7 @@ Level =
       int MapSize = 128,
       int BaseHeight = 10,
       int PeakHeight = 20,
-      int Passes = 3,
+      int Passes = 2,
       int Waves = 5,
       int Water = 5,
       Vec4 Color1 = [0.945, 0.725, 0.502, 1],
@@ -98,37 +98,37 @@ Level =
       bool AddCollider = true,
 		},
   },
-  Cog = 
+ Cog = 
+{
+	LinkId = 
 	{
-		LinkId = 
-		{
-			uint Id = 3,
-		},
-		Named = 
-		{
-			string Name = "Background",
-		},
-		Transform = 
-		{
-			Vec3 Translation = [0, -200, -1280],
-			Vec3 Scale = [2560, 32, 1280],
-			Quat Rotation = [0, 0, 0, 1],
-		},
-		Terrain3D = 
-		{
-      string MapPreset = "Terrain_EasySlope",
-      bool Enabled = true,
-      int MapSize = 256,
-      int BaseHeight = 10,
-      int PeakHeight = 20,
-      int Passes = 5,
-      int Waves = 5,
-      int Water = 5,
-      Vec4 Color1 = [0.945, 0.725, 0.502, 1],
-	  Vec4 Color2 = [0.54, 0.603, 0.463, 1],
-      bool AddCollider = true,
-		},
-  },
+		uint Id = 3,
+	},
+	Named = 
+	{
+		string Name = "Background",
+	},
+	Transform = 
+	{
+		Vec3 Translation = [4500, -300, -1280],
+		Vec3 Scale = [3840, 200, 1280],
+		Quat Rotation = [0, 0, 0, 1],
+	},
+	Terrain3D = 
+	{
+     string MapPreset = "Terrain_EasySlope",
+     bool Enabled = true,
+     int MapSize = 128,
+     int BaseHeight = 10,
+     int PeakHeight = 20,
+     int Passes = 3,
+     int Waves = 5,
+     int Water = 5,
+     Vec4 Color1 = [0.945, 0.725, 0.502, 1],
+     Vec4 Color2 = [0.54, 0.603, 0.463, 1],
+     bool AddCollider = true,
+	},
+ },
   Cog = 
 	{
 		LinkId = 
@@ -142,17 +142,17 @@ Level =
 		Transform = 
 		{
 			Vec3 Translation = [0, 0, 0],
-			Vec3 Scale = [1280, 64, 640],
+			Vec3 Scale = [128, 64, 640],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Terrain2D = 
 		{
-      string MapPreset = "Terrain_EasySlope",
+      string MapPreset = "JaggedAF2",
       bool Enabled = true,
       int MapSize = 128,
       int BaseHeight = 10,
       int PeakHeight = 20,
-      int Passes = 5,
+      int Passes = 1,
       int Waves = 5,
       int Water = 5,
       Vec4 Color1 = [0, 0, 0, 1],

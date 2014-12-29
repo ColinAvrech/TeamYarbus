@@ -69,6 +69,12 @@ namespace Framework
     int segments = 10;
     float length;
 
+    //object bounds
+    float bound_l;
+    float bound_r;
+    float bound_t;
+    float bound_b;
+
     void Make_Tree0(float x1, float y1, float length1, float angle1, int depth, float rad, unsigned parent = 0);
     void Make_Tree1(float x1, float y1, float x2, float y2, float angle, int depth, int branchCount);
     void Make_Tree2(float x1, float y1, float length, float angle, int depth, float rad, unsigned parent = 0);
@@ -87,6 +93,8 @@ namespace Framework
     //call for adding a line
     unsigned Add_Branch(float x1, float y1, float x2, float y2, float rad, unsigned parent = 0);
     void Generate_Buffers ();
+    void CalculateBounds();
+    bool InViewport();
   };
 }
 

@@ -176,8 +176,10 @@ namespace Framework
     // DEBUG DRAW
     if (useDebugDraw)
     {
+      glEnable(GL_BLEND);
       THERMODYNAMICS->Draw ();
       PHYSICS->Render ();
+      ResetBlendMode();
     }
   }
 

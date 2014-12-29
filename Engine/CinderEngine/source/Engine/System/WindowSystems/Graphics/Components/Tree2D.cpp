@@ -26,6 +26,9 @@ namespace Framework
 {
   DefineComponentName (Tree2D);
 
+  static std::vector<float> joints_x;
+  static std::vector<float> joints_y;
+
   static float myrand (float R)
   {
     return (2 * R * rand ()) / RAND_MAX - R;
@@ -49,8 +52,8 @@ namespace Framework
 
     if (vbo)
     {
-      delete vbo;
-      vbo = nullptr;
+      //delete vbo;
+      //vbo = nullptr;
     }
 
     if (tree)
@@ -143,22 +146,54 @@ namespace Framework
     }*/
 
     Generate_Buffers();
+    CalculateBounds();
+    //treeMesh.clear();
   }
 
+  bool Tree2D::InViewport()
+  {
+    //Object bounds
+    glm::vec2 plt = (glm::vec2)gameObject->Transform->GetScale() * glm::vec2(bound_l, bound_t) + (glm::vec2)gameObject->Transform->GetPosition();
+    glm::vec2 prb = (glm::vec2)gameObject->Transform->GetScale() * glm::vec2(bound_r, bound_b) + (glm::vec2)gameObject->Transform->GetPosition();
+    //Viewport bounds
+    glm::vec2 cam_pos = (glm::vec2)Camera::main->gameObject->Transform->GetPosition();
+    float fov = Camera::main->GetSize();
+
+    if (plt.x > cam_pos.x + fov || prb.x < cam_pos.x - fov ||
+      prb.y > cam_pos.y + fov || plt.y < cam_pos.y - fov)
+      return false;
+    //Otherwise
+    return true;
+
+  }
 
   void Tree2D::Generate_Buffers ()
   {
     shader = Resources::RS->Get_Shader("Tree");
     vao = new VAO();
-    vbo = new VBO(treeMesh.size() * sizeof(float), treeMesh.data());
+    vbo = new VBO(treeMesh.size() * sizeof(float), treeMesh.data(), GL_STATIC_DRAW);
+
     GLint posAttrib = shader->attribLocation("position");
     shader->enableVertexAttribArray(posAttrib);
     shader->vertexAttribPtr(posAttrib, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
     vao->unbindVAO();
   }
 
+  void Tree2D::CalculateBounds()
+  {
+    bound_r = *std::max_element(joints_x.begin(), joints_x.end());
+    bound_l = *std::min_element(joints_x.begin(), joints_x.end());
+    bound_t = *std::max_element(joints_y.begin(), joints_y.end());
+    bound_b = *std::min_element(joints_y.begin(), joints_y.end());
+    joints_x.clear();
+    joints_y.clear();
+  }
+
   void Tree2D::Draw ()
   {
+    if (!InViewport())
+      return;
+
     glDisable(GL_BLEND);
     shader->Use();
     vao->bindVAO();
@@ -506,6 +541,9 @@ namespace Framework
 
   unsigned Tree2D::Add_Branch(float x1, float y1, float x2, float y2, float rad, unsigned parent)
   {
+    joints_x.push_back(x1);
+    joints_y.push_back(y1);
+
     glm::vec2 dis(y2 - y1, x1 - x2);
 
     float _x;

@@ -27,6 +27,7 @@ namespace Framework
     virtual void Initialize () {}
     virtual void Serialize (Serializer::DataNode* data) {}
     virtual bool Draw_Last() { return false; }
+    virtual bool InViewport() { return true; }
 
     // creates the effect with desired num of particles, (0 means default for the effect)
     virtual bool initialize (size_t numParticles) = 0;
