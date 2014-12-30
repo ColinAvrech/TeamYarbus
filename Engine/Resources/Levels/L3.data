@@ -142,14 +142,14 @@ Level =
 		Transform = 
 		{
 			Vec3 Translation = [0, 0, 0],
-			Vec3 Scale = [128, 64, 640],
+			Vec3 Scale = [256, 64, 640],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Terrain2D = 
 		{
       string MapPreset = "JaggedAF2",
       bool Enabled = true,
-      int MapSize = 128,
+      int MapSize = 256,
       int BaseHeight = 10,
       int PeakHeight = 20,
       int Passes = 1,
@@ -180,7 +180,7 @@ Level =
 	},
 	Transform = 
 	{
-		Vec3 Translation = [0, 8.5, 0],
+		Vec3 Translation = [-10, 4, 0],
 		Vec3 Scale = [10, 1, 1],
 		Quat Rotation = [0, 0, 1, 0],
 	},
@@ -188,10 +188,10 @@ Level =
 	FluidBody = 
 	{
 		float k = 0.025,
-		float d = 0.0025,
-		float Spread = 0.25,
-		Vec4 Color1 = [0.25, 0.5, 1, 1],
-		Vec4 Color2 = [0, 0, 0, 0],
+		float d = 0.025,
+		float Spread = 0.025,
+		Vec4 Color1 = [0.25, 0.5, 1, 0.5],
+		Vec4 Color2 = [0, 0, 0, 1],
 	},
   },
   Cog = 

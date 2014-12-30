@@ -54,17 +54,6 @@ namespace Framework
       int PeakHeight;
       int WaterDepth;
 
-      //Private Enum
-      enum FlowDirection
-      {
-        NONE,
-        FLOW_LEFT,
-        FLOW_RIGHT,
-        PEAK,
-        TROUGH,
-        WATER_BODY
-      };
-
       //Private Member Functions
       //Layering
       void AddSoil();
@@ -74,12 +63,10 @@ namespace Framework
       //Helper functions
       void GenerateHeightMap(float **Array, int base, int height, const std::string& File = "");
       void SettleWater();
-      FlowDirection EvaluateSlope(const float *map, unsigned int pos);
-      std::pair<int, unsigned> EvaluateSpread(const float *map, unsigned int pos);
-      void Evaluate_Flat(float *&map, unsigned int pos);
-      void FlowLeft(float *&map, unsigned int start_pos);
-      void FlowRight(float *&map, unsigned int start_pos);
-      void Make_Rain(float *&map, unsigned int pos);
+
+      //Store these in a temporary buffer
+      void Find_Valleys();
+      
       bool ReadFile(int **Buffer, const std::string& _File);
     }; //class terrain
 

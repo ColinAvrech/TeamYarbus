@@ -57,20 +57,9 @@ namespace Framework
 
 	int EcoSystem::Evaluate_Compatibility(int pos)
 	{
-		//int i;
-		//for ( i = pos; i >= 0 || tree_list[i] == OPEN || tree_list[i] == GRASS; --i);
-
-		//int AvailableSpace = pos - i;
-		////HACK!!!
-		//if (AvailableSpace > 3 && water[pos] > 0.5f && water[pos] < 0.7f)
-		//  return TREE_5;
-
-		//else if (AvailableSpace <= 3 && water[pos] > 0.1f && water[pos] < 0.9f)
-		//  return GRASS;
-
-		//else
-		//  return OPEN;
-		return 0;
+    //if slope is too steep
+    if (std::abs(terrain[pos] - terrain[pos - 1]) > 1 || std::abs(terrain[pos] - terrain[pos + 1]) > 1)
+      return OPEN;
 	}
 
 	int EcoSystem::GetTotalObjects()
@@ -96,7 +85,7 @@ namespace Framework
       //tree_list[i] = Evaluate_Compatibility(i);
       //Hack!!
       //if (tree_list[i] != OPEN)
-      /*if (i % (rand() % 6 + 2) == 0 && terrain[i] <= 72)
+   /*   if (i % (rand() % 6 + 2) == 0 && terrain[i] <= 72)
         GenerateType(
         offsetX + Translation.x,
         offsetY + Translation.y,

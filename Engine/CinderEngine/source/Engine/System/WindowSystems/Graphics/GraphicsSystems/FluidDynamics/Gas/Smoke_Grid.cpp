@@ -71,7 +71,7 @@ namespace Framework
     THERMODYNAMICS->VelocityMap_PrevX.fill (0);
     THERMODYNAMICS->VelocityMap_PrevY.fill (0);
     THERMODYNAMICS->DensityMap.fill (0);
-    THERMODYNAMICS->DensityMap_Prev.fill (0);
+    //THERMODYNAMICS->DensityMap_Prev.fill (0);
   }
 
   INT32 Smoke_Grid::allocate_data ()
@@ -182,7 +182,7 @@ namespace Framework
     int i, j, size = (Grid_Size + 2)*(Grid_Size + 2);
     THERMODYNAMICS->VelocityMap_PrevX.fill (0);
     THERMODYNAMICS->VelocityMap_PrevY.fill (0);
-    THERMODYNAMICS->DensityMap_Prev.fill (0);
+    //THERMODYNAMICS->DensityMap_Prev.fill (0);
 
     if (!mouse_down [0] && !mouse_down [1]) return;
 

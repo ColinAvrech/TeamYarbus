@@ -54,7 +54,7 @@ namespace Framework
     float *leftDeltas;
     float *rightDeltas;
 
-    void Splash(unsigned int index, float speed);
+    void Splash(unsigned int index, float speed, float mass);
     void DepthUpdate(const float dt);
     void WaveUpdate(const float dt);
   };

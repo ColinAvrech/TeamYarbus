@@ -87,9 +87,9 @@ namespace Framework
     //Pine stuff
     void Make_Pine_Branch(float x1, float y1, float length1, float angle1, int depth, int curve, float rad, unsigned parent = 0);
     //Grass stuff
-    void Make_Grass_Stalk(float x1, float y1, float length1, float angle1, int depth, int curve, unsigned parent = 0);
+    //void Make_Grass_Stalk(float x1, float y1, float length1, float angle1, int depth, int curve, unsigned parent = 0);
     void Make_Grass_Blade(float x1, float y1, float length, float angle, int depth, float width, unsigned parent = 0);
-    void Make_Stalk_Head(float x1, float y1, float length, float angle);
+    //void Make_Stalk_Head(float x1, float y1, float length, float angle);
     //call for adding a line
     unsigned Add_Branch(float x1, float y1, float x2, float y2, float rad, unsigned parent = 0);
     void Generate_Buffers ();

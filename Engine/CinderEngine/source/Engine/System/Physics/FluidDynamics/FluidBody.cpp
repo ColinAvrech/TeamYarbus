@@ -98,7 +98,7 @@ namespace Framework
       time = 0.0f;
       int rand_index = rand() % height_points.size();
       int index1 = height_points.size() * 0.5f;
-      Splash(rand_index, -10.f);
+      Splash(rand_index, -10.f, 0.01f);
     }
 
     WaveUpdate(dt);
@@ -191,10 +191,10 @@ namespace Framework
     vao->unbindVAO();
   }
 
-  void FluidBody::Splash(unsigned int index, float speed)
+  void FluidBody::Splash(unsigned int index, float speed, float mass)
   {
     if (index < speeds.size())
-      speeds[index] += speed / scale.y;
+      speeds[index] = speed * mass;
   }
 
   void FluidBody::DepthUpdate(const float dt)

@@ -24,6 +24,8 @@ namespace Framework
       static const float M_a = 28.97f;     //Kg.Kmol-1   | Molar mass of air
 
       //Properties of specific materials--------------------
+      //Viscosity
+      static const float visc_Air = 0.0000181f;
       //Common densities
       static const float p_Air   = 1.225f;   //Kg/m^3 | Density of air at sea level at 15C.
       static const float p_Water = 999.97f;   //Kg/m^3

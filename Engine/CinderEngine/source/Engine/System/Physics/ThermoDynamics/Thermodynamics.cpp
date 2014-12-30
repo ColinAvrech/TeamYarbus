@@ -25,8 +25,6 @@
 #include "EventSystem.h" 
 #include "GameEvent.h"
 
-#define GRID_Y_SIZE 64
-
 namespace Framework
 {
   namespace Physics
@@ -79,6 +77,16 @@ namespace Framework
 
       Allocated = false;
 
+      //Initialize solver
+      solver.Obstacles = &Terrain;
+      solver.y_offset = y_offset;
+      //solver._dens = &TemperatureMap;
+      //solver._dens_prev = &TemperatureMap_Prev;
+      //solver._u = &VelocityMapX;
+      //solver._u_prev = &VelocityMap_PrevX;
+      //solver._v = &VelocityMapY;
+      //solver._v_prev = &VelocityMap_PrevY;
+
       //SpawnThreads();
 
       std::cout << "Thermodynamics Initialized." << std::endl;
@@ -90,6 +98,7 @@ namespace Framework
       if (obj)
       {
         glm::ivec2 sub = obj->GetGridPosition();
+        sub.y -= y_offset[sub.x];
         FireMap.push_back(std::make_pair(sub, obj));
         Terrain.Set(sub.x, sub.y, Physics::Material(obj->material_type));
         TemperatureMap.Set(sub.x, sub.y, obj->initTemp);
@@ -113,6 +122,9 @@ namespace Framework
     // Called every frame
     void ThermodynamicsSystem::Update(const float& dt)
     {
+      //test
+      //TemperatureMap.Set(65, 5, 10000.f);
+      //VelocityMapY.Set(65, 5, 2.f);
       if (paused)
         return;
 
@@ -120,16 +132,23 @@ namespace Framework
       float fov = Camera::main->GetSize();
       //if zoomed out by more than 128 stop updating
       //as its most likely a cutscene
-      if (fov > 64)
-        return;
-      int start = center - fov;
+      //if (fov > 64)
+      //  return;
+      int start = center - 64;
       if (start < 0)
         start = 0;
-      int end = center + fov;
+      int end = start + 128;
       if (end >= MapSize.x)
         end = MapSize.x - 1;
 
-      UpdateTemp(start, end, dt);
+      glm::ivec2 _start(start, 0);
+      glm::ivec2 _end(end, GRID_Y_SIZE);
+
+      solver.setLimits(_start, _end);
+
+      solver.velStep(&VelocityMapX, &VelocityMapY, &VelocityMap_PrevX, &VelocityMap_PrevY, 1.f, dt);
+      solver.densStep(&TemperatureMap, &TemperatureMap_Prev, &VelocityMapX, &VelocityMapY, 0.f, dt);
+      //UpdateTemp(start, end, dt);
       UpdateFire(dt);
     }
 
@@ -174,39 +193,40 @@ namespace Framework
     }
 
     // Setters
-    void ThermodynamicsSystem::SetMapSize(int size)
+    void ThermodynamicsSystem::SetMapSize(int size_x, int size_y)
     {
       Clear();
       //Scan level
-      MapSize = { size, GRID_Y_SIZE };
+      MapSize = { size_x, size_y };
       std::cout << "Grid " << MapSize.x << "x " << MapSize.y << std::endl;
       MapOffset = { -MapSize.x / 2, MapSize.y / 2 };
       AtmosphericTemperature = 300.f;
       //Allocate heatmap
       TemperatureMap.allocate(MapSize.x, MapSize.y);
       TemperatureMap.fill(300.f);
+      TemperatureMap_Prev.allocate(MapSize.x, MapSize.y);
+      TemperatureMap_Prev.fill(300.f);
 
       //Allocate Oxygen/Density map
       DensityMap.allocate(MapSize.x + 2, MapSize.y + 2);
-      DensityMap_Prev.allocate(MapSize.x + 2, MapSize.y + 2);
       DensityMap.fill(Constant::K_Air);
-      DensityMap_Prev.fill(Constant::K_Air);
 
       //Allocate Velocity map
       VelocityMapX.allocate(MapSize.x + 2, MapSize.y + 2);
       VelocityMapY.allocate(MapSize.x + 2, MapSize.y + 2);
       VelocityMap_PrevX.allocate(MapSize.x + 2, MapSize.y + 2);
       VelocityMap_PrevY.allocate(MapSize.x + 2, MapSize.y + 2);
-      VelocityMapX.fill({ 0 });
-      VelocityMapY.fill({ 0 });
-      VelocityMap_PrevX.fill({ 0 });
-      VelocityMap_PrevY.fill({ 0 });
+      VelocityMapX.fill({ 0.f });
+      VelocityMapY.fill({ 0.f });
+      VelocityMap_PrevX.fill({ 0.f });
+      VelocityMap_PrevY.fill({ 0.f });
 
       //Allocate Terrain map
       Terrain.allocate(MapSize.x, MapSize.y);
       Terrain.fill(AIR);
 
       y_offset = new int[MapSize.x];
+      solver.y_offset = y_offset;
       //WaterMap.allocate(MapSize.x, MapSize.y);
       //WaterMap.fill(0.0f);
 
@@ -215,6 +235,8 @@ namespace Framework
         dt_Tracker[i] = 0.0f;*/
 
       Allocated = true;
+      //test
+      TemperatureMap.Set(65, 1, Const::BT_Organics);
     }
 
     void ThermodynamicsSystem::ToggleAutoDissipation()
@@ -307,7 +329,7 @@ namespace Framework
     //Update temperatures
     void ThermodynamicsSystem::UpdateTemp(const int& start_index, const int& end_index, const float &dt)
     {
-      TemperatureMap.Set(50, 30, 10000.f);
+      //TemperatureMap.Set(65, 1, Const::BT_Organics);
       //std::cout << start_index << "\n";
       //std::cout << "Updated Temperature/Density/Pressure" << std::endl;
       for (int j = 0; j < MapSize.y; ++j)
@@ -479,6 +501,7 @@ namespace Framework
       if (Allocated)
       {
         TemperatureMap.fill(300.f);
+        TemperatureMap_Prev.fill(300.f);
 
         DensityMap.fill(Const::p_Air);
 
@@ -508,19 +531,22 @@ namespace Framework
     void ThermodynamicsSystem::Clear()
     {
       TemperatureMap.clean();
+      TemperatureMap_Prev.clean();
       DensityMap.clean();
-      DensityMap_Prev.clean();
       VelocityMapX.clean();
       VelocityMap_PrevX.clean();
       VelocityMapY.clean();
       VelocityMap_PrevY.clean();
       Terrain.clean();
-      //WaterMap.clean();
+      
       fireGroups.clear();
       FireMap.clear();
 
       if (y_offset != nullptr)
         delete[] y_offset;
+
+      y_offset = nullptr;
+      solver.y_offset = nullptr;
 
       Allocated = false;
     }
@@ -669,7 +695,7 @@ namespace Framework
           for (int j = h_start; j < h_end; ++j)
           {
             glColor4f(TemperatureMap.Get(j, i) / Constant::BT_Organics, 0.f, 0.f,
-              TemperatureMap.Get(j, i) / Constant::BT_Organics * 0.4f);
+              TemperatureMap.Get(j, i) / Constant::BT_Organics);
             glVertex2f(j - (MapSize.x * 0.5f) + 2, i - 0 + y_offset[j]);
             glVertex2f(j - (MapSize.x * 0.5f) + 3, i - 0 + y_offset[j]);
             glVertex2f(j - (MapSize.x * 0.5f) + 3, i + 1 + y_offset[j]);

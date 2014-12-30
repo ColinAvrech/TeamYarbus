@@ -17,7 +17,7 @@
 #pragma region Includes
 
 #pragma endregion
-
+#define GRID_Y_SIZE 32
 
 namespace Framework
 {
@@ -113,7 +113,7 @@ namespace Framework
 	    int GetCellMaterial(int x, int y);
 
       // Setters
-      void SetMapSize(int size);
+      void SetMapSize(int size_x, int size_y = GRID_Y_SIZE);
       void ToggleAutoDissipation();
       float SetCellTemperature(const float& x, const float& y, const float& temp, const float& dt);
       void SetCellVelocity (const int x, const int y, vec2 v);
@@ -170,9 +170,9 @@ namespace Framework
 
       //Temperature Map. Temperature is stored in Kelvin.
       Grid2D<float> TemperatureMap;
+      Grid2D<float> TemperatureMap_Prev;
       //Oxygen density. Stored in Kg/m^2.
       Grid2D<float> DensityMap;
-      Grid2D<float> DensityMap_Prev;
       //Velocity Map. Stores 2d vectors.
       Grid2D<float> VelocityMapX;
       Grid2D<float> VelocityMap_PrevX;

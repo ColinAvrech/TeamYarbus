@@ -96,11 +96,25 @@ namespace Framework
           _data [i] += rhs._data [i];
         return *this;
       }
+
       Grid2D<T>& operator*=(T rhs)
       {
         for (unsigned int i = 0; i < _length; ++i)
           _data [i] *= rhs;
         return *this;
+      }
+
+      void addAndMultiply(const glm::ivec2 &start, const glm::ivec2 &end, const Grid2D<T> &add, const float v)
+      {
+        for (unsigned int i = start.x; i < end.x; ++i)
+        {
+          for (unsigned int j = start.y; j < end.y; ++j)
+          {
+            T value = this->Get(i, j);
+            value += (add.Get(i, j) * v);
+            this->Set(i, j, value);
+          }
+        }
       }
 
       //Load ?!?

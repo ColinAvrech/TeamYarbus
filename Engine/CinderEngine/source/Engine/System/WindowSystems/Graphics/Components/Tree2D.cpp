@@ -112,25 +112,6 @@ namespace Framework
     Make_TreeLong(0, -0.1f, 0.5f, 2.0, 6, segments, 10);
       break;
     case Framework::TREE_5:
-      tree = new FractalGenerator ();
-      tree->Generate_Tree ();
-      shader = Resources::RS->Get_Shader ("Tree");
-      tree->Create_Mesh (tree->getTotalLines (), &treeMesh, &edges);
-
-      fsm = gameObject->FireGroup;
-      if (fsm)
-      {
-        FireStarter* fs;;
-        for (unsigned i = 0; i < edges.size (); ++i)
-        {
-          //set the pointer to a new firestarter with the offset position
-          fs = new FireStarter(glm::mat2 (gameObject->Transform->GetModelMatrix ()) * edges.at (i), fsm);
-          fs->manager = fsm;
-          fs->material_type = GRASS;
-          fs->initTemp = 400.0f;
-          fsm->AddFireStarter(fs);
-        }
-      }
       break;
 
     case Framework::TREE_SHORT_GRASS:
@@ -313,17 +294,17 @@ namespace Framework
      
       x2 = x1 + length * (2 * (SCALE + 3*myrand(RAND))) * cos(angle - angle2);
       
-      if (depth < segments - 2)
+      if (depth < segments - 1)
       {
         //Add_Branch(x1, y1, x2, y2);
-        Make_Tree2(x1, y1, length, angle - 1.2f * angle2, depth / 3, newrad, parent);
+        Make_Tree2(x1, y1, length * 0.75, angle - 1.2f * angle2, depth / 3, newrad / 2, parent);
 
         x2 = x1 + length * (2 * (SCALE + 3 * myrand(RAND))) * cos(angle + angle2);
 
         y2 = y1 + length * (2 * (SCALE + myrand(RAND))) * sin(-((15 - depth) / 10.f)*angle);
 
         //Add_Branch(x1, y1, x2, y2);
-        Make_Tree2(x1, y1, length, angle + 1.2f * angle2, depth / 3, newrad, parent);
+        Make_Tree2(x1, y1, length * 0.75, angle + 1.2f * angle2, depth / 3, newrad / 2, parent);
       }
     }
   }
@@ -442,8 +423,7 @@ namespace Framework
     float ANGLE = 0.2f;
     float RAND = 0.2f;
     int tuft = 10 + rand() % 10;
-    //if (tuft >= 15)
-      //Make_Grass_Stalk(x1, y1, length, 1.5f, 2 + rand() % 3, rand() % 2);
+
     float angle = 2.f + myrand(ANGLE);
     float x = -1.f;
     for (int i = 0; i < tuft - 1; ++i)
@@ -470,39 +450,6 @@ namespace Framework
         decay_rate = 0.f;
       Make_Grass_Blade(x2, y2, length, angle + myrand(0.3f), depth - 1, width * decay_rate, parent);
     }
-  }
-
-  void Tree2D::Make_Grass_Stalk(float x1, float y1, float length, float angle, int depth, int curve, unsigned parent)
-  {
-    float SCALE = 1.0f;
-    float ANGLE = 0.2f;
-    float RAND = 0.1f;
-    if (depth > 0)
-    {
-      float x2 = x1 + length * cos(angle);
-      float y2 = y1 + length * sin(angle);
-
-      parent = Add_Branch(x1, y1, x2, y2, base_radius, parent);
-
-      x1 = x1 + length * cos(angle);
-      y1 = y1 + length * sin(angle);
-      float angle2;
-      if (curve == 0)
-        angle2 = angle + ANGLE + myrand(RAND);
-      else
-        angle2 = angle - ANGLE + myrand(RAND);
-
-      Make_Grass_Stalk(x1, y1, length, angle2, depth - 1, curve, parent);
-    }
-    else
-    {
-      Make_Stalk_Head(x1, y1, length / 2, angle);
-    }
-  }
-
-  void Tree2D::Make_Stalk_Head(float x1, float y1, float length, float angle)
-  {
-    //Make a fluffy head
   }
 
   void Tree2D::Make_Pine_Branch(float x1, float y1, float length, float angle, int depth, int curve, float rad, unsigned parent)
@@ -548,7 +495,7 @@ namespace Framework
 
     float _x;
     float _y;
-
+    //If it's the first branch in the tree calculate offsets
     if (parent == 0)
     {
       _x = x1 + dis.x * rad;
@@ -561,7 +508,7 @@ namespace Framework
       treeMesh.push_back(_x);
       treeMesh.push_back(_y);
     }
-
+    //If not, use offsets from parent branch
     else
     {
       _x = treeMesh[parent - 2];
@@ -574,6 +521,7 @@ namespace Framework
       treeMesh.push_back(_x);
       treeMesh.push_back(_y);
     }
+    //points 3 and 4 are not dependent on any other points
     //pt3
     treeMesh.push_back(x2 - dis.x * rad * decay_rate);
     treeMesh.push_back(y2 - dis.y * rad * decay_rate);
@@ -589,6 +537,7 @@ namespace Framework
     treeMesh.push_back(x2 + dis.x * rad * decay_rate);
     treeMesh.push_back(y2 + dis.y * rad * decay_rate);
 
+    //return index of parent branch for future reference
     return treeMesh.size();
   }
 
