@@ -8,258 +8,123 @@
 */
 /******************************************************************************/
 
+//////////////////////////////////////////////////////////////////////////
+// Based on Jos Stam's Solver for Fluids (Real Time N-S Solver)
+// Reference:
+// http://www.dgp.toronto.edu/people/stam/reality/Research/pdf/GDC03.pdf
+//////////////////////////////////////////////////////////////////////////
+
 #include <Precompiled.h>
 #include "FluidSolver.h"
 
-#define SWAP(x0,x) {auto *tmp = x0; x0 = x; x = tmp;}
-#define NOT_OBSTACLE(x, y) y - y_offset[x] > 0 && Obstacles->Get(x, y) == AIR
-#define OFFSET(y) y_offset[i] - y_offset[y]
+#define IX(i,j) ((i)+(N+2)*(j))
+#define SWAP(x0,x) {float * tmp=x0;x0=x;x=tmp;}
+#define FOR_EACH_CELL for ( i=1 ; i<=N ; i++ ) { for ( j=1 ; j<=N ; j++ ) {
+#define END_FOR }}
 
 namespace Framework
 {
-  namespace Physics
+
+  // Constructor
+  FluidSolver::FluidSolver()
+  {}
+
+  // Destructor
+  FluidSolver::~FluidSolver()
+  {}
+
+  void FluidSolver::vel_step(int N, float * u, float * v, float * u0, float * v0, float visc, float dt)
   {
-    // Constructor
-    FluidSolver::FluidSolver()
-    {
-      /*_u = nullptr;
-      _u_prev = nullptr;
-      _dens = nullptr;
-      _dens_prev = nullptr;*/
-      Obstacles = nullptr;
-      y_offset = nullptr;
+    add_source(N, u, u0, dt); add_source(N, v, v0, dt);
+    SWAP(u0, u); diffuse(N, 1, u, u0, visc, dt);
+    SWAP(v0, v); diffuse(N, 2, v, v0, visc, dt);
+    project(N, u, v, u0, v0);
+    SWAP(u0, u); SWAP(v0, v);
+    advect(N, 1, u, u0, u0, v0, dt); advect(N, 2, v, v0, u0, v0, dt);
+    project(N, u, v, u0, v0);
+  }
 
-      start = glm::ivec2(0, 0);
-      end = glm::ivec2(0, 0);
+  void FluidSolver::dens_step(int N, float * x, float * x0, float * u, float * v, float diff, float dt)
+  {
+    add_source(N, x, x0, dt);
+    SWAP(x0, x); diffuse(N, 0, x, x0, diff, dt);
+    SWAP(x0, x); advect(N, 0, x, x0, u, v, dt);
+  }
+
+  void FluidSolver::project(int N, float * u, float * v, float * p, float * div)
+  {
+    int i, j;
+
+    FOR_EACH_CELL
+      div[IX(i, j)] = -0.5f*(u[IX(i + 1, j)] - u[IX(i - 1, j)] + v[IX(i, j + 1)] - v[IX(i, j - 1)]) / N;
+    p[IX(i, j)] = 0;
+    END_FOR
+      set_bnd(N, 0, div); set_bnd(N, 0, p);
+
+    lin_solve(N, 0, p, div, 1, 4);
+
+    FOR_EACH_CELL
+      u[IX(i, j)] -= 0.5f*N*(p[IX(i + 1, j)] - p[IX(i - 1, j)]);
+    v[IX(i, j)] -= 0.5f*N*(p[IX(i, j + 1)] - p[IX(i, j - 1)]);
+    END_FOR
+      set_bnd(N, 1, u); set_bnd(N, 2, v);
+  }
+
+  void FluidSolver::advect(int N, int b, float * d, float * d0, float * u, float * v, float dt)
+  {
+    int i, j, i0, j0, i1, j1;
+    float x, y, s0, t0, s1, t1, dt0;
+
+    dt0 = dt*N;
+    FOR_EACH_CELL
+      x = i - dt0*u[IX(i, j)]; y = j - dt0*v[IX(i, j)];
+    if (x<0.5f) x = 0.5f; if (x>N + 0.5f) x = N + 0.5f; i0 = (int)x; i1 = i0 + 1;
+    if (y<0.5f) y = 0.5f; if (y>N + 0.5f) y = N + 0.5f; j0 = (int)y; j1 = j0 + 1;
+    s1 = x - i0; s0 = 1 - s1; t1 = y - j0; t0 = 1 - t1;
+    d[IX(i, j)] = s0*(t0*d0[IX(i0, j0)] + t1*d0[IX(i0, j1)]) +
+      s1*(t0*d0[IX(i1, j0)] + t1*d0[IX(i1, j1)]);
+    END_FOR
+      set_bnd(N, b, d);
+  }
+
+  void FluidSolver::diffuse(int N, int b, float * x, float * x0, float diff, float dt)
+  {
+    float a = dt*diff*N*N;
+    lin_solve(N, b, x, x0, a, 1 + 4 * a);
+  }
+
+  void FluidSolver::lin_solve(int N, int b, float * x, float * x0, float a, float c)
+  {
+    int i, j, k;
+
+    for (k = 0; k < 20; k++) {
+      FOR_EACH_CELL
+        x[IX(i, j)] = (x0[IX(i, j)] + a*(x[IX(i - 1, j)] + x[IX(i + 1, j)] + x[IX(i, j - 1)] + x[IX(i, j + 1)])) / c;
+      END_FOR
+        set_bnd(N, b, x);
     }
+  }
 
-    // Destructor
-    FluidSolver::~FluidSolver()
-    {
-      //Do nothing
+  void FluidSolver::set_bnd(int N, int b, float * x)
+  {
+    int i;
+
+    for (i = 1; i <= N; i++) {
+      x[IX(0, i)] = b == 1 ? -x[IX(1, i)] : x[IX(1, i)];
+      x[IX(N + 1, i)] = b == 1 ? -x[IX(N, i)] : x[IX(N, i)];
+      x[IX(i, 0)] = b == 2 ? -x[IX(i, 1)] : x[IX(i, 1)];
+      x[IX(i, N + 1)] = b == 2 ? -x[IX(i, N)] : x[IX(i, N)];
     }
+    x[IX(0, 0)] = 0.5f*(x[IX(1, 0)] + x[IX(0, 1)]);
+    x[IX(0, N + 1)] = 0.5f*(x[IX(1, N + 1)] + x[IX(0, N)]);
+    x[IX(N + 1, 0)] = 0.5f*(x[IX(N, 0)] + x[IX(N + 1, 1)]);
+    x[IX(N + 1, N + 1)] = 0.5f*(x[IX(N, N + 1)] + x[IX(N + 1, N)]);
+  }
 
-    void FluidSolver::setLimits(const glm::ivec2& _start, const glm::ivec2& _end)
-    {
-      start = _start;
-      end = _end;
-    }
+  void FluidSolver::add_source(int N, float * x, float * s, float dt)
+  {
+    int i, size = (N + 2)*(N + 2);
+    for (i = 0; i < size; i++) x[i] += dt*s[i];
+  }
 
-    //Update density grid from a source grid
-    void FluidSolver::addSource(Grid2D<float> &x, Grid2D<float> &s, const float dt)
-    {
-      x.addAndMultiply(start, end, s, dt);
-    }
-
-    //Diffuse heat
-    void FluidSolver::diffuse(Grid2D<float> &x, Grid2D<float> &x0, float diff, const float dt)
-    {
-      int i, j, k;
-      float a = dt * diff * (x.getSize().x - 2) * (x.getSize().y - 2);
-
-      for (k = 0; k < 1; ++k)
-      {
-        for (i = start.x + 1; i < end.x - 1; ++i)
-        {
-          //offset in y direction to ensure not crossing bounds
-          for (j = start.y - y_offset[i] + 1; j < end.y - y_offset[i] - 1; ++j)
-          {
-            //if not in obstacle
-            if (j > 0 && Obstacles->Get(i, j) == AIR)
-            {
-              if (a == 0)
-                x.Set(i, j, x0.Get(i, j));
-              else
-              {
-                if (j + y_offset[i] - y_offset[i - 1] > 0 && j + y_offset[i] - y_offset[i + 1] > 0)
-                x.Set(i, j, (x0.Get(i, j) +
-                  a * (x.Get(i - 1, j + y_offset[i] - y_offset[i - 1]) +
-                  x.Get(i + 1, j + y_offset[i] - y_offset[i + 1]) +
-                  x.Get(i, j - 1) +
-                  x.Get(i, j + 1)))
-                  / (1 + 4 * a));
-              }
-            } //if not in obstacle
-          } //for vertical indices
-        } //for horizontal indices
-      } //for 10 passes
-    } //function diffuse
-
-    void FluidSolver::advect(Grid2D<float> &d, Grid2D<float> &d0, Grid2D<float> &u, Grid2D<float> &v, const float dt)
-    {
-      int i, j, i0, j0, i1, j1;
-      float x, y, s0, t0, s1, t1;
-      const int N_i = end.x - 1;
-      const int N_j = end.y - 1;
-
-      const int dt0_x = dt * (N_i - 1 - start.x);
-      const int dt0_y = dt * (N_j - 1 - start.y);
-
-      for (i = start.x + 1; i < N_i; ++i)
-      {
-        for (j = start.y - y_offset[i] + 1; j < N_j - y_offset[i]; ++j)
-        {
-          //if not in obstacle
-          if (j > 0 && Obstacles->Get(i, j) == AIR)
-          {
-            x = i - dt0_x * u.Get(i, j);
-            y = j - dt0_y * v.Get(i, j);
-
-            if (x < 0.5f) x = 0.5f;
-            if (x > N_i + 0.5f) x = N_i + 0.5f;
-
-            i0 = (int)x;
-            i1 = i0 + 1;
-
-            if (y < 0.5f) y = 0.5f;
-            if (y > N_j + 0.5f) y = N_j + 0.5f;
-
-            j0 = (int)y;
-            j0 += y_offset[i];
-            j1 = j0 + 1;
-
-            s1 = x - i0;
-            s0 = 1 - s1;
-            t1 = y - j0;
-            t0 = 1 - t1;
-
-            //If none of the resulting cells are obstacles
-            if (
-                 NOT_OBSTACLE(i0, j0) &&
-                 NOT_OBSTACLE(i1, j1) &&
-                 NOT_OBSTACLE(i0, j1) &&
-                 NOT_OBSTACLE(i1, j0)
-              )
-            {
-              if (j0 - y_offset[i0] > 0 && j1 - y_offset[i0] > 0 && j0 - y_offset[i1] > 0 && j1 - y_offset[i1] > 0)
-              {
-                  d.Set(i, j,
-                    s0 * (t0 * d0.Get(i0, j0 - y_offset[i0]) +
-                    t1 * d0.Get(i0, j1 - y_offset[i0])) +
-                    s1 * (t0 * d0.Get(i1, j0 - y_offset[i1]) +
-                    t1 * d0.Get(i1, j1 - y_offset[i1])));
-              }
-              else
-              {
-                d.Set(i, j, d0.Get(i, j));
-              }
-            } //If none of the resulting cells are obstacles
-            //If one or more are obstacles
-            else
-            {
-              d.Set(i, j, d0.Get(i, j));
-            }
-          } //if not in obstacle
-        } //for vertical indices
-      } //for horizontal indices
-      //setBnd(b, d);
-    } //function advect
-
-    //Update density over a time step dt
-    void FluidSolver::densStep(Grid2D<float> *x, Grid2D<float> *x0, Grid2D<float> *u, Grid2D<float> *v, float diff, const float dt)
-    {
-      addSource(*x, *x0, dt);
-      SWAP(x0, x);
-      diffuse(*x, *x0, diff, dt);
-      SWAP(x0, x);
-      advect(*x, *x0, *u, *v, dt);
-    }
-
-    //Compute velocity field
-    void FluidSolver::project(Grid2D<float> &u, Grid2D<float> &v, Grid2D<float> &p, Grid2D<float> &div)
-    {
-      int i, j, k;
-      float h_u;
-
-      h_u = 1.0f / (end.x - 2 - start.x);
-
-      for (i = start.x + 1; i < end.x - 1; ++i)
-      {
-        for (j = start.y - y_offset[i] + 1; j < end.y - y_offset[i] - 1; ++j)
-        {
-          if (j > 0 && Obstacles->Get(i, j) == AIR)
-          {
-            if (j + OFFSET(i + 1) > 0 && j + OFFSET(i - 1) > 0)
-            {
-              div.Set(i, j,
-                -0.5f * h_u * (u.Get(i + 1, j + OFFSET(i + 1)) - u.Get(i - 1, j + OFFSET(i - 1)))
-                - 0.5f * h_u * (v.Get(i, j + 1) - v.Get(i, j - 1))
-                );
-              p.Set(i, j, 0.f);
-            }
-          } //if not obstacle
-        } //for vertical indices
-      } //for horizontal indices
-
-      //setBnd(0, div);
-      //setBnd(0, p);
-
-      for (k = 0; k < 1; ++k)
-      {
-        for (i = start.x + 1; i < end.x - 1; ++i)
-        {
-          for (j = start.y - y_offset[i] + 1; j < end.y - y_offset[i] - 1; ++j)
-          {
-            if (j > 0 && Obstacles->Get(i, j) == AIR)
-            {
-              if (j + OFFSET(i - 1) > 0 && j + OFFSET(i + 1) > 0)
-              {
-                p.Set(i, j,
-                  (div.Get(i, j) +
-                  p.Get(i - 1, j + OFFSET(i - 1)) +
-                  p.Get(i + 1, j + OFFSET(i + 1)) +
-                  p.Get(i, j - 1) +
-                  p.Get(i, j + 1))
-                  / 4);
-              }
-            } //if not in obstacle
-          } //for vertical indices
-        } //for horizontal indices
-        //setBnd(0, p);
-      } //for 10 passes
-
-      for (i = start.x + 1; i < end.x - 1; ++i)
-      {
-        for (j = start.y - y_offset[i] + 1; j < end.y - y_offset[i] - 1; ++j)
-        {
-          if (j > 0 && Obstacles->Get(i, j) == AIR && j + OFFSET(i + 1) > 0 && j + OFFSET(i - 1) > 0)
-          {
-            u.Set(i, j, 
-              u.Get(i, j) - 
-              0.5f * (
-              p.Get(i + 1, j + OFFSET(i + 1)) - 
-              p.Get(i - 1, j + OFFSET(i - 1))
-              ) / h_u);
-
-            v.Set(i, j,
-              v.Get(i, j) -
-              0.5f * (
-              p.Get(i, j + 1) -
-              p.Get(i - 1, j)
-              ) / h_u);
-          } //if not an obstacle
-        } //for vertical indices
-      } //for horizontal indices
-      //setBnd(1, u);
-    } //function project
-
-    void FluidSolver::velStep(Grid2D<float> *u, Grid2D<float> *v, Grid2D<float> *u0, Grid2D<float> *v0, float visc, const float dt)
-    {
-      addSource(*u, *u0, dt);
-      addSource(*v, *v0, dt);
-      SWAP(u0, u);
-      diffuse(*u, *u0, visc, dt);
-      SWAP(v0, v);
-      diffuse(*v, *v0, visc, dt);
-
-      project(*u, *v, *u0, *v0);
-      SWAP(u0, u);
-      SWAP(v0, v);
-      advect(*u, *u0, *u0, *v0, dt);
-      advect(*v, *v0, *u0, *v0, dt);
-
-      project(*u, *v, *u0, *v0);
-    }
-
-  } //namespace Physics
-} //namespace Framework 
+}

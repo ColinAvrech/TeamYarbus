@@ -78,14 +78,8 @@ namespace Framework
       Allocated = false;
 
       //Initialize solver
-      solver.Obstacles = &Terrain;
-      solver.y_offset = y_offset;
-      //solver._dens = &TemperatureMap;
-      //solver._dens_prev = &TemperatureMap_Prev;
-      //solver._u = &VelocityMapX;
-      //solver._u_prev = &VelocityMap_PrevX;
-      //solver._v = &VelocityMapY;
-      //solver._v_prev = &VelocityMap_PrevY;
+      //solver.Obstacles = &Terrain;
+      //solver.y_offset = y_offset;
 
       //SpawnThreads();
 
@@ -123,33 +117,37 @@ namespace Framework
     void ThermodynamicsSystem::Update(const float& dt)
     {
       //test
-      //TemperatureMap.Set(65, 5, 10000.f);
-      //VelocityMapY.Set(65, 5, 2.f);
+      TemperatureMap.Set(65, 1, 10000.f);
+      VelocityMapY.Set(65, 1, 100.f);
+      VelocityMapX.Set(80, 25, -100.f);
       if (paused)
         return;
 
       int center = Camera::main->gameObject->Transform->GetGridPosition().x;
       float fov = Camera::main->GetSize();
-      //if zoomed out by more than 128 stop updating
-      //as its most likely a cutscene
-      //if (fov > 64)
-      //  return;
-      int start = center - 64;
+
+      int start = center - 32;
       if (start < 0)
         start = 0;
-      int end = start + 128;
+      int end = start + 64;
       if (end >= MapSize.x)
         end = MapSize.x - 1;
 
       glm::ivec2 _start(start, 0);
       glm::ivec2 _end(end, GRID_Y_SIZE);
 
-      solver.setLimits(_start, _end);
+      //solver.setLimits(_start, _end);
 
-      solver.velStep(&VelocityMapX, &VelocityMapY, &VelocityMap_PrevX, &VelocityMap_PrevY, 1.f, dt);
-      solver.densStep(&TemperatureMap, &TemperatureMap_Prev, &VelocityMapX, &VelocityMapY, 0.f, dt);
-      //UpdateTemp(start, end, dt);
+      //solver.vel_step(126, VelocityMapX.GetArray(), VelocityMapY.GetArray(), VelocityMap_PrevX.GetArray(), VelocityMap_PrevY.GetArray(), 1.f, dt);
+      //solver.dens_step(126, TemperatureMap.GetArray(), TemperatureMap_Prev.GetArray(), VelocityMapX.GetArray(), VelocityMapY.GetArray(), 0.f, dt);
+      //solver.velStep(&VelocityMapX, &VelocityMapY, &VelocityMap_PrevX, &VelocityMap_PrevY, 1.f, dt);
+      //solver.densStep(&TemperatureMap, &TemperatureMap_Prev, &VelocityMapX, &VelocityMapY, 0.f, dt);
+      UpdateTemp(start, end, dt);
       UpdateFire(dt);
+
+      VelocityMap_PrevX.fill(0.f);
+      VelocityMap_PrevY.fill(0.f);
+      TemperatureMap_Prev.fill(0.f);
     }
 
     // Getters
@@ -226,7 +224,7 @@ namespace Framework
       Terrain.fill(AIR);
 
       y_offset = new int[MapSize.x];
-      solver.y_offset = y_offset;
+      //solver.y_offset = y_offset;
       //WaterMap.allocate(MapSize.x, MapSize.y);
       //WaterMap.fill(0.0f);
 
@@ -235,8 +233,6 @@ namespace Framework
         dt_Tracker[i] = 0.0f;*/
 
       Allocated = true;
-      //test
-      TemperatureMap.Set(65, 1, Const::BT_Organics);
     }
 
     void ThermodynamicsSystem::ToggleAutoDissipation()
@@ -500,8 +496,8 @@ namespace Framework
       AtmosphericTemperature = 300.f;
       if (Allocated)
       {
-        TemperatureMap.fill(300.f);
-        TemperatureMap_Prev.fill(300.f);
+        TemperatureMap.fill(0.f);
+        TemperatureMap_Prev.fill(0.f);
 
         DensityMap.fill(Const::p_Air);
 
@@ -546,7 +542,7 @@ namespace Framework
         delete[] y_offset;
 
       y_offset = nullptr;
-      solver.y_offset = nullptr;
+      //solver.y_offset = nullptr;
 
       Allocated = false;
     }

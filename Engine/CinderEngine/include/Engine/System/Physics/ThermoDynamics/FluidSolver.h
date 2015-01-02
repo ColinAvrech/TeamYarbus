@@ -13,39 +13,25 @@
 
 namespace Framework
 {
-  namespace Physics
+
+  class FluidSolver
   {
-    //Forward declaration
-    template<class T>
-    class Grid2D;
+  public:
+    FluidSolver();
+    ~FluidSolver();
 
-    class FluidSolver
-    {
-    public:
-      FluidSolver();
-      ~FluidSolver();
-      //Never updates the entire grid, only 128 x 32
-      void setLimits(const glm::ivec2 &start, const glm::ivec2 &end);
-      void velStep(Grid2D<float> *u, Grid2D<float> *v, Grid2D<float> *u0, Grid2D<float> *v0, float visc, const float dt);
-      void densStep(Grid2D<float> *x, Grid2D<float> *x0, Grid2D<float> *u, Grid2D<float> *v, float diff, const float dt);
+    void add_source(int N, float * x, float * s, float dt);
+    void set_bnd(int N, int b, float * x);
+    void lin_solve(int N, int b, float * x, float * x0, float a, float c);
+    void diffuse(int N, int b, float * x, float * x0, float diff, float dt);
+    void advect(int N, int b, float * d, float * d0, float * u, float * v, float dt);
+    void project(int N, float * u, float * v, float * p, float * div);
+    void dens_step(int N, float * x, float * x0, float * u, float * v, float diff, float dt);
+    void vel_step(int N, float * u, float * v, float * u0, float * v0, float visc, float dt);
 
-      //pointers are initialized in thermo::Initialize function
-      //Grid2D<float> *_u, *_v, *_u_prev, *_v_prev;
-      //Grid2D<float> *_dens, *_dens_prev; //actually temperature
-      Grid2D<Material> *Obstacles;
-      int *y_offset;
+  private:
 
-    private:
-      glm::ivec2 start;
-      glm::ivec2 end;
-
-      //Helper functions
-      void addSource(Grid2D<float> &x, Grid2D<float> &s, const float dt);
-      void diffuse(Grid2D<float> &x, Grid2D<float> &x0, float diff, const float dt);
-      void advect(Grid2D<float> &d, Grid2D<float> &d0, Grid2D<float> &u, Grid2D<float> &v, const float dt);
-      void project(Grid2D<float> &u, Grid2D<float> &v, Grid2D<float> &p, Grid2D<float> &div);
-    };
-  }
+  };
 }
 
 #endif
