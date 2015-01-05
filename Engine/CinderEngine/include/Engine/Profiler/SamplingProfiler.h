@@ -1,14 +1,12 @@
 #pragma once
-#include <Windows.h>
-#include <vector>
-using std::vector;
+#include "Precompiled.h"
 
 class SamplingProfiler
 {
 public:
   SamplingProfiler(const unsigned& p_maxsamples);
   ~SamplingProfiler();
-  
+
   void Exit();
 
   bool IsFull(){ return samples.size() == maxSamples; }

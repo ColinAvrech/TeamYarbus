@@ -1,5 +1,5 @@
-#include "SamplingProfiler.h"
-#include "DebugConsole.h"
+#include <Precompiled.h>
+#include "Profiler\SamplingProfiler.h"
 
 SamplingProfiler::SamplingProfiler(const unsigned& p_maxsamples) : maxSamples(p_maxsamples)
 {
@@ -13,7 +13,7 @@ SamplingProfiler::~SamplingProfiler()
 {
   if (!IsFull())
   {
-	  Exit();
+    Exit();
   }
 }
 
@@ -32,7 +32,7 @@ void SamplingProfiler::Exit()
   {
     if (!CloseHandle(mainThread))
       CheckForError();
-    
+  
     mainThread = nullptr;
   }
 
@@ -90,14 +90,14 @@ void SamplingProfiler::CheckForError() const
   }
 }
 
-#include "StackTrace.h"
+#include "Profiler\StackTrace.h"
 #include <algorithm>
 #include <fstream>
 using std::ofstream;
 void SamplingProfiler::ExportResults()
 {
-  float totalSamples = (float)min(maxSamples, samples.size());
-  InitSym();
+  float totalSamples = (float)std::min(maxSamples, samples.size());
+  Framework::InitSym();
 
   //Used for getting context information
   BOOL result;
@@ -118,7 +118,7 @@ void SamplingProfiler::ExportResults()
 
     // Fill the initial stack frame information
     stack_frame = STACKFRAME64();
-    FillStackFrame(stack_frame, *context);
+    Framework::FillStackFrame(stack_frame, *context);
 
     // Traverse the stack
     while (true)
@@ -177,7 +177,7 @@ void SamplingProfiler::ExportResults()
   std::sort(stats.begin(), stats.end(), StatCompare);
 
   string filename = "profilingreport";
-  char strBuffer[200];
+  char strBuffer[1024];
 
 #ifdef _DEBUG
   filename.append("_debug.txt");
@@ -185,23 +185,23 @@ void SamplingProfiler::ExportResults()
   filename.append("_release.txt");
 #endif
 
-  RedirectIOToConsole();
-  cout << "Generating file..." << endl;
+  std::cout << "Generating file..." << std::endl;
   ofstream myfile(filename.c_str());
   sprintf_s(strBuffer, "Total # of Samples: %u\n", (unsigned long long)totalSamples);
   myfile << strBuffer;
-  cout << strBuffer;
+  std::cout << strBuffer;
   for (auto stat : stats)
   {
     sprintf_s(strBuffer, "Function: %s, Percentage: %f\n", stat->first.c_str(), 100 *(stat->second / totalSamples));
     myfile << strBuffer;
-    cout << strBuffer;
+    std::cout << strBuffer;
     delete stat;
     stat = nullptr;
   }
   myfile.close();
 
-  cout << filename.c_str() << " complete!" << endl;
+  std::cout << filename.c_str() << " complete!" << std::endl;
   stats.clear();
   samples.clear();
 }
+

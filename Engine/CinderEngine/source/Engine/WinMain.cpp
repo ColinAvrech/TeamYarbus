@@ -52,7 +52,7 @@ void TestUEDisconnect(UpdateEvent* e)
 int main (void)
 {
 #ifdef _DEBUG
-  gProfiler = new SamplingProfiler(10000); // 10000 is the default max number of samples to collect. For a fuller profile increase this number and for a quicker report decrease it.
+  gProfiler = new SamplingProfiler(100000); // 10000 is the default max number of samples to collect. For a fuller profile increase this number and for a quicker report decrease it.
 
   bool launchFullScreen = false;
 
