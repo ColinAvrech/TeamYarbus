@@ -31,6 +31,18 @@ const int ClientHeight = 576;
 //  }
 //};
 
+#ifdef _DEBUG
+#include "Profiler\SamplingProfiler.h"
+
+SamplingProfiler* gProfiler;
+void CALLBACK ProfilerCallback(UINT, UINT, DWORD_PTR, DWORD_PTR, DWORD_PTR)
+{
+  if (gProfiler)
+  {
+    gProfiler->TakeSample();
+  }
+}
+#endif
 
 void TestUEDisconnect(UpdateEvent* e)
 {
@@ -40,6 +52,8 @@ void TestUEDisconnect(UpdateEvent* e)
 int main (void)
 {
 #ifdef _DEBUG
+  gProfiler = new SamplingProfiler(100000); // 10000 is the default max number of samples to collect. For a fuller profile increase this number and for a quicker report decrease it.
+
   bool launchFullScreen = false;
 
   EnableMemoryLeakChecking ();
@@ -107,7 +121,7 @@ int main (void)
   //OBJECTSYSTEM->LoadAllLevels("..//..//Resources//Levels//MasterLevelFile.txt");
 
   SplashScreenMusic->Play();
-  OBJECTSYSTEM->LoadLevel("L3");
+  OBJECTSYSTEM->LoadLevel("ZilchTestLevel");
   //OBJECTSYSTEM->ZilchLoadLevel(Zilch::String("ZilchTestLevel"));
 
  //Initialize Cheat Codes
@@ -140,6 +154,10 @@ int main (void)
 
   //! Free console
   CinderConsole::Free_Cinder_Console ();
+
+#ifdef _DEBUG
+  delete gProfiler;
+#endif
 
   return 0;
 }

@@ -43,7 +43,7 @@ namespace Framework
 		shader = Resources::RS->Get_Shader("Default");
 		color = { 1, 1, 1, 1 };
 		animated = false;
-    frameNumber = 0;
+		frameNumber = 0;
 
 		Width = Zilch::Real(texture->width / (WINDOWSYSTEM->Get_Width()-0.5f) * 2.0f);
 		Height = Zilch::Real(texture->height / (WINDOWSYSTEM->Get_Height() - 0.5f) * 2.0f);

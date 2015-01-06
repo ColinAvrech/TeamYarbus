@@ -54,6 +54,8 @@ namespace Framework
   void ZilchComponent::Initialize()
   {
 	  std::cout << "INITIALIZING ZILCH COMPONENT" << std::endl;
+
+
 	  /*
 	  //Get pointer to appropriate library
     library = &(ZILCH->lib);

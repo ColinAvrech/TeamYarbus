@@ -53,13 +53,13 @@ Level =
 	  {
 		  string Name = "Camera",
 	  },
-    Transform = 
+	  Transform = 
 	  {
 		  Vec3 Translation = [0, 0, -10],
 		  Vec3 Scale = [1, 1, 1],
 		  Quat Rotation = [0, 0, 0, 1],
 	  },
-    Camera = 
+      Camera = 
 		{
 			bool Enabled = true,
 			bool main = true,
@@ -69,7 +69,7 @@ Level =
 			float FarPlane = 100,
 			float Size = 128,
 		},
-  },
+    },
 	Cog = 
 	{
 		LinkId = 
@@ -83,8 +83,16 @@ Level =
 		Transform = 
 		{
 			Vec3 Translation = [0, 0, 0],
-			Vec3 Scale = [9, 9, 9],
+			Vec3 Scale = [10, 10, 10],
 			Quat Rotation = [0, 0, 0, 1],
+		},
+		Sprite = 
+		{
+			bool Visible = true,
+			bool AnimationActive = false,
+			string SpriteSource = "Default.png",
+			string Shader = "Default",
+			Vec4 Color = [0.5, 1, 1, 1],
 		},
 		NewZilch = 
 		{

@@ -129,7 +129,6 @@ namespace Framework
 	  Zilch::ExceptionReport report;
 	  Zilch::ExecutableState* state = ZILCH->GetDependencies();
 	  Zilch::Handle ActiveScript = state->AllocateDefaultConstructedHeapObject(ZilchClass, report, Zilch::HeapFlags::NonReferenceCounted);
-	  
 	  //Create an array of arguments
 	  Zilch::Array<Zilch::Type*> args;
 	  args.push_back(ZilchTypeId(GameObject*));
@@ -148,12 +147,8 @@ namespace Framework
 		  call.Invoke(report);
 	  }
 	  
-	  /*
-	  for (int i; i < ActiveScript.Type->GetFieldMap(false).count; ++i)
-	  {
-		  
-	  }
-	  */
+	  ZilchClass->AllFunctions;
+	  
 	  //Field* owner = ZilchClass->InstanceFields["Butts"];
 	  //ActiveScript.Type->AddRawField(owner);
 	  //LibraryBuilder::AddExtensionProperty((*library)->BoundTypes.findValue("GameObject", nullptr), String(name.c_str()), ActiveScript, nullptr, nullptr, MemberOptions::None);
@@ -165,13 +160,6 @@ namespace Framework
 	  //Function* ZilchInitialize = ZilchClass->FindFunction("Initialize", args, ZilchTypeId(void), Zilch::FindMemberOptions::None);
 	  //ErrorIf(ZilchInitialize == nullptr, "Failed to find function 'Initialize' on Zilch type ", ZilchClass);
 
-	  
-	  // The exception report stores any exceptions that may have occurred while executing code
-	  // Exceptions include accessing arrays out of bounds, dereferencing null, etc
-	  
-    //not sure about error handling
-    //ZilchComponent* zc = new ZilchComponent(name);
-    //zc->Initialize();
     return ActiveScript;
   }
 
@@ -188,8 +176,7 @@ namespace Framework
     }
     return NULL;
   }
-
-  //JOSH
+	
   Component* GameObject::ZGetComponent(Zilch::String component)
   {
 	  string stdcomp = component.c_str();

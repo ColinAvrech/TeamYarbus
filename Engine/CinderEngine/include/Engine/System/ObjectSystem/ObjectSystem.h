@@ -60,7 +60,6 @@ namespace Framework
     virtual const string GetName(){ return "ObjectSystem"; }
 
     GameObject* CreateObject();
-    GameObject* ZilchCreateObject();
 
     //!Destroy all the GOC. Used in final shutdown procedure.
     void DestroyObjectNow(GameObject* obj);
@@ -79,12 +78,9 @@ namespace Framework
     
 	  GameObject* FindObjectByName(Zilch::String name);
     GameObject* FindObjectByName (const char *name);
-
-    GameObject* ZilchFindObjectByID (Zilch::Integer id);
     GameObject* FindObjectByID(unsigned id);
 	  
     static unsigned LastGameObjectId;
-    static unsigned ZilchLastGameObjectId;
     std::string currentLevelName;
     static int currentLevel;
 
@@ -93,13 +89,11 @@ namespace Framework
 
     typedef std::unordered_map<unsigned, GameObject*> GameObjectMap;
     GameObjectMap GameObjects;
-    GameObjectMap ZilchGameObjects;
 
     GameObject* ptrPlayer;
 
   private:
     Zilch::Array<GameObject*>* SerializeObject(Serializer::DataNode* data);
-    Zilch::Array<GameObject*>* ZilchSerializeObject(Serializer::DataNode* data);
 
     void DestroyGameObjectsToBeDestroyed();
 

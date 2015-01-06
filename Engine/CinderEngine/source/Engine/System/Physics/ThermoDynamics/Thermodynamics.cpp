@@ -117,9 +117,9 @@ namespace Framework
     void ThermodynamicsSystem::Update(const float& dt)
     {
       //test
-      TemperatureMap.Set(65, 1, 10000.f);
+      /*TemperatureMap.Set(65, 1, 10000.f);
       VelocityMapY.Set(65, 1, 100.f);
-      VelocityMapX.Set(80, 25, -100.f);
+      VelocityMapX.Set(80, 25, -100.f);*/
       if (paused)
         return;
 
