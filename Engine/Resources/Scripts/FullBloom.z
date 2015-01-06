@@ -22,203 +22,6 @@ class NewZilch : ZilchComponent
 	}
 }
 
-
-
-/******************************************************************************/
-/*!
-\file   FullBloom.z
-\author Joshua Biggs
-\par    Course: GAM205
-\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
-\brief  This is the driving component for the creation and handling of the Pause menu.
-*/
-/******************************************************************************/
-
-class Josh : Component
-{
-	//var Owner:GameObject = null;
-	var ObjectSys:ObjectSystem = null;
-	var OHai : String = "";
-	var Obj: GameObject = null;
-	var Detector: MouseDetector = null;
-
-	var SpawnedObject:GameObject = null;
-	var MenuObjects:ZArray = null;
-	
-	constructor() : base()
-	{
-
-	}
-
-	function Initialize(owner:GameObject)
-	{
-	this.Owner = owner;
-	
-	ZInterface.WindowSystem.SetCursor(false);
-	//this.Detector = new MouseDetector(this.Owner, this.OnMouseEvent);
-	
-	//var obj = new Dot();
-	
-	//this.ObjectSys
-	//Console.WriteLine(ZInterface.WindowSystem);
-	this.MenuObjects = ZInterface.ObjectSystem.LoadLevelAdditive("HowToPlay");
-	this.MenuObjects = ZInterface.ObjectSystem.LoadLevelAdditive("MainMenu");
-	var scale = this.Owner.Transform.GetScale();
-	var trans =  this.Owner.Transform.GetTranslation();
-	var len = this.MenuObjects.Length;
-	for (var i:Integer = 0; i < len; i += 1)
-	{
-		var obj = this.MenuObjects.Get(i);
-		var prevScale = obj.Transform.GetScale();
-		obj.Transform.SetScale(Real3(prevScale.X * scale.X, prevScale.Y * scale.Y, prevScale.Z * scale.Z));
-		obj.Transform.Translate(0,0,trans.Z);
-	}
-	/*
-	for (var i = 0; i < list.Length; i += 1)
-	{
-		if(list.Get(i).GetName());
-	}
-	*/
-	
-	//Console.WriteLine(ZInterface.ObjectSystem.FindObjectByName("ExitGame"));
-	
-	//list.Get(11).Transform.Translate(1,1,0);
-	Console.WriteLine(ZInterface.ObjectSystem);
-	//this.Detector = new MouseDetector(this.Owner, this.OnMouseEvent);
-	//this.Detector.Rect.Width = 6.15839389087326;
-	//this.Detector.Rect.Height = 6.15839389087326;
-	
-	
-	//Cinder.Connect(this, Events.UpdateEvent, this.LogicUpdate);
-	//Cinder.Connect(this, Events.KeyEvent, this.KeyIsPressed);
-	//var obj : GameObject = Cinder.objsys.CreateObject();
-	//Console.Writeline(obj);
-	//Console.Writeline(obj);
-	//Console.WriteLine(new Player());
-	//Console.WriteLine(this.Owner);
-	EventSystem.Connect("KESCAPE", this.EscapePressed);
-	//EventSystem.Connect(Events.UpdateEvent, this.LogicUpdate);
-	//Console.WriteLine(this);
-	//Console.WriteLine("hello");
-	//var gameobject = this.ObjectSys.CreateObject();
-	//Console.WriteLine("GAMEOBJECT");
-	//gameobject.AddComponent("Transform");
-	//Console.WriteLine("COMPONENTT");
-	//gameobject.Transform;
-	//Console.WriteLine(gameobject.Transform);
-	//gameobject.AddComponent("Sprite");
-	//newsprite.LoadSprite("Env.png", "Default");
-	//Console.WriteLine(gameobject.Sprite.Texture.Name);
-	//this.SpawnedObject = gameobject;
-	
-	
-	//var file:ZilchFile = ZInterface.OpenFile("..//..//Resources//Scripts//test.z");
-	//var i = 0;
-	//Console.WriteLine(file.ReadLine(100) == '\0');
-	/*
-	while (file.ReadLine(i) != "\0")
-	{
-		Console.WriteLine(file.ReadLine(i));
-		i += 1;
-	}
-	*/
-
-	//var collider:CircleCollider = this.Owner.ShapeCollider as any as CircleCollider;
-
-	
-	
-	//Console.WriteLine(collider.Radius);
-	}
-	
-	function OnMouseEvent(e: MouseEvent)
-	{
-		var transform1 = this.Detector.Dot1.Object.Transform;
-		var transform2 = this.Detector.Dot2.Object.Transform;
-		var pos1 = this.Detector.Dot1.Object.Transform.GetTranslation();
-		var pos11 = transform1.GetScreenPosition(Real2(0,0));
-		var pos2 = this.Detector.Dot2.Object.Transform.GetTranslation();
-		var pos22 = transform2.GetScreenPosition(Real2(0,1));
-		//Console.WriteLine(Camera.Main.Aspect);
-		if (e.State == MouseState.MouseOutside)
-		{
-			//Console.WriteLine("Outside");
-		}
-		else if (e.State == MouseState.MouseEnter)
-		{
-			Console.WriteLine("Enter");
-			this.Owner.Sprite.ChangeTexture("Circle.png");
-		}
-		else if (e.State == MouseState.MouseExit)
-		{
-			//Console.WriteLine("Exit");
-			this.Owner.Sprite.ChangeTexture("Default");
-		}
-		//Console.WriteLine("MOUSE!");
-	}
-	
-	function Ping(e: UIEvent)
-	{
-		Console.WriteLine("PING!");
-		Console.WriteLine(e.Message);
-	}
-	
-	function LogicUpdate(e: UpdateEvent)
-	{
-	//Console.WriteLine(e.TimePassed);
-	//this.SpawnedObject.Transform.Translate(0,0.1,0);
-		//Console.WriteLine(ZInterface.WindowSystem.GetNormalMousePosition());
-		//this.Detector.Rect.Width = this.Owner.Transform.GetScreenPosition(Real2(1, 1)).X;
-		//this.Detector.Rect.Height = this.Owner.Transform.GetScreenPosition(Real2(1, 1)).Y;
-	//Console.WriteLine(Camera.GetWorldMousePosition());
-	}
-
-	function EscapePressed(e: KeyEvent)
-	{
-		if (InputManager.IsKeyTriggered(Keys.ESCAPE))
-		{
-			
-			if (this.MenuObjects.Get(0).Sprite.GetColor().W == 0 && !ZInterface.WindowSystem.CursorVisible)
-			{
-				this.ChangeMenuAlpha(1);
-				ZInterface.SetPaused(true);
-			}
-			else
-			{
-				this.ChangeMenuAlpha(0);
-				this.MenuObjects.Get(2).Sprite.ChangeTexture("UIResumeBlack.png");
-				this.MenuObjects.Get(3).Sprite.ChangeTexture("UIHowToPlayBlack.png");
-				this.MenuObjects.Get(4).Sprite.ChangeTexture("UIExitBlack.png");
-				ZInterface.SetPaused(false);
-			}
-			Console.WriteLine("PAUSED!");
-			if (ZInterface.IsPaused())
-			{
-				ZInterface.SetSceneShader("Blur");
-				ZInterface.WindowSystem.SetCursor(true);
-				
-			}
-			else
-			{
-				ZInterface.SetSceneShader("Passthrough");
-				ZInterface.WindowSystem.SetCursor(false);
-			}
-			
-			
-		}
-	}
-	
-	function ChangeMenuAlpha(alpha:Integer)
-	{
-		
-		var len = this.MenuObjects.Length;
-		for (var i:Integer = 0; i < len; i += 1)
-		{
-			this.MenuObjects.Get(i).Sprite.ChangeColor(1,1,1,alpha);
-		}
-	}
-
-}
-
 class Dot
 {
 	var Object: GameObject = null;
@@ -240,6 +43,7 @@ class Dot
 	
 }
 
+
 class Cinder
 {
 	[Static]
@@ -249,12 +53,12 @@ class Cinder
 	var ScreenUnitRatioY:Real = 1.732051615138131;
 	
 	//NEEDS FIXED ANY TYPE?
-	[Static]
+	/*[Static]
 	function Connect(eventListener:Josh, eventName:String, functionDelegate:delegate(e:KeyEvent))
 	{
 		EventSystem.Connect(eventName, functionDelegate);
 	}
-	
+	*/
 	[Static]
 	function MouseToWorldZPlane():Real2
 	{

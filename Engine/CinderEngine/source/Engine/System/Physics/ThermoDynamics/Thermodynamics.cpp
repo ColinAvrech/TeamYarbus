@@ -117,9 +117,9 @@ namespace Framework
     void ThermodynamicsSystem::Update(const float& dt)
     {
       //test
-      TemperatureMap.Set(65, 1, 10000.f);
+      /*TemperatureMap.Set(65, 1, 10000.f);
       VelocityMapY.Set(65, 1, 100.f);
-      VelocityMapX.Set(80, 25, -100.f);
+      VelocityMapX.Set(80, 25, -100.f);*/
       if (paused)
         return;
 
@@ -142,12 +142,12 @@ namespace Framework
       //solver.dens_step(126, TemperatureMap.GetArray(), TemperatureMap_Prev.GetArray(), VelocityMapX.GetArray(), VelocityMapY.GetArray(), 0.f, dt);
       //solver.velStep(&VelocityMapX, &VelocityMapY, &VelocityMap_PrevX, &VelocityMap_PrevY, 1.f, dt);
       //solver.densStep(&TemperatureMap, &TemperatureMap_Prev, &VelocityMapX, &VelocityMapY, 0.f, dt);
-      UpdateTemp(start, end, dt);
+      /*UpdateTemp(start, end, dt);
       UpdateFire(dt);
 
       VelocityMap_PrevX.fill(0.f);
       VelocityMap_PrevY.fill(0.f);
-      TemperatureMap_Prev.fill(0.f);
+      TemperatureMap_Prev.fill(0.f);*/
     }
 
     // Getters
