@@ -133,21 +133,8 @@ namespace Framework
       if (end >= MapSize.x)
         end = MapSize.x - 1;
 
-      glm::ivec2 _start(start, 0);
-      glm::ivec2 _end(end, GRID_Y_SIZE);
-
-      //solver.setLimits(_start, _end);
-
-      //solver.vel_step(126, VelocityMapX.GetArray(), VelocityMapY.GetArray(), VelocityMap_PrevX.GetArray(), VelocityMap_PrevY.GetArray(), 1.f, dt);
-      //solver.dens_step(126, TemperatureMap.GetArray(), TemperatureMap_Prev.GetArray(), VelocityMapX.GetArray(), VelocityMapY.GetArray(), 0.f, dt);
-      //solver.velStep(&VelocityMapX, &VelocityMapY, &VelocityMap_PrevX, &VelocityMap_PrevY, 1.f, dt);
-      //solver.densStep(&TemperatureMap, &TemperatureMap_Prev, &VelocityMapX, &VelocityMapY, 0.f, dt);
       UpdateTemp(start, end, dt);
       UpdateFire(dt);
-
-      VelocityMap_PrevX.fill(0.f);
-      VelocityMap_PrevY.fill(0.f);
-      TemperatureMap_Prev.fill(0.f);
     }
 
     // Getters

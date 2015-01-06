@@ -85,13 +85,13 @@ namespace Framework
       //tree_list[i] = Evaluate_Compatibility(i);
       //Hack!!
       //if (tree_list[i] != OPEN)
-   /*   if (i % (rand() % 6 + 2) == 0 && terrain[i] <= 72)
+      if (i % (rand() % 10 + 2) == 0 && terrain[i] <= 72)
         GenerateType(
         offsetX + Translation.x,
         offsetY + Translation.y,
         Translation.z,
         TREE_0, ID
-        );*/
+        );
      /* else if(rand() % 2)
         GenerateType(
         offsetX + Translation.x,

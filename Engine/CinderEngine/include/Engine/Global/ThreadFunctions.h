@@ -34,7 +34,7 @@ namespace Framework
     static int currentIndex = -1;
     InterlockedIncrement ((LONG*) &currentIndex);
     int threadIndex = currentIndex;
-    const int numRows = (int)ThermodynamicsSystem::MapSize.x / ThermodynamicsSystem::kNumThreads;
+    const int numRows = 128 / ThermodynamicsSystem::kNumThreads;
     int startIndex = threadIndex * numRows;
     int endIndex = startIndex + numRows - 1;
 
