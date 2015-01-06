@@ -12,6 +12,7 @@ class NewZilch : ZilchComponent
 	
 	function Initialize()
 	{
+		this.Owner.Sprite.ChangeLayer(1);
 		Console.WriteLine("INITIALIZED");
 		var script = this.Owner.GetComponent("NewZilch") as NewZilch;
 		Console.WriteLine(script);

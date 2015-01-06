@@ -90,9 +90,9 @@ Level =
 		{
 			bool Visible = true,
 			bool AnimationActive = false,
-			string SpriteSource = "Default",
+			string SpriteSource = "Default.png",
 			string Shader = "Default",
-			Vec4 Color = [1, 1, 1, 0],
+			Vec4 Color = [0.5, 1, 1, 1],
 		},
 		NewZilch = 
 		{
