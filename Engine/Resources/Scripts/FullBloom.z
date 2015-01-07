@@ -1,6 +1,10 @@
 class NewZilch : ZilchComponent
 {
 	var Butts:Integer = 8;
+	var Faggot:String = "NOT OP";
+	var IsTrue:Boolean = true;
+	var Comp:Real3 = Real3();
+	
 	constructor() : base()
 	{
 		Console.WriteLine("SASA");
@@ -16,6 +20,10 @@ class NewZilch : ZilchComponent
 		Console.WriteLine("INITIALIZED");
 		var script = this.Owner.GetComponent("NewZilch") as NewZilch;
 		Console.WriteLine(script);
+		Console.WriteLine(this.Butts);
+		Console.WriteLine(this.Faggot);
+		Console.WriteLine(this.IsTrue);
+		Console.WriteLine(this.Comp);
 	}
 	
 	function Destroy()

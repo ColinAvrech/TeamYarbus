@@ -15,7 +15,7 @@
 namespace Framework
 {
 
-  ZilchDefineType(ZilchComponent, CinderZilch)
+  ZilchDefineType(ZilchComponent, CinderZilch) //, builder, type
   {
 	  type->HandleManager = ZilchManagerId(Zilch::PointerManager);
 	  ZilchBindConstructor();
@@ -37,17 +37,94 @@ namespace Framework
 	  
   }
 
+  void ZilchComponent::DeleteThis()
+  {
+	  
+	  ThisHandle.Delete();
+  }
+
   void ZilchComponent::Create(GameObject* owner)
   {
 	  gameObject = owner;
 	  std::cout << "CREATING ZILCH COMPONENT" << std::endl;
   }
 
-  void ZilchComponent::Serialize(Serializer::DataNode* owner)
+  void ZilchComponent::Serialize(Serializer::DataNode* data)
   {
 	  std::cout << "SERIALIZING ZILCH COMPONENT" << std::endl;
 	  //Serializer::DataNode* temp = componentData->FindElement(componentData, "OHai");
 	  //temp->GetValue(&ohai);
+	  Zilch::ExceptionReport report;
+	  auto fields = ThisHandle.Type->InstanceFields.values();
+	  while (!fields.empty())
+	  {
+		  
+		  Field* field = fields.front();
+		  Serializer::DataNode* value = data->FindElement(data, field->Name.c_str());
+		  fields.popFront();
+
+		  if (value != nullptr)
+		  {
+			  Call call(field->Set, ZILCH->GetDependencies());
+			  call.SetHandle(Zilch::Call::This, ThisHandle);
+			  switch (value->dataType)
+			  {
+				  case Serializer::TYPE_INT:
+				  case Serializer::TYPE_UINT:
+				  {
+					  call.Set(0, value->value_.Int_);
+					  break;
+				  }
+				  case Serializer::TYPE_BOOL:
+				  {
+					  call.Set(0, value->value_.Bool_);
+					  break;
+				  }
+				  case Serializer::TYPE_FLOAT:
+				  {
+					  call.Set(0, value->value_.Float_);
+					  break;
+				  }
+				  case Serializer::TYPE_STRING:
+				  {
+					  call.Set(0, String(value->value_.String_->c_str()));
+					  break;
+				  }
+				  case Serializer::TYPE_VEC2:
+				  {
+					  std::vector<float>* vec = value->value_.VecN_;
+					  call.Set(0, Real2(vec->at(0), vec->at(1)));
+					  break;
+				  }
+				  case Serializer::TYPE_VEC3:
+				  {
+					  std::vector<float>* vec = value->value_.VecN_;
+					  call.Set(0, Real3(vec->at(0), vec->at(1), vec->at(2)));
+					  break;
+				  }
+				  case Serializer::TYPE_VEC4:
+				  {
+					  std::vector<float>* vec = value->value_.VecN_;
+					  call.Set(0, Real4(vec->at(0), vec->at(1), vec->at(2), vec->at(3)));
+					  break;
+				  }
+				  default:
+				  {
+					  string msg = "UNRECOGNIZED TYPE ";
+					  msg.append(value->typeString);
+					  msg.append(" FOR VARIABLE ");
+					  msg.append(value->objectName);
+					  std::cout << msg << std::endl;
+				  }
+			  }
+
+			  call.Invoke(report);
+		  }
+		  
+
+		  
+	  }
+
   }
 
   //INITIALIZE

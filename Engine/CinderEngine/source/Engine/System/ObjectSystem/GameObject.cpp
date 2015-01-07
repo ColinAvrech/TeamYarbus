@@ -57,7 +57,7 @@ namespace Framework
     {
       if (comp.second != nullptr)
       {
-        delete comp.second;
+        comp.second->DeleteThis();
         comp.second = nullptr;
       }
     }
@@ -149,10 +149,15 @@ namespace Framework
 	  
 	  ZilchClass->AllFunctions;
 	  
+	  
+
 	  //Field* owner = ZilchClass->InstanceFields["Butts"];
 	  //ActiveScript.Type->AddRawField(owner);
 	  //LibraryBuilder::AddExtensionProperty((*library)->BoundTypes.findValue("GameObject", nullptr), String(name.c_str()), ActiveScript, nullptr, nullptr, MemberOptions::None);
-	  Components[name] = (Component*) ActiveScript.Type;
+	  ZilchComponent* component = (ZilchComponent*)ActiveScript.Dereference();
+	  component->ThisHandle = ActiveScript;
+	  Components[name] = component;
+
 	  //Zilch::PropertyArray
 	  //ExtenstionPropery
 	  
