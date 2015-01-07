@@ -90,6 +90,13 @@ namespace Framework
         return *this;
       }
 
+      Grid2D<T>& operator=(Grid2D<T> &rhs)
+      {
+        for (unsigned int i = 0; i < _length; ++i)
+          _data[i] = rhs._data[i];
+        return *this;
+      }
+
       Grid2D<T>& operator+=(Grid2D<T> &rhs)
       {
         for (unsigned int i = 0; i < _length; ++i)
@@ -115,6 +122,13 @@ namespace Framework
             this->Set(i, j, value);
           }
         }
+      }
+
+      void Swap(Grid2D<T> &rhs)
+      {
+        T *temp = this->_data;
+        this->_data = rhs._data;
+        rhs._data = temp;
       }
 
       //Load ?!?

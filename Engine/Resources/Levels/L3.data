@@ -110,7 +110,7 @@ Level =
 	},
 	Transform = 
 	{
-		Vec3 Translation = [4500, -300, -1280],
+		Vec3 Translation = [2500, -300, -1280],
 		Vec3 Scale = [3840, 200, 1280],
 		Quat Rotation = [0, 0, 0, 1],
 	},
@@ -142,14 +142,14 @@ Level =
 		Transform = 
 		{
 			Vec3 Translation = [0, 0, 0],
-			Vec3 Scale = [256, 64, 640],
+			Vec3 Scale = [128, 64, 640],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Terrain2D = 
 		{
       string MapPreset = "JaggedAF2",
       bool Enabled = true,
-      int MapSize = 256,
+      int MapSize = 128,
       int BaseHeight = 10,
       int PeakHeight = 20,
       int Passes = 1,

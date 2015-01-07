@@ -193,6 +193,11 @@ namespace Framework
 
   void Camera::UpdateCamera (Pipeline* p)
   {
+    if (glfwGetMouseButton (WINDOWSYSTEM->Get_Window (), GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+    {
+      MouseUpdate (WINDOWSYSTEM->Get_Mouse_Position ());
+    }
+  
     switch (czs)
 
     {
