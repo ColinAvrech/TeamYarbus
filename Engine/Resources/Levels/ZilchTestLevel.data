@@ -96,6 +96,8 @@ Level =
 		},
 		NewZilch = 
 		{
+			uint Butts = 99,
+			string Faggot = "OP",
 		},
 	},
 },

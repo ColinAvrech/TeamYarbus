@@ -59,6 +59,8 @@ namespace Framework
     virtual void OnApplicationPause (PauseEvent* pause)
     {}
 
+	virtual void DeleteThis() { delete this; }
+
     GameObject* GetOwner();
     // Definition in GameObject.cpp
 

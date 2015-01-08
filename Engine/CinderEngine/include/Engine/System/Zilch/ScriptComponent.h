@@ -62,9 +62,10 @@ namespace Framework
 
     //Constructor. Initialize with owner and component name.
     ZilchComponent();
-
+	
     //!Updated every frame.
     //void Update(const double &dt);
+	Handle ThisHandle;
 
 	virtual void Create(GameObject* owner);
 
@@ -76,6 +77,7 @@ namespace Framework
     //Destructor
 	virtual ~ZilchComponent() override;
 
+	virtual void DeleteThis();
 
   private:
     //Private data ----------------------------------
