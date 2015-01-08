@@ -123,7 +123,7 @@ namespace Framework
       //test
       TemperatureMap.Set(1, 1, 10000.f);
       VelocityMapY.Set(65, 1, 100.f);
-      VelocityMapX.Set(80, 25, -100.f);
+      VelocityMapX.Set(65, 5, 100.f);
       if (paused)
         return;
 
@@ -599,6 +599,23 @@ namespace Framework
             glVertex2f(j - (MapSize.x * 0.5f) + 3, i - 0 + y_offset[j]);
             glVertex2f(j - (MapSize.x * 0.5f) + 3, i + 1 + y_offset[j]);
             glVertex2f(j - (MapSize.x * 0.5f) + 2, i + 1 + y_offset[j]);
+          }
+        }
+      }
+      glEnd();
+
+      //draw wind
+      glBegin(GL_LINES);
+      {
+        for (int i = v_start; i < v_end; ++i)
+        {
+          for (int j = h_start; j < h_end; ++j)
+          {
+            float x_off = VelocityMapX.Get(j, i) / 100.f;
+            float y_off = VelocityMapY.Get(j, i) / 100.f;
+            glColor4f(1.f, 1.f, 1.f, 1.f);
+            glVertex2f(j - (MapSize.x * 0.5f) + 2.5f, i + 0.5f + y_offset[j]); //Base
+            glVertex2f(j - (MapSize.x * 0.5f) + 2.5f + x_off, i + 0.5f + y_offset[j] + y_off); //Tip
           }
         }
       }
