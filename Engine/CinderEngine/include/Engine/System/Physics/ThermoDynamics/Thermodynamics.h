@@ -168,6 +168,7 @@ namespace Framework
       vec2 MapOffset;
       float AtmosphericTemperature;
       int simulation_speed;
+      float viscosity;
 
       //Temperature Map. Temperature is stored in Kelvin.
       Grid2D<float> TemperatureMap;
@@ -220,10 +221,14 @@ namespace Framework
       // Private Functions
       -----------------------------------------------------------------------*/
 #pragma region Private Functions
-      
+      //temp_step helper functions
       void diffuse(int start, int end, const float dt);
-      void advect(int start, int end, const float dt);
-      
+      //vel_step helper functions
+      void release_pressure(int start, int end, const float dt);
+      void project(int start, int end);
+      //advection
+      void advect(Grid2D<float> &g, Grid2D<float> &g0, Grid2D<float> &u, Grid2D<float> &v, int start, int end, const float dt);
+
       void Init_Materials();
 #pragma endregion
 

@@ -72,6 +72,8 @@ namespace Framework
       }*/
 
       simulation_speed = 10;
+      EqualizePressure = true;
+      viscosity = Const::visc_Air;
 
       //Initialize material list
       Init_Materials();

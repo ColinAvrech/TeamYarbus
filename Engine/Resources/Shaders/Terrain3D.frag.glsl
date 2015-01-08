@@ -14,7 +14,7 @@ out vec4 outColor;
 uniform vec3 lightDir;// = vec3 (50, -10, 0);
 
 // MATERIAL PROPERTIES OF SELF
-vec3 mambient = vec3 (0.5, 0.5, 0.8);
+vec3 mambient = vec3 (0.25, 0.25, 0.4);
 vec3 mdiffuse = vec3 (0.9, 0.8, 0.5);
 vec3 mspecular = vec3 (1, 1, 1);
 
@@ -22,7 +22,7 @@ vec3 mspecular = vec3 (1, 1, 1);
 float shininess = 10;
 
 // MATERIAL PROPERTIES OF LIGHT
-uniform vec3 lambient = vec3 (0.8, 0.7, 0.7);
+uniform vec3 lambient = vec3 (0.1, 0.1, 0.2);
 uniform vec3 ldiffuse = vec3 (0.7, 0.9, 0.5);
 uniform vec3 lspecular = vec3 (1, 1, 1);
 

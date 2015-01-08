@@ -49,18 +49,62 @@ namespace Framework
                     TemperatureMap_Prev.Get(i, j), AtmosphericTemperature, _dt, 1.0f);
                   netdQ += dQ;
                 }
-              }
-            }
-          }
+              } //update only directly adjacent cells
+            } //for x
+          } //for y
           //Set calculated temperature
           TemperatureMap.Set(i, j, TemperatureMap_Prev.Get(i, j) + dTemp(netdQ, DensityMap.Get(i, j) * 1.0f, Const::c_Air));
         }//for i
       }//for j
     } //function diffuse
 
-    void ThermodynamicsSystem::advect(int start, int end, const float dt)
+    void ThermodynamicsSystem::advect(Grid2D<float> &g, Grid2D<float> &g0, Grid2D<float> &u, Grid2D<float> &v, int start, int end, const float dt)
     {
 
+    }
+
+    void ThermodynamicsSystem::project(int start, int end)
+    {
+
+    }
+
+    void ThermodynamicsSystem::release_pressure(int start, int end, const float dt)
+    {
+      int h = MapSize.y * MapSize.y;
+      float a = simulation_speed * dt * viscosity * h;
+      float c = 1 + 4 * a;
+
+      for (int j = 0; j < MapSize.y; ++j)
+      {
+        for (int i = start; i < end; ++i)
+        {
+          float net_vel_x = 0.f;
+          float net_vel_y = 0.f;
+          //Loop through surrounding cells
+          for (int y = j - 1; y <= j + 1; ++y)
+          {
+            for (int x = i - 1; x <= i + 1; ++x)
+            {
+              int _y = y + y_offset[i] - y_offset[x];
+              if ((x == i - 1 && _y == j) ||
+                (x == i + 1 && _y == j) ||
+                (x == i && _y == j - 1) ||
+                (x == i && _y == j + 1))
+              {
+                if (x < MapSize.x && x >= 0 && _y < MapSize.y && _y >= 0)
+                {
+                  net_vel_x += VelocityMapX.Get(x, _y);
+                  net_vel_y += VelocityMapY.Get(x, _y);
+                }
+              } //update only directly adjacent cells
+            } //for x
+          } //for y
+          float res_vel_x = (VelocityMap_PrevX.Get(i, j) + a * net_vel_x) / c;
+          VelocityMapX.Set(i, j, res_vel_x);
+          float res_vel_y = (VelocityMap_PrevY.Get(i, j) + a * net_vel_y) / c;
+          VelocityMapY.Set(i, j, res_vel_y);
+        }//for i
+      }//for j
     }
 
     //Update temperatures
@@ -70,18 +114,31 @@ namespace Framework
       TemperatureMap.Swap(TemperatureMap_Prev);
       //diffuse heat
       diffuse(start_index, end_index, dt);
+      //swap current with previous
+      //TemperatureMap.Swap(TemperatureMap_Prev);
       //move heat
-      advect(start_index, end_index, dt);
+      advect(TemperatureMap, TemperatureMap_Prev, VelocityMapX, VelocityMapY, start_index, end_index, dt);
     }//function Update temp
 
 
     //Update velocity vectors
     void ThermodynamicsSystem::vel_step(const int& start_index, const int& end_index, const float& dt)
     {
+      //Swap arrays
       VelocityMapX.Swap(VelocityMap_PrevX);
       VelocityMapY.Swap(VelocityMap_PrevY);
-
-
+      //diffuse velocity if EqualizePressure is true
+      if (EqualizePressure)
+      {
+        release_pressure(start_index, end_index, dt);
+      }
+      //compute total applied forces
+      project(start_index, end_index);
+      //Swap arrays
+      //VelocityMapX.Swap(VelocityMap_PrevX);
+      //VelocityMapY.Swap(VelocityMap_PrevY);
+      //advect wind velocities
+      //no need for now
     }
   } //namespace physics
 } //namespace framework
