@@ -122,8 +122,8 @@ namespace Framework
     {
       //test
       TemperatureMap.Set(1, 1, 10000.f);
-      VelocityMapY.Set(65, 1, 100.f);
-      VelocityMapX.Set(65, 5, 100.f);
+      VelocityMapY.Set(65, 1, 0.01f);
+      //VelocityMapX.Set(65, 5, 100.f);
       if (paused)
         return;
 
