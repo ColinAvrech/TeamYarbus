@@ -17,7 +17,7 @@
 #pragma region Includes
 
 #pragma endregion
-#define GRID_Y_SIZE 32
+#define GRID_Y_SIZE 16
 
 namespace Framework
 {
@@ -92,6 +92,8 @@ namespace Framework
       void SpawnThreads ();
       void ReleaseThreads ();
       void UpdateMultiThreaded ();
+
+      void OnKeyPressed(KeyEvent* key);
       //////////////////////////////////////////////////////////////////////////
 
     public:
@@ -228,6 +230,7 @@ namespace Framework
       void project(int start, int end);
       //advection
       void advect(Grid2D<float> &g, Grid2D<float> &g0, Grid2D<float> &u, Grid2D<float> &v, int start, int end, int b, const float dt);
+      void convect(int start, int end, const float dt);
 
       void lin_solve(int start, int end, int b, Grid2D<float> &x, Grid2D<float> &x0, float a, float c);
       void set_bnd(int start, int end, int b, Grid2D<float> &x);

@@ -92,14 +92,14 @@ namespace Framework
         Translation.z,
         TREE_0, ID
         );
-     /* else if(rand() % 2)
+      else if(rand() % 2)
         GenerateType(
         offsetX + Translation.x,
         offsetY + Translation.y,
         Translation.z,
         TREE_SHORT_GRASS, ID
         );
-      else if (rand() % 2)
+      /*else if (rand() % 2)
         GenerateType(
         offsetX + Translation.x,
         offsetY + Translation.y,

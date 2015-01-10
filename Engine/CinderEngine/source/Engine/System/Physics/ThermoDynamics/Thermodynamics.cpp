@@ -29,6 +29,7 @@ namespace Framework
 {
   namespace Physics
   {
+    static float time = 0.f;
     glm::ivec2 ThermodynamicsSystem::MapSize;
     FireSystem* ThermodynamicsSystem::FIRE = nullptr;
     std::vector <glm::vec2> ThermodynamicsSystem::TerrainPoints;
@@ -53,6 +54,7 @@ namespace Framework
     //Destructor
     ThermodynamicsSystem::~ThermodynamicsSystem()
     {
+      EVENTSYSTEM->mDisconnect <KeyEvent, ThermodynamicsSystem>(Events::KEY_ANY, this, &ThermodynamicsSystem::OnKeyPressed);
       Clear();
       //ReleaseThreads();
     }
@@ -63,6 +65,9 @@ namespace Framework
 
     bool ThermodynamicsSystem::Initialize()
     {
+#ifdef _DEBUG 
+      EVENTSYSTEM->mConnect <KeyEvent, ThermodynamicsSystem>(Events::KEY_ANY, this, &ThermodynamicsSystem::OnKeyPressed);
+#endif
       /*if (guiText == nullptr)
       {
         GameObject* go = new GameObject(10000);
@@ -89,6 +94,19 @@ namespace Framework
 
       std::cout << "Thermodynamics Initialized." << std::endl;
       return true;
+    }
+
+    void ThermodynamicsSystem::OnKeyPressed(KeyEvent* key)
+    {
+      if (key->KeyDown)
+        switch (key->KeyValue)
+      {
+        case GLFW_KEY_P:
+          EqualizePressure = !EqualizePressure;
+          break;
+        default:
+          break;
+      }
     }
 
     void ThermodynamicsSystem::Add_Object(FireStarter *obj)
@@ -121,9 +139,10 @@ namespace Framework
     void ThermodynamicsSystem::Update(const float& dt)
     {
       //test
-      TemperatureMap.Set(1, 1, 10000.f);
-      VelocityMapY.Set(65, 1, 0.01f);
-      //VelocityMapX.Set(65, 5, 100.f);
+      time += dt;
+      //TemperatureMap.Set(65, 5, 3000.f);
+      VelocityMapY.Set(65, 5, std::abs(100.f * std::cos(time / 1.f)));
+      //VelocityMapX.Set(65, 5, 50.f * std::sin(time / 1.f));
       if (paused)
         return;
 
@@ -613,7 +632,7 @@ namespace Framework
           {
             float x_off = VelocityMapX.Get(j, i) / 100.f;
             float y_off = VelocityMapY.Get(j, i) / 100.f;
-            glColor4f(1.f, 1.f, 1.f, 1.f);
+            glColor4f(VelocityMapX.Get(j, i) >= 0, VelocityMapY.Get(j, i) >= 0, 1.f, 1.f);
             glVertex2f(j - (MapSize.x * 0.5f) + 2.5f, i + 0.5f + y_offset[j]); //Base
             glVertex2f(j - (MapSize.x * 0.5f) + 2.5f + x_off, i + 0.5f + y_offset[j] + y_off); //Tip
           }
@@ -651,6 +670,18 @@ namespace Framework
         //glVertex2f ((*i).first.x, (*i).first.y - 1);
       }
       glEnd();
+
+      glBegin(GL_LINES);
+      {
+        for (int i = h_start; i < h_end; ++i)
+        {
+          glColor4f(1.f, 1.f, 1.f, 1.f);
+          glVertex2f(i - (MapSize.x * 0.5f) + 2.f, y_offset[i]); //Base
+          glVertex2f(i - (MapSize.x * 0.5f) + 2.f, y_offset[i] + MapSize.y); //Tip
+        }
+      }
+      glEnd();
+
       glMatrixMode(GL_PROJECTION);
       glLoadIdentity();
       glMatrixMode(GL_MODELVIEW);
