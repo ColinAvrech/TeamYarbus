@@ -11,4 +11,3 @@ Terrain3D.frag.glsl
 Tree.frag.glsl
 PointLight.frag.glsl
 Blur.frag.glsl
-Text.frag.glsl

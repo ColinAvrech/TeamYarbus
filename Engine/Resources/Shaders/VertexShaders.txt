@@ -9,4 +9,3 @@ Terrain.vs.glsl
 Terrain3D.vs.glsl
 Tree.vs.glsl
 PointLight.vs.glsl
-Text.vs.glsl

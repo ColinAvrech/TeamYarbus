@@ -30,6 +30,7 @@ namespace Framework
   namespace Physics
   {
     static float time = 0.f;
+    static const int Update_Width = 32;
     glm::ivec2 ThermodynamicsSystem::MapSize;
     FireSystem* ThermodynamicsSystem::FIRE = nullptr;
     std::vector <glm::vec2> ThermodynamicsSystem::TerrainPoints;
@@ -143,7 +144,8 @@ namespace Framework
     {
       //test
       time += dt;
-      //TemperatureMap.Set(65, 5, 3000.f);
+      TemperatureMap.Set(65, 5, 3000.f);
+      //VelocityMapY.Set(65, 5, 100.f);
       VelocityMapY.Set(65, 5, std::abs(100.f * std::cos(time / 1.f)));
       //VelocityMapX.Set(65, 5, 50.f * std::sin(time / 1.f));
       if (paused)
@@ -152,10 +154,10 @@ namespace Framework
       int center = Camera::main->gameObject->Transform->GetGridPosition().x;
       float fov = Camera::main->GetSize();
 
-      int start = center - 32;
+      int start = center - Update_Width;
       if (start < 0)
         start = 0;
-      int end = start + 64;
+      int end = start + 2 * Update_Width;
       if (end >= MapSize.x)
         end = MapSize.x - 1;
       
@@ -676,12 +678,15 @@ namespace Framework
 
       glBegin(GL_LINES);
       {
-        for (int i = h_start; i < h_end; ++i)
-        {
-          glColor4f(1.f, 1.f, 1.f, 1.f);
-          glVertex2f(i - (MapSize.x * 0.5f) + 2.f, y_offset[i]); //Base
-          glVertex2f(i - (MapSize.x * 0.5f) + 2.f, y_offset[i] + MapSize.y); //Tip
-        }
+        int c = c_center.x;
+        //left
+        glColor4f(1.f, 0.25f, 0.5f, 1.f);
+        glVertex2f(c - Update_Width - (MapSize.x * 0.5f) + 2.f, y_offset[c - Update_Width]); //Base
+        glVertex2f(c - Update_Width - (MapSize.x * 0.5f) + 2.f, y_offset[c - Update_Width] + MapSize.y); //Tip
+        //right
+        glColor4f(1.f, 0.25f, 0.5f, 1.f);
+        glVertex2f(c + Update_Width - (MapSize.x * 0.5f) + 2.f, y_offset[c + Update_Width]); //Base
+        glVertex2f(c + Update_Width - (MapSize.x * 0.5f) + 2.f, y_offset[c + Update_Width] + MapSize.y); //Tip
       }
       glEnd();
 

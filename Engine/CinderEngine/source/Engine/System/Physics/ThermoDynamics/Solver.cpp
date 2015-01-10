@@ -18,6 +18,7 @@ namespace Framework
   namespace Physics
   {
     namespace Const = Constant;
+    static const int N = 16;
 
     void ThermodynamicsSystem::lin_solve(int start, int end, int b, Grid2D<float> &x1, Grid2D<float> &x0, float a, float c)
     {
@@ -116,7 +117,7 @@ namespace Framework
     void ThermodynamicsSystem::advect(Grid2D<float> &g, Grid2D<float> &g0, Grid2D<float> &u, Grid2D<float> &v, int start, int end, int b, const float dt)
     {
       //float dt0 = (MapSize.y - 2) * simulation_speed * dt;
-      float dt0 = 16 * simulation_speed * dt;
+      float dt0 = (N-2) * simulation_speed * dt;
       FOR(start, end)
         float x = i - dt0 * VelocityMapX.Get(i, j);
         float y = j - dt0 * VelocityMapY.Get(i, j);
@@ -164,7 +165,7 @@ namespace Framework
         if (j - 1 > 0)
           div -= VelocityMapY.Get(i, j - 1);
 
-        float pre_vy = -0.5f * div / (16 - 2);
+        float pre_vy = -0.5f * div / (N - 2);
         VelocityMap_PrevY.Set(i, j, pre_vy);
         VelocityMap_PrevX.Set(i, j, 0.f);
         END_FOR
@@ -187,7 +188,7 @@ namespace Framework
         if (_j > 0 && _j < MapSize.y)
           x_sum -= VelocityMap_PrevX.Get(i - 1, _j);
         
-        float val_x = 0.5f * (16 - 2) * x_sum;
+        float val_x = 0.5f * (N - 2) * x_sum;
         VelocityMapX.Set(i, j, VelocityMapX.Get(i, j) - val_x);
 
         //y velocity
@@ -196,7 +197,7 @@ namespace Framework
         if (j - 1 > 0)
           y_sum -= VelocityMap_PrevX.Get(i, j - 1);
 
-        float val_y = 0.5f * (16 - 2) * y_sum;
+        float val_y = 0.5f * (N - 2) * y_sum;
         VelocityMapY.Set(i, j, VelocityMapY.Get(i, j) - val_y);
         END_FOR
 
@@ -206,7 +207,7 @@ namespace Framework
     void ThermodynamicsSystem::release_pressure(int start, int end, const float dt)
     {
       //int h = MapSize.y * MapSize.y;
-      int h = 16 * 16;
+      int h = N * N;
       float a = simulation_speed * dt * viscosity * h;
       float c = 1 + 4 * a;
 
@@ -257,7 +258,7 @@ namespace Framework
       VelocityMapY.Swap(VelocityMap_PrevY);
       
       //project(start_index, end_index);
-      //lin_solve(start_index, end_index, 0, VelocityMapX, VelocityMapY, 1, 4);
+      //lin_solve(start_index, end_index, 0, VelocityMapX, VelocityMapY, 0.1f, 4);
     }
 
     void ThermodynamicsSystem::set_bnd(int start, int end, int b, Grid2D<float> &x)
