@@ -54,7 +54,8 @@ namespace Framework
 	void SparkCollector::Update(UpdateEvent *u)
 	{
 		//GUIText* guiText;
-		guiText->text = "Sparks Collected: " + std::to_string(sparkCounter);
+		string txt = "Sparks Collected: " + std::to_string(sparkCounter);
+		guiText->text = String(txt.c_str());
 	}
 
 	DefineComponentName(SparkCollector);

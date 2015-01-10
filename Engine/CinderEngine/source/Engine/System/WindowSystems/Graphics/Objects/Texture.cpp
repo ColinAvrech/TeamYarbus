@@ -34,6 +34,74 @@ namespace Framework
     Load_Texture (filename);
   }
 
+  //FOR FREETYPE BITMAPS
+  Texture::Texture (FT_Bitmap* fontchar)
+  {
+	  string name = "Character";
+	  Name = Zilch::String(name.c_str());
+	  bool hasAlpha = true;
+	  
+	  GLuint texture;
+	  glGenTextures(1, &texture);
+	  glBindTexture(GL_TEXTURE_2D, texture);
+	  int w, h;
+	  w = fontchar->width;
+	  h = fontchar->rows;
+	  unsigned char* image = fontchar->buffer;
+	  float index[] = { 0.0, 1.0 };
+	  //glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	  
+	  GLuint* uimage = new GLuint[fontchar->rows * fontchar->width];
+	  for (size_t i = 0; i < fontchar->rows * fontchar->width; ++i)
+	  {
+		  char* pixel = reinterpret_cast<char *>(uimage + i);
+		  pixel[0] = 255;
+		  pixel[1] = 255;
+		  pixel[2] = 255;
+		  pixel[3] = image[i];
+	  }
+	  
+
+	  
+	  /*
+	  glPixelMapfv(GL_PIXEL_MAP_I_TO_R, 2, index);
+	  glPixelMapfv(GL_PIXEL_MAP_I_TO_G, 2, index);
+	  glPixelMapfv(GL_PIXEL_MAP_I_TO_B, 2, index);
+	  glPixelMapfv(GL_PIXEL_MAP_I_TO_A, 2, index);
+	  */
+	  //glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, w, h, 0, GL_RED, GL_UNSIGNED_BYTE, image);
+	  //glTexImage2D(GL_TEXTURE_2D, 0, GL_BLUE, w, h, 0, GL_BLUE, GL_UNSIGNED_BYTE, image);
+	   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, uimage);
+	  //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_COLOR_INDEX, GL_BITMAP, image);
+	  //glTexImage2D(GL_TEXTURE_2D, 0, 1, w, h, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, uimage);
+	  
+	  delete[]uimage;
+
+	  width = w;
+	  height = h;
+	  aspect = float(width) / height;
+	  //SOIL_free_image_data(image);
+
+	  if (hasAlpha) glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	  /*
+	  GLuint tex;
+	  GLuint uniform_tex = 0;
+	  glActiveTexture(GL_TEXTURE0);
+	  glGenTextures(1, &tex);
+	  glBindTexture(GL_TEXTURE_2D, tex);
+	  glUniform1i(uniform_tex, 0);
+	  */
+	  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+	  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	  //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	  //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	  textureID = texture;
+  }
+
 
   // DESTRUCTOR
   // DELETES TEXTURE OBJECT

@@ -15,29 +15,48 @@
 #include "glm.hpp"
 #include "Component.h"
 
+#include <ft2build.h>
+#include FT_FREETYPE_H
+
 namespace Framework
 {
-  class BoundType;
-
-  class GUIText : public Component
+  class GUIText : public IGraphicsObject
   {
   public:
+	ZilchDeclareDerivedType(GUIText, IGraphicsObject);
     GUIText();
     virtual ~GUIText();
+
+	FT_Library  library;
+	int error;
+	
+	FT_Face  face;
 
     virtual void Serialize (Serializer::DataNode* data);
     virtual void Initialize ();
     virtual void OnApplicationPause (PauseEvent* pause);
 
-
+	void GUIText::Change_Color(Real4 newcolor);
     // X, Y BETWEEN -1 to +1
-    void Draw ();
+    virtual void Draw ();
 
     void ToggleVisibility();
 
     bool visible;
     vec2 position;
-    string text;
+    String text;
+	Real4 color;
+	int font;
+
+	const static string Name;
+
+	virtual bool Draw_Last() { return false; }
+	virtual bool InViewport() { return true; }
+
+  
+  private:
+	static VAO* vao;
+
   };  
 }
 

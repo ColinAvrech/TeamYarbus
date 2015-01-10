@@ -80,7 +80,7 @@ namespace Framework
 		shader = Resources::RS->Get_Shader(shadername);
 
 		value = data->FindElement(data, "Color");
-    value->GetValue (&color);
+		value->GetValue (&color);
 
 		Width = Zilch::Real(texture->width / (WINDOWSYSTEM->Get_Width() - 0.5f) * 2.0f);
 		Height = Zilch::Real(texture->height / (WINDOWSYSTEM->Get_Height() - 0.5f) * 2.0f);
@@ -204,6 +204,20 @@ namespace Framework
 	void Sprite::Change_Texture(Zilch::String textureName)
 	{
 		texture = Resources::RS->Get_Texture(textureName.c_str());
+		texture->Bind();
+		shader->Use();
+		shader->uni1i("image", 0);
+		texture->Unbind();
+		shader->Disable();
+
+		Width = Zilch::Real(texture->width / (WINDOWSYSTEM->Get_Width() - 0.5f) * 2.0f);
+		Height = Zilch::Real(texture->height / (WINDOWSYSTEM->Get_Height() - 0.5f) * 2.0f);
+	}
+
+	void Sprite::Change_Texture(Texture* texturenew)
+	{
+		//texture = Resources::RS->Get_Texture(textureName.c_str());
+		texture = texturenew;
 		texture->Bind();
 		shader->Use();
 		shader->uni1i("image", 0);

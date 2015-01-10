@@ -51,7 +51,15 @@ namespace Framework
 		static Boolean IsPaused();
 		static void ZInterface::SetPaused(bool state);
 		static void SetSceneShader(String shader);
+		
+		static Real2* VecToReal(vec2* vec);
+		static Real3* VecToReal(vec3* vec);
+		static Real4* VecToReal(vec4* vec);
 
+		static vec2 RealToVec(Real2* real);
+		static vec3 RealToVec(Real3* real);
+		static vec4 RealToVec(Real4* real);
+		
 		static ZilchFile* OpenFile(Zilch::String filepath);
 		
 	};

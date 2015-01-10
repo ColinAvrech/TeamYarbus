@@ -104,6 +104,46 @@ namespace Framework
 	{
 		return CORE->SetPaused(state);
 	}
+	
+	Real2* ZInterface::VecToReal(vec2* vec)
+	{
+		return &Real2(vec->x, vec->y);
+	}
+	Real3* ZInterface::VecToReal(vec3* vec)
+	{
+		return &Real3(vec->x, vec->y, vec->z);
+	}
+	Real4* ZInterface::VecToReal(vec4* vec)
+	{
+		return &Real4(vec->x, vec->y, vec->z, vec->w);
+	}
+
+	vec2 ZInterface::RealToVec(Real2* real)
+	{
+		vec2 vec;
+		vec.x = real->x;
+		vec.y = real->y;
+		return vec;
+	}
+	vec3 ZInterface::RealToVec(Real3* real)
+	{
+		vec3 vec;
+		vec.x = real->x;
+		vec.y = real->y;
+		vec.z = real->z;
+		return vec;
+	}
+	vec4 ZInterface::RealToVec(Real4* real)
+	{
+		vec4 vec;
+		vec.x = real->x;
+		vec.y = real->y;
+		vec.z = real->z;
+		vec.w = real->w;
+		return vec;
+	}
+	
+
 
 	ZilchFile::ZilchFile(ifstream* file)
 	{

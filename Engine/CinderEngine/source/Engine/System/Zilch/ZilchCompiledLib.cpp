@@ -117,6 +117,26 @@ namespace Framework
     }
   }
 
+  void GetComponent(Call& call, ExceptionReport& report)
+  {
+	  GameObject* gameObject = (GameObject*)call.GetHandle(Call::This).Dereference();
+
+	  BoundType* componentType = (BoundType*)call.GetFunction()->UserData;
+
+	  Component* comp = gameObject->GetComponent(componentType->Name.c_str());
+
+	  call.Set(Call::Return, comp);
+  }
+
+  void TypeParsedCallback (LibraryBuilder& builder, BoundType* type, const void* codeUserData, const void* userData)
+  {
+	  if (TypeBinding::IsA(type, ZilchTypeId(ZilchComponent)))
+	  {
+		  Property* prop = builder.AddExtensionProperty(ZilchTypeId(GameObject), type->Name, type, NULL, GetComponent, MemberOptions::None);
+		  prop->Get->UserData = type;
+	  }
+  }
+
   void ScriptSystem::CompileScripts(Project& project, Module& dependencies)
   {
     std::cout << "Compiling scripts \n";
@@ -124,6 +144,7 @@ namespace Framework
     // The 'Compile' function actually returns a Zilch Library
     // Be careful! If the code fails to compile, this function will return null
     //not sure what "Test" is?!?
+	project.AddTypeParsedCallback(TypeParsedCallback, NULL);
     lib = project.Compile("Test", dependencies, EvaluationMode::Project);
 	    ErrorIf(lib == nullptr, "Failed to compiler library");
 

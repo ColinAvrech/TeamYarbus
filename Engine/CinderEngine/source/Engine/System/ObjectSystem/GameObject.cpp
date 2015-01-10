@@ -32,6 +32,7 @@ namespace Framework
 
     ZilchBindFieldGet(Transform);
     ZilchBindFieldGet(Sprite);
+	//ZilchBindFieldGet(GUIText);
 	  ZilchBindMethod(GetName);
 	  ZilchBindMethodOverloadAs(ZGetComponent, "GetComponent", Component*, Zilch::String);
     

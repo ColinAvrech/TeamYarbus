@@ -88,3 +88,8 @@ Passthrough.vs.glsl
 BlendIn.frag.glsl
 0
 FadeIn
+>
+Text.vs.glsl
+Text.frag.glsl
+0
+Text

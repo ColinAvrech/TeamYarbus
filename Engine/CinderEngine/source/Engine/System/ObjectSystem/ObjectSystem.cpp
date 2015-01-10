@@ -377,7 +377,7 @@ namespace Framework
 		std::cout << "SERIALIZING" << std::endl;
 
 		Zilch::Array<GameObject*>* objectlist = new Zilch::Array<GameObject*>();
-		vector<Handle*> scripts;
+		vector<Handle> scripts;
 
 		auto it = data->branch;
 		while (it)
@@ -422,7 +422,7 @@ namespace Framework
 							call.SetHandle(0, ct->branch);
 							call.Invoke(report);
 						}
-						scripts.push_back(&zilchComp);
+						scripts.push_back(zilchComp);
 						//newcomp = zilchComp->Type;
 						//scripts.push_back(std::pair<ZilchComponent*, Serializer::DataNode*>(zilchComp, ct->branch));
 
@@ -441,14 +441,14 @@ namespace Framework
 		for (auto i : scripts)
 		{
 
-			Function* ZilchInitialize = i->Type->FindFunction("Initialize", args, ZilchTypeId(void), Zilch::FindMemberOptions::None);
-			ErrorIf(ZilchInitialize == nullptr, "Failed to find function 'Initialize' on Zilch type ", i->Type);
+			Function* ZilchInitialize = i.Type->FindFunction("Initialize", args, ZilchTypeId(void), Zilch::FindMemberOptions::None);
+			ErrorIf(ZilchInitialize == nullptr, "Failed to find function 'Initialize' on Zilch type ", i.Type);
 
 			{
 				Zilch::ExceptionReport report;
 				// Invoke the Initialize function, which Initializes all of the zilch scripts.
 				Zilch::Call call(ZilchInitialize, ZILCH->GetDependencies());
-				call.SetHandle(Zilch::Call::This, *i);
+				call.SetHandle(Zilch::Call::This, i);
 				call.Invoke(report);
 			}
 
