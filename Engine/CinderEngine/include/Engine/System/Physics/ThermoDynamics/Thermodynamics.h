@@ -68,9 +68,9 @@ namespace Framework
       void Update(const float& dt);
 
       //Update temperatures
-      void UpdateTemp(const int& start_index, const int& end_index, const float& dt);
+      void temp_step(const int& start_index, const int& end_index, const float& dt);
       //Calculate velocity vectors
-      void ComputeVelocity(const int& start_index, const int& end_index, const float& dt);
+      void vel_step(const int& start_index, const int& end_index, const float& dt);
       //Update fire
       void UpdateFire(const float& dt);
 
@@ -167,6 +167,8 @@ namespace Framework
       float CellSize;
       vec2 MapOffset;
       float AtmosphericTemperature;
+      int simulation_speed;
+      float viscosity;
 
       //Temperature Map. Temperature is stored in Kelvin.
       Grid2D<float> TemperatureMap;
@@ -192,8 +194,6 @@ namespace Framework
       vector<FireGroup*> fireGroups;
       vector<std::pair<glm::ivec2, FireStarter*>> FireMap;
       static FireSystem* FIRE;
-
-      FluidSolver solver;
 #pragma endregion
 
 
@@ -221,10 +221,17 @@ namespace Framework
       // Private Functions
       -----------------------------------------------------------------------*/
 #pragma region Private Functions
-      //Determine subscript from position
-      glm::ivec2 GetSubscript(const float& x, const float& y);
-      glm::vec2 GetConvecDir(const unsigned i, const unsigned j);
-      
+      //temp_step helper functions
+      void diffuse(int start, int end, const float dt);
+      //vel_step helper functions
+      void release_pressure(int start, int end, const float dt);
+      void project(int start, int end);
+      //advection
+      void advect(Grid2D<float> &g, Grid2D<float> &g0, Grid2D<float> &u, Grid2D<float> &v, int start, int end, int b, const float dt);
+
+      void lin_solve(int start, int end, int b, Grid2D<float> &x, Grid2D<float> &x0, float a, float c);
+      void set_bnd(int start, int end, int b, Grid2D<float> &x);
+
       void Init_Materials();
 #pragma endregion
 

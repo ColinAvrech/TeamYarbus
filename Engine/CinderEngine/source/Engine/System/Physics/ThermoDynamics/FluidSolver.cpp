@@ -40,7 +40,8 @@ namespace Framework
     SWAP(v0, v); diffuse(N, 2, v, v0, visc, dt);
     project(N, u, v, u0, v0);
     SWAP(u0, u); SWAP(v0, v);
-    advect(N, 1, u, u0, u0, v0, dt); advect(N, 2, v, v0, u0, v0, dt);
+    advect(N, 1, u, u0, u0, v0, dt);
+    advect(N, 2, v, v0, u0, v0, dt);
     project(N, u, v, u0, v0);
   }
 

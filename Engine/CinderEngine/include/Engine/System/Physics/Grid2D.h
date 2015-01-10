@@ -131,6 +131,17 @@ namespace Framework
         rhs._data = temp;
       }
 
+      void Copy(unsigned x1, unsigned y1, unsigned x2, unsigned y2, Grid2D<T> &rhs)
+      {
+        for (unsigned int i = x1; i < x2; ++i)
+        {
+          for (unsigned int j = y1; j < y2; ++j)
+          {
+            this->Set(i, j, rhs.Get(i, j));
+          }
+        }
+      }
+
       //Load ?!?
       //Save ?!?
 

@@ -41,7 +41,7 @@ namespace Framework
     ThermodynamicsSystem::ThermodynamicsSystem()
     {
       //Do stuff
-      CellSize = 0.1f;
+      CellSize = 1.f;
       THERMODYNAMICS = this;
     }
 
@@ -63,7 +63,7 @@ namespace Framework
 
     bool ThermodynamicsSystem::Initialize()
     {
-      if (guiText == nullptr)
+      /*if (guiText == nullptr)
       {
         GameObject* go = new GameObject(10000);
 		Component* tsfm = go->AddComponent("Transform");
@@ -72,7 +72,11 @@ namespace Framework
         guiText = reinterpret_cast<GUIText*> (go->AddComponent("GUIText"));
         guiText->position = { -0.2f, -0.9f };
         guiText->Initialize();
-      }
+      }*/
+
+      simulation_speed = 10;
+      EqualizePressure = true;
+      viscosity = Const::visc_Air;
 
       //Initialize material list
       Init_Materials();
@@ -120,9 +124,9 @@ namespace Framework
     void ThermodynamicsSystem::Update(const float& dt)
     {
       //test
-      /*TemperatureMap.Set(65, 1, 10000.f);
-      VelocityMapY.Set(65, 1, 100.f);
-      VelocityMapX.Set(80, 25, -100.f);*/
+      TemperatureMap.Set(1, 1, 10000.f);
+      VelocityMapY.Set(65, 1, 0.01f);
+      //VelocityMapX.Set(65, 5, 100.f);
       if (paused)
         return;
 
@@ -135,8 +139,12 @@ namespace Framework
       int end = start + 64;
       if (end >= MapSize.x)
         end = MapSize.x - 1;
-
-      UpdateTemp(start, end, dt);
+      
+      //Update velocity field
+      vel_step(start, end, dt);
+      //Update temperature field
+      temp_step(start, end, dt);
+      //Update fire
       UpdateFire(dt);
     }
 
@@ -160,7 +168,7 @@ namespace Framework
     //Get cell oxygen content
     float ThermodynamicsSystem::GetCellOxygen(const float& x, const float& y)
     {
-      glm::ivec2 sub = GetSubscript(x, y);
+      glm::ivec2 sub(x, y);
       int sub_x = int(sub.x);
       int sub_y = int(sub.y);
       if (sub_x < 0 || sub_x > MapSize.x || sub_y < 0 || sub_y > MapSize.y)
@@ -170,7 +178,7 @@ namespace Framework
     //Get cell velocity
     vec2 ThermodynamicsSystem::GetCellVelocity(const float& x, const float& y)
     {
-      glm::ivec2 sub = GetSubscript(x, y);
+      glm::ivec2 sub(x, y);
       int sub_x = int(sub.x);
       int sub_y = int(sub.y);
       if (sub_x < 0 || sub_x > MapSize.x || sub_y < 0 || sub_y > MapSize.y)
@@ -191,9 +199,9 @@ namespace Framework
       AtmosphericTemperature = 300.f;
       //Allocate heatmap
       TemperatureMap.allocate(MapSize.x, MapSize.y);
-      TemperatureMap.fill(300.f);
+      TemperatureMap.fill(AtmosphericTemperature);
       TemperatureMap_Prev.allocate(MapSize.x, MapSize.y);
-      TemperatureMap_Prev.fill(300.f);
+      TemperatureMap_Prev.fill(AtmosphericTemperature);
 
       //Allocate Oxygen/Density map
       DensityMap.allocate(MapSize.x + 2, MapSize.y + 2);
@@ -214,13 +222,6 @@ namespace Framework
       Terrain.fill(AIR);
 
       y_offset = new int[MapSize.x];
-      //solver.y_offset = y_offset;
-      //WaterMap.allocate(MapSize.x, MapSize.y);
-      //WaterMap.fill(0.0f);
-
-      //dt_Tracker = new float[MapSize.x];
-      /*for (int i = 0; i < MapSize.x; ++i)
-        dt_Tracker[i] = 0.0f;*/
 
       Allocated = true;
     }
@@ -240,7 +241,7 @@ namespace Framework
       else
       {
         dQ = ConductiveHeatTransfer(Const::K_Air, TemperatureMap.Get(sub_x, sub_y), temp, dt, 1);
-        float deltaTemp = dTemp(dQ, DensityMap.Get(sub_x, sub_y) * 0.001f, /*Const::c_Air*/100);
+        float deltaTemp = dTemp(dQ, DensityMap.Get(sub_x, sub_y) * 1.f, Const::c_Air);
         TemperatureMap.Set(sub_x, sub_y, TemperatureMap.Get(sub_x, sub_y) + deltaTemp);
       }
       return dQ;
@@ -310,82 +311,6 @@ namespace Framework
       new_p.Volatile = false;
       materialList.push_back(new_p);
       //append more materials in the right order
-    }
-
-    //Update temperatures
-    void ThermodynamicsSystem::UpdateTemp(const int& start_index, const int& end_index, const float &dt)
-    {
-      //TemperatureMap.Set(65, 1, Const::BT_Organics);
-      //std::cout << start_index << "\n";
-      //std::cout << "Updated Temperature/Density/Pressure" << std::endl;
-      for (int j = 0; j < MapSize.y; ++j)
-      {
-        for (int i = start_index; i < end_index; ++i)
-        {
-          //float dt = dt_Tracker[i];
-          float netdQ = 0.f;
-          float oTemp = TemperatureMap.Get(i, j);
-          //Loop through surrounding cells
-          for (int y = j - 1; y <= j + 1; ++y)
-          {
-            for (int x = i - 1; x <= i + 1; ++x)
-            {
-              int _y = y + y_offset[i] - y_offset[x];
-              if (x != i || _y != j)
-              {
-                if (x < MapSize.x && x >= 0 && _y < MapSize.y && _y >= 0)
-                {
-                  float dQ = ConductiveHeatTransfer(materialList[Terrain.Get(i, j)].K,
-                    TemperatureMap.Get(i, j), TemperatureMap.Get(x, _y), dt, 1.0f);
-                  netdQ += dQ;
-                  float oTemp = TemperatureMap.Get(x, _y);
-                  TemperatureMap.Set(x, _y, TemperatureMap.Get(x, _y) - dTemp(dQ, DensityMap.Get(x, _y) * 1.0f, Const::c_Air));
-
-                  float factor = TemperatureMap.Get(x, _y) / oTemp;
-                  //DensityMap.Set (x, y, DensityMap.Get (x, y) / factor);
-                }
-                else
-                {
-                  float dQ = ConductiveHeatTransfer(materialList[Terrain.Get(i, j)].K,
-                    TemperatureMap.Get(i, j), AtmosphericTemperature, dt, 1.0f);
-                  netdQ += dQ;
-                }
-              }
-            }
-          }
-          if (j < MapSize.y - 1)
-          {
-            if (materialList[Terrain.Get(i, j)].isFluid && materialList[Terrain.Get(i, j + 1)].isFluid)
-            {
-              float dQConv = ConvectiveHeatTransfer(materialList[Terrain.Get(i, j)].Hc,
-                TemperatureMap.Get(i, j), TemperatureMap.Get(i, j + 1), dt);
-              float oTempConv = TemperatureMap.Get(i, j + 1);
-              netdQ += dQConv;
-              TemperatureMap.Set(i, j + 1, TemperatureMap.Get(i, j + 1) - dTemp(dQConv, DensityMap.Get(i, j + 1) * 1.0f, Const::c_Air));
-              float factor2 = TemperatureMap.Get(i, j + 1) / oTempConv;
-              //DensityMap.Set(i, j + 1, DensityMap.Get(i, j) / factor2);
-            }
-          }
-          else
-          {
-            if (materialList[Terrain.Get(i, j)].isFluid)
-            {
-              float dQConv = ConvectiveHeatTransfer(materialList[Terrain.Get(i, j)].Hc,
-                TemperatureMap.Get(i, j), AtmosphericTemperature, dt);
-              netdQ += dQConv;
-            }
-          }
-          TemperatureMap.Set(i, j, TemperatureMap.Get(i, j) + dTemp(netdQ, DensityMap.Get(i, j) * 1.0f, Const::c_Air));
-          float factor1 = TemperatureMap.Get(i, j) / oTemp;
-          //DensityMap.Set(i, j, DensityMap.Get(i, j) / factor1);
-        }//for
-      }//for
-    }//function
-
-    //Update velocity vectors
-    void ThermodynamicsSystem::ComputeVelocity(const int& start_index, const int& end_index, const float& dt)
-    {
-
     }
 
     /* glm::vec2 ThermodynamicsSystem::GetConvecDir(const unsigned i, const unsigned j)
@@ -486,8 +411,8 @@ namespace Framework
       AtmosphericTemperature = 300.f;
       if (Allocated)
       {
-        TemperatureMap.fill(0.f);
-        TemperatureMap_Prev.fill(0.f);
+        TemperatureMap.fill(AtmosphericTemperature);
+        TemperatureMap_Prev.fill(AtmosphericTemperature);
 
         DensityMap.fill(Const::p_Air);
 
@@ -504,14 +429,6 @@ namespace Framework
         FireMap.at(i).second->DouseFire();
       }
       FireMap.clear();
-    }
-
-    glm::ivec2 ThermodynamicsSystem::GetSubscript(const float &x, const float &y)
-    {
-      int sub_x = int(std::abs(((x)* (MapSize.x / 2 - 1) + MapOffset.x - 1)));
-      int sub_y = int(std::abs(((y)* (MapSize.y / 2 - 1) + MapOffset.y - 1)));
-      glm::ivec2 res(sub_x, sub_y);
-      return res;
     }
 
     void ThermodynamicsSystem::Clear()
@@ -532,7 +449,6 @@ namespace Framework
         delete[] y_offset;
 
       y_offset = nullptr;
-      //solver.y_offset = nullptr;
 
       Allocated = false;
     }
@@ -686,6 +602,23 @@ namespace Framework
             glVertex2f(j - (MapSize.x * 0.5f) + 3, i - 0 + y_offset[j]);
             glVertex2f(j - (MapSize.x * 0.5f) + 3, i + 1 + y_offset[j]);
             glVertex2f(j - (MapSize.x * 0.5f) + 2, i + 1 + y_offset[j]);
+          }
+        }
+      }
+      glEnd();
+
+      //draw wind
+      glBegin(GL_LINES);
+      {
+        for (int i = v_start; i < v_end; ++i)
+        {
+          for (int j = h_start; j < h_end; ++j)
+          {
+            float x_off = VelocityMapX.Get(j, i) / 100.f;
+            float y_off = VelocityMapY.Get(j, i) / 100.f;
+            glColor4f(1.f, 1.f, 1.f, 1.f);
+            glVertex2f(j - (MapSize.x * 0.5f) + 2.5f, i + 0.5f + y_offset[j]); //Base
+            glVertex2f(j - (MapSize.x * 0.5f) + 2.5f + x_off, i + 0.5f + y_offset[j] + y_off); //Tip
           }
         }
       }

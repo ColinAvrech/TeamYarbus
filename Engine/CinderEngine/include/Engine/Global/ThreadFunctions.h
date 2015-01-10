@@ -44,7 +44,7 @@ namespace Framework
       //startClocks = GetSystemClock ();
       //std::cout << deltaTime << "\n";
       WaitForSingleObject (eventStartTemperature [threadIndex], INFINITE);
-      THERMODYNAMICS->UpdateTemp (startIndex, endIndex, 2.0);
+      THERMODYNAMICS->temp_step (startIndex, endIndex, 2.0);
       SetEvent (eventEndTemperature [threadIndex]);
     }
 
@@ -71,7 +71,7 @@ namespace Framework
     while (true)
     {
       WaitForSingleObject (eventStartVelocity [threadIndex], INFINITE);
-      THERMODYNAMICS->ComputeVelocity (startIndex, endIndex, 0.016f);//HACK should use CORE->DT
+      THERMODYNAMICS->vel_step (startIndex, endIndex, dt);//HACK should use CORE->DT
       SetEvent (eventEndVelocity [threadIndex]);
     }
 
