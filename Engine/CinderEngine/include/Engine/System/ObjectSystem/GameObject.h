@@ -59,6 +59,7 @@ namespace Framework
   class PlayerStats;
   class SparkCollector;
   class FluidBody;
+  class GUIText;
 
   class GameObject
   {
@@ -91,19 +92,20 @@ namespace Framework
     //Components
     ComponentPointer(Transform);
     ComponentPointer(Sprite);
-	  ComponentPointer(Health);
+	ComponentPointer(Health);
     ComponentPointer (ShapeCollider2D);
     ComponentPointer (RigidBody2D);
     ComponentPointer(Camera);
     ComponentPointer(CharacterController);
 	ComponentPointer(SparkCollector);
-	  ComponentPointer(FireGroup);
+	ComponentPointer(FireGroup);
     ComponentPointer(Microphone);
     ComponentPointer(Terrain2D);
     ComponentPointer(Terrain3D);
     ComponentPointer(AudioComponent);
 	ComponentPointer(PlayerStats);
-  ComponentPointer(FluidBody);
+    ComponentPointer(FluidBody);
+    ComponentPointer(GUIText);
 	
 
    // Menu Components

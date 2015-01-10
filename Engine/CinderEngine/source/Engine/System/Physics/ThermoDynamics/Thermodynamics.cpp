@@ -66,6 +66,9 @@ namespace Framework
       if (guiText == nullptr)
       {
         GameObject* go = new GameObject(10000);
+		Component* tsfm = go->AddComponent("Transform");
+		tsfm->Initialize();
+
         guiText = reinterpret_cast<GUIText*> (go->AddComponent("GUIText"));
         guiText->position = { -0.2f, -0.9f };
         guiText->Initialize();

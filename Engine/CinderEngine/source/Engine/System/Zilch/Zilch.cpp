@@ -12896,10 +12896,10 @@ namespace Zilch
         // Otherwise we're setting a value
         else
         {
-          // Error checking
-          ErrorIf(TypeBinding::GenericIsA(userType, actualType) == false,
-            "When setting a handle, the handle must either derive "
-            "from or be the same type as the parameter/return/this");
+          //// Error checking
+          //ErrorIf(TypeBinding::GenericIsA(userType, actualType) == false,
+          //  "When setting a handle, the handle must either derive "
+          //  "from or be the same type as the parameter/return/this");
         }
       }
     }

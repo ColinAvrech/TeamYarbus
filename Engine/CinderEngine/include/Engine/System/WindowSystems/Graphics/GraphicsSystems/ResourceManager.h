@@ -33,6 +33,7 @@ namespace Framework
     string SpriteSheetResourcePath = "../../Resources/SpriteSheets/";
     string ShaderResourcePath = "../../Resources/Shaders/";
     string AudioResourcePath = "../../Resources/Audio/";
+	string FontResourcePath = "../../Resources/Fonts/";
 
     Texture* Get_Texture (string textureName);
     SpriteSheet* Get_SpriteSheet (string spriteSheetName);

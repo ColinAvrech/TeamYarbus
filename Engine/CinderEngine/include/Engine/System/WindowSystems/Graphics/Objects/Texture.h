@@ -9,16 +9,18 @@
 /******************************************************************************/
 
 #pragma once
+#include <ft2build.h>
+#include FT_FREETYPE_H
 
 namespace Framework
 {
-
 
   class Texture
   {
   public:
 	ZilchDeclareBaseType(Texture, Zilch::TypeCopyMode::ReferenceType);
     Texture ();
+	Texture (FT_Bitmap* fontchar);
     Texture (const char* filename);
     ~Texture ();
 
