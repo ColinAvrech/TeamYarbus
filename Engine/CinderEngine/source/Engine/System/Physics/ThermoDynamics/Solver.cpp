@@ -94,23 +94,17 @@ namespace Framework
       for (int j = 2; j < MapSize.y; ++j) {
         for (int i = start; i < end; ++i) {
           int dy = 0;
-          if (materialList[Terrain.Get(i, j)].isFluid && materialList[Terrain.Get(i, j - 1)].isFluid)
+          if (j + 1 < MapSize.y && materialList[Terrain.Get(i, j)].isFluid && materialList[Terrain.Get(i, j - 1)].isFluid)
           {
+            dy = VelocityMapY.Get(i, j) > 1 ? 1 : dy;
+            dy = VelocityMapY.Get(i, j) < -1 ? -1 : dy;
             vx = 1;// VelocityMapY.Get(i, j) / 100;
-            dy = 1;
           }
           
-          int dx = 0;// int(VelocityMapX.Get(i, j) / 100);
+          int dx = 0;
+          dx = int(VelocityMapX.Get(i, j) / 10) > 1 ? 1 : dx;
+          dx = int(VelocityMapX.Get(i, j) / 10) < -1 ? -1 : dx;
 
-          /*if (dx >= 1)
-            dx = 1;
-          else if (dx <= -1)
-            dx = -1;
-
-          if (i - dx < 0)
-            dx = i;
-          else if (i - dx >= MapSize.x)
-            dx = i - MapSize.x + 1;*/
 
           float dQConv;
           if (i - dx >= 0 && i - dx < MapSize.x && j - dy + VO(i, i - dx) >= 0 && j - dy + VO(i, i - dx) < MapSize.y)

@@ -144,10 +144,10 @@ namespace Framework
     {
       //test
       time += dt;
-      TemperatureMap.Set(65, 5, std::abs(3000.f * std::cos(time)));
+      TemperatureMap.Set(65, 5, 3000.f);// std::abs(3000.f * std::cos(time)));
       //VelocityMapY.Set(65, 5, 100.f);
-      VelocityMapY.Set(65, 5, std::abs(100.f * std::cos(time / 1.f)));
-      //VelocityMapX.Set(65, 5, std::abs(100.f * std::sin(time / 1.f)));
+      VelocityMapY.Set(65, 5, 100.f * std::cos(time / 1.f));
+      VelocityMapX.Set(65, 5, 100.f * std::sin(time / 1.f));
       if (paused)
         return;
 
