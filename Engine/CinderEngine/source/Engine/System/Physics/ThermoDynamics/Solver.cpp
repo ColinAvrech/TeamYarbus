@@ -243,11 +243,9 @@ namespace Framework
       //Swap arrays
       VelocityMapX.Swap(VelocityMap_PrevX);
       VelocityMapY.Swap(VelocityMap_PrevY);
-      //diffuse velocity if EqualizePressure is true
-      if (EqualizePressure)
-      {
-        release_pressure(start_index, end_index, dt);
-      }
+
+      release_pressure(start_index, end_index, dt);
+      
       //compute total applied forces
       project(start_index, end_index);
       //Swap arrays
@@ -260,6 +258,7 @@ namespace Framework
       //project(start_index, end_index);
       //lin_solve(start_index, end_index, 0, VelocityMap_PrevX, VelocityMap_PrevY, 0.75, 4);
       lin_solve(start_index, end_index, 0, VelocityMapX, VelocityMapY, 1, 4);
+      release_pressure(start_index, end_index, dt);
       //Swap arrays
       VelocityMapX.Swap(VelocityMap_PrevX);
       VelocityMapY.Swap(VelocityMap_PrevY);

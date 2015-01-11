@@ -144,10 +144,10 @@ namespace Framework
     {
       //test
       time += dt;
-      TemperatureMap.Set(65, 5, 3000.f);// std::abs(3000.f * std::cos(time)));
+      TemperatureMap.Set(65, 5, std::abs(3000.f * std::cos(time)));
       //VelocityMapY.Set(65, 5, 100.f);
-      VelocityMapY.Set(65, 5, 100.f * std::cos(time / 1.f));
-      VelocityMapX.Set(65, 5, 100.f * std::sin(time / 1.f));
+      VelocityMapY.Set(65, 5, std::abs(100.f * std::cos(time / 1.f)));
+      //VelocityMapX.Set(65, 5, 100.f * std::sin(time / 1.f));
       if (paused)
         return;
 
@@ -637,7 +637,7 @@ namespace Framework
           {
             float x_off = VelocityMapX.Get(j, i) / 50.f;
             float y_off = VelocityMapY.Get(j, i) / 50.f;
-            glColor4f(VelocityMapX.Get(j, i) >= 0, VelocityMapY.Get(j, i) >= 0, 1.f, 1.f);
+            glColor4f(1.f, 1.f, 1.f, 1.f);
             glVertex2f(j - (MapSize.x * 0.5f) + 2.5f, i + 0.5f + y_offset[j]); //Base
             glVertex2f(j - (MapSize.x * 0.5f) + 2.5f + x_off, i + 0.5f + y_offset[j] + y_off); //Tip
           }

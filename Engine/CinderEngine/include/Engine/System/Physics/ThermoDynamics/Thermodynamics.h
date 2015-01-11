@@ -17,7 +17,7 @@
 #pragma region Includes
 
 #pragma endregion
-#define GRID_Y_SIZE 16
+#define GRID_Y_SIZE 32
 
 namespace Framework
 {
