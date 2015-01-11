@@ -33,8 +33,6 @@ namespace Framework
     float ConvectiveHeatTransfer(float Hc, float T1, float T2, const float& dt)
     {
       float dTemp = T2 - T1;
-      if (dTemp > 0.0f)
-        return 0.0f;
 
       float dQ = Hc * dTemp * dt;
       return dQ;

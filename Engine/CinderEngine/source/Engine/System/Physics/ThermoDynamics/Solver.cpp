@@ -31,10 +31,10 @@ namespace Framework
           {
             int _y = y + VO(i, x);
             //only adjacent cells
-            if ((x == i - 1 && _y == j) ||
-              (x == i + 1 && _y == j) ||
-              (x == i && _y == j - 1) ||
-              (x == i && _y == j + 1))
+            if ((x == i - 1 && y == j) ||
+              (x == i + 1 && y == j) ||
+              (x == i && y == j - 1) ||
+              (x == i && y == j + 1))
             {
               if (x < MapSize.x && x >= 0 && _y < MapSize.y && _y >= 0)
               {
@@ -63,10 +63,10 @@ namespace Framework
             {
               int _y = y + VO(i, x);
               //only adjacent cells
-              if ((x == i - 1 && _y == j - 1) ||
-                (x == i + 1 && _y == j) ||
-                (x == i && _y == j - 1) ||
-                (x == i && _y == j + 1))
+              if ((x == i - 1 && y == j) ||
+                (x == i + 1 && y == j) ||
+                (x == i && y == j - 1) ||
+                (x == i && y == j + 1))
               {
                 if (x < MapSize.x && x >= 0 && _y < MapSize.y && _y >= 0)
                 {
@@ -90,27 +90,40 @@ namespace Framework
     void ThermodynamicsSystem::convect(int start, int end, const float dt)
     {
       float _dt = simulation_speed * dt;
-      FOR(start, end)
-        int dy = 0;
-        if (materialList[Terrain.Get(i, j)].isFluid && materialList[Terrain.Get(i, j + 1)].isFluid)
-        {
-          VelocityMapY.Set(i, j, VelocityMapY.Get(i, j) + (TemperatureMap_Prev.Get(i, j) - TemperatureMap_Prev.Get(i, j + 1)) / 300.f);
-          dy = 1;
-        }
-        
-        int dx = 0;// VelocityMapX.Get(i, j) / 10;
-        float dQConv;
-        if (i + dx >= 0 && i + dx < MapSize.x && j + dy + VO(i, i + dx) >= 0 && j + dy + VO(i, i + dx) < MapSize.y)
-        {
-          dQConv = ConvectiveHeatTransfer(materialList[Terrain.Get(i, j)].Hc,
-            TemperatureMap_Prev.Get(i, j), TemperatureMap_Prev.Get(i + dx, j + dy), _dt);
-        }
-        else
-        {
-          dQConv = ConvectiveHeatTransfer(materialList[Terrain.Get(i, j)].Hc,
-            TemperatureMap_Prev.Get(i, j), AtmosphericTemperature, _dt);
-        }
-        TemperatureMap.Set(i, j, TemperatureMap_Prev.Get(i, j + 1) + dTemp(dQConv, DensityMap.Get(i, j + 1) * 1.0f, Const::c_Air));
+      float vx = 1.f;
+      for (int j = 2; j < MapSize.y; ++j) {
+        for (int i = start; i < end; ++i) {
+          int dy = 0;
+          if (materialList[Terrain.Get(i, j)].isFluid && materialList[Terrain.Get(i, j - 1)].isFluid)
+          {
+            vx = 1;// VelocityMapY.Get(i, j) / 100;
+            dy = 1;
+          }
+          
+          int dx = 0;// int(VelocityMapX.Get(i, j) / 100);
+
+          /*if (dx >= 1)
+            dx = 1;
+          else if (dx <= -1)
+            dx = -1;
+
+          if (i - dx < 0)
+            dx = i;
+          else if (i - dx >= MapSize.x)
+            dx = i - MapSize.x + 1;*/
+
+          float dQConv;
+          if (i - dx >= 0 && i - dx < MapSize.x && j - dy + VO(i, i - dx) >= 0 && j - dy + VO(i, i - dx) < MapSize.y)
+          {
+            dQConv = ConvectiveHeatTransfer(materialList[Terrain.Get(i, j)].Hc,
+              TemperatureMap_Prev.Get(i, j), TemperatureMap_Prev.Get(i - dx, j - dy + VO(i, i - dx)), _dt * vx);
+          }
+          else
+          {
+            dQConv = ConvectiveHeatTransfer(materialList[Terrain.Get(i, j)].Hc,
+              TemperatureMap_Prev.Get(i, j), AtmosphericTemperature, _dt * vx);
+          }
+          TemperatureMap.Set(i, j, TemperatureMap_Prev.Get(i, j) + dTemp(dQConv, DensityMap.Get(i, j) * 1.0f, Const::c_Air));
       END_FOR
     }
 
@@ -223,10 +236,10 @@ namespace Framework
       //diffuse heat
       diffuse(start_index, end_index, dt);
       //swap current with previous
-      //TemperatureMap.Swap(TemperatureMap_Prev);
+      TemperatureMap.Swap(TemperatureMap_Prev);
       //move heat
       convect(start_index, end_index, dt);
-      //advect(TemperatureMap, TemperatureMap_Prev, VelocityMapX, VelocityMapY, start_index, end_index, dt);
+      //advect(TemperatureMap, TemperatureMap_Prev, VelocityMapX, VelocityMapY, start_index, end_index, 0, dt);
     }//function Update temp
 
 
@@ -251,7 +264,7 @@ namespace Framework
       advect(VelocityMapY, VelocityMap_PrevY, VelocityMap_PrevX, VelocityMap_PrevY, start_index, end_index, 2, dt);
 
       //project(start_index, end_index);
-      //lin_solve(start_index, end_index, 0, VelocityMap_PrevX, VelocityMap_PrevY, 1, 4);
+      //lin_solve(start_index, end_index, 0, VelocityMap_PrevX, VelocityMap_PrevY, 0.75, 4);
       lin_solve(start_index, end_index, 0, VelocityMapX, VelocityMapY, 1, 4);
       //Swap arrays
       VelocityMapX.Swap(VelocityMap_PrevX);
@@ -264,13 +277,13 @@ namespace Framework
     void ThermodynamicsSystem::set_bnd(int start, int end, int b, Grid2D<float> &x)
     {
       for (int i = start + 1; i < end - 1; ++i) {
-        x.Set(i, 1, b == 2 ? -x.Get(i, 1) : x.Get(i, 1));
+        x.Set(i, 1, b == 2 ? -x.Get(i, 2) : x.Get(i, 2));
         x.Set(i, MapSize.y - 1, b == 2 ? -x.Get(i, MapSize.y - 2) : x.Get(i, MapSize.y - 2));
       }
 
       for (int i = 1; i < MapSize.y - 1; ++i)
       {
-        x.Set(start, i, b == 1 ? -x.Get(1, i) : x.Get(1, i));
+        x.Set(start, i, b == 1 ? -x.Get(start+1, i) : x.Get(start+1, i));
         x.Set(end - 1, i, b == 1 ? -x.Get(end - 2, i) : x.Get(end - 2, i));
       }
 

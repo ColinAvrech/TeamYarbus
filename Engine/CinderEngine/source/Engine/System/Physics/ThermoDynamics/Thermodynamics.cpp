@@ -144,10 +144,10 @@ namespace Framework
     {
       //test
       time += dt;
-      TemperatureMap.Set(65, 5, 3000.f);
+      TemperatureMap.Set(65, 5, std::abs(3000.f * std::cos(time)));
       //VelocityMapY.Set(65, 5, 100.f);
       VelocityMapY.Set(65, 5, std::abs(100.f * std::cos(time / 1.f)));
-      //VelocityMapX.Set(65, 5, 50.f * std::sin(time / 1.f));
+      //VelocityMapX.Set(65, 5, std::abs(100.f * std::sin(time / 1.f)));
       if (paused)
         return;
 
@@ -573,10 +573,10 @@ namespace Framework
       int h_end = c_center.x + fov;
       if (h_end >= MapSize.x)
         h_end = MapSize.x - 1;
-      int v_start = c_center.y - fov;
+      int v_start = 0;// c_center.y - fov;
       if (v_start < 0)
         v_start = 0;
-      int v_end = c_center.y + fov;
+      int v_end = MapSize.y;// c_center.y + fov;
       if (v_end >= MapSize.y)
         v_end = MapSize.y - 1;
       glUseProgram(0);
@@ -635,8 +635,8 @@ namespace Framework
         {
           for (int j = h_start; j < h_end; ++j)
           {
-            float x_off = VelocityMapX.Get(j, i) / 100.f;
-            float y_off = VelocityMapY.Get(j, i) / 100.f;
+            float x_off = VelocityMapX.Get(j, i) / 50.f;
+            float y_off = VelocityMapY.Get(j, i) / 50.f;
             glColor4f(VelocityMapX.Get(j, i) >= 0, VelocityMapY.Get(j, i) >= 0, 1.f, 1.f);
             glVertex2f(j - (MapSize.x * 0.5f) + 2.5f, i + 0.5f + y_offset[j]); //Base
             glVertex2f(j - (MapSize.x * 0.5f) + 2.5f + x_off, i + 0.5f + y_offset[j] + y_off); //Tip
@@ -679,14 +679,20 @@ namespace Framework
       glBegin(GL_LINES);
       {
         int c = c_center.x;
+        int hstart = c - Update_Width;
+        if (hstart < 0)
+          hstart = 0;
+        int hend = hstart + 2 * Update_Width;
+        if (hend > MapSize.x - 1)
+          hend = MapSize.x - 1;
         //left
         glColor4f(1.f, 0.25f, 0.5f, 1.f);
-        glVertex2f(c - Update_Width - (MapSize.x * 0.5f) + 2.f, y_offset[c - Update_Width]); //Base
-        glVertex2f(c - Update_Width - (MapSize.x * 0.5f) + 2.f, y_offset[c - Update_Width] + MapSize.y); //Tip
+        glVertex2f(hstart - (MapSize.x * 0.5f) + 2.f, y_offset[hstart]); //Base
+        glVertex2f(hstart - (MapSize.x * 0.5f) + 2.f, y_offset[hstart] + MapSize.y); //Tip
         //right
         glColor4f(1.f, 0.25f, 0.5f, 1.f);
-        glVertex2f(c + Update_Width - (MapSize.x * 0.5f) + 2.f, y_offset[c + Update_Width]); //Base
-        glVertex2f(c + Update_Width - (MapSize.x * 0.5f) + 2.f, y_offset[c + Update_Width] + MapSize.y); //Tip
+        glVertex2f(hend - (MapSize.x * 0.5f) + 2.f, y_offset[hend]); //Base
+        glVertex2f(hend - (MapSize.x * 0.5f) + 2.f, y_offset[hend] + MapSize.y); //Tip
       }
       glEnd();
 
