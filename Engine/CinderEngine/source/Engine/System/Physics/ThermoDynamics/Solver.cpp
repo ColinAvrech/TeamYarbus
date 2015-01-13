@@ -102,8 +102,8 @@ namespace Framework
           }
           
           int dx = 0;
-          dx = int(VelocityMapX.Get(i, j) / 10) > 1 ? 1 : dx;
-          dx = int(VelocityMapX.Get(i, j) / 10) < -1 ? -1 : dx;
+          dx = int(VelocityMapX.Get(i, j) / 5) > 1 ? 1 : dx;
+          dx = int(VelocityMapX.Get(i, j) / 5) < -1 ? -1 : dx;
 
 
           float dQConv;

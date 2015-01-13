@@ -72,8 +72,8 @@ namespace Framework
       /*if (guiText == nullptr)
       {
         GameObject* go = new GameObject(10000);
-		Component* tsfm = go->AddComponent("Transform");
-		tsfm->Initialize();
+    Component* tsfm = go->AddComponent("Transform");
+    tsfm->Initialize();
 
         guiText = reinterpret_cast<GUIText*> (go->AddComponent("GUIText"));
         guiText->position = { -0.2f, -0.9f };
@@ -145,8 +145,9 @@ namespace Framework
       //test
       time += dt;
       TemperatureMap.Set(65, 5, std::abs(3000.f * std::cos(time)));
-      //VelocityMapY.Set(65, 5, 100.f);
-      VelocityMapY.Set(65, 5, std::abs(100.f * std::cos(time / 1.f)));
+      VelocityMapY.Set(65, 5, 100.f);
+      VelocityMapY.Set(60, 5, 100.f);
+      //VelocityMapY.Set(65, 5, std::abs(100.f * std::cos(time / 1.f)));
       //VelocityMapX.Set(65, 5, 100.f * std::sin(time / 1.f));
       if (paused)
         return;
@@ -173,6 +174,7 @@ namespace Framework
     //Get cell temperature
     float ThermodynamicsSystem::GetCellTemperature(int x, int y)
     {
+      y -= y_offset[x];
       if (x < 0 || x >= MapSize.x || y < 0 || y >= MapSize.y)
         return AtmosphericTemperature;
       return TemperatureMap.Get(x, y);
@@ -181,6 +183,7 @@ namespace Framework
     //Get Terrain material
     int ThermodynamicsSystem::GetCellMaterial(int x, int y)
     {
+      y -= y_offset[x];
       if (x < 0 || x >= MapSize.x || y < 0 || y >= MapSize.y)
         return AIR;
       return Terrain.Get(x, y);
@@ -197,16 +200,14 @@ namespace Framework
       return DensityMap.Get(sub_x, sub_y);
     }
     //Get cell velocity
-    vec2 ThermodynamicsSystem::GetCellVelocity(const float& x, const float& y)
+    vec2 ThermodynamicsSystem::GetCellVelocity(int x, int y)
     {
-      glm::ivec2 sub(x, y);
-      int sub_x = int(sub.x);
-      int sub_y = int(sub.y);
-      if (sub_x < 0 || sub_x > MapSize.x || sub_y < 0 || sub_y > MapSize.y)
+      y -= y_offset[x];
+      if (x < 0 || x > MapSize.x || y < 0 || y > MapSize.y)
       {
         return vec2(0, 0);
       }
-      return vec2(VelocityMapX.Get(sub_x, sub_y), VelocityMapY.Get(sub_x, sub_y));
+      return vec2(VelocityMapX.Get(x, y), VelocityMapY.Get(x, y));
     }
 
     // Setters
@@ -252,18 +253,17 @@ namespace Framework
       EqualizePressure = !EqualizePressure;
     }
 
-    float ThermodynamicsSystem::SetCellTemperature(const float& x, const float& y, const float& temp, const float& dt)
+    float ThermodynamicsSystem::SetCellTemperature(int x, int y, const float temp, const float dt)
     {
-      int sub_x = int(x);
-      int sub_y = int(y);
+      y -= y_offset[x];
       float dQ;
-      if (sub_x < 0 || sub_x > MapSize.x || sub_y < 0 || sub_y > MapSize.y)
+      if (x < 0 || x > MapSize.x || y < 0 || y > MapSize.y)
         dQ = ConductiveHeatTransfer(Const::K_Wood, AtmosphericTemperature, temp, dt, 1);
       else
       {
-        dQ = ConductiveHeatTransfer(Const::K_Air, TemperatureMap.Get(sub_x, sub_y), temp, dt, 1);
-        float deltaTemp = dTemp(dQ, DensityMap.Get(sub_x, sub_y) * 1.f, Const::c_Air);
-        TemperatureMap.Set(sub_x, sub_y, TemperatureMap.Get(sub_x, sub_y) + deltaTemp);
+        dQ = ConductiveHeatTransfer(Const::K_Air, TemperatureMap.Get(x, y), temp, dt, 1);
+        float deltaTemp = dTemp(dQ, DensityMap.Get(x, y) * 1.f, Const::c_Air);
+        TemperatureMap.Set(x, y, TemperatureMap.Get(x, y) + deltaTemp);
       }
       return dQ;
     }

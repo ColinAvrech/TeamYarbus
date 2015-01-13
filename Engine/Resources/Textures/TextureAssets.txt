@@ -45,3 +45,4 @@ Credits.png
 UIRestartTitle.png
 UIRestartWhite.png
 UIRestartBlack.png
+tumbleweed.png

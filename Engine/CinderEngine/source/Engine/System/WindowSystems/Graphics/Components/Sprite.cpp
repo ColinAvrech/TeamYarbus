@@ -293,6 +293,7 @@ namespace Framework
 	// Called By Renderer Component
 	void Sprite::Draw()
 	{
+    glEnable(GL_BLEND);
     if (enabled && vao != nullptr)
     {
       vao->bindVAO ();

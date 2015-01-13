@@ -110,14 +110,14 @@ namespace Framework
       //Get cell oxygen content
       float GetCellOxygen(const float& x, const float& y);
       //Get cell velocity
-      vec2 GetCellVelocity(const float& x, const float& y);
+      vec2 GetCellVelocity(int x, int y);
 	    //Return Terrain binary map value
 	    int GetCellMaterial(int x, int y);
 
       // Setters
       void SetMapSize(int size_x, int size_y = GRID_Y_SIZE);
       void ToggleAutoDissipation();
-      float SetCellTemperature(const float& x, const float& y, const float& temp, const float& dt);
+      float SetCellTemperature(int x, int y, const float temp, const float dt);
       void SetCellVelocity (const int x, const int y, vec2 v);
       void Add_Object(FireStarter *obj);
       void Add_Group(FireGroup *obj);
