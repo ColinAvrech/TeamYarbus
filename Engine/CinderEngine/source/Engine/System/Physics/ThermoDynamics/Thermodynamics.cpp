@@ -29,6 +29,8 @@ namespace Framework
 {
   namespace Physics
   {
+    static float time = 0.f;
+    static const int Update_Width = 32;
     glm::ivec2 ThermodynamicsSystem::MapSize;
     FireSystem* ThermodynamicsSystem::FIRE = nullptr;
     std::vector <glm::vec2> ThermodynamicsSystem::TerrainPoints;
@@ -53,6 +55,7 @@ namespace Framework
     //Destructor
     ThermodynamicsSystem::~ThermodynamicsSystem()
     {
+      EVENTSYSTEM->mDisconnect <KeyEvent, ThermodynamicsSystem>(Events::KEY_ANY, this, &ThermodynamicsSystem::OnKeyPressed);
       Clear();
       //ReleaseThreads();
     }
@@ -63,11 +66,14 @@ namespace Framework
 
     bool ThermodynamicsSystem::Initialize()
     {
+#ifdef _DEBUG 
+      EVENTSYSTEM->mConnect <KeyEvent, ThermodynamicsSystem>(Events::KEY_ANY, this, &ThermodynamicsSystem::OnKeyPressed);
+#endif
       /*if (guiText == nullptr)
       {
         GameObject* go = new GameObject(10000);
-		Component* tsfm = go->AddComponent("Transform");
-		tsfm->Initialize();
+    Component* tsfm = go->AddComponent("Transform");
+    tsfm->Initialize();
 
         guiText = reinterpret_cast<GUIText*> (go->AddComponent("GUIText"));
         guiText->position = { -0.2f, -0.9f };
@@ -92,6 +98,19 @@ namespace Framework
 
       std::cout << "Thermodynamics Initialized." << std::endl;
       return true;
+    }
+
+    void ThermodynamicsSystem::OnKeyPressed(KeyEvent* key)
+    {
+      if (key->KeyDown)
+        switch (key->KeyValue)
+      {
+        case GLFW_KEY_P:
+          EqualizePressure = !EqualizePressure;
+          break;
+        default:
+          break;
+      }
     }
 
     void ThermodynamicsSystem::Add_Object(FireStarter *obj)
@@ -124,19 +143,22 @@ namespace Framework
     void ThermodynamicsSystem::Update(const float& dt)
     {
       //test
-      //TemperatureMap.Set(1, 1, 10000.f);
-      //VelocityMapY.Set(65, 1, 0.01f);
-      //VelocityMapX.Set(65, 5, 100.f);
+      time += dt;
+      TemperatureMap.Set(65, 5, std::abs(3000.f * std::cos(time)));
+      VelocityMapY.Set(65, 5, 100.f);
+      VelocityMapY.Set(60, 5, 100.f);
+      //VelocityMapY.Set(65, 5, std::abs(100.f * std::cos(time / 1.f)));
+      //VelocityMapX.Set(65, 5, 100.f * std::sin(time / 1.f));
       if (paused)
         return;
 
       int center = Camera::main->gameObject->Transform->GetGridPosition().x;
       float fov = Camera::main->GetSize();
 
-      int start = center - 32;
+      int start = center - Update_Width;
       if (start < 0)
         start = 0;
-      int end = start + 64;
+      int end = start + 2 * Update_Width;
       if (end >= MapSize.x)
         end = MapSize.x - 1;
       
@@ -152,6 +174,7 @@ namespace Framework
     //Get cell temperature
     float ThermodynamicsSystem::GetCellTemperature(int x, int y)
     {
+      y -= y_offset[x];
       if (x < 0 || x >= MapSize.x || y < 0 || y >= MapSize.y)
         return AtmosphericTemperature;
       return TemperatureMap.Get(x, y);
@@ -160,6 +183,7 @@ namespace Framework
     //Get Terrain material
     int ThermodynamicsSystem::GetCellMaterial(int x, int y)
     {
+      y -= y_offset[x];
       if (x < 0 || x >= MapSize.x || y < 0 || y >= MapSize.y)
         return AIR;
       return Terrain.Get(x, y);
@@ -176,16 +200,14 @@ namespace Framework
       return DensityMap.Get(sub_x, sub_y);
     }
     //Get cell velocity
-    vec2 ThermodynamicsSystem::GetCellVelocity(const float& x, const float& y)
+    vec2 ThermodynamicsSystem::GetCellVelocity(int x, int y)
     {
-      glm::ivec2 sub(x, y);
-      int sub_x = int(sub.x);
-      int sub_y = int(sub.y);
-      if (sub_x < 0 || sub_x > MapSize.x || sub_y < 0 || sub_y > MapSize.y)
+      y -= y_offset[x];
+      if (x < 0 || x > MapSize.x || y < 0 || y > MapSize.y)
       {
         return vec2(0, 0);
       }
-      return vec2(VelocityMapX.Get(sub_x, sub_y), VelocityMapY.Get(sub_x, sub_y));
+      return vec2(VelocityMapX.Get(x, y), VelocityMapY.Get(x, y));
     }
 
     // Setters
@@ -231,18 +253,17 @@ namespace Framework
       EqualizePressure = !EqualizePressure;
     }
 
-    float ThermodynamicsSystem::SetCellTemperature(const float& x, const float& y, const float& temp, const float& dt)
+    float ThermodynamicsSystem::SetCellTemperature(int x, int y, const float temp, const float dt)
     {
-      int sub_x = int(x);
-      int sub_y = int(y);
+      y -= y_offset[x];
       float dQ;
-      if (sub_x < 0 || sub_x > MapSize.x || sub_y < 0 || sub_y > MapSize.y)
+      if (x < 0 || x > MapSize.x || y < 0 || y > MapSize.y)
         dQ = ConductiveHeatTransfer(Const::K_Wood, AtmosphericTemperature, temp, dt, 1);
       else
       {
-        dQ = ConductiveHeatTransfer(Const::K_Air, TemperatureMap.Get(sub_x, sub_y), temp, dt, 1);
-        float deltaTemp = dTemp(dQ, DensityMap.Get(sub_x, sub_y) * 1.f, Const::c_Air);
-        TemperatureMap.Set(sub_x, sub_y, TemperatureMap.Get(sub_x, sub_y) + deltaTemp);
+        dQ = ConductiveHeatTransfer(Const::K_Air, TemperatureMap.Get(x, y), temp, dt, 1);
+        float deltaTemp = dTemp(dQ, DensityMap.Get(x, y) * 1.f, Const::c_Air);
+        TemperatureMap.Set(x, y, TemperatureMap.Get(x, y) + deltaTemp);
       }
       return dQ;
     }
@@ -552,10 +573,10 @@ namespace Framework
       int h_end = c_center.x + fov;
       if (h_end >= MapSize.x)
         h_end = MapSize.x - 1;
-      int v_start = c_center.y - fov;
+      int v_start = 0;// c_center.y - fov;
       if (v_start < 0)
         v_start = 0;
-      int v_end = c_center.y + fov;
+      int v_end = MapSize.y;// c_center.y + fov;
       if (v_end >= MapSize.y)
         v_end = MapSize.y - 1;
       glUseProgram(0);
@@ -614,8 +635,8 @@ namespace Framework
         {
           for (int j = h_start; j < h_end; ++j)
           {
-            float x_off = VelocityMapX.Get(j, i) / 100.f;
-            float y_off = VelocityMapY.Get(j, i) / 100.f;
+            float x_off = VelocityMapX.Get(j, i) / 50.f;
+            float y_off = VelocityMapY.Get(j, i) / 50.f;
             glColor4f(1.f, 1.f, 1.f, 1.f);
             glVertex2f(j - (MapSize.x * 0.5f) + 2.5f, i + 0.5f + y_offset[j]); //Base
             glVertex2f(j - (MapSize.x * 0.5f) + 2.5f + x_off, i + 0.5f + y_offset[j] + y_off); //Tip
@@ -654,6 +675,27 @@ namespace Framework
         //glVertex2f ((*i).first.x, (*i).first.y - 1);
       }
       glEnd();
+
+      glBegin(GL_LINES);
+      {
+        int c = c_center.x;
+        int hstart = c - Update_Width;
+        if (hstart < 0)
+          hstart = 0;
+        int hend = hstart + 2 * Update_Width;
+        if (hend > MapSize.x - 1)
+          hend = MapSize.x - 1;
+        //left
+        glColor4f(1.f, 0.25f, 0.5f, 1.f);
+        glVertex2f(hstart - (MapSize.x * 0.5f) + 2.f, y_offset[hstart]); //Base
+        glVertex2f(hstart - (MapSize.x * 0.5f) + 2.f, y_offset[hstart] + MapSize.y); //Tip
+        //right
+        glColor4f(1.f, 0.25f, 0.5f, 1.f);
+        glVertex2f(hend - (MapSize.x * 0.5f) + 2.f, y_offset[hend]); //Base
+        glVertex2f(hend - (MapSize.x * 0.5f) + 2.f, y_offset[hend] + MapSize.y); //Tip
+      }
+      glEnd();
+
       glMatrixMode(GL_PROJECTION);
       glLoadIdentity();
       glMatrixMode(GL_MODELVIEW);

@@ -55,7 +55,7 @@ namespace Framework
       if (b->gameObject != nullptr)
       {
         b->gameObject->Transform->SetPosition(b->position.x, b->position.y);
-        b->gameObject->Transform->Rotate(b->angularVelocity * dt);
+        b->gameObject->Transform->Rotate(180 / M_PI * b->orient);
       }
       IntegrateForces(b, dt);
     }

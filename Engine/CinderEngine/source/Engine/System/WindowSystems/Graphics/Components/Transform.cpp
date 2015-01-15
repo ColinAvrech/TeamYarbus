@@ -167,7 +167,7 @@ namespace Framework
 
   void Transform::Rotate (float angle)
   {
-    rotation += angle;
+    rotation = angle;
     matricesReady = false;
   }
 

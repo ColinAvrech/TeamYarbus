@@ -93,8 +93,8 @@ Level =
       int Passes = 2,
       int Waves = 5,
       int Water = 5,
-      Vec4 Color1 = [0.945, 0.725, 0.502, 1],
-	  Vec4 Color2 = [0.235, 0.223, 0.816, 1],
+      Vec4 Color1 = [0.2, 0.2, 0.2, 1],
+	  Vec4 Color2 = [0.1, 0.1, 0.1, 1],
       bool AddCollider = true,
 		},
   },
@@ -124,7 +124,7 @@ Level =
      int Passes = 3,
      int Waves = 5,
      int Water = 5,
-     Vec4 Color1 = [0.945, 0.725, 0.502, 1],
+     Vec4 Color1 = [0.745, 0.525, 0.202, 1],
      Vec4 Color2 = [0.54, 0.603, 0.463, 1],
      bool AddCollider = true,
 	},
@@ -169,6 +169,54 @@ Level =
     },
   },
   Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 4,
+		},
+		Named = 
+		{
+			string Name = "Player",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0, 75, 0],
+			Vec3 Scale = [1, 1, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		CircleCollider2D = 
+		{
+      bool Enabled = true,
+		  float Radius = 1.0,
+		  bool Static = false,
+		  string Material = "4de020863e872da8:DefaultPhysicsMaterial",
+		},
+		CharacterController = 
+		{
+		  bool Enabled = true,
+          bool UseFlying = false,
+		  Vec2 Acceleration = [30, 0],
+		  Vec2 JumpVelocity = [0, 2],
+		  Vec2 MicrophoneMultiplier = [0, 10],
+		},
+    Sprite = 
+		{
+			string SpriteSource = "tumbleweed.png",
+			bool FlipX = false,
+			bool FlipY = false,
+			Vec4 Color = [1, 1, 1, 1],
+			bool Visible = true,
+			bool OnTop = false,
+			bool AnimationActive = false,
+			float AnimationSpeed = 1,
+			uint StartFrame = 0,
+			BlendMode BlendMode = Alpha,
+			SpriteGeometryMode GeometryMode = ZPlane,
+			string SpriteLayer = "52ad5fa30d7fcd50:DefaultSpriteLayer",
+			string Shader = "Default",
+		},
+	},
+  Cog = 
   {
 	LinkId = 
 	{
@@ -193,96 +241,5 @@ Level =
 		Vec4 Color1 = [0.25, 0.5, 1, 0.5],
 		Vec4 Color2 = [0, 0, 0, 1],
 	},
-  },
-  Cog = 
-	{
-		LinkId = 
-		{
-			uint Id = 6,
-		},
-		Named = 
-		{
-			string Name = "LeftWall",
-		},
-		Transform = 
-		{
-			Vec3 Translation = [-60, 0, 0],
-			Vec3 Scale = [1, 1, 1],
-			Quat Rotation = [0, 0, 0, 1],
-		},
-    PolygonCollider2D = 
-    {
-      bool Enabled = true,
-		  bool Static = true,
-		  string Material = "4de020863e872da8:DefaultPhysicsMaterial",
-      Vec2 Dimensions = [5, 150],
-      float Orientation = 0,
-    },
-  },
-  Cog = 
-	{
-		LinkId = 
-		{
-			uint Id = 7,
-		},
-		Named = 
-		{
-			string Name = "RightWall",
-		},
-		Transform = 
-		{
-			Vec3 Translation = [60, 0, 0],
-			Vec3 Scale = [1, 1, 1],
-			Quat Rotation = [0, 0, 0, 1],
-		},
-    PolygonCollider2D = 
-    {
-      bool Enabled = true,
-		  bool Static = true,
-		  string Material = "4de020863e872da8:DefaultPhysicsMaterial",
-      Vec2 Dimensions = [5, 150],
-      float Orientation = 0,
-    },
-    AudioComponent = 
-    {
-      bool Positional = false,
-      bool MicEffect = false,
-      bool Play = true,
-      bool Mute = false,
-      bool LowPassFilter = true,
-      float LPFcutoff = 2000,
-      float LPFresonance = 1,
-      bool HighPassFilter = true,
-      float HPFcutoff = 150,
-      float HPFresonance = 1,
-      string SoundID = "BG",
-      string SoundName = "Pads",
-      string FileName = "Pads.ogg",
-    },
-  },
-  Cog = 
-	{
-		LinkId = 
-		{
-			uint Id = 8,
-		},
-		Named = 
-		{
-			string Name = "TopWall",
-		},
-		Transform = 
-		{
-			Vec3 Translation = [0, 64, 0],
-			Vec3 Scale = [1, 1, 1],
-			Quat Rotation = [0, 0, 0, 1],
-		},
-    PolygonCollider2D = 
-    {
-      bool Enabled = true,
-		  bool Static = true,
-		  string Material = "4de020863e872da8:DefaultPhysicsMaterial",
-      Vec2 Dimensions = [150, 5],
-      float Orientation = 0,
-    },
-  },
+ },
 },

@@ -195,7 +195,7 @@ namespace Framework
   {
     if (glfwGetMouseButton (WINDOWSYSTEM->Get_Window (), GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
     {
-      MouseUpdate (WINDOWSYSTEM->Get_Mouse_Position ());
+      //MouseUpdate (WINDOWSYSTEM->Get_Mouse_Position ());
     }
   
     switch (czs)

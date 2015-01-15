@@ -10,7 +10,7 @@
 #include <Precompiled.h>
 
 #define VO(x1, x2) y_offset[x1] - y_offset[x2]
-#define FOR(s, e) for (int j = 0; j < MapSize.y; ++j) { for (int i = start; i < end; ++i) {
+#define FOR(s, e) for (int j = 2; j < MapSize.y - 1; ++j) { for (int i = start + 1; i < end - 1; ++i) {
 #define END_FOR }}
 
 namespace Framework
@@ -18,6 +18,7 @@ namespace Framework
   namespace Physics
   {
     namespace Const = Constant;
+    static const int N = 16;
 
     void ThermodynamicsSystem::lin_solve(int start, int end, int b, Grid2D<float> &x1, Grid2D<float> &x0, float a, float c)
     {
@@ -30,10 +31,10 @@ namespace Framework
           {
             int _y = y + VO(i, x);
             //only adjacent cells
-            if ((x == i - 1 && _y == j) ||
-              (x == i + 1 && _y == j) ||
-              (x == i && _y == j - 1) ||
-              (x == i && _y == j + 1))
+            if ((x == i - 1 && y == j) ||
+              (x == i + 1 && y == j) ||
+              (x == i && y == j - 1) ||
+              (x == i && y == j + 1))
             {
               if (x < MapSize.x && x >= 0 && _y < MapSize.y && _y >= 0)
               {
@@ -52,7 +53,8 @@ namespace Framework
     {
       float _dt = simulation_speed * dt;
 
-      FOR(start, end)
+      for (int j = 0; j < MapSize.y; ++j) {
+        for (int i = start; i < end; ++i) {
           float netdQ = 0.f;
           //Loop through surrounding cells
           for (int y = j - 1; y <= j + 1; ++y)
@@ -61,10 +63,10 @@ namespace Framework
             {
               int _y = y + VO(i, x);
               //only adjacent cells
-              if ((x == i - 1 && _y == j) ||
-                (x == i + 1 && _y == j) ||
-                (x == i && _y == j - 1) ||
-                (x == i && _y == j + 1))
+              if ((x == i - 1 && y == j) ||
+                (x == i + 1 && y == j) ||
+                (x == i && y == j - 1) ||
+                (x == i && y == j + 1))
               {
                 if (x < MapSize.x && x >= 0 && _y < MapSize.y && _y >= 0)
                 {
@@ -85,9 +87,44 @@ namespace Framework
       END_FOR
     } //function diffuse
 
+    void ThermodynamicsSystem::convect(int start, int end, const float dt)
+    {
+      float _dt = simulation_speed * dt;
+      float vx = 1.f;
+      for (int j = 2; j < MapSize.y; ++j) {
+        for (int i = start; i < end; ++i) {
+          int dy = 0;
+          if (j + 1 < MapSize.y && materialList[Terrain.Get(i, j)].isFluid && materialList[Terrain.Get(i, j - 1)].isFluid)
+          {
+            dy = VelocityMapY.Get(i, j) > 1 ? 1 : dy;
+            dy = VelocityMapY.Get(i, j) < -1 ? -1 : dy;
+            vx = 1;// VelocityMapY.Get(i, j) / 100;
+          }
+          
+          int dx = 0;
+          dx = int(VelocityMapX.Get(i, j) / 5) > 1 ? 1 : dx;
+          dx = int(VelocityMapX.Get(i, j) / 5) < -1 ? -1 : dx;
+
+
+          float dQConv;
+          if (i - dx >= 0 && i - dx < MapSize.x && j - dy + VO(i, i - dx) >= 0 && j - dy + VO(i, i - dx) < MapSize.y)
+          {
+            dQConv = ConvectiveHeatTransfer(materialList[Terrain.Get(i, j)].Hc,
+              TemperatureMap_Prev.Get(i, j), TemperatureMap_Prev.Get(i - dx, j - dy + VO(i, i - dx)), _dt * vx);
+          }
+          else
+          {
+            dQConv = ConvectiveHeatTransfer(materialList[Terrain.Get(i, j)].Hc,
+              TemperatureMap_Prev.Get(i, j), AtmosphericTemperature, _dt * vx);
+          }
+          TemperatureMap.Set(i, j, TemperatureMap_Prev.Get(i, j) + dTemp(dQConv, DensityMap.Get(i, j) * 1.0f, Const::c_Air));
+      END_FOR
+    }
+
     void ThermodynamicsSystem::advect(Grid2D<float> &g, Grid2D<float> &g0, Grid2D<float> &u, Grid2D<float> &v, int start, int end, int b, const float dt)
     {
-      float dt0 = (MapSize.y - 2) * dt;
+      //float dt0 = (MapSize.y - 2) * simulation_speed * dt;
+      float dt0 = (N-2) * simulation_speed * dt;
       FOR(start, end)
         float x = i - dt0 * VelocityMapX.Get(i, j);
         float y = j - dt0 * VelocityMapY.Get(i, j);
@@ -135,7 +172,7 @@ namespace Framework
         if (j - 1 > 0)
           div -= VelocityMapY.Get(i, j - 1);
 
-        float pre_vy = -0.5f * div / (MapSize.y - 2);
+        float pre_vy = -0.5f * div / (N - 2);
         VelocityMap_PrevY.Set(i, j, pre_vy);
         VelocityMap_PrevX.Set(i, j, 0.f);
         END_FOR
@@ -158,7 +195,7 @@ namespace Framework
         if (_j > 0 && _j < MapSize.y)
           x_sum -= VelocityMap_PrevX.Get(i - 1, _j);
         
-        float val_x = 0.5f * (MapSize.y - 2) * x_sum;
+        float val_x = 0.5f * (N - 2) * x_sum;
         VelocityMapX.Set(i, j, VelocityMapX.Get(i, j) - val_x);
 
         //y velocity
@@ -167,17 +204,18 @@ namespace Framework
         if (j - 1 > 0)
           y_sum -= VelocityMap_PrevX.Get(i, j - 1);
 
-        float val_y = 0.5f * (MapSize.y - 2) * y_sum;
+        float val_y = 0.5f * (N - 2) * y_sum;
         VelocityMapY.Set(i, j, VelocityMapY.Get(i, j) - val_y);
         END_FOR
 
-        set_bnd(start, end, 1, VelocityMapX); set_bnd(start, end, 1, VelocityMapY);
+        set_bnd(start, end, 1, VelocityMapX); set_bnd(start, end, 2, VelocityMapY);
     }
 
     void ThermodynamicsSystem::release_pressure(int start, int end, const float dt)
     {
-      int h = MapSize.y * MapSize.y;
-      float a = dt * viscosity * h;
+      //int h = MapSize.y * MapSize.y;
+      int h = N * N;
+      float a = simulation_speed * dt * viscosity * h;
       float c = 1 + 4 * a;
 
       lin_solve(start, end, 1, VelocityMapX, VelocityMap_PrevX, a, c);
@@ -192,9 +230,10 @@ namespace Framework
       //diffuse heat
       diffuse(start_index, end_index, dt);
       //swap current with previous
-      //TemperatureMap.Swap(TemperatureMap_Prev);
+      TemperatureMap.Swap(TemperatureMap_Prev);
       //move heat
-      //advect(TemperatureMap, TemperatureMap_Prev, VelocityMapX, VelocityMapY, start_index, end_index, dt);
+      convect(start_index, end_index, dt);
+      //advect(TemperatureMap, TemperatureMap_Prev, VelocityMapX, VelocityMapY, start_index, end_index, 0, dt);
     }//function Update temp
 
 
@@ -204,11 +243,9 @@ namespace Framework
       //Swap arrays
       VelocityMapX.Swap(VelocityMap_PrevX);
       VelocityMapY.Swap(VelocityMap_PrevY);
-      //diffuse velocity if EqualizePressure is true
-      if (EqualizePressure)
-      {
-        release_pressure(start_index, end_index, dt);
-      }
+
+      release_pressure(start_index, end_index, dt);
+      
       //compute total applied forces
       project(start_index, end_index);
       //Swap arrays
@@ -219,29 +256,34 @@ namespace Framework
       advect(VelocityMapY, VelocityMap_PrevY, VelocityMap_PrevX, VelocityMap_PrevY, start_index, end_index, 2, dt);
 
       //project(start_index, end_index);
+      //lin_solve(start_index, end_index, 0, VelocityMap_PrevX, VelocityMap_PrevY, 0.75, 4);
+      lin_solve(start_index, end_index, 0, VelocityMapX, VelocityMapY, 1, 4);
+      release_pressure(start_index, end_index, dt);
       //Swap arrays
       VelocityMapX.Swap(VelocityMap_PrevX);
       VelocityMapY.Swap(VelocityMap_PrevY);
+      
+      //project(start_index, end_index);
+      //lin_solve(start_index, end_index, 0, VelocityMapX, VelocityMapY, 0.1f, 4);
     }
 
     void ThermodynamicsSystem::set_bnd(int start, int end, int b, Grid2D<float> &x)
     {
       for (int i = start + 1; i < end - 1; ++i) {
-        x.Set(i, 0, b == 2 ? -x.Get(i, 1) : x.Get(i, 1));
+        x.Set(i, 1, b == 2 ? -x.Get(i, 2) : x.Get(i, 2));
         x.Set(i, MapSize.y - 1, b == 2 ? -x.Get(i, MapSize.y - 2) : x.Get(i, MapSize.y - 2));
       }
 
       for (int i = 1; i < MapSize.y - 1; ++i)
       {
-        x.Set(start, i, b == 1 ? -x.Get(1, i) : x.Get(1, i));
+        x.Set(start, i, b == 1 ? -x.Get(start+1, i) : x.Get(start+1, i));
         x.Set(end - 1, i, b == 1 ? -x.Get(end - 2, i) : x.Get(end - 2, i));
       }
 
-
-      /*x[IX(0, 0)] = 0.5f*(x[IX(1, 0)] + x[IX(0, 1)]);
-      x[IX(0, N + 1)] = 0.5f*(x[IX(1, N + 1)] + x[IX(0, N)]);
-      x[IX(N + 1, 0)] = 0.5f*(x[IX(N, 0)] + x[IX(N + 1, 1)]);
-      x[IX(N + 1, N + 1)] = 0.5f*(x[IX(N, N + 1)] + x[IX(N + 1, N)]);*/
+      x.Set(start, 0, 0.5f * (x.Get(start + 1, 0) + x.Get(start, 1)));
+      x.Set(start, MapSize.y - 1, 0.5f * (x.Get(start + 1, MapSize.y - 1) + x.Get(start, MapSize.y - 2)));
+      x.Set(end - 1, 0, 0.5f * (x.Get(end - 2, 0) + x.Get(end - 1, 1)));
+      x.Set(end - 1, MapSize.y - 1, 0.5f * (x.Get(end - 2, MapSize.y - 1) + x.Get(end - 1, MapSize.y - 2)));
     }
   } //namespace physics
 } //namespace framework

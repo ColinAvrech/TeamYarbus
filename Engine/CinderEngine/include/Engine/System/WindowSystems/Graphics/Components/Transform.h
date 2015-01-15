@@ -40,7 +40,7 @@ namespace Framework
 	void Translate(const vec3 &v);
     void Scale (const float x, const float y, const float z);
     void Scale (const float v);
-    void Rotate (const float angle);
+    void Rotate (float angle);
     //////////////////////////////////////////////////////////////////////////
     bool MatrixMode (int m);
     void UpdateMatrices ();

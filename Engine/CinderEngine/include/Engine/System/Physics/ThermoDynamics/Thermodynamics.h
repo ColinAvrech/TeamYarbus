@@ -92,6 +92,8 @@ namespace Framework
       void SpawnThreads ();
       void ReleaseThreads ();
       void UpdateMultiThreaded ();
+
+      void OnKeyPressed(KeyEvent* key);
       //////////////////////////////////////////////////////////////////////////
 
     public:
@@ -108,14 +110,14 @@ namespace Framework
       //Get cell oxygen content
       float GetCellOxygen(const float& x, const float& y);
       //Get cell velocity
-      vec2 GetCellVelocity(const float& x, const float& y);
+      vec2 GetCellVelocity(int x, int y);
 	    //Return Terrain binary map value
 	    int GetCellMaterial(int x, int y);
 
       // Setters
       void SetMapSize(int size_x, int size_y = GRID_Y_SIZE);
       void ToggleAutoDissipation();
-      float SetCellTemperature(const float& x, const float& y, const float& temp, const float& dt);
+      float SetCellTemperature(int x, int y, const float temp, const float dt);
       void SetCellVelocity (const int x, const int y, vec2 v);
       void Add_Object(FireStarter *obj);
       void Add_Group(FireGroup *obj);
@@ -228,6 +230,7 @@ namespace Framework
       void project(int start, int end);
       //advection
       void advect(Grid2D<float> &g, Grid2D<float> &g0, Grid2D<float> &u, Grid2D<float> &v, int start, int end, int b, const float dt);
+      void convect(int start, int end, const float dt);
 
       void lin_solve(int start, int end, int b, Grid2D<float> &x, Grid2D<float> &x0, float a, float c);
       void set_bnd(int start, int end, int b, Grid2D<float> &x);
