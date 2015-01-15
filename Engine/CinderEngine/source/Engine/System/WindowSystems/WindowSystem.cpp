@@ -416,10 +416,17 @@ namespace Framework
     WindowNameSpace::Init_Glew ();
     cursorVisible = true;
     //ToggleCursorVisibility();
-
+	
     //Disables Sticky Keys - Colin
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_FALSE);
     glfwSetInputMode(window, GLFW_STICKY_MOUSE_BUTTONS, GL_FALSE);
+
+	//Getting physical moniter size for DPI calculaion
+	GLFWmonitor* primary = glfwGetPrimaryMonitor();
+
+	int widthMM, heightMM;
+	glfwGetMonitorPhysicalSize(primary, &widthMM, &heightMM);
+	dpi = ClientWidth / (widthMM / 63.46875);
   }
 
   void WindowSystem::Minimize()

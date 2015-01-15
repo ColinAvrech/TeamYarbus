@@ -27,8 +27,7 @@ namespace Framework
     GUIText();
     virtual ~GUIText();
 
-	FT_Library  library;
-	int error;
+	FT_Library*  library;
 	
 	FT_Face  face;
 
@@ -42,11 +41,14 @@ namespace Framework
 
     void ToggleVisibility();
 
-    bool visible;
-    vec2 position;
-    String text;
-	Real4 color;
-	int font;
+	//Serialized values
+    bool visible = true;
+    vec2 position = vec2(0,0);
+    String text = "Hello World";
+	Real4 color = Real4(1,1,1,1);
+	int size = 8;
+	String font = String("Default.ttf");
+	Real3 scale = Real3(1,1,1);
 
 	const static string Name;
 

@@ -125,7 +125,7 @@ namespace Framework
 	  Zilch::LibraryRef* library = &(ZILCH->lib);
 	  //Bind the Zilch class
 	  Zilch::BoundType* ZilchClass = (*library)->BoundTypes.findValue(name.c_str(), nullptr);
-	  ErrorIf(ZilchClass == nullptr, "Failed to find a Zilch type named ", name);
+	  ErrorIf(ZilchClass == nullptr, "Failed to find a Zilch type named ", name.c_str());
 	  
 	  Zilch::ExceptionReport report;
 	  Zilch::ExecutableState* state = ZILCH->GetDependencies();

@@ -393,7 +393,7 @@ namespace Framework
 
 				newobj->Name = *it->branch->next->branch->value_.String_;
 
-				auto ct = it->branch->next->next;
+				auto ct = it->branch->next;
 				while (ct)
 				{
 					Component* newcomp = newobj->AddComponent(ct->objectName);

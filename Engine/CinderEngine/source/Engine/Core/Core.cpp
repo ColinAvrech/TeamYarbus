@@ -22,9 +22,7 @@ namespace Framework
   CoreEngine* CORE;
   ZilchDefineType(CoreEngine, CinderZilch)
   {
-	  ZilchBindMethod(QuitGame);
-	  ZilchBindMethod(TogglePaused);
-	  ZilchBindMethod(IsPaused);
+	  
 	  //ZilchBindMethod(SetPaused);
   }
   CoreEngine::CoreEngine()

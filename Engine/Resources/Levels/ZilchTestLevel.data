@@ -55,7 +55,7 @@ Level =
 	  },
 	  Transform = 
 	  {
-		  Vec3 Translation = [-40, 0, -10],
+		  Vec3 Translation = [0, 0, -10],
 		  Vec3 Scale = [1, 1, 1],
 		  Quat Rotation = [0, 0, 0, 1],
 	  },
@@ -67,7 +67,7 @@ Level =
 			float FieldOfView = 45,
 			float NearPlane = 0,
 			float FarPlane = 800,
-			float Size = 2500,
+			float Size = 16,
 		},
     },
 	Cog = 
@@ -83,13 +83,15 @@ Level =
 		Transform = 
 		{
 			Vec3 Translation = [0, 0, 0],
-			Vec3 Scale = [10, 10, 10],
+			Vec3 Scale = [1, 1, 1],
 			Quat Rotation = [0, 0, 0, 0],
 		},
 		GUIText = 
 		{
+			Vec4 Color = [0, 1, 0, 1],
 			Vec3 Position = [0, 0, 0],
-			string Text = "Hello World",
+			int Size = 72,
+			string Text = "Hi Micah",
 		},
 	},
 },
