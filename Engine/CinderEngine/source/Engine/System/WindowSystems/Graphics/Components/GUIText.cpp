@@ -34,7 +34,7 @@ namespace Framework
   // Constructor
   GUIText::GUIText()
   {
-	  
+	  //TEXT HAS ISSUES WITH PARENTING, THE VIEW 
   }
   
   // Destructor
