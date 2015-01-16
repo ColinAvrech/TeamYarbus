@@ -1,8 +1,5 @@
 #pragma once
-#include <windows.h>
-#include <cstdio>
-#include <dbghelp.h>
-#pragma comment( lib, "dbghelp" )
+#include <Precompiled.h>
 
 namespace Framework
 {

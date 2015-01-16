@@ -10,8 +10,6 @@
 
 #pragma once
 
-
-
 //! The highest FPS the game can run at.
 #define FPS 60.0f
 
@@ -25,7 +23,7 @@ namespace Framework
   public:
     CoreEngine();
     ~CoreEngine();
-	ZilchDeclareBaseType(CoreEngine, Zilch::TypeCopyMode::ReferenceType);
+    ZilchDeclareBaseType(CoreEngine, Zilch::TypeCopyMode::ReferenceType);
     //!Update all the systems
     void GameLoop();
 
@@ -37,6 +35,11 @@ namespace Framework
 
     void TogglePaused();
     bool IsPaused(){ return GamePaused; }
+
+#ifdef _DEBUG
+    void ToggleProfiling();
+#endif
+
 	void CoreEngine::SetPaused(bool state);
     //! Stops the game for whatever reason
     void QuitGame();
@@ -50,7 +53,7 @@ namespace Framework
     std::vector<BaseSystem*> Systems;
     //!Is the game running (true) or not (false, shut down)
     bool GameActive;
-    bool GamePaused;
+    bool GamePaused = false;
 
     /*!dt for each frame
     A const reference is used for systems

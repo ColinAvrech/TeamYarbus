@@ -60,6 +60,8 @@ namespace Framework
     //if slope is too steep
     if (std::abs(terrain[pos] - terrain[pos - 1]) > 1 || std::abs(terrain[pos] - terrain[pos + 1]) > 1)
       return OPEN;
+    else
+      return INVALID;
 	}
 
 	int EcoSystem::GetTotalObjects()
@@ -82,8 +84,11 @@ namespace Framework
         offsetY = 0.0f;
       offsetX += nX;
 
-      //tree_list[i] = Evaluate_Compatibility(i);
-      //Hack!!
+      //int type = Evaluate_Compatibility(i);
+      //if (type != INVALID)
+        //tree_list[i] = ;
+      
+        //Hack!!
       //if (tree_list[i] != OPEN)
       if (i % (rand() % 10 + 2) == 0 && terrain[i] <= 72)
         GenerateType(

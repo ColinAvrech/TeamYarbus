@@ -23,10 +23,6 @@ class CameraFollow : ZilchComponent
 	
 	function LogicUpdate(e: UpdateEvent)
 	{
-		if (this.Owner == null)
-		{
-			return;
-		}
 		var pos1 = Camera.Main.Owner.Transform.GetTranslation();
 		var pos2 = this.Owner.Transform.GetTranslation();
 		pos2.Y += 2;
