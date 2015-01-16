@@ -52,6 +52,7 @@ namespace Framework
     int BaseHeight;
     int Passes;
     int Waves;
+    glm::vec2 Slope;
     int WaterDepth = 0;
     bool AddCollider = false;
     std::string MapFile;
