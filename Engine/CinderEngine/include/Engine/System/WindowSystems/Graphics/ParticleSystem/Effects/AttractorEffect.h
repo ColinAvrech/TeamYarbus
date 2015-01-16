@@ -22,6 +22,7 @@ namespace Framework
   class AttractorEffect : public IEffect
   {
   private:
+	  ZilchDeclareDerivedType(AttractorEffect, IEffect);
     std::shared_ptr<ParticleSystem> m_system;
     std::shared_ptr<IParticleRenderer> m_renderer;
     std::shared_ptr<BoxPosGen> m_posGenerators [3];

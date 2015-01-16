@@ -99,6 +99,31 @@ class Parent : ZilchComponent
 	}
 }
 
+class ZTree : ZilchComponent
+{
+	var Filename:String = "Tree0";
+	var Tree:GameObject = null;
+	
+	constructor() : base()
+	{
+	}
+	
+	function Initialize()
+	{
+		this.Tree = ZInterface.ObjectSystem.LoadArchetype(this.Filename);
+		EventSystem.Connect(Events.UpdateEvent, this.LogicUpdate);
+	}
+	
+	function LogicUpdate(e: UpdateEvent)
+	{
+		if (InputManager.IsKeyTriggered(Keys.SPACE))
+		{
+			ZInterface.ObjectSystem.DestroyObject(this.Tree);
+			this.Tree = ZInterface.ObjectSystem.LoadArchetype(this.Filename);
+		}
+	}
+}
+
 class ZRotator : ZilchComponent
 {
 	var Active:Boolean = true;

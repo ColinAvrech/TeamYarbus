@@ -29,6 +29,7 @@ namespace Framework
     Texture* texture;
     Shader* shader;
   public:
+	  ZilchDeclareDerivedType(TunnelEffect, IEffect);
     TunnelEffect () { }
     ~TunnelEffect () { }
 

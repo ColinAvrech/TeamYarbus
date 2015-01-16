@@ -27,6 +27,11 @@ namespace Framework
   static float maxSize;
   static float minSize;
 
+  ZilchDefineType(PlayerEffect, CinderZilch) //, builder, type
+  {
+	  type->HandleManager = ZilchManagerId(Zilch::PointerManager);
+  }
+
   PlayerEffect::~PlayerEffect ()
   {
 

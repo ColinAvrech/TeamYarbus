@@ -70,6 +70,7 @@ namespace Framework
     void LoadLevel(const char* name);
     void NextLevel();
     GameObject* LoadArchetype(const char *);
+	GameObject* ZLoadArchetype(String file);
 
     // Adds more objects to an existing level
     ZArray* LoadLevelAdditive(Zilch::String level);

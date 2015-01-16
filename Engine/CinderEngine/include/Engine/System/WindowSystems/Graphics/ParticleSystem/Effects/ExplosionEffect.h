@@ -23,6 +23,7 @@ namespace Framework
   class ExplosionEffect : public IEffect
   {
   private:
+	  ZilchDeclareDerivedType(ExplosionEffect, IEffect);
     std::shared_ptr<ParticleSystem> m_system;
     std::shared_ptr<IParticleRenderer> m_renderer;
     std::shared_ptr<BoxPosGen> m_posGenerator;
