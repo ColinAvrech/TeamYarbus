@@ -50,9 +50,9 @@ Level =
 	  },
     Camera = 
 		{
-      bool Enabled = true,
-      bool main = true,
-      Vec3 Facing = [0, 0, 1],
+			bool Enabled = true,
+			bool main = true,
+			Vec3 Facing = [0, 0, 1],
 			float FieldOfView = 45,
 			float NearPlane = 0,
 			float FarPlane = 100,
@@ -63,19 +63,19 @@ Level =
 	{
 		Named = 
 		{
-			string Name = "Title",
+			string Name = "Ember",
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, 1, 0],
+			Vec3 Translation = [0, 2, 0],
 			Vec3 Scale = [1, 1, 1],
-			Quat Rotation = [0, 0, 0, 0],
+			float Rotation = 180,
 		},
 		GUIText = 
 		{
 			Vec4 Color = [1, 0, 0, 1],
 			Vec3 Position = [0, 0, 0],
-			int Size = 72,
+			int Size = 82,
 			string Text = "Ember",
 		},
 	},
@@ -83,13 +83,24 @@ Level =
 	{
 		Named = 
 		{
-			string Name = "Title",
+			string Name = "Child",
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, 4, 0],
+			Vec3 Translation = [0, -1, 0],
 			Vec3 Scale = [1, 1, 1],
 			Quat Rotation = [0, 0, 0, 0],
+		},
+		GUIText = 
+		{
+			Vec4 Color = [1, 1, 0, 1],
+			Vec3 Position = [0, 0, 0],
+			int Size = 82,
+			string Text = "Child",
+		},
+		Parent = 
+		{
+			string Parent = "Ember",
 		},
 	},
 },

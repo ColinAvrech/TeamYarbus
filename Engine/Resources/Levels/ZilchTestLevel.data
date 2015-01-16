@@ -2,10 +2,6 @@ Level =
 {
 	LevelSettings = 
 	{
-		LinkId = 
-		{
-			uint Id = 0,
-		},
 		Named = 
 		{
 			string Name = "LevelSettings",
@@ -45,10 +41,6 @@ Level =
 	},
 	Cog = 
 	{
-	  LinkId = 
-	  {
-		  uint Id = 1,
-	  },
 	  Named = 
 	  {
 		  string Name = "Camera",
@@ -72,10 +64,6 @@ Level =
     },
 	Cog = 
 	{
-		LinkId = 
-	    {
-		    uint Id = 1,
-	    },
 		Named = 
 		{
 			string Name = "Ground",

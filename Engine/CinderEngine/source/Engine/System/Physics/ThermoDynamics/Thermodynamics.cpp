@@ -144,9 +144,9 @@ namespace Framework
     {
       //test
       time += dt;
-      TemperatureMap.Set(65, 5, std::abs(3000.f * std::cos(time)));
-      VelocityMapY.Set(65, 5, 100.f);
-      VelocityMapY.Set(60, 5, 100.f);
+      //TemperatureMap.Set(65, 5, std::abs(3000.f * std::cos(time)));
+      //VelocityMapY.Set(65, 5, 100.f);
+      //VelocityMapY.Set(60, 5, 100.f);
       //VelocityMapY.Set(65, 5, std::abs(100.f * std::cos(time / 1.f)));
       //VelocityMapX.Set(65, 5, 100.f * std::sin(time / 1.f));
       if (paused)
@@ -163,9 +163,9 @@ namespace Framework
         end = MapSize.x - 1;
       
       //Update velocity field
-      vel_step(start, end, dt);
+      //vel_step(start, end, dt);
       //Update temperature field
-      temp_step(start, end, dt);
+      //temp_step(start, end, dt);
       //Update fire
       UpdateFire(dt);
     }

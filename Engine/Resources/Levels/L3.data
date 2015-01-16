@@ -2,10 +2,6 @@ Level =
 {
 	LevelSettings = 
 	{
-		LinkId = 
-		{
-			uint Id = 1,
-		},
 		Named = 
 		{
 			string Name = "LevelSettings",
@@ -42,10 +38,6 @@ Level =
 	},
   Cog = 
 	{
-	  LinkId = 
-	  {
-		  uint Id = 560,
-	  },
 	  Named = 
 	  {
 		  string Name = "Camera",
@@ -69,10 +61,6 @@ Level =
   },
   Cog = 
 	{
-		LinkId = 
-		{
-			uint Id = 3,
-		},
 		Named = 
 		{
 			string Name = "Mountain",
@@ -100,10 +88,6 @@ Level =
   },
  Cog = 
 {
-	LinkId = 
-	{
-		uint Id = 3,
-	},
 	Named = 
 	{
 		string Name = "Background",
@@ -131,10 +115,6 @@ Level =
  },
   Cog = 
 	{
-		LinkId = 
-		{
-			uint Id = 3,
-		},
 		Named = 
 		{
 			string Name = "Terrain",
@@ -147,17 +127,17 @@ Level =
 		},
 		Terrain2D = 
 		{
-      string MapPreset = "JaggedAF2",
-      bool Enabled = true,
-      int MapSize = 128,
-      int BaseHeight = 10,
-      int PeakHeight = 20,
-      int Passes = 1,
-      int Waves = 5,
-      int Water = 5,
-      Vec4 Color1 = [0, 0, 0, 1],
-	  Vec4 Color2 = [0, 0, 0, 1],
-      bool AddCollider = true,
+			string MapPreset = "JaggedAF2",
+			bool Enabled = true,
+			int MapSize = 128,
+			int BaseHeight = 10,
+			int PeakHeight = 20,
+			int Passes = 1,
+			int Waves = 5,
+			int Water = 5,
+			Vec4 Color1 = [0, 0, 0, 1],
+			Vec4 Color2 = [0, 0, 0, 1],
+			bool AddCollider = true,
 		},
     EcoSystem = 
     {
@@ -170,10 +150,6 @@ Level =
   },
   Cog = 
 	{
-		LinkId = 
-		{
-			uint Id = 4,
-		},
 		Named = 
 		{
 			string Name = "Player",
@@ -218,10 +194,6 @@ Level =
 	},
   Cog = 
   {
-	LinkId = 
-	{
-		uint Id = 23,
-	},
 	Named = 
 	{
 		string Name = "Water",
