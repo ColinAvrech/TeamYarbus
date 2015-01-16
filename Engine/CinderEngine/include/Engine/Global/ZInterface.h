@@ -43,6 +43,7 @@ namespace Framework
 		static WindowSystem* WindowSys;
 		static Resources* ResourceSystem;
 		static Pipeline* ZInterface::GraphicsPipeline;
+		static PhysicsSystem* Physics;
 
 		static void QuitGame();
 
@@ -51,6 +52,8 @@ namespace Framework
 		static Boolean IsPaused();
 		static void ZInterface::SetPaused(bool state);
 		static void SetSceneShader(String shader);
+
+		static int DT;
 		
 		static Real2* VecToReal(vec2* vec);
 		static Real3* VecToReal(vec3* vec);

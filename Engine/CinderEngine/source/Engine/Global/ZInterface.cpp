@@ -22,6 +22,9 @@ namespace Framework
 	WindowSystem* ZInterface::WindowSys = WINDOWSYSTEM;
 	Resources* ZInterface::ResourceSystem = nullptr;
 	Pipeline* ZInterface::GraphicsPipeline = OPENGL;
+	PhysicsSystem* ZInterface::Physics = PHYSICS;
+
+	
 	
 	
 	ZilchDefineType(ZilchFile, CinderZilch)
@@ -46,6 +49,7 @@ namespace Framework
 		ZilchBindStaticMethod(QuitGame);
 		ZilchBindStaticFieldGetAs(ObjectSys, "ObjectSystem");
 		ZilchBindStaticFieldGetAs(WindowSys, "WindowSystem");
+		ZilchBindStaticFieldGetAs(Physics, "Physics");
 		ZilchBindStaticFieldGet(ResourceSystem);
 		ZilchBindStaticMethod(TogglePaused);
 		ZilchBindStaticMethod(IsPaused);

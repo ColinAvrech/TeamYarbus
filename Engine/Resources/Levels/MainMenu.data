@@ -67,9 +67,9 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, 2, 0],
+			Vec3 Translation = [0, 0, 0],
 			Vec3 Scale = [1, 1, 1],
-			float Rotation = 180,
+			float Rotation = 90,
 		},
 		Sprite = 
 		{
@@ -77,6 +77,11 @@ Level =
 			string Shader = "Default",
 			Vec4 Color = [1, 1, 1, 1],
 			bool Visible = true,
+		},
+		ZRotator = 
+		{
+			float Speed = 180,
+			bool UsesDT = true,
 		},
 	},
 	Cog = 
@@ -87,7 +92,7 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, -2, 0],
+			Vec3 Translation = [0, 5, 0],
 			Vec3 Scale = [1, 1, 1],
 			Quat Rotation = [0, 0, 0, 0],
 		},
@@ -101,6 +106,10 @@ Level =
 		Parent = 
 		{
 			string Parent = "Ember",
+			bool InheritPosition = true,
+			bool InheritRotation = true,
+			bool InheritScale = true,
+			bool Pivot = true,
 		},
 	},
 },

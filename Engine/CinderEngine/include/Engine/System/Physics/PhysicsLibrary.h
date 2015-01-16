@@ -20,6 +20,7 @@ namespace Framework
     namespace Constant
     {
       //Add physics constants here
+	
       const float g       = 9.80665f;     //m.s-1
       const long double G = 6.67259e-11;  //m3.Kg-1.s-2
 
@@ -36,6 +37,7 @@ namespace Framework
     vec3 getReflection(const vec3& normal, const vec3& velocity);
     vec3 Normal(const vec3& v1, const vec3& v2, const vec3& v3);
     float Angle_from_Vertical(const glm::vec2& d_vec);
+	
     //vec3 applyConstVelocity(GameObject * go, vec3 initial);
 
   } //Physics
