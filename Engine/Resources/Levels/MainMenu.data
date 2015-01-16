@@ -1,137 +1,106 @@
 Level = 
 {
-	Cog = 
+	LevelSettings = 
 	{
-		LinkId = 
-		{
-			uint Id = 100,
-		},
 		Named = 
 		{
-			string Name = "MenuBackground",
+			string Name = "LevelSettings",
+		},
+		GravityEffect = 
+		{
+			//bool Active = true,
+			bool WakeUpOnChange = false,
+			bool LocalSpaceDirection = true,
+			float Strength = 10,
+			Vec3 Direction = [0, -1, 0],
+		},
+		DragEffect = 
+		{
+			bool Active = true,
+			bool WakeUpOnChange = false,
+			float Drag = 0.7,
+		},
+		CameraViewport = 
+		{
+			bool Background = true,
+			Vec2 Offset = [0, 0],
+			Vec2 Size = [1, 1],
+			uint Layer = 0,
+			bool Active = true,
+			bool Blocking = true,
+			uint Renderer = 1,
+			uint Camera = 2,
+		},
+		ForwardRenderer = 
+		{
+			Vec4 ClearColor = [0.278431, 0.278431, 0.278431, 1],
+		},
+	},
+  Cog = 
+	{
+	  Named = 
+	  {
+		  string Name = "Camera",
+	  },
+    Transform = 
+	  {
+		  Vec3 Translation = [0, 0, -10],
+		  Vec3 Scale = [1, 1, 1],
+		  Quat Rotation = [0, 0, 0, 1],
+	  },
+    Camera = 
+		{
+			bool Enabled = true,
+			bool main = true,
+			Vec3 Facing = [0, 0, 1],
+			float FieldOfView = 45,
+			float NearPlane = 0,
+			float FarPlane = 100,
+			float Size = 16,
+		},
+    },
+	Cog = 
+	{
+		Named = 
+		{
+			string Name = "Ember",
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, 0, 0],
-			Vec3 Scale = [1.5, 1.5, 1.5],
-			Quat Rotation = [0, 0, 0, 1],
+			Vec3 Translation = [0, 2, 0],
+			Vec3 Scale = [1, 1, 1],
+			float Rotation = 180,
 		},
-		Sprite = 
+		GUIText = 
 		{
-			bool Visible = true,
-			bool AnimationActive = false,
-			string SpriteSource = "UIBackground.png",
-			string Shader = "Default",
-			Vec4 Color = [1, 1, 1, 0],
+			Vec4 Color = [1, 0, 0, 1],
+			Vec3 Position = [0, 0, 0],
+			int Size = 82,
+			string Text = "Ember",
 		},
 	},
 	Cog = 
 	{
-		LinkId = 
-		{
-			uint Id = 110,
-		},
 		Named = 
 		{
-			string Name = "MenuTitle",
+			string Name = "Child",
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, 8.775, 0],
-			Vec3 Scale = [0.75, 0.75, 0.75],
-			Quat Rotation = [0, 0, 0, 1],
+			Vec3 Translation = [0, -1, 0],
+			Vec3 Scale = [1, 1, 1],
+			Quat Rotation = [0, 0, 0, 0],
 		},
-		Sprite = 
+		GUIText = 
 		{
-			bool Visible = true,
-			bool AnimationActive = false,
-			string SpriteSource = "UIPauseTitle.png",
-			string Shader = "Default",
-			Vec4 Color = [1, 1, 1, 0],
+			Vec4 Color = [1, 1, 0, 1],
+			Vec3 Position = [0, 0, 0],
+			int Size = 82,
+			string Text = "Child",
 		},
-	},
-	Cog = 
-	{
-		LinkId = 
+		Parent = 
 		{
-			uint Id = 120,
-		},
-		Named = 
-		{
-			string Name = "ResumeGame",
-		},
-		Transform = 
-		{
-			Vec3 Translation = [0, 0.45, 0],
-			Vec3 Scale = [0.75, 0.75, 0.75],
-			Quat Rotation = [0, 0, 0, 1],
-		},
-		Sprite = 
-		{
-			bool Visible = true,
-			bool AnimationActive = false,
-			string SpriteSource = "UIResumeBlack.png",
-			string Shader = "Default",
-			Vec4 Color = [1, 1, 1, 0],
-		},
-		ResumeButton = 
-		{
-		},
-	},
-	Cog = 
-	{
-		LinkId = 
-		{
-			uint Id = 130,
-		},
-		Named = 
-		{
-			string Name = "HowToPlay",
-		},
-		Transform = 
-		{
-			Vec3 Translation = [0, -0.15, 0],
-			Vec3 Scale = [0.75, 0.75, 0.75],
-			Quat Rotation = [0, 0, 0, 1],
-		},
-		Sprite = 
-		{
-			bool Visible = true,
-			bool AnimationActive = false,
-			string SpriteSource = "UIHowToPlayBlack.png",
-			string Shader = "Default",
-			Vec4 Color = [1, 1, 1, 0],
-		},
-		HowToPlayButton = 
-		{
-		},
-	},
-	Cog = 
-	{
-		LinkId = 
-		{
-			uint Id = 140,
-		},
-		Named = 
-		{
-			string Name = "QuitGame",
-		},
-		Transform = 
-		{
-			Vec3 Translation = [0, -0.75, 0],
-			Vec3 Scale = [0.75, 0.75, 0.75],
-			Quat Rotation = [0, 0, 0, 1],
-		},
-		Sprite = 
-		{
-			bool Visible = true,
-			bool AnimationActive = false,
-			string SpriteSource = "UIExitBlack.png",
-			string Shader = "Default",
-			Vec4 Color = [1, 1, 1, 0],
-		},
-		ExitButton = 
-		{
+			string Parent = "Ember",
 		},
 	},
 },

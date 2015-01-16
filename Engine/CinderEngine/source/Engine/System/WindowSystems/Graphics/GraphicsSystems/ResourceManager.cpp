@@ -23,6 +23,11 @@ namespace Framework
   Resources::Resources ()
   {
     RS = this;
+	int error = FT_Init_FreeType(&FontLibrary);
+	if (error)
+	{
+		std::cout << "ERROR: FREETYPE LIBRARY NOT INITIALIZED!" << std::endl;
+	}
   }
 
 	ZilchDefineType(Resources, CinderZilch)
@@ -52,6 +57,11 @@ namespace Framework
       delete (i.second);
       i.second = nullptr;
     }
+	for (auto i : fonts)
+	{
+		delete (i.second);
+		i.second = nullptr;
+	}
   }
   Sound* Resources::ZGetSound(String soundName)
   {
@@ -63,6 +73,7 @@ namespace Framework
     Load_Shaders ();
     Load_Sounds();
     Load_SpriteSheets ();
+	Load_Fonts();
   }
 
   void Resources::Load_Textures ()
@@ -88,6 +99,31 @@ namespace Framework
       }
     }
     std::cout << CinderConsole::cyan << "--------------------------------\n" << CinderConsole::gray;
+  }
+
+  void Resources::Load_Fonts()
+  {
+	  std::cout << CinderConsole::cyan << "--------------------------------\nLoading Fonts...\n" << CinderConsole::gray;
+
+	  fonts["Default"] = new Font((FontResourcePath + "Default.ttf").c_str(), "Default");
+	  std::ifstream texFile(FontResourcePath + "FontAssets.txt");
+
+	  if (!texFile.good())
+	  {
+		  std::cout << CinderConsole::red << "Failed to Load Fonts...\n" << CinderConsole::gray;
+		  return;
+	  }
+	  else
+	  {
+		  string str;
+		  while (!texFile.eof())
+		  {
+			  texFile >> str;
+			  fonts[str] = new Font((FontResourcePath + str).c_str(), str);
+			  std::cout << CinderConsole::green << str << std::endl << CinderConsole::gray;
+		  }
+	  }
+	  std::cout << CinderConsole::cyan << "--------------------------------\n" << CinderConsole::gray;
   }
 
 
@@ -359,6 +395,20 @@ namespace Framework
 
     std::cout << CinderConsole::red << shaderName << " Invalid Name...\n" << CinderConsole::gray;
     throw ("Invalid Name...");
+  }
+
+  Font* Resources::Get_Font(String fontName)
+  {
+	  for (auto i : fonts)
+	  {
+		  if (i.first == fontName)
+		  {
+			  return i.second;
+		  }
+	  }
+
+	  std::cout << CinderConsole::red << fontName.c_str() << " Invalid Name...Using Default Font\n" << CinderConsole::gray;
+	  return fonts["Default"];
   }
 
 }

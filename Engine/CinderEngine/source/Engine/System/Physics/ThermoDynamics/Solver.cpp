@@ -218,8 +218,8 @@ namespace Framework
       float a = simulation_speed * dt * viscosity * h;
       float c = 1 + 4 * a;
 
-      lin_solve(start, end, 1, VelocityMapX, VelocityMap_PrevX, a, c);
-      lin_solve(start, end, 2, VelocityMapY, VelocityMap_PrevY, a, c);
+      //lin_solve(start, end, 1, VelocityMapX, VelocityMap_PrevX, a, c);
+      //lin_solve(start, end, 2, VelocityMapY, VelocityMap_PrevY, a, c);
     }
 
     //Update temperatures

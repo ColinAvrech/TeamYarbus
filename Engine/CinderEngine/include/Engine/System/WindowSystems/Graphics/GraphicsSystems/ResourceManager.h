@@ -15,6 +15,7 @@
 #include "SpriteSheet.h"
 #include "ComputeShader.h"
 #include <unordered_map>
+#include "Font.h"
 
 namespace Framework
 {
@@ -41,8 +42,10 @@ namespace Framework
     Sound* Get_Sound(string soundName);
 	Sound* ZGetSound(String soundName);
     ComputeShader* Get_ComputeShader (string shaderName);
+	Font* Get_Font(String fontName);
 
     static Resources* RS;
+	FT_Library  FontLibrary;
 
   private:
     std::unordered_map <string, Texture*> textures;
@@ -50,10 +53,12 @@ namespace Framework
     std::unordered_map <string, Shader*> shaders;
     std::unordered_map<string, ComputeShader*> computeShaders;
     std::unordered_map <string, Sound*> sounds;
+	std::unordered_map <string, Font*> fonts;
     void Load_Textures ();
     void Load_SpriteSheets ();
     void Load_Shaders ();
     void Load_Sounds ();
+	void Load_Fonts();
   };
 
 

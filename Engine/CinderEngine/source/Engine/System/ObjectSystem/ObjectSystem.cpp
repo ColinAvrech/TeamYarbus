@@ -349,14 +349,24 @@ namespace Framework
 
 	GameObject* ObjectSystem::FindObjectByName(Zilch::String name)
 	{
-		return FindObjectByName(name.c_str());
+		for (auto& i : GameObjects)
+		{
+
+			if (i.second && i.second->Name == name)
+			{
+				return i.second;
+			}
+		}
+
+		return nullptr;
 	}
 
 	GameObject* ObjectSystem::FindObjectByName(const char* name)
 	{
 		for (auto& i : GameObjects)
 		{
-			if (i.second && i.second->Name.compare(name) == 0)
+			
+			if (i.second && string(i.second->Name.c_str()).compare(name) == 0)
 			{
 				return i.second;
 			}
@@ -391,9 +401,9 @@ namespace Framework
 				//if (LastGameObjectId <= it->branch->branch->value_.UInt_)
 				//{ LastGameObjectId = it->branch->branch->value_.UInt_ + 1; } // Makes sure that every created object has a unique ID.
 
-				newobj->Name = *it->branch->next->branch->value_.String_;
+				newobj->Name = String(it->branch->branch->value_.String_->c_str());
 
-				auto ct = it->branch->next->next;
+				auto ct = it->branch->next;
 				while (ct)
 				{
 					Component* newcomp = newobj->AddComponent(ct->objectName);
@@ -431,7 +441,7 @@ namespace Framework
 				}
 				objectlist->append(newobj);
 
-				ErrorIf(newobj->Transform == nullptr, (string("Transform component missing on GameObject ") + newobj->Name).c_str());
+				ErrorIf(newobj->Transform == nullptr, (string("Transform component missing on GameObject ") + newobj->Name.c_str()).c_str());
 			}
 			it = it->next;
 		}
@@ -465,7 +475,7 @@ namespace Framework
 		file.CreateArchive();
 		Serializer::DataNode* Trunk = file.GetTrunk();
 		GameObject* newobj = this->CreateObject();
-		newobj->Name = *Trunk->branch->next->branch->value_.String_;
+		newobj->Name = String(Trunk->branch->branch->value_.String_->c_str());
 		//Skip 1st 3 objects
 		auto ct = Trunk->branch->next->next->next;
 		while (ct)
