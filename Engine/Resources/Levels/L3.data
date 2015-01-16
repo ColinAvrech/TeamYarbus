@@ -155,6 +155,7 @@ Level =
       int Passes = 1,
       int Waves = 5,
       int Water = 5,
+      Vec2 Slope = [2, -1],
       Vec4 Color1 = [0, 0, 0, 1],
 	  Vec4 Color2 = [0, 0, 0, 1],
       bool AddCollider = true,

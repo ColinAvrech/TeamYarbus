@@ -19,9 +19,9 @@ namespace Framework
   namespace Procedural
   {
     TerrainCreator::TerrainCreator(int _width, int _baseHeight, int _passes,
-      int _waves, int _peak, int _water, const std::string& _HMap) :
+      int _waves, int _peak, int _water, const std::string& _HMap, glm::vec2 &_slope) :
       MapWidth (_width), BaseHeight (_baseHeight), passes (_passes), waves (_waves), PeakHeight (_peak),
-      WaterDepth(_water)
+      WaterDepth(_water), Slope(glm::vec2(_slope))
     {
       Generate(_HMap);
     }
@@ -72,9 +72,12 @@ namespace Framework
       for (unsigned i = 0; i < MapWidth / 8; ++i)
         x8[i] = rand() % height;
 
-      for (unsigned i = 0; i < MapWidth; ++i)
-        (*Array)[i] = (0.03125f * x1[i] + 0.0625f * x2[i / 2] + 0.125f * x4[i / 4] + 0.25f * x8[i / 8] + 0.5f * WaveBuffer[(i * 2 * waves) / MapWidth]);
+      float t0 = std::abs(Slope.y / Slope.x);
 
+      for (unsigned i = 0; i < MapWidth; ++i){
+        int h = Slope.y > 0 ? i : MapWidth - i;
+        (*Array)[i] = (h * t0) + (0.03125f * x1[i] + 0.0625f * x2[i / 2] + 0.125f * x4[i / 4] + 0.25f * x8[i / 8] + 0.5f * WaveBuffer[(i * 2 * waves) / MapWidth]);
+      }
       for (int i = 0; i < passes; ++i)
       {
         for (unsigned j = 0; j < MapWidth - 2; ++j)
