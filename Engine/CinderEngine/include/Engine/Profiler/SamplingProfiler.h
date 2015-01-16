@@ -2,32 +2,42 @@
 
 namespace Framework
 {
-  static unsigned ProfilingSamplesTaken = 0;
+  #define NOMAX 0
+  static unsigned ProfilesTaken = 0;
 
   class SamplingProfiler
   {
   public:
+    
     SamplingProfiler(const unsigned& p_maxsamples);
 
     ~SamplingProfiler();
 
-    void Exit();
+    int GetID(){ return id; }
 
-    void TakeSample();
+    void Exit(); 
+
+    bool IsFull(); //used to stop collecting samples on full profiles
+    void SetFull();
+
+    void TakeSample(); //needs to be public for sampling callback
 
   private:
-    bool IsFull();
-
     void ExportResults();
 
     void CheckForError() const;
 
   private:
-    MMRESULT sampleEvent;
+    int id;
+
+    vector<CONTEXT> samples;
     unsigned maxSamples;
+    bool full;
+
+    //Data used for sample collection
     HANDLE mainThread = nullptr;
     HANDLE workerThread = nullptr;
-    vector<CONTEXT> samples;
+    MMRESULT sampleEvent;
   };
 
   void CALLBACK ProfilerCallback(UINT uTimerID, UINT uMsg, DWORD_PTR dwUser, DWORD_PTR dw1, DWORD_PTR dw2);

@@ -10,14 +10,13 @@ starts the game loop.
 /******************************************************************************/
 
 #include <Precompiled.h>
-#include <iostream>
-#include "Shlwapi.h" //used for PathAppend and PathFileExists for file/directory management
 #include "ZInterface.h"
 #include "CheatCodes.h"
+#include "Shlwapi.h" //used for PathAppend and PathFileExists for file/directory management
+
 #define WINDOWSBUILD
 #ifdef WINDOWSBUILD
 
-#define _DEGUB
 using namespace Framework;
 
 //! Window title
@@ -67,8 +66,8 @@ int main (void)
   strcpy(newDir, oldDir);
 
   // old way of setting the directory to the profiling reports folder
-  //  sprintf_s(newDir, "%s/%s", oldDir, R"(\..\ProfilingReports)");
-  if (PathAppend(newDir, R"(..\ProfilingReports)"))
+  //  sprintf_s(newDir, "%s/%s", oldDir, R"(\..\logs\ProfilingReports)");
+  if (PathAppend(newDir, R"(..\logs)"))
   {
     char* profilingReportsPath = newDir;
     if (PathFileExists(profilingReportsPath))

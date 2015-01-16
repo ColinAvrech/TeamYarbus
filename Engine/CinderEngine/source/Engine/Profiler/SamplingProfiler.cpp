@@ -1,12 +1,15 @@
 #include <Precompiled.h>
+#include <dbghelp.h>
+#pragma comment( lib, "dbghelp" )
 #include "Profiler\SamplingProfiler.h"
 
 namespace Framework
 {
-#define NOMAX 0
 
   SamplingProfiler::SamplingProfiler(const unsigned& p_maxsamples) : maxSamples(p_maxsamples)
   {
+    full = false;
+    id = ProfilesTaken++;
     workerThread = nullptr;
     mainThread = OpenThread(THREAD_SUSPEND_RESUME | THREAD_GET_CONTEXT | THREAD_QUERY_INFORMATION, 0, GetCurrentThreadId());
     CheckForError();
@@ -16,18 +19,16 @@ namespace Framework
 
   SamplingProfiler::~SamplingProfiler()
   {
-    if (!IsFull())
-    {
-      Exit();
-    }
+    
+    ExportResults();
   }
 
   void SamplingProfiler::Exit()
   {
     timeKillEvent(sampleEvent);
+
     if (workerThread)
     {
-      ExportResults();
       if (!CloseHandle(workerThread))
         CheckForError();
 
@@ -45,23 +46,23 @@ namespace Framework
 
   bool SamplingProfiler::IsFull()
   {
-    if (maxSamples == NOMAX)
+    if (!full && maxSamples != NOMAX && !(samples.size() < maxSamples))
     {
-      return false;
+      SetFull();
     }
-    else
-    {
-      return !(samples.size() < maxSamples);
-    }
+
+    return full;
+  }
+
+  void SamplingProfiler::SetFull()
+  {
+    full = true;
+    Exit();
   }
 
   void SamplingProfiler::TakeSample()
   {
-    if (IsFull())
-    {
-      Exit();
-    }
-    else
+    if (!IsFull())
     {
       if (workerThread == nullptr)
       {
@@ -103,11 +104,9 @@ namespace Framework
     }
   }
 
-  #include <algorithm>
-  #include <fstream>
-  #include "Profiler\StackTrace.h"
-  #include <iostream>
+  #pragma comment(lib, "Shlwapi.lib")
   #include "Shlwapi.h" //used for PathAppend and PathFileExists for file/directory management
+  #include "Profiler\StackTrace.h"
   using std::ofstream;
   void SamplingProfiler::ExportResults()
   {
@@ -208,7 +207,7 @@ namespace Framework
     char newDir[bufferSize];
     strcpy(newDir, oldDir);
     char* lpNewDir = newDir;
-    char* lpAppendStr = R"(..\ProfilingReports)";
+    char* lpAppendStr = R"(..\logs)";
 
     // old way of setting the directory to the profiling reports folder
     //  sprintf_s(newDir, "%s/%s", oldDir, R"(\..\ProfilingReports)");
@@ -219,19 +218,28 @@ namespace Framework
         CreateDirectory(lpNewDir, NULL);
       }
 
-      if (!SetCurrentDirectory(lpNewDir))
+      lpAppendStr = R"(\ProfilingReports)";
+      if (PathAppend(lpNewDir, lpAppendStr))
       {
-        std::cerr << "Error setting current directory: #" << GetLastError();
-      }
-      else
-      {
-        std::cout << "Set current directory to " << newDir << '\n';
+        if (!PathFileExists(lpNewDir))
+        {
+          CreateDirectory(lpNewDir, NULL);
+        }
+
+        if (!SetCurrentDirectory(lpNewDir))
+        {
+          std::cerr << "Error setting current directory: #" << GetLastError();
+        }
+        else
+        {
+          std::cout << "Set current directory to " << newDir << '\n';
+        }
       }
     }
 #pragma endregion 
 
     string filename = "profilingreport";
-    filename.append(std::to_string(ProfilingSamplesTaken));
+    filename.append(std::to_string(id));
     filename.append(".txt");
 
     std::cout << "Generating file " << filename << "...";
@@ -255,7 +263,6 @@ namespace Framework
     myfile.close();
 
     std::cout << " complete!" << std::endl;
-    ++ProfilingSamplesTaken;
     stats.clear();
     samples.clear();
 

@@ -25,12 +25,15 @@ namespace Framework
   CoreEngine* CORE;
 
 #ifdef _DEBUG
-  SamplingProfiler* gProfiler;
+  vector<SamplingProfiler *> vecProfilers;
   void CALLBACK ProfilerCallback(UINT, UINT, DWORD_PTR, DWORD_PTR, DWORD_PTR)
   {
-    if (gProfiler)
+    for (auto gProfiler : vecProfilers)
     {
-      gProfiler->TakeSample();
+      if (!gProfiler->IsFull())
+      {
+        gProfiler->TakeSample();
+      }
     }
   }
 #endif
@@ -55,11 +58,22 @@ namespace Framework
     //! probs nothing to destory, but we humans have a distructive nature...
     //! So it is here for when we need to destory something.
 #ifdef _DEBUG
-    if (gProfiler)
+    if (vecProfilers.size() > 0)
     {
-      delete gProfiler;
+      vecProfilers.front()->SetFull(); //Used to stop the game profiler from collecting more samples;
+      
+      if (!vecProfilers.back()->IsFull())
+        vecProfilers.back()->SetFull();
+      
+      for (auto gProfiler : vecProfilers)
+      {
+        delete gProfiler;
+        gProfiler = nullptr;
+      }
+      vecProfilers.clear();
     }
 #endif
+
     DestroySystems();
   }
 
@@ -129,6 +143,8 @@ namespace Framework
   {
     for (unsigned i = 0; i < Systems.size(); ++i)
       Systems[i]->Initialize();
+
+    //vecProfilers.push_back(new SamplingProfiler(0)); //0 collects samples until told to stop
   }
 
   void CoreEngine::QuitGame()
@@ -193,15 +209,17 @@ namespace Framework
 #ifdef _DEBUG
   void CoreEngine::ToggleProfiling()
   {
-    if (gProfiler)
+    if (!vecProfilers.empty())
     {
-      delete gProfiler;
-      gProfiler = nullptr;
+      auto gProfiler = vecProfilers.back();
+      if (gProfiler->GetID() != 0 && !gProfiler->IsFull()) //id 0 is reserved for the profiler that is run for the entire lifetime of the game.
+      {
+        gProfiler->SetFull();
+        return;
+      }
     }
-    else
-    {
-      gProfiler = new SamplingProfiler(0); // 10000 is the default max number of samples to collect. For a fuller profile increase this number and for a quicker report decrease it.
-    }
+    vecProfilers.push_back(new SamplingProfiler(NOMAX)); //0 collects samples until told to stop
+    // 10000 is the default max number of samples to collect. For a fuller profile increase this number and for a quicker report decrease it.
   }
 #endif
 }
