@@ -47,9 +47,9 @@ namespace Framework
 
   Transform::Transform ()
   {
-    position = { 0, 0, 0 };
-    scale = { 1, 1, 1 };
-    rotation = 0.0f;
+    localPosition = { 0, 0, 0 };
+    localScale = { 1, 1, 1 };
+    localRotation = 0.0f;
   }
 
   Transform::~Transform ()
@@ -473,6 +473,7 @@ namespace Framework
   {
     localPosition.x = x;
     localPosition.y = y;
+	
 	matricesReady = false;
   }
 

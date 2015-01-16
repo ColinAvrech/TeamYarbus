@@ -477,7 +477,7 @@ namespace Framework
 		GameObject* newobj = this->CreateObject();
 		newobj->Name = String(Trunk->branch->branch->value_.String_->c_str());
 		//Skip 1st 3 objects
-		auto ct = Trunk->branch->next->next->next;
+		auto ct = Trunk->branch->next->next;
 		while (ct)
 		{
 			Component* newcomp = newobj->AddComponent(ct->objectName);
