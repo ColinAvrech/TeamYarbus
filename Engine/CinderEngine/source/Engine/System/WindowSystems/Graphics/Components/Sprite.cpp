@@ -60,7 +60,10 @@ namespace Framework
     Component::Get_Enabled (data, "Visible");
 
     Serializer::DataNode* value = data->FindElement (data, "AnimationActive");
-    value->GetValue (&animated);
+	if (value)
+	{
+		value->GetValue(&animated);
+	}
 
 		value = data->FindElement(data, "SpriteSource");
 		std::string texname;

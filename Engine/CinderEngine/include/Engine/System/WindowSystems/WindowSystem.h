@@ -74,6 +74,8 @@ namespace Framework
     void Set_W_H (const int& w, const int& h);
 
     bool focused = true;
+
+	double dpi;
   private:
     GLFWwindow* window;
 

@@ -14,6 +14,8 @@
 #include "Pipeline.h"
 #include "glut.h"
 #include "ZInterface.h"
+#include "Font.h"
+#include "ResourceManager.h"
 
 
 namespace Framework
@@ -23,35 +25,16 @@ namespace Framework
 	{
 		type->HandleManager = ZilchManagerId(Zilch::PointerManager);
 		ZilchBindFieldGetSetAs(text, "Text");
+		ZilchBindFieldGetSetAs(color, "Color");
+		ZilchBindFieldGetSetAs(visible, "Visible");
+		ZilchBindFieldGetSetAs(scale, "Scale");
+		ZilchBindFieldGetSetAs(size, "Size");
 		//ZilchBindFieldGetSetAs(position, "Position");
 	}
   // Constructor
   GUIText::GUIText()
   {
-	  //gameObject->GUIText = this;
-	shader = Resources::RS->Get_Shader("Text");
-	color = Real4( 1, 0, 1, 1 );
-    visible = true;
-
-	error = FT_Init_FreeType(&library);
-	if (error)
-	{
-		cout << "ERROR: FREETYPE LIBRARY NOT INITIALIZED!" << endl;
-	}
-	//MUST HAVE FONTS BE LOADED IN FIRST, THEN LOADED FROM MEMEORY
-	error = FT_New_Face(library, "../../Resources/Fonts/Arial.ttf", 0, &face);
-	if (error == FT_Err_Unknown_File_Format)
-	{
-		cout << "ERROR: THE FONT FILE COULD BE OPENED AND READ BUT ITS FORMAT IS UNSUPPORTED!" << endl;
-	}
-	else if (error)
-	{
-		cout << "ERROR: THE FONT FILE FAILED TO OPEN!" << endl;
-	}
-	//MUST BE FIXED FOR EACH INDIVIDUAL RESOLUTION
-	error = FT_Set_Char_Size(face, 0, 16 * 64, 96, 96);
-	FT_Set_Pixel_Sizes(face, 0, 48);
-	//FT_Set_Pixel_Sizes(face, 0, 48);
+	  //TEXT HAS ISSUES WITH PARENTING, THE VIEW 
   }
   
   // Destructor
@@ -84,10 +67,19 @@ namespace Framework
 		const char* c = text.c_str();
 		float xPos = position.x;
 		float yPos = position.y;
+		float scaleX = 0.01f * scale.x;
+		float scaleY = 0.01f * scale.y;
+		if (gameObject->Transform)
+		{
+			vec3* pos = &gameObject->Transform->GetPosition();
+			xPos += pos->x;
+			yPos += pos->y;
+
+			vec3* scale = &gameObject->Transform->GetScale();
+			scaleX *= scale->x;
+			scaleY *= scale->y;
+		}
 		glRasterPos2f(xPos, yPos);
-		//
-		//glEnable(GL_BLEND);
-		//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		GLuint tex;
 		GLuint uniform_tex = 0;
@@ -95,24 +87,13 @@ namespace Framework
 		glGenTextures(1, &tex);
 		glBindTexture(GL_TEXTURE_2D, tex);
 		glUniform1i(uniform_tex, 0);
-		
-		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-		//
 
 
 		for (unsigned i = 0; i < text.size(); ++i)
 		{
 			FT_UInt glyph_index = FT_Get_Char_Index(face, int(*(c + i)));
-			error = FT_Load_Glyph(face, glyph_index, FT_LOAD_DEFAULT);
-			error = FT_Render_Glyph(face->glyph, FT_RENDER_MODE_NORMAL);
+			FT_Load_Glyph(face, glyph_index, FT_LOAD_DEFAULT);
+			FT_Render_Glyph(face->glyph, FT_RENDER_MODE_NORMAL);
 			
 
 
@@ -120,12 +101,10 @@ namespace Framework
 			//gameObject->Sprite->Change_Texture(texture);
 			//glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, slot->bitmap.width, slot->bitmap.rows, 0, GL_RED, GL_UNSIGNED_BYTE, slot->bitmap.buffer);
 
-
-
-			float x2 = xPos + slot->bitmap_left * gameObject->Transform->GetScale().x * 0.01f;
-			float y2 = -yPos - slot->bitmap_top * gameObject->Transform->GetScale().y * 0.01f;
-			float w = slot->bitmap.width * gameObject->Transform->GetScale().x * 0.01f;
-			float h = slot->bitmap.rows * gameObject->Transform->GetScale().y * 0.01f;
+			float x2 = xPos + slot->bitmap_left * scaleX;
+			float y2 = -yPos - slot->bitmap_top * scaleY;
+			float w = slot->bitmap.width * scaleX;
+			float h = slot->bitmap.rows * scaleY;
 			
 			GLfloat box[4][4] = {
 					{ x2, -y2, 0, 0 },
@@ -142,8 +121,8 @@ namespace Framework
 			//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 			texture->Unbind();
 
-			xPos += (slot->advance.x >> 6) * gameObject->Transform->GetScale().x * 0.01f;
-			yPos += (slot->advance.y >> 6) * gameObject->Transform->GetScale().x * 0.01f;
+			xPos += (slot->advance.x >> 6) * scaleX;
+			yPos += (slot->advance.y >> 6) * scaleY;
 			glRasterPos2f(xPos, yPos);
 			delete texture;
 			texture = nullptr;
@@ -160,6 +139,20 @@ namespace Framework
 
   void GUIText::Initialize()
   {
+	  //gameObject->GUIText = this;
+	  shader = Resources::RS->Get_Shader("Text");
+	  //color = Real4( 1, 0, 1, 1 );
+	  visible = true;
+	  library = &Resources::RS->FontLibrary;
+
+	  //error = FT_New_Face(library, "../../Resources/Fonts/Arial.ttf", 0, &face);
+	  Font* fontFile = Resources::RS->Get_Font(font);
+	  face = fontFile->face;
+
+	  
+	  FT_Set_Char_Size(face, 0, 16 * 64, WINDOWSYSTEM->dpi, WINDOWSYSTEM->dpi);
+	  FT_Set_Pixel_Sizes(face, 0, size);
+
     OPENGL->textObjects.push_back (this);
 	vao = new VAO();
 	GLuint vbo;
@@ -174,10 +167,48 @@ namespace Framework
   void GUIText::Serialize(Serializer::DataNode* data)
   {
     Serializer::DataNode* value = data->FindElement (data, "Position");
-    value->GetValue (&position);
+	if (value)
+	{
+		value->GetValue(&position);
+	}
+
+	value = data->FindElement(data, "Visible");
+	if (value)
+	{
+		value->GetValue(&visible);
+	}
 
     value = data->FindElement (data, "Text");
-    text = String(value->value_.String_->c_str());
+	if (value)
+	{
+		text = String(value->value_.String_->c_str());
+	}
+
+	value = data->FindElement(data, "Color");
+	if (value)
+	{
+		vector<float>* val = value->value_.VecN_;
+		color = Real4(val->at(0), val->at(1), val->at(2), val->at(3));
+	}
+
+	value = data->FindElement(data, "Scale");
+	if (value)
+	{
+		vector<float>* val = value->value_.VecN_;
+		scale = Real3(val->at(0), val->at(1), val->at(2));
+	}
+
+	value = data->FindElement(data, "Size");
+	if (value)
+	{
+		value->GetValue(&size);
+	}
+
+	value = data->FindElement(data, "Font");
+	if (value)
+	{
+		font = String(value->value_.String_->c_str());
+	}
   }
 
   void GUIText::Change_Color(Real4 newcolor)

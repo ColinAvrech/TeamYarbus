@@ -32,8 +32,13 @@ namespace Framework
 
     ZilchBindFieldGet(Transform);
     ZilchBindFieldGet(Sprite);
-	//ZilchBindFieldGet(GUIText);
+	ZilchBindFieldGet(Parent);
+	ZilchBindFieldGetSet(InheritRotation);
+	ZilchBindFieldGetSet(InheritPosition);
+	ZilchBindFieldGetSet(InheritScale);
+	ZilchBindFieldGetSet(Name);
 	  ZilchBindMethod(GetName);
+	  ZilchBindMethod(AddChild);
 	  ZilchBindMethodOverloadAs(ZGetComponent, "GetComponent", Component*, Zilch::String);
     
 	//ZilchBindFieldGetSet(ShapeCollider);
@@ -67,7 +72,7 @@ namespace Framework
 
   Zilch::String GameObject::GetName()
   {
-	  return String(Name.c_str());
+	  return Name;
   }
 
   // Zilch method for adding components to GameObjects
@@ -107,6 +112,25 @@ namespace Framework
     }
   }
 
+  void GameObject::AddChild(GameObject* child)
+  {
+	  child->Parent = this;
+	  children.push_back(child);
+  }
+
+  void GameObject::RemoveChild(GameObject* child)
+  {
+	  child->Parent = nullptr;
+	  for (int i = 0; i < children.size(); ++i)
+	  {
+		  if (children[i] == child)
+		  {
+			  children.erase(children.begin() + i);
+			  break;
+		  }
+	  }
+  }
+
   //DOES NOT WORK!!!
   ZilchComponent* GameObject::ZAddZilchComponent(Zilch::String name)
   {
@@ -125,7 +149,7 @@ namespace Framework
 	  Zilch::LibraryRef* library = &(ZILCH->lib);
 	  //Bind the Zilch class
 	  Zilch::BoundType* ZilchClass = (*library)->BoundTypes.findValue(name.c_str(), nullptr);
-	  ErrorIf(ZilchClass == nullptr, "Failed to find a Zilch type named ", name);
+	  ErrorIf(ZilchClass == nullptr, "Failed to find a Zilch type named ", name.c_str());
 	  
 	  Zilch::ExceptionReport report;
 	  Zilch::ExecutableState* state = ZILCH->GetDependencies();

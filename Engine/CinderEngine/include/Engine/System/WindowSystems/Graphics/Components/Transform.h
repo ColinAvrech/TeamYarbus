@@ -51,6 +51,11 @@ namespace Framework
     /*inline*/ vec3 GetPosition ();
     /*inline*/ vec3 GetScale ();
     /*inline*/ float GetRotation ();
+	vec3 GetLocalPosition();
+	vec3 GetLocalScale();
+	Real3 ZGetLocalPosition();
+	Real3 ZGetLocalScale();
+	float GetLocalRotation();
     vec2 GetNDCPosition ();
     glm::vec2 GetGridPosition ();
     glm::vec2 GetGridPosition (glm::vec2 pos);
@@ -59,6 +64,7 @@ namespace Framework
 
     void SetPosition (float x, float y);
 
+	//void UpdateChildren();
     //////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////
     // ZILCH FUNCTIONS
@@ -73,20 +79,30 @@ namespace Framework
 
     // The non-base component usees DefineComponentName macro to name component
     const static string Name;
-
+	
+	bool matricesReady;
 
   private:
     int currentMatrix;
+
+	//These functions assume that there is a parent.
+	void UpdatePosition(Transform* trans);
+	void UpdateScale(Transform* trans);
+	void UpdateRotation(Transform* trans);
 
     glm::mat4 modelMatrix;
     glm::mat4 modelViewProjectionMatrix;
     vec3 position;
     vec3 scale;
     float rotation;
+
+	vec3 localPosition;
+	vec3 localScale;
+	float localRotation;
     glm::mat3 normalMatrix;
 
     // To avoid Unnecesary calculation in Update Matrices
-    bool matricesReady;
+    
   };
 }
 

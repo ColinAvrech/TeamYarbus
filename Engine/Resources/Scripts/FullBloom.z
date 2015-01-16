@@ -36,14 +36,11 @@ class NewZilch : ZilchComponent
 	}
 }
 
-class SpriteText : ZilchComponent
+class FadeIn : ZilchComponent
 {
-	var Font:Integer = 8;
-	var Size:Integer = 10;
-	var Text:Property[String] = null;
-	var Color:Real3 = Real3();
-	
-	//var TextObject:GUIText = null;
+	var Local:Boolean = true;
+	var EndPos:Real3 = Real3();
+	var EndColor:Real4 = Real4(1,1,1,1);
 	
 	constructor() : base()
 	{
@@ -52,12 +49,8 @@ class SpriteText : ZilchComponent
 	function Initialize()
 	{
 		//this.Owner.Sprite.ChangeLayer(1);
-		//this.TextObject = this.Owner.AddComponent("GUIText") as GUIText;
-		///this.TextObject = this.Owner.GUIText;
-		//this.Text = @this.TextObject.Text;
 		
-		//this.Text.Set("Goodbye WOrld");
-		//EventSystem.Connect(Events.UpdateEvent, this.LogicUpdate);
+		EventSystem.Connect(Events.UpdateEvent, this.LogicUpdate);
 		
 		//ar toSend = new ExplosionEvent:EventData();
 		//Events.Send(this.Owner, Events.Explosion, toSend);
@@ -71,9 +64,44 @@ class SpriteText : ZilchComponent
 			Console.WriteLine("UP");
 		}
 	}
+}
+
+class Parent : ZilchComponent
+{
+	var Parent:String = null;
 	
-	function Destroy()
+	constructor() : base()
 	{
+	}
+	
+	function Initialize()
+	{
+		if (this.Parent != null)
+		{
+			var parent = ZInterface.ObjectSystem.FindObjectByName(this.Parent);
+			if (parent != null)
+			{
+				parent.AddChild(this.Owner);
+				//this.Owner.InheritPosition = false;
+			}
+			else
+			{
+				Console.WriteLine(String.Concatenate(this.Parent, " Not Found!"));
+			}
+		}
+		EventSystem.Connect(Events.UpdateEvent, this.LogicUpdate);
+		
+	}
+	
+	function LogicUpdate(e: UpdateEvent)
+	{
+		//this.TextObject.Text = this.Text.Get();
+		if (InputManager.IsKeyDown(Keys.UP))
+		{
+			this.Owner.Parent.Transform.Translate(0, 1, 0);
+			Console.WriteLine(this.Owner.Transform.GetTranslation());
+			Console.WriteLine(this.Owner.Transform.GetLocalTranslation());
+		}
 	}
 }
 

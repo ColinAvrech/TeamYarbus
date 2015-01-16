@@ -83,9 +83,18 @@ namespace Framework
     Component* GetComponent(string component);
 	
     //Public Variables
-    string Name;
+    String Name;
 	  String GetName();
     GameObject* Parent;
+	bool InheritRotation = true;
+	bool InheritPosition = true;
+	bool InheritScale = true;
+
+	std::vector<GameObject*> children;
+
+	void AddChild(GameObject* child);
+	void RemoveChild(GameObject* child);
+
     const unsigned GameObjectID;
 
 

@@ -15,6 +15,7 @@
 #include "Pipeline.h"
 #include "Collider2D.h"
 #include "Thermodynamics.h"
+#include "ZInterface.h"
 
 
 using namespace Zilch;
@@ -35,6 +36,9 @@ namespace Framework
 	ZilchBindMethodAs(ZSetTranslation, "SetTranslation");
 	ZilchBindMethod(GetRotation);
 	ZilchBindMethodAs(ZGetScale, "GetScale");
+	ZilchBindMethodAs(ZGetLocalScale, "GetLocalScale");
+	ZilchBindMethodAs(ZGetLocalPosition, "GetLocalTranslation");
+	ZilchBindMethodAs(GetLocalRotation, "GetLocalRotation");
 	ZilchBindMethodAs(ZSetScale, "SetScale");
 	  ZilchBindMethodOverload(Translate, void, float, float, float);
     ZilchBindMethodAs(Rotate, "SetRotation");
@@ -43,9 +47,9 @@ namespace Framework
 
   Transform::Transform ()
   {
-    position = { 0, 0, 0 };
-    scale = { 1, 1, 1 };
-    rotation = 0.0f;
+    localPosition = { 0, 0, 0 };
+    localScale = { 1, 1, 1 };
+    localRotation = 0.0f;
   }
 
   Transform::~Transform ()
@@ -73,18 +77,42 @@ namespace Framework
     // rotation : float (Serialized Data)
     //////////////////////////////////////////////////////////////////////////
     Serializer::DataNode* value = data->FindElement (data, "Translation");
-    value->GetValue (&position);
+    value->GetValue (&localPosition);
 
     value = data->FindElement (data, "Scale");
-    value->GetValue (&scale);
+    value->GetValue (&localScale);
 
     value = data->FindElement (data, "Rotation");
-    value->GetValue (&rotation);
+	if (value)
+	{
+		value->GetValue(&localRotation);
+	}
+
+	value = data->FindElement(data, "Angle");
+	if (value)
+	{
+		value->GetValue(&localRotation);
+	}
+
   }
 
 
   void Transform::Initialize ()
   {
+	  if (gameObject->Parent)
+	  {
+		  Transform* parentPos = gameObject->Parent->Transform;
+		  UpdateRotation(parentPos);
+		  UpdateScale(parentPos);
+		  UpdatePosition(parentPos);
+
+	  }
+	  else
+	  {
+		  position = localPosition;
+		  rotation = localRotation;
+		  scale = localScale;
+	  }
     gameObject->Transform = this;
     OPENGL->MatrixMode (MODEL);
     OPENGL->LoadIdentity ();
@@ -118,56 +146,101 @@ namespace Framework
 
   void Transform::ZSetTranslation(Zilch::Real3 newpos)
   {
-	  position = vec3(newpos.x, newpos.y, newpos.z);
+	  localPosition = vec3(newpos.x, newpos.y, newpos.z);
+	  if (gameObject->Parent)
+	  {
+		  Transform* parentPos = gameObject->Parent->Transform;
+		  UpdatePosition(parentPos);
+	  }
+	  else
+	  {
+		  position = localPosition;
+	  }
+
+	  //UpdateChildren();
 	  matricesReady = false;
   }
 
   void Transform::ZSetScale(Zilch::Real3 newscale)
   {
-	  scale = vec3(newscale.x, newscale.y, newscale.z);
-	  matricesReady = false;
+	  Scale(newscale.x, newscale.y, newscale.z);
   }
 
   void Transform::Translate (float x, float y, float z)
   {
-    position += vec3 (x, y, z);
-    matricesReady = false;
+    Translate(vec3 (x, y, z));
+    
   }
 
   void Transform::Translate(const vec3 &v)
   {
-	  position += v;
+	  localPosition += v;
+	  if (gameObject->Parent)
+	  {
+		  Transform* parentPos = gameObject->Parent->Transform;
+		  UpdatePosition(parentPos);
+	  }
+	  else
+	  {
+		  position = localPosition;
+	  }
+
+	  //UpdateChildren();
 	  matricesReady = false;
   }
 
   // Non-Uniform Scale
   void Transform::Scale (float x, float y, float z)
   {
-    scale = vec3 (x, y, z);
+    localScale = vec3 (x, y, z);
     //Update model matrix
+	if (gameObject->Parent)
+	{
+		Transform* parentPos = gameObject->Parent->Transform;
+		vec3 parentScale = parentPos->GetScale();
+		UpdateScale(parentPos);
+	}
+	else
+	{
+		scale = localScale;
+	}
+
     OPENGL->Scalefv(glm::value_ptr(scale));
     OPENGL->Rotatef(rotation, 0, 0, 1);
     OPENGL->Translatefv(glm::value_ptr(position));
     modelMatrix = OPENGL->GetModelMatrix();
+	
+	//UpdateChildren();
     matricesReady = false;
   }
 
   // Uniform Scale
   void Transform::Scale (float v)
   {
-    scale = vec3 (v);
+    Scale(v,v,v);
 
     if (gameObject->RigidBody2D != nullptr)
     {
       gameObject->RigidBody2D->shape->radius = std::abs (scale.x);
     }
-    matricesReady = false;
   }
 
 
   void Transform::Rotate (float angle)
   {
-    rotation = angle;
+    localRotation = angle;
+
+	if (gameObject->Parent)
+	{
+		Transform* parentPos = gameObject->Parent->Transform;
+		UpdateRotation(parentPos);
+	}
+	else
+	{
+		rotation = localRotation;
+	}
+
+	//UpdateChildren();
     matricesReady = false;
   }
 
@@ -276,6 +349,86 @@ namespace Framework
     return rotation;
   }
 
+  vec3 Transform::GetLocalPosition()
+  {
+	  return localPosition;
+  }
+
+  vec3 Transform::GetLocalScale()
+  {
+	  return localScale;
+  }
+
+  float Transform::GetLocalRotation()
+  {
+	  return localRotation;
+  }
+
+  Real3 Transform::ZGetLocalPosition()
+  {
+	  return *ZInterface::VecToReal(&localPosition);
+  }
+
+  Real3 Transform::ZGetLocalScale()
+  {
+	  return *ZInterface::VecToReal(&localScale);
+  }
+
+  void Transform::UpdatePosition(Transform* trans)
+  {
+	  if (gameObject->InheritPosition)
+	  {
+		  vec3 positionAdd = trans->GetPosition();
+		  float parentAngle = trans->GetRotation();
+		  float cosX = 1;
+		  float sinX = 1;
+		  if (gameObject->InheritRotation)
+		  {
+			  //positionAdd[0] *= cos(parentAngle);
+			  //positionAdd[1] *= sin(parentAngle);
+			  //DOES NOT DEAL WITH Z POSITION
+		  }
+		  position = localPosition + positionAdd;
+	  }
+	  else
+	  {
+		  position = localPosition;
+	  }
+  }
+  void Transform::UpdateScale(Transform* trans)
+  {
+	  if (gameObject->InheritScale)
+	  {
+		  vec3 parentScale = trans->GetScale();
+		  scale[0] = localScale[0] * parentScale[0];
+		  scale[1] = localScale[1] * parentScale[1];
+		  scale[2] = localScale[2] * parentScale[2];
+	  }
+	  else
+	  {
+		  scale = localScale;
+	  }
+	  
+  }
+  void Transform::UpdateRotation(Transform* trans)
+  {
+	  if (gameObject->InheritRotation)
+	  {
+		  rotation = localRotation + trans->GetRotation();
+	  }
+	  else
+	  {
+		  rotation = localRotation;
+	  }
+  }
+
+  //void Transform::UpdateChildren()
+  //{
+	 // for (auto i : gameObject->children)
+	 // {
+		//  //i->Transform->matricesReady = false;
+	 // }
+  //}
 
   //GLSL
   void Transform::UpdateMatrices()
@@ -283,6 +436,20 @@ namespace Framework
     //if (!matricesReady)
     {
       OPENGL->MatrixMode (MODEL);
+	  if (gameObject->Parent)
+	  {
+		  Transform* parentPos = gameObject->Parent->Transform;
+		  UpdateRotation(parentPos);
+		  UpdateScale(parentPos);
+		  UpdatePosition(parentPos);
+	  }
+	  else
+	  {
+		  position = localPosition;
+		  rotation = localRotation;
+		  scale = localScale;
+	  }
+
       OPENGL->Translatefv (glm::value_ptr (position));
       OPENGL->Scalefv (glm::value_ptr (scale));
       OPENGL->Rotatef (rotation, 0, 0, 1);
@@ -304,8 +471,10 @@ namespace Framework
 
   void Transform::SetPosition (float x, float y)
   {
-    position.x = x;
-    position.y = y;
+    localPosition.x = x;
+    localPosition.y = y;
+	
+	matricesReady = false;
   }
 
 }

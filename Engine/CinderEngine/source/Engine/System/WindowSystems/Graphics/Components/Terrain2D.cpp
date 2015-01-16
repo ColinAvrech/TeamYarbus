@@ -97,6 +97,12 @@ namespace Framework
       value->GetValue(&MapFile);
     else
       MapFile = "";
+
+    value = data->FindElement(data, "Slope");
+    if (value)
+      value->GetValue(&Slope);
+    else
+      Slope = glm::vec2(1.f, 0.f);
   }
 
   void Terrain2D::Initialize ()
@@ -151,7 +157,7 @@ namespace Framework
   void Terrain2D::Generate_Height_Points ()
   {
     std::vector <float> heights;
-    tc = new Procedural::TerrainCreator (MapSize, BaseHeight, Passes, Waves, PeakHeight, WaterDepth, MapFile);
+    tc = new Procedural::TerrainCreator (MapSize, BaseHeight, Passes, Waves, PeakHeight, WaterDepth, MapFile, Slope);
     Procedural::TerrainCreator& t = *tc;
     float* Map = t.GetRockMap ();
     //float* W_Map = t.GetWaterMap();
@@ -166,11 +172,11 @@ namespace Framework
 
       for (int i = 0; i < t.Get_Width(); ++i)
       {
-        if (previousHeight != offsetY || i == t.Get_Width() - 1)
-        {
+        //if (previousHeight != offsetY || i == t.Get_Width() - 1)
+        //{
           height_points.push_back({ offsetX, offsetY });
-          previousHeight = offsetY;
-        }
+          //previousHeight = offsetY;
+        //}
 
         offsetY = (Map[i] * nY) / 2.0f;
         if (offsetY < 0)
