@@ -52,13 +52,13 @@ namespace Framework
 	  //glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	  
 	  GLuint* uimage = new GLuint[fontchar->rows * fontchar->width];
-	  for (size_t i = 0; i < fontchar->rows * fontchar->width; ++i)
+	  for (auto i = 0; i < fontchar->rows * fontchar->width; ++i)
 	  {
 		  char* pixel = reinterpret_cast<char *>(uimage + i);
-		  pixel[0] = 255;
-		  pixel[1] = 255;
-		  pixel[2] = 255;
-		  pixel[3] = image[i];
+		  pixel[0] = (char)255;
+		  pixel[1] = (char)255;
+		  pixel[2] = (char)255;
+		  pixel[3] = (char)image[i];
 	  }
 	  
 

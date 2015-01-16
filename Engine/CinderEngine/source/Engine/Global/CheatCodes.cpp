@@ -41,6 +41,10 @@ namespace Framework
             }
             break;
 
+          case GLFW_KEY_P: //start profiler
+            CORE->ToggleProfiling();
+            break;
+
           case GLFW_KEY_R: // Restart Level
             OBJECTSYSTEM->RestartLevel();
             break;            

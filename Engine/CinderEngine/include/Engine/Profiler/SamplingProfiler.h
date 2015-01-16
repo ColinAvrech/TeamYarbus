@@ -1,27 +1,34 @@
 #pragma once
-#include "Precompiled.h"
 
-class SamplingProfiler
+namespace Framework
 {
-public:
-  SamplingProfiler(const unsigned& p_maxsamples);
-  ~SamplingProfiler();
+  static unsigned ProfilingSamplesTaken = 0;
 
-  void Exit();
+  class SamplingProfiler
+  {
+  public:
+    SamplingProfiler(const unsigned& p_maxsamples);
 
-  bool IsFull(){ return samples.size() == maxSamples; }
+    ~SamplingProfiler();
 
-  void TakeSample();
+    void Exit();
 
-  void ExportResults();
+    void TakeSample();
 
-  void CheckForError() const;
+  private:
+    bool IsFull();
 
-private:
-  MMRESULT sampleEvent;
-  const unsigned maxSamples;
-  HANDLE mainThread, workerThread;
-  vector<CONTEXT> samples;
-};
+    void ExportResults();
 
-void CALLBACK ProfilerCallback(UINT uTimerID, UINT uMsg, DWORD_PTR dwUser, DWORD_PTR dw1, DWORD_PTR dw2);
+    void CheckForError() const;
+
+  private:
+    MMRESULT sampleEvent;
+    unsigned maxSamples;
+    HANDLE mainThread = nullptr;
+    HANDLE workerThread = nullptr;
+    vector<CONTEXT> samples;
+  };
+
+  void CALLBACK ProfilerCallback(UINT uTimerID, UINT uMsg, DWORD_PTR dwUser, DWORD_PTR dw1, DWORD_PTR dw2);
+}

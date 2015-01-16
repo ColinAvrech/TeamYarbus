@@ -15,11 +15,26 @@ Main Game Loop.
 /******************************************************************************/
 
 #include <Precompiled.h>
+#ifdef _DEBUG
+#include "Profiler\SamplingProfiler.h"
+#endif
 
 namespace Framework
 {
   //! Global pointer to the Engine Core
   CoreEngine* CORE;
+
+#ifdef _DEBUG
+  SamplingProfiler* gProfiler;
+  void CALLBACK ProfilerCallback(UINT, UINT, DWORD_PTR, DWORD_PTR, DWORD_PTR)
+  {
+    if (gProfiler)
+    {
+      gProfiler->TakeSample();
+    }
+  }
+#endif
+
   ZilchDefineType(CoreEngine, CinderZilch)
   {
 	  ZilchBindMethod(QuitGame);
@@ -27,6 +42,7 @@ namespace Framework
 	  ZilchBindMethod(IsPaused);
 	  //ZilchBindMethod(SetPaused);
   }
+
   CoreEngine::CoreEngine()
   {
     CORE = this;
@@ -38,6 +54,13 @@ namespace Framework
   {
     //! probs nothing to destory, but we humans have a distructive nature...
     //! So it is here for when we need to destory something.
+#ifdef _DEBUG
+    if (gProfiler)
+    {
+      delete gProfiler;
+    }
+#endif
+    DestroySystems();
   }
 
   //!Update all the systems
@@ -166,4 +189,19 @@ namespace Framework
 	  pause.Paused = GamePaused;
 	  EVENTSYSTEM->TriggerEvent(Events::PAUSE, pause);
   }
+
+#ifdef _DEBUG
+  void CoreEngine::ToggleProfiling()
+  {
+    if (gProfiler)
+    {
+      delete gProfiler;
+      gProfiler = nullptr;
+    }
+    else
+    {
+      gProfiler = new SamplingProfiler(0); // 10000 is the default max number of samples to collect. For a fuller profile increase this number and for a quicker report decrease it.
+    }
+  }
+#endif
 }

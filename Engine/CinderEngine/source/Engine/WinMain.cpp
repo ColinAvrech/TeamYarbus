@@ -10,6 +10,8 @@ starts the game loop.
 /******************************************************************************/
 
 #include <Precompiled.h>
+#include <iostream>
+#include "Shlwapi.h" //used for PathAppend and PathFileExists for file/directory management
 #include "ZInterface.h"
 #include "CheatCodes.h"
 #define WINDOWSBUILD
@@ -31,19 +33,6 @@ const int ClientHeight = 576;
 //  }
 //};
 
-#ifdef _DEBUG
-#include "Profiler\SamplingProfiler.h"
-
-SamplingProfiler* gProfiler;
-void CALLBACK ProfilerCallback(UINT, UINT, DWORD_PTR, DWORD_PTR, DWORD_PTR)
-{
-  if (gProfiler)
-  {
-    gProfiler->TakeSample();
-  }
-}
-#endif
-
 void TestUEDisconnect(UpdateEvent* e)
 {
   std::cout << "Global Disconnect:" << std::endl;
@@ -52,14 +41,43 @@ void TestUEDisconnect(UpdateEvent* e)
 int main (void)
 {
 #ifdef _DEBUG
-  gProfiler = new SamplingProfiler(100000); // 10000 is the default max number of samples to collect. For a fuller profile increase this number and for a quicker report decrease it.
-
   bool launchFullScreen = false;
 
   EnableMemoryLeakChecking ();
 
   // TODO (EXTRA): make a window to show while the game is loading
   CinderConsole::Create_Cinder_Console ("CinderEngineConsole");
+
+#pragma region RemoveProfilingReportsDirectory
+  const int bufferSize = MAX_PATH;
+  char oldDir[bufferSize]; // store the current directory
+
+  // get the current directory, and store it
+  if (!GetCurrentDirectory(bufferSize, oldDir)) 
+  {
+    std::cerr << "Error getting current directory: #" << GetLastError();
+  }
+  else
+  {
+    std::cout << "Current directory: " << oldDir << '\n';
+  }
+
+  // new directory
+  char newDir[bufferSize];
+  strcpy(newDir, oldDir);
+
+  // old way of setting the directory to the profiling reports folder
+  //  sprintf_s(newDir, "%s/%s", oldDir, R"(\..\ProfilingReports)");
+  if (PathAppend(newDir, R"(..\ProfilingReports)"))
+  {
+    char* profilingReportsPath = newDir;
+    if (PathFileExists(profilingReportsPath))
+    {
+      RemoveDirectory(profilingReportsPath);
+    }
+  }
+#pragma endregion
+
 #else
   bool launchFullScreen = true;
 #endif
@@ -121,7 +139,7 @@ int main (void)
   //OBJECTSYSTEM->LoadAllLevels("..//..//Resources//Levels//MasterLevelFile.txt");
 
   SplashScreenMusic->Play();
-  OBJECTSYSTEM->LoadLevel("ZilchTestLevel");
+  OBJECTSYSTEM->LoadLevel("L3");
   //OBJECTSYSTEM->ZilchLoadLevel(Zilch::String("ZilchTestLevel"));
 
  //Initialize Cheat Codes
@@ -143,9 +161,6 @@ int main (void)
   //! Run the game! NOW!
   engine->GameLoop ();
 
-  //! Delete all systems
-  engine->DestroySystems ();
-
   //! Delete engine
   delete engine;
   delete audioEvents;
@@ -154,10 +169,6 @@ int main (void)
 
   //! Free console
   CinderConsole::Free_Cinder_Console ();
-
-#ifdef _DEBUG
-  delete gProfiler;
-#endif
 
   return 0;
 }
