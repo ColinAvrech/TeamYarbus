@@ -177,8 +177,8 @@ namespace Framework
         VelocityMap_PrevX.Set(i, j, 0.f);
         END_FOR
 
-        //set_bnd(start, end, 0, VelocityMap_PrevY);
-        //set_bnd(start, end, 0, VelocityMap_PrevX);
+        set_bnd(start, end, 0, VelocityMap_PrevY);
+        set_bnd(start, end, 0, VelocityMap_PrevX);
 
       lin_solve(start, end, 0, VelocityMap_PrevX, VelocityMap_PrevY, 1, 4);
 
@@ -249,8 +249,8 @@ namespace Framework
       //compute total applied forces
       project(start_index, end_index);
       //Swap arrays
-      //VelocityMapX.Swap(VelocityMap_PrevX);
-      //VelocityMapY.Swap(VelocityMap_PrevY);
+      VelocityMapX.Swap(VelocityMap_PrevX);
+      VelocityMapY.Swap(VelocityMap_PrevY);
       //advect wind velocities
       advect(VelocityMapX, VelocityMap_PrevX, VelocityMap_PrevX, VelocityMap_PrevY, start_index, end_index, 1, dt);
       advect(VelocityMapY, VelocityMap_PrevY, VelocityMap_PrevX, VelocityMap_PrevY, start_index, end_index, 2, dt);
