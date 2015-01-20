@@ -18,6 +18,7 @@ namespace Framework
   class IEffect : public IGraphicsObject
   {
   public:
+	  ZilchDeclareDerivedType(IEffect, IGraphicsObject);
     static const size_t DEFAULT_PARTICLE_NUM_FLAG = 0;	// for initialize method
     //enum Name { };
   public:
@@ -51,7 +52,9 @@ namespace Framework
   class EffectFactory
   {
   public:
+	  ZilchDeclareBaseType(EffectFactory, Zilch::TypeCopyMode::ReferenceType);
     static std::shared_ptr<IEffect> create (const char *name);
+	static std::shared_ptr<IEffect> create(String name);
   };
 }
 

@@ -23,7 +23,7 @@ namespace Framework
   class CLParticleRenderer : public IGraphicsObject
   {
   public:
-
+	  ZilchDeclareDerivedType(CLParticleRenderer, IGraphicsObject);
     CLParticleRenderer ();
     virtual ~CLParticleRenderer();
 

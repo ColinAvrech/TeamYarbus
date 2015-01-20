@@ -12,7 +12,10 @@
 
 namespace Framework
 {
-
+	ZilchDefineType(GLParticleRenderer, CinderZilch) //, builder, type
+	{
+		type->HandleManager = ZilchManagerId(Zilch::PointerManager);
+	}
   // GENERATE BUFFERS FOR THE ENTIRE PARTICLE SYSTEM
   void GLParticleRenderer::generate (ParticleSystem *sys, bool)
   {

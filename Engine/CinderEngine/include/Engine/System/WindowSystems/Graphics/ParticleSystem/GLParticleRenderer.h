@@ -24,6 +24,7 @@ namespace Framework
   // RENDERS PARTICLES AS POINTS
   class GLParticleRenderer : public IParticleRenderer
   {
+	  ZilchDeclareDerivedType(GLParticleRenderer, IParticleRenderer);
     VAO* vao;
     VBO* vbo;
     SSBO* SSBOParticles, *SSBOCol;

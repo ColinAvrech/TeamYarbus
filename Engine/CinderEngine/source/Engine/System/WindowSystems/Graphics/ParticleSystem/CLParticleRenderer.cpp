@@ -14,6 +14,10 @@ namespace Framework
 {
   DefineComponentName (CLParticleRenderer);
 
+  ZilchDefineType(CLParticleRenderer, CinderZilch) //, builder, type
+  {
+	  type->HandleManager = ZilchManagerId(Zilch::PointerManager);
+  }
   enum MOVEMENT
   {
     CL_LEFT,

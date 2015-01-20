@@ -27,6 +27,11 @@ namespace Framework
   static float maxSize;
   static float minSize;
 
+  ZilchDefineType(FountainEffect, CinderZilch) //, builder, type
+  {
+	  type->HandleManager = ZilchManagerId(Zilch::PointerManager);
+  }
+
   FountainEffect::~FountainEffect ()
   {
 

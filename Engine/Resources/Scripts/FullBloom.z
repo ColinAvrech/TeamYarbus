@@ -69,6 +69,10 @@ class FadeIn : ZilchComponent
 class Parent : ZilchComponent
 {
 	var Parent:String = null;
+	var InheritPosition:Boolean = true;
+	var InheritRotation:Boolean = true;
+	var InheritScale:Boolean = true;
+	var Pivot:Boolean = true;
 	
 	constructor() : base()
 	{
@@ -82,26 +86,71 @@ class Parent : ZilchComponent
 			if (parent != null)
 			{
 				parent.AddChild(this.Owner);
-				//this.Owner.InheritPosition = false;
+				this.Owner.InheritPosition = this.InheritPosition;
+				this.Owner.InheritRotation = this.InheritRotation;
+				this.Owner.InheritScale = this.InheritScale;
+				this.Owner.Pivot = this.Pivot;
 			}
 			else
 			{
 				Console.WriteLine(String.Concatenate(this.Parent, " Not Found!"));
 			}
 		}
+	}
+}
+
+class ZTree : ZilchComponent
+{
+	var Filename:String = "Tree0";
+	var Tree:GameObject = null;
+	
+	constructor() : base()
+	{
+	}
+	
+	function Initialize()
+	{
+		this.Tree = ZInterface.ObjectSystem.LoadArchetype(this.Filename);
 		EventSystem.Connect(Events.UpdateEvent, this.LogicUpdate);
-		
 	}
 	
 	function LogicUpdate(e: UpdateEvent)
 	{
-		//this.TextObject.Text = this.Text.Get();
-		if (InputManager.IsKeyDown(Keys.UP))
+		if (InputManager.IsKeyTriggered(Keys.SPACE))
 		{
-			this.Owner.Parent.Transform.Translate(0, 1, 0);
-			Console.WriteLine(this.Owner.Transform.GetTranslation());
-			Console.WriteLine(this.Owner.Transform.GetLocalTranslation());
+			ZInterface.ObjectSystem.DestroyObject(this.Tree);
+			this.Tree = ZInterface.ObjectSystem.LoadArchetype(this.Filename);
 		}
+	}
+}
+
+class ZRotator : ZilchComponent
+{
+	var Active:Boolean = true;
+	var Speed:Real = 0;
+	var UsesDT:Boolean = false;
+	
+	constructor() : base()
+	{
+	}
+	
+	function Initialize()
+	{
+		EventSystem.Connect(Events.UpdateEvent, this.LogicUpdate);
+	}
+	
+	function LogicUpdate(e: UpdateEvent)
+	{
+		if (!this.Active)
+		{
+			return;
+		}
+		var rot:Real = this.Speed;
+		if (this.UsesDT)
+		{
+			rot *= ZInterface.Physics.DT;
+		}
+		this.Owner.Transform.Rotate(rot);
 	}
 }
 

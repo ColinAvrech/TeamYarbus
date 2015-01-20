@@ -22,7 +22,10 @@
 namespace Framework
 {
   DefineComponentName (FireSystem);
-
+  ZilchDefineType(FireSystem, CinderZilch) //, builder, type
+  {
+	  type->HandleManager = ZilchManagerId(Zilch::PointerManager);
+  }
   // Constructor
   FireSystem::FireSystem ()
   {}

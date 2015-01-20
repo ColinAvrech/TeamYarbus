@@ -46,12 +46,12 @@ namespace Framework
   void ZilchComponent::Create(GameObject* owner)
   {
 	  gameObject = owner;
-	  std::cout << "CREATING ZILCH COMPONENT" << std::endl;
+	  //std::cout << "CREATING ZILCH COMPONENT" << std::endl;
   }
 
   void ZilchComponent::Serialize(Serializer::DataNode* data)
   {
-	  std::cout << "SERIALIZING ZILCH COMPONENT" << std::endl;
+	  //std::cout << "SERIALIZING ZILCH COMPONENT" << std::endl;
 	  //Serializer::DataNode* temp = componentData->FindElement(componentData, "OHai");
 	  //temp->GetValue(&ohai);
 	  Zilch::ExceptionReport report;

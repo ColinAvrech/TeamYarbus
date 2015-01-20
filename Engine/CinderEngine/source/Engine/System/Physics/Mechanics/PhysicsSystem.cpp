@@ -19,6 +19,7 @@
 #include "EventSystem.h"
 #include "GameEvent.h"
 #include "Events.h"
+#include "ZInterface.h"
 
 
 namespace Framework
@@ -27,10 +28,17 @@ namespace Framework
   {
     PhysicsSystem* PHYSICS = NULL;
 
+	ZilchDefineType(PhysicsSystem, CinderZilch)
+	{
+		type->HandleManager = ZilchManagerId(Zilch::PointerManager);
+		ZilchBindFieldGetAs(m_dt, "DT");
+	}
+
     PhysicsSystem::PhysicsSystem(float dt, unsigned iterations) : m_dt(dt)
       , m_iterations(iterations)
     {
       PHYSICS = this;
+	  ZInterface::Physics = this;
     }
 
 

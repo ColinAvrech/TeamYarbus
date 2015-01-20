@@ -16,6 +16,10 @@
 
 namespace Framework
 {
+	ZilchDefineType(AttractorEffect, CinderZilch) //, builder, type
+	{
+		type->HandleManager = ZilchManagerId(Zilch::PointerManager);
+	}
   bool AttractorEffect::initialize (size_t numParticles)
   {
     texture = Resources::RS->Get_Texture ("Particle1.png");
