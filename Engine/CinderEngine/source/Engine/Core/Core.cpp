@@ -34,6 +34,14 @@ namespace Framework
       {
         gProfiler->TakeSample();
       }
+      else if (!gProfiler->IsExported())
+      {
+        gProfiler->SetExported();
+      }
+      else
+      {
+        gProfiler->Exit();
+      }
     }
   }
 #endif

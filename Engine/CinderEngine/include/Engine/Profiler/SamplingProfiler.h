@@ -20,6 +20,9 @@ namespace Framework
     bool IsFull(); //used to stop collecting samples on full profiles
     void SetFull();
 
+    bool IsExported(){ return exported; }
+    void SetExported();
+    
     void TakeSample(); //needs to be public for sampling callback
 
   private:
@@ -33,6 +36,8 @@ namespace Framework
     vector<CONTEXT> samples;
     unsigned maxSamples;
     bool full;
+    bool exported;
+    bool exited;
 
     //Data used for sample collection
     HANDLE mainThread = nullptr;

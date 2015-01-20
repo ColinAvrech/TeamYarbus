@@ -8,8 +8,12 @@ namespace Framework
 
   SamplingProfiler::SamplingProfiler(const unsigned& p_maxsamples) : maxSamples(p_maxsamples)
   {
-    full = false;
     id = ProfilesTaken++;
+
+    full = false;
+    exported = false;
+    exited = false;
+
     workerThread = nullptr;
     mainThread = OpenThread(THREAD_SUSPEND_RESUME | THREAD_GET_CONTEXT | THREAD_QUERY_INFORMATION, 0, GetCurrentThreadId());
     CheckForError();
@@ -19,8 +23,11 @@ namespace Framework
 
   SamplingProfiler::~SamplingProfiler()
   {
+    if (!IsExported())
+      ExportResults();
     
-    ExportResults();
+    if (!exited)
+      Exit();
   }
 
   void SamplingProfiler::Exit()
@@ -42,6 +49,8 @@ namespace Framework
 
       mainThread = nullptr;
     }
+
+    exited = true;
   }
 
   bool SamplingProfiler::IsFull()
@@ -57,7 +66,12 @@ namespace Framework
   void SamplingProfiler::SetFull()
   {
     full = true;
-    Exit();
+  }
+
+  void SamplingProfiler::SetExported()
+  {
+    ExportResults(); 
+    exported = true;
   }
 
   void SamplingProfiler::TakeSample()
