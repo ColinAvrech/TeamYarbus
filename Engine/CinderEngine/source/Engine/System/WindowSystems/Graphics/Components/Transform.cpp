@@ -42,7 +42,6 @@ namespace Framework
 	ZilchBindMethodAs(ZSetScale, "SetScale");
 	  ZilchBindMethodOverload(Translate, void, float, float, float);
     ZilchBindMethodAs(Rotate, "SetRotation");
-	ZilchBindMethodAs(AddRotation, "Rotate");
 	ZilchBindMethodAs(ZGetScreenPosition, "GetScreenPosition");
   }
 
@@ -103,9 +102,9 @@ namespace Framework
 	  if (gameObject->Parent)
 	  {
 		  Transform* parentPos = gameObject->Parent->Transform;
-		  //UpdateRotation(parentPos);
-		  //UpdateScale(parentPos);
-		  //UpdatePosition(parentPos);
+		  UpdateRotation(parentPos);
+		  UpdateScale(parentPos);
+		  UpdatePosition(parentPos);
 
 	  }
 	  else
@@ -241,24 +240,8 @@ namespace Framework
 		rotation = localRotation;
 	}
 
+	//UpdateChildren();
     matricesReady = false;
-  }
-
-  void Transform::AddRotation(float angle)
-  {
-	  localRotation += angle;
-
-	  if (gameObject->Parent)
-	  {
-		  Transform* parentPos = gameObject->Parent->Transform;
-		  UpdateRotation(parentPos);
-	  }
-	  else
-	  {
-		  rotation = localRotation;
-	  }
-
-	  matricesReady = false;
   }
 
   //getters
@@ -397,27 +380,15 @@ namespace Framework
 	  {
 		  vec3 positionAdd = trans->GetPosition();
 		  float parentAngle = trans->GetRotation();
-		  float cos0 = cos(parentAngle * 0.0174532925199);
-		  float sin0 = sin(parentAngle * 0.0174532925199);
-		  vec3 newPos;
-		  //glm::mat2 matrix;
-		  //matrix[0] = { cosX, -sinX };
-		  //matrix[1] = {-sinX, cosX};
-
-		  
-		  if (gameObject->Pivot)
+		  float cosX = 1;
+		  float sinX = 1;
+		  if (gameObject->InheritRotation)
 		  {
+			  //positionAdd[0] *= cos(parentAngle);
+			  //positionAdd[1] *= sin(parentAngle);
 			  //DOES NOT DEAL WITH Z POSITION
-			  newPos[0] = (localPosition[0] * cos0) - (localPosition[1] * sin0);
-			  newPos[1] = (localPosition[1] * cos0) + (localPosition[0] * sin0);
 		  }
-		  else
-		  {
-			  newPos[0] = localPosition[0];
-			  newPos[1] = localPosition[1];
-		  }
-		  position = newPos + positionAdd;
-		  
+		  position = localPosition + positionAdd;
 	  }
 	  else
 	  {

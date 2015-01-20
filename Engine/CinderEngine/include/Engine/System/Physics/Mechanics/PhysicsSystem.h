@@ -28,8 +28,6 @@ namespace Framework
     public:
       PhysicsSystem(float dt, unsigned iterations);
 
-	  ZilchDeclareDerivedType(PhysicsSystem, BaseSystem);
-
       virtual bool Initialize();
       virtual void Update(const float& dt);
       virtual void OnApplicationPause(PauseEvent* pause);

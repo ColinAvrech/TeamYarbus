@@ -98,7 +98,6 @@ namespace Framework
 		ZilchBindMethodOverload(FindObjectByName, GameObject*, Zilch::String);
 		ZilchBindMethodAs(FindObjectByID, "FindObjectByID");
 		ZilchBindMethod(DestroyObject);
-		ZilchBindMethodAs(ZLoadArchetype, "LoadArchetype");
 		//ZilchBindMethod(LoadLevel);
 		//ZilchBindConstructor(Transform);
 		//ZilchBindMethodOverload(LoadLevel, void, Zilch::String);
@@ -274,7 +273,6 @@ namespace Framework
 			delete obj;
 			obj = nullptr;
 		}
-		GameObjectsToBeDestroyed.clear();
 	}
 
 	//#########   ERROR THIS FUNCTION'S will always cause a memory leak
@@ -468,14 +466,6 @@ namespace Framework
 		}
 
 		return objectlist;
-	}
-
-	GameObject* ObjectSystem::ZLoadArchetype(String file)
-	{
-		string fileName;
-		fileName.append(file.c_str());
-		fileName.append(".Archetype");
-		return LoadArchetype(fileName.c_str());
 	}
 
 	GameObject* ObjectSystem::LoadArchetype(const char *archtype_file)

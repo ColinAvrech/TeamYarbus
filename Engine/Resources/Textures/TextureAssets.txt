@@ -1,3 +1,4 @@
+TeamLogo.jpg
 TeamLogo.png
 TeamName.png
 Logo.png
@@ -45,4 +46,3 @@ UIRestartTitle.png
 UIRestartWhite.png
 UIRestartBlack.png
 tumbleweed.png
-FirePit.png

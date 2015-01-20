@@ -42,7 +42,6 @@ namespace Framework
 
     Texture* texture;
   public:
-	  ZilchDeclareDerivedType(PlayerEffect, IEffect);
     PlayerEffect (){}
     virtual ~PlayerEffect ();
 

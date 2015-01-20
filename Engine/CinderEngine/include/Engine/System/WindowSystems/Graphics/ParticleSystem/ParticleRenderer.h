@@ -23,7 +23,6 @@ namespace Framework
   class IParticleRenderer
   {
   public:
-	  ZilchDeclareBaseType(IParticleRenderer, TypeCopyMode::ReferenceType);
     IParticleRenderer () { }
     virtual ~IParticleRenderer () { }
 

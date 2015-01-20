@@ -41,7 +41,6 @@ namespace Framework
     void Scale (const float x, const float y, const float z);
     void Scale (const float v);
     void Rotate (float angle);
-	void AddRotation(float angle);
     //////////////////////////////////////////////////////////////////////////
     bool MatrixMode (int m);
     void UpdateMatrices ();

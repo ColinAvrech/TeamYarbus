@@ -89,7 +89,6 @@ namespace Framework
 	bool InheritRotation = true;
 	bool InheritPosition = true;
 	bool InheritScale = true;
-	bool Pivot = true;
 
 	std::vector<GameObject*> children;
 

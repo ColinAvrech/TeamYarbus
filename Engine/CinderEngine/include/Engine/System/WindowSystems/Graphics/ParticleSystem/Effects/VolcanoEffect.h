@@ -33,7 +33,6 @@ namespace Framework
     Texture* texture;
 
   public:
-	  ZilchDeclareDerivedType(FountainEffect, IEffect);
     FountainEffect () { }
     virtual ~FountainEffect ();
 

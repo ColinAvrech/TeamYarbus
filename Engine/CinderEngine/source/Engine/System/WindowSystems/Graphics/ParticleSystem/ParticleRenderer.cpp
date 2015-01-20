@@ -15,10 +15,6 @@
 
 namespace Framework
 {
-	ZilchDefineType(IParticleRenderer, CinderZilch) //, builder, type
-	{
-		type->HandleManager = ZilchManagerId(Zilch::PointerManager);
-	}
   std::shared_ptr<IParticleRenderer> RendererFactory::create (const char *name)
   {
     string renderer{ name };

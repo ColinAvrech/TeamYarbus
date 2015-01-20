@@ -16,10 +16,7 @@
 
 namespace Framework
 {
-	ZilchDefineType(ExplosionEffect, CinderZilch) //, builder, type
-	{
-		type->HandleManager = ZilchManagerId(Zilch::PointerManager);
-	}
+
   bool ExplosionEffect::initialize (size_t numParticles)
   {
     texture = Resources::RS->Get_Texture ("Fire1.png");

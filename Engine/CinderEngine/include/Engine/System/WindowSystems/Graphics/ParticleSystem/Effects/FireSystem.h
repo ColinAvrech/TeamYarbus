@@ -25,7 +25,6 @@ namespace Framework
   class FireSystem : public IEffect
   {
   public:
-	  ZilchDeclareDerivedType(FireSystem, IEffect);
     FireSystem ();
     virtual ~FireSystem ();
 

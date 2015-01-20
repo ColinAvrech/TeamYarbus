@@ -16,12 +16,6 @@
 
 namespace Framework
 {
-
-	ZilchDefineType(TunnelEffect, CinderZilch) //, builder, type
-	{
-		type->HandleManager = ZilchManagerId(Zilch::PointerManager);
-	}
-
   bool TunnelEffect::initialize (size_t numParticles)
   {
     texture = Resources::RS->Get_Texture ("Particle1.png");

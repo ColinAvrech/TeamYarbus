@@ -63,43 +63,44 @@ Level =
 	{
 		Named = 
 		{
-			string Name = "FirePit",
+			string Name = "Ember",
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, -4, 1],
-			Vec3 Scale = [3, 3, 3],
-			float Rotation = 0,
+			Vec3 Translation = [0, 2, 0],
+			Vec3 Scale = [1, 1, 1],
+			float Rotation = 180,
 		},
-		Sprite = 
+		GUIText = 
 		{
-			string SpriteSource = "FirePit.png",
-			string Shader = "Default",
-			Vec4 Color = [1, 1, 1, 1],
-			bool Visible = true,
-		},
-		ZTree = 
-		{
+			Vec4 Color = [1, 0, 0, 1],
+			Vec3 Position = [0, 0, 0],
+			int Size = 82,
+			string Text = "Ember",
 		},
 	},
 	Cog = 
 	{
 		Named = 
 		{
-			string Name = "Background",
+			string Name = "Child",
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, 0, -1],
-			Vec3 Scale = [10, 10, 1],
+			Vec3 Translation = [0, -1, 0],
+			Vec3 Scale = [1, 1, 1],
 			Quat Rotation = [0, 0, 0, 0],
 		},
-		Sprite = 
+		GUIText = 
 		{
-			string SpriteSource = "EnvHighRes.png",
-			string Shader = "Default",
-			Vec4 Color = [1, 1, 1, 0.0],
-			bool Visible = true,
+			Vec4 Color = [1, 1, 0, 1],
+			Vec3 Position = [0, 0, 0],
+			int Size = 82,
+			string Text = "Child",
+		},
+		Parent = 
+		{
+			string Parent = "Ember",
 		},
 	},
 },

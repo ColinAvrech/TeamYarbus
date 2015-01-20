@@ -36,7 +36,6 @@ namespace Framework
 	ZilchBindFieldGetSet(InheritRotation);
 	ZilchBindFieldGetSet(InheritPosition);
 	ZilchBindFieldGetSet(InheritScale);
-	ZilchBindFieldGetSet(Pivot);
 	ZilchBindFieldGetSet(Name);
 	  ZilchBindMethod(GetName);
 	  ZilchBindMethod(AddChild);
