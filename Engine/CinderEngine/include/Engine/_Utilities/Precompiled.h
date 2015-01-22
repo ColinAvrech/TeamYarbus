@@ -237,6 +237,8 @@ using std::string;
 #include "Thermodynamics.h"
 #include "ZilchCompiledLib.h"
 
+#include "PanelManager.h"
+
 //////////////////////////////////////////////////////////////////////////\
 
 #pragma hdrstop

@@ -96,6 +96,8 @@ int main (void)
   ObjectSystem                  * objsys      = new ObjectSystem ();
   UISystem                      * ui          = new UISystem ();
 
+  
+
   //Physics::PhysicsSystem * phys = new Physics::PhysicsSystem ();
   
   //Adding Pointer to ZilchInterface
