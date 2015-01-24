@@ -128,7 +128,8 @@ namespace Framework
 
     Generate_Buffers();
     CalculateBounds();
-    //treeMesh.clear();
+    vertex_count = treeMesh.size() / 2;
+    treeMesh.clear();
   }
 
   bool Tree2D::InViewport()
@@ -180,7 +181,7 @@ namespace Framework
     vao->bindVAO();
     shader->uniMat4("mvp", glm::value_ptr(gameObject->Transform->GetModelViewProjectionMatrix()));
     shader->uni4fv("color", glm::value_ptr(color));
-    glDrawArrays(GL_TRIANGLES, 0, treeMesh.size() / 2);
+    glDrawArrays(GL_TRIANGLES, 0, vertex_count);
 
     vao->unbindVAO();
     shader->Disable();
@@ -491,7 +492,7 @@ namespace Framework
     joints_x.push_back(x1);
     joints_y.push_back(y1);
 
-    glm::vec2 dis(y2 - y1, x1 - x2);
+    glm::vec3 dis(y2 - y1, x1 - x2, 0.f);
 
     float _x;
     float _y;
@@ -504,9 +505,11 @@ namespace Framework
       //pt1
       treeMesh.push_back(x1 - dis.x * rad);
       treeMesh.push_back(y1 - dis.y * rad);
+      //treeMesh.push_back(0.f);
       //pt2
       treeMesh.push_back(_x);
       treeMesh.push_back(_y);
+      //treeMesh.push_back(0.f);
     }
     //If not, use offsets from parent branch
     else

@@ -58,6 +58,7 @@ namespace Framework
     // Mesh Data
     VAO* vao;
     VBO* vbo;
+    unsigned vertex_count;
     std::vector <float> treeMesh;
     std::vector <glm::vec2> edges;
     Tree_Type type;

@@ -70,7 +70,7 @@ namespace Framework
   }
 	
 
-  Zilch::String GameObject::GetName()
+  String GameObject::GetName()
   {
 	  return Name;
   }

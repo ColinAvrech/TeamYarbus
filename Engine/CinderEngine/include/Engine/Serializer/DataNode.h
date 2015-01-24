@@ -60,6 +60,7 @@ namespace Framework
       void GetValue(double* store);
       void GetValue(bool* store);
       void GetValue(string* store);
+      void GetValue(Zilch::String* store);
       void GetValue(vec2* store);
       void GetValue(vec3* store);
       void GetValue(vec4* store);

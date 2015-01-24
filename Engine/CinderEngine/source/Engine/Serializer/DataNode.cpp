@@ -125,6 +125,12 @@ namespace Framework
       ErrorIf(!store, "Pointer Uninitialized");
       *store = *value_.String_;
     }
+    void DataNode::GetValue(Zilch::String* store)
+    {
+      std::string s;
+      this->GetValue(&s);
+      *store = Zilch::String(s.c_str());
+    }
     void DataNode::GetValue(vec2* store)
     {
       ErrorIf(value_.VecN_->size() < 2, "Wrong data type");
