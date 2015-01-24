@@ -82,7 +82,7 @@ class Parent : ZilchComponent
 			if (parent != null)
 			{
 				parent.AddChild(this.Owner);
-				this.Owner.InheritPosition = false;
+				//this.Owner.InheritPosition = false;
 			}
 			else
 			{
@@ -99,6 +99,8 @@ class Parent : ZilchComponent
 		if (InputManager.IsKeyDown(Keys.UP))
 		{
 			this.Owner.Parent.Transform.Translate(0, 1, 0);
+			Console.WriteLine(this.Owner.Transform.GetTranslation());
+			Console.WriteLine(this.Owner.Transform.GetLocalTranslation());
 		}
 	}
 }

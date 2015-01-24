@@ -27,11 +27,12 @@ namespace Framework
     TREE_2,
     TREE_3,
     TREE_4,
-	TREE_LONG,
+	  TREE_LONG,
     TREE_SHORT_GRASS,
     TREE_TALL_GRASS,
     TREE_5,
     OPEN,  //Keep this last
+    INVALID
   };
 
 

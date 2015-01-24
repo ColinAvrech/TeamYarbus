@@ -19,7 +19,7 @@ namespace Framework
   namespace Procedural
   {
     TerrainCreator::TerrainCreator(int _width, int _baseHeight, int _passes,
-      int _waves, int _peak, int _water, const std::string& _HMap, glm::vec2 &_slope) :
+      int _waves, int _peak, int _water, const std::string& _HMap, const glm::vec2 &_slope) :
       MapWidth (_width), BaseHeight (_baseHeight), passes (_passes), waves (_waves), PeakHeight (_peak),
       WaterDepth(_water), Slope(glm::vec2(_slope))
     {

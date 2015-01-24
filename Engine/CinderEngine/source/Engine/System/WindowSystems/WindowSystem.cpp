@@ -53,6 +53,7 @@ namespace Framework
   {
     void GLFWResize (GLFWwindow* window, const int w, const int h)
     {
+
       if (WINDOWSYSTEM->IsInFocus() && w != 0 && h != 0)
       {
         if (WINDOWSYSTEM->Get_Width() != w)
@@ -151,6 +152,9 @@ namespace Framework
 
     void GLFWMessageHandler (GLFWwindow* window, const int key, const int scanCode, const int state, const int mod)
     {
+		// if ( TwEventKeyGLFW( key, state ) )
+		// 	return;
+
       // Set booleans for InputManager
       InputManager::KeyChange(key, scanCode, state, mod);
 
@@ -312,11 +316,17 @@ namespace Framework
 
     void GLFWMouseButtonFunction (GLFWwindow *, const int button, const int action, const int mod)
     {
+		// if ( TwEventMouseButtonGLFW( button, action ) )
+		// 	return;
+
 		  WINDOWSYSTEM->IsMouseDown = action;
 		  InputManager::MouseChange(button, action, mod);
     }
     void GLFWMouseCursorMoved (GLFWwindow* window, const double xPos, const double yPos)
     {
+		// if ( TwEventMousePosGLFW( xPos, yPos ) )
+		// 	return;
+
       WINDOWSYSTEM->cursorPosition.x = xPos + mouseOffset.x;
       WINDOWSYSTEM->cursorPosition.y = yPos + mouseOffset.y;
     }
@@ -523,6 +533,8 @@ namespace Framework
   {
     if (focused)
     OPENGL->Update ();
+
+	// Panel::PanelManager::Draw( );
 
     glfwSwapBuffers (window);
   }

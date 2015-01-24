@@ -29,11 +29,11 @@ namespace Framework
     {
       HeightMapRock.allocate(MapWidth, MapDepth);
       float weight = 1.f;
-      for (int i = 0; i < passes; ++i, weight *= 0.25f);
+      for (auto i = 0; i < passes; ++i, weight *= 0.25f);
       
-      for (unsigned int i = 0; i < MapWidth; ++i)
+      for (auto i = 0; i < MapWidth; ++i)
       {
-        for (unsigned int j = 0; j < MapDepth; ++j)
+        for (auto j = 0; j < MapDepth; ++j)
         {
           if (i == 0 || i == MapWidth - 1 || j == 0 || j == MapDepth - 1)
             HeightMapRock.Set(i, j, -1.0f);
@@ -43,15 +43,15 @@ namespace Framework
       } // for i
 
       int factor = 1;
-      for (int i = 0; i < passes; ++i, factor *= 2);
+      for (auto i = 0; i < passes; ++i, factor *= 2);
 
-      for (int p = 0; p < passes && factor > 0; ++p)
+      for (auto p = 0; p < passes && factor > 0; ++p)
       {
         weight *= 6.2f;
         factor *= 0.5f;
-        for (unsigned int i = 0; i < MapWidth; ++i)
+        for (auto i = 0; i < MapWidth; ++i)
         {
-          for (unsigned int j = 0; j < MapDepth; ++j)
+          for (auto j = 0; j < MapDepth; ++j)
           {
             float value = HeightMapRock.Get(i, j);
             value += weight * HeightMapRock.Get(i / factor, j / factor);
@@ -60,11 +60,11 @@ namespace Framework
         } // for i
       } // for p
 
-      for (int p = 0; p < passes; ++p)
+      for (auto p = 0; p < passes; ++p)
       {
-        for (unsigned int i = 0; i < MapWidth - 1; ++i)
+        for (auto i = 0; i < MapWidth - 1; ++i)
         {
-          for (unsigned int j = 0; j < MapDepth - 1; ++j)
+          for (auto j = 0; j < MapDepth - 1; ++j)
           {
             float value_o = HeightMapRock.Get(i, j);
             float value_r = HeightMapRock.Get(i + 1, j);

@@ -24,7 +24,7 @@ namespace Framework
       //Constructor
       //Takes map width, map height, base height, smoothing passes, number of waves, peak height, water depth and preset shape
       TerrainCreator(int width, int baseHeight, int passes = 3, int waves = 2, 
-        int peak = 100, int water = 50, const std::string& HMap = "", glm::vec2 &_slope = glm::vec2(1.f, 0.f));
+        int peak = 100, int water = 50, const std::string& HMap = "", const glm::vec2 &_slope = glm::vec2(1.f, 0.f));
       //Destructor
       ~TerrainCreator();
       float * const GetRockMap() { return HeightMapRock;  }
