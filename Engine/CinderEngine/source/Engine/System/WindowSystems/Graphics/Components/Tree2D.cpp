@@ -37,9 +37,7 @@ namespace Framework
 
   // Constructor
   Tree2D::Tree2D ()
-  {
-    tree = nullptr;
-  }
+  {}
   
   // Destructor
   Tree2D::~Tree2D ()
@@ -54,12 +52,6 @@ namespace Framework
     {
       //delete vbo;
       //vbo = nullptr;
-    }
-
-    if (tree)
-    {
-      delete tree;
-      tree = nullptr;
     }
   }
 
@@ -209,23 +201,31 @@ namespace Framework
 
       float newrad = rad * decay_rate;
 
+      //branch 1
       float length2 = length1 * (SCALE + myrand (RAND));
       float angle2 = angle1 + ANGLE + myrand (RAND);
       int factor = 80 + rand () % 20;
       float f = factor / 100.f;
+      //randomize
       int fork;
       if (depth % 2 != 0)
         fork = rand() % 100;
       else
         fork = (rand() % 10) * (rand() % 10);
+      //decide whether or not to spawn branch
       if (fork > 20 - depth * 2)
-        Make_Tree0 (x2, y2, length2 * f, angle2, depth - 1, newrad, newParent);
+        Make_Tree0(x2, y2, length2 * f, angle2, depth - 1, newrad, newParent);
+
+      //branch 2
       length2 = length1 * (SCALE + myrand (RAND));
       angle2 = angle1 - ANGLE + myrand (RAND);
+      //randomize     
       if (depth % 2 == 0)
         fork = rand() % 100;
       else
         fork = (rand() % 10) * (rand() % 10);
+     
+      //decide whether or not to spawn
       if (fork > 20 - depth * 2)
         Make_Tree0 (x2, y2, length2 * f, angle2, depth - 1, newrad, newParent);
     }

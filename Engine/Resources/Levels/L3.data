@@ -168,9 +168,9 @@ Level =
 		  bool Static = false,
 		  string Material = "4de020863e872da8:DefaultPhysicsMaterial",
 		},
-		CameraFollow = 
-		{
-		},
+		//CameraFollow = 
+		//{
+		//},
 		CharacterController = 
 		{
 		  bool Enabled = true,

@@ -47,11 +47,6 @@ namespace Framework
   virtual void Draw ();
   virtual bool Draw_Last() { return false; }
 
-  std::vector <glm::vec2>& Get_Edges ()
-  {
-    return edges;
-  }
-
   void Set(glm::vec4& _color, Tree_Type _type);
   const static std::string Name;
   private:
@@ -61,10 +56,8 @@ namespace Framework
     VBO* vbo;
     unsigned vertex_count;
     std::vector <float> treeMesh;
-    std::vector <glm::vec2> edges;
     Tree_Type type;
     // Resources
-    FractalGenerator* tree;
     glm::vec4 color;
     float base_radius = 0.05f;
     float decay_rate = 0.5f;
