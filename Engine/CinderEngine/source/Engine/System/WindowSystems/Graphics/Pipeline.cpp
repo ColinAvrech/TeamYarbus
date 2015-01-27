@@ -110,9 +110,11 @@ namespace Framework
   void Pipeline::Update ()
   {
     fbo->bind ();
-    //glEnable(GL_DEPTH_TEST);
+
     glClearColor(0.5f, 0.5f, 0.5f, 1);
-    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    // Clear the screen
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    
     glEnable (GL_BLEND);
     sFactor = GL_SRC_ALPHA;
     dFactor = GL_ONE_MINUS_SRC_ALPHA;
@@ -132,6 +134,11 @@ namespace Framework
     //////////////////////////////////////////////////////////////////////////
     // SCENE DRAW
     //////////////////////////////////////////////////////////////////////////
+    // Enable depth test
+    glEnable(GL_DEPTH_TEST);
+    // Accept fragment if it's closer to the camera than the former one
+    glDepthFunc(GL_LESS);
+
     std::vector<IGraphicsObject *>last;
     for (auto* i : graphicsObjects [DEFAULT])
     {
@@ -140,6 +147,9 @@ namespace Framework
       else
         i->Draw ();
 	  }   
+    //disable depth test
+    glDisable(GL_DEPTH_TEST);
+    //draw stuff that should be drawn last
     for (auto* i : last)
     {
       i->Draw();

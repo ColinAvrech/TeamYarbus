@@ -29,6 +29,7 @@ namespace Framework
 
   static std::vector<float> joints_x;
   static std::vector<float> joints_y;
+  static float time = 0.f;
 
   static float myrand(float R)
   {
@@ -54,6 +55,7 @@ namespace Framework
       delete vbo;
       vbo = nullptr;
     }
+    glDeleteBuffers(1, &elementbuffer);
   }
 
   void Tree3D::Serialize(Serializer::DataNode* data)
@@ -85,7 +87,7 @@ namespace Framework
   {
     //FireGroup* fsm = nullptr;
     glm::vec3 pos(0.f, -0.1f, 0.f);
-    glm::vec2 angle(PI / 2, PI / 2);
+    glm::vec2 angle(0.f, PI / 2);
 
     switch (type)
     {
@@ -124,8 +126,9 @@ namespace Framework
 
     Generate_Buffers();
     CalculateBounds();
-    vertex_count = indices.size();
+    poly_count = indices.size();
     treeMesh.clear();
+    indices.clear();
   }
 
   bool Tree3D::InViewport()
@@ -147,20 +150,24 @@ namespace Framework
 
   void Tree3D::Generate_Buffers()
   {
-    shader = Resources::RS->Get_Shader("Tree");
+    shader = Resources::RS->Get_Shader("Tree3D");
     vao = new VAO();
     vbo = new VBO(treeMesh.size() * sizeof(float), treeMesh.data(), GL_STATIC_DRAW);
-
-    GLint posAttrib = shader->attribLocation("position");
-    shader->enableVertexAttribArray(posAttrib);
-    shader->vertexAttribPtr(posAttrib, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
-    vao->unbindVAO();
 
     // Generate a buffer for the indices
     glGenBuffers(1, &elementbuffer);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
 
+    GLint posAttrib = shader->attribLocation("position");
+    shader->enableVertexAttribArray(posAttrib);
+    shader->vertexAttribPtr(posAttrib, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), 0);
+
+    GLint normAttrib = shader->attribLocation("normal");
+    shader->enableVertexAttribArray(normAttrib);
+    shader->vertexAttribPtr(normAttrib, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), 3 * sizeof(float));
+
+    vao->unbindVAO();
   }
 
   void Tree3D::CalculateBounds()
@@ -179,21 +186,24 @@ namespace Framework
       return;
 
     glDisable(GL_BLEND);
+
     shader->Use();
     vao->bindVAO();
     shader->uniMat4("mvp", glm::value_ptr(gameObject->Transform->GetModelViewProjectionMatrix()));
     shader->uni4fv("color", glm::value_ptr(color));
-    //glDrawArrays(GL_TRIANGLES, 0, vertex_count);
+    time += dt;
+    glm::vec3 lightPos(5 * std::cos(time / 5.f), 45, 0.f);// 5 * std::sin(time / 5.f));
+    shader->uni3fv("lightPos", glm::value_ptr(lightPos));
 
     // Index buffer
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, elementbuffer);
 
     // Draw the triangles !
     glDrawElements(
       GL_TRIANGLES,      // mode
-      indices.size(),    // count
-      GL_UNSIGNED_INT,   // type
-      (void*)0           // element array buffer offset
+      poly_count,        // count
+      GL_UNSIGNED_INT, // type
+      0                  // element array buffer offset
       );
 
     vao->unbindVAO();
@@ -218,9 +228,13 @@ namespace Framework
       glm::vec3 pos2;
       pos2.x = pos.x + length1 * cos(angle1.y);
       pos2.y = pos.y + length1 * sin(angle1.x + angle1.y);
-      pos2.z = pos.z + length1 * cos(angle1.x);
+      pos2.z = pos.z + length1 * sin(angle1.x);
 
-      parent = Add_Branch(pos, pos2, rad, parent);
+      bool tip = false;
+      if (depth == 1)
+        tip = true;
+
+      parent = Add_Branch(pos, pos2, rad, parent, tip);
 
       float newrad = rad * decay_rate;
 
@@ -228,7 +242,7 @@ namespace Framework
       float length2 = length1 * (SCALE + myrand(RAND));
       glm::vec2 angle2;
       angle2.y = angle1.y + ANGLE + myrand(RAND);
-      angle2.x = angle1.x + myrand(2 * RAND) - RAND;
+      angle2.x = angle1.x + myrand(2 * RAND);
 
       int factor = 80 + rand() % 20;
       float f = factor / 100.f;
@@ -245,7 +259,7 @@ namespace Framework
       //branch 2
       length2 = length1 * (SCALE + myrand(RAND));
       angle2.y = angle1.y - ANGLE + myrand(RAND);
-      angle2.x = angle2.x - myrand(2 * RAND) + RAND;
+      angle2.x = angle2.x - myrand(2 * RAND);
 
       if (depth % 2 == 0)
         fork = rand() % 100;
@@ -526,8 +540,9 @@ namespace Framework
     joints_x.push_back(pos1.x);
     joints_y.push_back(pos1.y);
 
-    glm::vec3 dis_s(pos2.y - pos2.y, pos1.x - pos1.x, 0.f);
-    glm::vec3 dis_d(dis_s.z, dis_s.y, dis_s.x);
+    glm::vec3 dir_v = pos2 - pos1;
+    glm::vec3 dis_s(pos2.y - pos1.y, pos1.x - pos2.x, 0.f);
+    glm::vec3 dis_d = glm::cross(dis_s, dir_v);
 
     glm::vec3 new_vertices[4];
     glm::vec3 parent_vertices[4];
@@ -551,10 +566,10 @@ namespace Framework
       //single tip
       new_vertices[0] = pos2;
       //calculate normals
-      normals[B_LEFT]  = Physics::Normal(new_vertices[0], parent_vertices[B_LEFT],  parent_vertices[B_FRONT]);
-      normals[B_BACK]  = Physics::Normal(new_vertices[0], parent_vertices[B_BACK],  parent_vertices[B_LEFT] );
-      normals[B_RIGHT] = Physics::Normal(new_vertices[0], parent_vertices[B_RIGHT], parent_vertices[B_BACK] );
-      normals[B_FRONT] = Physics::Normal(new_vertices[0], parent_vertices[B_FRONT], parent_vertices[B_RIGHT]);
+      normals[B_LEFT] = glm::normalize(-dis_s);
+      normals[B_BACK] = glm::normalize(-dis_d);
+      normals[B_RIGHT] = glm::normalize(dis_s);
+      normals[B_FRONT] = glm::normalize(dis_d);
     }
     else
     {
@@ -567,10 +582,10 @@ namespace Framework
       //tip f
       new_vertices[B_FRONT] = pos2 + rad * decay_rate * dis_d;
       //calculate normals
-      normals[B_LEFT] = Physics::Normal(new_vertices[B_LEFT], parent_vertices[B_LEFT], parent_vertices[B_FRONT]);
-      normals[B_BACK] = Physics::Normal(new_vertices[B_BACK], parent_vertices[B_BACK], parent_vertices[B_LEFT]);
-      normals[B_RIGHT] = Physics::Normal(new_vertices[B_RIGHT], parent_vertices[B_RIGHT], parent_vertices[B_BACK]);
-      normals[B_FRONT] = Physics::Normal(new_vertices[B_FRONT], parent_vertices[B_FRONT], parent_vertices[B_RIGHT]);
+      normals[B_LEFT] = glm::normalize(-dis_s);
+      normals[B_BACK] = glm::normalize(-dis_d);
+      normals[B_RIGHT] = glm::normalize(dis_s);
+      normals[B_FRONT] = glm::normalize(dis_d);
     }
 
     //add to vertex/index array
@@ -579,24 +594,16 @@ namespace Framework
       //add 4 new vertices
       //vl
       /*1*/treeMesh.push_back(parent_vertices[B_LEFT].x); treeMesh.push_back(parent_vertices[B_LEFT].y); treeMesh.push_back(parent_vertices[B_LEFT].z);
-      /*1*///nl
-      /*1*/glm::vec3 n_l = normals[B_LEFT] + normals[B_BACK]; n_l = glm::normalize(n_l);
-      /*1*/treeMesh.push_back(n_l.x); treeMesh.push_back(n_l.y); treeMesh.push_back(n_l.z);
+      /*1*/treeMesh.push_back(normals[B_LEFT].x); treeMesh.push_back(normals[B_LEFT].y); treeMesh.push_back(normals[B_LEFT].z);
       //vr
       /*2*/treeMesh.push_back(parent_vertices[B_RIGHT].x); treeMesh.push_back(parent_vertices[B_RIGHT].y); treeMesh.push_back(parent_vertices[B_RIGHT].z);
-      /*2*///nr
-      /*2*/glm::vec3 n_r = normals[B_RIGHT] + normals[B_FRONT]; n_r = glm::normalize(n_r);
-      /*2*/treeMesh.push_back(n_r.x); treeMesh.push_back(n_r.y); treeMesh.push_back(n_r.z);
+      /*2*/treeMesh.push_back(normals[B_RIGHT].x); treeMesh.push_back(normals[B_RIGHT].y); treeMesh.push_back(normals[B_RIGHT].z);
       //vb
       /*3*/treeMesh.push_back(parent_vertices[B_BACK].x); treeMesh.push_back(parent_vertices[B_BACK].y); treeMesh.push_back(parent_vertices[B_BACK].z);
-      /*3*///nb
-      /*3*/glm::vec3 n_b = normals[B_BACK] + normals[B_RIGHT]; n_b = glm::normalize(n_b);
-      /*3*/treeMesh.push_back(n_b.x); treeMesh.push_back(n_b.y); treeMesh.push_back(n_b.z);
+      /*3*/treeMesh.push_back(normals[B_BACK].x); treeMesh.push_back(normals[B_BACK].y); treeMesh.push_back(normals[B_BACK].z);
       //vf
       /*4*/treeMesh.push_back(parent_vertices[B_FRONT].x); treeMesh.push_back(parent_vertices[B_FRONT].y); treeMesh.push_back(parent_vertices[B_FRONT].z);
-      /*4*///nf
-      /*4*/glm::vec3 n_f = normals[B_FRONT] + normals[B_LEFT]; n_f = glm::normalize(n_f);
-      /*4*/treeMesh.push_back(n_f.x); treeMesh.push_back(n_f.y); treeMesh.push_back(n_f.z);
+      /*4*/treeMesh.push_back(normals[B_FRONT].x); treeMesh.push_back(normals[B_FRONT].y); treeMesh.push_back(normals[B_FRONT].z);
 
       vertex_count += 4;
 
@@ -607,7 +614,7 @@ namespace Framework
     {
       //add one new vertex
       treeMesh.push_back(new_vertices[0].x); treeMesh.push_back(new_vertices[0].y); treeMesh.push_back(new_vertices[0].z);
-      glm::vec3 n = normals[B_BACK] + normals[B_FRONT] + normals[B_LEFT] + normals[B_RIGHT]; n = glm::normalize(n);
+      glm::vec3 n = glm::normalize(pos2 - pos1);
       treeMesh.push_back(n.x); treeMesh.push_back(n.y); treeMesh.push_back(n.z);
 
       //increment vertex count
@@ -624,24 +631,16 @@ namespace Framework
       //add 4 new vertices
       //vl
       treeMesh.push_back(new_vertices[B_LEFT].x); treeMesh.push_back(new_vertices[B_LEFT].y); treeMesh.push_back(new_vertices[B_LEFT].z);
-      //nl
-      glm::vec3 n_l = normals[B_LEFT] + normals[B_BACK]; n_l = glm::normalize(n_l);
-      treeMesh.push_back(n_l.x); treeMesh.push_back(n_l.y); treeMesh.push_back(n_l.z);
+      treeMesh.push_back(normals[B_LEFT].x); treeMesh.push_back(normals[B_LEFT].y); treeMesh.push_back(normals[B_LEFT].z);
       //vr
       treeMesh.push_back(new_vertices[B_RIGHT].x); treeMesh.push_back(new_vertices[B_RIGHT].y); treeMesh.push_back(new_vertices[B_RIGHT].z);
-      //nr
-      glm::vec3 n_r = normals[B_RIGHT] + normals[B_FRONT]; n_r = glm::normalize(n_r);
-      treeMesh.push_back(n_r.x); treeMesh.push_back(n_r.y); treeMesh.push_back(n_r.z);
+      treeMesh.push_back(normals[B_RIGHT].x); treeMesh.push_back(normals[B_RIGHT].y); treeMesh.push_back(normals[B_RIGHT].z);
       //vb
       treeMesh.push_back(new_vertices[B_BACK].x); treeMesh.push_back(new_vertices[B_BACK].y); treeMesh.push_back(new_vertices[B_BACK].z);
-      //nb
-      glm::vec3 n_b = normals[B_BACK] + normals[B_RIGHT]; n_b = glm::normalize(n_b);
-      treeMesh.push_back(n_b.x); treeMesh.push_back(n_b.y); treeMesh.push_back(n_b.z);
+      treeMesh.push_back(normals[B_BACK].x); treeMesh.push_back(normals[B_BACK].y); treeMesh.push_back(normals[B_BACK].z);
       //vf
       treeMesh.push_back(new_vertices[B_FRONT].x); treeMesh.push_back(new_vertices[B_FRONT].y); treeMesh.push_back(new_vertices[B_FRONT].z);
-      //nf
-      glm::vec3 n_f = normals[B_FRONT] + normals[B_LEFT]; n_f = glm::normalize(n_f);
-      treeMesh.push_back(n_f.x); treeMesh.push_back(n_f.y); treeMesh.push_back(n_f.z);
+      treeMesh.push_back(normals[B_FRONT].x); treeMesh.push_back(normals[B_FRONT].y); treeMesh.push_back(normals[B_FRONT].z);
 
       vertex_count += 4;
 

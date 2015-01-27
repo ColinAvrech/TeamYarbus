@@ -11,7 +11,7 @@ Cog =
 	Transform = 
 	{
 		Vec3 Translation = [0, 0, 0],
-		Vec3 Scale = [15, 15, 1],
+		Vec3 Scale = [15, 15, 15],
 		Quat Rotation = [0, 0, 0, 1],
 	},
 	Tree3D = 

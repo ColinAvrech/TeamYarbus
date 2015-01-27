@@ -120,7 +120,7 @@ namespace Framework
 
   void Terrain2D::Draw ()
   { 
-    glDisable (GL_BLEND);
+    glEnable (GL_BLEND);
     shader->Use ();
     vao->bindVAO ();
     shader->uniMat4 ("mvp", glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix ()));

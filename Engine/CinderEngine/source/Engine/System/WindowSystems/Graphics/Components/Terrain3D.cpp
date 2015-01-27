@@ -87,7 +87,7 @@ namespace Framework
   void Terrain3D::Draw()
   {
     time += 0.016f;
-    glCullFace(GL_BACK);
+    //glCullFace(GL_BACK);
     glEnable(GL_BLEND);
     shader->Use();
     vao->bindVAO();

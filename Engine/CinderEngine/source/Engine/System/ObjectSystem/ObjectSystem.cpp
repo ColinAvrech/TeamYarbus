@@ -36,6 +36,7 @@ deleted.
 #include "Terrain2D.h"
 #include "Terrain3D.h"
 #include "Tree2D.h"
+#include "Tree3D.h"
 #include "CinderEngine_UI.h"
 #include "Trees.h"
 #include "PointLight.h"
@@ -200,6 +201,7 @@ namespace Framework
 		RegisterComponent(Terrain2D);
 		RegisterComponent(Terrain3D);
 		RegisterComponent(Tree2D);
+    RegisterComponent(Tree3D);
 		RegisterComponent(EcoSystem);
 		RegisterComponent(UIBox);
 		RegisterComponent(PointLight);

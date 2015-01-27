@@ -53,6 +53,7 @@ namespace Framework
     GLuint elementbuffer;
 
     unsigned vertex_count;
+    unsigned poly_count;
     std::vector <float> treeMesh;
     std::vector<unsigned> indices;
     std::vector <glm::vec2> edges;

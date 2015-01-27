@@ -74,6 +74,11 @@ Tree.frag.glsl
 0
 Tree
 >
+Tree3D.vs.glsl
+Tree3D.frag.glsl
+0
+Tree3D
+>
 PointLight.vs.glsl
 PointLight.frag.glsl
 0

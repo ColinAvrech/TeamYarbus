@@ -89,8 +89,14 @@ namespace Framework
         //tree_list[i] = ;
       
         //Hack!!
+      if (i == 64)
+      {
+        GameObject *newobj;
+        newobj = OBJECTSYSTEM->LoadArchetype("Tree03D.Archetype");
+        newobj->Transform->Translate(offsetX + Translation.x, offsetY + Translation.y, Translation.z);
+      }
       //if (tree_list[i] != OPEN)
-      if (i % (rand() % 10 + 2) == 0 && terrain[i] <= 72)
+      /*if (i % (rand() % 10 + 2) == 0 && terrain[i] <= 72)
         GenerateType(
         offsetX + Translation.x,
         offsetY + Translation.y,
@@ -103,7 +109,7 @@ namespace Framework
         offsetY + Translation.y,
         Translation.z,
         TREE_SHORT_GRASS, ID
-        );
+        );*/
       /*else if (rand() % 2)
         GenerateType(
         offsetX + Translation.x,
