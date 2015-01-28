@@ -153,11 +153,8 @@ namespace Framework
     shader = Resources::RS->Get_Shader("Tree3D");
     vao = new VAO();
     vbo = new VBO(treeMesh.size() * sizeof(float), treeMesh.data(), GL_STATIC_DRAW);
-
     // Generate a buffer for the indices
-    glGenBuffers(1, &elementbuffer);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
+    ebo = new EBO(indices.size() * sizeof(unsigned), indices.data());
 
     GLint posAttrib = shader->attribLocation("position");
     shader->enableVertexAttribArray(posAttrib);
@@ -186,6 +183,8 @@ namespace Framework
       return;
 
     glDisable(GL_BLEND);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
 
     shader->Use();
     vao->bindVAO();
@@ -194,21 +193,19 @@ namespace Framework
     time += dt;
     glm::vec3 lightPos(5 * std::cos(time / 5.f), 45, 0.f);// 5 * std::sin(time / 5.f));
     shader->uni3fv("lightPos", glm::value_ptr(lightPos));
-
-    // Index buffer
-    glBindBuffer(GL_ARRAY_BUFFER, elementbuffer);
-
+    
     // Draw the triangles !
     glDrawElements(
       GL_TRIANGLES,      // mode
       poly_count,        // count
-      GL_UNSIGNED_INT, // type
+      GL_UNSIGNED_INT,   // type
       0                  // element array buffer offset
       );
 
     vao->unbindVAO();
     shader->Disable();
     OPENGL->ResetBlendMode();
+    glDisable(GL_CULL_FACE);
   }
 
   void Tree3D::Set(glm::vec4& _color, Tree3D_Type _type)
@@ -544,6 +541,9 @@ namespace Framework
     glm::vec3 dis_s(pos2.y - pos1.y, pos1.x - pos2.x, 0.f);
     glm::vec3 dis_d = glm::cross(dis_s, dir_v);
 
+    dis_s = glm::normalize(dis_s);
+    dis_d = glm::normalize(dis_d);
+
     glm::vec3 new_vertices[4];
     glm::vec3 parent_vertices[4];
     glm::vec3 normals[4];
@@ -621,7 +621,7 @@ namespace Framework
       ++vertex_count;
 
       //add 4 new triangles
-      /*1*/indices.push_back(parent - 4); indices.push_back(parent - 2); indices.push_back(vertex_count - 1);
+      /*1*/indices.push_back(parent - 2); indices.push_back(parent - 4); indices.push_back(vertex_count - 1);
       /*2*/indices.push_back(parent - 3); indices.push_back(parent - 2); indices.push_back(vertex_count - 1);
       /*3*/indices.push_back(parent - 4); indices.push_back(parent - 1); indices.push_back(vertex_count - 1);
       /*4*/indices.push_back(parent - 1); indices.push_back(parent - 3); indices.push_back(vertex_count - 1);
@@ -645,14 +645,14 @@ namespace Framework
       vertex_count += 4;
 
       //add 8 new triangles
-      /*1*/indices.push_back(parent - 4); indices.push_back(parent - 2);       indices.push_back(vertex_count - 4);
-      /*2*/indices.push_back(parent - 2); indices.push_back(vertex_count - 4); indices.push_back(vertex_count - 2);
-      /*3*/indices.push_back(parent - 2); indices.push_back(parent - 3);       indices.push_back(vertex_count - 2);
-      /*4*/indices.push_back(parent - 3); indices.push_back(vertex_count - 2); indices.push_back(vertex_count - 3);
-      /*5*/indices.push_back(parent - 3); indices.push_back(parent - 1);       indices.push_back(vertex_count - 3);
-      /*6*/indices.push_back(parent - 1); indices.push_back(vertex_count - 3); indices.push_back(vertex_count - 1);
-      /*7*/indices.push_back(parent - 1); indices.push_back(parent - 4);       indices.push_back(vertex_count - 1);
-      /*8*/indices.push_back(parent - 4); indices.push_back(vertex_count - 1); indices.push_back(vertex_count - 4);
+      /*1*/indices.push_back(parent - 2); indices.push_back(parent - 4);       indices.push_back(vertex_count - 2);
+      /*2*/indices.push_back(parent - 2); indices.push_back(vertex_count - 2); indices.push_back(vertex_count - 3);
+      /*3*/indices.push_back(parent - 3); indices.push_back(parent - 2);       indices.push_back(vertex_count - 3);
+      /*4*/indices.push_back(parent - 3); indices.push_back(vertex_count - 3); indices.push_back(vertex_count - 1);
+      /*5*/indices.push_back(parent - 1); indices.push_back(parent - 3);       indices.push_back(vertex_count - 1);
+      /*6*/indices.push_back(parent - 1); indices.push_back(vertex_count - 1); indices.push_back(vertex_count - 4);
+      /*7*/indices.push_back(parent - 4); indices.push_back(parent - 1);       indices.push_back(vertex_count - 4);
+      /*8*/indices.push_back(parent - 4); indices.push_back(vertex_count - 4); indices.push_back(vertex_count - 2);
     }
     
     return vertex_count;

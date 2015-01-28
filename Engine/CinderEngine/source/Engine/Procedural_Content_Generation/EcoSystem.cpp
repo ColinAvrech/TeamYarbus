@@ -89,7 +89,7 @@ namespace Framework
         //tree_list[i] = ;
       
         //Hack!!
-      if (i == 64)
+      if (i % 8 == 0)
       {
         GameObject *newobj;
         newobj = OBJECTSYSTEM->LoadArchetype("Tree03D.Archetype");

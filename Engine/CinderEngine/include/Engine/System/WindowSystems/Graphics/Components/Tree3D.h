@@ -50,6 +50,7 @@ namespace Framework
     // Mesh Data
     VAO* vao;
     VBO* vbo;
+    EBO* ebo;
     GLuint elementbuffer;
 
     unsigned vertex_count;

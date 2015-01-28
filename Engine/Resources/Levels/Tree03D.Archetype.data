@@ -19,7 +19,7 @@ Cog =
 		Vec4 Color = [0, 0, 0, 1],
 		int Tree_Type = 0,
 		int Segments = 10,
-		float Thickness = 0.5,
+		float Thickness = 0.05,
 		float Length = 0.1,
 	},
 },
