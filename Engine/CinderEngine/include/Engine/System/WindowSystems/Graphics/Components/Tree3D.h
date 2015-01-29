@@ -22,6 +22,7 @@ namespace Framework
   enum Tree3D_Type
   {
     TREE_0_3D,
+    TREE_1_3D,
     OPEN_3D,
     INVALID_3D
   };
@@ -73,12 +74,8 @@ namespace Framework
     float bound_b;
 
     void Make_Tree0(glm::vec3 &pos, float length1, glm::vec2 &angle1, int depth, float rad, unsigned parent = 0);
-    void Make_Tree1(float x1, float y1, float x2, float y2, float angle, int depth, int branchCount);
-    void Make_Tree2(float x1, float y1, float length, float angle, int depth, float rad, unsigned parent = 0);
-    void Make_Tree3(float x1, float y1, float length1, float angle1, int depth, float rad, unsigned parent = 0);
-    void Make_Tree4(float x1, float y1, float length, float angle, int depth, float rad, unsigned parent = 0);
-	void Make_TreeLong(float x1, float y1, float x2, float y2, float angle, int depth, int branchCount);
-    void Make_Grass(float x1, float y1, float length1, int depth);
+    void Make_Tree1(glm::vec3 &pos, float length1, glm::vec2 &angle1, int depth, float rad, unsigned parent = 0);
+    void Make_Tree_Fan(glm::vec3 &pos, float length1, glm::vec2 &angle1, int depth, float rad, unsigned parent = 0);
 
     //Helper
     //Pine stuff
