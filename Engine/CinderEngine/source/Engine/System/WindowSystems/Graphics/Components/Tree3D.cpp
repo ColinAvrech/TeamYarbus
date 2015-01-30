@@ -126,7 +126,7 @@ namespace Framework
 
     Generate_Buffers();
     CalculateBounds();
-    poly_count = indices.size();
+    poly_count = treeMesh.size() / 12;
     treeMesh.clear();
     indices.clear();
   }
@@ -154,7 +154,7 @@ namespace Framework
     vao = new VAO();
     vbo = new VBO(treeMesh.size() * sizeof(float), treeMesh.data(), GL_STATIC_DRAW);
     // Generate a buffer for the indices
-    ebo = new EBO(indices.size() * sizeof(unsigned), indices.data());
+    //ebo = new EBO(indices.size() * sizeof(unsigned), indices.data());
 
     GLint posAttrib = shader->attribLocation("position");
     shader->enableVertexAttribArray(posAttrib);
@@ -196,12 +196,14 @@ namespace Framework
     shader->uni1f("time", time);
     
     // Draw the triangles !
-    glDrawElements(
-      GL_TRIANGLES,      // mode
-      poly_count,        // count
-      GL_UNSIGNED_INT,   // type
-      0                  // element array buffer offset
-      );
+    //glDrawElements(
+    //  GL_TRIANGLES,      // mode
+    //  poly_count,        // count
+    //  GL_UNSIGNED_INT,   // type
+    //  0                  // element array buffer offset
+    //  );
+
+    glDrawArrays(GL_TRIANGLES, 0, poly_count);
 
     vao->unbindVAO();
     shader->Disable();
@@ -304,7 +306,7 @@ namespace Framework
     }
     else
     {
-      Make_Tree_Fan(pos, length, glm::vec2(0.f, PI / 2), 4 + rand() % 6, rad, parent);
+      //Make_Tree_Fan(pos, length, glm::vec2(0.f, PI / 2), 4 + rand() % 6, rad, parent);
     }
   }
 
@@ -370,6 +372,13 @@ namespace Framework
       B_BACK,
       B_FRONT
     };
+    enum NormalID
+    {
+      N_LB = 0,
+      N_RB,
+      N_RF,
+      N_LF
+    };
 
     joints_x.push_back(pos1.x);
     joints_y.push_back(pos1.y);
@@ -397,16 +406,23 @@ namespace Framework
       //base f
       parent_vertices[B_FRONT] = pos1 + rad * dis_d;
     }
+    else
+    {
+      parent_vertices[B_LEFT] = glm::vec3(treeMesh[parent - 24 * 6], treeMesh[parent - 24 * 6 + 1], treeMesh[parent - 24 * 6 + 2]);
+      parent_vertices[B_BACK] = glm::vec3(treeMesh[parent - 18 * 6], treeMesh[parent - 18 * 6 + 1], treeMesh[parent - 18 * 6 + 2]);
+      parent_vertices[B_RIGHT] = glm::vec3(treeMesh[parent - 12 * 6], treeMesh[parent - 12 * 6 + 1], treeMesh[parent - 12 * 6 + 2]);
+      parent_vertices[B_FRONT] = glm::vec3(treeMesh[parent - 6 * 6], treeMesh[parent - 6 * 6 + 1], treeMesh[parent - 6 * 6 + 2]);
+    }
 
     if (branch_tip)
     {
       //single tip
       new_vertices[0] = pos2;
       //calculate normals
-      normals[B_LEFT] = glm::normalize(-dis_s);
-      normals[B_BACK] = glm::normalize(-dis_d);
-      normals[B_RIGHT] = glm::normalize(dis_s);
-      normals[B_FRONT] = glm::normalize(dis_d);
+      normals[N_LB] = glm::normalize(Physics::Normal(new_vertices[0], parent_vertices[B_BACK], parent_vertices[B_LEFT]));
+      normals[N_RB] = glm::normalize(Physics::Normal(new_vertices[0], parent_vertices[B_RIGHT], parent_vertices[B_BACK]));
+      normals[N_RF] = glm::normalize(Physics::Normal(new_vertices[0], parent_vertices[B_FRONT], parent_vertices[B_RIGHT]));
+      normals[N_LF] = glm::normalize(Physics::Normal(new_vertices[0], parent_vertices[B_LEFT], parent_vertices[B_FRONT]));
     }
     else
     {
@@ -419,80 +435,111 @@ namespace Framework
       //tip f
       new_vertices[B_FRONT] = pos2 + rad * decay_rate * dis_d;
       //calculate normals
-      normals[B_LEFT] = glm::normalize(-dis_s);
-      normals[B_BACK] = glm::normalize(-dis_d);
-      normals[B_RIGHT] = glm::normalize(dis_s);
-      normals[B_FRONT] = glm::normalize(dis_d);
+      normals[N_LB] = glm::normalize(Physics::Normal(new_vertices[B_LEFT], parent_vertices[B_BACK], parent_vertices[B_LEFT]));
+      normals[N_RB] = glm::normalize(Physics::Normal(new_vertices[B_BACK], parent_vertices[B_RIGHT], parent_vertices[B_BACK]));
+      normals[N_RF] = glm::normalize(Physics::Normal(new_vertices[B_RIGHT], parent_vertices[B_FRONT], parent_vertices[B_RIGHT]));
+      normals[N_LF] = glm::normalize(Physics::Normal(new_vertices[B_FRONT], parent_vertices[B_LEFT], parent_vertices[B_FRONT]));
     }
 
     //add to vertex/index array
-    if (parent == 0)
-    {
-      //add 4 new vertices
-      //vl
-      /*1*/treeMesh.push_back(parent_vertices[B_LEFT].x); treeMesh.push_back(parent_vertices[B_LEFT].y); treeMesh.push_back(parent_vertices[B_LEFT].z);
-      /*1*/treeMesh.push_back(normals[B_LEFT].x); treeMesh.push_back(normals[B_LEFT].y); treeMesh.push_back(normals[B_LEFT].z);
-      //vr
-      /*2*/treeMesh.push_back(parent_vertices[B_RIGHT].x); treeMesh.push_back(parent_vertices[B_RIGHT].y); treeMesh.push_back(parent_vertices[B_RIGHT].z);
-      /*2*/treeMesh.push_back(normals[B_RIGHT].x); treeMesh.push_back(normals[B_RIGHT].y); treeMesh.push_back(normals[B_RIGHT].z);
-      //vb
-      /*3*/treeMesh.push_back(parent_vertices[B_BACK].x); treeMesh.push_back(parent_vertices[B_BACK].y); treeMesh.push_back(parent_vertices[B_BACK].z);
-      /*3*/treeMesh.push_back(normals[B_BACK].x); treeMesh.push_back(normals[B_BACK].y); treeMesh.push_back(normals[B_BACK].z);
-      //vf
-      /*4*/treeMesh.push_back(parent_vertices[B_FRONT].x); treeMesh.push_back(parent_vertices[B_FRONT].y); treeMesh.push_back(parent_vertices[B_FRONT].z);
-      /*4*/treeMesh.push_back(normals[B_FRONT].x); treeMesh.push_back(normals[B_FRONT].y); treeMesh.push_back(normals[B_FRONT].z);
-
-      vertex_count += 4;
-
-      parent = vertex_count;
-    }
 
     if (branch_tip)
     {
-      //add one new vertex
-      treeMesh.push_back(new_vertices[0].x); treeMesh.push_back(new_vertices[0].y); treeMesh.push_back(new_vertices[0].z);
-      glm::vec3 n = glm::normalize(pos2 - pos1);
-      treeMesh.push_back(n.x); treeMesh.push_back(n.y); treeMesh.push_back(n.z);
-
-      //increment vertex count
-      ++vertex_count;
-
       //add 4 new triangles
-      /*1*/indices.push_back(parent - 2); indices.push_back(parent - 4); indices.push_back(vertex_count - 1);
-      /*2*/indices.push_back(parent - 3); indices.push_back(parent - 2); indices.push_back(vertex_count - 1);
-      /*3*/indices.push_back(parent - 4); indices.push_back(parent - 1); indices.push_back(vertex_count - 1);
-      /*4*/indices.push_back(parent - 1); indices.push_back(parent - 3); indices.push_back(vertex_count - 1);
+      //1
+      treeMesh.push_back(new_vertices[0].x); treeMesh.push_back(new_vertices[0].y); treeMesh.push_back(new_vertices[0].z);
+      treeMesh.push_back(normals[N_LB].x); treeMesh.push_back(normals[N_LB].y); treeMesh.push_back(normals[N_LB].z);
+      treeMesh.push_back(parent_vertices[B_BACK].x); treeMesh.push_back(parent_vertices[B_BACK].y); treeMesh.push_back(parent_vertices[B_BACK].z);
+      treeMesh.push_back(normals[N_LB].x); treeMesh.push_back(normals[N_LB].y); treeMesh.push_back(normals[N_LB].z);
+      treeMesh.push_back(parent_vertices[B_LEFT].x); treeMesh.push_back(parent_vertices[B_LEFT].y); treeMesh.push_back(parent_vertices[B_LEFT].z);
+      treeMesh.push_back(normals[N_LB].x); treeMesh.push_back(normals[N_LB].y); treeMesh.push_back(normals[N_LB].z);
+
+      //2
+      treeMesh.push_back(new_vertices[0].x); treeMesh.push_back(new_vertices[0].y); treeMesh.push_back(new_vertices[0].z);
+      treeMesh.push_back(normals[N_RB].x); treeMesh.push_back(normals[N_RB].y); treeMesh.push_back(normals[N_RB].z);
+      treeMesh.push_back(parent_vertices[B_RIGHT].x); treeMesh.push_back(parent_vertices[B_RIGHT].y); treeMesh.push_back(parent_vertices[B_RIGHT].z);
+      treeMesh.push_back(normals[N_RB].x); treeMesh.push_back(normals[N_RB].y); treeMesh.push_back(normals[N_RB].z);
+      treeMesh.push_back(parent_vertices[B_BACK].x); treeMesh.push_back(parent_vertices[B_BACK].y); treeMesh.push_back(parent_vertices[B_BACK].z);
+      treeMesh.push_back(normals[N_RB].x); treeMesh.push_back(normals[N_RB].y); treeMesh.push_back(normals[N_RB].z);
+
+      //3
+      treeMesh.push_back(new_vertices[0].x); treeMesh.push_back(new_vertices[0].y); treeMesh.push_back(new_vertices[0].z);
+      treeMesh.push_back(normals[N_LF].x); treeMesh.push_back(normals[N_LF].y); treeMesh.push_back(normals[N_LF].z);
+      treeMesh.push_back(parent_vertices[B_FRONT].x); treeMesh.push_back(parent_vertices[B_FRONT].y); treeMesh.push_back(parent_vertices[B_FRONT].z);
+      treeMesh.push_back(normals[N_LF].x); treeMesh.push_back(normals[N_LF].y); treeMesh.push_back(normals[N_LF].z);
+      treeMesh.push_back(parent_vertices[B_RIGHT].x); treeMesh.push_back(parent_vertices[B_RIGHT].y); treeMesh.push_back(parent_vertices[B_RIGHT].z);
+      treeMesh.push_back(normals[N_LF].x); treeMesh.push_back(normals[N_LF].y); treeMesh.push_back(normals[N_LF].z);
+
+      //4
+      treeMesh.push_back(new_vertices[0].x); treeMesh.push_back(new_vertices[0].y); treeMesh.push_back(new_vertices[0].z);
+      treeMesh.push_back(normals[N_RF].x); treeMesh.push_back(normals[N_RF].y); treeMesh.push_back(normals[N_RF].z);
+      treeMesh.push_back(parent_vertices[B_LEFT].x); treeMesh.push_back(parent_vertices[B_LEFT].y); treeMesh.push_back(parent_vertices[B_LEFT].z);
+      treeMesh.push_back(normals[N_RF].x); treeMesh.push_back(normals[N_RF].y); treeMesh.push_back(normals[N_RF].z);
+      treeMesh.push_back(parent_vertices[B_FRONT].x); treeMesh.push_back(parent_vertices[B_FRONT].y); treeMesh.push_back(parent_vertices[B_FRONT].z);
+      treeMesh.push_back(normals[N_RF].x); treeMesh.push_back(normals[N_RF].y); treeMesh.push_back(normals[N_RF].z);
     }
     else
     {
-      //add 4 new vertices
-      //vl
-      treeMesh.push_back(new_vertices[B_LEFT].x); treeMesh.push_back(new_vertices[B_LEFT].y); treeMesh.push_back(new_vertices[B_LEFT].z);
-      treeMesh.push_back(normals[B_LEFT].x); treeMesh.push_back(normals[B_LEFT].y); treeMesh.push_back(normals[B_LEFT].z);
-      //vr
-      treeMesh.push_back(new_vertices[B_RIGHT].x); treeMesh.push_back(new_vertices[B_RIGHT].y); treeMesh.push_back(new_vertices[B_RIGHT].z);
-      treeMesh.push_back(normals[B_RIGHT].x); treeMesh.push_back(normals[B_RIGHT].y); treeMesh.push_back(normals[B_RIGHT].z);
-      //vb
-      treeMesh.push_back(new_vertices[B_BACK].x); treeMesh.push_back(new_vertices[B_BACK].y); treeMesh.push_back(new_vertices[B_BACK].z);
-      treeMesh.push_back(normals[B_BACK].x); treeMesh.push_back(normals[B_BACK].y); treeMesh.push_back(normals[B_BACK].z);
-      //vf
-      treeMesh.push_back(new_vertices[B_FRONT].x); treeMesh.push_back(new_vertices[B_FRONT].y); treeMesh.push_back(new_vertices[B_FRONT].z);
-      treeMesh.push_back(normals[B_FRONT].x); treeMesh.push_back(normals[B_FRONT].y); treeMesh.push_back(normals[B_FRONT].z);
-
-      vertex_count += 4;
-
       //add 8 new triangles
-      /*1*/indices.push_back(parent - 2); indices.push_back(parent - 4);       indices.push_back(vertex_count - 2);
-      /*2*/indices.push_back(parent - 2); indices.push_back(vertex_count - 2); indices.push_back(vertex_count - 3);
-      /*3*/indices.push_back(parent - 3); indices.push_back(parent - 2);       indices.push_back(vertex_count - 3);
-      /*4*/indices.push_back(parent - 3); indices.push_back(vertex_count - 3); indices.push_back(vertex_count - 1);
-      /*5*/indices.push_back(parent - 1); indices.push_back(parent - 3);       indices.push_back(vertex_count - 1);
-      /*6*/indices.push_back(parent - 1); indices.push_back(vertex_count - 1); indices.push_back(vertex_count - 4);
-      /*7*/indices.push_back(parent - 4); indices.push_back(parent - 1);       indices.push_back(vertex_count - 4);
-      /*8*/indices.push_back(parent - 4); indices.push_back(vertex_count - 4); indices.push_back(vertex_count - 2);
+      //1
+      treeMesh.push_back(new_vertices[B_LEFT].x); treeMesh.push_back(new_vertices[B_LEFT].y); treeMesh.push_back(new_vertices[B_LEFT].z);
+      treeMesh.push_back(normals[N_LB].x); treeMesh.push_back(normals[N_LB].y); treeMesh.push_back(normals[N_LB].z);
+      treeMesh.push_back(parent_vertices[B_BACK].x); treeMesh.push_back(parent_vertices[B_BACK].y); treeMesh.push_back(parent_vertices[B_BACK].z);
+      treeMesh.push_back(normals[N_LB].x); treeMesh.push_back(normals[N_LB].y); treeMesh.push_back(normals[N_LB].z);
+      treeMesh.push_back(parent_vertices[B_LEFT].x); treeMesh.push_back(parent_vertices[B_LEFT].y); treeMesh.push_back(parent_vertices[B_LEFT].z);
+      treeMesh.push_back(normals[N_LB].x); treeMesh.push_back(normals[N_LB].y); treeMesh.push_back(normals[N_LB].z);
+      //2
+      treeMesh.push_back(new_vertices[B_BACK].x); treeMesh.push_back(new_vertices[B_BACK].y); treeMesh.push_back(new_vertices[B_BACK].z);
+      treeMesh.push_back(normals[N_LB].x); treeMesh.push_back(normals[N_LB].y); treeMesh.push_back(normals[N_LB].z);
+      treeMesh.push_back(parent_vertices[B_BACK].x); treeMesh.push_back(parent_vertices[B_BACK].y); treeMesh.push_back(parent_vertices[B_BACK].z);
+      treeMesh.push_back(normals[N_LB].x); treeMesh.push_back(normals[N_LB].y); treeMesh.push_back(normals[N_LB].z);
+      treeMesh.push_back(new_vertices[B_LEFT].x); treeMesh.push_back(new_vertices[B_LEFT].y); treeMesh.push_back(new_vertices[B_LEFT].z);
+      treeMesh.push_back(normals[N_LB].x); treeMesh.push_back(normals[N_LB].y); treeMesh.push_back(normals[N_LB].z);
+      //3
+      treeMesh.push_back(new_vertices[B_BACK].x); treeMesh.push_back(new_vertices[B_BACK].y); treeMesh.push_back(new_vertices[B_BACK].z);
+      treeMesh.push_back(normals[N_RB].x); treeMesh.push_back(normals[N_RB].y); treeMesh.push_back(normals[N_RB].z);
+      treeMesh.push_back(parent_vertices[B_RIGHT].x); treeMesh.push_back(parent_vertices[B_RIGHT].y); treeMesh.push_back(parent_vertices[B_RIGHT].z);
+      treeMesh.push_back(normals[N_RB].x); treeMesh.push_back(normals[N_RB].y); treeMesh.push_back(normals[N_RB].z);
+      treeMesh.push_back(parent_vertices[B_BACK].x); treeMesh.push_back(parent_vertices[B_BACK].y); treeMesh.push_back(parent_vertices[B_BACK].z);
+      treeMesh.push_back(normals[N_RB].x); treeMesh.push_back(normals[N_RB].y); treeMesh.push_back(normals[N_RB].z);
+      //4
+      treeMesh.push_back(new_vertices[B_RIGHT].x); treeMesh.push_back(new_vertices[B_RIGHT].y); treeMesh.push_back(new_vertices[B_RIGHT].z);
+      treeMesh.push_back(normals[N_RB].x); treeMesh.push_back(normals[N_RB].y); treeMesh.push_back(normals[N_RB].z);
+      treeMesh.push_back(parent_vertices[B_RIGHT].x); treeMesh.push_back(parent_vertices[B_RIGHT].y); treeMesh.push_back(parent_vertices[B_RIGHT].z);
+      treeMesh.push_back(normals[N_RB].x); treeMesh.push_back(normals[N_RB].y); treeMesh.push_back(normals[N_RB].z);
+      treeMesh.push_back(new_vertices[B_BACK].x); treeMesh.push_back(new_vertices[B_BACK].y); treeMesh.push_back(new_vertices[B_BACK].z);
+      treeMesh.push_back(normals[N_RB].x); treeMesh.push_back(normals[N_RB].y); treeMesh.push_back(normals[N_RB].z);
+      //5
+      treeMesh.push_back(new_vertices[B_RIGHT].x); treeMesh.push_back(new_vertices[B_RIGHT].y); treeMesh.push_back(new_vertices[B_RIGHT].z);
+      treeMesh.push_back(normals[N_LF].x); treeMesh.push_back(normals[N_LF].y); treeMesh.push_back(normals[N_LF].z);
+      treeMesh.push_back(parent_vertices[B_FRONT].x); treeMesh.push_back(parent_vertices[B_FRONT].y); treeMesh.push_back(parent_vertices[B_FRONT].z);
+      treeMesh.push_back(normals[N_LF].x); treeMesh.push_back(normals[N_LF].y); treeMesh.push_back(normals[N_LF].z);
+      treeMesh.push_back(parent_vertices[B_RIGHT].x); treeMesh.push_back(parent_vertices[B_RIGHT].y); treeMesh.push_back(parent_vertices[B_RIGHT].z);
+      treeMesh.push_back(normals[N_LF].x); treeMesh.push_back(normals[N_LF].y); treeMesh.push_back(normals[N_LF].z);
+      //6
+      treeMesh.push_back(new_vertices[B_FRONT].x); treeMesh.push_back(new_vertices[B_FRONT].y); treeMesh.push_back(new_vertices[B_FRONT].z);
+      treeMesh.push_back(normals[N_LF].x); treeMesh.push_back(normals[N_LF].y); treeMesh.push_back(normals[N_LF].z);
+      treeMesh.push_back(parent_vertices[B_FRONT].x); treeMesh.push_back(parent_vertices[B_FRONT].y); treeMesh.push_back(parent_vertices[B_FRONT].z);
+      treeMesh.push_back(normals[N_LF].x); treeMesh.push_back(normals[N_LF].y); treeMesh.push_back(normals[N_LF].z);
+      treeMesh.push_back(new_vertices[B_RIGHT].x); treeMesh.push_back(new_vertices[B_RIGHT].y); treeMesh.push_back(new_vertices[B_RIGHT].z);
+      treeMesh.push_back(normals[N_LF].x); treeMesh.push_back(normals[N_LF].y); treeMesh.push_back(normals[N_LF].z);
+      //7
+      treeMesh.push_back(new_vertices[B_FRONT].x); treeMesh.push_back(new_vertices[B_FRONT].y); treeMesh.push_back(new_vertices[B_FRONT].z);
+      treeMesh.push_back(normals[N_RF].x); treeMesh.push_back(normals[N_RF].y); treeMesh.push_back(normals[N_RF].z);
+      treeMesh.push_back(parent_vertices[B_LEFT].x); treeMesh.push_back(parent_vertices[B_LEFT].y); treeMesh.push_back(parent_vertices[B_LEFT].z);
+      treeMesh.push_back(normals[N_RF].x); treeMesh.push_back(normals[N_RF].y); treeMesh.push_back(normals[N_RF].z);
+      treeMesh.push_back(parent_vertices[B_FRONT].x); treeMesh.push_back(parent_vertices[B_FRONT].y); treeMesh.push_back(parent_vertices[B_FRONT].z);
+      treeMesh.push_back(normals[N_RF].x); treeMesh.push_back(normals[N_RF].y); treeMesh.push_back(normals[N_RF].z);
+      //8
+      treeMesh.push_back(new_vertices[B_LEFT].x); treeMesh.push_back(new_vertices[B_LEFT].y); treeMesh.push_back(new_vertices[B_LEFT].z);
+      treeMesh.push_back(normals[N_RF].x); treeMesh.push_back(normals[N_RF].y); treeMesh.push_back(normals[N_RF].z);
+      treeMesh.push_back(parent_vertices[B_LEFT].x); treeMesh.push_back(parent_vertices[B_LEFT].y); treeMesh.push_back(parent_vertices[B_LEFT].z);
+      treeMesh.push_back(normals[N_RF].x); treeMesh.push_back(normals[N_RF].y); treeMesh.push_back(normals[N_RF].z);
+      treeMesh.push_back(new_vertices[B_FRONT].x); treeMesh.push_back(new_vertices[B_FRONT].y); treeMesh.push_back(new_vertices[B_FRONT].z);
+      treeMesh.push_back(normals[N_RF].x); treeMesh.push_back(normals[N_RF].y); treeMesh.push_back(normals[N_RF].z);
     }
     
-    return vertex_count;
+    return treeMesh.size();
   }
 
 }

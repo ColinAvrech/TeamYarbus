@@ -32,6 +32,7 @@ namespace Framework
       void Generate();
       void Save(const char *file);
       void Load(const char *file);
+      void DrawTexture();
 
     private:
       //Terrain settings

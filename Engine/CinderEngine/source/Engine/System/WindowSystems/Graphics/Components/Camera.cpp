@@ -140,12 +140,15 @@ namespace Framework
   {
     //////////////////////////////////////////////////////////////////////////
     // DATA TO BE SERIALIZED
-    // viewDirection  : vec3 (Serialized Data)
-    // aspect         : float     (Serialized Data)
-    // nearPlane      : float     (Serialized Data)
-    // farPlane       : float     (Serialized Data)
-    // fov            : float     (Serialized Data)
-    // main           : bool      (Serialized Data)
+    // viewDirection  : vec3  
+    // aspect         : float 
+    // nearPlane      : float 
+    // farPlane       : float 
+    // fov            : float 
+    // main           : bool  
+    // diaphragm      : int    (number of elements in the diaphragm)  
+    // f_stop         : float  (ratio of the lens's focal length to the diameter of the entrance pupil)
+    // FocalLength    : float  (focal length of camera lens)
     //////////////////////////////////////////////////////////////////////////
 
     // Main?
@@ -170,6 +173,22 @@ namespace Framework
     value = data->FindElement (data, "Size");
     value->GetValue (&size);
 	  aspect = (float)WINDOWSYSTEM->Get_Width() / WINDOWSYSTEM->Get_Height();
+
+    value = data->FindElement(data, "Elements");
+    if (value != nullptr)
+      value->GetValue(&Elements);
+    else
+      Elements = 6;
+    value = data->FindElement(data, "f_stop");
+    if (value != nullptr)
+      value->GetValue(&f_stop);
+    else
+      f_stop = 2.8f;
+    value = data->FindElement(data, "FocalLength");
+    if (value != nullptr)
+      value->GetValue(&FocalLength);
+    else
+      FocalLength = 0.15f;
   }
 
 

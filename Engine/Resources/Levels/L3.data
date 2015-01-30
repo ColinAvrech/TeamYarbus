@@ -57,6 +57,9 @@ Level =
 			float NearPlane = 0,
 			float FarPlane = 100,
 			float Size = 16,
+      int Elements = 6,
+      float f_Stop = 2.8,
+      float FocalLength = 0.15,
 		},
   },
   Cog = 
@@ -94,7 +97,7 @@ Level =
 	},
 	Transform = 
 	{
-		Vec3 Translation = [2500, -300, -1280],
+		Vec3 Translation = [2500, -400, -1280],
 		Vec3 Scale = [3840, 200, 1280],
 		Quat Rotation = [0, 0, 0, 1],
 	},

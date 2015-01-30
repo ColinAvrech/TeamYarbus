@@ -81,7 +81,10 @@ namespace Framework
     //ApectMovedUp
     float nearPlane;
     float farPlane;
-
+    //camera properties
+    int Elements;
+    float f_stop;
+    float FocalLength;
   };
 
   //////////////////////////////////////////////////////////////////////////
