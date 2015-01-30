@@ -83,17 +83,16 @@ namespace Framework
     value->GetValue (&localScale);
 
     value = data->FindElement (data, "Rotation");
-	if (value)
-	{
-		value->GetValue(&localRotation);
-	}
-
-	value = data->FindElement(data, "Angle");
-	if (value)
-	{
-		value->GetValue(&localRotation);
-	}
-
+	  if (value)
+	  {
+	  	value->GetValue(&localRotation);
+	  }
+    
+	  value = data->FindElement(data, "Angle");
+	  if (value)
+	  {
+	  	value->GetValue(&localRotation);
+	  }
   }
 
 
@@ -105,7 +104,6 @@ namespace Framework
 		  UpdateRotation(parentPos);
 		  UpdateScale(parentPos);
 		  UpdatePosition(parentPos);
-
 	  }
 	  else
 	  {

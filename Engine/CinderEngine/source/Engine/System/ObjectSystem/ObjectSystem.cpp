@@ -149,7 +149,7 @@ namespace Framework
 
 			case _LoadLevel:
 				PHYSICS->Clear();
-				Physics::THERMODYNAMICS->Clear();
+				//Physics::THERMODYNAMICS->Clear();
 				Physics::FLUIDDYNAMICS->Clear();
 				DestroyAllObjects();
 				EVENTSYSTEM->DeleteAllEvents();

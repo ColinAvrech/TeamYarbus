@@ -25,15 +25,15 @@
 namespace Framework
 {
 
-	ZilchDefineType(Camera, CinderZilch)
-	{
-		type->HandleManager = ZilchManagerId(Zilch::PointerManager);
-		ZilchBindStaticMethodAs(ZGetWorldMousePosition, "GetWorldMousePosition");
-		ZilchBindStaticFieldGetAs(main, "Main");
-		ZilchBindFieldGetAs(aspect, "Aspect");
-		ZilchBindFieldGetAs(size, "Size");
-		//ZilchBindStaticMethodAs(ZGetCameraMousePosition, "GetCameraMousePosition");
-	}
+  ZilchDefineType(Camera, CinderZilch)
+  {
+    type->HandleManager = ZilchManagerId(Zilch::PointerManager);
+    ZilchBindStaticMethodAs(ZGetWorldMousePosition, "GetWorldMousePosition");
+    ZilchBindStaticFieldGetAs(main, "Main");
+    ZilchBindFieldGetAs(aspect, "Aspect");
+    ZilchBindFieldGetAs(size, "Size");
+    //ZilchBindStaticMethodAs(ZGetCameraMousePosition, "GetCameraMousePosition");
+  }
   DefineComponentName(Camera);
 
   std::list<Camera*> Camera::allCameras;
@@ -152,14 +152,14 @@ namespace Framework
     //////////////////////////////////////////////////////////////////////////
 
     // Main?
-	  Serializer::DataNode* value;// = data->FindElement(data, "Facing");
+    Serializer::DataNode* value;// = data->FindElement(data, "Facing");
 
     value = data->FindElement(data, "main");
     value->GetValue(&mainCamera);
 
-	  //value->GetValue(&viewDirection);
+    //value->GetValue(&viewDirection);
 
-	  viewDirection = { 0, 0, 1 };
+    viewDirection = { 0, 0, 1 };
 
     value = data->FindElement(data, "FieldOfView");
     value->GetValue(&fov);
@@ -172,7 +172,7 @@ namespace Framework
 
     value = data->FindElement (data, "Size");
     value->GetValue (&size);
-	  aspect = (float)WINDOWSYSTEM->Get_Width() / WINDOWSYSTEM->Get_Height();
+    aspect = (float)WINDOWSYSTEM->Get_Width() / WINDOWSYSTEM->Get_Height();
 
     value = data->FindElement(data, "Elements");
     if (value != nullptr)
@@ -318,10 +318,30 @@ namespace Framework
     return fov;
   }
 
+  std::pair<float, float> Camera::GetPlanes()
+  {
+    return std::make_pair(nearPlane, farPlane);
+  }
+
+  int Camera::GetElementNum()
+  {
+    return Elements;
+  }
+
+  float Camera::GetAperture()
+  {
+    return FocalLength / f_stop;
+  }
+
+  glm::vec3 Camera::FocalPoint()
+  {
+    return this->gameObject->Transform->GetPosition() + Camera::main->FocalPlane * Camera::main->size * Camera::main->viewDirection;
+  }
+
   glm::vec2 Camera::GetWorldMousePosition()
   {
-	  glm::vec2 ndc = { (WINDOWSYSTEM->Get_Mouse_Position().x / WINDOWSYSTEM->Get_Width() - 0.5f) * 1.47f,
-		  ((WINDOWSYSTEM->Get_Height() - WINDOWSYSTEM->Get_Mouse_Position().y) / WINDOWSYSTEM->Get_Height() - 0.5f) * 1.47f };
+    glm::vec2 ndc = { (WINDOWSYSTEM->Get_Mouse_Position().x / WINDOWSYSTEM->Get_Width() - 0.5f) * 1.47f,
+      ((WINDOWSYSTEM->Get_Height() - WINDOWSYSTEM->Get_Mouse_Position().y) / WINDOWSYSTEM->Get_Height() - 0.5f) * 1.47f };
     
     //
     /*
@@ -337,16 +357,16 @@ namespace Framework
 
   Zilch::Real2 Camera::ZGetWorldMousePosition()
   {
-	  glm::vec2 ndc = Camera::GetWorldMousePosition();
+    glm::vec2 ndc = Camera::GetWorldMousePosition();
 
-	  //
-	  /*
-	  destPosX = (float) (cursorX / (windowWidth) -0.5f) * 2.0f;
-	  destPosY = (float) ((windowHeight - cursorY) / windowHeight - 0.5f) * 2.0f;
-	  */
-	  //
-	  return Zilch::Real2(Zilch::Real(ndc.x), Zilch::Real(ndc.y));
-		  
+    //
+    /*
+    destPosX = (float) (cursorX / (windowWidth) -0.5f) * 2.0f;
+    destPosY = (float) ((windowHeight - cursorY) / windowHeight - 0.5f) * 2.0f;
+    */
+    //
+    return Zilch::Real2(Zilch::Real(ndc.x), Zilch::Real(ndc.y));
+      
   }
 
 

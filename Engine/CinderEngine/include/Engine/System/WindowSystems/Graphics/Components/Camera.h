@@ -51,6 +51,10 @@ namespace Framework
     virtual void OnApplicationPause (PauseEvent* pause);
     float GetSize ();
     float GetFOV ();
+    std::pair<float, float> GetPlanes();
+    int GetElementNum();
+    float GetAperture();
+    glm::vec3 FocalPoint();
     static std::list <Camera*> allCameras;
     static Camera* current;
     static Camera* main;
@@ -85,6 +89,7 @@ namespace Framework
     int Elements;
     float f_stop;
     float FocalLength;
+    float FocalPlane;
   };
 
   //////////////////////////////////////////////////////////////////////////

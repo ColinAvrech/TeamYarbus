@@ -52,7 +52,6 @@ Level =
 		{
       bool Enabled = true,
       bool main = true,
-      Vec3 Facing = [0, 0, 1],
 			float FieldOfView = 45,
 			float NearPlane = 0,
 			float FarPlane = 100,

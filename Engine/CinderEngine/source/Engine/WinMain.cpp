@@ -86,7 +86,7 @@ int main (void)
   //! Create the core engine which manages all systems.
   CoreEngine                    * engine      = new CoreEngine ();
   EventSystem                   * events      = new EventSystem ();
-  Physics::ThermodynamicsSystem * thermo      = new Physics::ThermodynamicsSystem ();
+  //Physics::ThermodynamicsSystem * thermo      = new Physics::ThermodynamicsSystem ();
   Physics::FluidDynamicsSystem  * fluid       = new Physics::FluidDynamicsSystem();
   PhysicsSystem                 * phys        = new PhysicsSystem (1.0f / 60.0f, 10);
   WindowSystem                  * windows     = new WindowSystem (WindowTitle, ClientWidth, ClientHeight, launchFullScreen);
@@ -110,7 +110,7 @@ int main (void)
   engine->AddSystem (audio);
   engine->AddSystem (events);
   engine->AddSystem (zilch);
-  engine->AddSystem (thermo);
+  //engine->AddSystem (thermo);
   engine->AddSystem(fluid);
   engine->AddSystem(objsys);
   engine->AddSystem (ui);
