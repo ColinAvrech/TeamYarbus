@@ -8,4 +8,5 @@ del *.sln
 del *.suo
 rmdir /S /Q obj
 rmdir /S /Q bin
+rmdir /S /Q ipch
 pause
