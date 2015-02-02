@@ -60,6 +60,7 @@ namespace Framework
   class SparkCollector;
   class FluidBody;
   class GUIText;
+  class Splitscreen;
 
   class GameObject
   {

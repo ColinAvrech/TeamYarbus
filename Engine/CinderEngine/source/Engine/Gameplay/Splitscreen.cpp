@@ -20,7 +20,6 @@
 
 namespace Framework
 {
-	WindowSystem* WINDOWSYSTEM;
 	Splitscreen::~Splitscreen()
 	{
 		EVENTSYSTEM->mDisconnect<KeyEvent, Splitscreen>(Events::KEY_ANY, this, &Splitscreen::KeyPressed);

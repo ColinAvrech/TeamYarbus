@@ -33,7 +33,7 @@ namespace Framework
 		{
 			gameObject = obj;
 		}
-		Splitscreen();
+		Splitscreen(){};
 		~Splitscreen();
 
 		virtual void Initialize();
