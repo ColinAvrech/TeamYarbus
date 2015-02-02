@@ -12,6 +12,8 @@
 #include "Component.h"
 #include "Tree2D.h"
 
+#include "MetaCreator.h"
+
 namespace Framework
 {
 	////////////////////////////////////////////////////////////
@@ -20,6 +22,8 @@ namespace Framework
 	class EcoSystem : public Component
 	{
 	public:
+
+		META_DECLARE( EcoSystem );
 
 		/*-----------------------------------------------------------------------
 		// Constructors

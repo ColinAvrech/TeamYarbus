@@ -20,6 +20,11 @@
 #include "TDLib.h"
 #include "Pipeline.h"
 
+META_DEFINE( Framework::FluidBody, FluidBody )
+{
+
+}
+
 namespace Framework
 {
   static float time = 0.0f;

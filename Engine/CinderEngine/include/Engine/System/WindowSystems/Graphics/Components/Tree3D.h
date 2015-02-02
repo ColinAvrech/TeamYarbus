@@ -14,6 +14,8 @@
 #include <vector>
 #include "IGraphicsObject.h"
 
+#include "MetaCreator.h"
+
 namespace Framework
 {
   class VertexArrayObject;
@@ -30,6 +32,9 @@ namespace Framework
 
   class Tree3D : public IGraphicsObject
   {
+  public:
+	  META_DECLARE( Tree3D );
+
   public:
   Tree3D ();
   virtual ~Tree3D ();
@@ -91,5 +96,7 @@ namespace Framework
     bool InViewport();
   };
 }
+
+
 
 #endif

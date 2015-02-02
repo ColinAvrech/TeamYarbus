@@ -41,7 +41,6 @@ namespace Reflection
 	private:
 
 		NameType			mName;
-		HashedNameType		mHashedName;
 
 		HashedNameType		mType;
 		OffsetType			mOffset;

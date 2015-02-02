@@ -23,6 +23,11 @@ namespace Reflection
 		return mTypeName;
 	}
 
+	HashedNameType MetaType::GetHashedName( ) const
+	{
+		return mTypeHash;
+	}
+
 	size_t MetaType::GetSize() const
 	{
 		return mTypeSize;

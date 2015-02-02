@@ -132,9 +132,13 @@ namespace Panel
 		PanelContainer mPanels;
 	};
 
-
+	
 
 }
 
+namespace Framework
+{
+	extern Panel::PanelManager * PANELMANAGER;
+}
 
 #endif

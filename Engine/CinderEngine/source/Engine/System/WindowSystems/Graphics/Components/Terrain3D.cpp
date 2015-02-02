@@ -16,6 +16,11 @@
 #include "PhysicsLibrary.h"
 #include "random.hpp"
 
+META_DEFINE( Framework::Terrain3D, Terrain3D )
+{
+
+}
+
 namespace Framework
 {
   static VAO* vao1;

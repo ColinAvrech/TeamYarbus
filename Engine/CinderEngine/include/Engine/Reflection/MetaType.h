@@ -25,6 +25,7 @@ namespace Reflection
 		MetaType &					AddMember( const NameType & name, MemberType ParentType::*member );
 
 		const NameType &			GetName( ) const;
+		HashedNameType				GetHashedName( ) const;
 		SizeType					GetSize( ) const;
 		bool						IsBase( ) const;
 

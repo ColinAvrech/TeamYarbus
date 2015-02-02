@@ -121,7 +121,7 @@ namespace Framework
    ComponentPointer(MenuController);
    ComponentPointer(ButtonController);
 
-  private:
+  public:
 
     typedef std::map<string, Component *> ComponentMap;
     ComponentMap Components;

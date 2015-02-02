@@ -19,6 +19,8 @@
 #include "VertexBufferObject.h"
 #include "ElementBufferObject.h"
 
+#include "MetaCreator.h"
+
 namespace Framework
 {
   class Texture;
@@ -27,6 +29,9 @@ namespace Framework
   class Sprite : public IGraphicsObject
   {
   public:
+
+	  META_DECLARE( Sprite );
+
     ZilchDeclareDerivedType (Sprite, IGraphicsObject);
 
     Sprite ();
@@ -93,5 +98,11 @@ namespace Framework
     static VBO* vbo;
     static EBO* ebo;
   };
+
+}
+
+
+META_DEFINE( Framework::Sprite, Sprite )
+{
 
 }

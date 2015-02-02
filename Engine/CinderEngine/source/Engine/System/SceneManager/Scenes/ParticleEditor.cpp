@@ -351,7 +351,7 @@ namespace Framework
 
     //gpuRender.updateResults (GpuTimerQuery::WaitOption::WaitForResults);
 
-    //TwDraw ();
+	Panel::PanelManager::Draw( );
   }
 
   void ParticleEditor::Change_Size (int w, int h)

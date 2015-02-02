@@ -11,6 +11,8 @@
 #ifndef _CAMERA_H
 #define _CAMERA_H
 
+#include "MetaCreator.h"
+
 namespace Framework
 {
   class KeyEvent;
@@ -26,6 +28,8 @@ namespace Framework
   class Camera : public Component
   {
   public:
+	  META_DECLARE( Camera );
+
 	ZilchDeclareDerivedType(Camera, Component);
     Camera () : up (0, 1, 0) {}
     Camera (GameObject* go);
@@ -95,6 +99,11 @@ namespace Framework
   //////////////////////////////////////////////////////////////////////////
   // Inline Methods
   //////////////////////////////////////////////////////////////////////////
+}
+
+META_DEFINE( Framework::Camera, Camera )
+{
+
 }
 
 #endif

@@ -21,6 +21,11 @@
 #include "TDLib.h"
 #include "Pipeline.h"
 
+META_DEFINE( Framework::Terrain2D, Terrain2D )
+{
+
+}
+
 namespace Framework
 {
   using namespace Physics;
