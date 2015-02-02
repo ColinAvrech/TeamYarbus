@@ -19,6 +19,8 @@ namespace Framework
   class LevelTimer : public Component
   {
   public:
+	  META_DECLARE( LevelTimer );
+
   LevelTimer ();
   virtual ~LevelTimer ();
 
@@ -32,6 +34,11 @@ namespace Framework
 
   const static std::string Name;
   };  
+}
+
+META_DEFINE( Framework::LevelTimer, LevelTimer )
+{
+
 }
 
 #endif

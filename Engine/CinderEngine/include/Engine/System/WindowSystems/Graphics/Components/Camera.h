@@ -11,6 +11,8 @@
 #ifndef _CAMERA_H
 #define _CAMERA_H
 
+#include "MetaCreator.h"
+
 namespace Framework
 {
   class KeyEvent;
@@ -26,6 +28,8 @@ namespace Framework
   class Camera : public Component
   {
   public:
+	  META_DECLARE( Camera );
+
 	ZilchDeclareDerivedType(Camera, Component);
     Camera () : up (0, 1, 0) {}
     Camera (GameObject* go);
@@ -51,6 +55,10 @@ namespace Framework
     virtual void OnApplicationPause (PauseEvent* pause);
     float GetSize ();
     float GetFOV ();
+    std::pair<float, float> GetPlanes();
+    int GetElementNum();
+    float GetAperture();
+    glm::vec3 FocalPoint();
     static std::list <Camera*> allCameras;
     static Camera* current;
     static Camera* main;
@@ -81,12 +89,21 @@ namespace Framework
     //ApectMovedUp
     float nearPlane;
     float farPlane;
-
+    //camera properties
+    int Elements;
+    float f_stop;
+    float FocalLength;
+    float FocalPlane;
   };
 
   //////////////////////////////////////////////////////////////////////////
   // Inline Methods
   //////////////////////////////////////////////////////////////////////////
+}
+
+META_DEFINE( Framework::Camera, Camera )
+{
+
 }
 
 #endif

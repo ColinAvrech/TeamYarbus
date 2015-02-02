@@ -16,11 +16,15 @@
 #include "JSONSerializer.h"
 #include "IGraphicsObject.h"
 
+#include "MetaCreator.h"
+
 namespace Framework
 {
   class Terrain3D : public IGraphicsObject
   {
   public:
+	  META_DECLARE( Terrain3D );
+
     Terrain3D();
     virtual ~Terrain3D();
 
@@ -56,5 +60,7 @@ namespace Framework
     std::vector<float> vertices;
   };
 }
+
+
 
 #endif

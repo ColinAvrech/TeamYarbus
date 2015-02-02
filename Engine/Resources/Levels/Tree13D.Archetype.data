@@ -1,0 +1,26 @@
+Cog = 
+{
+	Named = 
+	{
+		string Name = "Tree5",
+	},
+	Archetyped = 
+	{
+		string Name = "521dcb3845577d9d:EnemyProjectile",
+	},
+	Transform = 
+	{
+		Vec3 Translation = [0, 0, 0],
+		Vec3 Scale = [15, 15, 15],
+		Quat Rotation = [0, 0, 0, 1],
+	},
+	Tree3D = 
+	{
+		Vec4 Color = [0, 0, 0, 1],
+		int Tree_Type = 1,
+		int Segments = 4,
+		float Thickness = 0.025,
+		float Length = 0.1,
+    float Decay = 0.9,
+	},
+},

@@ -20,6 +20,11 @@
 #include "TDLib.h"
 #include "Pipeline.h"
 
+META_DEFINE( Framework::FluidBody, FluidBody )
+{
+
+}
+
 namespace Framework
 {
   static float time = 0.0f;
@@ -93,13 +98,13 @@ namespace Framework
     scale = glm::vec2(gameObject->Transform->GetScale());
     time += dt;
     //test splash
-    //if (time >= 1.f)
-    //{
-      //time = 0.0f;
+    if (time >= 1.f)
+    {
+      time = 0.0f;
       int rand_index = rand() % height_points.size();
       int index1 = height_points.size() * 0.5f;
-      Splash(rand_index, -10.f, 0.001f);
-    //}
+      Splash(rand_index, -10.f, 0.1f);
+    }
 
     WaveUpdate(dt);
 

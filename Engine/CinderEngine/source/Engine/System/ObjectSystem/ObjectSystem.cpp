@@ -69,7 +69,7 @@ deleted.
 #include "CameraShake.h"
 #include "EndTrigger.h"
 #include "EndEventListener.h"
-#include "Splitscreen.h"
+#include "Spin.h"
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 
@@ -150,7 +150,7 @@ namespace Framework
 
 			case _LoadLevel:
 				PHYSICS->Clear();
-				Physics::THERMODYNAMICS->Clear();
+				//Physics::THERMODYNAMICS->Clear();
 				Physics::FLUIDDYNAMICS->Clear();
 				DestroyAllObjects();
 				EVENTSYSTEM->DeleteAllEvents();
@@ -232,7 +232,7 @@ namespace Framework
 		RegisterComponent(CameraShake);
 		RegisterComponent(EndTrigger);
 		RegisterComponent(EndEventListener);
-		RegisterComponent(Splitscreen);
+    RegisterComponent(Spin);
 		//////////////////////////////////////////////////////////////////////////
 	}
 	void ObjectSystem::AddComponentCreator(string name, ComponentCreator* creator)

@@ -29,33 +29,38 @@ namespace Framework
     {
       HeightMapRock.allocate(MapWidth, MapDepth);
       float weight = 1.f;
+      //Calculate starting weight
       for (auto i = 0; i < passes; ++i, weight *= 0.25f);
-      
+      //Generate initial noise map
       for (auto i = 0; i < MapWidth; ++i)
       {
         for (auto j = 0; j < MapDepth; ++j)
         {
           if (i == 0 || i == MapWidth - 1 || j == 0 || j == MapDepth - 1)
-            HeightMapRock.Set(i, j, -1.0f);
+            HeightMapRock.Set(i, j, 0.0f);
           else
             HeightMapRock.Set(i, j, weight * (rand() % PeakHeight));
         } //for j
       } // for i
 
       int factor = 1;
+      //Calculate index size
       for (auto i = 0; i < passes; ++i, factor *= 2);
-
+      //Make multiple passes
       for (auto p = 0; p < passes && factor > 0; ++p)
       {
-        weight *= 6.2f;
+        weight *= 6.f;
         factor *= 0.5f;
-        for (auto i = 0; i < MapWidth; ++i)
+        for (auto i = factor; i < MapWidth; ++i)
         {
-          for (auto j = 0; j < MapDepth; ++j)
+          for (auto j = factor; j < MapDepth; ++j)
           {
-            float value = HeightMapRock.Get(i, j);
-            value += weight * HeightMapRock.Get(i / factor, j / factor);
-            HeightMapRock.Set(i, j, value);
+            if (i != 0 && i != MapWidth - 1 && j != 0 && j != MapDepth - 1)
+            {
+              float value = HeightMapRock.Get(i, j);
+              value += weight * HeightMapRock.Get(i / factor, j / factor);
+              HeightMapRock.Set(i, j, value);
+            }
           } //for j
         } // for i
       } // for p
@@ -83,6 +88,28 @@ namespace Framework
     float *const TerrainCreator3D::GetMap()
     {
       return HeightMapRock.GetArray();
+    }
+
+    void TerrainCreator3D::DrawTexture()
+    {
+      float dx = 1.f / MapWidth;
+      float dy = 1.f / MapDepth;
+      glBegin(GL_QUADS);
+      {
+        for (int i = 0; i < MapDepth; ++i)
+        {
+          for (int j = 0; j < MapWidth; ++j)
+          {
+            float h = HeightMapRock.Get(j, i) / PeakHeight;
+            glColor4f(h, h, h, 1.f);
+            glVertex2f(j * dx - 0.5 * MapWidth * dx, i * dy - 0.5 * MapDepth * dy);
+            glVertex2f((j + 1) * dx - 0.5 * MapWidth * dx, i * dy - 0.5 * MapDepth * dy);
+            glVertex2f((j + 1) * dx - 0.5 * MapWidth * dx, (i + 1) * dy - 0.5 * MapDepth * dy);
+            glVertex2f(j * dx - 0.5 * MapWidth * dx, (i + 1) * dy - 0.5 * MapDepth * dy);
+          }
+        }
+      }
+      glEnd();
     }
   } //Procedural
 }  //Framework

@@ -21,6 +21,11 @@
 #include "TDLib.h"
 #include "Pipeline.h"
 
+META_DEFINE( Framework::Terrain2D, Terrain2D )
+{
+
+}
+
 namespace Framework
 {
   using namespace Physics;
@@ -191,22 +196,22 @@ namespace Framework
     float y_scale = t.GetPeakHeight();
     this->gameObject->Transform->Scale(x_scale, y_scale, 1.f);
 
-    if (AddCollider)
-    {
-      //Allocate thermo grid
-      int w_size = 2 * (int)this->gameObject->Transform->GetScale().x;
-      THERMODYNAMICS->SetMapSize(w_size);
+    //if (AddCollider)
+    //{
+    //  //Allocate thermo grid
+    //  int w_size = 2 * (int)this->gameObject->Transform->GetScale().x;
+    //  THERMODYNAMICS->SetMapSize(w_size);
 
-      int num_height_points = t.Get_Width();
-      int size_factor = w_size / num_height_points;
-      for (int x = 0; x < THERMODYNAMICS->MapSize.x; ++x)
-      {
-        ErrorIf(size_factor == 0, "Terrain size must be greater than terrain's heightpoints.");
-        float cur_peak = Map[x / size_factor];
-        THERMODYNAMICS->Terrain.Set (x, 0, STONE);
-        THERMODYNAMICS->y_offset[x] = (int)cur_peak;
-      } //for x
-    } //if main terrain
+    //  int num_height_points = t.Get_Width();
+    //  int size_factor = w_size / num_height_points;
+    //  for (int x = 0; x < THERMODYNAMICS->MapSize.x; ++x)
+    //  {
+    //    ErrorIf(size_factor == 0, "Terrain size must be greater than terrain's heightpoints.");
+    //    float cur_peak = Map[x / size_factor];
+    //    THERMODYNAMICS->Terrain.Set (x, 0, STONE);
+    //    THERMODYNAMICS->y_offset[x] = (int)cur_peak;
+    //  } //for x
+    //} //if main terrain
   }
 
 

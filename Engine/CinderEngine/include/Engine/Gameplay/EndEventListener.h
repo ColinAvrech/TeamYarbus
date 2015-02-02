@@ -11,6 +11,8 @@
 #ifndef _END_EVENT_LISTENER_H
 #define _END_EVENT_LISTENER_H
 
+#include "MetaCreator.h"
+
 namespace Framework
 {
   class UpdateEvent;
@@ -28,6 +30,9 @@ namespace Framework
   class EndEventListener : public Component
   {
   public:
+
+	  // META_DECLARE( EndEventListener );
+
   EndEventListener ();
   virtual ~EndEventListener ();
 
@@ -51,5 +56,10 @@ namespace Framework
     END_EVENT_STATE ees = EES_NONE;
   };  
 }
+
+// META_DEFINE( Framework::EndEventListener, EndEventListener )
+// {
+// 
+// }
 
 #endif

@@ -146,7 +146,7 @@ namespace Framework
         last.push_back(i);
       else
         i->Draw ();
-	  }   
+    }
     //disable depth test
     glDisable(GL_DEPTH_TEST);
     //draw stuff that should be drawn last
@@ -155,10 +155,10 @@ namespace Framework
       i->Draw();
     }
 
-	  for (auto* i : textObjects)
-	  {
-	  	i->Draw();
-	  }
+    for (auto* i : textObjects)
+    {
+      i->Draw();
+    }
 
     sFactor = GL_SRC_ALPHA;
     dFactor = GL_ONE_MINUS_SRC_ALPHA;
@@ -187,7 +187,7 @@ namespace Framework
     if (useDebugDraw)
     {
       glEnable(GL_BLEND);
-      THERMODYNAMICS->Draw ();
+      //THERMODYNAMICS->Draw ();
       PHYSICS->Render ();
       ResetBlendMode();
     }

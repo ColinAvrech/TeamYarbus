@@ -21,7 +21,9 @@ relaying information)
 */
 #pragma once
 
-#define DefineComponentName(Component) const string Component::Name("Component")
+#include "Hash.h"
+
+#define DefineComponentName(Component) const string Component::Name(#Component)
 
 namespace Framework
 {
@@ -67,6 +69,8 @@ namespace Framework
     //Variables that all components have
     GameObject* gameObject;
     bool enabled;
+
+	Hash::HashValue mComponentType;
 
   protected:
     void Get_Enabled (Serializer::DataNode* data, std::string enableKey = "Enabled")

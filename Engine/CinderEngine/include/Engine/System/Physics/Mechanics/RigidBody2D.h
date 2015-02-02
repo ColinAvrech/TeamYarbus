@@ -13,6 +13,8 @@
 #include "MathExtensionLibrary.h"
 #include "Component.h"
 
+#include "MetaCreator.h"
+
 namespace Framework
 {
 	class ShapeCollider2D;
@@ -20,6 +22,8 @@ namespace Framework
 	class RigidBody2D : public Framework::Component
 	{
 	public:
+		META_DECLARE( RigidBody2D );
+
 	  const static std::string Name;
 	  RigidBody2D(ShapeCollider2D *shape_, float x, float y);
     ~RigidBody2D ();
@@ -75,5 +79,9 @@ namespace Framework
 	};
 }
 
+META_DEFINE( Framework::RigidBody2D, RigidBody2D )
+{
+	MEMBER( position );
+}
 
 #endif // _RIGID_BODY_2D_H

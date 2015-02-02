@@ -164,10 +164,10 @@ namespace Framework
     gridPos = gameObject->Transform->GetGridPosition ();
     float micValue = AUDIOSYSTEM->GetMicrophoneValue ();
     body->ApplyForce(Vector2(micValue * micMultiplier.x * density,micValue * micMultiplier.y * density));
-    Physics::THERMODYNAMICS->SetCellTemperature (gridPos.x, gridPos.y, 
-      /*micValue **/ 10 * Constant::BT_Organics, e->Dt);
-    glm::vec2 vel = Physics::THERMODYNAMICS->GetCellVelocity(gridPos.x, gridPos.y);
-    body->ApplyForce(Vector2(10 * vel.x, 10 * vel.y));
+    //Physics::THERMODYNAMICS->SetCellTemperature (gridPos.x, gridPos.y, 
+    //  /*micValue **/ 10 * Constant::BT_Organics, e->Dt);
+    //glm::vec2 vel = Physics::THERMODYNAMICS->GetCellVelocity(gridPos.x, gridPos.y);
+    //body->ApplyForce(Vector2(10 * vel.x, 10 * vel.y));
   }
 
   bool CharacterController::CanFly() const

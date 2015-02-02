@@ -27,6 +27,8 @@ namespace Framework
   class CameraShake : public Component
   {
   public:
+	  META_DECLARE( CameraShake );
+
     CameraShake ();
     ~CameraShake ();
 
@@ -44,6 +46,11 @@ namespace Framework
     glm::vec3 startPosition;
     CAMERA_SHAKE_STATE state = CS_NONE;
   };  
+}
+
+META_DEFINE( Framework::CameraShake, CameraShake )
+{
+	
 }
 
 #endif

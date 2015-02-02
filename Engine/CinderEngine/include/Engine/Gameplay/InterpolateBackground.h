@@ -11,6 +11,8 @@
 #ifndef _INTERPOLATE_BACK_H
 #define _INTERPOLATE_BACK_H
 
+#include "MetaCreator.h"
+
 namespace Framework
 {
   enum COLOR_STATE
@@ -24,6 +26,9 @@ namespace Framework
   class InterpolateBackground : public Component
   {
   public:
+
+	  META_DECLARE( InterpolateBackground );
+
   InterpolateBackground ();
   ~InterpolateBackground ();
 
@@ -45,6 +50,11 @@ namespace Framework
 
     void Interpolate_Background (const float &dt);
   };  
+}
+
+META_DEFINE( Framework::InterpolateBackground, InterpolateBackground )
+{
+
 }
 
 #endif

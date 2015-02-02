@@ -27,6 +27,7 @@ solution "CinderEngine"
     files
     {
       "../include/**.h",
+      "../include/**.inl",
       "../source/**.cpp",
       "../source/**.c",
       "../source/**.tpp",
@@ -34,6 +35,7 @@ solution "CinderEngine"
       "../../Resources/**.txt",
       "../../Resources/**.data",
       "../../Resources/**.z",
+			"../../Resources/**.terrain",
     }
     
     excludes

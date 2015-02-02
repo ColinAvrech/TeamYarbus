@@ -14,6 +14,8 @@ starts the game loop.
 #include "CheatCodes.h"
 #include "Shlwapi.h" //used for PathAppend and PathFileExists for file/directory management
 
+#include "LevelEditor.h"
+
 #define WINDOWSBUILD
 #ifdef WINDOWSBUILD
 
@@ -40,7 +42,7 @@ void TestUEDisconnect(UpdateEvent* e)
 int main (void)
 {
 #ifdef _DEBUG
-  bool launchFullScreen = false;
+  bool launchFullScreen = true;
 
   EnableMemoryLeakChecking ();
 
@@ -86,7 +88,7 @@ int main (void)
   //! Create the core engine which manages all systems.
   CoreEngine                    * engine      = new CoreEngine ();
   EventSystem                   * events      = new EventSystem ();
-  Physics::ThermodynamicsSystem * thermo      = new Physics::ThermodynamicsSystem ();
+  //Physics::ThermodynamicsSystem * thermo      = new Physics::ThermodynamicsSystem ();
   Physics::FluidDynamicsSystem  * fluid       = new Physics::FluidDynamicsSystem();
   PhysicsSystem                 * phys        = new PhysicsSystem (1.0f / 60.0f, 10);
   WindowSystem                  * windows     = new WindowSystem (WindowTitle, ClientWidth, ClientHeight, launchFullScreen);
@@ -110,7 +112,7 @@ int main (void)
   engine->AddSystem (audio);
   engine->AddSystem (events);
   engine->AddSystem (zilch);
-  engine->AddSystem (thermo);
+  //engine->AddSystem (thermo);
   engine->AddSystem(fluid);
   engine->AddSystem(objsys);
   engine->AddSystem (ui);
@@ -132,7 +134,7 @@ int main (void)
 
 
   audio->LoadMicData ();
-  Sound *SplashScreenMusic = resourceManager.Get_Sound("SplashScreen.ogg");
+  Sound *SplashScreenMusic = resourceManager.Get_Sound("CreditsMusic.ogg");
     AUDIOEVENTS->unmanagedSounds.push_back(SplashScreenMusic);
 
   //! activate the window.
@@ -158,8 +160,17 @@ int main (void)
   // Update the ObjectManager to load in the first level
   OBJECTSYSTEM->Update(0.016f);
 
+  Panel::PanelManager			* panels = new Panel::PanelManager( Panel::PanelManager::GraphicAPI::OPENGL,
+																	ClientWidth, ClientHeight );
+  Editor::LevelEditor			* le = new Editor::LevelEditor( );
+  le->InitializeEditor( );
+
   //! Run the game! NOW!
   engine->GameLoop ();
+
+  // delete editors
+  delete le;
+  delete panels;
 
   //! Delete engine
   delete engine;

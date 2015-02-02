@@ -14,16 +14,16 @@ out vec4 outColor;
 uniform vec3 lightDir;// = vec3 (50, -10, 0);
 
 // MATERIAL PROPERTIES OF SELF
-vec3 mambient = vec3 (0.25, 0.25, 0.4);
-vec3 mdiffuse = vec3 (0.9, 0.8, 0.5);
+vec3 mambient = vec3 (0.2, 0.2, 0.25);
+vec3 mdiffuse = vec3 (0.5, 0.5, 0.5);
 vec3 mspecular = vec3 (1, 1, 1);
 
 // SHININESS
-float shininess = 10;
+float shininess = 5;
 
 // MATERIAL PROPERTIES OF LIGHT
-uniform vec3 lambient = vec3 (0.1, 0.1, 0.2);
-uniform vec3 ldiffuse = vec3 (0.7, 0.9, 0.5);
+uniform vec3 lambient = vec3 (0.1, 0.1, 0.3);
+uniform vec3 ldiffuse = vec3 (0.7, 0.7, 0.7);
 uniform vec3 lspecular = vec3 (1, 1, 1);
 
 void main ()
@@ -57,11 +57,11 @@ void main ()
   //Color + fog effect//////////////////////
   float factor = Position.z / 3300; 
   float r = color1.r + (color2.r) * Normal.r;
-  float r_range = lightColor.r * (1.5f - r) - 0.5f;
+  float r_range = lightColor.r * (1.5f - r) - 0.0f;
   float g = color1.g + (color2.g) * Normal.g;
-  float g_range = lightColor.g * (1.5f - g) - 0.5f;
+  float g_range = lightColor.g * (1.5f - g) - 0.0f;
   float b = color1.b + color2.b;
-  float b_range = lightColor.b * 0.5f * b - 0.5f;
+  float b_range = lightColor.b * 0.5f * b - 0.0f;
 
   float r_f = lightColor.r * (1.5f - r) - r_range * factor;
  // r_f *= lightColor.r;

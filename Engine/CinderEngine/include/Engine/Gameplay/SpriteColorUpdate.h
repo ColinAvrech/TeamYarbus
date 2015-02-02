@@ -24,6 +24,8 @@ namespace Framework
   class SpriteColorUpdate : public Component
   {
   public:
+	  META_DECLARE( SpriteColorUpdate );
+
   SpriteColorUpdate ();
   ~SpriteColorUpdate ();
 
@@ -43,6 +45,11 @@ namespace Framework
     float multiplier;
 
   };  
+}
+
+META_DEFINE( Framework::SpriteColorUpdate, SpriteColorUpdate )
+{
+
 }
 
 #endif
