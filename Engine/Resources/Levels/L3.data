@@ -248,7 +248,7 @@ Level =
 		float k = 0.025,
 		float d = 0.025,
 		float Spread = 0.25,
-		Vec4 Color1 = [0.3, 0.3, 0.3, 1],
+		Vec4 Color1 = [0.3, 0.35, 0.5, 1],
 		Vec4 Color2 = [0, 0, 0, 1],
 	},
  },
