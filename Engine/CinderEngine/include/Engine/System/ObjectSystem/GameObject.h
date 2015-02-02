@@ -115,6 +115,7 @@ namespace Framework
 	ComponentPointer(PlayerStats);
     ComponentPointer(FluidBody);
     ComponentPointer(GUIText);
+	ComponentPointer(Splitscreen);
 	
 
    // Menu Components
