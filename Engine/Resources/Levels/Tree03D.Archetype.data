@@ -16,7 +16,7 @@ Cog =
 	},
 	Tree3D = 
 	{
-		Vec4 Color = [0.5, 0.5, 0.5, 1],
+		Vec4 Color = [0.8, 1.0, 1.0, 1],
 		int Tree_Type = 0,
 		int Segments = 10,
 		float Thickness = 0.05,

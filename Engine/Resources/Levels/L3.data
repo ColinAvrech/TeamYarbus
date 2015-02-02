@@ -65,6 +65,38 @@ Level =
 	{
 		Named = 
 		{
+			string Name = "Trails",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0, 0, -10000],
+			Vec3 Scale = [10000, 10000, 0],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Sprite = 
+		{
+			string SpriteSource = "Trails.png",
+			bool FlipX = false,
+			bool FlipY = false,
+			Vec4 Color = [1, 1, 1, 1],
+			bool Visible = true,
+			bool OnTop = false,
+			bool AnimationActive = false,
+			float AnimationSpeed = 1,
+			uint StartFrame = 0,
+			BlendMode BlendMode = Alpha,
+			SpriteGeometryMode GeometryMode = ZPlane,
+			string SpriteLayer = "52ad5fa30d7fcd50:DefaultSpriteLayer",
+			string Shader = "Default",
+		},
+		Spin = 
+		{
+		},
+  },
+  Cog = 
+	{
+		Named = 
+		{
 			string Name = "Mountain",
 		},
 		Transform = 
@@ -83,8 +115,8 @@ Level =
       int Passes = 2,
       int Waves = 5,
       int Water = 5,
-      Vec4 Color1 = [0.2, 0.2, 0.2, 1],
-	  Vec4 Color2 = [0.1, 0.1, 0.1, 1],
+      Vec4 Color1 = [0.1, 0.2, 0.9, 1],
+	  Vec4 Color2 = [0.3, 0.2, 0.9, 1],
       bool AddCollider = true,
 		},
   },
@@ -110,8 +142,8 @@ Level =
      int Passes = 3,
      int Waves = 5,
      int Water = 5,
-     Vec4 Color1 = [0.745, 0.525, 0.202, 1],
-     Vec4 Color2 = [0.54, 0.603, 0.463, 1],
+     Vec4 Color1 = [0.1, 0.2, 0.9, 1],
+     Vec4 Color2 = [0.3, 0.2, 0.9, 1],
      bool AddCollider = true,
 	},
  },
@@ -124,20 +156,20 @@ Level =
 		Transform = 
 		{
 			Vec3 Translation = [0, 0, 0],
-			Vec3 Scale = [128, 64, 640],
+			Vec3 Scale = [512, 64, 640],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Terrain2D = 
 		{
       string MapPreset = "JaggedAF2",
       bool Enabled = true,
-      int MapSize = 128,
+      int MapSize = 512,
       int BaseHeight = 10,
       int PeakHeight = 20,
       int Passes = 1,
       int Waves = 5,
       int Water = 5,
-      Vec2 Slope = [2, -1],
+      Vec2 Slope = [1, -0],
       Vec4 Color1 = [0, 0, 0, 1],
 	    Vec4 Color2 = [0, 0, 0, 1],
       bool AddCollider = true,
@@ -186,7 +218,7 @@ Level =
 			string SpriteSource = "tumbleweed.png",
 			bool FlipX = false,
 			bool FlipY = false,
-			Vec4 Color = [1, 1, 1, 1],
+			Vec4 Color = [1, 1, 1, 0],
 			bool Visible = true,
 			bool OnTop = false,
 			bool AnimationActive = false,
@@ -206,8 +238,8 @@ Level =
 	},
 	Transform = 
 	{
-		Vec3 Translation = [-10, 4, 0],
-		Vec3 Scale = [10, 1, 1],
+		Vec3 Translation = [-10, 7, 0],
+		Vec3 Scale = [50, 4, 1],
 		Quat Rotation = [0, 0, 1, 0],
 	},
 	//These values seem to work best
@@ -215,8 +247,8 @@ Level =
 	{
 		float k = 0.025,
 		float d = 0.025,
-		float Spread = 0.025,
-		Vec4 Color1 = [0.25, 0.5, 1, 0.5],
+		float Spread = 0.25,
+		Vec4 Color1 = [0.3, 0.3, 0.3, 1],
 		Vec4 Color2 = [0, 0, 0, 1],
 	},
  },

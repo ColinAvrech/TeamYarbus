@@ -69,6 +69,7 @@ deleted.
 #include "CameraShake.h"
 #include "EndTrigger.h"
 #include "EndEventListener.h"
+#include "Spin.h"
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 
@@ -231,6 +232,7 @@ namespace Framework
 		RegisterComponent(CameraShake);
 		RegisterComponent(EndTrigger);
 		RegisterComponent(EndEventListener);
+    RegisterComponent(Spin);
 		//////////////////////////////////////////////////////////////////////////
 	}
 	void ObjectSystem::AddComponentCreator(string name, ComponentCreator* creator)

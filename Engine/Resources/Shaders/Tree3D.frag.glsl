@@ -15,7 +15,7 @@ uniform vec3 lights [5];
 ////////////////////////////////////////////
 
 // MATERIAL PROPERTIES OF SELF
-uniform vec3 mambient = vec3 (0.5, 0.5, 0.5);
+uniform vec3 mambient = vec3 (0.5, 0.5, 0.9);
 uniform vec3 mdiffuse = vec3 (0.6, 0.6, 0.6);
 uniform vec3 mspecular = vec3 (1, 1, 1);
 
@@ -27,7 +27,7 @@ uniform float shininess = 20;
 ////////////////////////////////////////////
 
 // MATERIAL PROPERTIES OF LIGHT
-uniform vec3 lambient = vec3 (0.75, 0.75, 0.75);
+uniform vec3 lambient = vec3 (0.75, 0.75, 0.9);
 uniform vec3 ldiffuse = vec3 (0.6, 0.6, 0.6);
 uniform vec3 lspecular = vec3 (1, 1, 1);
 uniform vec4 color;
@@ -35,7 +35,7 @@ uniform vec4 color;
 void main ()
 {
   //Only for testing with a moving light
-  vec3 lightPos = vec3(10 * cos(time / 5.f), 45 + 10 * sin(time / 10.f), 10 * sin(time / 5.f)); 
+  vec3 lightPos = vec3(20 * cos(time / 10.f), 45 + 7 * sin(time / 10.f), 7 * sin(time / 5.f)); 
   vec4 m_pos = modelMatrix * vec4(Position, 1.0);
   vec3 position = vec3(m_pos.x, m_pos.y, m_pos.z);
   vec4 lightColor = vec4 (0,0,0,0);

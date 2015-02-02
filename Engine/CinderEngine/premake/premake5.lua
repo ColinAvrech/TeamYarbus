@@ -35,6 +35,7 @@ solution "CinderEngine"
       "../../Resources/**.txt",
       "../../Resources/**.data",
       "../../Resources/**.z",
+			"../../Resources/**.terrain",
     }
     
     excludes
