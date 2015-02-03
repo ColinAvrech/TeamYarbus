@@ -58,6 +58,7 @@ namespace Editor
 
 	void ObjectPropertiesPanel::Open( )
 	{
+		SetupObjectPropertiesPanelProperties( );
 		Close( );
 
 		mObjectPropertiesPanel->SetVisible( true );
