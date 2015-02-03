@@ -65,38 +65,6 @@ Level =
 	{
 		Named = 
 		{
-			string Name = "Trails",
-		},
-		Transform = 
-		{
-			Vec3 Translation = [0, 1000, -10000],
-			Vec3 Scale = [10000, 10000, 0],
-			Quat Rotation = [0, 0, 0, 1],
-		},
-		Sprite = 
-		{
-			string SpriteSource = "Trails.png",
-			bool FlipX = false,
-			bool FlipY = false,
-			Vec4 Color = [1, 1, 1, 1],
-			bool Visible = true,
-			bool OnTop = false,
-			bool AnimationActive = false,
-			float AnimationSpeed = 1,
-			uint StartFrame = 0,
-			BlendMode BlendMode = Alpha,
-			SpriteGeometryMode GeometryMode = ZPlane,
-			string SpriteLayer = "52ad5fa30d7fcd50:DefaultSpriteLayer",
-			string Shader = "Default",
-		},
-		Spin = 
-		{
-		},
-  },
-  Cog = 
-	{
-		Named = 
-		{
 			string Name = "Mountain",
 		},
 		Transform = 

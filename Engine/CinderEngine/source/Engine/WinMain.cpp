@@ -42,7 +42,7 @@ void TestUEDisconnect(UpdateEvent* e)
 int main (void)
 {
 #ifdef _DEBUG
-  bool launchFullScreen = true;
+  bool launchFullScreen = false;
 
   EnableMemoryLeakChecking ();
 

@@ -94,7 +94,11 @@ namespace Framework
     time += 0.016f;
     //glCullFace(GL_BACK);
     glEnable(GL_BLEND);
+    
+    assert(shader && "Invalid Shader!!!");
     shader->Use();
+      
+    assert(vao && "VAO doesn't exist!!!");
     vao->bindVAO();
 
     shader->uniMat4("mvp", glm::value_ptr(gameObject->Transform->GetModelViewProjectionMatrix()));
@@ -105,7 +109,7 @@ namespace Framework
     glDrawArrays(GL_TRIANGLES, 0, vertices.size() / 2);
 
     vao->unbindVAO();
-
+      
     shader->Disable();
     OPENGL->ResetBlendMode();
   }
