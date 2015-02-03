@@ -6,6 +6,8 @@
 #include "MetaTypeDB.h"
 #include "RemQual.h"
 
+#include "MathExtensionLibrary.h"
+
 namespace Reflection
 {
 

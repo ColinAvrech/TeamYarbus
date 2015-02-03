@@ -4,6 +4,8 @@
 #include "AntTweakBar.h"
 #include "Hash.h"
 
+#include "MathExtensionLibrary.h"
+
 namespace Panel
 {
 	class PanelTypeDB
@@ -81,7 +83,7 @@ namespace Panel
 	PanelDefineType( double, double, TW_TYPE_DOUBLE );
 	PanelDefineType( std::string, string, TW_TYPE_STDSTRING );
 
-	PanelDefineType( Vector2, Vector2, TW_TYPE_DIR2F );
+	PanelDefineType( vec2, vec2, TW_TYPE_DIR2F );
 	PanelDefineType( glm::vec3, vec3, TW_TYPE_DIR3F );
 	PanelDefineType( glm::vec4, vec4, TW_TYPE_DIR4F );
 	PanelDefineType( glm::quat, quat, TW_TYPE_QUAT4F );

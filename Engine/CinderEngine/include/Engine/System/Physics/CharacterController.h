@@ -68,8 +68,3 @@ namespace Framework
   };
 
 }
-
-META_DEFINE( Framework::CharacterController, CharacterController )
-{
-
-}
