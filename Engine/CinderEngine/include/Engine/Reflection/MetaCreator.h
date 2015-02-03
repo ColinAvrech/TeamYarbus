@@ -65,6 +65,7 @@ META_DEFINE_BASE( unsigned int, unsigned int );
 META_DEFINE_BASE( float, float );
 META_DEFINE_BASE( double, double );
 
+META_DEFINE_BASE( Vector2, vec2 );
 META_DEFINE_BASE( glm::vec3, vec3 );
 META_DEFINE_BASE( glm::vec4, vec4 );
 META_DEFINE_BASE( std::string, string )
