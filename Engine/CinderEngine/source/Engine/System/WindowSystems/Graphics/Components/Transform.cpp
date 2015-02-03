@@ -47,9 +47,6 @@ namespace Framework
 
   Transform::Transform()
   {
-	  std::cout << * reinterpret_cast<float*>(
-		  reinterpret_cast<char*>(this) + ( reinterpret_cast<char *>( &testFloat ) - reinterpret_cast<char *>( this ) ) ) << std::endl;
-
     localPosition = { 0, 0, 0 };
     localScale = { 1, 1, 1 };
     localRotation = 0.0f;

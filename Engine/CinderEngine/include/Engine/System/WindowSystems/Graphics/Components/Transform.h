@@ -100,7 +100,6 @@ namespace Framework
 	vec3 localPosition;
 	vec3 localScale;
 	float localRotation;
-	float testFloat = 123.0f;
     glm::mat3 normalMatrix;
 
     // To avoid Unnecesary calculation in Update Matrices
@@ -111,10 +110,12 @@ namespace Framework
 
 META_DEFINE( Framework::Transform, Transform )
 {
+	MEMBER( localPosition );
 	MEMBER( position );
-	MEMBER( localRotation );
+	MEMBER( scale );
 	MEMBER( rotation );
-	MEMBER( testFloat );
+	MEMBER( localRotation );
+	MEMBER( localScale );
 }
 
 
