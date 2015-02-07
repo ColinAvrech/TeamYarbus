@@ -100,12 +100,11 @@ namespace Framework
     assert(vao && "VAO doesn't exist!!!");
     vao->bindVAO();
 
-<<<<<<< HEAD
     shader->uniMat4("mvp", glm::value_ptr(static_cast<Transform*>(gameObject->GetComponent("Transform"))->GetModelViewProjectionMatrix()));
-=======
-    shader->uniMat4("mvp", glm::value_ptr(gameObject->Transform->GetModelViewProjectionMatrix()));
-    shader->uniMat4("modelMatrix", glm::value_ptr(gameObject->Transform->GetModelMatrix()));
->>>>>>> 46a006a2cdd0172089d115c536b38080d0793903
+
+    //shader->uniMat4("mvp", glm::value_ptr(gameObject->Transform->GetModelViewProjectionMatrix()));
+    //shader->uniMat4("modelMatrix", glm::value_ptr(gameObject->Transform->GetModelMatrix()));
+
     shader->uni4f("color1", color1.r, color1.g, color1.b, color1.a);
     shader->uni4f("color2", color2.r, color2.g, color2.b, color2.a);
     shader->uni3f("lightDir", std::sin(time / 10.f), std::cos(time / 10.f), -2.f);
