@@ -18,6 +18,8 @@
 #include "ZilchCompiledlib.h"
 #include "Zilch.hpp"
 
+#include "MetaCreator.h"
+
 namespace Framework
 {
   class PolygonCollider2D;
@@ -25,6 +27,8 @@ namespace Framework
   class Terrain2D : public IGraphicsObject
   {
   public:
+	  META_DECLARE( Terrain2D );
+
     ZilchDeclareDerivedType (Terrain2D, IGraphicsObject);
 
   Terrain2D ();

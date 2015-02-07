@@ -23,6 +23,10 @@
 #include "Events.h"
 #include "PhysicsLibrary.h"
 
+META_DEFINE( Framework::CharacterController, CharacterController )
+{
+
+}
 
 namespace Framework
 {

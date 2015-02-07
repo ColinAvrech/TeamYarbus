@@ -18,6 +18,12 @@
 #include "AudioComponent.h"
 #include "Thermodynamics.h"
 
+META_DEFINE( Framework::EcoSystem, EcoSystem )
+{
+
+}
+
+
 namespace Framework
 { 
 	void EcoSystem::Serialize(Serializer::DataNode* data)

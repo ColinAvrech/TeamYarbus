@@ -17,6 +17,8 @@
 #include "ParticleUpdaters.h"
 #include "ParticleRenderer.h"
 
+#include "MetaCreator.h"
+
 namespace Framework
 {
   class KeyEvent;
@@ -25,6 +27,8 @@ namespace Framework
   class FireSystem : public IEffect
   {
   public:
+	  META_DECLARE( FireSystem );
+
     FireSystem ();
     virtual ~FireSystem ();
 

@@ -9,6 +9,7 @@
 /******************************************************************************/
 #pragma once
 
+#include "MetaCreator.h"
 
 namespace Framework
 {
@@ -18,6 +19,8 @@ namespace Framework
 	class Health : public Component
 	{
 	public:
+		META_DECLARE( Health );
+
 		const static std::string Name;
 		Health(GameObject * obj)
 		{
@@ -45,4 +48,9 @@ namespace Framework
 		glm::vec3 originalPosition;
 		PlayerEffect* playerEffect;
 	};
+}
+
+META_DEFINE( Framework::Health, Health )
+{
+
 }

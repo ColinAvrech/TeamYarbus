@@ -22,9 +22,9 @@ namespace Reflection
 
 }
 
-#define MetaDeclareType( type )	\
+#define MetaDeclareType( type, typeName )	\
 	namespace Reflection {		\
-	template <> inline const NameType & MetaTypeToName <type> () { static const NameType mName = #type; return mName; }; }
+	template <> inline const NameType & MetaTypeToName <type> () { static const NameType mName = #typeName; return mName; }; }
 
 
 #endif

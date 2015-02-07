@@ -17,7 +17,7 @@ namespace Reflection
 
 	HashedNameType MetaMember::GetHashedName( ) const
 	{
-		return mHashedName;
+		return mType;
 	}
 
 	const MetaType & MetaMember::GetType( ) const

@@ -10,6 +10,8 @@
 
 #pragma once
 
+#include "MetaCreator.h"
+
 using std::vector;
 
 namespace Framework
@@ -17,6 +19,8 @@ namespace Framework
   class FluidBody : public IGraphicsObject
   {
   public:
+	  META_DECLARE( FluidBody );
+
     FluidBody();
     virtual ~FluidBody();
     virtual void Serialize(Serializer::DataNode*);
@@ -60,3 +64,5 @@ namespace Framework
   };
 
 }
+
+

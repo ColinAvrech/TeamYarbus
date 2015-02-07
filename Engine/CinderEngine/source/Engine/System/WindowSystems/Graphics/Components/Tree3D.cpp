@@ -23,9 +23,18 @@
 #define IX(i) i*6
 #define V_DATA 6
 
+
+META_DEFINE( Framework::Tree3D, Tree3D )
+{
+	MEMBER( bound_l );
+	MEMBER( color );
+}
+
 namespace Framework
 {
   DefineComponentName(Tree3D);
+
+  
 
   static std::vector<float> joints_x;
   static std::vector<float> joints_y;

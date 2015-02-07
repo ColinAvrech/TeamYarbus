@@ -19,6 +19,11 @@
 #include "glfw3.h"
 #include "Events.h"
 
+META_DEFINE( Framework::FireSystem, FireSystem )
+{
+
+}
+
 namespace Framework
 {
   DefineComponentName (FireSystem);

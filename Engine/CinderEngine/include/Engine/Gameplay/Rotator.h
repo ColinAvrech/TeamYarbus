@@ -18,6 +18,8 @@ namespace Framework
   class Rotator : public Component
   {
   public:
+	  META_DECLARE( Rotator );
+
   Rotator ();
   ~Rotator ();
 
@@ -31,6 +33,11 @@ namespace Framework
   private:
     float velocity;
   };  
+}
+
+META_DEFINE( Framework::Rotator, Rotator )
+{
+
 }
 
 #endif

@@ -12,6 +12,7 @@
 
 #pragma once
 
+#include "MetaCreator.h"
 
 namespace Framework
 {
@@ -23,6 +24,8 @@ namespace Framework
   {
   public:
     //ZilchDeclareBaseType(MicahPC, Zilch::TypeCopyMode::ReferenceType);
+
+	  META_DECLARE( MicahPC );
 
     MicahPC();
     virtual ~MicahPC();
@@ -47,7 +50,10 @@ namespace Framework
 
   };
 
-
-
-
 }
+
+
+  META_DEFINE( Framework::MicahPC, MicahPC )
+  {
+
+  }

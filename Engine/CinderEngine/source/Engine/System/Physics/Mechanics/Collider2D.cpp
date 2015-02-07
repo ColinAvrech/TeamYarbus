@@ -107,10 +107,10 @@ namespace Framework
   void CircleCollider2D::Initialize ()
   {
     gameObject->ShapeCollider2D = this;
-    RigidBody2D* b = Physics::PHYSICS->Add (this, gameObject->Transform->GetPosition ().x, gameObject->Transform->GetPosition ().y);
-    rigidBody = b;
-    b->gameObject = this->gameObject;
+    RigidBody2D* b = reinterpret_cast<RigidBody2D*>(gameObject->AddComponent("RigidBody2D"));
     gameObject->RigidBody2D = b;
+    rigidBody = b;
+    b->position = Vector2(gameObject->Transform->GetPosition().x, gameObject->Transform->GetPosition().y);
     b->velocity = Vector2 (velocity.x, velocity.y);
     b->restitution = Bounciness;
     b->dynamicFriction = DynamicFriction;
@@ -222,10 +222,11 @@ namespace Framework
     SetBox (dimensions.x, dimensions.y);
     SetOrient (orientation);
     gameObject->ShapeCollider2D = this;
-    RigidBody2D* b = Physics::PHYSICS->Add (this, gameObject->Transform->GetPosition ().x, gameObject->Transform->GetPosition ().y);
+    RigidBody2D* b = reinterpret_cast<RigidBody2D*>(gameObject->AddComponent("RigidBody2D"));
+    gameObject->RigidBody2D = b; 
     rigidBody = b;
     b->gameObject = this->gameObject;
-    gameObject->RigidBody2D = b;
+    b->position = Vector2(gameObject->Transform->GetPosition().x, gameObject->Transform->GetPosition().y);
     b->restitution = Bounciness;
     b->dynamicFriction = DynamicFriction;
     b->staticFriction = StaticFriction;

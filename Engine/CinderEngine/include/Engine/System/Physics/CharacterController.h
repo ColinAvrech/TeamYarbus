@@ -11,6 +11,8 @@
 #include "Component.h"
 #include "Zilch.hpp"
 
+#include "MetaCreator.h"
+
 namespace Framework
 {
   class KeyEvent;
@@ -20,6 +22,8 @@ namespace Framework
   class CharacterController : public Component
   {
   public:
+	  META_DECLARE( CharacterController );
+
     ZilchDeclareDerivedType (CharacterController, Component);
     const static string Name;
 

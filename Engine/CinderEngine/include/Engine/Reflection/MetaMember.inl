@@ -8,7 +8,6 @@ namespace Reflection
 							const char * description ) :
 
 							mName( memberName ),
-							mHashedName( GenerateHash( memberName ) ),
 							mType( memberType ),
 							mOffset( offsetof( ParentType, *member ) ),
 							mIsPointer( std::is_pointer< MemberType >::value ),

@@ -12,6 +12,11 @@ namespace Panel
 
 	PanelManager::PanelManager( GraphicAPI graphics, unsigned int windowWidth, unsigned int windowHeight )
 	{
+		if ( Framework::PANELMANAGER != nullptr )
+			__debugbreak( );
+
+		Framework::PANELMANAGER = this;
+
 		InitATB( graphics );
 		SetWindowSize( windowWidth, windowHeight );
 	}

@@ -83,6 +83,7 @@ namespace Framework
           }
         }
 
+		PANELMANAGER->SetWindowSize( w, h );
         glfwSetWindowSize (window, WINDOWSYSTEM->Get_Width (), WINDOWSYSTEM->Get_Height ());
         OPENGL->ResizeBuffer (WINDOWSYSTEM->Get_Width (), WINDOWSYSTEM->Get_Height ());
       }
@@ -152,8 +153,8 @@ namespace Framework
 
     void GLFWMessageHandler (GLFWwindow* window, const int key, const int scanCode, const int state, const int mod)
     {
-		// if ( TwEventKeyGLFW( key, state ) )
-		// 	return;
+		if ( TwEventKeyGLFW( key, state ) )
+			return;
 
       // Set booleans for InputManager
       InputManager::KeyChange(key, scanCode, state, mod);
@@ -316,16 +317,16 @@ namespace Framework
 
     void GLFWMouseButtonFunction (GLFWwindow *, const int button, const int action, const int mod)
     {
-		// if ( TwEventMouseButtonGLFW( button, action ) )
-		// 	return;
+		if ( TwEventMouseButtonGLFW( button, action ) )
+			return;
 
 		  WINDOWSYSTEM->IsMouseDown = action;
 		  InputManager::MouseChange(button, action, mod);
     }
     void GLFWMouseCursorMoved (GLFWwindow* window, const double xPos, const double yPos)
     {
-		// if ( TwEventMousePosGLFW( xPos, yPos ) )
-		// 	return;
+		if ( TwEventMousePosGLFW( xPos, yPos ) )
+			return;
 
       WINDOWSYSTEM->cursorPosition.x = xPos + mouseOffset.x;
       WINDOWSYSTEM->cursorPosition.y = yPos + mouseOffset.y;
@@ -534,7 +535,7 @@ namespace Framework
     if (focused)
     OPENGL->Update ();
 
-	// Panel::PanelManager::Draw( );
+	Panel::PanelManager::Draw( );
 
     glfwSwapBuffers (window);
   }

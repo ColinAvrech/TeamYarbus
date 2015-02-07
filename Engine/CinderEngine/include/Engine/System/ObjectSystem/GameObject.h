@@ -60,6 +60,7 @@ namespace Framework
   class SparkCollector;
   class FluidBody;
   class GUIText;
+  class Splitscreen;
 
   class GameObject
   {
@@ -115,13 +116,14 @@ namespace Framework
 	ComponentPointer(PlayerStats);
     ComponentPointer(FluidBody);
     ComponentPointer(GUIText);
+	ComponentPointer(Splitscreen);
 	
 
    // Menu Components
    ComponentPointer(MenuController);
    ComponentPointer(ButtonController);
 
-  private:
+  public:
 
     typedef std::map<string, Component *> ComponentMap;
     ComponentMap Components;

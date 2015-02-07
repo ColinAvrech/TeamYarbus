@@ -11,6 +11,7 @@
 #ifndef _PLAYER_STATS_H
 #define _PLAYER_STATS_H
 
+#include "MetaCreator.h"
 
 namespace Framework
 {
@@ -21,6 +22,8 @@ namespace Framework
   class PlayerStats : public Component
   {
   public:
+	  META_DECLARE( PlayerStats );
+
   PlayerStats ();
   ~PlayerStats ();
   std::string NextLevel;
@@ -37,6 +40,11 @@ namespace Framework
     float timer = 0.0f;
 
   };  
+}
+
+META_DEFINE( Framework::PlayerStats, PlayerStats )
+{
+
 }
 
 #endif

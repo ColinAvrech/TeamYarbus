@@ -14,6 +14,8 @@
 #include <algorithm>
 #include "Component.h"
 
+#include "MetaCreator.h"
+
 #define MaxVertices 64
 
 namespace Framework
@@ -21,6 +23,9 @@ namespace Framework
 	class ShapeCollider2D : public Component
 	{
 	public:
+
+		META_DECLARE( ShapeCollider2D );
+
 	  const static std::string Name;
 	  enum Type
 	  {
@@ -65,6 +70,8 @@ namespace Framework
 	class CircleCollider2D : public ShapeCollider2D
 	{
 	public:
+		META_DECLARE( CircleCollider2D );
+
 	  const static std::string Name;
 	  CircleCollider2D () {}
     virtual ~CircleCollider2D ();
@@ -115,5 +122,14 @@ namespace Framework
 	};
 }
 
+META_DEFINE( Framework::ShapeCollider2D, ShapeCollider2D )
+{
+
+}
+
+META_DEFINE( Framework::CircleCollider2D, CircleCollider2D )
+{
+
+}
 
 #endif // _COLLIDER_2D_H

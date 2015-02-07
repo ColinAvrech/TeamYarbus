@@ -132,7 +132,11 @@ typedef enum ETwType
     TW_TYPE_QUAT4F = TW_TYPE_CDSTRING+2, // 4 floats encoding a quaternion {qx,qy,qz,qs}
     TW_TYPE_QUAT4D,     // 4 doubles encoding a quaternion {qx,qy,qz,qs}
     TW_TYPE_DIR3F,      // direction vector represented by 3 floats
-    TW_TYPE_DIR3D       // direction vector represented by 3 doubles
+    TW_TYPE_DIR3D,       // direction vector represented by 3 doubles
+
+	// user defined
+	TW_TYPE_DIR2F,
+	TW_TYPE_DIR4F
 } TwType;
 #define TW_TYPE_CSSTRING(n) ((TwType)(0x30000000+((n)&0xfffffff))) // Null-terminated C Static String of size n (defined as char[n], with n<2^28)
 

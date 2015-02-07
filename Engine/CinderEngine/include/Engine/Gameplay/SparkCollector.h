@@ -16,6 +16,8 @@ namespace Framework
 	class SparkCollector : public Component
 	{
 	public:
+		META_DECLARE( SparkCollector );
+
 		static GUIText* guiText;
 		SparkCollector(GameObject* obj)
 		{
@@ -37,4 +39,9 @@ namespace Framework
 	private:
 		int sparkCounter = 0;
 	};
+}
+
+META_DEFINE( Framework::SparkCollector, SparkCollector )
+{
+
 }

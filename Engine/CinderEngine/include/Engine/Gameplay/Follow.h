@@ -11,6 +11,8 @@
 #ifndef _FOLLOW_H
 #define _FOLLOW_H
 
+#include "MetaCreator.h"
+
 namespace Framework
 {
   class UpdateEvent;
@@ -19,6 +21,8 @@ namespace Framework
   class Follow : public Component
   {
   public:
+	  META_DECLARE( Follow );
+
   Follow ();
   ~Follow ();
 
@@ -33,6 +37,11 @@ namespace Framework
     std::string targetName;
     Transform* target;
   };  
+}
+
+META_DEFINE( Framework::Follow, Follow )
+{
+
 }
 
 #endif

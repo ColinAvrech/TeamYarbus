@@ -9,7 +9,7 @@
 /******************************************************************************/
 
 #include <Precompiled.h>
-
+#include "Hash.h"
 
 namespace Framework
 {
@@ -102,6 +102,7 @@ namespace Framework
     {
       Component* gc = OBJECTSYSTEM->SerialMap[name]->Create();
       Components[name] = gc;
+	    gc->mComponentType = Hash::Hash::Generate( name );
       gc->gameObject = this;
       return gc;
     }

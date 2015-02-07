@@ -18,8 +18,8 @@
 
 #include "ZilchCompiledLib.h"
 
-
-
+#include "MetaTypeDB.h"
+#include "MetaCreator.h"
 
 namespace Framework
 {
@@ -27,6 +27,7 @@ namespace Framework
   class Transform : public Component
   {
   public:
+	  META_DECLARE( Transform );
     ZilchDeclareDerivedType(Transform, Component);
     
     Transform ();
@@ -104,6 +105,18 @@ namespace Framework
     // To avoid Unnecesary calculation in Update Matrices
     
   };
+
 }
+
+META_DEFINE( Framework::Transform, Transform )
+{
+	MEMBER( localPosition );
+	MEMBER( position );
+	MEMBER( scale );
+	MEMBER( rotation );
+	MEMBER( localRotation );
+	MEMBER( localScale );
+}
+
 
 #endif

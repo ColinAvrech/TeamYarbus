@@ -14,6 +14,8 @@ starts the game loop.
 #include "CheatCodes.h"
 #include "Shlwapi.h" //used for PathAppend and PathFileExists for file/directory management
 
+#include "LevelEditor.h"
+
 #define WINDOWSBUILD
 #ifdef WINDOWSBUILD
 
@@ -158,8 +160,17 @@ int main (void)
   // Update the ObjectManager to load in the first level
   OBJECTSYSTEM->Update(0.016f);
 
+  Panel::PanelManager			* panels = new Panel::PanelManager( Panel::PanelManager::GraphicAPI::OPENGL,
+																	ClientWidth, ClientHeight );
+  Editor::LevelEditor			* le = new Editor::LevelEditor( );
+  le->InitializeEditor( );
+
   //! Run the game! NOW!
   engine->GameLoop ();
+
+  // delete editors
+  delete le;
+  delete panels;
 
   //! Delete engine
   delete engine;

@@ -12,6 +12,7 @@
 
 #pragma once
 
+#include "MetaCreator.h"
 
 namespace Framework
 {
@@ -23,6 +24,8 @@ namespace Framework
   class FirePointController : public Component
   {
   public:
+	  META_DECLARE( FirePointController );
+
     //ZilchDeclareBaseType(FirePointController, Zilch::TypeCopyMode::ReferenceType);
 
     FirePointController();
@@ -43,5 +46,10 @@ namespace Framework
 
 
 
+
+}
+
+META_DEFINE( Framework::FirePointController, FirePointController )
+{
 
 }

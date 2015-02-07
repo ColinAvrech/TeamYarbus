@@ -16,6 +16,8 @@
 -----------------------------------------------------------------------------*/
 #pragma region Includes
 
+#include "MetaCreator.h"
+
 #pragma endregion
 
 namespace Framework
@@ -28,6 +30,8 @@ namespace Framework
   class AudioComponent : public  Component
   {
     public:
+
+		META_DECLARE( AudioComponent );
 
       /*-----------------------------------------------------------------------
       // Constructors
@@ -144,6 +148,11 @@ namespace Framework
       #pragma endregion
 
   };
+}
+
+META_DEFINE( Framework::AudioComponent, AudioComponent )
+{
+
 }
 
 //-----------------------------------------------------------------------------
