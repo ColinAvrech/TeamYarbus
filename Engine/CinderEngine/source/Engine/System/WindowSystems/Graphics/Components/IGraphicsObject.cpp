@@ -55,7 +55,7 @@ namespace Framework
     if (shader != nullptr)
     {
       shader->Use ();
-      shader->uniMat4 ("mvp", glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix ()));
+      shader->uniMat4("mvp", glm::value_ptr(static_cast<Transform*>(gameObject->GetComponent("Transform"))->GetModelViewProjectionMatrix()));
       shader->Disable ();
     }
   }

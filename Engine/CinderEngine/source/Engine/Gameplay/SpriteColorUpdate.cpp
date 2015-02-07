@@ -33,7 +33,7 @@ namespace Framework
   void SpriteColorUpdate::Initialize ()
   {
     EVENTSYSTEM->mConnect<UpdateEvent, SpriteColorUpdate> (Events::UPDATEEVENT, this, &SpriteColorUpdate::Update);
-    gameObject->Sprite->color = minColor;
+    static_cast<Sprite*>(gameObject->GetComponent("Sprite"))->color = minColor;
   }
 
   void SpriteColorUpdate::Update (UpdateEvent* update)
@@ -69,7 +69,7 @@ namespace Framework
       break;
     }
 
-    gameObject->Sprite->color = glm::mix (minColor, maxColor, timer);
+    static_cast<Sprite*>(gameObject->GetComponent("Sprite"))->color = glm::mix(minColor, maxColor, timer);
   }
 
   void SpriteColorUpdate::OnApplicationPause (PauseEvent* pause)

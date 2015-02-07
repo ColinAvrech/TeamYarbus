@@ -48,7 +48,6 @@ namespace Framework
 
   void FireGroup::Initialize()
   {
-    gameObject->FireGroup = this;
   }
 
   void FireGroup::AddFireStarter(FireStarter *newFirePoint)
@@ -96,7 +95,7 @@ namespace Framework
 
   vec2 FireStarter::GetPosition()
   {
-    vec3 pos = manager->gameObject->Transform->GetPosition(); //Get Tree position
+    vec3 pos = static_cast<Transform*>(manager->gameObject->GetComponent("Transform"))->GetPosition(); //Get Tree position
 
     return vec2(pos.x + positionOffset.x, pos.y + positionOffset.y);
   }
@@ -104,7 +103,7 @@ namespace Framework
   vec2 FireStarter::GetGridPosition()
   {
     //manager->gameObject->Transform->GetGridPosition(positionOffset + (glm::vec2) manager->gameObject->Transform->GetPosition ());
-    return manager->gameObject->Transform->GetGridPosition() + positionOffset;
+    return static_cast<Transform*>(manager->gameObject->GetComponent("Transform"))->GetGridPosition() + positionOffset;
   }
 
 	void FireStarter::LightOnFire(void)

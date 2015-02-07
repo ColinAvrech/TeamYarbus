@@ -22,6 +22,7 @@
 #include <vector>
 #include <string>
 #include <cmath>
+#include <glm/gtx/norm.hpp>
 
 using glm::vec2;
 using glm::vec3;

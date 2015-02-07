@@ -35,13 +35,12 @@ namespace Framework
 	void Health::Initialize()
 	{
 		EVENTSYSTEM->mConnect<UpdateEvent, Health>(Events::UPDATEEVENT, this, &Health::Update);
-		gameObject->Health = this;
 
 		//currentDeathRate = startDeathRate;
 		currentRadius = maxRadius;
 		invincible = false;
-		originalPosition = gameObject->Transform->GetPosition();
-		playerEffect = reinterpret_cast<PlayerEffect*>(gameObject->GetComponent("PlayerEffect"));
+    originalPosition = static_cast<Transform*>(gameObject->GetComponent("Transform"))->GetPosition();
+		playerEffect = static_cast<PlayerEffect*>(gameObject->GetComponent("PlayerEffect"));
 	}
 
 #include "PlayerStats.h"
@@ -63,8 +62,10 @@ namespace Framework
 			return;
 		}
 
+
+    Transform* tform = static_cast<Transform*>(gameObject->GetComponent("Transform"));
 		//check if player is colliding with node on fire -- for refuel
-		glm::ivec2 currPos = gameObject->Transform->GetGridPosition();
+		glm::ivec2 currPos = tform->GetGridPosition();
 		int material = Physics::THERMODYNAMICS->GetCellMaterial(currPos.x, currPos.y);
 		float temp = Physics::THERMODYNAMICS->GetCellTemperature(currPos.x, currPos.y);
 
@@ -79,7 +80,7 @@ namespace Framework
 		}
 
 		currentRadius -= currentDeathRate * e->Dt;
-		gameObject->Transform->Scale(currentRadius / maxRadius);
+		tform->Scale(currentRadius / maxRadius);
 
 		if (currentRadius <= minRadius)
 		{

@@ -167,9 +167,12 @@ Level =
 		{
       bool Enabled = true,
 		  float Radius = 1.0,
+		},
+    RigidBody2D = 
+    {
 		  bool Static = false,
 		  string Material = "4de020863e872da8:DefaultPhysicsMaterial",
-		},
+    },
 		//CameraFollow = 
 		//{
 		//},
@@ -186,7 +189,7 @@ Level =
 			string SpriteSource = "tumbleweed.png",
 			bool FlipX = false,
 			bool FlipY = false,
-			Vec4 Color = [1, 1, 1, 0],
+			Vec4 Color = [1, 1, 1, 1],
 			bool Visible = true,
 			bool OnTop = false,
 			bool AnimationActive = false,

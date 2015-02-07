@@ -14,6 +14,7 @@
 #include "Component.h"
 
 #include "MetaCreator.h"
+#include "Material.h"
 
 namespace Framework
 {
@@ -27,53 +28,55 @@ namespace Framework
 	  const static std::string Name;
 	  RigidBody2D(ShapeCollider2D *shape_, float x, float y);
     ~RigidBody2D ();
-    RigidBody2D (){}
+    RigidBody2D();
 	
 	  virtual void Serialize (Framework::Serializer::DataNode* data);
-    void SerializeMaterial (const char* name);
 	  virtual void Initialize ();
 	
-	  void ApplyForce( const Vector2& f );
-	
-	  void ApplyImpulse( const Vector2& impulse, const Vector2& contactVector )
+	  void ApplyForce( const vec3& f );
+    void ComputeMass();
+
+	  void ApplyImpulse( const vec3& impulse, const vec3& contactVector )
 	  {
-	    velocity += im * impulse;
-	    angularVelocity += iI * Cross( contactVector, impulse );
+	    velocity += invMass * impulse;
+	    angularVelocity += invI * Cross( contactVector, impulse );
 	  }
-	
+
+    void SetMaterial(string newMatName);
+    void SetDensity(const float& newDensity);
+    float GetArea();
+
 	  void SetStatic( void )
 	  {
 	    I = 0.0f;
-	    iI = 0.0f;
-	    m = 0.0f;
-	    im = 0.0f;
+	    invI = 0.0f;
+	    mass = 0.0f;
+	    invMass = 0.0f;
 	  }
 	
 	  void SetOrient( float radians );
 
-	  Vector2 position;
-	  Vector2 velocity;
-	  Vector2 maxVelocity;
-	
+	  vec3 position;
+	  vec3 velocity;
+	  vec3 maxVelocity;
+    vec3 acceleration;
+
 	  float angularVelocity;
 	  float torque;
 	  float orient; // radians
 	
-	  Vector2 force;
+	  vec3 force;
 	
 	  // Set by shape
 	  float I;  // moment of inertia
-	  float iI; // inverse inertia
-	  float m;  // mass
-	  float im; // inverse masee
+	  float invI; // inverse inertia
+	  float mass;  // mass
+	  float invMass; // inverse masee
 	
-	  float staticFriction;
-	  float dynamicFriction;
-	  float restitution;
-	
-	  // Shape interface
-	  ShapeCollider2D *shape;
-	
+    bool isStatic;
+    string matName;
+    Material* mat;
+
 	  // Store a color in RGB format
 	  float r, g, b;
 	};

@@ -32,7 +32,9 @@ namespace Framework
 
   void EndTrigger::Update(UpdateEvent* update)
   {
-    if (!triggered && CharacterController::PLAYER->gameObject->Transform->GetPosition().x >= gameObject->Transform->GetPosition().x)
+    Transform* characterTransform = static_cast<Transform*>(CharacterController::PLAYER->gameObject->GetComponent("Transform"));
+    Transform* tform = static_cast<Transform*>(gameObject->GetComponent("Transform"));
+    if (!triggered && characterTransform->GetPosition().x >= tform->GetPosition().x)
     {
       triggered = true;
       BaseEvent b;

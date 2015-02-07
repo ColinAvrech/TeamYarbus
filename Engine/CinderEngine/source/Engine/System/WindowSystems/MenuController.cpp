@@ -44,10 +44,14 @@ namespace Framework
   void MenuController::AddButtonsWhoPing(PingEvent * e)
   {
     // if the ping is a button
-    if (e->Ping != nullptr && e->Ping->ButtonController != nullptr)
+    if (!e || !e->Ping)
+      return;
+
+    ButtonController*bc = static_cast<ButtonController*>(e->Ping->GetComponent("ButtonController"));
+    if (bc)
     {
       Button new_button;
-      new_button.ActiveState = e->Ping->ButtonController->ActiveState;
+      new_button.ActiveState =bc->ActiveState;
       new_button.Obj = e->Ping;
       Buttons.push_back(new_button);
     }

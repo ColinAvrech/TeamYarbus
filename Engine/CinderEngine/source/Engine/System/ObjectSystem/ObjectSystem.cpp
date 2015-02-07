@@ -192,6 +192,7 @@ namespace Framework
 		RegisterComponent(ShapeCollider2D);
 		RegisterComponent(CircleCollider2D);
 		RegisterComponent(PolygonCollider2D);
+    RegisterComponent(CompoundCollider2D);
 		RegisterComponent(FluidBody);
 		//RegisterComponent (SplineCollider);
 		//////////////////////////////////////////////////////////////////////////
@@ -308,10 +309,14 @@ namespace Framework
 	{
 		bool loadSuccess = false;
 		string nextLevel;
-		if (ptrPlayer && ptrPlayer->PlayerStats)
+		if (ptrPlayer)
 		{
-			loadSuccess = true;
-			nextLevel = ptrPlayer->PlayerStats->NextLevel.c_str();
+      PlayerStats* ps = static_cast<PlayerStats*>(ptrPlayer->GetComponent("PlayerStats"));
+      if (ps)
+      {
+			  loadSuccess = true;
+			  nextLevel = ps->NextLevel.c_str();
+      }
 		}
 		else//HACK for splash screens
 		{
@@ -398,11 +403,13 @@ namespace Framework
 		auto it = data->branch;
 		while (it)
 		{
+      string objName;
+      Serializer::DataNode *n = it->FindElement(it->branch, "Named");
+      n->FindElement(n->branch, "Name")->GetValue(&objName);
 			if (it->objectName.compare("Cog") == 0 &&
-				it->branch->next->branch->value_.String_->compare("EditorCamera") != 0)
+				objName.compare("EditorCamera") != 0)
 			{
 				GameObject* newobj = OBJECTSYSTEM->CreateObject();
-
 
 				//if (LastGameObjectId <= it->branch->branch->value_.UInt_)
 				//{ LastGameObjectId = it->branch->branch->value_.UInt_ + 1; } // Makes sure that every created object has a unique ID.
@@ -448,7 +455,7 @@ namespace Framework
 				}
 				objectlist->append(newobj);
 
-				ErrorIf(newobj->Transform == nullptr, (string("Transform component missing on GameObject ") + newobj->Name.c_str()).c_str());
+        ErrorIf(!newobj->GetComponent("Transform"), (string("Transform component missing on GameObject ") + newobj->Name.c_str()).c_str());
 			}
 			it = it->next;
 		}
@@ -459,7 +466,7 @@ namespace Framework
 		{
 
 			Function* ZilchInitialize = i.Type->FindFunction("Initialize", args, ZilchTypeId(void), Zilch::FindMemberOptions::None);
-			ErrorIf(ZilchInitialize == nullptr, "Failed to find function 'Initialize' on Zilch type ", i.Type);
+			ErrorIf(!ZilchInitialize, "Failed to find function 'Initialize' on Zilch type ", i.Type);
 
 			{
 				Zilch::ExceptionReport report;

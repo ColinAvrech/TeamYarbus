@@ -42,7 +42,6 @@ namespace Framework
   // Destructor
   FluidBody::~FluidBody()
   {
-    gameObject->FluidBody = nullptr;
     delete vao1, vbo1;
     vao = nullptr;
     vbo = nullptr;
@@ -77,11 +76,11 @@ namespace Framework
 
   void FluidBody::Initialize()
   {
-    position.x = this->gameObject->Transform->GetPosition().x;
-    position.y = this->gameObject->Transform->GetPosition().y;
-    scale = glm::vec2(gameObject->Transform->GetScale());
+    Transform* tform = static_cast<Transform*>(gameObject->GetComponent("Transform"));
+    position.x = tform->GetPosition().x;
+    position.y = tform->GetPosition().y;
+    scale = glm::vec2(tform->GetScale());
     Base_Level = 1.f;
-    gameObject->FluidBody = this;
     Generate_Height_Points();
     Generate_Vertices();
     Generate_Buffers();
@@ -95,7 +94,7 @@ namespace Framework
 
   void FluidBody::Update(const float dt)
   {
-    scale = glm::vec2(gameObject->Transform->GetScale());
+    scale = glm::vec2(static_cast<Transform*>(gameObject->GetComponent("Transform"))->GetScale());
     time += dt;
     //test splash
     if (time >= 1.f)
@@ -128,7 +127,7 @@ namespace Framework
     glEnable(GL_BLEND);
     shader->Use();
     vao->bindVAO();
-    shader->uniMat4("mvp", glm::value_ptr(gameObject->Transform->GetModelViewProjectionMatrix()));
+    shader->uniMat4("mvp", glm::value_ptr(static_cast<Transform*>(gameObject->GetComponent("Transform"))->GetModelViewProjectionMatrix()));
     shader->uni4f("color1", color1.r, color1.g, color1.b, color1.a);
     shader->uni4f("color2", color2.r, color2.g, color2.b, color2.a);
 

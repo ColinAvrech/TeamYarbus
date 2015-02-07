@@ -28,14 +28,14 @@ namespace Framework
 	};
 	
 	void CircletoCircle( Manifold *m, RigidBody2D *a, RigidBody2D *b )
-	{
-	  CircleCollider2D *A = reinterpret_cast<CircleCollider2D *>(a->shape);
-	  CircleCollider2D *B = reinterpret_cast<CircleCollider2D *>(b->shape);
+  {
+    CircleCollider2D *A = reinterpret_cast<CircleCollider2D *>(a->gameObject->GetComponent("ShapeCollider2D"));
+    CircleCollider2D *B = reinterpret_cast<CircleCollider2D *>(b->gameObject->GetComponent("ShapeCollider2D"));
 	
 	  // Calculate translational vector, which is normal
-	  Vector2 normal = b->position - a->position;
+	  vec3 normal = b->position - a->position;
 	
-	  float dist_sqr = normal.LenSqr( );
+	  float dist_sqr = normal.length() * normal.length();
 	  float radius = A->radius + B->radius;
 	
 	  // Not in contact
@@ -61,7 +61,7 @@ namespace Framework
 	  if(distance == 0.0f)
 	  {
 	    m->penetration = A->radius;
-	    m->normal = Vector2( 1, 0 );
+	    m->normal = vec3( 1, 0, 0);
 	    m->contacts [0] = a->position;
 	  }
 	  else
@@ -73,15 +73,15 @@ namespace Framework
 	}
 	
 	void CircletoPolygon( Manifold *m, RigidBody2D *a, RigidBody2D *b )
-	{
-	  CircleCollider2D *A       = reinterpret_cast<CircleCollider2D *>      (a->shape);
-	  PolygonCollider2D *B = reinterpret_cast<PolygonCollider2D *>(b->shape);
+  {
+    CircleCollider2D  *A = reinterpret_cast<CircleCollider2D *> (a->gameObject->GetComponent("ShapeCollider2D"));
+    PolygonCollider2D *B = reinterpret_cast<PolygonCollider2D *>(b->gameObject->GetComponent("ShapeCollider2D"));
 	
 	  m->contact_count = 0;
 	
 	  // Transform circle center to Polygon model space
-	  Vector2 center = a->position;
-	  center = B->u.Transpose( ) * (center - b->position);
+	  vec3 center = a->position;
+	  center = glm::transpose(B->u) * (center - b->position);
 	
 	  // Find edge with minimum penetration
 	  // Exact concept as using support points in Polygon vs Polygon
@@ -89,7 +89,7 @@ namespace Framework
 	  unsigned faceNormal = 0;
 	  for(unsigned i = 0; i < B->m_vertexCount; ++i)
 	  {
-	    float s = Dot( B->m_normals[i], center - B->m_vertices[i] );
+	    float s = glm::dot( B->m_normals[i], center - B->m_vertices[i] );
 	
 	    if(s > A->radius)
 	      return;
@@ -110,9 +110,9 @@ namespace Framework
 	  EVENTSYSTEM->TriggerEvent(Events::COLLISION, collisionEvent);
 
 	  // Grab face's vertices
-	  Vector2 v1 = B->m_vertices[faceNormal];
+	  vec3 v1 = B->m_vertices[faceNormal];
 	  unsigned i2 = faceNormal + 1 < B->m_vertexCount ? faceNormal + 1 : 0;
-	  Vector2 v2 = B->m_vertices[i2];
+	  vec3 v2 = B->m_vertices[i2];
 	
 	  // Check to see if center is within polygon
 	  if(separation < EPSILON)
@@ -125,20 +125,20 @@ namespace Framework
 	  }
 	
 	  // Determine which voronoi region of the edge center of circle lies within
-	  float dot1 = Dot( center - v1, v2 - v1 );
-	  float dot2 = Dot( center - v2, v1 - v2 );
+	  float dot1 = glm::dot( center - v1, v2 - v1 );
+	  float dot2 = glm::dot( center - v2, v1 - v2 );
 	  m->penetration = A->radius - separation;
 	
 	  // Closest to v1
 	  if(dot1 <= 0.0f)
 	  {
-	    if(DistSqr( center, v1 ) > A->radius * A->radius)
+      //it is implied that the squares would have the same outcome hence leaving early
+	    if(glm::distance( center, v1 ) > A->radius)
 	      return;
 	
 	    m->contact_count = 1;
-	    Vector2 n = v1 - center;
-	    n = B->u * n;
-	    n.Normalize( );
+	    vec3 n = v1 - center;
+	    n = glm::normalize(B->u * n);
 	    m->normal = n;
 	    v1 = B->u * v1 + b->position;
 	    m->contacts[0] = v1;
@@ -147,23 +147,22 @@ namespace Framework
 	  // Closest to v2
 	  else if(dot2 <= 0.0f)
 	  {
-	    if(DistSqr( center, v2 ) > A->radius * A->radius)
+	    if(glm::distance( center, v2 ) > A->radius )
 	      return;
 	
 	    m->contact_count = 1;
-	    Vector2 n = v2 - center;
+	    vec3 n = v2 - center;
 	    v2 = B->u * v2 + b->position;
 	    m->contacts[0] = v2;
-	    n = B->u * n;
-	    n.Normalize( );
+	    n = glm::normalize(B->u * n);
 	    m->normal = n;
 	  }
 	
 	  // Closest to face
 	  else
 	  {
-	    Vector2 n = B->m_normals[faceNormal];
-	    if(Dot( center - v1, n ) > A->radius)
+	    vec3 n = B->m_normals[faceNormal];
+	    if(glm::dot( center - v1, n ) > A->radius)
 	      return;
 	
 	    n = B->u * n;
@@ -183,29 +182,32 @@ namespace Framework
 	{
 	  float bestDistance = -FLT_MAX;
 	  unsigned bestIndex = -1;
-	
+
+    RigidBody2D* rigidA = reinterpret_cast<RigidBody2D*>(A->gameObject->GetComponent("RigidBody2D"));
+    RigidBody2D* rigidB = reinterpret_cast<RigidBody2D*>(B->gameObject->GetComponent("RigidBody2D"));
+
 	  for(unsigned i = 0; i < A->m_vertexCount; ++i)
 	  {
 	    // Retrieve a face normal from A
-	    Vector2 n = A->m_normals[i];
-	    Vector2 nw = A->u * n;
+	    vec3 n = A->m_normals[i];
+	    vec3 nw = A->u * n;
 	
 	    // Transform face normal into B's model space
-	    Mat2 buT = B->u.Transpose( );
+	    glm::mat3 buT = glm::transpose(B->u);
 	    n = buT * nw;
 	
 	    // Retrieve support point from B along -n
-	    Vector2 s = B->GetSupport( -n );
+	    vec3 s = B->GetSupport( -n );
 	
 	    // Retrieve vertex on face from A, transform into
 	    // B's model space
-	    Vector2 v = A->m_vertices[i];
-	    v = A->u * v + A->rigidBody->position;
-	    v -= B->rigidBody->position;
+	    vec3 v = A->m_vertices[i];
+	    v = A->u * v + rigidA->position;
+	    v -= rigidB->position;
 	    v = buT * v;
 	
 	    // Compute penetration distance (in B's model space)
-	    float d = Dot( n, s - v );
+	    float d = glm::dot( n, s - v );
 	
 	    // Store greatest distance
 	    if(d > bestDistance)
@@ -221,20 +223,20 @@ namespace Framework
 	  return bestDistance;
 	}
 	
-	void FindIncidentFace( Vector2 *v, PolygonCollider2D *RefPoly, PolygonCollider2D *IncPoly, unsigned referenceIndex )
+	void FindIncidentFace( vec3 *v, PolygonCollider2D *RefPoly, PolygonCollider2D *IncPoly, unsigned referenceIndex )
 	{
-	  Vector2 referenceNormal = RefPoly->m_normals[referenceIndex];
+	  vec3 referenceNormal = RefPoly->m_normals[referenceIndex];
 	
 	  // Calculate normal in incident's frame of reference
 	  referenceNormal = RefPoly->u * referenceNormal; // To world space
-	  referenceNormal = IncPoly->u.Transpose( ) * referenceNormal; // To incident's model space
+	  referenceNormal = glm::transpose(IncPoly->u) * referenceNormal; // To incident's model space
 	
 	  // Find most anti-normal face on incident polygon
 	  int incidentFace = 0;
 	  float minDot = FLT_MAX;
 	  for(unsigned i = 0; i < IncPoly->m_vertexCount; ++i)
 	  {
-	    float dot = Dot( referenceNormal, IncPoly->m_normals[i] );
+	    float dot = glm::dot( referenceNormal, IncPoly->m_normals[i] );
 	    if(dot < minDot)
 	    {
 	      minDot = dot;
@@ -243,23 +245,24 @@ namespace Framework
 	  }
 	
 	  // Assign face vertices for incidentFace
-	  v[0] = IncPoly->u * IncPoly->m_vertices[incidentFace] + IncPoly->rigidBody->position;
+    RigidBody2D* rb = reinterpret_cast<RigidBody2D*>(IncPoly->gameObject->GetComponent("RigidBody2D"));
+	  v[0] = IncPoly->u * IncPoly->m_vertices[incidentFace] + rb->position;
 	  incidentFace = incidentFace + 1 >= (int)IncPoly->m_vertexCount ? 0 : incidentFace + 1;
-	  v[1] = IncPoly->u * IncPoly->m_vertices[incidentFace] + IncPoly->rigidBody->position;
+	  v[1] = IncPoly->u * IncPoly->m_vertices[incidentFace] + rb->position;
 	}
 	
-	int Clip( Vector2 n, float c, Vector2 *face )
+	int Clip( vec3 n, float c, vec3 *face )
 	{
 	  unsigned sp = 0;
-	  Vector2 out[2] = {
+	  vec3 out[2] = {
 	    face[0],
 	    face[1]
 	  };
 	
 	  // Retrieve distances from each endpoint to the line
 	  // d = ax + by - c
-	  float d1 = Dot( n, face[0] ) - c;
-	  float d2 = Dot( n, face[1] ) - c;
+	  float d1 = glm::dot( n, face[0] ) - c;
+	  float d2 = glm::dot( n, face[1] ) - c;
 	
 	  // If negative (behind plane) clip
 	  if(d1 <= 0.0f) out[sp++] = face[0];
@@ -285,8 +288,8 @@ namespace Framework
 	
 	void PolygontoPolygon( Manifold *m, RigidBody2D *a, RigidBody2D *b )
 	{
-	  PolygonCollider2D *A = reinterpret_cast<PolygonCollider2D *>(a->shape);
-	  PolygonCollider2D *B = reinterpret_cast<PolygonCollider2D *>(b->shape);
+    PolygonCollider2D *A = reinterpret_cast<PolygonCollider2D *>(a->gameObject->GetComponent("PolygonCollider2D"));
+    PolygonCollider2D *B = reinterpret_cast<PolygonCollider2D *>(b->gameObject->GetComponent("PolygonCollider2D"));
 	  m->contact_count = 0;
 	
 	  // Check for a separating axis with A's face planes
@@ -325,7 +328,7 @@ namespace Framework
 	  }
 	
 	  // World space incident face
-	  Vector2 incidentFace[2];
+	  vec3 incidentFace[2];
 	  FindIncidentFace( incidentFace, RefPoly, IncPoly, referenceIndex );
 	
 	  //        y
@@ -342,26 +345,26 @@ namespace Framework
 	  //  n : incident normal
 	
 	  // Setup reference face vertices
-	  Vector2 v1 = RefPoly->m_vertices[referenceIndex];
+	  vec3 v1 = RefPoly->m_vertices[referenceIndex];
 	  referenceIndex = referenceIndex + 1 == RefPoly->m_vertexCount ? 0 : referenceIndex + 1;
-	  Vector2 v2 = RefPoly->m_vertices[referenceIndex];
+	  vec3 v2 = RefPoly->m_vertices[referenceIndex];
 	
 	  // Transform vertices to world space
-	  v1 = RefPoly->u * v1 + RefPoly->rigidBody->position;
-	  v2 = RefPoly->u * v2 + RefPoly->rigidBody->position;
+    RigidBody2D* rb = reinterpret_cast<RigidBody2D*>(RefPoly->gameObject->GetComponent("RigidBody2D"));
+	  v1 = RefPoly->u * v1 + rb->position;
+	  v2 = RefPoly->u * v2 + rb->position;
 	
 	  // Calculate reference face side normal in world space
-	  Vector2 sidePlaneNormal = (v2 - v1);
-	  sidePlaneNormal.Normalize( );
-	
+	  vec3 sidePlaneNormal = glm::normalize(v2 - v1);
+	  
 	  // Orthogonalize
-	  Vector2 refFaceNormal( sidePlaneNormal.y, -sidePlaneNormal.x );
+	  vec3 refFaceNormal( sidePlaneNormal.y, -sidePlaneNormal.x , 0);
 	
 	  // ax + by = c
 	  // c is distance from origin
-	  float refC = Dot( refFaceNormal, v1 );
-	  float negSide = -Dot( sidePlaneNormal, v1 );
-	  float posSide =  Dot( sidePlaneNormal, v2 );
+	  float refC = glm::dot( refFaceNormal, v1 );
+	  float negSide = -glm::dot( sidePlaneNormal, v1 );
+    float posSide = glm::dot(sidePlaneNormal, v2);
 	
 	  // Clip incident face to reference face side planes
 	  if(Clip( -sidePlaneNormal, negSide, incidentFace ) < 2)
@@ -375,7 +378,7 @@ namespace Framework
 	
 	  // Keep points behind reference face
 	  unsigned cp = 0; // clipped points behind reference face
-	  float separation = Dot( refFaceNormal, incidentFace[0] ) - refC;
+	  float separation = glm::dot( refFaceNormal, incidentFace[0] ) - refC;
 	  if(separation <= 0.0f)
 	  {
 	    m->contacts[cp] = incidentFace[0];
@@ -385,7 +388,7 @@ namespace Framework
 	  else
 	    m->penetration = 0;
 	
-	  separation = Dot( refFaceNormal, incidentFace[1] ) - refC;
+	  separation = glm::dot( refFaceNormal, incidentFace[1] ) - refC;
 	  if(separation <= 0.0f)
 	  {
 	    m->contacts[cp] = incidentFace[1];

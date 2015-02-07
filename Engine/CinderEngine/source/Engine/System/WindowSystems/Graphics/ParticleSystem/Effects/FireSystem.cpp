@@ -175,7 +175,7 @@ namespace Framework
     shader->uni1i ("tex", 0);
     shader->uni1f ("size", size);
 
-    shader->uniMat4 ("matModel", glm::value_ptr (gameObject->Transform->GetModelMatrix ()));
+    shader->uniMat4("matModel", glm::value_ptr(static_cast<Transform*>(gameObject->GetComponent("Transform"))->GetModelMatrix()));
     shader->uniMat4 ("matProjection", glm::value_ptr (Camera::GetViewToProjectionMatrix ()));
     shader->uniMat4 ("matModelview", glm::value_ptr (Camera::GetWorldToViewMatrix ()));
     m_renderer->render ();

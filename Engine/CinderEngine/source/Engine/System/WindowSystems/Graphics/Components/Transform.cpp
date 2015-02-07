@@ -47,9 +47,11 @@ namespace Framework
 
   Transform::Transform()
   {
+    /*TODO: IDK prints 123 for some unknown reason*/
+    /*
 	  std::cout << * reinterpret_cast<float*>(
 		  reinterpret_cast<char*>(this) + ( reinterpret_cast<char *>( &testFloat ) - reinterpret_cast<char *>( this ) ) ) << std::endl;
-
+      */
     localPosition = { 0, 0, 0 };
     localScale = { 1, 1, 1 };
     localRotation = 0.0f;
@@ -58,7 +60,6 @@ namespace Framework
   Transform::~Transform()
   {
     OPENGL->transforms.remove(this);
-    gameObject->Transform = nullptr;
   }
 
   void Transform::Load_Identity()
@@ -103,7 +104,7 @@ namespace Framework
   {
     if (gameObject->Parent)
     {
-      Transform* parentPos = gameObject->Parent->Transform;
+      Transform* parentPos = static_cast<Transform*>(gameObject->Parent->GetComponent("Transform"));
       UpdateRotation(parentPos);
       UpdateScale(parentPos);
       UpdatePosition(parentPos);
@@ -114,7 +115,6 @@ namespace Framework
       rotation = localRotation;
       scale = localScale;
     }
-    gameObject->Transform = this;
     OPENGL->MatrixMode(MODEL);
     OPENGL->LoadIdentity();
     OPENGL->Scalefv(glm::value_ptr(scale));
@@ -127,8 +127,6 @@ namespace Framework
     matricesReady = false;
     currentMatrix = 0;
     //UpdateMatrices ();
-
-    gameObject->Transform = this;
 
     OPENGL->transforms.push_back(this);
   }
@@ -150,7 +148,7 @@ namespace Framework
     localPosition = vec3(newpos.x, newpos.y, newpos.z);
     if (gameObject->Parent)
     {
-      Transform* parentPos = gameObject->Parent->Transform;
+      Transform* parentPos = static_cast<Transform*>(gameObject->Parent->GetComponent("Transform"));
       UpdatePosition(parentPos);
     }
     else
@@ -178,7 +176,7 @@ namespace Framework
     localPosition += v;
     if (gameObject->Parent)
     {
-      Transform* parentPos = gameObject->Parent->Transform;
+      Transform* parentPos = static_cast<Transform*>(gameObject->Parent->GetComponent("Transform"));
       UpdatePosition(parentPos);
     }
     else
@@ -197,7 +195,7 @@ namespace Framework
     //Update model matrix
     if (gameObject->Parent)
     {
-      Transform* parentPos = gameObject->Parent->Transform;
+      Transform* parentPos = static_cast<Transform*>(gameObject->Parent->GetComponent("Transform"));
       vec3 parentScale = parentPos->GetScale();
       UpdateScale(parentPos);
     }
@@ -219,10 +217,12 @@ namespace Framework
   void Transform::Scale(float v)
   {
     Scale(v, v, v);
+    ShapeCollider2D* shape = static_cast<ShapeCollider2D*>(gameObject->Parent->GetComponent("ShapeCollider2D"));
 
-    if (gameObject->RigidBody2D != nullptr)
+    //TODO: Support universal scaling on all collider types
+    if (shape && shape->GetType() == ShapeCollider2D::eCircle)
     {
-      gameObject->RigidBody2D->shape->radius = std::abs(scale.x);
+      static_cast<CircleCollider2D*>(shape)->SetRadius( std::abs(scale.x) );
     }
   }
 
@@ -233,7 +233,7 @@ namespace Framework
 
     if (gameObject->Parent)
     {
-      Transform* parentPos = gameObject->Parent->Transform;
+      Transform* parentPos = static_cast<Transform*>(gameObject->Parent->GetComponent("Transform"));
       UpdateRotation(parentPos);
     }
     else
@@ -439,7 +439,7 @@ namespace Framework
       OPENGL->MatrixMode(MODEL);
       if (gameObject->Parent)
       {
-        Transform* parentPos = gameObject->Parent->Transform;
+        Transform* parentPos = static_cast<Transform*>(gameObject->Parent->GetComponent("Transform"));
         UpdateRotation(parentPos);
         UpdateScale(parentPos);
         UpdatePosition(parentPos);

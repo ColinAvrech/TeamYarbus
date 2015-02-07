@@ -143,10 +143,11 @@ namespace Framework
   bool Tree3D::InViewport()
   {
     //Object bounds
-    glm::vec2 plt = (glm::vec2)gameObject->Transform->GetScale() * glm::vec2(bound_l, bound_t) + (glm::vec2)gameObject->Transform->GetPosition();
-    glm::vec2 prb = (glm::vec2)gameObject->Transform->GetScale() * glm::vec2(bound_r, bound_b) + (glm::vec2)gameObject->Transform->GetPosition();
+    Transform* tform = static_cast<Transform*>(gameObject->GetComponent("Transform"));
+    glm::vec2 plt = (glm::vec2)tform->GetScale() * glm::vec2(bound_l, bound_t) + (glm::vec2)tform->GetPosition();
+    glm::vec2 prb = (glm::vec2)tform->GetScale() * glm::vec2(bound_r, bound_b) + (glm::vec2)tform->GetPosition();
     //Viewport bounds
-    glm::vec2 cam_pos = (glm::vec2)Camera::main->gameObject->Transform->GetPosition();
+    glm::vec2 cam_pos = (glm::vec2)static_cast<Transform*>(Camera::main->gameObject->GetComponent("Transform"))->GetPosition();
     float fov = Camera::main->GetSize();
 
     if (plt.x > cam_pos.x + fov || prb.x < cam_pos.x - fov ||
@@ -197,8 +198,9 @@ namespace Framework
 
     shader->Use();
     vao->bindVAO();
-    shader->uniMat4("mvp", glm::value_ptr(gameObject->Transform->GetModelViewProjectionMatrix()));
-    shader->uniMat4("modelMatrix", glm::value_ptr(gameObject->Transform->GetModelMatrix()));
+    Transform* tform = static_cast<Transform*>(gameObject->GetComponent("Transform"));
+    shader->uniMat4("mvp", glm::value_ptr(tform->GetModelViewProjectionMatrix()));
+    shader->uniMat4("modelMatrix", glm::value_ptr(tform->GetModelMatrix()));
     shader->uni4fv("color", glm::value_ptr(color));
     time += dt;
     //glm::vec3 lightPos(10 * std::cos(time / 5.f), 45 + 10 * std::sin(time / 10.f), 10 * std::sin(time / 5.f));

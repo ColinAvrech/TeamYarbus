@@ -40,7 +40,7 @@ namespace Framework
 
   void Rotator::Update (UpdateEvent* update)
   {
-    gameObject->Transform->Rotate (velocity * 0.016f);
+    static_cast<Transform*>(gameObject->GetComponent("Transform"))->Rotate(velocity * 0.016f);
   }
 
 }

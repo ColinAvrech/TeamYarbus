@@ -98,9 +98,10 @@ namespace Framework
   }
 
   void FractalGenerator::Create_Mesh(int lines, std::vector <float>* mesh, std::vector <glm::vec2>* edges)
-{
+  {
     mesh->clear ();
     edges->clear ();
+
     screenWidth = WINDOWSYSTEM->Get_Width ();
     screenHeight = WINDOWSYSTEM->Get_Height ();
 

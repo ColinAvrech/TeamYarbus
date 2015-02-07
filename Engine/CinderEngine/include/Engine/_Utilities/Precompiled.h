@@ -119,7 +119,6 @@ using std::string;
 //////////////////////////////////////////////////////////////////////////
 
 // GRAPHICS
-#include "Material.h"
 #include "Color.h"
 #include "VertexArrayObject.h"
 #include "VertexBufferObject.h"

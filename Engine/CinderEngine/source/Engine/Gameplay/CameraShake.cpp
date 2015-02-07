@@ -32,13 +32,14 @@ namespace Framework
 
   void CameraShake::Initialize ()
   {
-    originalPosition = Camera::main->gameObject->Transform->GetPosition ();
+    originalPosition = static_cast<Transform*>(Camera::main->gameObject->GetComponent("Transform"))->GetPosition();
     EVENTSYSTEM->mConnect<UpdateEvent, CameraShake> (Events::UPDATEEVENT, this, &CameraShake::Update);
     EVENTSYSTEM->mConnect<PauseEvent, CameraShake> (Events::PAUSE, this, &CameraShake::OnApplicationPause);
   }
 
   void CameraShake::Update (UpdateEvent* update)
   {
+    Transform* tform = static_cast<Transform*>(Camera::main->gameObject->GetComponent("Transform"));
     switch (state)
     {
     case Framework::CS_NONE:
@@ -51,7 +52,7 @@ namespace Framework
       time += 0.016f;
       if (enabled && time < duration)
       {
-        Camera::main->gameObject->Transform->SetPosition
+        tform->SetPosition
           (originalPosition.x + glm::linearRand (-shake.x / time, shake.x / time),
           originalPosition.y + glm::linearRand (-shake.y / time, shake.y / time));
       }
@@ -61,7 +62,7 @@ namespace Framework
       }
       break;
     case Framework::CS_END:
-      startPosition = Camera::main->gameObject->Transform->GetPosition ();
+      startPosition = tform->GetPosition ();
       time = 0.0f;
       state = CS_RESET;
       break;
@@ -70,7 +71,7 @@ namespace Framework
       if (time < 1.0f)
       {
         glm::vec3 position = glm::mix (startPosition, originalPosition, time);
-        Camera::main->gameObject->Transform->SetPosition (position.x, position.y);
+        tform->SetPosition (position.x, position.y);
       }
       else
       {

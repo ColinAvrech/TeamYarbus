@@ -27,10 +27,12 @@ namespace Framework
 		META_DECLARE( ShapeCollider2D );
 
 	  const static std::string Name;
-	  enum Type
+	  enum ColliderType
 	  {
+      eInvalid,
 	    eCircle,
 	    ePoly,
+      eCompound,
 	    eCount
 	  };
 	
@@ -38,7 +40,6 @@ namespace Framework
     virtual ~ShapeCollider2D ();
 	
 	  virtual void Serialize (Serializer::DataNode* data){}
-    void SerializeMaterial (std::string name);
     virtual ShapeCollider2D *Clone (void) const
     {
       return nullptr;
@@ -47,24 +48,14 @@ namespace Framework
     virtual void ComputeMass (float density) {}
     virtual void SetOrient (float radians){}
     virtual void Draw (void) const{}
-    virtual Type GetType (void) const
+    virtual ColliderType GetType (void) const
     {
-      return (Type)0;
+      return eInvalid;
     }
+
+    virtual float GetArea() { return 0.0f; };
+    virtual vec3 GetCenter() { return vec3(); }
 	
-	  RigidBody2D *rigidBody;
-	
-	  // For circle shape
-	  float radius;
-    bool isStatic;
-    float Density;
-    float StaticFriction;
-    float DynamicFriction;
-    float Bounciness;
-    glm::vec3 velocity;
-	
-	  // For Polygon shape
-	  Mat2 u; // Orientation matrix from model to world
 	};
 	
 	class CircleCollider2D : public ShapeCollider2D
@@ -74,7 +65,7 @@ namespace Framework
 
 	  const static std::string Name;
 	  CircleCollider2D () {}
-    virtual ~CircleCollider2D ();
+    virtual ~CircleCollider2D () = default;
 	  CircleCollider2D( float r );
 	
 	  ShapeCollider2D *Clone( void ) const;
@@ -82,13 +73,15 @@ namespace Framework
 	  virtual void Serialize (Serializer::DataNode* data);
 	  virtual void Initialize ();
 	
-	  void ComputeMass( float density );
-	
-	  void SetOrient( float radians );
-	
 	  void Draw( void ) const;
+
+    float GetArea();
+
+    float GetRadius() const { return radius; }
+    void SetRadius(const float& newrad) { radius = newrad; }
 	
-	  Type GetType( void ) const;
+    ColliderType GetType(void) const;
+    float radius = 0;
 	};
 	
 	class PolygonCollider2D : public ShapeCollider2D
@@ -96,30 +89,53 @@ namespace Framework
 	public:
 	  const static std::string Name;
     PolygonCollider2D ();
-    virtual ~PolygonCollider2D ();
+    virtual ~PolygonCollider2D () = default;
 	  virtual void Serialize (Serializer::DataNode* data);
 	
 	  virtual void Initialize( void );
 	
 	  ShapeCollider2D *Clone( void ) const;
-	  void ComputeMass( float density );
 	  void SetOrient( float radians );
 	  void Draw( void ) const;
-
-	  Type GetType( void ) const;
+	  ColliderType GetType( void ) const;
 	
 	  // Half width and half height
 	  void SetBox( float hw, float hh );
 	
-	  void Set( Vector2 *vertices, unsigned count );
+	  void Set( vec3 *vertices, unsigned count );
 	
-	  Vector2 GetSupport( const Vector2& dir );
-    Vector2 dimensions;
-    float orientation;
-	  unsigned m_vertexCount;
-	  Vector2 m_vertices[MaxVertices];
-	  Vector2 m_normals[MaxVertices];
+	  vec3 GetSupport( const vec3& dir );
+
+    float GetArea();
+    vec3 GetCenter();
+    float ComputeInertia(float density);
+
+    // For Polygon shape
+    glm::mat3 u = glm::mat3(); // Orientation matrix from model to world
+    vec3 dimensions = vec3();
+
+    float orientation = 0;
+	  unsigned m_vertexCount = 0;
+	  vec3 m_vertices[MaxVertices];
+	  vec3 m_normals[MaxVertices];
+
+    private:
+      void CenterPolygon();
 	};
+
+  class CompoundCollider2D : public ShapeCollider2D
+  {
+    public:
+      CompoundCollider2D();
+      ~CompoundCollider2D();
+      
+      void AddCollider(ShapeCollider2D* newCollider);
+      void RemoveCollider(ShapeCollider2D* oldCollider);
+
+      void Draw(void) const;
+
+      std::vector<ShapeCollider2D*> childColliders;
+  };
 }
 
 META_DEFINE( Framework::ShapeCollider2D, ShapeCollider2D )

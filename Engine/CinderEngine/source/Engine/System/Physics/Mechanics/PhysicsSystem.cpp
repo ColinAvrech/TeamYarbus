@@ -36,26 +36,27 @@ namespace Framework
 
     void IntegrateForces(RigidBody2D *b, float dt)
     {
-      if (b->im == 0.0f)
+      if (b->invMass == 0.0f)
         return;
 
-      b->velocity += (b->force * b->im + gravity) * (dt / 2.0f);
+      b->velocity += (b->force * b->invMass + gravity) * (dt / 2.0f);
       //std::cout << b->velocity.x << "\n";
-      b->angularVelocity += b->torque * b->iI * (dt / 2.0f);
+      b->angularVelocity += b->torque * b->invI * (dt / 2.0f);
     }
 
     void IntegrateVelocity(RigidBody2D *b, float dt)
     {
-      if (b->im == 0.0f)
+      if (b->invMass == 0.0f)
         return;
 
-      b->position += b->velocity * dt;
+      vec3 deltaPosition = b->velocity * dt;
       b->orient += b->angularVelocity * dt;
       b->SetOrient(b->orient);
       if (b->gameObject != nullptr)
       {
-        b->gameObject->Transform->SetPosition(b->position.x, b->position.y);
-        b->gameObject->Transform->Rotate(180 / M_PI * b->orient);
+        Transform* tform = static_cast<Transform*>(b->gameObject->GetComponent("Transform"));
+        tform->Translate(deltaPosition);
+        tform->Rotate(180 / M_PI * b->orient);
       }
       IntegrateForces(b, dt);
     }
@@ -71,7 +72,7 @@ namespace Framework
         for (unsigned j = i + 1; j < rigidBodies.size(); ++j)
         {
           RigidBody2D *B = rigidBodies[j];
-          if (A->im == 0 && B->im == 0)
+          if (A->invMass == 0 && B->invMass == 0)
             continue;
           Manifold m(A, B);
           m.Solve();
@@ -105,7 +106,7 @@ namespace Framework
       for (unsigned i = 0; i < rigidBodies.size(); ++i)
       {
         RigidBody2D *b = rigidBodies[i];
-        b->force.Set(0, 0);
+        b->force = vec3();
         b->torque = 0;
       }
     }
@@ -120,8 +121,9 @@ namespace Framework
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
 
-        glm::vec3 eye = glm::vec3(0, 0, 1) * Camera::main->GetSize() + glm::vec3(Camera::main->gameObject->Transform->GetPosition().x, Camera::main->gameObject->Transform->GetPosition().y, 0);
-        glm::vec3 center = Camera::main->gameObject->Transform->GetPosition();
+        Transform* tform = static_cast<Transform*>(Camera::main->gameObject->GetComponent("Transform"));
+        glm::vec3 eye = glm::vec3(0, 0, 1) * Camera::main->GetSize() + glm::vec3(tform->GetPosition().x, tform->GetPosition().y, 0);
+        glm::vec3 center = tform->GetPosition();
         glm::vec3 up = glm::vec3(0, 1, 0);
 
         gluLookAt(eye.x, eye.y, eye.z, center.x, center.y, center.z, up.x, up.y, up.z);
@@ -129,7 +131,26 @@ namespace Framework
         for (unsigned i = 0; i < rigidBodies.size(); ++i)
         {
           RigidBody2D *b = rigidBodies[i];
-          b->shape->Draw();
+          assert(b);
+          ShapeCollider2D *shape = static_cast<ShapeCollider2D*>(b->gameObject->GetComponent("ShapeCollider2D"));
+          //assert(shape);
+          if (shape)
+          {
+            switch (shape->GetType())
+            {
+              case ShapeCollider2D::ColliderType::eCircle:
+                static_cast<CircleCollider2D*>(shape)->Draw();
+                break;
+
+              case ShapeCollider2D::ColliderType::ePoly:
+                static_cast<PolygonCollider2D*>(shape)->Draw();
+                break;
+
+              case ShapeCollider2D::ColliderType::eCompound:
+                static_cast<CompoundCollider2D*>(shape)->Draw();
+                break;
+            }
+          }
         }
 
         glPointSize(4.0f);
@@ -140,7 +161,7 @@ namespace Framework
           Manifold& m = contacts[i];
           for (unsigned j = 0; j < m.contact_count; ++j)
           {
-            Vector2 c = m.contacts[j];
+            vec3 c = m.contacts[j];
             glVertex2f(c.x, c.y);
           }
         }
@@ -152,10 +173,10 @@ namespace Framework
         for (unsigned i = 0; i < contacts.size(); ++i)
         {
           Manifold& m = contacts[i];
-          Vector2 n = m.normal;
+          vec3 n = m.normal;
           for (unsigned j = 0; j < m.contact_count; ++j)
           {
-            Vector2 c = m.contacts[j];
+            vec3 c = m.contacts[j];
             glVertex2f(c.x, c.y);
             n *= 0.75f;
             c += n;
@@ -172,7 +193,16 @@ namespace Framework
     {
       assert(shape);
       RigidBody2D *b = new RigidBody2D(shape, (float)x, (float)y);
-      rigidBodies.push_back(b);
+      return Add(b);
+    }
+
+    RigidBody2D* PhysicsSystem::Add(RigidBody2D* b)
+    {
+      assert(b);
+      if (b)
+      {
+        rigidBodies.push_back(b);
+      }
       return b;
     }
 

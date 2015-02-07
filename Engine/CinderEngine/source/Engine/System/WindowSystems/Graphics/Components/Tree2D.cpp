@@ -127,10 +127,11 @@ namespace Framework
   bool Tree2D::InViewport()
   {
     //Object bounds
-    glm::vec2 plt = (glm::vec2)gameObject->Transform->GetScale() * glm::vec2(bound_l, bound_t) + (glm::vec2)gameObject->Transform->GetPosition();
-    glm::vec2 prb = (glm::vec2)gameObject->Transform->GetScale() * glm::vec2(bound_r, bound_b) + (glm::vec2)gameObject->Transform->GetPosition();
+    Transform* tform = static_cast<Transform*>(gameObject->GetComponent("Transform"));
+    glm::vec2 plt = (glm::vec2)tform->GetScale() * glm::vec2(bound_l, bound_t) + (glm::vec2)tform->GetPosition();
+    glm::vec2 prb = (glm::vec2)tform->GetScale() * glm::vec2(bound_r, bound_b) + (glm::vec2)tform->GetPosition();
     //Viewport bounds
-    glm::vec2 cam_pos = (glm::vec2)Camera::main->gameObject->Transform->GetPosition();
+    glm::vec2 cam_pos = (glm::vec2)static_cast<Transform*>(Camera::main->gameObject->GetComponent("Transform"))->GetPosition();
     float fov = Camera::main->GetSize();
 
     if (plt.x > cam_pos.x + fov || prb.x < cam_pos.x - fov ||
@@ -171,7 +172,7 @@ namespace Framework
     glDisable(GL_BLEND);
     shader->Use();
     vao->bindVAO();
-    shader->uniMat4("mvp", glm::value_ptr(gameObject->Transform->GetModelViewProjectionMatrix()));
+    shader->uniMat4("mvp", glm::value_ptr(static_cast<Transform*>(gameObject->GetComponent("Transform"))->GetModelViewProjectionMatrix()));
     shader->uni4fv("color", glm::value_ptr(color));
     glDrawArrays(GL_TRIANGLES, 0, vertex_count);
 

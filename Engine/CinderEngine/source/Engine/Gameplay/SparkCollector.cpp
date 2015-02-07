@@ -39,7 +39,6 @@ namespace Framework
 	{
 		EVENTSYSTEM->mConnect<CollisionEvent, SparkCollector>(Events::COLLISION, this, &SparkCollector::CollideSpark);
 		EVENTSYSTEM->mConnect<UpdateEvent, SparkCollector>(Events::UPDATEEVENT, this, &SparkCollector::Update);
-		gameObject->SparkCollector = this;
 		guiText = reinterpret_cast<GUIText*> (gameObject->AddComponent("GUIText"));
 		guiText->position = { -0.2f, -1.9f };
 		guiText->Initialize();
