@@ -14,7 +14,7 @@ namespace Editor
 	ObjectListPanel::ObjectListPanel( ) :
 		mObjectListPanel( Framework::PANELMANAGER->AddPanel( "Object List" ) )
 	{
-		SetupObjectListPanelProperties( );
+		
 	}
 
 	ObjectListPanel::~ObjectListPanel( )
@@ -43,6 +43,7 @@ namespace Editor
 
 	void ObjectListPanel::Open( )
 	{
+		SetupObjectListPanelProperties( );
 		Close( );
 
 		mObjectListPanel->SetVisible( true );

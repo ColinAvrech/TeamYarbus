@@ -107,6 +107,7 @@ namespace Panel
 
 		static void CheckEvent( void * wnd, unsigned int msg, unsigned int wParam, int lParam );
 		static void Draw( );
+		void SetWindowSize( unsigned int width, unsigned int height );
 
 		PanelHandle AddPanel( const std::string & panelName );
 		PanelHandle GetPanel( const std::string & panelName );
@@ -127,7 +128,7 @@ namespace Panel
 		void InitATB( GraphicAPI graphics );
 		void DeinitATB( );
 
-		void SetWindowSize( unsigned int width, unsigned int height );
+		
 
 		PanelContainer mPanels;
 	};

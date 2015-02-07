@@ -58,6 +58,7 @@ namespace Editor
 
 	void ObjectPropertiesPanel::Open( )
 	{
+		SetupObjectPropertiesPanelProperties( );
 		Close( );
 
 		mObjectPropertiesPanel->SetVisible( true );
@@ -169,120 +170,6 @@ namespace Editor
 		}
 
 		return;
-
-		// switch ( member.GetType( ).GetHashedName( ) )
-		// {
-		// case Introspect0r::NOTBASE:
-		// 	ReadTypeInfo( OIS_SERVICES.Get<Introspect0r>( )->GetType( member->GetHashTypeName( ) ), member->Get( obj ), groupName );
-		// 	break;
-		// 
-		// case Introspect0r::BOOL:
-		// 	break;
-		// 
-		// case Introspect0r::INT8:
-		// case Introspect0r::CHAR:
-		// 	mObjectPropertiesPanel.AddFieldCB( member->GetName( ),
-		// 									   ( groupName ).c_str( ),
-		// 									   &Introspect0r::TypeGetter<Introspect0r::CHAR>( ).Get( member, obj ),
-		// 									   obj,
-		// 									   get,
-		// 									   set );
-		// 	break;
-		// case Introspect0r::UINT8:
-		// case Introspect0r::UCHAR:
-		// 	mObjectPropertiesPanel.AddFieldCB( member->GetName( ),
-		// 									   ( groupName ).c_str( ),
-		// 									   &Introspect0r::TypeGetter<Introspect0r::UCHAR>( ).Get( member, obj ),
-		// 									   obj,
-		// 									   get,
-		// 									   set );
-		// 	break;
-		// 
-		// case Introspect0r::INT16:
-		// 	mObjectPropertiesPanel.AddFieldCB( member->GetName( ),
-		// 									   ( groupName ).c_str( ),
-		// 									   &Introspect0r::TypeGetter<Introspect0r::INT16>( ).Get( member, obj ),
-		// 									   obj,
-		// 									   get,
-		// 									   set );
-		// 	break;
-		// case Introspect0r::UINT16:
-		// 	mObjectPropertiesPanel.AddFieldCB( member->GetName( ),
-		// 									   ( groupName ).c_str( ),
-		// 									   &Introspect0r::TypeGetter<Introspect0r::UINT16>( ).Get( member, obj ),
-		// 									   obj,
-		// 									   get,
-		// 									   set );
-		// 	break;
-		// case Introspect0r::INT32:
-		// 	mObjectPropertiesPanel.AddFieldCB( member->GetName( ),
-		// 									   ( groupName ).c_str( ),
-		// 									   &Introspect0r::TypeGetter<Introspect0r::INT32>( ).Get( member, obj ),
-		// 									   obj,
-		// 									   get,
-		// 									   set );
-		// 	break;
-		// case Introspect0r::UINT32:
-		// 	mObjectPropertiesPanel.AddFieldCB( member->GetName( ),
-		// 									   ( groupName ).c_str( ),
-		// 									   &Introspect0r::TypeGetter<Introspect0r::UINT32>( ).Get( member, obj ),
-		// 									   obj,
-		// 									   get,
-		// 									   set );
-		// 	break;
-		// 
-		// case Introspect0r::REAL:
-		// 	mObjectPropertiesPanel.AddFieldCB( member->GetName( ),
-		// 									   ( groupName ).c_str( ),
-		// 									   &Introspect0r::TypeGetter<Introspect0r::REAL>( ).Get( member, obj ),
-		// 									   obj,
-		// 									   get,
-		// 									   set );
-		// 	break;
-		// case Introspect0r::TIMEREAL:
-		// 	OIS_FORCE_ASSERT( "ObjectPropertiesPanel: TimeReal type not supported" )
-		// 		break;
-		// 
-		// case Introspect0r::STRING:
-		// 	mObjectPropertiesPanel.AddFieldCB( member->GetName( ),
-		// 									   ( groupName ).c_str( ),
-		// 									   &Introspect0r::TypeGetter<Introspect0r::STRING>( ).Get( member, obj ),
-		// 									   obj,
-		// 									   get,
-		// 									   set );
-		// 	break;
-		// case Introspect0r::CHARPTR:
-		// 	mObjectPropertiesPanel.AddFieldCB( member->GetName( ),
-		// 									   ( groupName ).c_str( ),
-		// 									   &Introspect0r::TypeGetter<Introspect0r::CHARPTR>( ).Get( member, obj ),
-		// 									   obj,
-		// 									   get,
-		// 									   set );
-		// 	break;
-		// 
-		// case Introspect0r::VEC3:
-		// 	mObjectPropertiesPanel.AddFieldCB( member->GetName( ),
-		// 									   ( groupName ).c_str( ),
-		// 									   &Introspect0r::TypeGetter<Introspect0r::VEC3>( ).Get( member, obj ),
-		// 									   obj,
-		// 									   get,
-		// 									   set );
-		// 	break;
-		// case Introspect0r::QUAT:
-		// 	mObjectPropertiesPanel.AddFieldCB( member->GetName( ),
-		// 									   ( groupName ).c_str( ),
-		// 									   &Introspect0r::TypeGetter<Introspect0r::QUAT>( ).Get( member, obj ),
-		// 									   obj,
-		// 									   get,
-		// 									   set );
-		// case Introspect0r::MAT4:
-		// 	OIS_FORCE_ASSERT( "ObjectPropertiesPanel: Mat4 type not supported" )
-		// 		break;
-		// 
-		// }
-		// 
-		// return;
-		// }
 	}
 
 }

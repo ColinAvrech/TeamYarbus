@@ -1,2 +1,3 @@
 tumbleweed.png
 Trails.png
+lantern.png

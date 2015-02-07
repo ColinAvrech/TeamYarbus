@@ -204,7 +204,6 @@ namespace Framework
     shader->uni4fv("color", glm::value_ptr(color));
     time += dt;
     //glm::vec3 lightPos(10 * std::cos(time / 5.f), 45 + 10 * std::sin(time / 10.f), 10 * std::sin(time / 5.f));
-    shader->uni1f("time", time);
     
     // Draw the triangles !
     //glDrawElements(

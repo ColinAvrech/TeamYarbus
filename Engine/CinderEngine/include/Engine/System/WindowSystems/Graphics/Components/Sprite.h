@@ -104,5 +104,5 @@ namespace Framework
 
 META_DEFINE( Framework::Sprite, Sprite )
 {
-
+	MEMBER( color );
 }

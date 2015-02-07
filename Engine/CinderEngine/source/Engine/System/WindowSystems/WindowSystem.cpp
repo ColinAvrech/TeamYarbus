@@ -83,6 +83,7 @@ namespace Framework
           }
         }
 
+		PANELMANAGER->SetWindowSize( w, h );
         glfwSetWindowSize (window, WINDOWSYSTEM->Get_Width (), WINDOWSYSTEM->Get_Height ());
         OPENGL->ResizeBuffer (WINDOWSYSTEM->Get_Width (), WINDOWSYSTEM->Get_Height ());
       }
