@@ -2,6 +2,7 @@
 
 namespace Framework
 {
+#ifdef _DEBUG
   #define NOMAX 0
   static unsigned ProfilesTaken = 0;
 
@@ -46,4 +47,5 @@ namespace Framework
   };
 
   void CALLBACK ProfilerCallback(UINT uTimerID, UINT uMsg, DWORD_PTR dwUser, DWORD_PTR dw1, DWORD_PTR dw2);
+#endif
 }

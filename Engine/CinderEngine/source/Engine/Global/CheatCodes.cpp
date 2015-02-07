@@ -45,7 +45,9 @@ namespace Framework
             break;
 
           case GLFW_KEY_P: //start profiler
+#ifdef _DEBUG
             CORE->ToggleProfiling();
+#endif
             break;
 
           case GLFW_KEY_R: // Restart Level
