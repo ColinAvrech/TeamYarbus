@@ -93,7 +93,7 @@ namespace Framework
   {
     time += 0.016f;
     //glCullFace(GL_BACK);
-    glEnable(GL_BLEND);
+    //glEnable(GL_BLEND);
     
     assert(shader && "Invalid Shader!!!");
     shader->Use();
@@ -112,7 +112,7 @@ namespace Framework
     vao->unbindVAO();
       
     shader->Disable();
-    OPENGL->ResetBlendMode();
+    //OPENGL->ResetBlendMode();
   }
 
   void Terrain3D::Generate_Height_Points()

@@ -191,7 +191,7 @@ namespace Framework
     if (!InViewport())
       return;
 
-    glDisable(GL_BLEND);
+    //glDisable(GL_BLEND);
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
 
@@ -215,7 +215,7 @@ namespace Framework
 
     vao->unbindVAO();
     shader->Disable();
-    OPENGL->ResetBlendMode();
+    //OPENGL->ResetBlendMode();
     glDisable(GL_CULL_FACE);
   }
 

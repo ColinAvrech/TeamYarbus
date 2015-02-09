@@ -64,5 +64,5 @@ void main ()
   lightColor += vec4 ((ambient + diffuse + specular) * att, 1.0);
   // calculate resulting color
   //outColor = vec4(Normal.r * 0.5 + 0.5, Normal.g * 0.5 + 0.5, Normal.b * 0.5 + 0.5, 1.0);
-  outColor = vec4(color.r * lightColor.r, color.g * lightColor.g, color.b * lightColor.b, 1);
+  outColor = vec4(color.r * lightColor.r, color.g * lightColor.g, color.b * lightColor.b, 1.f);
 }

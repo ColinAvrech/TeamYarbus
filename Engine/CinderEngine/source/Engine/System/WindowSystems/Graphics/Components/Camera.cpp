@@ -335,7 +335,7 @@ namespace Framework
 
   glm::vec3 Camera::FocalPoint()
   {
-    return this->gameObject->Transform->GetPosition() + Camera::main->FocalPlane * Camera::main->size * Camera::main->viewDirection;
+    return this->gameObject->Transform->GetPosition() + (Camera::main->FocalPlane + Camera::main->size) * Camera::main->viewDirection;
   }
 
   glm::vec2 Camera::GetWorldMousePosition()

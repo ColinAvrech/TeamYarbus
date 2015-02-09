@@ -125,7 +125,7 @@ namespace Framework
 
   void Terrain2D::Draw ()
   { 
-    glEnable (GL_BLEND);
+    //glEnable (GL_BLEND);
     shader->Use ();
     vao->bindVAO ();
     shader->uniMat4 ("mvp", glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix ()));
@@ -136,7 +136,7 @@ namespace Framework
 
     vao->unbindVAO ();
     shader->Disable ();
-    OPENGL->ResetBlendMode ();
+    //OPENGL->ResetBlendMode ();
   }
 
   const float* Terrain2D::GetTerrain()

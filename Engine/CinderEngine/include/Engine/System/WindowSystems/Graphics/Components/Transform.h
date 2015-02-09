@@ -45,6 +45,7 @@ namespace Framework
     //////////////////////////////////////////////////////////////////////////
     bool MatrixMode (int m);
     void UpdateMatrices ();
+    void SetMVP(glm::mat4 &mvp);
 
     //getters
     glm::mat4 GetModelMatrix ();

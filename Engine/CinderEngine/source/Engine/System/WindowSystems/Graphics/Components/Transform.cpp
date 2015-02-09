@@ -453,7 +453,7 @@ namespace Framework
       OPENGL->Rotatef(rotation, 0, 0, 1);
 
       modelMatrix = OPENGL->GetModelMatrix();
-      modelViewProjectionMatrix = OPENGL->GetModelViewProjectionMatrix();
+      //modelViewProjectionMatrix = OPENGL->GetModelViewProjectionMatrix();
       OPENGL->LoadIdentity();
 
       matricesReady = true;
@@ -473,6 +473,12 @@ namespace Framework
     localPosition.y = y;
 
     matricesReady = false;
+  }
+
+  void Transform::SetMVP(glm::mat4 &mvp)
+  {
+    //perspective * lookat * model
+    modelViewProjectionMatrix = mvp * modelMatrix;
   }
 
 }

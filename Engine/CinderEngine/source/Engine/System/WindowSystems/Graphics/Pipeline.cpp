@@ -109,9 +109,10 @@ namespace Framework
 
   void Pipeline::Update ()
   {
-    fbo->bind ();
+    fbo->bind();
 
     glClearColor(0.5f, 0.5f, 0.5f, 1);
+    glClearDepth(1.0f);	// Set Depth Buffer to Max Dist. when cleared	
     // Clear the screen
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
@@ -125,10 +126,10 @@ namespace Framework
       i->UpdateMatrices ();
     }
 
-    for (auto* i : cameras)
+    /*for (auto* i : cameras)
     {
       i->UpdateCamera (this);
-    }
+    }*/
 
     //////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////
@@ -138,22 +139,74 @@ namespace Framework
     glEnable(GL_DEPTH_TEST);
     // Accept fragment if it's closer to the camera than the former one
     glDepthFunc(GL_LESS);
+    //fog========================================================
+    //glEnable(GL_FOG);
+    //glFogi(GL_FOG_MODE, GL_EXP2); //set the fog mode to GL_EXP2
+    //GLfloat fogColor[4] = { 0.5, 0.5, 0.5, 1.0 };
+    //glFogfv(GL_FOG_COLOR, fogColor);
+    //glFogf(GL_FOG_DENSITY, 0.3f);
+    //glHint(GL_FOG_HINT, GL_NICEST);
+    //==========================================================
+    //// Accept fragment if it's closer to the camera than the former one
+    //glDepthFunc(GL_LESS);
+    glEnable(GL_BLEND);
+    
+    //camera properties
+    int n = 1;// Camera::main->GetElementNum();
+    float aperture = Camera::main->GetAperture();
 
-    std::vector<IGraphicsObject *>last;
-    for (auto* i : graphicsObjects [DEFAULT])
+    //projection matrix
+    glm::mat4 projection = glm::perspective
+      (
+      Camera::main->GetFOV() * M_PI / 180,
+      (float)WINDOWSYSTEM->Get_Width() / WINDOWSYSTEM->Get_Height(),
+      Camera::main->GetPlanes().first,
+      Camera::main->GetPlanes().second
+      );
+    
+    glm::vec3 campos = Camera::main->gameObject->Transform->GetPosition();
+    glm::vec3 up = glm::vec3(0.f, -1.f, 0.f);
+    //eye and object
+    glm::vec3 eye = Camera::main->GetSize() * glm::vec3(0.f, 0.f, 1.f) + glm::vec3(campos.x, campos.y, 0.f);
+    glm::vec3 object = campos;
+
+    //right and up vectors
+    glm::vec3 right = glm::normalize(glm::cross(object - eye, up));
+    glm::vec3 p_up = glm::normalize(glm::cross(object - eye, right));
+
+    for (int i = 0; i < n; ++i)
     {
-      if (i->Draw_Last())
-        last.push_back(i);
-      else
-        i->Draw ();
+      glm::vec3 bokeh = right * std::cosf(i * M_2_PI / n) + p_up * std::sinf(i * M_2_PI / n);
+      glm::mat4 modelview = glm::lookAt(eye + aperture * bokeh, object, p_up);
+
+
+      for (auto* it : transforms)
+      {
+        it->SetMVP(projection * modelview);
+      }
+
+      std::vector<IGraphicsObject *>last;
+      for (auto* it : graphicsObjects[DEFAULT])
+      {
+        if (it->Draw_Last())
+          last.push_back(it);
+        else
+        {
+          it->Draw();
+        }
+      }
+      //disable depth test
+      glDisable(GL_DEPTH_TEST);
+      //draw stuff that should be drawn last
+      for (auto* it : last)
+      {
+        it->Draw();
+      }
     }
-    //disable depth test
-    glDisable(GL_DEPTH_TEST);
-    //draw stuff that should be drawn last
-    for (auto* i : last)
-    {
-      i->Draw();
-    }
+    //glAccum(GL_RETURN, 1);
+
+    glDisable(GL_BLEND);
+    glBlendFunc(sFactor, dFactor);
 
     for (auto* i : textObjects)
     {
@@ -457,7 +510,6 @@ namespace Framework
   {
     vao->bindVAO ();
     fbo->unBind ();
-
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     shader->Use ();
     glBindTexture (GL_TEXTURE_2D, renderTexture);
@@ -465,12 +517,12 @@ namespace Framework
     switch (shaderState)
     {
     case Framework::SS_DEFAULT:
-      ALPHA = 1.0f;
+      ALPHA = 1.f;
       shader->uni1i("image", 0);
       break;
 
     case Framework::SS_LIGHTING:
-      ALPHA = 1.0f;
+      ALPHA = 1.f;
       shader->uni1i("image", 0);
       break;
 
@@ -492,7 +544,7 @@ namespace Framework
       }
       break;
     default:
-      ALPHA = 1.0f;
+      ALPHA = 1.f;
       break;
     }
     shader->uni1i ("image", 0);
