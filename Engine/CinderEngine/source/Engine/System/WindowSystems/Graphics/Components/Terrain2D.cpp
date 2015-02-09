@@ -209,11 +209,11 @@ namespace Framework
 
   bool CalculateIntersectionPoint
     (
-      double Ax, double Ay,
-      double Bx, double By,
-      double Cx, double Cy,
-      double Dx, double Dy,
-      double *X, double *Y
+      float Ax, float Ay,
+      float Bx, float By,
+      float Cx, float Cy,
+      float Dx, float Dy,
+      float &X, float &Y
     )
   {
 
@@ -257,8 +257,8 @@ namespace Framework
       return false;
 
     //  (4) Apply the discovered position to line A-B in the original coordinate system.
-    *X = Ax + ABpos*theCos;
-    *Y = Ay + ABpos*theSin;
+    X = Ax + ABpos*theCos;
+     Y = Ay + ABpos*theSin;
 
     //  Success.
     return true;
@@ -277,7 +277,7 @@ namespace Framework
     CompoundCollider2D* collider = static_cast<CompoundCollider2D*>(gameObject->AddComponent("CompoundCollider2D"));
     for (unsigned i = 0; i < height_points.size () - 1; ++i)
     {
-      glm::dvec2 center;
+      glm::vec3 center;
       glm::vec2 p0 = (glm::mat2)tform->GetModelMatrix () * glm::vec2 (height_points [i].x, y);
       glm::vec2 p1 = (glm::mat2)tform->GetModelMatrix () * glm::vec2 (height_points [i + 1].x, y);
       glm::vec2 p2 = (glm::mat2)tform->GetModelMatrix () * glm::vec2 (height_points [i + 1].x, height_points [i + 1].y);
@@ -305,11 +305,12 @@ namespace Framework
         p2.x, p2.y,
         p1.x, p1.y,
         p3.x, p3.y,
-        &center.x, &center.y
+        center.x, center.y
         );
 
       PolygonCollider2D* poly = new PolygonCollider2D();
       poly->Set (p, 4);
+      poly->SetOffset(center - tform->GetPosition());
       
       collider->AddCollider(poly);
     }
@@ -326,8 +327,8 @@ namespace Framework
     b->mat->staticFriction = 1.0f;
     b->mat->dynamicFriction = 1.0f;
     b->Initialize();
-    b->SetStatic();
     b->ComputeMass();
+    b->SetStatic();
 
     PHYSICS->Add(b);
 
