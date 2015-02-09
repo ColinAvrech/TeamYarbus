@@ -15,9 +15,6 @@
 
 namespace Framework
 {
-  DefineComponentName (ShapeCollider2D);
-  DefineComponentName (CircleCollider2D);
-  DefineComponentName (PolygonCollider2D);
   DefineComponentName (RigidBody2D);
 
   RigidBody2D::RigidBody2D()

@@ -36,7 +36,7 @@ namespace Framework
 	  vec3 normal = b->position - a->position;
 	
 	  float dist_sqr = normal.length() * normal.length();
-	  float radius = A->radius + B->radius;
+	  float radius = A->GetRadius() + B->GetRadius();
 	
 	  // Not in contact
 	  if(dist_sqr >= radius * radius)
@@ -60,7 +60,7 @@ namespace Framework
 	
 	  if(distance == 0.0f)
 	  {
-	    m->penetration = A->radius;
+	    m->penetration = A->GetRadius();
 	    m->normal = vec3( 1, 0, 0);
 	    m->contacts [0] = a->position;
 	  }
@@ -68,7 +68,7 @@ namespace Framework
 	  {
 	    m->penetration = radius - distance;
 	    m->normal = normal / distance; // Faster than using Normalized since we already performed sqrt
-	    m->contacts[0] = m->normal * A->radius + a->position;
+      m->contacts[0] = m->normal * A->GetRadius() + a->position;
 	  }
 	}
 	
@@ -91,7 +91,7 @@ namespace Framework
 	  {
 	    float s = glm::dot( B->m_normals[i], center - B->m_vertices[i] );
 	
-	    if(s > A->radius)
+      if (s > A->GetRadius())
 	      return;
 	
 	    if(s > separation)
@@ -119,21 +119,21 @@ namespace Framework
 	  {
 	    m->contact_count = 1;
 	    m->normal = -(B->u * B->m_normals[faceNormal]);
-	    m->contacts[0] = m->normal * A->radius + a->position;
-	    m->penetration = A->radius;
+      m->contacts[0] = m->normal * A->GetRadius() + a->position;
+      m->penetration = A->GetRadius();
 	    return;
 	  }
 	
 	  // Determine which voronoi region of the edge center of circle lies within
 	  float dot1 = glm::dot( center - v1, v2 - v1 );
 	  float dot2 = glm::dot( center - v2, v1 - v2 );
-	  m->penetration = A->radius - separation;
+    m->penetration = A->GetRadius() - separation;
 	
 	  // Closest to v1
 	  if(dot1 <= 0.0f)
 	  {
       //it is implied that the squares would have the same outcome hence leaving early
-	    if(glm::distance( center, v1 ) > A->radius)
+      if (glm::distance(center, v1) > A->GetRadius())
 	      return;
 	
 	    m->contact_count = 1;
@@ -147,7 +147,7 @@ namespace Framework
 	  // Closest to v2
 	  else if(dot2 <= 0.0f)
 	  {
-	    if(glm::distance( center, v2 ) > A->radius )
+      if (glm::distance(center, v2) > A->GetRadius())
 	      return;
 	
 	    m->contact_count = 1;
@@ -162,12 +162,12 @@ namespace Framework
 	  else
 	  {
 	    vec3 n = B->m_normals[faceNormal];
-	    if(glm::dot( center - v1, n ) > A->radius)
+      if (glm::dot(center - v1, n) > A->GetRadius())
 	      return;
 	
 	    n = B->u * n;
 	    m->normal = -n;
-	    m->contacts[0] = m->normal * A->radius + a->position;
+      m->contacts[0] = m->normal * A->GetRadius() + a->position;
 	    m->contact_count = 1;
 	  }
 	}

@@ -395,6 +395,71 @@ namespace Framework
     childColliders.clear();
   }
 
+  ShapeCollider2D* CompoundCollider2D::Clone(void) const
+  {
+    return new CompoundCollider2D(*this);
+  }
+
+  //TODO Finish the following three methods
+  void CompoundCollider2D::Initialize()
+  {
+
+  }
+
+  void CompoundCollider2D::Serialize(Serializer::DataNode* data)
+  {
+
+  }
+
+  void CompoundCollider2D::ComputeMass(float density)
+  {
+      
+  }
+
+  void CompoundCollider2D::SetOrient(float radians)
+  {
+    vec3 offset;
+    Transform* tform;
+    for (auto c : childColliders)
+    {
+      tform = static_cast<Transform*>(c->gameObject->GetComponent("Transform"));
+      offset = c->GetOffset();
+      tform->Translate(-offset);
+      c->SetOrient(radians);
+      tform->Translate(offset);
+    }
+  }
+
+  ShapeCollider2D::ColliderType CompoundCollider2D::GetType(void) const
+  {
+    return eCompound;
+  }
+
+  float CompoundCollider2D::GetArea()
+  {
+    float sumArea = 0.0f;
+
+    for (auto c : childColliders)
+    {
+      sumArea += c->GetArea();
+    }
+
+    return sumArea;
+  }
+
+  vec3 CompoundCollider2D::GetCenter()
+  {
+    vec3 sumPos;
+    
+    for (auto c : childColliders)
+    {
+      sumPos += c->GetCenter();
+    }
+
+    return sumPos / (float)childColliders.size();
+
+  }
+
   void CompoundCollider2D::AddCollider(ShapeCollider2D* newCollider)
   {
     newCollider->gameObject = gameObject;

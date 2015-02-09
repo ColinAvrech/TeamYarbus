@@ -22,102 +22,108 @@ namespace Framework
 {
 	class ShapeCollider2D : public Component
 	{
-	public:
+  	public:
+		  META_DECLARE( ShapeCollider2D );
 
-		META_DECLARE( ShapeCollider2D );
+	    const static std::string Name;
+	    enum ColliderType
+	    {
+        eInvalid,
+	      eCircle,
+	      ePoly,
+        eCompound,
+	      eCount
+	    };
+	
+      ShapeCollider2D ();
+      virtual ~ShapeCollider2D ();
+	
+	    virtual void Serialize (Serializer::DataNode* data){}
+      virtual ShapeCollider2D *Clone (void) const
+      {
+        return nullptr;
+      }
+	    virtual void Initialize (void){}
+      virtual void ComputeMass (float density) {}
+      virtual void SetOrient (float radians){}
+      virtual void Draw (void) const{}
+      virtual ColliderType GetType (void) const
+      {
+        return eInvalid;
+      }
 
-	  const static std::string Name;
-	  enum ColliderType
-	  {
-      eInvalid,
-	    eCircle,
-	    ePoly,
-      eCompound,
-	    eCount
-	  };
-	
-    ShapeCollider2D ();
-    virtual ~ShapeCollider2D ();
-	
-	  virtual void Serialize (Serializer::DataNode* data){}
-    virtual ShapeCollider2D *Clone (void) const
-    {
-      return nullptr;
-    }
-	  virtual void Initialize (void){}
-    virtual void ComputeMass (float density) {}
-    virtual void SetOrient (float radians){}
-    virtual void Draw (void) const{}
-    virtual ColliderType GetType (void) const
-    {
-      return eInvalid;
-    }
+      vec3 GetOffset() const{ return offset; }
+      void SetOffset(const vec3 &newOffset){ offset = newOffset; }
 
-    virtual float GetArea() { return 0.0f; };
-    virtual vec3 GetCenter() { return vec3(); }
-	
+      virtual float GetArea() { return 0.0f; };
+      virtual vec3 GetCenter() { return vec3(); }
+
+    private: 
+      vec3 offset = vec3();
 	};
 	
 	class CircleCollider2D : public ShapeCollider2D
 	{
-	public:
-		META_DECLARE( CircleCollider2D );
+	  public:
+		  META_DECLARE( CircleCollider2D );
 
-	  const static std::string Name;
-	  CircleCollider2D () {}
-    virtual ~CircleCollider2D () = default;
-	  CircleCollider2D( float r );
+	    CircleCollider2D () {}
+      virtual ~CircleCollider2D () = default;
+	    CircleCollider2D( float r );
 	
-	  ShapeCollider2D *Clone( void ) const;
+	    ShapeCollider2D *Clone( void ) const;
 	
-	  virtual void Serialize (Serializer::DataNode* data);
-	  virtual void Initialize ();
+	    virtual void Serialize (Serializer::DataNode* data);
+	    virtual void Initialize ();
 	
-	  void Draw( void ) const;
+	    void Draw( void ) const;
 
-    float GetArea();
+      float GetArea();
 
-    float GetRadius() const { return radius; }
-    void SetRadius(const float& newrad) { radius = newrad; }
+      float GetRadius() const { return radius; }
+      void SetRadius(const float& newrad) { radius = newrad; }
 	
-    ColliderType GetType(void) const;
-    float radius = 0;
+      ColliderType GetType(void) const;
+
+  private:
+      float radius = 0;
 	};
 	
 	class PolygonCollider2D : public ShapeCollider2D
 	{
-	public:
-	  const static std::string Name;
-    PolygonCollider2D ();
-    virtual ~PolygonCollider2D () = default;
-	  virtual void Serialize (Serializer::DataNode* data);
-	
-	  virtual void Initialize( void );
-	
-	  ShapeCollider2D *Clone( void ) const;
-	  void SetOrient( float radians );
-	  void Draw( void ) const;
-	  ColliderType GetType( void ) const;
-	
-	  // Half width and half height
-	  void SetBox( float hw, float hh );
-	
-	  void Set( vec3 *vertices, unsigned count );
-	
-	  vec3 GetSupport( const vec3& dir );
+    public:
+      META_DECLARE(PolygonCollider2D);
 
-    float GetArea();
-    vec3 GetCenter();
-    float ComputeInertia(float density);
+      PolygonCollider2D ();
+      virtual ~PolygonCollider2D () = default;
+	    virtual void Serialize (Serializer::DataNode* data);
+	
+	    virtual void Initialize( void );
+	
+	    ShapeCollider2D *Clone( void ) const;
+	    void SetOrient( float radians );
+	    void Draw( void ) const;
+	    ColliderType GetType( void ) const;
+	
+	    // Half width and half height
+	    void SetBox( float hw, float hh );
+	
+	    void Set( vec3 *vertices, unsigned count );
+	
+	    vec3 GetSupport( const vec3& dir );
 
-    // For Polygon shape
-    glm::mat3 u = glm::mat3(); // Orientation matrix from model to world
-    vec3 dimensions = vec3();
+      float GetArea();
+      vec3 GetCenter();
+      float ComputeInertia(float density);
 
-    float orientation = 0;
-	  unsigned m_vertexCount = 0;
-	  vec3 m_vertices[MaxVertices];
-	  vec3 m_normals[MaxVertices];
+      // For Polygon shape
+      glm::mat3 u = glm::mat3(); // Orientation matrix from model to world
+      vec3 dimensions = vec3();
+
+      float orientation = 0;
+	    unsigned m_vertexCount = 0;
+	    vec3 m_vertices[MaxVertices];
+	    vec3 m_normals[MaxVertices];
 
     private:
       void CenterPolygon();
@@ -126,14 +132,26 @@ namespace Framework
   class CompoundCollider2D : public ShapeCollider2D
   {
     public:
+      META_DECLARE(CompoundCollider2D);
       CompoundCollider2D();
       ~CompoundCollider2D();
-      
+
+      void Serialize(Serializer::DataNode* data);
+      ShapeCollider2D *Clone(void) const;
+      void Initialize(void);
+      void ComputeMass(float density);
+      void SetOrient(float radians);
+      ColliderType GetType(void) const;
+
+      float GetArea();
+      vec3 GetCenter();
+
       void AddCollider(ShapeCollider2D* newCollider);
       void RemoveCollider(ShapeCollider2D* oldCollider);
 
       void Draw(void) const;
 
+    private:
       std::vector<ShapeCollider2D*> childColliders;
   };
 }
@@ -144,6 +162,16 @@ META_DEFINE( Framework::ShapeCollider2D, ShapeCollider2D )
 }
 
 META_DEFINE( Framework::CircleCollider2D, CircleCollider2D )
+{
+
+}
+
+META_DEFINE(Framework::PolygonCollider2D, PolygonCollider2D)
+{
+
+}
+
+META_DEFINE(Framework::CompoundCollider2D, CompoundCollider2D)
 {
 
 }
