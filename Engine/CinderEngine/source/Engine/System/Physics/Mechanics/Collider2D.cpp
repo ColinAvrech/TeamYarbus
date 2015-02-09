@@ -492,7 +492,24 @@ namespace Framework
   {
     for (auto c : childColliders)
     {
-      c->Draw();
+      switch (c->GetType())
+      {
+        case eCircle:
+          static_cast<CircleCollider2D*>(c)->Draw();
+          break;
+        
+        case ePoly:
+          static_cast<PolygonCollider2D*>(c)->Draw();
+          break;
+
+        case eCompound:
+          static_cast<CompoundCollider2D*>(c)->Draw();
+          break;
+
+        default:
+          return;
+          break;
+      }
     }
   }
 }
