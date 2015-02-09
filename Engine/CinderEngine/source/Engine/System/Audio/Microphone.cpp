@@ -21,7 +21,6 @@ namespace Framework
 
 	void Microphone::Initialize()
 	{
-		gameObject->Microphone = this;
 	}
 
 	DefineComponentName(Microphone);

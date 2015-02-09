@@ -40,10 +40,14 @@ namespace Framework
   {
     EVENTSYSTEM->mConnect<UpdateEvent, EndEventListener>(Events::UPDATEEVENT, this, &EndEventListener::Update);
     EVENTSYSTEM->mConnect<EndEvent, EndEventListener>(Events::END_EVENT, this, &EndEventListener::EndEventHandler);
-    vec3 worldpos = gameObject->Transform->GetPosition();
-    vec3 pos = Camera::main->gameObject->Transform->GetPosition();
-    gameObject->Transform->SetPosition(worldpos.x, pos.y - (Camera::main->GetSize() * 4.0f));
-    gameObject->Sprite->enabled = false;
+
+    Transform* tform = static_cast<Transform*>(gameObject->GetComponent("Transform"));
+    Sprite* sprite = static_cast<Sprite*>(gameObject->GetComponent("Sprite"));
+
+    vec3 worldpos = tform->GetPosition();
+    vec3 pos = static_cast<Transform*>(Camera::main->gameObject->GetComponent("Transform"))->GetPosition();
+    tform->SetPosition(worldpos.x, pos.y - (Camera::main->GetSize() * 4.0f));
+    sprite->enabled = false;
     endPosition = { -20, 110, -10 };
   }
 
@@ -60,10 +64,13 @@ namespace Framework
   {
     if (loadCredits)
     {
+      Transform* camTransform = static_cast<Transform*>(Camera::main->gameObject->GetComponent("Transform"));
+      Transform* tform = static_cast<Transform*>(gameObject->GetComponent("Transform"));
+      Sprite* sprite = static_cast<Sprite*>(gameObject->GetComponent("Sprite"));
       switch (ees)
       {
       case Framework::EES_NONE:
-        startPosition = Camera::main->gameObject->Transform->GetPosition();
+        startPosition = camTransform->GetPosition();
         startSize = Camera::main->size;
         endSize = 310.0f;
         ees = EES_CAMERA;
@@ -75,28 +82,28 @@ namespace Framework
         Camera::main->size = glm::mix(startSize, endSize, timer);
         if (timer < 1.0f)
         {
-          Camera::main->gameObject->Transform->SetPosition(pos.x, pos.y);
+          camTransform->SetPosition(pos.x, pos.y);
         }
         else
         {
-          gameObject->Transform->SetPosition(pos.x, pos.y - 400);
+          tform->SetPosition(pos.x, pos.y - 400);
           ees = EES_CREDITS;
         }
       }
         break;
       case Framework::EES_CREDITS:
         WINDOWSYSTEM->SetCursorVisibility(true);
-        gameObject->Transform->Scale(300 * gameObject->Sprite->Get_Texture()->Get_Aspect_Ratio(), 300, 1);
-        gameObject->Sprite->enabled = true;
-        gameObject->Transform->Translate(0, update->Dt * 10, 0);
+        tform->Scale(300 * sprite->Get_Texture()->Get_Aspect_Ratio(), 300, 1);
+        sprite->enabled = true;
+        tform->Translate(0, update->Dt * 10, 0);
         if (exitGame == nullptr)
         {
           std::string name = "ExitButton";
           exitGame = OBJECTSYSTEM->FindObjectByName(name.c_str());
-          exitGame->Sprite->Change_Color(1.0f, 1.0f, 1.0f, 1.0f);
+          static_cast<Sprite*>(exitGame->GetComponent("Sprite"))->Change_Color(1.0f, 1.0f, 1.0f, 1.0f);
           string name2 = "RestartButton";
           GameObject* restartGame = OBJECTSYSTEM->FindObjectByName(name2.c_str());
-          restartGame->Sprite->Change_Color(1.0f, 1.0f, 1.0f, 1.0f);
+          static_cast<Sprite*>(restartGame->GetComponent("Sprite"))->Change_Color(1.0f, 1.0f, 1.0f, 1.0f);
         }
         CharacterController::PLAYER->useFlying = true;
         break;

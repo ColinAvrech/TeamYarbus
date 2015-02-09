@@ -17,13 +17,11 @@
 #include "IGraphicsObject.h"
 #include "ZilchCompiledlib.h"
 #include "Zilch.hpp"
-
+#include "Collider2D.h"
 #include "MetaCreator.h"
 
 namespace Framework
 {
-  class PolygonCollider2D;
-
   class Terrain2D : public IGraphicsObject
   {
   public:
@@ -67,7 +65,6 @@ namespace Framework
     VAO* vao;
     VBO* vbo;
 
-    std::vector <PolygonCollider2D*> edges;
     std::vector <vec2> height_points;
     std::vector <float> vertices;
     int PeakHeight;

@@ -66,13 +66,15 @@ namespace Framework
     m_system = std::make_shared<ParticleSystem> (NUM_PARTICLES);
     m_system->init (NUM_PARTICLES);
 
+    Transform* tform = static_cast<Transform*>(gameObject->GetComponent("Transform"));
+
     //
     // emitter:
     //
     {auto particleEmitter = std::make_shared<ParticleEmitter> ();
 
     particleEmitter->m_emitRate = (float) NUM_PARTICLES * 0.05f;
-    glm::vec3 pos = gameObject->Transform->GetPosition ();
+    glm::vec3 pos = tform->GetPosition();
     particleEmitter->position = pos;
     // pos:
     m_posGenerator = std::make_shared<BoxPosGen> ();
@@ -109,7 +111,7 @@ namespace Framework
       auto particleEmitter = std::make_shared<ParticleEmitter> ();
 
       particleEmitter->m_emitRate = (float) NUM_PARTICLES * 0.05f;
-      glm::vec3 pos = gameObject->Transform->GetPosition ();
+      glm::vec3 pos = tform->GetPosition ();
       particleEmitter->position = pos;
       // pos:
       auto m_posGenerator = std::make_shared<BoxPosGen> ();
@@ -154,7 +156,7 @@ namespace Framework
     m_system->addUpdater (m_eulerUpdater);
 
     m_floorUpdater = std::make_shared<FloorUpdater> ();
-    m_floorUpdater->m_floorY = gameObject->Transform->GetPosition().y;
+    m_floorUpdater->m_floorY = tform->GetPosition().y;
     m_system->addUpdater (m_floorUpdater);
 
     return true;
@@ -231,8 +233,10 @@ namespace Framework
     static double time = 0.0;
     time += dt;
 
-    m_posGenerator->m_pos.x = gameObject->Transform->GetPosition ().x + 10.0f * sin ((float) time * 2.5f * 2.5f);
-    m_posGenerator->m_pos.z = gameObject->Transform->GetPosition ().z + 10.0f * cos ((float) time * 2.5f * 2.5f);
+    Transform* tform = static_cast<Transform*>(gameObject->GetComponent("Transform"));
+
+    m_posGenerator->m_pos.x = tform->GetPosition ().x + 10.0f * sin ((float) time * 2.5f * 2.5f);
+    m_posGenerator->m_pos.z = tform->GetPosition ().z + 10.0f * cos ((float) time * 2.5f * 2.5f);
 
     m_system->update (dt);
   }
@@ -268,7 +272,7 @@ namespace Framework
     shader->uni1i ("tex", 0);
     shader->uni1f ("size", size);
 
-    shader->uniMat4 ("matModel", glm::value_ptr (gameObject->Transform->GetModelMatrix ()));
+    shader->uniMat4("matModel", glm::value_ptr(static_cast<Transform*>(gameObject->GetComponent("Transform"))->GetModelMatrix()));
     shader->uniMat4 ("matProjection", glm::value_ptr (Camera::GetViewToProjectionMatrix ()));
     shader->uniMat4 ("matModelview", glm::value_ptr (Camera::GetWorldToViewMatrix ()));
     m_renderer->render ();

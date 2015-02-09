@@ -33,19 +33,21 @@ namespace Framework
 
 	void EcoSystem::Initialize()
 	{
-		ErrorIf(!gameObject->Terrain2D, "Can't have no trees with no ground, YO!");
+    Terrain2D* terrainComp = static_cast<Terrain2D*>(gameObject->GetComponent("Terrain2D"));
+    Transform* tform = static_cast<Transform*>(gameObject->GetComponent("Transform"));
+		ErrorIf(!terrain, "Can't have no trees with no ground, YO!");
     Initialize_Archetype_List();
-		terrain = gameObject->Terrain2D->GetTerrain();
-		water = gameObject->Terrain2D->GetWater();
-		MapWidth = gameObject->Terrain2D->GetWidth();
-    MapHeight = gameObject->Terrain2D->GetPeakHeight();
+    terrain = terrainComp->GetTerrain();
+    water = terrainComp->GetWater();
+    MapWidth = terrainComp->GetWidth();
+    MapHeight = terrainComp->GetPeakHeight();
 		//Set up barren ground
 		tree_list = new int[MapWidth];
 		for (int i = 0; i < MapWidth; ++i)
 			tree_list[i] = int(OPEN);
 
-		Translation = gameObject->Transform->GetPosition();
-		Scale = gameObject->Transform->GetScale();
+		Translation = tform->GetPosition();
+		Scale = tform->GetScale();
 		GenerateVegetation();
 	}
 
@@ -99,7 +101,7 @@ namespace Framework
       {
         GameObject *newobj;
         newobj = OBJECTSYSTEM->LoadArchetype("Tree03D.Archetype");
-        newobj->Transform->Translate(offsetX + Translation.x, offsetY + Translation.y, Translation.z);
+        static_cast<Transform*>(newobj->GetComponent("Transform"))->Translate(offsetX + Translation.x, offsetY + Translation.y, Translation.z);
       }
       //if (tree_list[i] != OPEN)
       /*if (i % (rand() % 10 + 2) == 0 && terrain[i] <= 72)
@@ -132,10 +134,10 @@ namespace Framework
     
     newobj = OBJECTSYSTEM->LoadArchetype(Archetype_List[type]);
 
-		newobj->Transform->Translate(x, y, z);
+    static_cast<Transform*>(newobj->GetComponent("Transform"))->Translate(x, y, z);
 
     FireGroup* fsm = nullptr;
-    fsm = newobj->FireGroup;
+    fsm = static_cast<FireGroup*>(newobj->GetComponent("FireGroup"));
     if (fsm != nullptr && fsm->firePoints.size())
     {
       Physics::THERMODYNAMICS->Add_Group(fsm);

@@ -20,7 +20,7 @@
 
 const float PI = 3.141592741f;
 const float EPSILON = 0.0001f;
-
+/*
 struct Vector2
 {
   union
@@ -36,6 +36,7 @@ struct Vector2
   };
 
   Vector2( ) {}
+  Vector2(vec2 v) { x = v.x; y = v.y; }
   Vector2( float x_, float y_ )
     : x( x_ )
     , y( y_ )
@@ -136,6 +137,8 @@ inline Vector2 operator*( float s, const Vector2& v )
   return Vector2( s * v.x, s * v.y );
 }
 
+*/
+/*
 struct Mat2
 {
   union
@@ -249,6 +252,18 @@ inline float Cross( const Vector2& a, const Vector2& b )
 {
   return a.x * b.y - a.y * b.x;
 }
+*/
+
+inline vec3 Cross(float a, const vec3&v)
+{
+  return vec3(-a * v.y, a * v.x, 0.0f);
+
+}
+
+inline float Cross(const vec3& a, const vec3& b)
+{
+  return a.x * b.y - a.y * b.x;
+}
 
 // Comparison with tolerance of EPSILON
 inline bool Equal( float a, float b )
@@ -290,7 +305,7 @@ inline bool BiasGreaterThan( float a, float b )
 }
 
 const float gravityScale = 5.0f;
-const Vector2 gravity( 0, -10.0f * gravityScale );
+const vec3 gravity( 0, -10.0f * gravityScale, 0);
 const float dt = 1.0f / 60.0f;
 
 #endif // _MATH_EXT_H

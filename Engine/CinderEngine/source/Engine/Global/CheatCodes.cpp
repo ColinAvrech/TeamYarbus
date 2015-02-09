@@ -31,18 +31,23 @@ namespace Framework
       if (e->KeyDown && e->SHIFTPressed)
       {
         GameObject* player = OBJECTSYSTEM->ptrPlayer;
-        
+
+        Health* hp = static_cast<Health*>(player->GetComponent("Health"));
+        CharacterController* cc = static_cast<CharacterController*>(player->GetComponent("CharacterController"));
+        PlayerStats* ps = static_cast<PlayerStats*>(OBJECTSYSTEM->ptrPlayer->GetComponent("PlayerStats"));
         switch (e->KeyValue)
         {
           case GLFW_KEY_F: // Toggle Flying
-            if (player && player->CharacterController)
+            if (player && cc)
             {
-              player->CharacterController->ToggleFlying();
+              cc->ToggleFlying();
             }
             break;
 
           case GLFW_KEY_P: //start profiler
+#ifdef _DEBUG
             CORE->ToggleProfiling();
+#endif
             break;
 
           case GLFW_KEY_R: // Restart Level
@@ -50,17 +55,17 @@ namespace Framework
             break;            
 
           case GLFW_KEY_I: // Toggle Invincibility:   Shift + I
-            if (player && player->Health)
+            if (player && hp)
     	      {
     	        std::cout << "Toggle Invincibility Cheat!" << std::endl;
-              player->Health->ToggleInvulnerability();
+              hp->ToggleInvulnerability();
             }
             break;
 
           case GLFW_KEY_N: // Goto NextLevel: Shift + N
 
             // Check for player and its next level, or splash screen
-            if ((OBJECTSYSTEM->ptrPlayer && OBJECTSYSTEM->ptrPlayer->PlayerStats) ||
+            if ((OBJECTSYSTEM->ptrPlayer && ps) ||
                 OBJECTSYSTEM->FindObjectByName("Logo") != nullptr)
             {
               std::cout << "Goto NextLevel Cheat!" << std::endl;

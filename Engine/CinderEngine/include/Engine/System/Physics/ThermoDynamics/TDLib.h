@@ -78,7 +78,7 @@ namespace Framework
     float dTemp(float dQ, float m, float c);
 
     //Possible materials used in terrain
-    enum Material
+    enum MaterialType
     {
       AIR,
       WATER,
@@ -93,6 +93,7 @@ namespace Framework
       CEMENT,
       CARBON,
       FUEL,
+      COUNT
     };//enum material
 
   } //namespace Physics

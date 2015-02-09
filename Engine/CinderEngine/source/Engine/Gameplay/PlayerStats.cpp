@@ -27,7 +27,6 @@ namespace Framework
   {
     EVENTSYSTEM->mConnect<AllTreesBurnedEvent, PlayerStats> (Events::ALLLTREESBURNED, this, &PlayerStats::AllTreesBurned);
     EVENTSYSTEM->mConnect<UpdateEvent, PlayerStats> (Events::UPDATEEVENT, this, &PlayerStats::Update);
-    gameObject->PlayerStats = this;
     OPENGL->Change_Shader("FadeIn", (int)SS_FADE_IN);
   }
 

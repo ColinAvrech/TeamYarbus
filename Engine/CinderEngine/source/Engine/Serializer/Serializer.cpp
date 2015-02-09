@@ -39,6 +39,12 @@ namespace Framework
 			exitted = false;
 		} //constructor JSONSerializer
 
+    ZeroSerializer::ZeroSerializer(string filename) : ZeroSerializer()
+    {
+      open(filename.c_str());
+      CreateArchive();
+    }
+
 		bool ZeroSerializer::open(const char* filepath)
 		{
 			std::string path("..//..//Resources//Levels//");
@@ -83,6 +89,7 @@ namespace Framework
 				ReadLine();
 				ParseLine();
 			}
+      close();
 		}
 
 

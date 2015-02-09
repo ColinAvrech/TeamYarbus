@@ -120,7 +120,7 @@ namespace Framework
         glm::ivec2 sub = obj->GetGridPosition();
         sub.y -= y_offset[sub.x];
         FireMap.push_back(std::make_pair(sub, obj));
-        Terrain.Set(sub.x, sub.y, Physics::Material(obj->material_type));
+        Terrain.Set(sub.x, sub.y, Physics::MaterialType(obj->material_type));
         TemperatureMap.Set(sub.x, sub.y, obj->initTemp);
       }
     }
@@ -152,7 +152,7 @@ namespace Framework
       if (paused)
         return;
 
-      int center = Camera::main->gameObject->Transform->GetGridPosition().x;
+      int center = static_cast<Transform*>(Camera::main->gameObject->GetComponent("Transform"))->GetGridPosition().x;
       float fov = Camera::main->GetSize();
 
       int start = center - Update_Width;
@@ -565,7 +565,9 @@ namespace Framework
     //Debug draw
     void ThermodynamicsSystem::Draw()
     {
-      glm::vec2 c_center = Camera::main->gameObject->Transform->GetGridPosition();
+
+      Transform* tform = static_cast<Transform*>(Camera::main->gameObject->GetComponent("Transform"));
+      glm::vec2 c_center = tform->GetGridPosition();
       float fov = Camera::main->GetSize();
       int h_start = c_center.x - fov;
       if (h_start < 0)
@@ -586,8 +588,8 @@ namespace Framework
       glMatrixMode(GL_MODELVIEW);
       glLoadIdentity();
 
-      glm::vec3 eye = glm::vec3(0, 0, 1) * Camera::main->GetSize() + glm::vec3(Camera::main->gameObject->Transform->GetPosition().x, Camera::main->gameObject->Transform->GetPosition().y, 0);
-      glm::vec3 center = Camera::main->gameObject->Transform->GetPosition();
+      glm::vec3 eye = glm::vec3(0, 0, 1) * Camera::main->GetSize() + glm::vec3(tform->GetPosition().x, tform->GetPosition().y, 0);
+      glm::vec3 center = tform->GetPosition();
       glm::vec3 up = glm::vec3(0, 1, 0);
       gluLookAt(eye.x, eye.y, eye.z, center.x, center.y, center.z, up.x, up.y, up.z);
       

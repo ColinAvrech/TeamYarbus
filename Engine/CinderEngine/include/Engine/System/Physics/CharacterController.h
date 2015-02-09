@@ -62,7 +62,6 @@ namespace Framework
     float drag;
     float maxVel;
     float currentforce;
-    float density;
     glm::vec2 maxAcceleration;
 
   };

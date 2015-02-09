@@ -52,8 +52,10 @@ namespace Framework
       obj->Name = "FireStarter";
 
       // Transform
-      obj->AddComponent("Transform")->Initialize();
-      obj->Transform->Translate(gameObject->Transform->GetPosition());
+      Transform* tform = static_cast<Transform*>(gameObject->GetComponent("Transform"));
+      Transform* objTform = static_cast<Transform*>(obj->AddComponent("Transform"));
+      objTform->Initialize();
+      objTform->Translate(tform->GetPosition());
 
       // Sphere Collider
       obj->AddComponent("SphereCollider")->Initialize();

@@ -87,41 +87,16 @@ namespace Framework
     String Name;
 	  String GetName();
     GameObject* Parent;
-	bool InheritRotation = true;
-	bool InheritPosition = true;
-	bool InheritScale = true;
+	  bool InheritRotation = true;
+	  bool InheritPosition = true;
+	  bool InheritScale = true;
 
-	std::vector<GameObject*> children;
+	  std::vector<GameObject*> children;
 
-	void AddChild(GameObject* child);
-	void RemoveChild(GameObject* child);
+	  void AddChild(GameObject* child);
+	  void RemoveChild(GameObject* child);
 
     const unsigned GameObjectID;
-
-
-    //Components
-    ComponentPointer(Transform);
-    ComponentPointer(Sprite);
-	ComponentPointer(Health);
-    ComponentPointer (ShapeCollider2D);
-    ComponentPointer (RigidBody2D);
-    ComponentPointer(Camera);
-    ComponentPointer(CharacterController);
-	ComponentPointer(SparkCollector);
-	ComponentPointer(FireGroup);
-    ComponentPointer(Microphone);
-    ComponentPointer(Terrain2D);
-    ComponentPointer(Terrain3D);
-    ComponentPointer(AudioComponent);
-	ComponentPointer(PlayerStats);
-    ComponentPointer(FluidBody);
-    ComponentPointer(GUIText);
-	ComponentPointer(Splitscreen);
-	
-
-   // Menu Components
-   ComponentPointer(MenuController);
-   ComponentPointer(ButtonController);
 
   public:
 

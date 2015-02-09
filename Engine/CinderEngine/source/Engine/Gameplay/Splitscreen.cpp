@@ -44,8 +44,9 @@ namespace Framework
 		if (flashlight == true)
 		{
 			//flaslight follows the mouse
-			origin.x = gameObject->Transform->GetPosition().x - WINDOWSYSTEM->Get_Mouse_Position().x;
-			origin.y = gameObject->Transform->GetPosition().y - WINDOWSYSTEM->Get_Mouse_Position().y;
+      Transform* tform = static_cast<Transform*>(gameObject->GetComponent("Transform"));
+			origin.x = tform->GetPosition().x - WINDOWSYSTEM->Get_Mouse_Position().x;
+			origin.y = tform->GetPosition().y - WINDOWSYSTEM->Get_Mouse_Position().y;
 			leftBounds.x = lightRadius*cos(lightTheta / 2);
 			leftBounds.y = lightRadius*sin(lightTheta / 2);
 			rightBounds.x = lightRadius*cos(-lightTheta / 2);

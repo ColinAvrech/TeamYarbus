@@ -166,7 +166,7 @@ namespace Framework
     //destPos.x = (float) (cursorX / (windowWidth) -0.5f) * 2.0f;
     //destPos.y = (float) ((windowHeight - cursorY) / windowHeight - 0.5f) * 2.0f;
 
-    destPos = gameObject->Transform->GetNDCPosition ();
+    destPos = static_cast<Transform*>(gameObject->GetComponent("Transform"))->GetNDCPosition();
 
     vec4* verticesPos = (vec4*) SSBOPos->MapBufferRange<vec4> (0, particleCount);
     for (int i = 0; i < particleCount; i++)
@@ -232,7 +232,8 @@ namespace Framework
     //destPos.x = (float) ((cursorX / (windowWidth) -0.5f) * 2.0f);
     //destPos.y = (float) ((windowHeight - cursorY) / windowHeight - 0.5f) * 2.0f;
 
-    destPos = gameObject->Transform->GetNDCPosition ();
+    Transform* tform = static_cast<Transform*>(gameObject->GetComponent("Transform"));
+    destPos = tform->GetNDCPosition ();
 
     //switch (move)
     //{
@@ -311,7 +312,7 @@ namespace Framework
 
     texture->Bind ();
     GLuint posAttrib = shader->attribLocation ("position");
-    shader->uniMat4 ("mvp", glm::value_ptr (CharacterController::PLAYER->gameObject->Transform->GetModelViewProjectionMatrix ()));
+    shader->uniMat4 ("mvp", glm::value_ptr (static_cast<Transform*>(CharacterController::PLAYER->gameObject->GetComponent("Transform"))->GetModelViewProjectionMatrix ()));
     glBindBuffer (GL_ARRAY_BUFFER, SSBOPos->Get_POS ());
     shader->vertexAttribPtr (posAttrib, 4, GL_FLOAT, GL_FALSE, 0, 0);
     shader->enableVertexAttribArray (posAttrib);

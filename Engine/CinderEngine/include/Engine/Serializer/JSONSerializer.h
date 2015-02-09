@@ -26,6 +26,7 @@ namespace Framework
       //CONSTRUCTOR
       //------------------------------------------------
       ZeroSerializer();
+      ZeroSerializer(string filename);
 
 
       /*-----------------------------------------------------------------------

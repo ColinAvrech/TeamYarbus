@@ -74,7 +74,7 @@ namespace Framework
     m_system->init (NUM_PARTICLES);
 
     // Emitters
-    vec3 position = gameObject->Transform->GetPosition ();
+    vec3 position = static_cast<Transform*>(gameObject->GetComponent("Transform"))->GetPosition();
     trailGenerator = std::make_shared<BoxPosGen> ();
     trailGenerator1 = std::make_shared<BoxPosGen> ();
     CreateTrailEmitter  (trailGenerator, true, position, { 1.5f, 1.5f, -0.5f }, { 3.0f, 3.0f, 0.5f }, 50);
@@ -166,8 +166,9 @@ namespace Framework
 
   void PlayerEffect::cpuUpdate (double dt)
   {
-    trailGenerator->m_pos = glm::vec4 (gameObject->Transform->GetPosition (), 1.0f);
-    trailGenerator1->m_pos = glm::vec4 (gameObject->Transform->GetPosition (), 1.0f);
+    Transform* tform = static_cast<Transform*>(gameObject->GetComponent("Transform"));
+    trailGenerator->m_pos  = glm::vec4 (tform->GetPosition (), 1.0f);
+    trailGenerator1->m_pos = glm::vec4 (tform->GetPosition (), 1.0f);
     //particleEmitter->position = gameObject->Transform->GetPosition ();
     m_system->update (dt);
   }
@@ -203,7 +204,7 @@ namespace Framework
     shader->uni1i ("tex", 0);
     shader->uni1f ("size", size);
 
-    shader->uniMat4 ("matModel", glm::value_ptr (gameObject->Transform->GetModelMatrix ()));
+    shader->uniMat4("matModel", glm::value_ptr(static_cast<Transform*>(gameObject->GetComponent("Transform"))->GetModelMatrix()));
     shader->uniMat4 ("matProjection", glm::value_ptr (Camera::GetViewToProjectionMatrix()));
     shader->uniMat4 ("matModelview", glm::value_ptr (Camera::GetWorldToViewMatrix()));
     m_renderer->render ();

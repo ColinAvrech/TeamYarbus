@@ -183,7 +183,7 @@ namespace Framework
       Grid2D<float> VelocityMapY;
       Grid2D<float> VelocityMap_PrevY;
       //Terrain. Simple collision table using enums.
-      Grid2D<Material> Terrain;
+      Grid2D<MaterialType> Terrain;
       //Water and moisture content
       //Grid2D<float> WaterMap;
       int *y_offset;

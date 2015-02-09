@@ -18,32 +18,35 @@ namespace Framework
 {
 	void Manifold::Solve( void )
 	{
-	  Dispatch[A->shape->GetType( )][B->shape->GetType( )]( this, A, B );
+    ShapeCollider2D* shapeA = static_cast<ShapeCollider2D*>(A->gameObject->GetComponent("ShapeCollider2D"));
+    ShapeCollider2D* shapeB = static_cast<ShapeCollider2D*>(B->gameObject->GetComponent("ShapeCollider2D"));
+    if (shapeA && shapeB)
+      Dispatch[shapeA->GetType( )][shapeB->GetType( )]( this, A, B );
 	}
 	
 	void Manifold::Initialize( void )
 	{
 	  // Calculate average restitution
-	  e = (std::min)( A->restitution, B->restitution );
+    e = (std::min)(A->mat->restitution, B->mat->restitution);
 	
 	  // Calculate static and dynamic friction
-	  sf = std::sqrt( A->staticFriction * A->staticFriction );
-	  df = std::sqrt( A->dynamicFriction * A->dynamicFriction );
+    sf = std::sqrt(A->mat->staticFriction * A->mat->staticFriction);
+    df = std::sqrt(A->mat->dynamicFriction * A->mat->dynamicFriction);
 	
 	  for(unsigned i = 0; i < contact_count; ++i)
 	  {
 	    // Calculate radii from COM to contact
-	    Vector2 ra = contacts[i] - A->position;
-	    Vector2 rb = contacts[i] - B->position;
+	    vec3 ra = contacts[i] - A->position;
+	    vec3 rb = contacts[i] - B->position;
 	
-	    Vector2 rv = B->velocity + Cross( B->angularVelocity, rb ) -
+	    vec3 rv = B->velocity + Cross( B->angularVelocity, rb ) -
 	              A->velocity - Cross( A->angularVelocity, ra );
 	
 	
 	    // Determine if we should perform a resting collision or not
 	    // The idea is if the only thing moving this object is gravity,
 	    // then the collision should be performed without any restitution
-	    if(rv.LenSqr( ) < (dt * gravity).LenSqr( ) + EPSILON)
+	    if(glm::length2(rv) < glm::length2(dt * gravity) + EPSILON)
 	      e = 0.0f;
 	  }
 	}
@@ -51,7 +54,7 @@ namespace Framework
 	void Manifold::ApplyImpulse( void )
 	{
 	  // Early out and positional correct if both objects have infinite mass
-	  if(Equal( A->im + B->im, 0 ))
+	  if(Equal( A->invMass + B->invMass, 0 ))
 	  {
 	    InfiniteMassCorrection( );
 	    return;
@@ -60,15 +63,15 @@ namespace Framework
 	  for(unsigned i = 0; i < contact_count; ++i)
 	  {
 	    // Calculate radii from COM to contact
-	    Vector2 ra = contacts[i] - A->position;
-	    Vector2 rb = contacts[i] - B->position;
+	    vec3 ra = contacts[i] - A->position;
+	    vec3 rb = contacts[i] - B->position;
 	
 	    // Relative velocity
-	    Vector2 rv = B->velocity + Cross( B->angularVelocity, rb ) -
+	    vec3 rv = B->velocity + Cross( B->angularVelocity, rb ) -
 	              A->velocity - Cross( A->angularVelocity, ra );
 	
 	    // Relative velocity along the normal
-	    float contactVel = Dot( rv, normal );
+	    float contactVel = glm::dot( rv, normal );
 	
 	    // Do not resolve if velocities are separating
 	    if(contactVel > 0)
@@ -76,7 +79,7 @@ namespace Framework
 	
 	    float raCrossN = Cross( ra, normal );
 	    float rbCrossN = Cross( rb, normal );
-	    float invMassSum = A->im + B->im + Sqr( raCrossN ) * A->iI + Sqr( rbCrossN ) * B->iI;
+	    float invMassSum = A->invMass + B->invMass + Sqr( raCrossN ) * A->invI + Sqr( rbCrossN ) * B->invI;
 	
 	    // Calculate impulse scalar
 	    float j = -(1.0f + e) * contactVel;
@@ -89,7 +92,7 @@ namespace Framework
       //
       
 	    // Apply impulse         !!  SUPER BUG IS HERE  !
-	    Vector2 impulse = normal * j;
+	    vec3 impulse = normal * j;
 	    A->ApplyImpulse( -impulse, ra );
 	    B->ApplyImpulse(  impulse, rb );
 
@@ -102,11 +105,10 @@ namespace Framework
 	    rv = B->velocity + Cross( B->angularVelocity, rb ) -
 	         A->velocity - Cross( A->angularVelocity, ra );
 	
-	    Vector2 t = rv - (normal * Dot( rv, normal ));
-	    t.Normalize( );
+	    vec3 t = glm::normalize(rv - (normal * glm::dot( rv, normal )));
 	
 	    // j tangent magnitude
-	    float jt = -Dot( rv, t );
+      float jt = -glm::dot(rv, t);
 	    jt /= invMassSum;
 	    jt /= (float)contact_count;
 	
@@ -115,7 +117,7 @@ namespace Framework
 	      return;
 	
 	    // Coulumb's law
-	    Vector2 tangentImpulse;
+	    vec3 tangentImpulse;
 	    if(std::abs( jt ) < j * sf)
 	      tangentImpulse = t * jt;
 	    else
@@ -131,23 +133,25 @@ namespace Framework
 	{
 	  const float k_slop = 0.05f; // Penetration allowance
 	  const float percent = 0.4f; // Penetration percentage to correct
-	  Vector2 correction = ((std::max)( penetration - k_slop, 0.0f ) / (A->im + B->im)) * normal * percent;
-	  A->position -= correction * A->im;
-	  B->position += correction * B->im;
+	  vec3 correction = ((std::max)( penetration - k_slop, 0.0f ) / (A->invMass + B->invMass)) * normal * percent;
+	  A->position -= correction * A->invMass;
+	  B->position += correction * B->invMass;
     if (A->gameObject != nullptr)
-      A->gameObject->Transform->SetPosition (A->position.x, A->position.y);
+      static_cast<Transform*>(A->gameObject->GetComponent("Transform"))->SetPosition(A->position.x, A->position.y);
     if (B->gameObject != nullptr)
-	  B->gameObject->Transform->SetPosition (B->position.x, B->position.y);
+      static_cast<Transform*>(B->gameObject->GetComponent("Transform"))->SetPosition(B->position.x, B->position.y);
 	}
 	
 	void Manifold::InfiniteMassCorrection( void )
-	{
-	  A->velocity.Set( 0, 0 );
-    if (!A->shape->isStatic)
-    A->gameObject->Transform->SetPosition (0, 0);
-	  B->velocity.Set( 0, 0 );
-    if (!B->shape->isStatic)
-    B->gameObject->Transform->SetPosition (0, 0);
+  {
+    RigidBody2D* rbA = static_cast<RigidBody2D*>(A->gameObject->GetComponent("RigidBody2D"));
+    RigidBody2D* rbB = static_cast<RigidBody2D*>(B->gameObject->GetComponent("RigidBody2D"));
+	  A->velocity = vec3();
+    if (!rbA->isStatic)
+      static_cast<Transform*>(A->gameObject->GetComponent("Transform"))->SetPosition(0, 0);
+    B->velocity = vec3();
+    if (!rbB->isStatic)
+      static_cast<Transform*>(B->gameObject->GetComponent("Transform"))->SetPosition(0, 0);
 	}
 }
 

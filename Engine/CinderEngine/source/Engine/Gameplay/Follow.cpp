@@ -30,13 +30,13 @@ namespace Framework
 
   void Follow::Initialize ()
   {
-    target = OBJECTSYSTEM->FindObjectByName (targetName.c_str())->Transform;
+    target = static_cast<Transform*>(OBJECTSYSTEM->FindObjectByName(targetName.c_str())->GetComponent("Transform"));
     EVENTSYSTEM->mConnect<UpdateEvent, Follow> (Events::UPDATEEVENT, this, &Follow::Update);
   }
 
   void Follow::Update (UpdateEvent* update)
   {
-    gameObject->Transform->SetPosition (target->GetPosition().x, target->GetPosition().y);
+    static_cast<Transform*>(gameObject->GetComponent("Transform"))->SetPosition(target->GetPosition().x, target->GetPosition().y);
   }
 
   void Follow::OnApplicationPause (PauseEvent* pause)

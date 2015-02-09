@@ -56,11 +56,11 @@ namespace Framework
 		
     if (visible)
     {
-
+      Transform* tform = static_cast<Transform*>(gameObject->GetComponent("Transform"));
 		vao->bindVAO();
 		shader->Use();
 		shader->uni4fv("overrideColor", glm::value_ptr(ZInterface::RealToVec(&color)));
-		shader->uniMat4("mvp", glm::value_ptr(gameObject->Transform->GetModelViewProjectionMatrix()));
+		shader->uniMat4("mvp", glm::value_ptr(tform->GetModelViewProjectionMatrix()));
 
 		FT_GlyphSlot  slot = face->glyph;  /* a small shortcut */
 
@@ -69,13 +69,13 @@ namespace Framework
 		float yPos = position.y;
 		float scaleX = 0.01f * scale.x;
 		float scaleY = 0.01f * scale.y;
-		if (gameObject->Transform)
+		if (tform)
 		{
-			vec3* pos = &gameObject->Transform->GetPosition();
+			vec3* pos = &tform->GetPosition();
 			xPos += pos->x;
 			yPos += pos->y;
 
-			vec3* scale = &gameObject->Transform->GetScale();
+			vec3* scale = &tform->GetScale();
 			scaleX *= scale->x;
 			scaleY *= scale->y;
 		}

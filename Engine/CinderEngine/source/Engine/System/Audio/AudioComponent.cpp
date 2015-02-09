@@ -119,7 +119,6 @@ namespace Framework
   void AudioComponent::Initialize()
   {
     //LoadSound("FireA.ogg");
-    gameObject->AudioComponent = this;
     AUDIOSYSTEM->AddAudioComponent(this);
   }
 
@@ -143,8 +142,9 @@ namespace Framework
 
   void AudioComponent::Update()
   {
+    Transform* tform = static_cast<Transform*>(gameObject->GetComponent("Transform"));
     if (_positional)
-      _newSound->SetPosition(gameObject->Transform->GetPosition());
+      _newSound->SetPosition(tform->GetPosition());
 
     if (_playing)
     {

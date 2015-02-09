@@ -47,7 +47,6 @@ namespace Framework
       Camera::main = nullptr;
     }
     allCameras.remove (this);
-    gameObject->Camera = nullptr;
     OPENGL->cameras.remove (this);
     EVENTSYSTEM->mDisconnect <KeyEvent, Camera> (Events::KEY_ANY, this, &Camera::OnKeyPressed);
   }
@@ -57,27 +56,29 @@ namespace Framework
   {
     float camSpeed = 1.0f;
     float zoomSpeed = 1.0f;
+
+    Transform* tform = static_cast<Transform*>(Camera::main->gameObject->GetComponent("Transform"));
     if (key->KeyDown)
       switch (key->KeyValue)
     {
       case GLFW_KEY_A:
         OPENGL->MatrixMode (VIEW);
-        Camera::main->gameObject->Transform->Translate (-camSpeed, 0, 0);
+        tform->Translate (-camSpeed, 0, 0);
         Camera::main->matricesReady = false;
         break;
       case GLFW_KEY_D:
         OPENGL->MatrixMode (VIEW);
-        Camera::main->gameObject->Transform->Translate (camSpeed, 0, 0);
+        tform->Translate (camSpeed, 0, 0);
         Camera::main->matricesReady = false;
         break;
       case GLFW_KEY_S:
         OPENGL->MatrixMode (VIEW);
-        Camera::main->gameObject->Transform->Translate (0, -camSpeed, 0);
+        tform->Translate (0, -camSpeed, 0);
         Camera::main->matricesReady = false;
         break;
       case GLFW_KEY_W:
         OPENGL->MatrixMode (VIEW);
-        Camera::main->gameObject->Transform->Translate (0, camSpeed, 0);
+        tform->Translate (0, camSpeed, 0);
         Camera::main->matricesReady = false;
         break;
       case GLFW_KEY_Z:
@@ -111,13 +112,13 @@ namespace Framework
     EVENTSYSTEM->mConnect <KeyEvent, Camera> (Events::KEY_ANY, this, &Camera::OnKeyPressed);
 #endif
     EVENTSYSTEM->mConnect <PauseEvent, Camera> (Events::PAUSE, this, &Camera::OnApplicationPause);
-    gameObject->Camera = this;
     allCameras.push_back(this);
+    Transform* tform = static_cast<Transform*>(gameObject->GetComponent("Transform"));
     if (mainCamera)
     {
       Camera::main = this;
       //Camera::main->Zoom(-100.0f);
-      worldToView = glm::lookAt(size * viewDirection + vec3 (gameObject->Transform->GetPosition().x, gameObject->Transform->GetPosition().y, 0.0), gameObject->Transform->GetPosition(), up);
+      worldToView = glm::lookAt(size * viewDirection + vec3 (tform->GetPosition().x, tform->GetPosition().y, 0.0), tform->GetPosition(), up);
       viewToProjection = glm::perspective(fov * M_PI / 180, aspect, nearPlane, farPlane);
     }
     Camera::current = this;
@@ -125,12 +126,12 @@ namespace Framework
     OPENGL->cameras.push_back(this);
     OPENGL->Perspective (fov, aspect, nearPlane, farPlane);
     OPENGL->MatrixMode (MODEL);
-    OPENGL->Translatefv (const_cast <float*>(glm::value_ptr (gameObject->Transform->GetPosition ())));
+    OPENGL->Translatefv (const_cast <float*>(glm::value_ptr (tform->GetPosition ())));
     OPENGL->MatrixMode (VIEW);
     OPENGL->LookAt
       (size * viewDirection +
-      glm::vec3 (gameObject->Transform->GetPosition ().x, gameObject->Transform->GetPosition ().y, 0.0),
-      gameObject->Transform->GetPosition (), up);
+      glm::vec3 (tform->GetPosition ().x, tform->GetPosition ().y, 0.0),
+      tform->GetPosition (), up);
     OPENGL->MatrixMode (MODEL);
     OPENGL->LoadIdentity ();
     matricesReady = true;
@@ -256,8 +257,9 @@ namespace Framework
     {
       //gameObject->Transform->SetPosition (PLAYER->gameObject->Transform->GetPosition ().x, PLAYER->gameObject->Transform->GetPosition ().y);
       OPENGL->Perspective (fov, aspect, nearPlane, farPlane);
-      vec3 eye = size * viewDirection + glm::vec3(gameObject->Transform->GetPosition().x, gameObject->Transform->GetPosition().y, 0.0);
-      OPENGL->LookAt( eye, gameObject->Transform->GetPosition(), up);
+      Transform* tform = static_cast<Transform*>(gameObject->GetComponent("Transform"));
+      vec3 eye = size * viewDirection + glm::vec3(tform->GetPosition().x, tform->GetPosition().y, 0.0);
+      OPENGL->LookAt( eye, tform->GetPosition(), up);
       OPENGL->MatrixMode (MODEL);
       OPENGL->LoadIdentity ();
     }
@@ -283,8 +285,9 @@ namespace Framework
     //if (!Camera::main->matricesReady)
     if (Camera::main)
     {
-      vec3 eye = Camera::main->size * Camera::main->viewDirection + vec3(Camera::main->gameObject->Transform->GetPosition().x, Camera::main->gameObject->Transform->GetPosition().y, 0.0);
-      vec3 center = Camera::main->gameObject->Transform->GetPosition();
+      Transform* tform = static_cast<Transform*>(Camera::main->gameObject->GetComponent("Transform"));
+      vec3 eye = Camera::main->size * Camera::main->viewDirection + vec3(tform->GetPosition().x, tform->GetPosition().y, 0.0);
+      vec3 center = tform->GetPosition();
       Camera::main->worldToView = glm::lookAt( eye, center, Camera::main->up);
     }
 
@@ -335,7 +338,7 @@ namespace Framework
 
   glm::vec3 Camera::FocalPoint()
   {
-    return this->gameObject->Transform->GetPosition() + (Camera::main->FocalPlane + Camera::main->size) * Camera::main->viewDirection;
+    return static_cast<Transform*>(gameObject->GetComponent("Transform"))->GetPosition() + Camera::main->FocalPlane * Camera::main->size * Camera::main->viewDirection;
   }
 
   glm::vec2 Camera::GetWorldMousePosition()

@@ -62,7 +62,7 @@ namespace Framework
     shader->uni1i ("image", 0);
     shader->uni1f ("lightRadius", radius);
     shader->uni1f ("intensity", intensity);
-    position = glm::vec3 (gameObject->Transform->GetNDCPosition (), 0.0f);
+    position = glm::vec3(static_cast<Transform*>(gameObject->GetComponent("Transform"))->GetNDCPosition(), 0.0f);
     shader->uni2fv ("lightPosition", glm::value_ptr (position));
     shader->uni4fv ("lightColor", glm::value_ptr (color));
   }

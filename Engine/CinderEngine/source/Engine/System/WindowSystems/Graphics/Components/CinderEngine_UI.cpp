@@ -113,11 +113,12 @@ namespace Framework
     vao->bindVAO ();
     Specify_Attributes ();
     vao->unbindVAO ();
-
-    box.Min.x = gameObject->Transform->GetPosition ().x - box.Dimension.x * gameObject->Transform->GetScale ().x * 0.5f;
-    box.Min.y = gameObject->Transform->GetPosition ().y - box.Dimension.y * gameObject->Transform->GetScale ().y * 0.5f;
-    box.Max.x = gameObject->Transform->GetPosition ().x + box.Dimension.x * gameObject->Transform->GetScale ().x * 0.5f;
-    box.Max.y = gameObject->Transform->GetPosition ().y + box.Dimension.y * gameObject->Transform->GetScale ().y * 0.5f;
+    
+    Transform* tform = static_cast<Transform*>(gameObject->GetComponent("Transform"));
+    box.Min.x = tform->GetPosition ().x - box.Dimension.x * tform->GetScale ().x * 0.5f;
+    box.Min.y = tform->GetPosition ().y - box.Dimension.y * tform->GetScale ().y * 0.5f;
+    box.Max.x = tform->GetPosition ().x + box.Dimension.x * tform->GetScale ().x * 0.5f;
+    box.Max.y = tform->GetPosition ().y + box.Dimension.y * tform->GetScale ().y * 0.5f;
     EVENTSYSTEM->mConnect<UpdateEvent, UIBox> (Events::UPDATEEVENT, this, &UIBox::UIUpdate);
 
     if (uiEvent == nullptr)
@@ -131,9 +132,10 @@ namespace Framework
   {
     if (enabled)
     {      
-      glm::vec2 normPos = WINDOWSYSTEM->Get_Normalized_Mouse_Position ();
-      box.S_Min = gameObject->Transform->GetNDCPosition (box.Min);
-      box.S_Max = gameObject->Transform->GetNDCPosition (box.Max);
+      glm::vec2 normPos = WINDOWSYSTEM->Get_Normalized_Mouse_Position();
+      Transform* tform = static_cast<Transform*>(gameObject->GetComponent("Transform"));
+      box.S_Min = tform->GetNDCPosition (box.Min);
+      box.S_Max = tform->GetNDCPosition (box.Max);
       //std::cout << "MIN " << box.S_Min.x << ", " << box.S_Min.y << "\n";
       //std::cout << "MAX " << box.S_Max.x << ", " << box.S_Max.y << "\n";
 
@@ -170,7 +172,7 @@ namespace Framework
       texture->Bind ();
       shader->uni4fv ("overrideColor", glm::value_ptr (color));
       shader->uniMat4 ("mvp",
-        glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix ()));
+        glm::value_ptr (static_cast<Transform*>(gameObject->GetComponent("Transform"))->GetModelViewProjectionMatrix ()));
       glDrawElements (GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
       texture->Unbind ();
       shader->Disable ();

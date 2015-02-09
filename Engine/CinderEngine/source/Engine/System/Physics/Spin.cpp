@@ -25,7 +25,8 @@ namespace Framework
 
   void Spin::OnUpdate(UpdateEvent *e)
   {
-    gameObject->Transform->Rotate(gameObject->Transform->GetRotation() + PI/20);
+    Transform* tform = static_cast<Transform*>(gameObject->GetComponent("Transform"));
+    tform->Rotate(tform->GetRotation() + PI/20);
   }
 
   DefineComponentName(Spin);

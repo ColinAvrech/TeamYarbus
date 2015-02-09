@@ -47,21 +47,13 @@ namespace Framework
   // Destructor
   Terrain2D::~Terrain2D ()
   {
-    gameObject->Terrain2D = nullptr;
-    delete vao1, vbo1;
+    delete tc;
+    tc = nullptr;
+    delete vao, vbo, vao1, vbo1;
     vao = nullptr;
     vbo = nullptr;
-    tc = nullptr;
     vao1 = nullptr;
     vbo1 = nullptr;
-
-    for (auto* i : edges)
-    {
-      delete i;
-      i = nullptr;
-    }
-
-    edges.clear ();
   }
 
 
@@ -112,7 +104,6 @@ namespace Framework
 
   void Terrain2D::Initialize ()
   {
-    gameObject->Terrain2D = this;
     Generate_Height_Points ();
     Generate_Vertices ();
     Generate_Buffers ();
@@ -128,7 +119,7 @@ namespace Framework
     //glEnable (GL_BLEND);
     shader->Use ();
     vao->bindVAO ();
-    shader->uniMat4 ("mvp", glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix ()));
+    shader->uniMat4("mvp", glm::value_ptr(static_cast<Transform*>(gameObject->GetComponent("Transform"))->GetModelViewProjectionMatrix()));
     shader->uni4f ("color1", color1.r, color1.g, color1.b, color1.a);
     shader->uni4f ("color2", color2.r, color2.g, color2.b, color2.a);
 
@@ -192,9 +183,10 @@ namespace Framework
     }
 
     //Set y scale to match terrain height
-    float x_scale = this->gameObject->Transform->GetScale().x;
+    Transform* tform = static_cast<Transform*>(gameObject->GetComponent("Transform"));
+    float x_scale = tform->GetScale().x;
     float y_scale = t.GetPeakHeight();
-    this->gameObject->Transform->Scale(x_scale, y_scale, 1.f);
+    tform->Scale(x_scale, y_scale, 1.f);
 
     //if (AddCollider)
     //{
@@ -275,23 +267,26 @@ namespace Framework
 
   void Terrain2D::Generate_Edges ()
   {
-    Vector2* p = new Vector2 [4];
+    vec3* p = new vec3 [4];
     float y = 0.0f;
     // Edges for Line Colliders
+    assert(gameObject);
+    Transform* tform = static_cast<Transform*>(gameObject->GetComponent("Transform"));
+
+    RigidBody2D* b = static_cast<RigidBody2D*>(gameObject->AddComponent("RigidBody2D"));
+    CompoundCollider2D* collider = static_cast<CompoundCollider2D*>(gameObject->AddComponent("CompoundCollider2D"));
     for (unsigned i = 0; i < height_points.size () - 1; ++i)
     {
-      PolygonCollider2D* poly = new PolygonCollider2D ();
-      edges.push_back (poly);
       glm::dvec2 center;
-      glm::vec2 p0 = (glm::mat2)gameObject->Transform->GetModelMatrix () * glm::vec2 (height_points [i].x, y);
-      glm::vec2 p1 = (glm::mat2)gameObject->Transform->GetModelMatrix () * glm::vec2 (height_points [i + 1].x, y);
-      glm::vec2 p2 = (glm::mat2)gameObject->Transform->GetModelMatrix () * glm::vec2 (height_points [i + 1].x, height_points [i + 1].y);
-      glm::vec2 p3 = (glm::mat2)gameObject->Transform->GetModelMatrix () * glm::vec2 (height_points [i].x, height_points [i].y);
+      glm::vec2 p0 = (glm::mat2)tform->GetModelMatrix () * glm::vec2 (height_points [i].x, y);
+      glm::vec2 p1 = (glm::mat2)tform->GetModelMatrix () * glm::vec2 (height_points [i + 1].x, y);
+      glm::vec2 p2 = (glm::mat2)tform->GetModelMatrix () * glm::vec2 (height_points [i + 1].x, height_points [i + 1].y);
+      glm::vec2 p3 = (glm::mat2)tform->GetModelMatrix () * glm::vec2 (height_points [i].x, height_points [i].y);
 
-      p [0] = Vector2 (p2.x, p2.y);
-      p [1] = Vector2 (p3.x, p3.y);
-      p [2] = Vector2 (p0.x, p0.y);
-      p [3] = Vector2 (p1.x, p1.y);
+      p [0] = vec3 (p2.x, p2.y, 0.0f);
+      p [1] = vec3 (p3.x, p3.y, 0.0f);
+      p [2] = vec3 (p0.x, p0.y, 0.0f);
+      p [3] = vec3 (p1.x, p1.y, 0.0f);
 
       ////////////////////////////////////////////////////////////////////////////
       ////////////////////////////////////////////////////////////////////////////
@@ -313,16 +308,29 @@ namespace Framework
         &center.x, &center.y
         );
 
+      PolygonCollider2D* poly = new PolygonCollider2D();
       poly->Set (p, 4);
-      RigidBody2D* b = PHYSICS->Add (poly, gameObject->Transform->GetPosition().x + (float)(center.x),
-        (gameObject->Transform->GetPosition ().y + (float)(center.y)));
-      b->SetOrient (0);
-      b->SetStatic ();
-      b->restitution = 0.5f;
-
-      b->staticFriction = 1.0f;
-      b->dynamicFriction = 1.0f;
+      
+      collider->AddCollider(poly);
     }
+
+
+    b->SetOrient(0);
+    if (!b->mat)
+    {
+      b->matName = "Terrain2D::GenerateEdges_Material";
+      b->mat = new Material();
+    }
+    b->mat->restitution = 0.5f;
+
+    b->mat->staticFriction = 1.0f;
+    b->mat->dynamicFriction = 1.0f;
+    b->Initialize();
+    b->SetStatic();
+    b->ComputeMass();
+
+    PHYSICS->Add(b);
+
     delete [] p;
     p = nullptr;
   }

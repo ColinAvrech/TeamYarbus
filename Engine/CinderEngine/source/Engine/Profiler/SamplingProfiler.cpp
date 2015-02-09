@@ -5,7 +5,7 @@
 
 namespace Framework
 {
-
+#ifdef _DEBUG
   SamplingProfiler::SamplingProfiler(const unsigned& p_maxsamples) : maxSamples(p_maxsamples)
   {
     id = ProfilesTaken++;
@@ -292,4 +292,5 @@ namespace Framework
     }
 #pragma endregion
   }
+#endif
 }

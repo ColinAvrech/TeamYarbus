@@ -109,8 +109,6 @@ namespace Framework
 
 	void Sprite::Initialize()
 	{
-		gameObject->Sprite = this;
-
 		if (vao == nullptr || vbo == nullptr || ebo == nullptr)
 		{
 			ShapeData data = ShapeGenerator::Generate_Quad();
@@ -170,7 +168,6 @@ namespace Framework
 			delete ebo;
 			ebo = nullptr;
 		}
-    gameObject->Sprite = nullptr;
 	}
 
 
@@ -249,9 +246,10 @@ namespace Framework
 		shader->uni4fv("overrideColor", glm::value_ptr(color));
 
 		if (animated || texture->Get_ID() != TEXTURE_NONE)
-		{
-      glm::vec3 scale = gameObject->Transform->GetScale ();
-      gameObject->Transform->Scale (scale.y * texture->Get_Aspect_Ratio (), scale.y, scale.z);
+    {
+      Transform* tform = static_cast<Transform*>(gameObject->GetComponent("Transform"));
+      glm::vec3 scale = tform->GetScale ();
+      tform->Scale (scale.y * texture->Get_Aspect_Ratio (), scale.y, scale.z);
 			GLint texAttrib = shader->attribLocation("texcoord");
 			shader->enableVertexAttribArray(texAttrib);
 			shader->vertexAttribPtr(texAttrib, 2, GL_FLOAT, GL_FALSE, 12 * sizeof(GLfloat), 10 * sizeof(GLfloat));
@@ -299,7 +297,7 @@ namespace Framework
       vao->bindVAO ();
       shader->Use ();
       shader->uni4fv ("overrideColor", glm::value_ptr (color));
-      shader->uniMat4 ("mvp", glm::value_ptr (gameObject->Transform->GetModelViewProjectionMatrix ()));
+      shader->uniMat4("mvp", glm::value_ptr(static_cast<Transform*>(gameObject->GetComponent("Transform"))->GetModelViewProjectionMatrix()));
       //shader->uniMat4("modelViewProjectionMatrix", glm::value_ptr(gameObject->Transform->GetModelViewProjectionMatrix()));
       (this->*DrawFunction)();
       shader->Disable ();

@@ -30,13 +30,13 @@ namespace Framework
     //Pointerrs
 	type->HandleManager = ZilchManagerId(Zilch::PointerManager);
 
-    ZilchBindFieldGet(Transform);
-    ZilchBindFieldGet(Sprite);
-	ZilchBindFieldGet(Parent);
-	ZilchBindFieldGetSet(InheritRotation);
-	ZilchBindFieldGetSet(InheritPosition);
-	ZilchBindFieldGetSet(InheritScale);
-	ZilchBindFieldGetSet(Name);
+    //ZilchBindFieldGet(Transform);
+    //ZilchBindFieldGet(Sprite);
+	  ZilchBindFieldGet(Parent);
+	  ZilchBindFieldGetSet(InheritRotation);
+	  ZilchBindFieldGetSet(InheritPosition);
+	  ZilchBindFieldGetSet(InheritScale);
+	  ZilchBindFieldGetSet(Name);
 	  ZilchBindMethod(GetName);
 	  ZilchBindMethod(AddChild);
 	  ZilchBindMethodOverloadAs(ZGetComponent, "GetComponent", Component*, Zilch::String);
@@ -97,20 +97,26 @@ namespace Framework
 
   Component* GameObject::AddComponent(string name)
   {
-    ErrorIf(Components.find(name) != Components.end(), "COMPONENT CREATED TWICE ON SAME OBJECT");
-    if (OBJECTSYSTEM->SerialMap.find(name) != OBJECTSYSTEM->SerialMap.end())
+    //TODO:: Fix object stuffs
+    //ErrorIf(Components.find(name) != Components.end(), "COMPONENT CREATED TWICE ON SAME OBJECT");
+    Component* gc = GetComponent(name);
+    if (!gc)
     {
-      Component* gc = OBJECTSYSTEM->SerialMap[name]->Create();
-      Components[name] = gc;
-	    gc->mComponentType = Hash::Hash::Generate( name );
-      gc->gameObject = this;
-      return gc;
+      if (OBJECTSYSTEM->SerialMap.find(name) != OBJECTSYSTEM->SerialMap.end())
+      {
+        gc = OBJECTSYSTEM->SerialMap[name]->Create();
+        Components[name] = gc;
+	      gc->mComponentType = Hash::Hash::Generate( name );
+        gc->gameObject = this;
+      }
+      else
+      {
+        std::cout << CinderConsole::red << "ERROR, Object System requested to create unregistered component" << CinderConsole::cyan << name.c_str() << std::endl;
+        return NULL;
+      }
     }
-    else
-    {
-      std::cout << CinderConsole::red << "ERROR, Object System requested to create unregistered component" << CinderConsole::cyan << name.c_str() << std::endl;
-      return NULL;
-    }
+    
+    return gc;
   }
 
   void GameObject::AddChild(GameObject* child)
@@ -196,16 +202,15 @@ namespace Framework
 
   Component* GameObject::GetComponent(string component)
   {
-    ComponentMap::iterator it = Components.find(component);
-    if (it == Components.end())
-    {
-      return NULL;
-    }
-    else
-    {
-      return it->second;
-    }
-    return NULL;
+    //if (Components.size())
+    //{
+      ComponentMap::iterator it = Components.find(component);
+      if (it != Components.end())
+      {
+        return it->second;
+      }
+    //}
+    return nullptr;
   }
 	
   Component* GameObject::ZGetComponent(Zilch::String component)
