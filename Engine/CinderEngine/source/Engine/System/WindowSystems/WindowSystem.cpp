@@ -535,9 +535,7 @@ namespace Framework
     if (focused)
     OPENGL->Update ();
 
-	  Panel::PanelManager::Draw( );
-
-    glfwSwapBuffers (window);
+	  //Panel::PanelManager::Draw( );
   }
 
   int WindowSystem::Get_Width ()

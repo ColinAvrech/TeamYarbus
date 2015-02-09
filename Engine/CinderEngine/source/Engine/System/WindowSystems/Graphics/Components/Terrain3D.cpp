@@ -103,7 +103,7 @@ namespace Framework
     shader->uniMat4("mvp", glm::value_ptr(static_cast<Transform*>(gameObject->GetComponent("Transform"))->GetModelViewProjectionMatrix()));
 
     //shader->uniMat4("mvp", glm::value_ptr(gameObject->Transform->GetModelViewProjectionMatrix()));
-    //shader->uniMat4("modelMatrix", glm::value_ptr(gameObject->Transform->GetModelMatrix()));
+    shader->uniMat4("modelMatrix", glm::value_ptr(GETCOMPONENT(gameObject, Transform)->GetModelMatrix()));
 
     shader->uni4f("color1", color1.r, color1.g, color1.b, color1.a);
     shader->uni4f("color2", color2.r, color2.g, color2.b, color2.a);

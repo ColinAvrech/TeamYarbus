@@ -26,7 +26,7 @@ namespace Framework
 			WS_TRANS_TOLIGHT,
 			WS_TRANS_TODARK
 		};
-    WorldStateManager(){}
+    WorldStateManager();
 		~WorldStateManager(){}
 
 		virtual bool Initialize();
