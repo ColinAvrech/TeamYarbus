@@ -30,6 +30,7 @@ factory in the next loop.
 
 
 #define ComponentPointer(Name) Name * Name = nullptr
+#define GETCOMPONENT(Object, Name) static_cast<Name*>(Object->GetComponent(#Name))
 
 #include "Common.h"
 #include "ObjectSystem.h"
@@ -39,8 +40,6 @@ factory in the next loop.
 #include "Zilch.hpp"
 #include "ScriptComponent.h"
 #include "Health.h"
-//#include "FireStarter.h"
-//#include "Microphone.h"
 
 namespace Framework
 {

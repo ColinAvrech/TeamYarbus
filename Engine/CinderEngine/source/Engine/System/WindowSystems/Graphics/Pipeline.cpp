@@ -164,7 +164,7 @@ namespace Framework
       Camera::main->GetPlanes().second
       );
     
-    glm::vec3 campos = Camera::main->gameObject->Transform->GetPosition();
+    glm::vec3 campos = GETCOMPONENT(Camera::main->gameObject, Transform)->GetPosition();
     glm::vec3 up = glm::vec3(0.f, -1.f, 0.f);
     //eye and object
     glm::vec3 eye = Camera::main->GetSize() * glm::vec3(0.f, 0.f, 1.f) + glm::vec3(campos.x, campos.y, 0.f);

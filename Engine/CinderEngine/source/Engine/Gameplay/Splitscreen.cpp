@@ -26,10 +26,7 @@ namespace Framework
 	}
 	void Splitscreen::Initialize()
 	{
-		t_maxtime = 0.0;
-		lworld_maxtime = 0.0;
-		currentState = DARK_WORLD;
-		lastState = DARK_WORLD;
+
 		EVENTSYSTEM->mConnect<KeyEvent, Splitscreen>(Events::KEY_ANY, this, &Splitscreen::KeyPressed);
 	}
 	void Splitscreen::Serialize(Serializer::DataNode* data)
@@ -55,44 +52,13 @@ namespace Framework
 	}
 	void Splitscreen::Update(UpdateEvent* e)
 	{
-		//transitional period
-		if (currentState == TRANS_TOLIGHT ||
-			currentState == TRANS_TODARK &&
-			t_timer <= t_maxtime)
-		{
-			t_timer += e->Dt;
-			if (currentState == TRANS_TOLIGHT)
-			{
-				currentState = LIGHT_WORLD;
-				lastState = TRANS_TOLIGHT;
-			}
-			else if (currentState == TRANS_TODARK)
-			{
-				currentState = DARK_WORLD;
-				lastState = TRANS_TODARK;
-			}
-			lworld_timer += e->Dt;
-		}
-		if (lworld_timer <= lworld_maxtime)
-		{
-			EnableInteractions();
-		}
-		else
-			currentState = TRANS_TODARK;
-		if (currentState == DARK_WORLD)
-		{
-			CalculateFlashlight();
-		}
+
 	}
 	void Splitscreen::KeyPressed(KeyEvent* e)
 	{
 		if (e->KeyDown)
 		{
-			if (currentState == DARK_WORLD)
-			{
-				currentState = TRANS_TODARK;
-				lastState = DARK_WORLD;
-			}
+			//WORLDSTA
 		}
 	}
 	void Splitscreen::EnableInteractions(/*parameters of filters*/)

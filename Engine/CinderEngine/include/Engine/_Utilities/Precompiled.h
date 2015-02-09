@@ -209,6 +209,7 @@ using std::string;
 #include "SpriteColorUpdate.h"
 #include "FireStarter.h"
 #include "FireSystem.h"
+#include "WorldStateManager.h"
 
 // SCRIPTING
 #include "ScriptComponent.h"

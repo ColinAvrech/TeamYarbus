@@ -20,15 +20,7 @@ namespace Framework
 	{
 	public:
 		const static string Name;
-		enum state
-		{
-			DARK_WORLD = 0,
-			LIGHT_WORLD,
-			TRANS_TOLIGHT,
-			TRANS_TODARK
-		};
-		state currentState;
-		state lastState;
+
 		Splitscreen(GameObject* obj) 
 		{
 			gameObject = obj;
@@ -53,11 +45,11 @@ namespace Framework
 		bool flashlight = true;
 
 		//transitioning
-		double t_timer;
-		double t_maxtime;
+		//double t_timer;
+		//double t_maxtime;
 
-		//light world
-		double lworld_timer;
-		double lworld_maxtime;
+		////light world
+		//double lworld_timer;
+		//double lworld_maxtime;
 	};
 }

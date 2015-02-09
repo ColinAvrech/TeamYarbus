@@ -97,6 +97,7 @@ int main (void)
   ScriptSystem                  * zilch       = new ScriptSystem();
   ObjectSystem                  * objsys      = new ObjectSystem ();
   UISystem                      * ui          = new UISystem ();
+  WorldStateManager             * worldstate  = new WorldStateManager();
 
   
 
