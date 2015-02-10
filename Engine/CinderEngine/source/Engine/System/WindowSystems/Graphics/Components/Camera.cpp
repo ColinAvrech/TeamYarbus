@@ -61,8 +61,8 @@ namespace Framework
 
   void Camera::OnKeyPressed (KeyEvent* key)
   {
-    float camSpeed = 1.0f;
-    float zoomSpeed = 1.0f;
+    float camSpeed = 1.f;
+    float zoomSpeed = 1.f;
 
     Transform* tform = static_cast<Transform*>(Camera::main->gameObject->GetComponent("Transform"));
     if (key->KeyDown)
@@ -93,6 +93,28 @@ namespace Framework
         break;
       case GLFW_KEY_X:
         Camera::main->Zoom (-zoomSpeed);
+        break;
+      case GLFW_KEY_Q:
+        OPENGL->MatrixMode(VIEW);
+        tform->Translate(0, 0, camSpeed);
+        Camera::main->matricesReady = false;
+        break;
+      case GLFW_KEY_E:
+        OPENGL->MatrixMode(VIEW);
+        tform->Translate(0, 0, -camSpeed);
+        Camera::main->matricesReady = false;
+        break;
+      case GLFW_KEY_I:
+        OPENGL->MatrixMode(VIEW);
+        tform->Translate(0, 0, camSpeed);
+        Camera::main->Zoom(-zoomSpeed);
+        Camera::main->matricesReady = false;
+        break;
+      case GLFW_KEY_O:
+        OPENGL->MatrixMode(VIEW);
+        tform->Translate(0, 0, -camSpeed);
+        Camera::main->Zoom(zoomSpeed);
+        Camera::main->matricesReady = false;
         break;
       default:
         break;
@@ -191,6 +213,17 @@ namespace Framework
     value = data->FindElement(data, "FocalLength");
     if (value != nullptr)
       value->GetValue(&FocalLength);
+<<<<<<< HEAD
+=======
+    else
+      FocalLength = 0.15f;
+
+    value = data->FindElement(data, "FocalDistance");
+    if (value != nullptr)
+      value->GetValue(&FocalPlane);
+    else
+      FocalPlane = GETCOMPONENT(gameObject, Transform)->GetPosition().z;
+>>>>>>> 39e027676fce7bcc93dbc43d2ac600addc0de05e
   }
 
 
@@ -216,7 +249,7 @@ namespace Framework
   {
     if (glfwGetMouseButton (WINDOWSYSTEM->Get_Window (), GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
     {
-      //MouseUpdate (WINDOWSYSTEM->Get_Mouse_Position ());
+      MouseUpdate (WINDOWSYSTEM->Get_Mouse_Position ());
     }
   
     switch (czs)
@@ -263,6 +296,7 @@ namespace Framework
       OPENGL->LookAt( eye, tform->GetPosition(), up);
       OPENGL->MatrixMode (MODEL);
       OPENGL->LoadIdentity ();
+      Calculate_Size();
     }
   }
 
@@ -276,7 +310,7 @@ namespace Framework
   {
     //if (size + zoom > 0 && (size + zoom) < farPlane)
     //{
-      size += zoom;
+      fov += zoom;
       matricesReady = false;
     //}
   }
@@ -337,9 +371,15 @@ namespace Framework
     return FocalLength / f_stop;
   }
 
-  glm::vec3 Camera::FocalPoint()
+  float Camera::FocalPoint()
   {
-    return static_cast<Transform*>(gameObject->GetComponent("Transform"))->GetPosition() + Camera::main->FocalPlane * Camera::main->size * Camera::main->viewDirection;
+    return FocalPlane;
+  }
+
+  void Camera::Calculate_Size()
+  {
+    float Height = 2 * tan(0.5f * fov) * GETCOMPONENT(gameObject, Transform)->GetPosition().z;
+    size = Height * aspect;
   }
 
   glm::vec2 Camera::GetWorldMousePosition()

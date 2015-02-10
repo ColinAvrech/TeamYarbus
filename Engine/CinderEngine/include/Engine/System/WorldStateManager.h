@@ -27,7 +27,7 @@ namespace Framework
 			WS_TRANS_TODARK
 		};
     WorldStateManager();
-    ~WorldStateManager(){}
+		~WorldStateManager(){}
 
 		virtual bool Initialize();
 		virtual void Update(const float& dt);
