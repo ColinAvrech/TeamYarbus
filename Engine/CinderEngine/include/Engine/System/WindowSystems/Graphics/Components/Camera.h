@@ -58,8 +58,7 @@ namespace Framework
     std::pair<float, float> GetPlanes();
     int GetElementNum();
     float GetAperture();
-    float FocalPoint();
-    void Calculate_Size();
+    glm::vec3 FocalPoint();
     static std::list <Camera*> allCameras;
     static Camera* current;
     static Camera* main;

@@ -193,8 +193,8 @@ namespace Framework
       return;
 
     //glDisable(GL_BLEND);
-    //glEnable(GL_CULL_FACE);
-    //glCullFace(GL_BACK);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
 
     shader->Use();
     vao->bindVAO();
@@ -218,7 +218,7 @@ namespace Framework
     vao->unbindVAO();
     shader->Disable();
     //OPENGL->ResetBlendMode();
-    //glDisable(GL_CULL_FACE);
+    glDisable(GL_CULL_FACE);
   }
 
   void Tree3D::Set(glm::vec4& _color, Tree3D_Type _type)
