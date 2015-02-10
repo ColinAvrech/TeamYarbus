@@ -33,13 +33,6 @@ namespace Framework
   std::list <GUIText*> Pipeline::textObjects;
   std::list <ShapeCollider*> Pipeline::debugColliders;
 
-  //////////////////////////////////////////////////////////////////////////
-  // TEMPORARY - SHOULD BE TRANSFERRED SOMEWHERE
-  bool useMotionBlur = true;
-  int counter = 0;
-  int numberOfIterations = 6;
-  //////////////////////////////////////////////////////////////////////////
-
   Pipeline::Pipeline ()
   {
     glViewport (0, 0, WINDOWSYSTEM->Get_Width(), WINDOWSYSTEM->Get_Height());
@@ -145,7 +138,7 @@ namespace Framework
     // Enable depth test
     glEnable(GL_DEPTH_TEST);
     // Accept fragment if it's closer to the camera than the former one
-    glDepthFunc(GL_LEQUAL);
+    glDepthFunc(GL_LESS);
     //fog========================================================
     //glEnable(GL_FOG);
     //glFogi(GL_FOG_MODE, GL_EXP2); //set the fog mode to GL_EXP2
@@ -171,12 +164,11 @@ namespace Framework
       Camera::main->GetPlanes().second
       );
     
-    glm::vec3 campos = Camera::main->gameObject->C<Transform>()->GetPosition();
-    //Camera::main->gameObject->GetComponent<Transform>();
+    glm::vec3 campos = GETCOMPONENT(Camera::main->gameObject, Transform)->GetPosition();
     glm::vec3 up = glm::vec3(0.f, -1.f, 0.f);
     //eye and object
-    glm::vec3 eye = campos;
-    glm::vec3 object = campos + glm::vec3(0.f, 0.f, -1.f) * Camera::main->FocalPoint();
+    glm::vec3 eye = Camera::main->GetSize() * glm::vec3(0.f, 0.f, 1.f) + glm::vec3(campos.x, campos.y, 0.f);
+    glm::vec3 object = campos;
 
     //right and up vectors
     glm::vec3 right = glm::normalize(glm::cross(object - eye, up));
@@ -185,15 +177,8 @@ namespace Framework
     for (int i = 0; i < n; ++i)
     {
       glm::vec3 bokeh = right * std::cosf(i * M_2_PI / n) + p_up * std::sinf(i * M_2_PI / n);
-      MatrixMode(VIEW);
-      LoadIdentity();
-      LookAt(eye + aperture * bokeh, object, p_up);
-      glm::vec3 pos = campos + bokeh;
-      //Translatefv (&pos.x);
-      Rotatef(GETCOMPONENT(Camera::main->gameObject, Transform)->GetRotation(), 0, 0, 1);
-      glm::mat4 modelview = GetViewMatrix ();
-      MatrixMode(MODEL);
-      LoadIdentity();
+      glm::mat4 modelview = glm::lookAt(eye + aperture * bokeh, object, p_up);
+
 
       for (auto* it : transforms)
       {
@@ -217,61 +202,48 @@ namespace Framework
       {
         it->Draw();
       }
+    }
+    //glAccum(GL_RETURN, 1);
 
-      RenderToTexture(fbo, renderTexture, sceneShader);
+    glDisable(GL_BLEND);
+    glBlendFunc(sFactor, dFactor);
 
-      //if (i == 0)
-      //{
-      //  glAccum(GL_LOAD, 1.f / n);
-      //}
-      //else
-      //{
-      //  glAccum(GL_ACCUM, 1.f / n);
-      //}
-      //fbo->bind();
-      //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    for (auto* i : textObjects)
+    {
+      i->Draw();
     }
 
-    glAccum(GL_RETURN, 1.0f);
-    glfwSwapBuffers(WINDOWSYSTEM->Get_Window());
-    //glDisable(GL_BLEND);
-    //glBlendFunc(sFactor, dFactor);
-
-    //for (auto* i : textObjects)
-    //{
-    //  i->Draw();
-    //}
-
-    //sFactor = GL_SRC_ALPHA;
-    //dFactor = GL_ONE_MINUS_SRC_ALPHA;
-    //glBlendFunc (sFactor, dFactor);
+    sFactor = GL_SRC_ALPHA;
+    dFactor = GL_ONE_MINUS_SRC_ALPHA;
+    glBlendFunc (sFactor, dFactor);
+    RenderToTexture (fbo, renderTexture, sceneShader);
 
     //////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////
     // UI DRAW
     //////////////////////////////////////////////////////////////////////////
 
-    //for (auto* i : graphicsObjects [PAUSE])
-    //{
-    //  i->Draw ();
-    //}
+    for (auto* i : graphicsObjects [PAUSE])
+    {
+      i->Draw ();
+    }
 
-    //for (auto* i : uiObjects)
-    //{
-    //  i->UIDraw ();
-    //}
+    for (auto* i : uiObjects)
+    {
+      i->UIDraw ();
+    }
 
 
-    ////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////
-    //// DEBUG DRAW
-    //if (useDebugDraw)
-    //{
-    //  glEnable(GL_BLEND);
-    //  //THERMODYNAMICS->Draw ();
-    //  PHYSICS->Render ();
-    //  ResetBlendMode();
-    //}
+    //////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
+    // DEBUG DRAW
+    if (useDebugDraw)
+    {
+      glEnable(GL_BLEND);
+      //THERMODYNAMICS->Draw ();
+      PHYSICS->Render ();
+      ResetBlendMode();
+    }
   }
 
 #pragma region TRANSFORMATIONS
@@ -534,27 +506,6 @@ namespace Framework
     }
   }
 
-  static void motion_blur()
-  {
-    if (counter == 0)
-    {
-      glAccum(GL_LOAD, 1.0f / numberOfIterations);
-    }
-    else
-    {
-      glAccum(GL_ACCUM, 1.0f / numberOfIterations);
-    }
-
-    ++(counter);
-
-    if (counter >= numberOfIterations)
-    {
-      counter = 0;
-      glAccum(GL_RETURN, 1.0f);
-      glfwSwapBuffers(WINDOWSYSTEM->Get_Window());
-    }
-  }
-
   void Pipeline::RenderToTexture(FBO* fbo, GLuint tex, Shader* shader)
   {
     vao->bindVAO ();
@@ -602,8 +553,6 @@ namespace Framework
     shader->Disable ();
     glBindTexture (GL_TEXTURE_2D, 0);
     vao->unbindVAO ();
-
-    //useMotionBlur ? motion_blur() : glfwSwapBuffers(WINDOWSYSTEM->Get_Window());
   }
 
   void Pipeline::ResizeBuffer (const int w, const int h)
