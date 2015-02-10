@@ -213,8 +213,6 @@ namespace Framework
     value = data->FindElement(data, "FocalLength");
     if (value != nullptr)
       value->GetValue(&FocalLength);
-<<<<<<< HEAD
-=======
     else
       FocalLength = 0.15f;
 
@@ -223,7 +221,6 @@ namespace Framework
       value->GetValue(&FocalPlane);
     else
       FocalPlane = GETCOMPONENT(gameObject, Transform)->GetPosition().z;
->>>>>>> 39e027676fce7bcc93dbc43d2ac600addc0de05e
   }
 
 
