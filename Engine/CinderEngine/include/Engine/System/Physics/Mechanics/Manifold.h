@@ -23,6 +23,7 @@ namespace Framework
 	    : A( a )
 	    , B( b )
 	  {
+      contact_count = 0;
 	  }
 	
 	  void Solve( void );                 // Generate contact information

@@ -40,6 +40,13 @@ namespace Framework
   Camera* Camera::current = nullptr;
   Camera* Camera::main = nullptr;
 
+  Camera::Camera() : up(0, 1, 0)
+  {
+    fov = 45.0f;
+    viewDirection = { 0, 0, 1 };
+    aspect = (float)WINDOWSYSTEM->Get_Width() / WINDOWSYSTEM->Get_Height();
+  }
+
   Camera::~Camera ()
   {
     if (mainCamera)
@@ -135,6 +142,7 @@ namespace Framework
     OPENGL->MatrixMode (MODEL);
     OPENGL->LoadIdentity ();
     matricesReady = true;
+
   }
 
   void Camera::Serialize(Serializer::DataNode* data)
@@ -160,8 +168,6 @@ namespace Framework
 
     //value->GetValue(&viewDirection);
 
-    viewDirection = { 0, 0, 1 };
-
     value = data->FindElement(data, "FieldOfView");
     value->GetValue(&fov);
 
@@ -173,23 +179,18 @@ namespace Framework
 
     value = data->FindElement (data, "Size");
     value->GetValue (&size);
-    aspect = (float)WINDOWSYSTEM->Get_Width() / WINDOWSYSTEM->Get_Height();
 
     value = data->FindElement(data, "Elements");
     if (value != nullptr)
       value->GetValue(&Elements);
-    else
-      Elements = 6;
-    value = data->FindElement(data, "f_stop");
+    
+      value = data->FindElement(data, "f_stop");
     if (value != nullptr)
       value->GetValue(&f_stop);
-    else
-      f_stop = 2.8f;
+
     value = data->FindElement(data, "FocalLength");
     if (value != nullptr)
       value->GetValue(&FocalLength);
-    else
-      FocalLength = 0.15f;
   }
 
 

@@ -326,11 +326,9 @@ namespace Framework
 
     b->mat->staticFriction = 1.0f;
     b->mat->dynamicFriction = 1.0f;
-    b->Initialize();
     b->ComputeMass();
     b->SetStatic();
-
-    PHYSICS->Add(b);
+    b->Initialize();
 
     delete [] p;
     p = nullptr;

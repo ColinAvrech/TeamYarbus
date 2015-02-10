@@ -25,6 +25,8 @@ namespace Framework
 	void CircletoPolygon( Manifold *m, RigidBody2D *a, RigidBody2D *b );
 	void PolygontoCircle( Manifold *m, RigidBody2D *a, RigidBody2D *b );
 	void PolygontoPolygon( Manifold *m, RigidBody2D *a, RigidBody2D *b );
+  void CompoundSolve(Manifold *m, RigidBody2D *a, RigidBody2D *b);
+
 }
 
 

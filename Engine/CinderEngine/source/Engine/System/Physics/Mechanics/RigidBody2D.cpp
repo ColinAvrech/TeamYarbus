@@ -19,7 +19,6 @@ namespace Framework
 
   RigidBody2D::RigidBody2D()
   {
-    SetStatic();
     gameObject = nullptr;
     matName = "";
     mat = new Material();
@@ -28,7 +27,7 @@ namespace Framework
     angularVelocity = 0;
     torque = 0;
     orient = MyRandom(-PI, PI);
-    
+
     r = MyRandom(0.2f, 1.0f);
     g = MyRandom(0.2f, 1.0f);
     b = MyRandom(0.2f, 1.0f);
@@ -95,7 +94,7 @@ namespace Framework
 
 	void RigidBody2D::Initialize ()
   {
-    SetDensity(mat->density);
+    PHYSICS->Add(this);
   }
 
   void RigidBody2D::ApplyForce (const vec3& f)
@@ -108,10 +107,8 @@ namespace Framework
 
   void RigidBody2D::SetDensity(const float& newDensity)
   {
-    mass = newDensity * GetArea();
-    invMass = (mass > 0.0f) ? 1.0f / mass : 0.0f;
-    I = I * newDensity;
-    invI = (abs(I) > 0) ? 1.0f / I : 0.0f;
+    mat->density = newDensity;
+    ComputeMass();
   }
 
   float RigidBody2D::GetArea()
