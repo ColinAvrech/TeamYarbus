@@ -538,8 +538,6 @@ namespace Framework
     OPENGL->Update ();
 
 	  Panel::PanelManager::Draw( );
-
-    glfwSwapBuffers (window);
   }
 
   int WindowSystem::Get_Width ()

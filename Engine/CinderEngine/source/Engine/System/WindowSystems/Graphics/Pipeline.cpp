@@ -228,17 +228,10 @@ namespace Framework
         it->Draw();
       }
     }
-    //glAccum(GL_RETURN, 1);
 
-    glDisable(GL_BLEND);
-    glBlendFunc(sFactor, dFactor);
-
-    for (auto* i : textObjects)
-    {
-      i->Draw();
-      RenderToTexture(fbo, renderTexture, sceneShader);
-    }
+    RenderToTexture(fbo, renderTexture, sceneShader);
     glfwSwapBuffers(WINDOWSYSTEM->Get_Window());
+
     //glDisable(GL_BLEND);
     //glBlendFunc(sFactor, dFactor);
 
