@@ -372,6 +372,8 @@ namespace Framework
       const GLFWvidmode* mode = glfwGetVideoMode(primaryMonitor);
 
       //TODO: use this for resolution selector
+      //TODO: Antialiasing options
+
       //const GLFWvidmode* modes = glfwGetVideoModes(primaryMonitor, &count);
       if (fullscreen)
       {

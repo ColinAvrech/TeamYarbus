@@ -120,6 +120,9 @@ namespace Framework
     shader->Use ();
     vao->bindVAO ();
     shader->uniMat4("mvp", glm::value_ptr(static_cast<Transform*>(gameObject->GetComponent("Transform"))->GetModelViewProjectionMatrix()));
+    shader->uniMat4("view", glm::value_ptr(OPENGL->GetViewMatrix()));
+    shader->uniMat4("projection", glm::value_ptr(OPENGL->GetProjectionMatrix()));
+    shader->uniMat4("model", glm::value_ptr(gameObject->C<Transform>()->GetModelMatrix()));
     shader->uni4f ("color1", color1.r, color1.g, color1.b, color1.a);
     shader->uni4f ("color2", color2.r, color2.g, color2.b, color2.a);
 

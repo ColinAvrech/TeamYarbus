@@ -84,13 +84,22 @@ namespace Framework
 
     fbo = new FBO ();
     glGenTextures (1, &renderTexture);
-    glBindTexture (GL_TEXTURE_2D, renderTexture);
+    //MSAA test
+    //////////////////////////////
+    glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, renderTexture);
+    glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 4, GL_RGB, WINDOWSYSTEM->Get_Width(), WINDOWSYSTEM->Get_Height(), GL_TRUE);
+    glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE, renderTexture, 0);
+    glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_DEPTH24_STENCIL8, WINDOWSYSTEM->Get_Width(), WINDOWSYSTEM->Get_Height());
+    ////////////////////////////////////////////////////
+    /*glBindTexture (GL_TEXTURE_2D, renderTexture);
     glTexImage2D (GL_TEXTURE_2D, 0, GL_RGB, WINDOWSYSTEM->Get_Width(), WINDOWSYSTEM->Get_Height(), 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
     glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glFramebufferTexture2D (GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderTexture, 0);
-    glBindTexture (GL_TEXTURE_2D, 0);
+    glBindTexture (GL_TEXTURE_2D, 0);*/
     fbo->unBind ();
+    glEnable(GL_MULTISAMPLE);
   }
 
   Pipeline::~Pipeline ()
@@ -170,9 +179,16 @@ namespace Framework
       Camera::main->GetPlanes().first,
       Camera::main->GetPlanes().second
       );
+    MatrixMode(PROJECTION);
+    LoadIdentity();
+    Perspective(
+      Camera::main->GetFOV(),
+      (float)WINDOWSYSTEM->Get_Width() / WINDOWSYSTEM->Get_Height(),
+      Camera::main->GetPlanes().first,
+      Camera::main->GetPlanes().second
+      );
     
     glm::vec3 campos = Camera::main->gameObject->C<Transform>()->GetPosition();
-    //Camera::main->gameObject->GetComponent<Transform>();
     glm::vec3 up = glm::vec3(0.f, -1.f, 0.f);
     //eye and object
     glm::vec3 eye = campos;
@@ -219,20 +235,7 @@ namespace Framework
       }
 
       RenderToTexture(fbo, renderTexture, sceneShader);
-
-      //if (i == 0)
-      //{
-      //  glAccum(GL_LOAD, 1.f / n);
-      //}
-      //else
-      //{
-      //  glAccum(GL_ACCUM, 1.f / n);
-      //}
-      //fbo->bind();
-      //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
-
-    glAccum(GL_RETURN, 1.0f);
     glfwSwapBuffers(WINDOWSYSTEM->Get_Window());
     //glDisable(GL_BLEND);
     //glBlendFunc(sFactor, dFactor);
@@ -557,11 +560,22 @@ namespace Framework
 
   void Pipeline::RenderToTexture(FBO* fbo, GLuint tex, Shader* shader)
   {
-    vao->bindVAO ();
-    fbo->unBind ();
-    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    shader->Use ();
-    glBindTexture (GL_TEXTURE_2D, renderTexture);
+    //vao->bindVAO ();
+    //fbo->unBind ();
+    //render multi sampled===================================
+    glBindFramebuffer(GL_READ_FRAMEBUFFER, fbo->getBufferPos());
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+    //test
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    shader->Use();
+    glBindTexture(GL_TEXTURE_2D, renderTexture);
+    ////
+    glBlitFramebuffer(0, 0, WINDOWSYSTEM->Get_Width(), WINDOWSYSTEM->Get_Height(),
+      0, 0, WINDOWSYSTEM->Get_Width(), WINDOWSYSTEM->Get_Height(), GL_COLOR_BUFFER_BIT, GL_NEAREST);
+    /////////////////////////////////////////////////////
+    //glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    //shader->Use ();
+    //glBindTexture (GL_TEXTURE_2D, renderTexture);
 
     switch (shaderState)
     {
