@@ -108,6 +108,7 @@ namespace Framework
         Components[name] = gc;
 	      gc->mComponentType = Hash::Hash::Generate( name );
         gc->gameObject = this;
+        //gc->Initialize();
       }
       else
       {

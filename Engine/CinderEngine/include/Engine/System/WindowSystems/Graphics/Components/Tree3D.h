@@ -78,8 +78,8 @@ namespace Framework
     float bound_t;
     float bound_b;
 
-    void Make_Tree0(glm::vec3 &pos, float length1, glm::vec2 &angle1, int depth, float rad, unsigned parent = 0);
-    void Make_Tree1(glm::vec3 &pos, float length1, glm::vec2 &angle1, int depth, float rad, unsigned parent = 0);
+    void Make_Tree0(glm::vec3 &pos, float length1, glm::vec3 &angle1, int depth, float rad, unsigned parent = 0);
+    void Make_Tree1(glm::vec3 &pos, float length1, glm::vec3 &angle1, int depth, float rad, unsigned parent = 0);
     void Make_Tree_Fan(glm::vec3 &pos, float length1, glm::vec2 &angle1, int depth, float rad, unsigned parent = 0);
 
     //Helper

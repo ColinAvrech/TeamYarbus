@@ -18,8 +18,8 @@ namespace Framework
 {
 	void Manifold::Solve( void )
 	{
-    ShapeCollider2D* shapeA = static_cast<ShapeCollider2D*>(A->gameObject->GetComponent("ShapeCollider2D"));
-    ShapeCollider2D* shapeB = static_cast<ShapeCollider2D*>(B->gameObject->GetComponent("ShapeCollider2D"));
+    ShapeCollider2D* shapeA = GETCOMPONENT(A->gameObject, ShapeCollider2D);
+    ShapeCollider2D* shapeB = GETCOMPONENT(B->gameObject, ShapeCollider2D);
     if (shapeA && shapeB)
       Dispatch[shapeA->GetType( )][shapeB->GetType( )]( this, A, B );
 	}

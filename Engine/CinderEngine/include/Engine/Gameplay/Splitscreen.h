@@ -30,20 +30,11 @@ namespace Framework
 
 		virtual void Initialize();
 		void Serialize(Serializer::DataNode* data);
-		void CalculateFlashlight();
 		void EnableInteractions();
 		void Update(UpdateEvent* e);
 		void KeyPressed(KeyEvent* e);
 
 	private:
-		//flashlight
-		float lightRadius;
-		double lightTheta;
-		glm::vec2 origin;
-		glm::vec2 leftBounds;
-		glm::vec2 rightBounds;
-		bool flashlight = true;
-
 		//transitioning
 		//double t_timer;
 		//double t_maxtime;

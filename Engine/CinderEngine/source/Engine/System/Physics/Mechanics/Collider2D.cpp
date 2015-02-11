@@ -52,7 +52,16 @@ namespace Framework
   {
     Serializer::DataNode* value = data->FindElement (data, "Radius");
     value->GetValue (&radius);
-    radius *= static_cast<Transform*>(gameObject->GetComponent("Transform"))->GetScale().x;
+    SetRadius(radius * static_cast<Transform*>(gameObject->GetComponent("Transform"))->GetScale().x);
+  }
+
+  void CircleCollider2D::SetRadius(const float &newrad)
+  {
+    radius = newrad;
+
+    RigidBody2D* rb = static_cast<RigidBody2D*>(gameObject->GetComponent("RigidBody2D"));
+    if (rb)
+      rb->ComputeMass();
   }
 
   void CircleCollider2D::Initialize ()
@@ -492,7 +501,24 @@ namespace Framework
   {
     for (auto c : childColliders)
     {
-      c->Draw();
+      switch (c->GetType())
+      {
+        case eCircle:
+          static_cast<CircleCollider2D*>(c)->Draw();
+          break;
+        
+        case ePoly:
+          static_cast<PolygonCollider2D*>(c)->Draw();
+          break;
+
+        case eCompound:
+          static_cast<CompoundCollider2D*>(c)->Draw();
+          break;
+
+        default:
+          return;
+          break;
+      }
     }
   }
 }

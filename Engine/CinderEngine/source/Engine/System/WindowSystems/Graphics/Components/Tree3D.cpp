@@ -96,7 +96,7 @@ namespace Framework
   {
     //FireGroup* fsm = nullptr;
     glm::vec3 pos(0.f, -0.1f, 0.f);
-    glm::vec2 angle(0.f, PI / 2);
+    glm::vec3 angle(0.f, 0.f, PI / 2);
 
     switch (type)
     {
@@ -193,8 +193,8 @@ namespace Framework
       return;
 
     //glDisable(GL_BLEND);
-    //glEnable(GL_CULL_FACE);
-    //glCullFace(GL_BACK);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
 
     shader->Use();
     vao->bindVAO();
@@ -218,7 +218,7 @@ namespace Framework
     vao->unbindVAO();
     shader->Disable();
     //OPENGL->ResetBlendMode();
-    //glDisable(GL_CULL_FACE);
+    glDisable(GL_CULL_FACE);
   }
 
   void Tree3D::Set(glm::vec4& _color, Tree3D_Type _type)
@@ -227,17 +227,26 @@ namespace Framework
     type = _type;
   }
 
-  void Tree3D::Make_Tree0(glm::vec3 &pos, float length1, glm::vec2 &angle1, int depth, float rad, unsigned parent)
+  void Tree3D::Make_Tree0(glm::vec3 &pos, float length1, glm::vec3 &angle1, int depth, float rad, unsigned parent)
   {
     float SCALE = 1.0f;
-    float ANGLE = 0.3f;
+    float ANGLE = 0.4f;
     float RAND = 0.1f;
     if (depth > 0)
     {
+      float cosa = std::cos(angle1.x); float sina = std::sin(angle1.x);
+      float cosb = std::cos(angle1.y); float sinb = std::sin(angle1.y);
+      float cosc = std::cos(angle1.z); float sinc = std::sin(angle1.z);
+
+      float rotmat[3][3] = { { cosb*cosc, -cosb*sina*sinb - cosa*sinc, cosa*cosc*sinb },
+               { cosb*sinc, cosa*cosc + sina*sinb*sinc , -cosc*sina + cosa*sinb*sinc },
+               { -sinb, cosb*sina, cosa*cosb }
+      };
+      glm::vec3 b(1.f, 0.f, 0.f);
       glm::vec3 pos2;
-      pos2.x = pos.x + length1 * cos(angle1.y);
-      pos2.y = pos.y + length1 * sin(angle1.x + angle1.y);
-      pos2.z = pos.z + length1 * sin(angle1.x);
+      pos2.x = pos.x + length1*(b.x*rotmat[0][0] + b.y*rotmat[0][1] + b.z*rotmat[0][2]);
+      pos2.y = pos.y + length1*(b.x*rotmat[1][0] + b.y*rotmat[1][1] + b.z*rotmat[1][2]);
+      pos2.z = pos.z + length1*(b.x*rotmat[2][0] + b.y*rotmat[2][1] + b.z*rotmat[2][2]);
 
       bool tip = false;
       if (depth == 1)
@@ -248,12 +257,13 @@ namespace Framework
       float newrad = rad * decay_rate;
 
       //branch 1
-      glm::vec2 angle2;
-      angle2.y = angle1.y + ANGLE + myrand(RAND);
+      glm::vec3 angle2;
+      angle2.z = angle1.z + ANGLE + myrand(RAND);
       //angle2.x = angle1.x + myrand(2 * RAND);
-      angle2.x = angle1.x + myrand(RAND) - 0.75f * RAND;
+      angle2.x = angle1.x + myrand(RAND) - 0.5 * RAND;
+      angle2.y = angle1.y + myrand(RAND) - 0.5 * RAND;// +myrand(2 * RAND) - 1.5 * RAND;
 
-      int factor = 80 + rand() % 20;
+      int factor = 78 + rand() % 20;
       float f = factor / 100.f;
       //decide whether or not to spawn a branch
       int fork;
@@ -265,9 +275,28 @@ namespace Framework
       if (fork > 20 - depth * 2)
         Make_Tree0(pos2, length1 * f, angle2, depth - 1, newrad, parent);
 
+      ////branch froont
+      ////branch 1
+      //angle2.x = angle1.x + ANGLE + myrand(RAND);
+      ////angle2.x = angle1.x + myrand(2 * RAND);
+      //angle2.z = angle1.z + myrand(2 * RAND) - 1.5 * RAND;
+      //angle2.y = angle1.y;// +myrand(2 * RAND) - 1.5 * RAND;
+
+      //factor = 70 + rand() % 20;
+      //f = factor / 100.f;
+      ////decide whether or not to spawn a branch
+      //if (depth % 2 != 0)
+      //  fork = rand() % 100;
+      //else
+      //  fork = (rand() % 10) * (rand() % 10);
+
+      //if (fork > 20 - depth * 2)
+      //  Make_Tree0(pos2, length1 * f, angle2, depth - 1, newrad, parent);
+
       //branch 2
-      angle2.y = angle1.y - ANGLE + myrand(RAND);
-      angle2.x = angle1.x - myrand(RAND) + 0.75f * RAND;
+      angle2.z = angle1.z - ANGLE + myrand(RAND);
+      angle2.x = angle1.x - myrand(RAND) + 0.5 * RAND;
+      angle2.y = angle1.y - myrand(RAND) + 0.5 * RAND;// -myrand(2 * RAND) + 1.5 * RAND;
 
       if (depth % 2 == 0)
         fork = rand() % 100;
@@ -276,11 +305,24 @@ namespace Framework
 
       if (fork > 20 - depth * 2)
         Make_Tree0(pos2, length1 * f, angle2, depth - 1, newrad, parent);
+
+      ////branch back
+      //angle2.x = angle1.x - ANGLE + myrand(RAND);
+      //angle2.z = angle1.z - myrand(2 * RAND) + 1.5 * RAND;
+      //angle2.y = angle1.y;// -myrand(2 * RAND) + 1.5 * RAND;
+
+      //if (depth % 2 == 0)
+      //  fork = rand() % 100;
+      //else
+      //  fork = (rand() % 10) * (rand() % 10);
+
+      //if (fork > 20 - depth * 2)
+      //  Make_Tree0(pos2, length1 * f, angle2, depth - 1, newrad, parent);
     }
   }
 
 
-  void Tree3D::Make_Tree1(glm::vec3 &pos, float length1, glm::vec2 &angle1, int depth, float rad, unsigned parent)
+  void Tree3D::Make_Tree1(glm::vec3 &pos, float length1, glm::vec3 &angle1, int depth, float rad, unsigned parent)
   {
     float SCALE = 1.0f;
     float ANGLE = 0.0f;
@@ -294,7 +336,7 @@ namespace Framework
 
       parent = Add_Branch(pos, pos2, rad, parent);
 
-      glm::vec2 angle2;
+      glm::vec3 angle2;
 
 
       if (depth % 2 == 0)
