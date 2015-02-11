@@ -81,7 +81,6 @@ namespace Framework
 
     Component* ZGetComponent(Zilch::String component);
     Component* GetComponent(string component);
-    
 	
     //Public Variables
     String Name;
@@ -102,19 +101,7 @@ namespace Framework
 
     typedef std::map<string, Component *> ComponentMap;
     ComponentMap Components;
-    //template get component
-    template <typename T>
-    T* C()
-    {
-      T* comp = nullptr;
-      for (auto i = Components.begin(); i != Components.end(); ++i)
-      {
-        comp = dynamic_cast<T*>(i->second);
-        if (comp != nullptr)
-          return comp;
-      }
-      return nullptr;
-    }
+
   };
 }
 

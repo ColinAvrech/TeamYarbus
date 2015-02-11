@@ -52,7 +52,16 @@ namespace Framework
   {
     Serializer::DataNode* value = data->FindElement (data, "Radius");
     value->GetValue (&radius);
-    radius *= static_cast<Transform*>(gameObject->GetComponent("Transform"))->GetScale().x;
+    SetRadius(radius * static_cast<Transform*>(gameObject->GetComponent("Transform"))->GetScale().x);
+  }
+
+  void CircleCollider2D::SetRadius(const float &newrad)
+  {
+    radius = newrad;
+
+    RigidBody2D* rb = static_cast<RigidBody2D*>(gameObject->GetComponent("RigidBody2D"));
+    if (rb)
+      rb->ComputeMass();
   }
 
   void CircleCollider2D::Initialize ()

@@ -473,7 +473,7 @@ namespace Framework
     matricesReady = false;
   }
 
-  void Transform::SetMVP(const glm::mat4 &mvp)
+  void Transform::SetMVP(glm::mat4 &mvp)
   {
     //perspective * lookat * model
     modelViewProjectionMatrix = mvp * modelMatrix;

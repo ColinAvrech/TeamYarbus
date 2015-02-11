@@ -30,8 +30,8 @@ namespace Framework
   public:
 	  META_DECLARE( Camera );
 
-	ZilchDeclareDerivedType(Camera, Component);
-    Camera () : up (0, 1, 0) {}
+    ZilchDeclareDerivedType(Camera, Component);
+    Camera();
     Camera (GameObject* go);
     virtual ~Camera ();
 
@@ -58,8 +58,7 @@ namespace Framework
     std::pair<float, float> GetPlanes();
     int GetElementNum();
     float GetAperture();
-    float FocalPoint();
-    void Calculate_Size();
+    glm::vec3 FocalPoint();
     static std::list <Camera*> allCameras;
     static Camera* current;
     static Camera* main;
@@ -86,14 +85,14 @@ namespace Framework
     glm::mat4 viewToProjection;
 
     bool mainCamera;
-    float fov;
+    float fov = 45.0f;
     //ApectMovedUp
-    float nearPlane;
-    float farPlane;
+    float nearPlane = 0;
+    float farPlane = 10;
     //camera properties
-    int Elements;
-    float f_stop;
-    float FocalLength;
+    int Elements = 6;
+    float f_stop = 2.8f;
+    float FocalLength = 0.15f;
     float FocalPlane;
   };
 

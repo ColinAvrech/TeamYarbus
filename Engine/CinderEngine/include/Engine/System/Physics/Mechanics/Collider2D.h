@@ -81,7 +81,7 @@ namespace Framework
       float GetArea();
 
       float GetRadius() const { return radius; }
-      void SetRadius(const float& newrad) { radius = newrad; }
+      void SetRadius(const float& newrad);
 	
       ColliderType GetType(void) const;
 
@@ -151,7 +151,6 @@ namespace Framework
 
       void Draw(void) const;
 
-    private:
       std::vector<ShapeCollider2D*> childColliders;
   };
 }
