@@ -79,8 +79,8 @@ namespace Editor
 	{
 		if ( e->KeyDown == true )
 		{
-			SetVisible( mIsVisible );
 			mIsVisible = !mIsVisible;
+			SetVisible( mIsVisible );
 		}
 	}
 
