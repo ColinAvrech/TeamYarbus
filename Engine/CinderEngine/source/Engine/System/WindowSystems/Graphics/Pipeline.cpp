@@ -80,10 +80,10 @@ namespace Framework
     //MSAA test
     //////////////////////////////
     glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, renderTexture);
-    glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 4, GL_RGB, WINDOWSYSTEM->Get_Width(), WINDOWSYSTEM->Get_Height(), GL_TRUE);
+    glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 4, GL_RGB, 1920, 1080, GL_TRUE);
     glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, 0);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE, renderTexture, 0);
-    glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_DEPTH24_STENCIL8, WINDOWSYSTEM->Get_Width(), WINDOWSYSTEM->Get_Height());
+    glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_DEPTH24_STENCIL8, 1920, 1080);
     ////////////////////////////////////////////////////
     /*glBindTexture (GL_TEXTURE_2D, renderTexture);
     glTexImage2D (GL_TEXTURE_2D, 0, GL_RGB, WINDOWSYSTEM->Get_Width(), WINDOWSYSTEM->Get_Height(), 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
@@ -206,7 +206,8 @@ namespace Framework
 
       for (auto* it : transforms)
       {
-        it->SetMVP(projection * modelview);
+        glm::mat4 mat = projection * modelview;
+        it->SetMVP(mat);
       }
 
       std::vector<IGraphicsObject *>last;
@@ -590,9 +591,12 @@ namespace Framework
   void Pipeline::ResizeBuffer (const int w, const int h)
   {
     glViewport (0, 0, w, h);
-    glBindTexture (GL_TEXTURE_2D, renderTexture);
-    glTexImage2D (GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
-    glBindTexture (GL_TEXTURE_2D, 0);
+    ////glBindTexture (GL_TEXTURE_2D, renderTexture);
+    //glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, renderTexture);
+    ////glTexImage2D (GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
+    //glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 4, GL_RGB, w, h, GL_TRUE);
+    ////glBindTexture (GL_TEXTURE_2D, 0);
+    //glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, 0);
   }
 
   void Pipeline::Change_Shader (std::string sh, int id /* = 0*/)
