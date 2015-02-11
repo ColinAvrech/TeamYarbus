@@ -69,30 +69,52 @@ namespace Framework
       switch (key->KeyValue)
     {
       case GLFW_KEY_A:
-        OPENGL->MatrixMode (VIEW);
-        tform->Translate (-camSpeed, 0, 0);
+        OPENGL->MatrixMode(VIEW);
+        tform->Translate(-camSpeed, 0, 0);
         Camera::main->matricesReady = false;
         break;
       case GLFW_KEY_D:
-        OPENGL->MatrixMode (VIEW);
-        tform->Translate (camSpeed, 0, 0);
+        OPENGL->MatrixMode(VIEW);
+        tform->Translate(camSpeed, 0, 0);
         Camera::main->matricesReady = false;
         break;
       case GLFW_KEY_S:
-        OPENGL->MatrixMode (VIEW);
-        tform->Translate (0, -camSpeed, 0);
+        OPENGL->MatrixMode(VIEW);
+        tform->Translate(0, -camSpeed, 0);
         Camera::main->matricesReady = false;
         break;
       case GLFW_KEY_W:
-        OPENGL->MatrixMode (VIEW);
-        tform->Translate (0, camSpeed, 0);
+        OPENGL->MatrixMode(VIEW);
+        tform->Translate(0, camSpeed, 0);
         Camera::main->matricesReady = false;
         break;
       case GLFW_KEY_Z:
-        Camera::main->Zoom (zoomSpeed);
+        Camera::main->Zoom(zoomSpeed);
         break;
       case GLFW_KEY_X:
-        Camera::main->Zoom (-zoomSpeed);
+        Camera::main->Zoom(-zoomSpeed);
+        break;
+      case GLFW_KEY_Q:
+        OPENGL->MatrixMode(VIEW);
+        tform->Translate(0, 0, camSpeed);
+        Camera::main->matricesReady = false;
+        break;
+      case GLFW_KEY_E:
+        OPENGL->MatrixMode(VIEW);
+        tform->Translate(0, 0, -camSpeed);
+        Camera::main->matricesReady = false;
+        break;
+      case GLFW_KEY_I:
+        OPENGL->MatrixMode(VIEW);
+        tform->Translate(0, 0, camSpeed);
+        Camera::main->Zoom(-zoomSpeed);
+        Camera::main->matricesReady = false;
+        break;
+      case GLFW_KEY_O:
+        OPENGL->MatrixMode(VIEW);
+        tform->Translate(0, 0, -camSpeed);
+        Camera::main->Zoom(zoomSpeed);
+        Camera::main->matricesReady = false;
         break;
       default:
         break;
@@ -278,7 +300,7 @@ namespace Framework
   {
     //if (size + zoom > 0 && (size + zoom) < farPlane)
     //{
-      size += zoom;
+      fov += zoom;
       matricesReady = false;
     //}
   }
@@ -339,9 +361,9 @@ namespace Framework
     return FocalLength / f_stop;
   }
 
-  glm::vec3 Camera::FocalPoint()
+  float Camera::FocalPoint()
   {
-    return static_cast<Transform*>(gameObject->GetComponent("Transform"))->GetPosition() + Camera::main->FocalPlane * Camera::main->size * Camera::main->viewDirection;
+    return FocalPlane;
   }
 
   glm::vec2 Camera::GetWorldMousePosition()

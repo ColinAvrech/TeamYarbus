@@ -184,8 +184,8 @@ namespace Framework
     glm::vec3 campos = Camera::main->gameObject->C<Transform>()->GetPosition();
     glm::vec3 up = glm::vec3(0.f, -1.f, 0.f);
     //eye and object
-    glm::vec3 eye = Camera::main->GetSize() * glm::vec3(0.f, 0.f, 1.f) + glm::vec3(campos.x, campos.y, 0.f);
-    glm::vec3 object = campos;
+    glm::vec3 eye = campos;
+    glm::vec3 object = campos + glm::vec3(0.f, 0.f, 1.f) * Camera::main->FocalPoint();
 
     //right and up vectors
     glm::vec3 right = glm::normalize(glm::cross(object - eye, up));
@@ -197,7 +197,6 @@ namespace Framework
       MatrixMode(VIEW);
       LoadIdentity();
       LookAt(eye + aperture * bokeh, object, p_up);
-      glm::vec3 pos = campos + bokeh;
       //Translatefv (&pos.x);
       Rotatef(GETCOMPONENT(Camera::main->gameObject, Transform)->GetRotation(), 0, 0, 1);
       glm::mat4 modelview = GetViewMatrix ();
