@@ -219,20 +219,8 @@ namespace Framework
       }
 
       RenderToTexture(fbo, renderTexture, sceneShader);
-
-      //if (i == 0)
-      //{
-      //  glAccum(GL_LOAD, 1.f / n);
-      //}
-      //else
-      //{
-      //  glAccum(GL_ACCUM, 1.f / n);
-      //}
-      //fbo->bind();
-      //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
-    glAccum(GL_RETURN, 1.0f);
     glfwSwapBuffers(WINDOWSYSTEM->Get_Window());
     //glDisable(GL_BLEND);
     //glBlendFunc(sFactor, dFactor);
