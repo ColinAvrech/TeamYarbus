@@ -22,19 +22,41 @@ namespace Editor
 
 		void Focus( Framework::GameObject * obj );
 
+		//////////////////////////////////////////////////
+		// Buttons
+		//////////////////////////////////////////////////
+		static void TW_CALL OpenComponentList( void * );
+		static void TW_CALL CloseComponentList( void * );
+
+		static void TW_CALL AddComponent( void * type );
+
 	private:
+		//////////////////////////////////////////////////
+		// Properties Panel
+		//////////////////////////////////////////////////
+		void OpenObjectProperties( );
+		void CloseObjectProperties( );
+
 		void SetupObjectPropertiesPanelProperties( );
-
-		void Open( );
-		void Close( );
-
 		void PopulateObjectProperties( );
+
 		void ReadComponent( const Reflection::MetaType & metatype, void * component );
 		void ReadMember( const Reflection::MetaType & metatype, const Reflection::MetaMember & member, void * component );
-			
+
+		//////////////////////////////////////////////////
+		// Component List Panel
+		//////////////////////////////////////////////////
+		void OpenComponentList( );
+		void CloseComponentList( );
+
+		void SetupComponentListPanelProperties( );
+		void PopulateComponentList( );
+
 		Framework::GameObject * mFocusObject = nullptr;
+		std::string mFocusObjectName;
 
 		Panel::PanelManager::PanelHandle mObjectPropertiesPanel;
+		Panel::PanelManager::PanelHandle mComponentListPanel;
 		
 
 	};

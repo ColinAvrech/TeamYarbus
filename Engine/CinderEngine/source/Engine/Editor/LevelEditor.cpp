@@ -34,6 +34,12 @@ namespace Editor
 		mEditorPanels.push_back( new ObjectPropertiesPanel( ) );
 
 		SetVisible( false );
+		
+		Framework::PANELMANAGER->Define( "buttonalign", "center" );
+		Framework::PANELMANAGER->Define( "contained", "true" );
+		Framework::PANELMANAGER->Define( "fontsize", "1" );
+		Framework::PANELMANAGER->Define( "fontresizable", "false" );
+		Framework::PANELMANAGER->Define( "help", "'I am Melvin the Great! Hear me rawr!'" );
 	}
 
 	void LevelEditor::ShutdownEditor( )
