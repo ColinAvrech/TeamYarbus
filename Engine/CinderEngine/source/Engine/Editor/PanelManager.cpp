@@ -129,6 +129,7 @@ namespace Panel
 	void PanelManager::InitATB( GraphicAPI graphics )
 	{
 		ErrorCheck( TwInit( static_cast< ETwGraphAPI >( graphics ), NULL ) );
+		TwCopyStdStringToClientFunc( [] ( std::string & des, const std::string & source ) { des = source; } );
 	}
 
 	void PanelManager::DeinitATB( )
