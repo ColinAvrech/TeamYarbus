@@ -132,7 +132,7 @@ namespace Framework
         {
           RigidBody2D *b = rigidBodies[i];
           assert(b);
-          ShapeCollider2D *shape = static_cast<ShapeCollider2D*>(b->gameObject->GetComponent("ShapeCollider2D"));
+          ShapeCollider2D *shape = b->gameObject->C<ShapeCollider2D>();
           //assert(shape);
           if (shape)
           {

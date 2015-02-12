@@ -17,15 +17,15 @@ namespace Framework
 	class Manifold;
 	class RigidBody2D;
 	
-	typedef void (*CollisionCallback)( Manifold *m, RigidBody2D *a, RigidBody2D *b );
+  typedef void(*CollisionCallback)(Manifold *m, ShapeCollider2D* a, ShapeCollider2D* b);
 	
 	extern CollisionCallback Dispatch[ShapeCollider2D::eCount][ShapeCollider2D::eCount];
 	
-	void CircletoCircle( Manifold *m, RigidBody2D *a, RigidBody2D *b );
-	void CircletoPolygon( Manifold *m, RigidBody2D *a, RigidBody2D *b );
-	void PolygontoCircle( Manifold *m, RigidBody2D *a, RigidBody2D *b );
-	void PolygontoPolygon( Manifold *m, RigidBody2D *a, RigidBody2D *b );
-  void CompoundSolve(Manifold *m, RigidBody2D *a, RigidBody2D *b);
+  void CircletoCircle   (Manifold *m, ShapeCollider2D* a, ShapeCollider2D* b);
+  void CircletoPolygon  (Manifold *m, ShapeCollider2D* a, ShapeCollider2D* b);
+  void PolygontoCircle  (Manifold *m, ShapeCollider2D* a, ShapeCollider2D* b);
+  void PolygontoPolygon (Manifold *m, ShapeCollider2D* a, ShapeCollider2D* b);
+  void CompoundSolve    (Manifold *m, ShapeCollider2D* a, ShapeCollider2D* b);
 
 }
 

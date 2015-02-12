@@ -16,7 +16,10 @@ namespace Framework
 
   // Constructor
   Follow::Follow ()
-  {}
+  {
+    target = nullptr;
+    targetName = "";
+  }
   
   // Destructor
   Follow::~Follow ()
@@ -30,13 +33,27 @@ namespace Framework
 
   void Follow::Initialize ()
   {
-    target = static_cast<Transform*>(OBJECTSYSTEM->FindObjectByName(targetName.c_str())->GetComponent("Transform"));
-    EVENTSYSTEM->mConnect<UpdateEvent, Follow> (Events::UPDATEEVENT, this, &Follow::Update);
+    SetTarget(targetName);
+  }
+
+  void Follow::SetTarget(string newTargetName)
+  {
+    targetName = newTargetName;
+    Transform* newTarget = static_cast<Transform*>(OBJECTSYSTEM->FindObjectByName(targetName.c_str())->GetComponent("Transform"));
+    SetTarget(newTarget);
+  }
+
+  void Follow::SetTarget(Transform* newTarget)
+  {
+    target = newTarget;
+    EVENTSYSTEM->mConnect<UpdateEvent, Follow>(Events::UPDATEEVENT, this, &Follow::Update);
   }
 
   void Follow::Update (UpdateEvent* update)
   {
-    static_cast<Transform*>(gameObject->GetComponent("Transform"))->SetPosition(target->GetPosition().x, target->GetPosition().y);
+    Transform* tform = gameObject->C<Transform>();
+    if (tform && target)
+      tform->SetPosition(target->GetPosition2D());
   }
 
   void Follow::OnApplicationPause (PauseEvent* pause)

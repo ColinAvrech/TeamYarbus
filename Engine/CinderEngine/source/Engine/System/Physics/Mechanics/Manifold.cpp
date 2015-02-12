@@ -18,10 +18,10 @@ namespace Framework
 {
 	void Manifold::Solve( void )
 	{
-    ShapeCollider2D* shapeA = GETCOMPONENT(A->gameObject, ShapeCollider2D);
-    ShapeCollider2D* shapeB = GETCOMPONENT(B->gameObject, ShapeCollider2D);
+    ShapeCollider2D* shapeA = A->gameObject->C<ShapeCollider2D>();
+    ShapeCollider2D* shapeB = B->gameObject->C<ShapeCollider2D>();
     if (shapeA && shapeB)
-      Dispatch[shapeA->GetType( )][shapeB->GetType( )]( this, A, B );
+      Dispatch[shapeA->GetType()][shapeB->GetType()]( this, shapeA, shapeB );
 	}
 	
 	void Manifold::Initialize( void )
@@ -137,9 +137,9 @@ namespace Framework
 	  A->position -= correction * A->invMass;
 	  B->position += correction * B->invMass;
     if (A->gameObject != nullptr)
-      static_cast<Transform*>(A->gameObject->GetComponent("Transform"))->SetPosition(A->position.x, A->position.y);
+      static_cast<Transform*>(A->gameObject->GetComponent("Transform"))->SetPosition(A->gameObject->C<Transform>()->GetPosition2D());
     if (B->gameObject != nullptr)
-      static_cast<Transform*>(B->gameObject->GetComponent("Transform"))->SetPosition(B->position.x, B->position.y);
+      static_cast<Transform*>(B->gameObject->GetComponent("Transform"))->SetPosition(B->gameObject->C<Transform>()->GetPosition2D());
 	}
 	
 	void Manifold::InfiniteMassCorrection( void )
@@ -148,10 +148,10 @@ namespace Framework
     RigidBody2D* rbB = static_cast<RigidBody2D*>(B->gameObject->GetComponent("RigidBody2D"));
 	  A->velocity = vec3();
     if (!rbA->isStatic)
-      static_cast<Transform*>(A->gameObject->GetComponent("Transform"))->SetPosition(0, 0);
+      static_cast<Transform*>(A->gameObject->GetComponent("Transform"))->SetPosition(vec2());
     B->velocity = vec3();
     if (!rbB->isStatic)
-      static_cast<Transform*>(B->gameObject->GetComponent("Transform"))->SetPosition(0, 0);
+      static_cast<Transform*>(B->gameObject->GetComponent("Transform"))->SetPosition(vec2());
 	}
 }
 

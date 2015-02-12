@@ -28,11 +28,11 @@ namespace Framework
 	    const static std::string Name;
 	    enum ColliderType
 	    {
-        eInvalid,
-	      eCircle,
-	      ePoly,
+        eCircle,
+        ePoly,
         eCompound,
-	      eCount
+        eCount,
+        eInvalid
 	    };
 	
       ShapeCollider2D ();

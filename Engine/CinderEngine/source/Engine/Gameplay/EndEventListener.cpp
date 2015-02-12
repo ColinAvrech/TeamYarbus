@@ -46,7 +46,7 @@ namespace Framework
 
     vec3 worldpos = tform->GetPosition();
     vec3 pos = static_cast<Transform*>(Camera::main->gameObject->GetComponent("Transform"))->GetPosition();
-    tform->SetPosition(worldpos.x, pos.y - (Camera::main->GetSize() * 4.0f));
+    tform->SetPosition(vec2(worldpos.x, pos.y - (Camera::main->GetSize() * 4.0f)));
     sprite->enabled = false;
     endPosition = { -20, 110, -10 };
   }
@@ -82,11 +82,11 @@ namespace Framework
         Camera::main->size = glm::mix(startSize, endSize, timer);
         if (timer < 1.0f)
         {
-          camTransform->SetPosition(pos.x, pos.y);
+          camTransform->SetPosition(vec2(pos.x, pos.y));
         }
         else
         {
-          tform->SetPosition(pos.x, pos.y - 400);
+          tform->SetPosition(vec2(pos.x, pos.y - 400));
           ees = EES_CREDITS;
         }
       }

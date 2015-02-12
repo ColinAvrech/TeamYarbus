@@ -40,8 +40,3 @@ namespace Framework
 		int sparkCounter = 0;
 	};
 }
-
-META_DEFINE( Framework::SparkCollector, SparkCollector )
-{
-
-}

@@ -99,8 +99,7 @@ namespace Framework
 
     Transform* tform = AUDIOSYSTEM->listener = static_cast<Transform*>(gameObject->GetComponent("Transform"));
     
-    vec3 pos = tform->GetPosition();
-    static_cast<Transform*>(Camera::main->gameObject->GetComponent("Transform"))->SetPosition(pos.x, pos.y);
+    Camera::main->gameObject->C<Transform>()->SetPosition(tform->GetPosition2D());
   }
 
   static void UpdateGroundState(CollisionEvent* collision)

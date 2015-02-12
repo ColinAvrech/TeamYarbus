@@ -76,7 +76,8 @@ namespace Framework
 
     void RestartLevel();
     
-	  GameObject* FindObjectByName(Zilch::String name);
+    GameObject* FindObjectByName(Zilch::String name);
+    GameObject* FindObjectByName(string name){ return FindObjectByName(name.c_str()); }
     GameObject* FindObjectByName (const char *name);
     GameObject* FindObjectByID(unsigned id);
 	  
