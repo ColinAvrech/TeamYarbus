@@ -32,8 +32,8 @@ namespace Framework
         ePoly,
         eCompound,
         eHeightMap,
-        eInvalid,
-	      eCount
+	      eCount,
+        eInvalid
 	    };
 	
       ShapeCollider2D ();
