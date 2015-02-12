@@ -76,7 +76,7 @@ namespace Editor
 	void TW_CALL ObjectPropertiesPanel::RemoveComponent( void * type )
 	{
 		const Reflection::MetaType * mt = reinterpret_cast< const Reflection::MetaType * >( type );
-		//Framework::LEVELEDITOR->GetObjectPropertiesPanel( ).mFocusObject->RemoveComponent( mt->GetName( ) );
+		Framework::LEVELEDITOR->GetObjectPropertiesPanel( ).mFocusObject->RemoveComponent( mt->GetName( ) );
 		Framework::LEVELEDITOR->GetObjectPropertiesPanel( ).Refresh( );
 	}
 

@@ -9,8 +9,6 @@ namespace Editor
 
 	class ObjectListPanel : public EditorBase
 	{
-	public:
-		static void TW_CALL SelectObject( void * obj );
 
 	public:
 		ObjectListPanel( );
@@ -19,6 +17,12 @@ namespace Editor
 		void SetVisible( bool state );
 		void Refresh( );
 		void Reset( );
+
+		//////////////////////////////////////////////////
+		// Buttons
+		//////////////////////////////////////////////////
+		static void TW_CALL SelectObject( void * obj );
+		static void TW_CALL CreateObject( void * );
 
 	private:
 		void Open( );
@@ -29,9 +33,10 @@ namespace Editor
 
 	private:
 		unsigned int mObjectCount = 0;
-		// std::vector< Framework::GameObject * > mObjects;
 
 		Panel::PanelManager::PanelHandle mObjectListPanel;
+
+		std::string mNewObjectName;
 	};
 
 }

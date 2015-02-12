@@ -6,15 +6,10 @@
 namespace Editor
 {
 
-	void TW_CALL ObjectListPanel::SelectObject( void * obj )
-	{
-		Framework::LEVELEDITOR->GetObjectPropertiesPanel( ).Focus( reinterpret_cast< Framework::GameObject* >( obj ) );
-	}
-
 	ObjectListPanel::ObjectListPanel( ) :
 		mObjectListPanel( Framework::PANELMANAGER->AddPanel( "Object List" ) )
 	{
-		
+
 	}
 
 	ObjectListPanel::~ObjectListPanel( )
@@ -32,14 +27,30 @@ namespace Editor
 
 	void ObjectListPanel::Refresh( )
 	{
-
+		SetVisible( false );
+		SetVisible( true );
 	}
 
 	void ObjectListPanel::Reset( )
 	{
 		mObjectCount = 0;
-		// mObjects.clear( );
 	}
+
+	//////////////////////////////////////////////////
+	// Buttons
+	//////////////////////////////////////////////////
+	void TW_CALL ObjectListPanel::SelectObject( void * obj )
+	{
+		Framework::LEVELEDITOR->GetObjectPropertiesPanel( ).Focus( reinterpret_cast< Framework::GameObject* >( obj ) );
+	}
+
+	void TW_CALL ObjectListPanel::CreateObject( void * )
+	{
+		Framework::GameObject * newobj = Framework::OBJECTSYSTEM->CreateObject( );
+		newobj->Name = Framework::LEVELEDITOR->GetObjectListPanel( ).mNewObjectName.c_str( );
+		Framework::LEVELEDITOR->GetObjectListPanel( ).Refresh( );
+	}
+
 
 	void ObjectListPanel::Open( )
 	{
@@ -74,15 +85,18 @@ namespace Editor
 
 	void ObjectListPanel::PopulateObjectList( )
 	{
+		// new object creation
+		mObjectListPanel->AddField( "Name", &mNewObjectName );
+		mObjectListPanel->AddButton( "Create", &ObjectListPanel::CreateObject, nullptr );
+		mObjectListPanel->AddSeperator( );
+
+		// objects
 		auto objectsFirst = Framework::OBJECTSYSTEM->GameObjects.begin( );
 		auto objectsEnd = Framework::OBJECTSYSTEM->GameObjects.end( );
-
-		// mObjects.reserve( std::distance( objectsFirst, objectsEnd ) );
 
 		while ( objectsFirst != objectsEnd )
 		{
 			std::string name = std::to_string( mObjectCount ) + ". " + objectsFirst->second->GetName( ).c_str( );
-			// mObjects.push_back( objectsFirst->second );
 
 			mObjectListPanel->AddButton( name, &ObjectListPanel::SelectObject, objectsFirst->second );
 
