@@ -32,6 +32,7 @@ namespace Framework
 	      eCircle,
 	      ePoly,
         eCompound,
+        eHeightMap,
 	      eCount
 	    };
 	
