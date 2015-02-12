@@ -29,6 +29,7 @@ namespace Editor
 		static void TW_CALL CloseComponentList( void * );
 
 		static void TW_CALL AddComponent( void * type );
+		static void TW_CALL RemoveComponent( void * type );
 
 	private:
 		//////////////////////////////////////////////////

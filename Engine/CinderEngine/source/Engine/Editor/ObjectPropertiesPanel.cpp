@@ -73,6 +73,13 @@ namespace Editor
 		Framework::LEVELEDITOR->GetObjectPropertiesPanel( ).Refresh( );
 	}
 
+	void TW_CALL ObjectPropertiesPanel::RemoveComponent( void * type )
+	{
+		const Reflection::MetaType * mt = reinterpret_cast< const Reflection::MetaType * >( type );
+		//Framework::LEVELEDITOR->GetObjectPropertiesPanel( ).mFocusObject->RemoveComponent( mt->GetName( ) );
+		Framework::LEVELEDITOR->GetObjectPropertiesPanel( ).Refresh( );
+	}
+
 	//////////////////////////////////////////////////
 	// Properties Panel
 	//////////////////////////////////////////////////
@@ -131,10 +138,13 @@ namespace Editor
 		{
 			const Reflection::MetaType & mt = META_HASH( componentFirst->second->mComponentType );
 			ReadComponent( mt, componentFirst->second );
+			mObjectPropertiesPanel->AddSeperator( "", mt.GetName( ) );
+			mObjectPropertiesPanel->AddButton( "Remove Component", &ObjectPropertiesPanel::RemoveComponent,
+											   const_cast< Reflection::MetaType * > ( &mt ), mt.GetName( ) );
 
 			++componentFirst;
 		}
-		std::cout << std::endl;
+
 	}
 
 	void ObjectPropertiesPanel::ReadComponent( const Reflection::MetaType & metatype, void * component )
@@ -258,7 +268,7 @@ namespace Editor
 
 		for ( auto & type : types )
 		{
-			mComponentListPanel->AddButton( type->GetName( ), &ObjectPropertiesPanel::AddComponent, 
+			mComponentListPanel->AddButton( type->GetName( ), &ObjectPropertiesPanel::AddComponent,
 											const_cast< Reflection::MetaType * >( type ) );
 		}
 	}
