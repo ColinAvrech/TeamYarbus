@@ -50,7 +50,7 @@ namespace Framework
 
     static glm::mat4 GetWorldToViewMatrix ();
     static glm::mat4 GetViewToProjectionMatrix ();
-    static glm::vec2 GetWorldMousePosition ();
+    static glm::vec2 GetWorldMousePosition (float projection_plane = 0.f);
     void OnKeyPressed (KeyEvent* key);
     virtual void OnApplicationPause (PauseEvent* pause);
     float GetSize ();

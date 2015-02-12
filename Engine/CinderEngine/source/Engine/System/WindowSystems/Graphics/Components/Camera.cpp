@@ -371,20 +371,22 @@ namespace Framework
     return FocalPlane;
   }
 
-  glm::vec2 Camera::GetWorldMousePosition()
+  glm::vec2 Camera::GetWorldMousePosition(float projection_plane)
   {
-    glm::vec2 ndc = { (WINDOWSYSTEM->Get_Mouse_Position().x / WINDOWSYSTEM->Get_Width() - 0.5f) * 1.47f,
-      ((WINDOWSYSTEM->Get_Height() - WINDOWSYSTEM->Get_Mouse_Position().y) / WINDOWSYSTEM->Get_Height() - 0.5f) * 1.47f };
+    float offset_correction = 1.78f;
+    //glm::vec2 ndc = { (WINDOWSYSTEM->Get_Mouse_Position().x / WINDOWSYSTEM->Get_Width() - 0.5f) * 1.47f,
+    //  ((WINDOWSYSTEM->Get_Height() - WINDOWSYSTEM->Get_Mouse_Position().y) / WINDOWSYSTEM->Get_Height() - 0.5f) * 1.47f };
+    glm::vec2 mousepos = WINDOWSYSTEM->Get_Normalized_Mouse_Position();
+   
+    glm::vec3 pos = Camera::main->gameObject->C<Transform>()->GetPosition();
+
+    float z_dist = pos.z - projection_plane;
+    float w_size = z_dist * std::tan(Camera::main->fov * PI / 360.f);
     
-    //
-    /*
-        destPosX = (float) (cursorX / (windowWidth) -0.5f) * 2.0f;//1.47
-        destPosY = (float) ((windowHeight - cursorY) / windowHeight - 0.5f) * 2.0f;
-    */
-    //
     return glm::vec2
       (
-        ndc.x * Camera::main->size, ndc.y * Camera::main->size / Camera::main->aspect
+         pos.x + mousepos.x * w_size * offset_correction, 
+         pos.y + mousepos.y * w_size * offset_correction / Camera::main->aspect
       );
   }
 

@@ -39,18 +39,18 @@ namespace Framework
   void Lantern::CalculateBounds()
   {
     //flaslight follows the mouse
-    glm::vec2 orthogonalRight = glm::vec2(-origin.y, origin.x);
-    glm::vec2 orthogonalLeft = -orthogonalRight;
+    //lantern position
     glm::vec2 tform = (glm::vec2)gameObject->C<Transform>()->GetPosition();
-    origin = Camera::GetWorldMousePosition() - tform;
+    //lantern to mouse
+    origin = glm::normalize(Camera::GetWorldMousePosition(0.f) - tform);
+
+    glm::vec2 orthogonalRight = glm::normalize(glm::vec2(-origin.y, origin.x));
+    glm::vec2 orthogonalLeft = -orthogonalRight;
+    
     leftBounds = tform + origin * lightRadius*cos(lightTheta / 2) +
-      orthogonalLeft * lightRadius*sin(-lightTheta / 2);
+      orthogonalLeft * lightRadius*sin(lightTheta / 2);
     rightBounds = tform + origin * lightRadius*cos(lightTheta / 2) +
       orthogonalRight * lightRadius*sin(lightTheta / 2);
-
-    glm::normalize(origin);
-    glm::normalize(rightBounds);
-    glm::normalize(leftBounds);
   }
 
   void Lantern::CheckCollision()
@@ -94,12 +94,15 @@ namespace Framework
     glBegin(GL_LINES);
     {
       glColor4f(223/255.f, 0, 1.f, 1.f);
+      //left and right bounds
       glVertex3f(c_center.x, c_center.y, 0);
-      glVertex3f(Camera::GetWorldMousePosition().x, Camera::GetWorldMousePosition().y, 0);
+      glVertex3f(rightBounds.x, rightBounds.y, 0);
       glVertex3f(c_center.x, c_center.y, 0);
-      glVertex3f(c_center.x + rightBounds.x, c_center.y + rightBounds.y, 0);
+      glVertex3f(leftBounds.x, leftBounds.y, 0);
+      glColor4f(123 / 255.f, 0.5f, 1.f, 1.f);
+      //lantern to mouse
       glVertex3f(c_center.x, c_center.y, 0);
-      glVertex3f(c_center.x + leftBounds.x, c_center.y + leftBounds.y, 0);
+      glVertex3f(Camera::GetWorldMousePosition(0.f).x, Camera::GetWorldMousePosition(0.f).y, 0);
     }
     glEnd();
   }
