@@ -230,6 +230,11 @@ Level =
 			string SpriteLayer = "52ad5fa30d7fcd50:DefaultSpriteLayer",
 			string Shader = "Default",
 		},
+		Lantern = 
+		{
+			float lightTheta = 90.f,
+			float lightRadius = 2.f,
+		},
   },
   Cog = 
   {

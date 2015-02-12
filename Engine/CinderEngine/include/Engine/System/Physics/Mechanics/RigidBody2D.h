@@ -84,6 +84,8 @@ namespace Framework
 
 META_DEFINE( Framework::RigidBody2D, RigidBody2D )
 {
+	TAG( "Component" );
+
 	MEMBER( position );
 }
 

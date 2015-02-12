@@ -20,7 +20,7 @@ namespace Editor
 
 	LevelEditor::~LevelEditor( )
 	{
-
+		
 	}
 
 	void LevelEditor::InitializeEditor( )
@@ -30,10 +30,19 @@ namespace Editor
 																			this,
 																			&LevelEditor::HandleInput );
 
+		// add all aux editor panels
 		mEditorPanels.push_back( new ObjectListPanel( ) );
 		mEditorPanels.push_back( new ObjectPropertiesPanel( ) );
 
+		// set all panels to not visible
 		SetVisible( false );
+		
+		// define global panel attribute
+		Framework::PANELMANAGER->Define( "buttonalign", "center" );
+		Framework::PANELMANAGER->Define( "contained", "true" );
+		Framework::PANELMANAGER->Define( "fontsize", "1" );
+		Framework::PANELMANAGER->Define( "fontresizable", "false" );
+		Framework::PANELMANAGER->Define( "help", "'I am Melvin the Great! Hear me rawr!'" );
 	}
 
 	void LevelEditor::ShutdownEditor( )
@@ -43,6 +52,7 @@ namespace Editor
 																			   this,
 																			   &LevelEditor::HandleInput );
 
+		// delete all aux panels
 		for ( auto panel : mEditorPanels )
 			delete panel;
 	}
@@ -79,8 +89,8 @@ namespace Editor
 	{
 		if ( e->KeyDown == true )
 		{
-			SetVisible( mIsVisible );
 			mIsVisible = !mIsVisible;
+			SetVisible( mIsVisible );
 		}
 	}
 

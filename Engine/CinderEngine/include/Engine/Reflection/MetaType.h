@@ -18,6 +18,8 @@ namespace Reflection
 		typedef std::vector< MetaMember >			MetaMemberContainer;
 		typedef MetaMemberContainer::const_iterator MetaMemberIterator;
 
+		typedef std::vector< NameType >				MetaTagContainer;
+
 	public:
 		~MetaType( );
 
@@ -32,6 +34,11 @@ namespace Reflection
 		const MetaMember &			GetMember( const NameType & name ) const;
 		const MetaMember &			GetMember( HashedNameType name ) const;
 		const MetaMemberContainer &	GetMembers( ) const;
+
+		bool						TagExist( const NameType & tag ) const;
+		void						AddTag( const NameType & tag );
+		void						RemoveTag( const NameType & tag );
+		void						ReplaceTag( const NameType & prev, const NameType & curr );
 
 		MetaMemberIterator			Begin( ) const;
 		MetaMemberIterator			End( ) const;
@@ -52,6 +59,7 @@ namespace Reflection
 		bool						mIsBase = true;
 
 		MetaMemberContainer			mMembers;
+		MetaTagContainer			mTags;
 	};
 
 }

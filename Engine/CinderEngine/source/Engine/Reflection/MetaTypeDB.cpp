@@ -31,6 +31,19 @@ namespace Reflection
 		return mTypes.find( typeName )->second;
 	}
 
+	MetaTypeDB::MetaTagResult MetaTypeDB::GetTypeByTag( const NameType & tag ) const
+	{
+		MetaTagResult list;
+		
+		for ( const auto & type : mTypes )
+		{
+			if ( type.second.TagExist( tag ) == true )
+				list.emplace_back( &type.second );
+		}
+		
+		return list;
+	}
+
 	MetaTypeDB & MetaTypeDB::GetDB( )
 	{
 		static MetaTypeDB instance;
