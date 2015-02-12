@@ -57,6 +57,9 @@ namespace Reflection
 #define MEMBER( member ) \
 	::Reflection::MetaCreator< ::Reflection::RemQual< _MetaType >::Type >::mMetaType->AddMember( #member, &_MetaType::member ) 
 
+#define TAG( tag ) \
+	::Reflection::MetaCreator< ::Reflection::RemQual< _MetaType >::Type >::mMetaType->AddTag( tag )
+
 META_DEFINE_BASE( bool, bool );
 META_DEFINE_BASE( char, char );
 META_DEFINE_BASE( unsigned char, unsigned char );

@@ -55,6 +55,30 @@ namespace Reflection
 		return mMembers;
 	}
 
+	bool MetaType::TagExist( const NameType & tag ) const
+	{
+		return std::find( mTags.begin( ), mTags.end( ), tag ) != mTags.end( );
+	}
+
+	void MetaType::AddTag( const NameType & tag )
+	{
+		mTags.emplace_back( tag );
+	}
+
+	void MetaType::RemoveTag( const NameType & tag )
+	{
+		auto it = std::find( mTags.begin( ), mTags.end( ), tag );
+		MetaAssert( it != mTags.end( ) );
+		mTags.erase( it );
+	}
+
+	void MetaType::ReplaceTag( const NameType & prev, const NameType & curr )
+	{
+		auto it = std::find( mTags.begin( ), mTags.end( ), prev );
+		MetaAssert( it != mTags.end( ) );
+		*it = curr;
+	}
+
 	MetaType::MetaMemberIterator MetaType::Begin( ) const
 	{
 		return mMembers.cbegin( );

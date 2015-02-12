@@ -111,6 +111,8 @@ namespace Framework
 
 META_DEFINE( Framework::Transform, Transform )
 {
+	TAG( "Component" );
+
 	MEMBER( localPosition );
 	MEMBER( position );
 	MEMBER( scale );
