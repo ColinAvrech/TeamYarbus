@@ -13,7 +13,7 @@ namespace Framework
 {
 	class UpdateEvent;
 
-	class Lantern : public Component
+	class Lantern : public IGraphicsObject
 	{
 	public:
 		const static std::string Name;
@@ -23,18 +23,21 @@ namespace Framework
 		}
 		Lantern(){}
 
-		~Lantern(){};
+		~Lantern();
 		void reFuel();
 		void Update(UpdateEvent* e);
 		virtual void Serialize(Serializer::DataNode* data);
 		virtual void Initialize();
 		void CalculateBounds();
 		void CheckCollision();
+		void Draw();
+		virtual bool Draw_Last() { return true; }
+		virtual bool InViewport() { return true; }
 
 	private:
 		//flashlight
 		float lightRadius;
-		double lightTheta;
+		float lightTheta;
 		glm::vec2 origin;
 		glm::vec2 leftBounds;
 		glm::vec2 rightBounds;
