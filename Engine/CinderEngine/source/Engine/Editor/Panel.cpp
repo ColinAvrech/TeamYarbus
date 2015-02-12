@@ -153,14 +153,16 @@ namespace Panel
 			oss << " group='" << group << "' ";
 		oss << " enum='" << enums << "' ";
 
-		TwType & type = mEnumTypes[ std::hash<std::string >( )( label.c_str( ) ) ];
-		type = TwDefineEnum( label.c_str( ), nullptr, 0 );
+		TwType & type = mEnumTypes[ std::hash<std::string >( )( ( std::to_string( mCount ) + label ).c_str( ) ) ];
+		type = TwDefineEnum( ( std::to_string( mCount ) + label ).c_str( ), nullptr, 0 );
 
 		if ( readOnly == false )
-			ErrorCheck( TwAddVarRW( mPtr, label.c_str( ), type, value, oss.str( ).c_str( ) ) );
+			ErrorCheck( TwAddVarRW( mPtr, ( std::to_string( mCount ) + label ).c_str( ), type, value, oss.str( ).c_str( ) ) );
 		else
-			ErrorCheck( TwAddVarRO( mPtr, label.c_str( ), type, value, oss.str( ).c_str( ) ) );
+			ErrorCheck( TwAddVarRO( mPtr, ( std::to_string( mCount ) + label ).c_str( ), type, value, oss.str( ).c_str( ) ) );
 
+		TwDefine( ( std::string( " '" ) + mName + "'/'" + std::to_string( mCount ) + label + "'  label='" + label + "' " ).c_str( ) );
+		++mCount;
 	}
 
 	void Panel::AddEnumFieldCB( const std::string & label,
@@ -175,10 +177,13 @@ namespace Panel
 			oss << " group='" << group << "' ";
 		oss << " enum='" << enums << "' ";
 
-		TwType & type = mEnumTypes[ std::hash<std::string >( )( label.c_str( ) ) ];
-		type = TwDefineEnum( label.c_str( ), nullptr, 0 );
+		TwType & type = mEnumTypes[ std::hash<std::string >( )( ( std::to_string( mCount ) + label ).c_str( ) ) ];
+		type = TwDefineEnum( ( std::to_string( mCount ) + label ).c_str( ), nullptr, 0 );
 
-		ErrorCheck( TwAddVarCB( mPtr, label.c_str( ), type, setCB, getCB, obj, oss.str( ).c_str( ) ) );
+		ErrorCheck( TwAddVarCB( mPtr, ( std::to_string( mCount ) + label ).c_str( ), type, setCB, getCB, obj, oss.str( ).c_str( ) ) );
+
+		TwDefine( ( std::string( " '" ) + mName + "'/'" + std::to_string( mCount ) + label + "'  label='" + label + "' " ).c_str( ) );
+		++mCount;
 	}
 
 	void Panel::AddButton( const std::string & name,
@@ -189,7 +194,10 @@ namespace Panel
 		std::ostringstream oss;
 		if ( group.empty( ) == false )
 			oss << " group='" << group << "' ";
-		ErrorCheck( TwAddButton( mPtr, name.c_str( ), callback, additionalData, oss.str( ).c_str( ) ) );
+		ErrorCheck( TwAddButton( mPtr, ( std::to_string( mCount ) + name ).c_str( ), callback, additionalData, oss.str( ).c_str( ) ) );
+
+		TwDefine( ( std::string( " '" ) + mName + "'/'" + std::to_string( mCount ) + name + "'  label='" + name + "' " ).c_str( ) );
+		++mCount;
 	}
 
 	void Panel::AddLabel( const std::string & labelName,
@@ -198,22 +206,24 @@ namespace Panel
 		std::ostringstream oss;
 		if ( group.empty( ) == false )
 			oss << " group='" << group << "' ";
-		ErrorCheck( TwAddButton( mPtr, labelName.c_str( ), NULL, NULL, oss.str( ).c_str( ) ) );
+		ErrorCheck( TwAddButton( mPtr, ( std::to_string( mCount ) + labelName ).c_str( ), NULL, NULL, oss.str( ).c_str( ) ) );
+		TwDefine( ( std::string( " '" ) + mName + "'/'" + std::to_string( mCount ) + labelName + "'  label='" + labelName + "' " ).c_str( ) );
+		++mCount;
 	}
 
 	void Panel::AddSeperator( const std::string & name,
 							  const std::string & group )
 	{
-		if ( group.empty( ) )
+		if ( !group.empty( ) )
 		{
 			std::ostringstream oss;
 			oss << " group='" << group << "' ";
-			ErrorCheck( TwAddSeparator( mPtr, name.c_str( ), oss.str( ).c_str( ) ) );
+			ErrorCheck( TwAddSeparator( mPtr, ( std::to_string( mCount ) + name ).c_str( ), oss.str( ).c_str( ) ) );
 		}
 		else
-			ErrorCheck( TwAddSeparator( mPtr, name.c_str( ), nullptr ) );
+			ErrorCheck( TwAddSeparator( mPtr, ( std::to_string( mCount ) + name ).c_str( ), nullptr ) );
 
-
+		++mCount;
 	}
 
 

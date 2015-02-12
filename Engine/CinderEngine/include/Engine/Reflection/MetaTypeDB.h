@@ -15,6 +15,7 @@ namespace Reflection
 	private:
 
 		typedef std::unordered_map< HashedNameType, MetaType > MetaTypeContainer;
+		typedef std::vector<const MetaType *> MetaTagResult;
 
 	public:
 
@@ -32,6 +33,8 @@ namespace Reflection
 
 		const MetaType &	GetType( const NameType & typeName ) const;
 		const MetaType &	GetType( HashedNameType typeName ) const;
+
+		MetaTagResult		GetTypeByTag( const NameType & tag ) const;
 
 		static MetaTypeDB &	GetDB( );
 
@@ -57,6 +60,9 @@ namespace Reflection
 
 #define META_HASH( hash ) \
 	Reflection::MetaTypeDB::GetDB( ).GetType( hash )
+
+#define META_TAG( tag ) \
+	Reflection::MetaTypeDB::GetDB( ).GetTypeByTag( tag )
 
 #include "MetaTypeDB.inl"
 

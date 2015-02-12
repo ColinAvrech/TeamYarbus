@@ -30,16 +30,19 @@ namespace Framework
     }
 	};
 	
-	void CircletoCircle( Manifold *m, RigidBody2D *a, RigidBody2D *b )
+	void CircletoCircle( Manifold *m, ShapeCollider2D* shapeA, ShapeCollider2D* shapeB)
   {
-    CircleCollider2D *A = reinterpret_cast<CircleCollider2D *>(a->gameObject->GetComponent("ShapeCollider2D"));
-    CircleCollider2D *B = reinterpret_cast<CircleCollider2D *>(b->gameObject->GetComponent("ShapeCollider2D"));
+    CircleCollider2D *circleA = static_cast<CircleCollider2D *>(shapeA);
+    CircleCollider2D *circleB = static_cast<CircleCollider2D *>(shapeB);
 	
+    RigidBody2D *rbA = shapeA->gameObject->C<RigidBody2D>();
+    RigidBody2D *rbB = shapeB->gameObject->C<RigidBody2D>();
+
 	  // Calculate translational vector, which is normal
-	  vec3 normal = b->position - a->position;
+	  vec3 normal = rbB->position - rbA->position;
 	
 	  float dist_sqr = normal.length() * normal.length();
-	  float radius = A->GetRadius() + B->GetRadius();
+	  float radius = circleA->GetRadius() + circleB->GetRadius();
 	
 	  // Not in contact
 	  if(dist_sqr >= radius * radius)
@@ -50,8 +53,8 @@ namespace Framework
 	  
     //has collided
     CollisionEvent collisionEvent;
-    collisionEvent.thisObject = B->gameObject;
-    collisionEvent.OtherObject = A->gameObject;
+    collisionEvent.thisObject = circleB->gameObject;
+    collisionEvent.OtherObject = circleA->gameObject;
     //collisionEvent.normal.x = B->m_normals [faceNormal].x;
     //collisionEvent.normal.y = B->m_normals [faceNormal].y;
     //collisionEvent.normal.z = 0.0f;
@@ -63,44 +66,46 @@ namespace Framework
 	
 	  if(distance == 0.0f)
 	  {
-	    m->penetration = A->GetRadius();
+	    m->penetration = circleA->GetRadius();
 	    m->normal = vec3( 1, 0, 0);
-	    m->contacts [0] = a->position;
+	    m->contacts [0] = rbA->position;
 	  }
 	  else
 	  {
 	    m->penetration = radius - distance;
 	    m->normal = normal / distance; // Faster than using Normalized since we already performed sqrt
-      m->contacts[0] = m->normal * A->GetRadius() + a->position;
+      m->contacts[0] = m->normal * circleA->GetRadius() + rbA->position;
 	  }
 	}
 	
-	void CircletoPolygon( Manifold *m, RigidBody2D *a, RigidBody2D *b )
+  void CircletoPolygon(Manifold *m, ShapeCollider2D* a, ShapeCollider2D* b)
   {
     PolygontoCircle(m, b, a);
     m->normal = -m->normal;
 	}
 
-  void PolygontoCircle(Manifold *m, RigidBody2D *a, RigidBody2D *b)
+  void PolygontoCircle(Manifold *m, ShapeCollider2D* shapeA, ShapeCollider2D* shapeB)
   {
-    CircleCollider2D  *A = reinterpret_cast<CircleCollider2D *> (a->gameObject->GetComponent("ShapeCollider2D"));
-    PolygonCollider2D *B = reinterpret_cast<PolygonCollider2D *>(b->gameObject->GetComponent("ShapeCollider2D"));
+    PolygonCollider2D *polyA = static_cast<PolygonCollider2D *>(shapeA);
+    CircleCollider2D  *circleB = static_cast<CircleCollider2D *> (shapeB);
 
+    RigidBody2D* rbPoly = shapeA->gameObject->C<RigidBody2D>();
+    RigidBody2D* rbCircle = shapeB->gameObject->C<RigidBody2D>();
     m->contact_count = 0;
 
     // Transform circle center to Polygon model space
-    vec3 center = a->position;
-    center = glm::transpose(B->u) * (center - b->position);
+    vec3 center = rbCircle->position;
+    center = glm::transpose(polyA->u) * (center - rbPoly->position);
 
     // Find edge with minimum penetration
     // Exact concept as using support points in Polygon vs Polygon
     float separation = -FLT_MAX;
     unsigned faceNormal = 0;
-    for (unsigned i = 0; i < B->m_vertexCount; ++i)
+    for (unsigned i = 0; i < polyA->m_vertexCount; ++i)
     {
-      float s = glm::dot(B->m_normals[i], center - B->m_vertices[i]);
+      float s = glm::dot(polyA->m_normals[i], center - polyA->m_vertices[i]);
 
-      if (s > A->GetRadius())
+      if (s > circleB->GetRadius())
         return;
 
       if (s > separation)
@@ -111,72 +116,72 @@ namespace Framework
     }
     //has collided
     CollisionEvent collisionEvent;
-    collisionEvent.thisObject = B->gameObject;
-    collisionEvent.OtherObject = A->gameObject;
-    collisionEvent.normal.x = B->m_normals[faceNormal].x;
-    collisionEvent.normal.y = B->m_normals[faceNormal].y;
+    collisionEvent.thisObject = polyA->gameObject;
+    collisionEvent.OtherObject = circleB->gameObject;
+    collisionEvent.normal.x = polyA->m_normals[faceNormal].x;
+    collisionEvent.normal.y = polyA->m_normals[faceNormal].y;
     collisionEvent.normal.z = 0.0f;
     EVENTSYSTEM->TriggerEvent(Events::COLLISION, collisionEvent);
 
     // Grab face's vertices
-    vec3 v1 = B->m_vertices[faceNormal];
-    unsigned i2 = faceNormal + 1 < B->m_vertexCount ? faceNormal + 1 : 0;
-    vec3 v2 = B->m_vertices[i2];
+    vec3 v1 = polyA->m_vertices[faceNormal];
+    unsigned i2 = faceNormal + 1 < polyA->m_vertexCount ? faceNormal + 1 : 0;
+    vec3 v2 = polyA->m_vertices[i2];
 
     // Check to see if center is within polygon
     if (separation < EPSILON)
     {
       m->contact_count = 1;
-      m->normal = -(B->u * B->m_normals[faceNormal]);
-      m->contacts[0] = m->normal * A->GetRadius() + a->position;
-      m->penetration = A->GetRadius();
+      m->normal = -(polyA->u * polyA->m_normals[faceNormal]);
+      m->contacts[0] = m->normal * circleB->GetRadius() + rbCircle->position;
+      m->penetration = circleB->GetRadius();
       return;
     }
 
     // Determine which voronoi region of the edge center of circle lies within
     float dot1 = glm::dot(center - v1, v2 - v1);
     float dot2 = glm::dot(center - v2, v1 - v2);
-    m->penetration = A->GetRadius() - separation;
+    m->penetration = circleB->GetRadius() - separation;
 
     // Closest to v1
     if (dot1 <= 0.0f)
     {
       //it is implied that the squares would have the same outcome hence leaving early
-      if (glm::distance(center, v1) > A->GetRadius())
+      if (glm::distance(center, v1) > circleB->GetRadius())
         return;
 
       m->contact_count = 1;
       vec3 n = v1 - center;
-      n = glm::normalize(B->u * n);
+      n = glm::normalize(polyA->u * n);
       m->normal = n;
-      v1 = B->u * v1 + b->position;
+      v1 = polyA->u * v1 + rbPoly->position;
       m->contacts[0] = v1;
     }
 
     // Closest to v2
     else if (dot2 <= 0.0f)
     {
-      if (glm::distance(center, v2) > A->GetRadius())
+      if (glm::distance(center, v2) > circleB->GetRadius())
         return;
 
       m->contact_count = 1;
       vec3 n = v2 - center;
-      v2 = B->u * v2 + b->position;
+      v2 = polyA->u * v2 + rbPoly->position;
       m->contacts[0] = v2;
-      n = glm::normalize(B->u * n);
+      n = glm::normalize(polyA->u * n);
       m->normal = n;
     }
 
     // Closest to face
     else
     {
-      vec3 n = B->m_normals[faceNormal];
-      if (glm::dot(center - v1, n) > A->GetRadius())
+      vec3 n = polyA->m_normals[faceNormal];
+      if (glm::dot(center - v1, n) > circleB->GetRadius())
         return;
 
-      n = B->u * n;
+      n = polyA->u * n;
       m->normal = -n;
-      m->contacts[0] = m->normal * A->GetRadius() + a->position;
+      m->contacts[0] = m->normal * circleB->GetRadius() + rbCircle->position;
       m->contact_count = 1;
     }
   }
@@ -187,8 +192,8 @@ namespace Framework
     float bestDistance = -FLT_MAX;
     unsigned bestIndex = -1;
 
-    RigidBody2D* rigidA = reinterpret_cast<RigidBody2D*>(A->gameObject->GetComponent("RigidBody2D"));
-    RigidBody2D* rigidB = reinterpret_cast<RigidBody2D*>(B->gameObject->GetComponent("RigidBody2D"));
+    RigidBody2D* rbA = reinterpret_cast<RigidBody2D*>(A->gameObject->GetComponent("RigidBody2D"));
+    RigidBody2D* rbB = reinterpret_cast<RigidBody2D*>(B->gameObject->GetComponent("RigidBody2D"));
 
     for (unsigned i = 0; i < A->m_vertexCount; ++i)
     {
@@ -206,8 +211,8 @@ namespace Framework
       // Retrieve vertex on face from A, transform into
       // B's model space
       vec3 v = A->m_vertices[i];
-      v = A->u * v + rigidA->position;
-      v -= rigidB->position;
+      v = A->u * v + rbA->position;
+      v -= rbB->position;
       v = buT * v;
 
       // Compute penetration distance (in B's model space)
@@ -290,10 +295,14 @@ namespace Framework
     return sp;
   }
 
-	void PolygontoPolygon( Manifold *m, RigidBody2D *a, RigidBody2D *b )
+	void PolygontoPolygon( Manifold *m, ShapeCollider2D* shapeA, ShapeCollider2D* shapeB)
 	{
-    PolygonCollider2D *A = reinterpret_cast<PolygonCollider2D *>(a->gameObject->GetComponent("PolygonCollider2D"));
-    PolygonCollider2D *B = reinterpret_cast<PolygonCollider2D *>(b->gameObject->GetComponent("PolygonCollider2D"));
+    PolygonCollider2D *A = static_cast<PolygonCollider2D *>(shapeA);
+    PolygonCollider2D *B = static_cast<PolygonCollider2D *>(shapeB);
+
+    RigidBody2D* rbA = A->gameObject->C<RigidBody2D>();
+    RigidBody2D* rbB = B->gameObject->C<RigidBody2D>();
+
 	  m->contact_count = 0;
 	
 	  // Check for a separating axis with A's face planes
@@ -407,33 +416,29 @@ namespace Framework
 	  m->contact_count = cp;
 	}
 
-  void CompoundSolve(Manifold *m, RigidBody2D *a, RigidBody2D *b)
+  void CompoundSolve(Manifold *m, ShapeCollider2D* a, ShapeCollider2D* b)
   {
     glm::vec3 normal = vec3();
-    bool flipnormal;
+    bool flipnormal = false;
 
     CompoundCollider2D* cc;
-    if (GETCOMPONENT(a->gameObject, ShapeCollider2D)->GetType() == ShapeCollider2D::ColliderType::eCompound)
+    if (a->GetType() == ShapeCollider2D::ColliderType::eCompound)
     {
-      cc = GETCOMPONENT(a->gameObject, CompoundCollider2D);
-      flipnormal = false;
+      cc = static_cast<CompoundCollider2D*>(a);
     }
     else
     {
-      cc = GETCOMPONENT(a->gameObject, CompoundCollider2D);
+      cc = static_cast<CompoundCollider2D*>(b);
       flipnormal = true;
     }
 
-    RigidBody2D* rb;
     for (auto c : cc->childColliders)
-    {
-      rb = GETCOMPONENT(c->gameObject, RigidBody2D);
-      
+    {      
       if (!flipnormal)
-        Dispatch[cc->GetType()][GETCOMPONENT(b->gameObject, ShapeCollider2D)->GetType()](m, rb, b);
+        Dispatch[c->GetType()][b->GetType()](m, c, b);
       else
       {
-        Dispatch[cc->GetType()][GETCOMPONENT(a->gameObject, ShapeCollider2D)->GetType()](m, rb, b);
+        Dispatch[c->GetType()][a->GetType()](m, c, a);
       }
       
       normal += m->normal;

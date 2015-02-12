@@ -188,6 +188,11 @@ namespace Framework
     value = data->FindElement(data, "main");
     value->GetValue(&mainCamera);
 
+    if (mainCamera)
+    {
+      gameObject->AddComponent("Follow");
+    }
+
     //value->GetValue(&viewDirection);
 
     value = data->FindElement(data, "FieldOfView");

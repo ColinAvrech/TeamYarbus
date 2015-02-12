@@ -53,8 +53,8 @@ namespace Framework
       if (enabled && time < duration)
       {
         tform->SetPosition
-          (originalPosition.x + glm::linearRand (-shake.x / time, shake.x / time),
-          originalPosition.y + glm::linearRand (-shake.y / time, shake.y / time));
+          (vec2(originalPosition.x + glm::linearRand (-shake.x / time, shake.x / time),
+          originalPosition.y + glm::linearRand (-shake.y / time, shake.y / time)));
       }
       else
       {
@@ -71,7 +71,7 @@ namespace Framework
       if (time < 1.0f)
       {
         glm::vec3 position = glm::mix (startPosition, originalPosition, time);
-        tform->SetPosition (position.x, position.y);
+        tform->SetPosition (vec2(position.x, position.y));
       }
       else
       {

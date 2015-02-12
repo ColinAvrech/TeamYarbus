@@ -120,6 +120,15 @@ namespace Framework
     return gc;
   }
 
+
+  void GameObject::RemoveComponent(string name)
+  {
+    Component* c = GetComponent(name);
+    Components.erase(name);
+    delete c;
+    c = nullptr;
+  }
+
   void GameObject::AddChild(GameObject* child)
   {
 	  child->Parent = this;
@@ -218,15 +227,11 @@ namespace Framework
   {
 	  string stdcomp = component.c_str();
 	  ComponentMap::iterator it = Components.find(stdcomp);
-	  if (it == Components.end())
-	  {
-		  return NULL;
-	  }
-	  else
+	  if (it != Components.end())
 	  {
 		  return it->second;
 	  }
-	  return NULL;
+	  return nullptr;
   }
 
 }

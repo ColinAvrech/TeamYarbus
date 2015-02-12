@@ -335,6 +335,11 @@ namespace Framework
     return position;
   }
 
+  vec2 Transform::GetPosition2D()
+  {
+    return vec2(position.x, position.y);
+  }
+
   vec3 Transform::GetScale()
   {
     return scale;
@@ -372,9 +377,11 @@ namespace Framework
 
   void Transform::UpdatePosition(Transform* trans)
   {
+    assert(gameObject && "Missing gameObject*");
     if (gameObject->InheritPosition)
     {
       vec3 positionAdd = trans->GetPosition();
+      /*
       float parentAngle = trans->GetRotation();
       float cosX = 1;
       float sinX = 1;
@@ -384,11 +391,18 @@ namespace Framework
         //positionAdd[1] *= sin(parentAngle);
         //DOES NOT DEAL WITH Z POSITION
       }
+      */
       position = localPosition + positionAdd;
     }
     else
     {
       position = localPosition;
+    }
+
+    Camera* cam = gameObject->C<Camera>();
+    if (cam)
+    {
+      cam->UpdatePosition(position);
     }
   }
   void Transform::UpdateScale(Transform* trans)
@@ -465,10 +479,10 @@ namespace Framework
     std::cout << "( " << position.x << ", " << position.y << ", " << position.z << " )\n";
   }
 
-  void Transform::SetPosition(float x, float y)
+  void Transform::SetPosition(const vec2& v)
   {
-    localPosition.x = x;
-    localPosition.y = y;
+    localPosition.x = v.x;
+    localPosition.y = v.y;
 
     matricesReady = false;
   }
