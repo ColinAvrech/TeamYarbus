@@ -32,6 +32,7 @@ namespace Framework
         ePoly,
         eCompound,
         eHeightMap,
+        eInvalid,
 	      eCount
 	    };
 	
