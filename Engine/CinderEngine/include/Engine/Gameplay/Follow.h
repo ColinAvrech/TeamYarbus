@@ -21,13 +21,15 @@ namespace Framework
   class Follow : public Component
   {
   public:
-	  META_DECLARE( Follow );
+    META_DECLARE( Follow );
 
   Follow ();
   ~Follow ();
 
   virtual void Initialize ();
-  virtual void Serialize (Serializer::DataNode* data);
+  virtual void Serialize(Serializer::DataNode* data);
+  void SetTarget(string newTargetName);
+  void SetTarget(Transform* newTarget);
   virtual void OnApplicationPause (PauseEvent* pause);
   void Update (UpdateEvent* update);
 

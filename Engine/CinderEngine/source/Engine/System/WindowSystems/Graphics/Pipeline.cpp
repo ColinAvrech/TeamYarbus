@@ -229,11 +229,6 @@ namespace Framework
       }
     }
 
-    RenderToTexture(fbo, renderTexture, sceneShader);
-
-	Panel::PanelManager::Draw( );
-
-    glfwSwapBuffers(WINDOWSYSTEM->Get_Window());
 
     //glDisable(GL_BLEND);
     //glBlendFunc(sFactor, dFactor);
@@ -269,6 +264,10 @@ namespace Framework
       PHYSICS->Render ();
       ResetBlendMode();
     }
+
+    RenderToTexture(fbo, renderTexture, sceneShader);
+    Panel::PanelManager::Draw( );
+    glfwSwapBuffers(WINDOWSYSTEM->Get_Window());
   }
 
 #pragma region TRANSFORMATIONS

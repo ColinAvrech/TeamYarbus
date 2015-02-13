@@ -72,6 +72,7 @@ deleted.
 #include "Spin.h"
 #include "Splitscreen.h"
 #include "Lantern.h"
+#include "Rain.h"
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 
@@ -235,9 +236,10 @@ namespace Framework
 		RegisterComponent(CameraShake);
 		RegisterComponent(EndTrigger);
 		RegisterComponent(EndEventListener);
-    RegisterComponent(Spin);
-	RegisterComponent(Splitscreen);
-	RegisterComponent(Lantern);
+        RegisterComponent(Spin);
+	    RegisterComponent(Splitscreen);
+	    RegisterComponent(Lantern);
+	    RegisterComponent(Rain);
 		//////////////////////////////////////////////////////////////////////////
 	}
 	void ObjectSystem::AddComponentCreator(string name, ComponentCreator* creator)
@@ -419,7 +421,7 @@ namespace Framework
         Serializer::DataNode *n = it->FindElement(it->branch, "Named");
         n->FindElement(n->branch, "Name")->GetValue(&newobj->Name);
 
-				auto ct = it->branch->next;
+        auto ct = it->branch->next;
 				while (ct)
 				{
 					Component* newcomp = newobj->AddComponent(ct->objectName);
@@ -455,6 +457,16 @@ namespace Framework
 					}
 					ct = ct->next;
 				}
+
+        //Follow cam setup
+        /*
+        if (newobj->Name == "Player" && Camera::main)
+        {
+          Follow* followComp = static_cast<Follow*>(Camera::main->gameObject->AddComponent("Follow"));
+          followComp->SetTarget("Player");
+        }
+        */
+
 				objectlist->append(newobj);
 
         ErrorIf(!newobj->GetComponent("Transform"), (string("Transform component missing on GameObject ") + newobj->Name.c_str()).c_str());

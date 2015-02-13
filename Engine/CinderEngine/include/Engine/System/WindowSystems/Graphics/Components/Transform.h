@@ -51,6 +51,7 @@ namespace Framework
     glm::mat4 GetModelMatrix ();
     glm::mat4 GetModelViewProjectionMatrix ();
     /*inline*/ vec3 GetPosition ();
+    /*inline*/ vec2 GetPosition2D();
     /*inline*/ vec3 GetScale ();
     /*inline*/ float GetRotation ();
 	vec3 GetLocalPosition();
@@ -64,7 +65,7 @@ namespace Framework
     glm::vec2 GetNDCPosition (const glm::vec2& v);
     glm::vec2 GetScreenPosition ();
 
-    void SetPosition (float x, float y);
+    void SetPosition (const vec2& v);
 
 	//void UpdateChildren();
     //////////////////////////////////////////////////////////////////////////

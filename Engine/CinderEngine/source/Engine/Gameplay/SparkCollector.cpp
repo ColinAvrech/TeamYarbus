@@ -9,6 +9,12 @@
 /******************************************************************************/
 
 #include <Precompiled.h>
+#include "SparkCollector.h"
+
+META_DEFINE(Framework::SparkCollector, SparkCollector)
+{
+
+}
 
 namespace Framework
 {

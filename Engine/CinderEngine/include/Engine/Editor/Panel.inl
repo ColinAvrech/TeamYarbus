@@ -21,18 +21,12 @@ namespace Panel
 			oss << "step=0.01 precision=23";
 
 		if ( readOnly == false )
-			r = TwAddVarRW( mPtr, label.c_str( ), PanelType<T>::mType, value, oss.str( ).c_str( ) );
+			r = TwAddVarRW( mPtr, ( std::to_string( mCount ) + label ).c_str( ), PanelType<T>::mType, value, oss.str( ).c_str( ) );
 		else
-			r = TwAddVarRO( mPtr, label.c_str( ), PanelType<T>::mType, value, oss.str( ).c_str( ) );
+			r = TwAddVarRO( mPtr, ( std::to_string( mCount ) + label ).c_str( ), PanelType<T>::mType, value, oss.str( ).c_str( ) );
 
-		// if ( r == 0 )
-		// {
-		// 	String sGroup = group;
-		// 	if ( readOnly == false )
-		// 		r = TwAddVarRW( mPtr, ( sGroup + " " + label ).c_str( ), PanelType<T>::mType, value, oss.str( ).c_str( ) );
-		// 	else
-		// 		r = TwAddVarRO( mPtr, ( sGroup + " " + label ).c_str( ), PanelType<T>::mType, value, oss.str( ).c_str( ) );
-		// }
+		TwDefine( ( std::string( " '" ) + mName + "'/'" + std::to_string( mCount ) + label + "'  label='" + label + "' " ).c_str( ) );
+		++mCount;
 	}
 
 	template <>
@@ -100,7 +94,11 @@ namespace Panel
 		std::ostringstream oss;
 		if ( group.empty( ) == false )
 			oss << " group='" << group << "' ";
-		ErrorCheck( TwAddVarCB( mPtr, label.c_str( ), PanelType<T>::mType, set, get, obj, oss.str( ).c_str( ) ) );
+
+		ErrorCheck( TwAddVarCB( mPtr, ( std::to_string( mCount ) + label ).c_str( ), PanelType<T>::mType, set, get, obj, oss.str( ).c_str( ) ) );
+		
+		TwDefine( ( std::string( " '" ) + mName + "'/'" + std::to_string( mCount ) + label + "'  label='" + label + "' " ).c_str( ) );
+		++mCount;
 	}
 
 }

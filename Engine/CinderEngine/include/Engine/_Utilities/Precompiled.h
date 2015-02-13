@@ -205,7 +205,6 @@ using std::string;
 #include "MicahPC.h"
 #include "PlayerStats.h"
 #include "Rotator.h"
-#include "SparkCollector.h"
 #include "SpriteColorUpdate.h"
 #include "FireStarter.h"
 #include "FireSystem.h"

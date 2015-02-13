@@ -50,7 +50,7 @@ namespace Framework
 
     static glm::mat4 GetWorldToViewMatrix ();
     static glm::mat4 GetViewToProjectionMatrix ();
-    static glm::vec2 GetWorldMousePosition ();
+    static glm::vec2 GetWorldMousePosition (float projection_plane = 0.f);
     void OnKeyPressed (KeyEvent* key);
     virtual void OnApplicationPause (PauseEvent* pause);
     float GetSize ();
@@ -68,10 +68,10 @@ namespace Framework
     //////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////
     // ZILCH FUNCTIONS
-	static Zilch::Real2 ZGetWorldMousePosition();
+    static Zilch::Real2 ZGetWorldMousePosition();
     //////////////////////////////////////////////////////////////////////////
-	float aspect;
-  float size;
+    float aspect;
+    float size;
     // The non-base component usees DefineComponentName macro to name component
     const static string Name;
   private:

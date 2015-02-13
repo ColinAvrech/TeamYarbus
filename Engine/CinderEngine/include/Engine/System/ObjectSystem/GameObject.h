@@ -76,8 +76,10 @@ namespace Framework
     Component* ZAddComponent(Zilch::String name);
     Component* AddComponent(string name);
 
-   ZilchComponent* ZAddZilchComponent(Zilch::String name);
-   Handle AddZilchComponent(string name);
+    void RemoveComponent(string name);
+
+    ZilchComponent* ZAddZilchComponent(Zilch::String name);
+    Handle AddZilchComponent(string name);
 
     Component* ZGetComponent(Zilch::String component);
     Component* GetComponent(string component);

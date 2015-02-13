@@ -117,13 +117,14 @@ namespace Framework
       {
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        gluPerspective(Camera::main->GetFOV(), (float)WINDOWSYSTEM->Get_Width() / WINDOWSYSTEM->Get_Height(), 0, 100.0f);
+        gluPerspective(Camera::main->GetFOV(), (float)WINDOWSYSTEM->Get_Width() / WINDOWSYSTEM->Get_Height(),
+          Camera::main->GetPlanes().first, Camera::main->GetPlanes().second);
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
 
         Transform* tform = static_cast<Transform*>(Camera::main->gameObject->GetComponent("Transform"));
-        glm::vec3 eye = glm::vec3(0, 0, 1) * Camera::main->GetSize() + glm::vec3(tform->GetPosition().x, tform->GetPosition().y, 0);
-        glm::vec3 center = tform->GetPosition();
+        glm::vec3 eye = tform->GetPosition();
+        glm::vec3 center = tform->GetPosition() + glm::vec3(0.f, 0.f, 1.f) * Camera::main->FocalPoint();
         glm::vec3 up = glm::vec3(0, 1, 0);
 
         gluLookAt(eye.x, eye.y, eye.z, center.x, center.y, center.z, up.x, up.y, up.z);
@@ -132,7 +133,7 @@ namespace Framework
         {
           RigidBody2D *b = rigidBodies[i];
           assert(b);
-          ShapeCollider2D *shape = static_cast<ShapeCollider2D*>(b->gameObject->GetComponent("ShapeCollider2D"));
+          ShapeCollider2D *shape = b->gameObject->C<ShapeCollider2D>();
           //assert(shape);
           if (shape)
           {

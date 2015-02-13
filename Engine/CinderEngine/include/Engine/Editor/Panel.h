@@ -117,6 +117,8 @@ namespace Panel
 		std::string mName;
 		std::map<std::hash<std::string>::result_type, TwType> mEnumTypes;
 		PanelPtr mPtr = nullptr;
+
+		unsigned int mCount = 0;
 	};
 
 #define CBSTRCPY(className, name, value, data)\
