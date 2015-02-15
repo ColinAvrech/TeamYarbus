@@ -238,24 +238,47 @@ Level =
   },
   Cog = 
   {
-	Named = 
-	{
-		string Name = "Water",
+		Named = 
+		{
+			string Name = "Water",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [-10, 7, 0],
+			Vec3 Scale = [50, 4, 1],
+			Quat Rotation = [0, 0, 1, 0],
+		},
+		//These values seem to work best
+		FluidBody = 
+		{
+			float k = 0.025,
+			float d = 0.025,
+			float Spread = 0.25,
+			Vec4 Color1 = [0.3, 0.35, 0.5, 1],
+			Vec4 Color2 = [0, 0, 0, 1],
+		},
 	},
-	Transform = 
+	Cog = 
 	{
-		Vec3 Translation = [-10, 7, 0],
-		Vec3 Scale = [50, 4, 1],
-		Quat Rotation = [0, 0, 1, 0],
+		Named = 
+		{
+			string Name = "FPSCounter",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [10, 55, 0],
+			Vec3 Scale = [1, 1, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+    GUIText = 
+    {
+      Vec4 Color = [0, 1, 0, 1],
+			Vec3 Position = [0, 0, 0],
+			int Size = 72,
+			string Text = "TEST",
+    },
+		FpsCounter = 
+		{
+		},
 	},
-	//These values seem to work best
-	FluidBody = 
-	{
-		float k = 0.025,
-		float d = 0.025,
-		float Spread = 0.25,
-		Vec4 Color1 = [0.3, 0.35, 0.5, 1],
-		Vec4 Color2 = [0, 0, 0, 1],
-	},
- },
 },
