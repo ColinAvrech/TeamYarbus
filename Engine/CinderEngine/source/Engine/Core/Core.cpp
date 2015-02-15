@@ -23,6 +23,7 @@ namespace Framework
 {
   //! Global pointer to the Engine Core
   CoreEngine* CORE;
+  FrameRateManager* frameRateManager_;
 
 #ifdef _DEBUG
   vector<SamplingProfiler *> vecProfilers;
@@ -57,6 +58,8 @@ namespace Framework
     CORE = this;
     GameActive = true;
     GamePaused = false;
+
+	frameRateManager_ = new FrameRateManager;
   }
 
   CoreEngine::~CoreEngine()
@@ -81,6 +84,8 @@ namespace Framework
 #endif
 
     DestroySystems();
+
+	delete frameRateManager_;
   }
 
   //!Update all the systems
@@ -88,8 +93,8 @@ namespace Framework
   {
     //required for deterministic physics
     float accumulator = 0;
-    float frameStart = (float)GetCurrentTime();
-    float dt = 0.016f;
+//    float frameStart = (float)GetCurrentTime();
+//    float dt = 0.016f;
     
     //!Gameloop
     while (GameActive)
@@ -97,7 +102,8 @@ namespace Framework
       if (WINDOWSYSTEM->IsInFocus())
       {
         //! Marks the begining of a frame
-        StartGameLoop_dt();
+//        StartGameLoop_dt();
+		  frameRateManager_->StartFrame();
      
         for (unsigned i = 0; i < Systems.size(); ++i)
         {
@@ -110,9 +116,10 @@ namespace Framework
         }
 
         //!FPS limiter, FPS define can be found in Core.h
-        FrameLimiter();
+//        FrameLimiter();
         //! marks the end of a frame and calculates the dt, average dt
-        EndGameLoop_dt();
+//        EndGameLoop_dt();
+		frameRateManager_->EndFrame();
       }
       else
       {

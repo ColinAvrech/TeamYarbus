@@ -72,6 +72,7 @@ deleted.
 #include "Spin.h"
 #include "Splitscreen.h"
 #include "Lantern.h"
+#include "Rain.h"
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 
@@ -241,9 +242,10 @@ namespace Framework
 		RegisterComponent(CameraShake);
 		RegisterComponent(EndTrigger);
 		RegisterComponent(EndEventListener);
-    RegisterComponent(Spin);
-	RegisterComponent(Splitscreen);
-	RegisterComponent(Lantern);
+        RegisterComponent(Spin);
+	    RegisterComponent(Splitscreen);
+	    RegisterComponent(Lantern);
+	    RegisterComponent(Rain);
 		//////////////////////////////////////////////////////////////////////////
 	}
 	void ObjectSystem::AddComponentCreator(string name, ComponentCreator* creator)

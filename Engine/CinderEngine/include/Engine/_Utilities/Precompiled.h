@@ -239,6 +239,8 @@ using std::string;
 
 #include "PanelManager.h"
 
+#include "FrameRateManager.h"
+
 //////////////////////////////////////////////////////////////////////////\
 
 #pragma hdrstop
