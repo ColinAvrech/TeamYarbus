@@ -229,6 +229,7 @@ using std::string;
 #include "FluidDynamics.h"
 #include "AudioSystem.h"
 #include "ObjectSystem.h"
+#include "UISystem.h"
 #include "PhysicsSystem.h"
 #include "WindowSystem.h"
 #include "UISystem.h"

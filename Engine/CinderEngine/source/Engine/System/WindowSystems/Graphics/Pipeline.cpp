@@ -21,6 +21,8 @@ namespace Framework
   FBO* fbo;
   //moved scene shader to Pipeline.cpp
   GLuint renderTexture;
+  GLuint depthrenderbuffer;
+  GLuint rbo; //Render buffer object
 
   //! Global pointer to  the Pipeline.
   Pipeline* OPENGL = NULL;
@@ -84,6 +86,14 @@ namespace Framework
     glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, 0);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE, renderTexture, 0);
     glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_DEPTH24_STENCIL8, 1920, 1080);
+
+    //depth test
+    // The depth buffer
+    glGenRenderbuffers(1, &depthrenderbuffer);
+    glBindRenderbuffer(GL_RENDERBUFFER, depthrenderbuffer);
+    glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_DEPTH_COMPONENT, 1920, 1080);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthrenderbuffer);
+
     ////////////////////////////////////////////////////
     /*glBindTexture (GL_TEXTURE_2D, renderTexture);
     glTexImage2D (GL_TEXTURE_2D, 0, GL_RGB, WINDOWSYSTEM->Get_Width(), WINDOWSYSTEM->Get_Height(), 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
@@ -135,10 +145,10 @@ namespace Framework
       i->UpdateMatrices ();
     }
 
-    /*for (auto* i : cameras)
+    for (auto* i : cameras)
     {
       i->UpdateCamera (this);
-    }*/
+    }
 
     //////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////
@@ -185,7 +195,7 @@ namespace Framework
     glm::vec3 up = glm::vec3(0.f, -1.f, 0.f);
     //eye and object
     glm::vec3 eye = campos;
-    glm::vec3 object = campos + glm::vec3(0.f, 0.f, 1.f) * Camera::main->FocalPoint();
+    glm::vec3 object = campos + Camera::main->GetViewDirection() * Camera::main->FocalPoint();
 
     //right and up vectors
     glm::vec3 right = glm::normalize(glm::cross(object - eye, up));
@@ -198,7 +208,7 @@ namespace Framework
       LoadIdentity();
       LookAt(eye + aperture * bokeh, object, p_up);
       //Translatefv (&pos.x);
-      Rotatef(GETCOMPONENT(Camera::main->gameObject, Transform)->GetRotation(), 0, 0, 1);
+      Rotatef(Camera::main->gameObject->C<Transform>()->GetRotation(), 0, 0, 1);
       glm::mat4 modelview = GetViewMatrix ();
       MatrixMode(MODEL);
       LoadIdentity();
@@ -257,9 +267,10 @@ namespace Framework
     //////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////
     // DEBUG DRAW
+    //////////////////////////////////////////////////////////////////////////
     if (useDebugDraw)
     {
-      glEnable(GL_BLEND);
+      //glEnable(GL_BLEND);
       //THERMODYNAMICS->Draw ();
       PHYSICS->Render ();
       ResetBlendMode();
@@ -549,7 +560,7 @@ namespace Framework
     //shader->Use ();
     //glBindTexture (GL_TEXTURE_2D, renderTexture);
 
-    switch (shaderState)
+    /*switch (shaderState)
     {
     case Framework::SS_DEFAULT:
       ALPHA = 1.f;
@@ -587,7 +598,7 @@ namespace Framework
     glDrawArrays (GL_TRIANGLES, 0, 6);
     shader->Disable ();
     glBindTexture (GL_TEXTURE_2D, 0);
-    vao->unbindVAO ();
+    vao->unbindVAO ();*/
   }
 
   void Pipeline::ResizeBuffer (const int w, const int h)

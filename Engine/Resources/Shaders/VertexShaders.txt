@@ -11,3 +11,4 @@ Tree.vs.glsl
 Tree3D.vs.glsl
 PointLight.vs.glsl
 Text.vs.glsl
+Quad.vs.glsl

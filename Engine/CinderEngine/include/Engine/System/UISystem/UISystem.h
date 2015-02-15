@@ -1,46 +1,41 @@
 /******************************************************************************/
 /*!
 \file   UISystem.h
-\author Manas Sudhir Kulkarni
+\author Sagnik Chowdhury
 \par    Course: GAM200
 \par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
-\brief  
+\brief  UI system for Cinder engine
 */
 /******************************************************************************/
 
-#ifndef _UI_SYS_H
-#define _UI_SYS_H
+#pragma once
 
-#include "BaseSystem.h"
 
 namespace Framework
 {
-  class UIEvent;
-
-  class UIListener
-  {
-  public:
-    UIListener ();
-    ~UIListener ();
-    void Initialize ();
-    void MessageHandler (UIEvent*);
-  };
-
+  class UILayer;
 
   class UISystem : public BaseSystem
   {
   public:
-  UISystem ();
-  ~UISystem ();
-  
-  virtual bool Initialize ();
-  virtual void Update(const float& dt);
-  virtual const std::string GetName() { return "UISystem"; }
+    UISystem();
+    ~UISystem();
+    //!Initialize the system
+    virtual bool Initialize();
 
-  static UIListener listener;
+    // Called every frame
+    virtual void Update(const float& dt);
+
+    virtual bool UpdatesOnPaused();
+
+    virtual const string GetName() { return "UISystem"; }
+
+    void AddLayer(const char *layername);
+
+  private:
+    std::vector<UILayer*> UILayers;
+    void Clear();
   };
 
   extern UISystem* UISYSTEM;
 }
-
-#endif

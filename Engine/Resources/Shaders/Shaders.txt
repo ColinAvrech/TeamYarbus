@@ -98,3 +98,8 @@ Text.vs.glsl
 Text.frag.glsl
 0
 Text
+>
+Quad.vs.glsl
+Rain.frag.glsl
+0
+Storm

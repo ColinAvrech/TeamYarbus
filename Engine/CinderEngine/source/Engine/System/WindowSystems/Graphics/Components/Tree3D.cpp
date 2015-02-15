@@ -193,8 +193,6 @@ namespace Framework
       return;
 
     //glDisable(GL_BLEND);
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
 
     shader->Use();
     vao->bindVAO();
@@ -218,7 +216,6 @@ namespace Framework
     vao->unbindVAO();
     shader->Disable();
     //OPENGL->ResetBlendMode();
-    glDisable(GL_CULL_FACE);
   }
 
   void Tree3D::Set(glm::vec4& _color, Tree3D_Type _type)
@@ -261,7 +258,7 @@ namespace Framework
       glm::vec3 angle2;
       angle2.z = angle1.z + ANGLE + myrand(RAND);
       //angle2.x = angle1.x + myrand(2 * RAND);
-      angle2.x = angle1.x + myrand(RAND) - 0.5 * RAND;
+      angle2.x = angle1.x;// +myrand(RAND) + 0.5 * RAND;
       angle2.y = angle1.y + myrand(RAND) - 0.5 * RAND;
 
       int factor = 78 + rand() % 20;
@@ -278,8 +275,8 @@ namespace Framework
 
       //branch right
       angle2.z = angle1.z - ANGLE + myrand(RAND);
-      angle2.x = angle1.x - myrand(RAND) + 0.5 * RAND;
-      angle2.y = angle1.y - myrand(RAND) + 0.5 * RAND;
+      angle2.x = angle1.x;// -myrand(RAND) - 0.5 * RAND;
+      angle2.y = angle1.y - myrand(RAND) + 0.75 * RAND;
 
       if (depth % 2 == 0)
         fork = rand() % 100;

@@ -59,8 +59,8 @@ namespace Framework
     //!name of the system if the Factory, duh.
     virtual const string GetName(){ return "ObjectSystem"; }
 
+    GameObject* CreateObject(const std::string &objname);
     GameObject* CreateObject();
-
     //!Destroy all the GOC. Used in final shutdown procedure.
     void DestroyObjectNow(GameObject* obj);
     void DestroyObject(GameObject* obj);
@@ -70,6 +70,7 @@ namespace Framework
     void LoadLevel(const char* name);
     void NextLevel();
     GameObject* LoadArchetype(const char *);
+    GameObject* CreateAtPosition(const char *, float x, float y, float z = 0.f);
 
     // Adds more objects to an existing level
     ZArray* LoadLevelAdditive(Zilch::String level);

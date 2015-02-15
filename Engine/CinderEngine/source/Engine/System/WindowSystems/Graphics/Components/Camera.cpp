@@ -245,7 +245,7 @@ namespace Framework
   {
     if (glfwGetMouseButton (WINDOWSYSTEM->Get_Window (), GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
     {
-      //MouseUpdate (WINDOWSYSTEM->Get_Mouse_Position ());
+      MouseUpdate (WINDOWSYSTEM->Get_Mouse_Position ());
     }
   
     switch (czs)
@@ -369,6 +369,11 @@ namespace Framework
   float Camera::FocalPoint()
   {
     return FocalPlane;
+  }
+
+  const glm::vec3& Camera::GetViewDirection()
+  {
+    return viewDirection;
   }
 
   glm::vec2 Camera::GetWorldMousePosition(float projection_plane)

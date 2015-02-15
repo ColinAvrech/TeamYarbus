@@ -45,11 +45,10 @@ namespace Framework
     unsigned i = 20;
     while (i > 0)
     {
-      GameObject* obj = OBJECTSYSTEM->CreateObject();
+      GameObject* obj = OBJECTSYSTEM->CreateObject("FireStarter");
 
       // Create FireStarters
       FireStarters.push_back(obj);
-      obj->Name = "FireStarter";
 
       // Transform
       Transform* tform = static_cast<Transform*>(gameObject->GetComponent("Transform"));
