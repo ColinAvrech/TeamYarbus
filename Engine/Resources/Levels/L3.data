@@ -230,6 +230,9 @@ Level =
 			string SpriteLayer = "52ad5fa30d7fcd50:DefaultSpriteLayer",
 			string Shader = "Default",
 		},
+		Rain = 
+		{
+		},
 		Lantern = 
 		{
 			float lightTheta = 90.f,

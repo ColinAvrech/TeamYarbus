@@ -9,6 +9,7 @@
 /******************************************************************************/
 #include <Precompiled.h>
 #include "Rain.h"
+#include "Lantern.h"
 
 namespace Framework
 {
@@ -19,6 +20,7 @@ namespace Framework
 	void Rain::Initialize()
 	{
 		EVENTSYSTEM->mConnect<UpdateEvent, Rain>(Events::UPDATEEVENT, this, &Rain::Update);
+		rainAngle = 90.f;
 	}
 	void Rain::Serialize(Serializer::DataNode* data)
 	{
@@ -27,7 +29,18 @@ namespace Framework
 
 	void Rain::Update(UpdateEvent* e)
 	{
-		
+		float afg = gameObject->C<Lantern>()->getAngleFromGround();
+		float lt = gameObject->C<Lantern>()->getLightTheta();
+
+		/*check if lantern is blocking rain*/
+		if (rainAngle >= afg && rainAngle <= afg + lt)
+		{
+			gameObject->C<Lantern>()->setRainedOn(false);
+		}
+		else
+		{
+			gameObject->C<Lantern>()->setRainedOn(true);
+		}
 	}
 	DefineComponentName(Rain);
 }
