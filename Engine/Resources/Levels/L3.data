@@ -70,8 +70,8 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, -800, -2880],
-			Vec3 Scale = [10000, 300, 640],
+			Vec3 Translation = [0, -600, -5080],
+			Vec3 Scale = [10000, 300, 3000],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Terrain3D = 
@@ -97,8 +97,8 @@ Level =
 	},
 	Transform = 
 	{
-		Vec3 Translation = [2500, -400, -1280],
-		Vec3 Scale = [3840, 200, 1280],
+		Vec3 Translation = [2500, -350, -3840],
+		Vec3 Scale = [3840, 200, 3840],
 		Quat Rotation = [0, 0, 0, 1],
 	},
 	Terrain3D = 

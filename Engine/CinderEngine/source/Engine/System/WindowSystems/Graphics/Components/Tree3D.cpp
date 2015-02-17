@@ -253,35 +253,47 @@ namespace Framework
       parent = Add_Branch(pos, pos2, rad, parent, tip);
 
       float newrad = rad * decay_rate;
+      //float inc = (segments - depth) / 20.f;
 
       //branch left
       glm::vec3 angle2;
       angle2.z = angle1.z + ANGLE + myrand(RAND);
-      //angle2.x = angle1.x + myrand(2 * RAND);
-      angle2.x = angle1.x;// +myrand(RAND) + 0.5 * RAND;
-      angle2.y = angle1.y + myrand(RAND) - 0.5 * RAND;
+      angle2.x = angle1.x;// +myrand(RAND) - 0.5 * RAND;
+      angle2.y = angle1.y;// -myrand(RAND) + 0.25 * RAND;
 
       int factor = 78 + rand() % 20;
       float f = factor / 100.f;
       //decide whether or not to spawn a branch
       int fork;
       if (depth % 2 != 0)
+      {
         fork = rand() % 100;
+      }
       else
+      {
         fork = (rand() % (10 + (previous == 2))) * (rand() % (10 + (previous == 2)));
+        angle2.y += myrand(ANGLE);
+        angle2.x += myrand(ANGLE);
+      }
 
       if (fork > 20 - depth * 2)
         Make_Tree0(pos2, length1 * f, angle2, depth - 1, newrad, 1, parent);
 
       //branch right
       angle2.z = angle1.z - ANGLE + myrand(RAND);
-      angle2.x = angle1.x;// -myrand(RAND) - 0.5 * RAND;
-      angle2.y = angle1.y - myrand(RAND) + 0.75 * RAND;
-
+      angle2.x = angle1.x;// - myrand(RAND) + 0.5 * RAND;
+      angle2.y = angle1.y;// + myrand(RAND) - 0.25 * RAND;
+      //decide whether or not to spawn a branch
       if (depth % 2 == 0)
+      {
         fork = rand() % 100;
+        angle2.y -= myrand(ANGLE);
+        angle2.x -= myrand(ANGLE);
+      }
       else
+      {
         fork = (rand() % (10 + (previous == 1))) * (rand() % (10 + (previous == 1)));
+      }
 
       if (fork > 20 - depth * 2)
         Make_Tree0(pos2, length1 * f, angle2, depth - 1, newrad, 2, parent);
