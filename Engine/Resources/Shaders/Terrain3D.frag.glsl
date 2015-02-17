@@ -84,9 +84,14 @@ void main ()
    
     b_f = ((-(p.z + visibility)) / visibility) * 0.5 + ((2 * visibility + p.z) / visibility) * b;
   }
+
+  ////////////////////////////////////////
+  //BNW test
+  ////////////////////////////////////////
+  float gs_col = (0.29*r_f + 0.49*g_f + 0.12*b_f);
   
 
   ////////////////////////////////////////
-
+  outColor = vec4(gs_col, gs_col, gs_col, 1.f);
   outColor = vec4(r_f, g_f, b_f, 1.f);
 }

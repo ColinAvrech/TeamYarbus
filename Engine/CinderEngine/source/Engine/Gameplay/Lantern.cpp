@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /******************************************************************************/
 /*!
 \file   Lantern.cpp
@@ -75,6 +76,102 @@ namespace Framework
 
   void Lantern::Draw()
   {
+=======
+/******************************************************************************/
+/*!
+\file   Lantern.cpp
+\author Anna Pearson
+\par    Course: GAM200
+\par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
+\brief  The players Lantern
+*/
+/******************************************************************************/
+#include <Precompiled.h>
+#include "Lantern.h"
+#include "PhysicsSystem.h"
+
+#define PI 4.0f*atan(1.0f)
+
+namespace Framework
+{
+  Lantern::~Lantern()
+  {
+    EVENTSYSTEM->mDisconnect<UpdateEvent, Lantern>(Events::UPDATEEVENT, this, &Lantern::Update);
+  }
+  void Lantern::Initialize()
+  {
+    EVENTSYSTEM->mConnect<UpdateEvent, Lantern>(Events::UPDATEEVENT, this, &Lantern::Update);
+	decayRate = .1f;
+	rainDecayRate = .2f;
+	rainedOn = false;
+
+  }
+
+  void Lantern::Serialize(Serializer::DataNode* data)
+  {
+    data->FindElement(data, "lightRadius")->GetValue(&lightRadius);
+    data->FindElement(data, "lightTheta")->GetValue(&lightTheta);
+  }
+
+  void Lantern::Update(UpdateEvent* e)
+  {
+	  if (lightTheta <= 0)
+	  {
+		  //set game state to end
+	  }
+	  if (rainedOn == true)
+		  lightTheta -= rainDecayRate;
+	  else
+		  lightTheta -= decayRate;
+	  CalculateBounds();
+  }
+
+  void Lantern::CalculateBounds()
+  {
+	lightThetaRad = lightTheta * PI / 180;
+    //flaslight follows the mouse
+    //lantern position
+    glm::vec2 tform = (glm::vec2)gameObject->C<Transform>()->GetPosition();
+    //lantern to mouse
+    origin = glm::normalize(Camera::GetWorldMousePosition(0.f) - tform);
+
+    glm::vec2 orthogonalRight = glm::normalize(glm::vec2(-origin.y, origin.x));
+    glm::vec2 orthogonalLeft = -orthogonalRight;
+    
+    leftBounds = tform + origin * lightRadius*cos(lightThetaRad / 2) +
+      orthogonalLeft * lightRadius*sin(lightThetaRad / 2);
+    rightBounds = tform + origin * lightRadius*cos(lightThetaRad / 2) +
+      orthogonalRight * lightRadius*sin(lightThetaRad / 2);
+
+	//need for interaction with rain
+	glm::vec2 ground(0, 0);
+	float dotToLantern = glm::dot(rightBounds, ground);
+	angleFromGround = acosf(dotToLantern) * 180 / PI;
+  }
+
+  void Lantern::CheckCollision()
+  {
+    for (int i = 0; i < OBJECTSYSTEM->GameObjects.size(); ++i)
+    {
+      glm::vec2 objPos = (glm::vec2)OBJECTSYSTEM->GameObjects[i]->C<Transform>()->GetPosition();
+      glm::vec2 playerPos = (glm::vec2)gameObject->C<Transform>()->GetPosition();
+      glm::vec2 playerToObj = (glm::vec2)OBJECTSYSTEM->GameObjects[i]->C<Transform>()->GetPosition() - origin;
+      float dotToTarget = glm::dot(playerToObj, origin);
+      float angleBetweenTarget = acosf(dotToTarget) * 180 / PI;
+      float distToTarget = glm::distance2(playerPos, objPos);
+
+      //if (angleBetweenTarget < lightThetaRad && distToTarget < lightRadius)
+      //{
+      //	//make objects interactable
+      //}
+    }
+  }
+
+  void Lantern::reFuel(){};
+
+  void Lantern::Draw()
+  {
+>>>>>>> 317217c4b758cb6632834a598257b5017e3e8a75
     Transform* tform = static_cast<Transform*>(Camera::main->gameObject->GetComponent("Transform"));
     glm::vec2 c_center = (glm::vec2)gameObject->C<Transform>()->GetPosition();
     glUseProgram(0);

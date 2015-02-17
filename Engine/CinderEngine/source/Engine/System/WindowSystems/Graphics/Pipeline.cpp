@@ -19,8 +19,13 @@ namespace Framework
   VAO* vao;
   VBO* vbo;
   FBO* fbo;
+  FBO* dsfbo;
+  //FBO* efbo;
   //moved scene shader to Pipeline.cpp
-  GLuint renderTexture;
+  GLuint sourceTexture;     //offscreen texture
+  GLuint renderTexture;     //final texture
+  GLuint dsTexture;         //downsampled texture for post processing
+  GLuint depthrenderbuffer; //depth buffer
 
   //! Global pointer to  the Pipeline.
   Pipeline* OPENGL = NULL;
@@ -32,6 +37,14 @@ namespace Framework
   std::list <PointLight*> Pipeline::pointLights;
   std::list <GUIText*> Pipeline::textObjects;
   std::list <ShapeCollider*> Pipeline::debugColliders;
+
+  //Shadertoy test=================================
+  Shader *rainshader;
+  static float timer = 0.f;
+  //===============================================
+  //Post process test==============================
+  Shader *bnw;
+  //===============================================
 
   Pipeline::Pipeline ()
   {
@@ -60,6 +73,12 @@ namespace Framework
         -1.0f, 1.0f, 0.0f, 1.0f
     };
 
+    //Shadertoy test===============================================
+    rainshader = Resources::RS->Get_Shader("Storm");
+    //=============================================================
+    //Post process test============================================
+    bnw = Resources::RS->Get_Shader("BNW");
+    //=============================================================
     Change_Shader ("Passthrough", (int) SS_DEFAULT);
 
     vao = new VAO ();
@@ -76,22 +95,25 @@ namespace Framework
     vao->unbindVAO ();
 
     fbo = new FBO ();
-    glGenTextures (1, &renderTexture);
     //MSAA test
     //////////////////////////////
-    glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, renderTexture);
-    glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 4, GL_RGB, 1920, 1080, GL_TRUE);
-    glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, 0);
+    renderTexture = GenerateTextureMultiSampled(1920, 1080); //primary texture
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE, renderTexture, 0);
-    glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_DEPTH24_STENCIL8, 1920, 1080);
+    // Generate a depth buffer
+    glGenRenderbuffers(1, &depthrenderbuffer);
+    glBindRenderbuffer(GL_RENDERBUFFER, depthrenderbuffer);
+    glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_DEPTH_COMPONENT, 1920, 1080);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthrenderbuffer);
+    fbo->unBind();
     ////////////////////////////////////////////////////
-    /*glBindTexture (GL_TEXTURE_2D, renderTexture);
-    glTexImage2D (GL_TEXTURE_2D, 0, GL_RGB, WINDOWSYSTEM->Get_Width(), WINDOWSYSTEM->Get_Height(), 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
-    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glFramebufferTexture2D (GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderTexture, 0);
-    glBindTexture (GL_TEXTURE_2D, 0);*/
-    fbo->unBind ();
+    //Test offscreen rendering
+    //=================================================
+    dsfbo = new FBO();
+    sourceTexture = GenerateTexture(1920, 1080); //post process texture
+    dsTexture = GenerateTexture(1920, 1080);     //downsampled version of original texture
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, dsTexture, 0);
+    //===================================================
+    
     glEnable(GL_MULTISAMPLE);
   }
 
@@ -135,10 +157,10 @@ namespace Framework
       i->UpdateMatrices ();
     }
 
-    /*for (auto* i : cameras)
+    for (auto* i : cameras)
     {
       i->UpdateCamera (this);
-    }*/
+    }
 
     //////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////
@@ -148,16 +170,7 @@ namespace Framework
     glEnable(GL_DEPTH_TEST);
     // Accept fragment if it's closer to the camera than the former one
     glDepthFunc(GL_LESS);
-    //fog========================================================
-    //glEnable(GL_FOG);
-    //glFogi(GL_FOG_MODE, GL_EXP2); //set the fog mode to GL_EXP2
-    //GLfloat fogColor[4] = { 0.5, 0.5, 0.5, 1.0 };
-    //glFogfv(GL_FOG_COLOR, fogColor);
-    //glFogf(GL_FOG_DENSITY, 0.3f);
-    //glHint(GL_FOG_HINT, GL_NICEST);
-    //==========================================================
-    //// Accept fragment if it's closer to the camera than the former one
-    //glDepthFunc(GL_LESS);
+    // Enable alpha blending for scene
     glEnable(GL_BLEND);
     
     //camera properties
@@ -185,12 +198,12 @@ namespace Framework
     glm::vec3 up = glm::vec3(0.f, -1.f, 0.f);
     //eye and object
     glm::vec3 eye = campos;
-    glm::vec3 object = campos + glm::vec3(0.f, 0.f, 1.f) * Camera::main->FocalPoint();
+    glm::vec3 object = campos + Camera::main->GetViewDirection() * Camera::main->FocalPoint();
 
     //right and up vectors
     glm::vec3 right = glm::normalize(glm::cross(object - eye, up));
     glm::vec3 p_up = glm::normalize(glm::cross(object - eye, right));
-
+    //DOF loop
     for (int i = 0; i < n; ++i)
     {
       glm::vec3 bokeh = right * std::cosf(i * M_2_PI / n) + p_up * std::sinf(i * M_2_PI / n);
@@ -198,7 +211,7 @@ namespace Framework
       LoadIdentity();
       LookAt(eye + aperture * bokeh, object, p_up);
       //Translatefv (&pos.x);
-      Rotatef(GETCOMPONENT(Camera::main->gameObject, Transform)->GetRotation(), 0, 0, 1);
+      Rotatef(Camera::main->gameObject->C<Transform>()->GetRotation(), 0, 0, 1);
       glm::mat4 modelview = GetViewMatrix ();
       MatrixMode(MODEL);
       LoadIdentity();
@@ -227,9 +240,40 @@ namespace Framework
       {
         it->Draw();
       }
-    }
+    } //end DOF loop
+    //=======================================================================
+    //Downsample texture
+    //=======================================================================
+    DownSample(fbo, dsfbo);
+    //=======================================================================
+    //Shadertoy test
+    //=======================================================================
+    //dsfbo->bind();
+    //rainshader->Use();
+    //glm::vec3 resolution(WINDOWSYSTEM->Get_Width(), WINDOWSYSTEM->Get_Height(), 0.f);
+    //rainshader->uni3fv("iResolution", glm::value_ptr(resolution));
+    //timer += dt;
+    //rainshader->uni1f("iGlobalTime", timer);
+    ////draw quad with shadertoy over scene, currently results in a black screen.
+    //glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    //=========================================================================
 
-
+    ///////////////////////////////////////////////////////////////////////////
+    //Do post processing here
+    ///////////////////////////////////////////////////////////////////////////
+    //RenderToTexture(fbo, renderTexture, sceneShader);
+    dsfbo->bind();
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, sourceTexture, 0);
+    //glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, dsTexture);
+    bnw->Use();
+    bnw->uni1i("image", 0);
+    //Draw quad
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    ////Swap active textures
+    SwapTextureIds(&dsTexture, &sourceTexture);
+    bnw->Disable();
+    ///////////////////////////////////////////////////////////////////////////
     //glDisable(GL_BLEND);
     //glBlendFunc(sFactor, dFactor);
 
@@ -257,15 +301,16 @@ namespace Framework
     //////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////
     // DEBUG DRAW
+    //////////////////////////////////////////////////////////////////////////
     if (useDebugDraw)
     {
-      glEnable(GL_BLEND);
+      //glEnable(GL_BLEND);
       //THERMODYNAMICS->Draw ();
       PHYSICS->Render ();
       ResetBlendMode();
     }
 
-    RenderToTexture(fbo, renderTexture, sceneShader);
+    DownSample(dsfbo, 0);
     Panel::PanelManager::Draw( );
     glfwSwapBuffers(WINDOWSYSTEM->Get_Window());
   }
@@ -530,34 +575,25 @@ namespace Framework
     }
   }
 
-  void Pipeline::RenderToTexture(FBO* fbo, GLuint tex, Shader* shader)
+  void Pipeline::RenderToTexture(FBO* source, GLuint tex, Shader* shader)
   {
-    //vao->bindVAO ();
-    //fbo->unBind ();
-    //render multi sampled===================================
-    glBindFramebuffer(GL_READ_FRAMEBUFFER, fbo->getBufferPos());
-    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-    //test
+    //Manas' code========================================
+    /*vao->bindVAO();
+    source->unBind();
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     shader->Use();
-    glBindTexture(GL_TEXTURE_2D, renderTexture);
-    ////
-    glBlitFramebuffer(0, 0, WINDOWSYSTEM->Get_Width(), WINDOWSYSTEM->Get_Height(),
-      0, 0, WINDOWSYSTEM->Get_Width(), WINDOWSYSTEM->Get_Height(), GL_COLOR_BUFFER_BIT, GL_NEAREST);
-    /////////////////////////////////////////////////////
-    //glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    //shader->Use ();
-    //glBindTexture (GL_TEXTURE_2D, renderTexture);
+    glBindTexture(GL_TEXTURE_2D, tex);
 
     switch (shaderState)
     {
     case Framework::SS_DEFAULT:
-      ALPHA = 1.f;
+      ALPHA = 1.0f;
       shader->uni1i("image", 0);
       break;
 
     case Framework::SS_LIGHTING:
-      ALPHA = 1.f;
+      ALPHA = 1.0f;
       shader->uni1i("image", 0);
       break;
 
@@ -575,30 +611,79 @@ namespace Framework
       if (ALPHA <= 0.0f)
       {
         ALPHA = 0.0f;
-        Change_Shader ("Passthrough", (int) SS_DEFAULT);
+        Change_Shader("Passthrough", (int)SS_DEFAULT);
       }
       break;
     default:
-      ALPHA = 1.f;
+      ALPHA = 1.0f;
       break;
     }
-    shader->uni1i ("image", 0);
-    shader->uni1f ("alpha", ALPHA);
-    glDrawArrays (GL_TRIANGLES, 0, 6);
-    shader->Disable ();
-    glBindTexture (GL_TEXTURE_2D, 0);
-    vao->unbindVAO ();
+    shader->uni1i("image", 0);
+    shader->uni1f("alpha", ALPHA);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+    shader->Disable();
+    glBindTexture(GL_TEXTURE_2D, 0);
+    vao->unbindVAO();*/
+    //thecppguy code==================================
+    vao->bindVAO();
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glClear(GL_COLOR_BUFFER_BIT);
+    shader->Use();
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, tex);
+    shader->uni1i("image", 0);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+    shader->Disable();
+    vao->unbindVAO();
+  }
+
+  void Pipeline::DownSample(FBO *source, FBO *dest)
+  {
+    glBindFramebuffer(GL_READ_FRAMEBUFFER, source ? source->getBufferPos() : 0);
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, dest ? dest->getBufferPos() : 0);
+    glBlitFramebuffer(0, 0, WINDOWSYSTEM->Get_Width(), WINDOWSYSTEM->Get_Height(),
+      0, 0, WINDOWSYSTEM->Get_Width(), WINDOWSYSTEM->Get_Height(), GL_COLOR_BUFFER_BIT, GL_NEAREST);
+  }
+
+  GLuint Pipeline::GenerateTextureMultiSampled(int _width, int _height, int samples)
+  {
+    GLuint iTexture;
+    glGenTextures(1, &iTexture);
+    glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, iTexture);
+    glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 4, GL_RGB, 1920, 1080, GL_TRUE);
+    glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_DEPTH24_STENCIL8, 1920, 1080);
+    glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, 0);
+    return iTexture;
+  }
+
+  GLuint Pipeline::GenerateTexture(int w, int h)
+  {
+    GLuint textureId;
+    glGenTextures(1, &textureId);
+    glBindTexture(GL_TEXTURE_2D, textureId);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, w, h, 0, GL_RGBA, GL_FLOAT, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    //unbind and return
+    glBindTexture(GL_TEXTURE_2D, 0);
+    return textureId;
+  }
+
+  void Pipeline::SwapTextureIds(GLuint *tex1, GLuint *tex2)
+  {
+    GLuint temptex = *tex1;
+    *tex1 = *tex2;
+    *tex2 = temptex;
   }
 
   void Pipeline::ResizeBuffer (const int w, const int h)
   {
     glViewport (0, 0, w, h);
-    ////glBindTexture (GL_TEXTURE_2D, renderTexture);
-    //glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, renderTexture);
-    ////glTexImage2D (GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
-    //glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 4, GL_RGB, w, h, GL_TRUE);
-    ////glBindTexture (GL_TEXTURE_2D, 0);
-    //glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, 0);
+    //glBindTexture(GL_TEXTURE_2D, dsTexture);
+    //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
+    //glBindTexture(GL_TEXTURE_2D, 0);
   }
 
   void Pipeline::Change_Shader (std::string sh, int id /* = 0*/)

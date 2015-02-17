@@ -30,6 +30,6 @@ namespace Framework
 		virtual void Initialize();
 
 	private: 
-		glm::vec2 rainDirection;
+		float rainAngle;
 	};
 }

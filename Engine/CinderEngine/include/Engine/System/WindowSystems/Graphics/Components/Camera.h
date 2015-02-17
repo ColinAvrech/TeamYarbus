@@ -59,6 +59,7 @@ namespace Framework
     int GetElementNum();
     float GetAperture();
     float FocalPoint();
+    const glm::vec3& GetViewDirection();
     static std::list <Camera*> allCameras;
     static Camera* current;
     static Camera* main;

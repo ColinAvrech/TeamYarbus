@@ -96,7 +96,7 @@ namespace Framework
 	{
 		type->HandleManager = ZilchManagerId(Zilch::PointerManager);
 
-		ZilchBindMethod(CreateObject);
+		//ZilchBindMethod(CreateObject);
 		ZilchBindMethod(DestroyAllObjects);
 		ZilchBindMethodOverload(LoadLevelAdditive, ZArray*, Zilch::String);
 		ZilchBindMethodAs(ZilchLoadLevel, "LoadLevel");
@@ -166,7 +166,6 @@ namespace Framework
 				Cheats::InitializeCheats();
 				AUDIOEVENTS->Initialize();
 				PHYSICS->Reset();
-				UISystem::listener.Initialize();
 				break;
 
       case OSC_RESTARTLEVEL:
@@ -179,13 +178,20 @@ namespace Framework
 		}
 	}
 
-	GameObject* ObjectSystem::CreateObject()
+	GameObject* ObjectSystem::CreateObject(const std::string &objname)
 	{
-		GameObject * obj = new GameObject(LastGameObjectId);
-		GameObjects[LastGameObjectId] = obj;
-		++LastGameObjectId;
+		GameObject * obj = this->CreateObject();
+    obj->Name = objname;
 		return obj;
 	}
+
+  GameObject* ObjectSystem::CreateObject()
+  {
+    GameObject * obj = new GameObject(LastGameObjectId);
+    GameObjects[LastGameObjectId] = obj;
+    ++LastGameObjectId;
+    return obj;
+  }
 
 	//Called When the ObjectSystem is created
 	void ObjectSystem::RegisterComponents(void)
@@ -416,13 +422,10 @@ namespace Framework
 			if (it->objectName.compare("Cog") == 0 &&
 				objName.compare("EditorCamera") != 0)
 			{
-				GameObject* newobj = OBJECTSYSTEM->CreateObject();
+				GameObject* newobj = OBJECTSYSTEM->CreateObject(objName);
 
 				//if (LastGameObjectId <= it->branch->branch->value_.UInt_)
-				//{ LastGameObjectId = it->branch->branch->value_.UInt_ + 1; } // Makes sure that every created object has a unique ID.
-
-        Serializer::DataNode *n = it->FindElement(it->branch, "Named");
-        n->FindElement(n->branch, "Name")->GetValue(&newobj->Name);
+				//{ LastGameObjectId = it->branch->branch->value_.UInt_ + 1; } // Makes sure that every created object has a unique ID
 
         auto ct = it->branch->next;
 				while (ct)
@@ -505,9 +508,11 @@ namespace Framework
 		file.open(archtype_file);
 		file.CreateArchive();
 		Serializer::DataNode* Trunk = file.GetTrunk();
-		GameObject* newobj = this->CreateObject();
+    std::string obj_name;
     Serializer::DataNode *n = Trunk->FindElement(Trunk->branch, "Named");
-    n->FindElement(n->branch, "Name")->GetValue(&newobj->Name);
+    n->FindElement(n->branch, "Name")->GetValue(&obj_name);
+		GameObject* newobj = this->CreateObject(obj_name);
+    
 		//Skip 1st 3 objects
 		auto ct = Trunk->branch->next->next;
 		while (ct)
@@ -523,6 +528,13 @@ namespace Framework
 		} //while
 		return newobj;
 	}
+
+  GameObject* ObjectSystem::CreateAtPosition(const char *archetype, float _x, float _y, float _z)
+  {
+    GameObject *newobj = LoadArchetype(archetype);
+    newobj->C<Transform>()->Translate(_x, _y, _z);
+    return newobj;
+  }
 
 
 

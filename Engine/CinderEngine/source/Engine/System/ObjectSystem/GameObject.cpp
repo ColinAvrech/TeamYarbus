@@ -36,8 +36,8 @@ namespace Framework
 	  ZilchBindFieldGetSet(InheritRotation);
 	  ZilchBindFieldGetSet(InheritPosition);
 	  ZilchBindFieldGetSet(InheritScale);
-	  ZilchBindFieldGetSet(Name);
-	  ZilchBindMethod(GetName);
+	  //ZilchBindFieldGetSet(Name);
+	  //ZilchBindMethod(GetName);
 	  ZilchBindMethod(AddChild);
 	  ZilchBindMethodOverloadAs(ZGetComponent, "GetComponent", Component*, Zilch::String);
     
@@ -70,7 +70,7 @@ namespace Framework
   }
 	
 
-  String GameObject::GetName()
+  std::string GameObject::GetName()
   {
 	  return Name;
   }

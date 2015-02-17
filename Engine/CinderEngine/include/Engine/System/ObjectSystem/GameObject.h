@@ -30,7 +30,6 @@ factory in the next loop.
 
 
 #define ComponentPointer(Name) Name * Name = nullptr
-#define GETCOMPONENT(Object, Name) static_cast<Name*>(Object->GetComponent(#Name))
 
 #include "Common.h"
 #include "ObjectSystem.h"
@@ -85,8 +84,8 @@ namespace Framework
     Component* GetComponent(string component);
 	
     //Public Variables
-    String Name;
-	  String GetName();
+    std::string Name;
+	  std::string GetName();
     GameObject* Parent;
 	  bool InheritRotation = true;
 	  bool InheritPosition = true;

@@ -52,6 +52,7 @@ namespace Framework
 	  void KeyFunction(KeyEvent* key);
     // GLFW callbacks
     void GLFWMessageHandler(GLFWwindow* window, const int key, const int scanCode, const int state, const int mod);
+	static void GLFWCharHandler( GLFWwindow* window, unsigned int glfwChar );
     void GLFWMouseButtonFunction(GLFWwindow *, const int button, const int action, const int mod);
     void GLFWMouseCursorMoved (GLFWwindow* window, const double xPos, const double yPos);
     void GLFWWindowClosed(GLFWwindow* window);
@@ -76,6 +77,7 @@ namespace Framework
     bool focused = true;
 
 	double dpi;
+
   private:
     GLFWwindow* window;
 
@@ -84,6 +86,7 @@ namespace Framework
     int WindowHeight;
     int WindowWidth;
     bool cursorVisible;
+	
   };
 
   extern WindowSystem* WINDOWSYSTEM;

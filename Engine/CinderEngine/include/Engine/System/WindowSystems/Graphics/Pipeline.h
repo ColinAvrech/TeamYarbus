@@ -106,7 +106,10 @@ namespace Framework
     bool matricesReady;
 
     void RenderToTexture (FBO* fbo, GLuint tex, Shader* shader);
-
+    void DownSample(FBO *source, FBO *dest);
+    GLuint GenerateTextureMultiSampled(int _width, int _height, int samples = 4);
+    GLuint GenerateTexture(int _width, int height);
+    void SwapTextureIds(GLuint *tex1, GLuint *tex2);
     bool useDebugDraw;
   };
 
