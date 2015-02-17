@@ -314,6 +314,10 @@ namespace Framework
       }
     }
 
+	void GLFWCharHandler( GLFWwindow* window, unsigned int glfwChar )
+	{
+		TwEventCharGLFW( glfwChar, GLFW_PRESS );
+	}
 
     void GLFWMouseButtonFunction (GLFWwindow *, const int button, const int action, const int mod)
     {
@@ -405,6 +409,7 @@ namespace Framework
 
       // Set Callback Functions
       glfwSetKeyCallback (*GLFWwindowptr, GLFWMessageHandler);
+	  glfwSetCharCallback( *GLFWwindowptr, GLFWCharHandler );
       glfwSetMouseButtonCallback (*GLFWwindowptr, GLFWMouseButtonFunction);
       glfwSetCursorPosCallback (*GLFWwindowptr, GLFWMouseCursorMoved);
       glfwSetWindowSizeCallback (*GLFWwindowptr, GLFWResize);

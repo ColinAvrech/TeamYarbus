@@ -22,22 +22,34 @@ namespace Framework
   void Lantern::Initialize()
   {
     EVENTSYSTEM->mConnect<UpdateEvent, Lantern>(Events::UPDATEEVENT, this, &Lantern::Update);
+	decayRate = .1f;
+	rainDecayRate = .2f;
+	rainedOn = false;
+
   }
 
   void Lantern::Serialize(Serializer::DataNode* data)
   {
     data->FindElement(data, "lightRadius")->GetValue(&lightRadius);
     data->FindElement(data, "lightTheta")->GetValue(&lightTheta);
-    lightTheta *= PI / 180;
   }
 
   void Lantern::Update(UpdateEvent* e)
   {
-    CalculateBounds();
+	  if (lightTheta <= 0)
+	  {
+		  //set game state to end
+	  }
+	  if (rainedOn == true)
+		  lightTheta -= rainDecayRate;
+	  else
+		  lightTheta -= decayRate;
+	  CalculateBounds();
   }
 
   void Lantern::CalculateBounds()
   {
+	lightThetaRad = lightTheta * PI / 180;
     //flaslight follows the mouse
     //lantern position
     glm::vec2 tform = (glm::vec2)gameObject->C<Transform>()->GetPosition();
@@ -47,10 +59,15 @@ namespace Framework
     glm::vec2 orthogonalRight = glm::normalize(glm::vec2(-origin.y, origin.x));
     glm::vec2 orthogonalLeft = -orthogonalRight;
     
-    leftBounds = tform + origin * lightRadius*cos(lightTheta / 2) +
-      orthogonalLeft * lightRadius*sin(lightTheta / 2);
-    rightBounds = tform + origin * lightRadius*cos(lightTheta / 2) +
-      orthogonalRight * lightRadius*sin(lightTheta / 2);
+    leftBounds = tform + origin * lightRadius*cos(lightThetaRad / 2) +
+      orthogonalLeft * lightRadius*sin(lightThetaRad / 2);
+    rightBounds = tform + origin * lightRadius*cos(lightThetaRad / 2) +
+      orthogonalRight * lightRadius*sin(lightThetaRad / 2);
+
+	//need for interaction with rain
+	glm::vec2 ground(0, 0);
+	float dotToLantern = glm::dot(rightBounds, ground);
+	angleFromGround = acosf(dotToLantern) * 180 / PI;
   }
 
   void Lantern::CheckCollision()
@@ -64,7 +81,7 @@ namespace Framework
       float angleBetweenTarget = acosf(dotToTarget) * 180 / PI;
       float distToTarget = glm::distance2(playerPos, objPos);
 
-      //if (angleBetweenTarget < lightTheta && distToTarget < lightRadius)
+      //if (angleBetweenTarget < lightThetaRad && distToTarget < lightRadius)
       //{
       //	//make objects interactable
       //}
