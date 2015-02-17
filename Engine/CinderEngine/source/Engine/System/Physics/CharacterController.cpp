@@ -88,6 +88,8 @@ namespace Framework
   {
     PLAYER = this;
     OBJECTSYSTEM->ptrPlayer = this->gameObject;
+
+    startingPos = gameObject->C<Transform>()->GetPosition2D();
     //accel = { 0 , 0 };
     //maxAcceleration = { 50, 100 };
     maxVel = 20.0f;
@@ -98,8 +100,15 @@ namespace Framework
     EVENTSYSTEM->mConnect<UpdateEvent, CharacterController> (Events::UPDATEEVENT, this, &CharacterController::Update);
 
     Transform* tform = AUDIOSYSTEM->listener = static_cast<Transform*>(gameObject->GetComponent("Transform"));
-    
-    Camera::main->gameObject->C<Transform>()->SetPosition(tform->GetPosition2D());
+  }
+
+  void CharacterController::ResetPosition()
+  {
+    gameObject->C<Transform>()->SetPosition(startingPos);
+    RigidBody2D* rb = gameObject->C<RigidBody2D>();
+    rb->velocity = vec2();
+    rb->acceleration = vec2();
+    rb->torque = rb->angularVelocity = 0.0f;
   }
 
   static void UpdateGroundState(CollisionEvent* collision)
@@ -135,7 +144,7 @@ namespace Framework
     if (InputManager::IsKeyDown(GLFW_KEY_UP) && (onGround || useFlying) && (body->velocity.y < 9.5f))
     {
       onGround = false;
-      body->ApplyForce(vec3(0, 4000 * body->mat->density, 0.0f));
+      body->ApplyForce(vec2(0, 4000 * body->mat->density));
         
       if (hp)
       {
@@ -153,19 +162,19 @@ namespace Framework
     // Go down
     if (InputManager::IsKeyDown(GLFW_KEY_DOWN) && (body->velocity.y > -9.5f))
     {
-      body->ApplyForce(vec3(0, -2000 * body->mat->density, 0.0f));
+      body->ApplyForce(vec2(0, -2000 * body->mat->density));
     }
 
     if (InputManager::IsKeyDown(GLFW_KEY_RIGHT) && body->velocity.x < 50.0f)
-      body->ApplyForce(vec3(acceleration.x * body->mat->density, 0, 0.0f));
+      body->ApplyForce(vec2(acceleration.x * body->mat->density, 0.0f));
  
     if (InputManager::IsKeyDown(GLFW_KEY_LEFT) && body->velocity.x > -50.0f)
-      body->ApplyForce(vec3(-acceleration.x * body->mat->density, 0, 0.0f));
+      body->ApplyForce(vec2(-acceleration.x * body->mat->density, 0.0f));
     
     // Microphone input
     gridPos = static_cast<Transform*>(gameObject->GetComponent("Transform"))->GetGridPosition();
     float micValue = AUDIOSYSTEM->GetMicrophoneValue ();
-    body->ApplyForce(vec3(micValue * body->mat->density * micMultiplier, 0));
+    body->ApplyForce(vec2(micValue * body->mat->density * micMultiplier));
     //Physics::THERMODYNAMICS->SetCellTemperature (gridPos.x, gridPos.y, 
     //  /*micValue **/ 10 * Constant::BT_Organics, e->Dt);
     //glm::vec2 vel = Physics::THERMODYNAMICS->GetCellVelocity(gridPos.x, gridPos.y);

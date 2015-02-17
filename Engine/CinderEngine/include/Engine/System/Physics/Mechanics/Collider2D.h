@@ -53,14 +53,14 @@ namespace Framework
         return eInvalid;
       }
 
-      vec3 GetOffset() const{ return offset; }
-      void SetOffset(const vec3 &newOffset){ offset = newOffset; }
+      vec2 GetOffset() const{ return offset; }
+      void SetOffset(const vec2 &newOffset){ offset = newOffset; }
 
-      virtual float GetArea() { return 0.0f; };
-      virtual vec3 GetCenter() { return vec3(); }
+      virtual float GetArea() const { return 0.0f; };
+      virtual vec2 GetCenter() const;
 
-    private: 
-      vec3 offset = vec3();
+    protected: 
+      vec2 offset = vec2();
 	};
 	
 	class CircleCollider2D : public ShapeCollider2D
@@ -79,7 +79,7 @@ namespace Framework
 	
 	    void Draw( void ) const;
 
-      float GetArea();
+      float GetArea() const;
 
       float GetRadius() const { return radius; }
       void SetRadius(const float& newrad);
@@ -109,22 +109,22 @@ namespace Framework
 	    // Half width and half height
 	    void SetBox( float hw, float hh );
 	
-	    void Set( vec3 *vertices, unsigned count );
+	    void Set( vec2 *vertices, unsigned count );
 	
-	    vec3 GetSupport( const vec3& dir );
+	    vec2 GetSupport( const vec2& dir );
 
-      float GetArea();
-      vec3 GetCenter();
+      float GetArea() const;
+      vec2 GetCenter() const;
       float ComputeInertia(float density);
 
       // For Polygon shape
-      glm::mat3 u = glm::mat3(); // Orientation matrix from model to world
-      vec3 dimensions = vec3();
+      glm::mat2 u = glm::mat2(); // Orientation matrix from model to world
+      vec2 dimensions = vec2();
 
       float orientation = 0;
 	    unsigned m_vertexCount = 0;
-	    vec3 m_vertices[MaxVertices];
-	    vec3 m_normals[MaxVertices];
+	    vec2 m_vertices[MaxVertices];
+	    vec2 m_normals[MaxVertices];
 
     private:
       void CenterPolygon();
@@ -144,8 +144,8 @@ namespace Framework
       void SetOrient(float radians);
       ColliderType GetType(void) const;
 
-      float GetArea();
-      vec3 GetCenter();
+      float GetArea() const;
+      vec2 GetCenter() const;
 
       void AddCollider(ShapeCollider2D* newCollider);
       void RemoveCollider(ShapeCollider2D* oldCollider);

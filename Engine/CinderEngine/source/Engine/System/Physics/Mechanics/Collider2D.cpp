@@ -30,7 +30,10 @@ namespace Framework
     gameObject = nullptr;
   }
 
-
+  vec2 ShapeCollider2D::GetCenter() const
+  {
+    return gameObject->C<Transform>()->GetPosition2D() + offset;
+  }
 
   //////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////
@@ -75,33 +78,34 @@ namespace Framework
     // Render a circle with a bunch of lines
     glColor3f (1, 0, 0);
     glBegin (GL_LINE_LOOP);
-    RigidBody2D* rigidBody = static_cast<RigidBody2D*>(gameObject->GetComponent("RigidBody2D"));
+    RigidBody2D* rigidBody = gameObject->C<RigidBody2D>();
+    Transform* tform = gameObject->C<Transform>();
     float theta = rigidBody->orient;
     float inc = PI * 2.0f / (float) k_segments;
     for (unsigned i = 0; i < k_segments; ++i)
     {
       theta += inc;
-      vec3 p (std::cos (theta), std::sin (theta), 0.0f);
+      vec2 p (std::cos (theta), std::sin (theta));
       p *= radius;
-      p += rigidBody->position;
+      p += tform->GetPosition2D();
       glVertex2f (p.x, p.y);
     }
     glEnd ();
 
     // Render line within circle so orientation is visible
     glBegin (GL_LINE_STRIP);
-    vec3 r (0, 1.0f, 0.0f);
+    vec2 r (0, 1.0f);
     float c = std::cos (rigidBody->orient);
     float s = std::sin (rigidBody->orient);
-    r = vec3(r.x * c - r.y * s, r.x * s + r.y * c, 0.0f);
+    r = vec2(r.x * c - r.y * s, r.x * s + r.y * c);
     r *= radius;
-    r += rigidBody->position;
-    glVertex2f (rigidBody->position.x, rigidBody->position.y);
+    r += tform->GetPosition2D();
+    glVertex2f (tform->GetPosition2D().x, tform->GetPosition2D().y);
     glVertex2f (r.x, r.y);
     glEnd ();
   }
 
-  float CircleCollider2D::GetArea()
+  float CircleCollider2D::GetArea() const
   {
     return PI * radius * radius; 
   }
@@ -150,7 +154,7 @@ namespace Framework
 
   void PolygonCollider2D::CenterPolygon()
   {
-    vec3 c = GetCenter();
+    vec2 c = GetCenter();
     // Translate vertices to centroid (make the centroid (0, 0)
     // for the polygon in model space)
     // Not floatly necessary, but I like doing this anyway
@@ -164,14 +168,14 @@ namespace Framework
     SetOrient (orientation);
   }
 
-	vec3 PolygonCollider2D::GetSupport (const vec3& dir)
+	vec2 PolygonCollider2D::GetSupport (const vec2& dir)
 	{
 	  float bestProjection = -FLT_MAX;
-	  vec3 bestVertex;
+	  vec2 bestVertex;
 	
 	  for (unsigned i = 0; i < m_vertexCount; ++i)
 	  {
-	    vec3 v = m_vertices [i];
+	    vec2 v = m_vertices [i];
 	    float projection = glm::dot(v, dir);
 	
 	    if (projection > bestProjection)
@@ -184,7 +188,7 @@ namespace Framework
 	  return bestVertex;
 	}
 	
-	void PolygonCollider2D::Set (vec3 *vertices, unsigned count)
+	void PolygonCollider2D::Set (vec2 *vertices, unsigned count)
 	{
 	  // No hulls with less than 3 vertices (ensure actual polygon)
 	  assert (count > 2 && count <= MaxVertices);
@@ -218,7 +222,7 @@ namespace Framework
 	
 	    // Search for next index that wraps around the hull
 	    // by computing cross products to find the most counter-clockwise
-	    // vertex in the set, given the previos hull index
+	    // vertex in the set, given the previous hull index
 	    int nextHullIndex = 0;
 	    for (int i = 1; i < (int) count; ++i)
 	    {
@@ -233,8 +237,8 @@ namespace Framework
 	      // Cross every set of three unique vertices
 	      // Record each counter clockwise third vertex and add
 	      // to the output hull
-	      vec3 e1 = vertices [nextHullIndex] - vertices [hull [outCount]];
-	      vec3 e2 = vertices [i] - vertices [hull [outCount]];
+	      vec2 e1 = vertices [nextHullIndex] - vertices [hull [outCount]];
+	      vec2 e2 = vertices [i] - vertices [hull [outCount]];
 	      float c = Cross (e1, e2);
 	      if (c < 0.0f)
 	        nextHullIndex = i;
@@ -264,27 +268,27 @@ namespace Framework
 	  for (unsigned i1 = 0; i1 < m_vertexCount; ++i1)
 	  {
 	    unsigned i2 = i1 + 1 < m_vertexCount ? i1 + 1 : 0;
-	    vec3 face = m_vertices [i2] - m_vertices [i1];
+	    vec2 face = m_vertices [i2] - m_vertices [i1];
 	
 	    // Ensure no zero-length edges, because that's bad
 	    assert (glm::length(face) > EPSILON);
 	
 	    // Calculate normal with 2D cross product between vector and scalar
-	    m_normals [i1] = glm::normalize(vec3(face.y, -face.x, 0));
+	    m_normals [i1] = glm::normalize(vec2(face.y, -face.x));
 	  }
 	}
 	
 	void PolygonCollider2D::SetBox (float hw, float hh)
 	{
 	  m_vertexCount = 4;
-    m_vertices[0] = vec3(-hw, -hh, 1.0f);
-    m_vertices[1] = vec3(hw, -hh, 1.0f);
-    m_vertices[2] = vec3(hw, hh, 1.0f);
-    m_vertices[3] = vec3(-hw, hh, 1.0f);
-	  m_normals[0] = vec3(0.0f, -1.0f, 0.0f);
-    m_normals[1] = vec3(1.0f, 0.0f, 0.0f);
-    m_normals[2] = vec3(0.0f, 1.0f, 0.0f);
-    m_normals[3] = vec3(-1.0f, 0.0f, 0.0f);
+    m_vertices[0] = vec2(-hw, -hh);
+    m_vertices[1] = vec2( hw, -hh);
+    m_vertices[2] = vec2( hw, hh);
+    m_vertices[3] = vec2(-hw, hh);
+	  m_normals[0] = vec2(0.0f, -1.0f);
+    m_normals[1] = vec2(1.0f,  0.0f);
+    m_normals[2] = vec2(0.0f,  1.0f);
+    m_normals[3] = vec2(-1.0f, 0.0f);
 	}
 	
 	ShapeCollider2D::ColliderType PolygonCollider2D::GetType (void) const
@@ -301,7 +305,7 @@ namespace Framework
 	    glBegin (GL_LINE_LOOP);
 	    for (unsigned i = 0; i < m_vertexCount; ++i)
 	    {
-	      vec3 v = rigidBody->position + u * m_vertices [i];
+	      vec2 v = gameObject->C<Transform>()->GetPosition2D() + u * m_vertices[i];
 	      glVertex2f (v.x, v.y);
 	    }
 	    glEnd ();
@@ -310,26 +314,19 @@ namespace Framework
 	
 	void PolygonCollider2D::SetOrient (float radians)
   {
-    u = glm::mat3();
-    /*
-    float c = std::cos(radians);
-    float s = std::sin(radians);
-
-    m00 = c; m01 = -s;
-    m10 = s; m11 = c;
-    */
+    u = GetRotationMatrix(radians);
 	}
 
-  float PolygonCollider2D::GetArea()
+  float PolygonCollider2D::GetArea() const
   {
     float area = 0.0f;
 
     for (unsigned i1 = 0; i1 < m_vertexCount; ++i1)
     {
       // Triangle vertices, third vertex implied as (0, 0)
-      vec3 p1(m_vertices[i1]);
+      vec2 p1(m_vertices[i1]);
       unsigned i2 = i1 + 1 < m_vertexCount ? i1 + 1 : 0;
-      vec3 p2(m_vertices[i2]);
+      vec2 p2(m_vertices[i2]);
 
       float D = Cross(p1, p2);
       float triangleArea = 0.5f * D;
@@ -340,18 +337,18 @@ namespace Framework
     return area;
   }
 
-  vec3 PolygonCollider2D::GetCenter()
+  vec2 PolygonCollider2D::GetCenter() const
   {
     // Calculate centroid and moment of interia
-    vec3 c; // centroid
+    vec2 c; // centroid
     const float k_inv3 = 1.0f / 3.0f;
 
     for (unsigned i1 = 0; i1 < m_vertexCount; ++i1)
     {
       // Triangle vertices, third vertex implied as (0, 0)
-      vec3 p1(m_vertices[i1]);
+      vec2 p1(m_vertices[i1]);
       unsigned i2 = i1 + 1 < m_vertexCount ? i1 + 1 : 0;
-      vec3 p2(m_vertices[i2]);
+      vec2 p2(m_vertices[i2]);
 
       float D = Cross(p1, p2);
       float triangleArea = 0.5f * D;
@@ -362,7 +359,7 @@ namespace Framework
     //Normalizes the center to be that for a unit polygon(max extent of 1)
     c *= 1.0f / GetArea();
 
-    return c;
+    return c + offset;
   }
 
   float PolygonCollider2D::ComputeInertia(float density)
@@ -374,9 +371,9 @@ namespace Framework
 	  for (unsigned i1 = 0; i1 < m_vertexCount; ++i1)
 	  {
 	    // Triangle vertices, third vertex implied as (0, 0)
-	    vec3 p1 (m_vertices [i1]);
+	    vec2 p1 (m_vertices [i1]);
 	    unsigned i2 = i1 + 1 < m_vertexCount ? i1 + 1 : 0;
-	    vec3 p2 (m_vertices [i2]);
+	    vec2 p2 (m_vertices [i2]);
 
       float D = Cross(p1, p2);
 	    float intx2 = p1.x * p1.x + p2.x * p1.x + p2.x * p2.x;
@@ -427,15 +424,15 @@ namespace Framework
 
   void CompoundCollider2D::SetOrient(float radians)
   {
-    vec3 offset;
+    vec2 offset;
     Transform* tform;
     for (auto c : childColliders)
     {
       tform = static_cast<Transform*>(c->gameObject->GetComponent("Transform"));
       offset = c->GetOffset();
-      tform->Translate(-offset);
+      tform->Translate2D(-offset);
       c->SetOrient(radians);
-      tform->Translate(offset);
+      tform->Translate2D(offset);
     }
   }
 
@@ -444,7 +441,7 @@ namespace Framework
     return eCompound;
   }
 
-  float CompoundCollider2D::GetArea()
+  float CompoundCollider2D::GetArea() const
   {
     float sumArea = 0.0f;
 
@@ -456,9 +453,9 @@ namespace Framework
     return sumArea;
   }
 
-  vec3 CompoundCollider2D::GetCenter()
+  vec2 CompoundCollider2D::GetCenter() const
   {
-    vec3 sumPos;
+    vec2 sumPos;
     
     for (auto c : childColliders)
     {

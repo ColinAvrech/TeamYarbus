@@ -36,6 +36,8 @@ namespace Framework
 
     ~CharacterController();
 
+    void ResetPosition();
+
     /*!Telegraph that the component is active*/
     virtual void Initialize();
     virtual void Serialize(Serializer::DataNode* data);
@@ -53,6 +55,7 @@ namespace Framework
     bool useFlying;
 
   private:
+    glm::vec2 startingPos;
     glm::vec2 gridPos;
     glm::vec2 accel;
     glm::vec2 jumpVel;

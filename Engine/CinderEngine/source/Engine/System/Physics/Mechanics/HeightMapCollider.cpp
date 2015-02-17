@@ -81,14 +81,9 @@ namespace Framework
     return eHeightMap;
   }
 
-  float HeightMapCollider::GetArea()
+  float HeightMapCollider::GetArea() const
   {
     Transform *t = gameObject->C<Transform>();
     return normalized_area * t->GetScale().x * t->GetScale().y;
-  }
-
-  vec3 HeightMapCollider::GetCenter()
-  {
-    return glm::vec3();
   }
 }

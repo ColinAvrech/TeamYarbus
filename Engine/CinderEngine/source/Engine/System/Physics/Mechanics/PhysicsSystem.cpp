@@ -39,7 +39,8 @@ namespace Framework
       if (b->invMass == 0.0f)
         return;
 
-      b->velocity += (b->force * b->invMass + gravity) * (dt / 2.0f);
+      b->acceleration = (b->force * b->invMass + gravity);
+      b->velocity += b->acceleration * (dt / 2.0f);
       //std::cout << b->velocity.x << "\n";
       b->angularVelocity += b->torque * b->invI * (dt / 2.0f);
     }
@@ -49,13 +50,13 @@ namespace Framework
       if (b->invMass == 0.0f)
         return;
 
-      vec3 deltaPosition = b->velocity * dt;
+      vec2 deltaPosition = b->velocity * dt;
       b->orient += b->angularVelocity * dt;
       b->SetOrient(b->orient);
       if (b->gameObject != nullptr)
       {
         Transform* tform = static_cast<Transform*>(b->gameObject->GetComponent("Transform"));
-        tform->Translate(deltaPosition);
+        tform->Translate2D(deltaPosition);
         tform->Rotate(180 / M_PI * b->orient);
       }
       IntegrateForces(b, dt);
@@ -106,7 +107,7 @@ namespace Framework
       for (unsigned i = 0; i < rigidBodies.size(); ++i)
       {
         RigidBody2D *b = rigidBodies[i];
-        b->force = vec3();
+        b->force = vec2();
         b->torque = 0;
       }
     }
@@ -162,7 +163,7 @@ namespace Framework
           Manifold& m = contacts[i];
           for (unsigned j = 0; j < m.contact_count; ++j)
           {
-            vec3 c = m.contacts[j];
+            vec2 c = m.contacts[j];
             glVertex2f(c.x, c.y);
           }
         }
@@ -174,10 +175,10 @@ namespace Framework
         for (unsigned i = 0; i < contacts.size(); ++i)
         {
           Manifold& m = contacts[i];
-          vec3 n = m.normal;
+          vec2 n = m.normal;
           for (unsigned j = 0; j < m.contact_count; ++j)
           {
-            vec3 c = m.contacts[j];
+            vec2 c = m.contacts[j];
             glVertex2f(c.x, c.y);
             n *= 0.75f;
             c += n;
@@ -188,13 +189,6 @@ namespace Framework
 
         glLoadIdentity();
       }
-    }
-
-    RigidBody2D * PhysicsSystem::Add(ShapeCollider2D *shape, float x, float y)
-    {
-      assert(shape);
-      RigidBody2D *b = new RigidBody2D(shape, (float)x, (float)y);
-      return Add(b);
     }
 
     RigidBody2D* PhysicsSystem::Add(RigidBody2D* b)

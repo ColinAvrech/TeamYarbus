@@ -22,8 +22,8 @@ namespace Framework
     gameObject = nullptr;
     matName = "";
     mat = new Material();
-    force = velocity = vec3();
-    maxVelocity = vec3(10, 10, 0.0f);
+    force = velocity = vec2();
+    maxVelocity = vec2(10, 10);
     angularVelocity = 0;
     torque = 0;
     orient = MyRandom(-PI, PI);
@@ -32,11 +32,6 @@ namespace Framework
     g = MyRandom(0.2f, 1.0f);
     b = MyRandom(0.2f, 1.0f);
   }
-
-  RigidBody2D::RigidBody2D(ShapeCollider2D* shape_, float x, float y) : RigidBody2D()
-	{
-    position = vec3(x, y, 0);
-	}
 	
 	RigidBody2D::~RigidBody2D ()
 	{
@@ -97,7 +92,7 @@ namespace Framework
     PHYSICS->Add(this);
   }
 
-  void RigidBody2D::ApplyForce (const vec3& f)
+  void RigidBody2D::ApplyForce (const vec2& f)
   {
     //if (force.y < 0.1f)
       force += f;

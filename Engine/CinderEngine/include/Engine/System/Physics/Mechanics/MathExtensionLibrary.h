@@ -254,13 +254,12 @@ inline float Cross( const Vector2& a, const Vector2& b )
 }
 */
 
-inline vec3 Cross(float a, const vec3&v)
+inline vec2 Cross(float a, const vec2&v)
 {
-  return vec3(-a * v.y, a * v.x, 0.0f);
-
+  return vec2(-a * v.y, a * v.x);
 }
 
-inline float Cross(const vec3& a, const vec3& b)
+inline float Cross(const vec2& a, const vec2& b)
 {
   return a.x * b.y - a.y * b.x;
 }
@@ -305,7 +304,17 @@ inline bool BiasGreaterThan( float a, float b )
 }
 
 const float gravityScale = 5.0f;
-const vec3 gravity( 0, -10.0f * gravityScale, 0);
+const vec2 gravity( 0.0f, -10.0f * gravityScale);
 const float dt = 1.0f / 60.0f;
 
+inline glm::mat2 GetRotationMatrix(float radians)
+{
+  glm::mat2 m;
+  float c = std::cos(radians);
+  float s = std::sin(radians);
+
+  m[0][0] = c; m[0][1] = -s;
+  m[0][0] = s; m[0][1] = c;
+  return m;
+}
 #endif // _MATH_EXT_H

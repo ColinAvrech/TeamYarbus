@@ -25,7 +25,7 @@ namespace Framework
   GameObject * OtherObject;
 	GameObject * thisObject;
 	float Penetration;
-	vec3 normal;
+	vec2 normal;
 
 	float Dt;
   };

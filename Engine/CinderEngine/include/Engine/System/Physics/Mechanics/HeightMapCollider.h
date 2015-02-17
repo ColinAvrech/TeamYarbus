@@ -34,8 +34,7 @@ namespace Framework
       virtual void SetOrient(float radians);
       virtual void Draw(void) const;
       virtual ColliderType GetType(void) const;
-      virtual float GetArea();
-      virtual vec3 GetCenter();
+      virtual float GetArea() const;
 
   private:
     float x_offset = 0.f;

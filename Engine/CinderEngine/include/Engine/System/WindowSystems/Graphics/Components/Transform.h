@@ -38,7 +38,8 @@ namespace Framework
     // Transformations
     void Load_Identity ();
     void Translate (const float x, const float y, const float z);
-	void Translate(const vec3 &v);
+  	void Translate(const vec3 &v);
+    void Translate2D(const vec2 &v) { Translate(v.x, v.y, 0); }
     void Scale (const float x, const float y, const float z);
     void Scale (const float v);
     void Rotate (float angle);
@@ -54,11 +55,11 @@ namespace Framework
     /*inline*/ vec2 GetPosition2D();
     /*inline*/ vec3 GetScale ();
     /*inline*/ float GetRotation ();
-	vec3 GetLocalPosition();
-	vec3 GetLocalScale();
-	Real3 ZGetLocalPosition();
-	Real3 ZGetLocalScale();
-	float GetLocalRotation();
+	  vec3 GetLocalPosition();
+	  vec3 GetLocalScale();
+	  Real3 ZGetLocalPosition();
+	  Real3 ZGetLocalScale();
+	  float GetLocalRotation();
     vec2 GetNDCPosition ();
     glm::vec2 GetGridPosition ();
     glm::vec2 GetGridPosition (glm::vec2 pos);
@@ -99,9 +100,9 @@ namespace Framework
     vec3 scale;
     float rotation;
 
-	vec3 localPosition;
-	vec3 localScale;
-	float localRotation;
+	  vec3 localPosition;
+	  vec3 localScale;
+	  float localRotation;
     glm::mat3 normalMatrix;
 
     // To avoid Unnecesary calculation in Update Matrices

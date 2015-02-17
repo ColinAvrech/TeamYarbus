@@ -36,8 +36,8 @@ namespace Framework
     RigidBody2D *B;
 	
 	  float penetration;     // Depth of penetration from collision
-	  vec3 normal;          // From A to B
-	  vec3 contacts[2];     // Points of contact during collision
+	  vec2 normal;          // From A to B
+	  vec2 contacts[2];     // Points of contact during collision
 	  unsigned contact_count; // Number of contacts that occured during collision
 	  float e;               // Mixed restitution
 	  float df;              // Mixed dynamic friction

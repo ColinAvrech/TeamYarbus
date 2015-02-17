@@ -77,6 +77,7 @@ namespace Framework
     //////////////////////////////////////////////////////////////////////////
     Serializer::DataNode* value = data->FindElement(data, "Translation");
     value->GetValue(&localPosition);
+    position = localPosition;
 
     value = data->FindElement(data, "Scale");
     value->GetValue(&localScale);
@@ -110,6 +111,7 @@ namespace Framework
       rotation = localRotation;
       scale = localScale;
     }
+
     OPENGL->MatrixMode(MODEL);
     OPENGL->LoadIdentity();
     OPENGL->Scalefv(glm::value_ptr(scale));
@@ -117,7 +119,7 @@ namespace Framework
     OPENGL->Translatefv(glm::value_ptr(position));
     modelMatrix = OPENGL->GetModelMatrix();
     OPENGL->LoadIdentity();
-    modelViewProjectionMatrix = (glm::mat4(1));
+    modelViewProjectionMatrix = glm::mat4(1);
     normalMatrix = glm::mat3(1);
     matricesReady = false;
     currentMatrix = 0;

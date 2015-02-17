@@ -124,6 +124,7 @@ namespace Framework
   void Camera::OnApplicationPause (PauseEvent* pause)
   {
     timer = 0.0f;
+#ifndef _DEBUG
     if (pause->Paused)
     {
       czs = CZ_ZOOMOUT;
@@ -132,6 +133,7 @@ namespace Framework
     {
       czs = CZ_ZOOMIN;
     }
+#endif
   }
 
 
@@ -297,7 +299,9 @@ namespace Framework
 
   void Camera::UpdatePosition(const vec3& deltaPos)
   {
-    position += deltaPos;
+    Transform* tform = gameObject->C<Transform>();
+    if (tform)
+      tform->Translate(deltaPos);
     matricesReady = false;
   }
 
