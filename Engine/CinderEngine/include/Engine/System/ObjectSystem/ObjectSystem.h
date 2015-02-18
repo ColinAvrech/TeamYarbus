@@ -30,9 +30,10 @@ namespace Framework
 
   enum ObjectSystemCommand
   {
-    _Idle,
-    _LoadLevel,
-    _LoadLevelAdditive,
+    OSC_IDLE,
+    OSC_LOADLEVEL,
+    OSC_LOADADDITIVE,
+    OSC_RESTARTLEVEL
   };
 
   //!Set the factory to null to indicate is hasn't been created yet

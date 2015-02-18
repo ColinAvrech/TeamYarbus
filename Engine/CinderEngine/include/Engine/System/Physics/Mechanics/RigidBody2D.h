@@ -25,18 +25,17 @@ namespace Framework
 	public:
 		META_DECLARE( RigidBody2D );
 
-	  const static std::string Name;
-	  RigidBody2D(ShapeCollider2D *shape_, float x, float y);
-    ~RigidBody2D ();
+    const static std::string Name;
     RigidBody2D();
+    ~RigidBody2D ();
 	
 	  virtual void Serialize (Framework::Serializer::DataNode* data);
 	  virtual void Initialize ();
 	
-	  void ApplyForce( const vec3& f );
+	  void ApplyForce( const vec2& f );
     void ComputeMass();
 
-	  void ApplyImpulse( const vec3& impulse, const vec3& contactVector )
+	  void ApplyImpulse( const vec2& impulse, const vec2& contactVector )
 	  {
 	    velocity += invMass * impulse;
 	    angularVelocity += invI * Cross( contactVector, impulse );
@@ -56,16 +55,15 @@ namespace Framework
 	
 	  void SetOrient( float radians );
 
-	  vec3 position;
-	  vec3 velocity;
-	  vec3 maxVelocity;
-    vec3 acceleration;
+	  vec2 velocity;
+	  vec2 maxVelocity;
+    vec2 acceleration;
 
 	  float angularVelocity;
 	  float torque;
 	  float orient; // radians
 	
-	  vec3 force;
+	  vec2 force;
 	
 	  // Set by shape
 	  float I;  // moment of inertia
@@ -86,7 +84,8 @@ META_DEFINE( Framework::RigidBody2D, RigidBody2D )
 {
 	TAG( "Component" );
 
-	MEMBER( position );
+  MEMBER(velocity);
+  MEMBER(acceleration);
 }
 
 #endif // _RIGID_BODY_2D_H

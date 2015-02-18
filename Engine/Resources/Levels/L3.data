@@ -44,7 +44,7 @@ Level =
 	  },
     Transform = 
 	  {
-		  Vec3 Translation = [17, 0, 10],
+		  Vec3 Translation = [11, 16, 10],
 		  Vec3 Scale = [1, 1, 1],
 		  Quat Rotation = [0, 0, 0, 1],
 	  },
@@ -52,11 +52,11 @@ Level =
 		{
       bool Enabled = true,
       bool main = true,
-			float FieldOfView = 45,
+			float FieldOfView = 60,
 			float NearPlane = 1,
 			float FarPlane = 3000,
       float FocalDistance = 10,
-			float Size = 16,
+			float Size = 32,
       int Elements = 6,
       float f_Stop = 2.8,
       float FocalLength = 0.15,

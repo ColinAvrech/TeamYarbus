@@ -148,10 +148,10 @@ namespace Framework
 
 			switch (CommandList.back())
 			{
-			case _Idle:
+			case OSC_IDLE:
 				break;
 
-			case _LoadLevel:
+			case OSC_LOADLEVEL:
 				PHYSICS->Clear();
 				//Physics::THERMODYNAMICS->Clear();
 				Physics::FLUIDDYNAMICS->Clear();
@@ -167,6 +167,9 @@ namespace Framework
 				AUDIOEVENTS->Initialize();
 				PHYSICS->Reset();
 				break;
+
+      case OSC_RESTARTLEVEL:
+        ptrPlayer->C<CharacterController>()->ResetPosition();
 
 			default:
 				break;
@@ -311,7 +314,7 @@ namespace Framework
 
 	void ObjectSystem::LoadLevel(const char* name)
 	{
-		CommandList.push(ObjectSystemCommand::_LoadLevel);
+		CommandList.push(ObjectSystemCommand::OSC_LOADLEVEL);
 		currentLevelName = name;
 	}
 
@@ -365,7 +368,7 @@ namespace Framework
 
 	void ObjectSystem::RestartLevel()
 	{
-		CommandList.push(ObjectSystemCommand::_LoadLevel);
+		CommandList.push(ObjectSystemCommand::OSC_RESTARTLEVEL);
 	}
 
 	GameObject* ObjectSystem::FindObjectByName(Zilch::String name)

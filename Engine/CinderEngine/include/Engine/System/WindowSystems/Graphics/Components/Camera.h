@@ -80,7 +80,6 @@ namespace Framework
     glm:: vec2 oldPosition;
     bool matricesReady;
 
-    vec3 position;
     vec3 viewDirection;
     glm::mat4 worldToView;
     glm::mat4 viewToProjection;

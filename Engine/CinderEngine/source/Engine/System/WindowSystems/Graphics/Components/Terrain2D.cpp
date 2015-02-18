@@ -23,7 +23,10 @@
 
 META_DEFINE( Framework::Terrain2D, Terrain2D )
 {
-
+  TAG("Terrain2D");
+  MEMBER(height_points); 
+  MEMBER(color1);
+  MEMBER(color2);
 }
 
 namespace Framework
@@ -270,7 +273,7 @@ namespace Framework
 
   void Terrain2D::Generate_Edges ()
   {
-    vec3* p = new vec3 [4];
+    vec2* p = new vec2 [4];
     float y = 0.0f;
     // Edges for Line Colliders
     assert(gameObject);
@@ -280,16 +283,16 @@ namespace Framework
     CompoundCollider2D* collider = static_cast<CompoundCollider2D*>(gameObject->AddComponent("CompoundCollider2D"));
     for (unsigned i = 0; i < height_points.size () - 1; ++i)
     {
-      glm::vec3 center;
+      glm::vec2 center;
       glm::vec2 p0 = (glm::mat2)tform->GetModelMatrix () * glm::vec2 (height_points [i].x, y);
       glm::vec2 p1 = (glm::mat2)tform->GetModelMatrix () * glm::vec2 (height_points [i + 1].x, y);
       glm::vec2 p2 = (glm::mat2)tform->GetModelMatrix () * glm::vec2 (height_points [i + 1].x, height_points [i + 1].y);
       glm::vec2 p3 = (glm::mat2)tform->GetModelMatrix () * glm::vec2 (height_points [i].x, height_points [i].y);
 
-      p [0] = vec3 (p2.x, p2.y, 0.0f);
-      p [1] = vec3 (p3.x, p3.y, 0.0f);
-      p [2] = vec3 (p0.x, p0.y, 0.0f);
-      p [3] = vec3 (p1.x, p1.y, 0.0f);
+      p [0] = vec2 (p2.x, p2.y);
+      p [1] = vec2 (p3.x, p3.y);
+      p [2] = vec2 (p0.x, p0.y);
+      p [3] = vec2 (p1.x, p1.y);
 
       ////////////////////////////////////////////////////////////////////////////
       ////////////////////////////////////////////////////////////////////////////
@@ -313,7 +316,7 @@ namespace Framework
 
       PolygonCollider2D* poly = new PolygonCollider2D();
       poly->Set (p, 4);
-      poly->SetOffset(center - tform->GetPosition());
+      poly->SetOffset(center - tform->GetPosition2D());
       
       collider->AddCollider(poly);
     }
