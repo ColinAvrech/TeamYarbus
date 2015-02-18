@@ -77,7 +77,7 @@ namespace Framework
     rainshader = Resources::RS->Get_Shader("Storm");
     //=============================================================
     //Post process test============================================
-    bnw = Resources::RS->Get_Shader("BNW");
+    bnw = Resources::RS->Get_Shader("GrayScale");
     //=============================================================
     Change_Shader ("Passthrough", (int) SS_DEFAULT);
 

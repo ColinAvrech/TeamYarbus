@@ -1,4 +1,4 @@
-#version 330 core
+#version 430 core
 //Generate a fullscreen quad
 #define QUAD_SIZE 2.755868545
 //split screen
