@@ -407,6 +407,9 @@ namespace Framework
       //*GLFWwindowptr = glfwCreateWindow (800, 600, "OpenGL", glfwGetPrimaryMonitor (), nullptr);
       glfwMakeContextCurrent (*GLFWwindowptr);
 
+
+      glfwWindowHint(GLFW_SAMPLES, 4);
+
       // Set Callback Functions
       glfwSetKeyCallback (*GLFWwindowptr, GLFWMessageHandler);
 	  glfwSetCharCallback( *GLFWwindowptr, GLFWCharHandler );
