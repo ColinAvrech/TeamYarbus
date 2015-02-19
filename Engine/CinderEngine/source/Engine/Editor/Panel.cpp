@@ -124,6 +124,13 @@ namespace Panel
 		ErrorCheck( TwSetParam( mPtr, nullptr, "alpha", TW_PARAM_INT32, 1, &a ) );
 	}
 
+	void Panel::AddGroupToGroup( const std::string & outer, const std::string & inner )
+	{
+		std::string s;
+		s += "'" + mName + "'/'" + inner + "' group='" + outer + "'";
+		TwDefine( s.c_str( ) );
+	}
+
 	//------------------------------------------------------------------------------------------
 	// clear panel fiels
 	//------------------------------------------------------------------------------------------
