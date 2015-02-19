@@ -133,11 +133,11 @@ namespace Editor
 		auto componentFirst = mFocusObject->Components.begin( );
 		auto componentLast = mFocusObject->Components.end( );
 
-		// loop through all the component in the type
+		// loop through all the component in the object
 		while ( componentFirst != componentLast )
 		{
 			const Reflection::MetaType & mt = META_HASH( componentFirst->second->mComponentType );
-			ReadComponent( mt, componentFirst->second );
+			ReadType( mt, componentFirst->second, mt.GetName( ) );
 			mObjectPropertiesPanel->AddSeperator( "", mt.GetName( ) );
 			mObjectPropertiesPanel->AddButton( "Remove Component", &ObjectPropertiesPanel::RemoveComponent,
 											   const_cast< Reflection::MetaType * > ( &mt ), mt.GetName( ) );
@@ -147,7 +147,7 @@ namespace Editor
 
 	}
 
-	void ObjectPropertiesPanel::ReadComponent( const Reflection::MetaType & metatype, void * component )
+	void ObjectPropertiesPanel::ReadType( const Reflection::MetaType & metatype, void * component, const std::string & groupName )
 	{
 		auto memberFirst = metatype.Begin( );
 		auto memberLast = metatype.End( );
@@ -155,75 +155,98 @@ namespace Editor
 		// loop through all the members in the type
 		while ( memberFirst != memberLast )
 		{
-			ReadMember( metatype, *memberFirst, component );
+			ReadMember( metatype, *memberFirst, component, groupName );
 			++memberFirst;
 		}
 	}
 
 	void ObjectPropertiesPanel::ReadMember( const Reflection::MetaType & metatype,
 											const Reflection::MetaMember & member,
-											void * component )
+											void * component,
+											const std::string & groupName )
+	{
+		// not base type
+		if ( member.GetType( ).IsBase( ) == false )
+		{
+			ReadType( member.GetType( ), member.GetPtr( component ), member.GetName( ) );
+			mObjectPropertiesPanel->AddGroupToGroup( groupName, member.GetName( ) );
+			return;
+		}
+
+		// container
+		if ( member.IsContainer( ) == true )
+		{
+
+			return;
+		}
+
+		// plain old data
+		AddMember( member, component, groupName );
+		return;
+	}
+
+	void ObjectPropertiesPanel::AddMember( const Reflection::MetaMember & member,
+										   void * component,
+										   const std::string & groupName )
 	{
 		switch ( HASH_TO_PANEL_TYPE( member.GetType( ).GetHashedName( ) ) )
 		{
 		case TW_TYPE_BOOLCPP:
-			mObjectPropertiesPanel->AddField( member.GetName( ), member.GetPtr<bool>( component ), metatype.GetName( ) );
+			mObjectPropertiesPanel->AddField( member.GetName( ), member.GetPtr<bool>( component ), groupName );
 			break;
 
 		case TW_TYPE_INT8:
-			mObjectPropertiesPanel->AddField( member.GetName( ), member.GetPtr<char>( component ), metatype.GetName( ) );
+			mObjectPropertiesPanel->AddField( member.GetName( ), member.GetPtr<char>( component ), groupName );
 			break;
 
 		case TW_TYPE_INT16:
-			mObjectPropertiesPanel->AddField( member.GetName( ), member.GetPtr<short>( component ), metatype.GetName( ) );
+			mObjectPropertiesPanel->AddField( member.GetName( ), member.GetPtr<short>( component ), groupName );
 			break;
 
 		case TW_TYPE_INT32:
-			mObjectPropertiesPanel->AddField( member.GetName( ), member.GetPtr<int>( component ), metatype.GetName( ) );
+			mObjectPropertiesPanel->AddField( member.GetName( ), member.GetPtr<int>( component ), groupName );
 			break;
 
 		case TW_TYPE_UINT8:
-			mObjectPropertiesPanel->AddField( member.GetName( ), member.GetPtr<unsigned char>( component ), metatype.GetName( ) );
+			mObjectPropertiesPanel->AddField( member.GetName( ), member.GetPtr<unsigned char>( component ), groupName );
 			break;
 
 		case TW_TYPE_UINT16:
-			mObjectPropertiesPanel->AddField( member.GetName( ), member.GetPtr<unsigned short>( component ), metatype.GetName( ) );
+			mObjectPropertiesPanel->AddField( member.GetName( ), member.GetPtr<unsigned short>( component ), groupName );
 			break;
 
 		case TW_TYPE_UINT32:
-			mObjectPropertiesPanel->AddField( member.GetName( ), member.GetPtr<unsigned >( component ), metatype.GetName( ) );
+			mObjectPropertiesPanel->AddField( member.GetName( ), member.GetPtr<unsigned >( component ), groupName );
 			break;
 
 		case TW_TYPE_FLOAT:
-			mObjectPropertiesPanel->AddField( member.GetName( ), member.GetPtr<float>( component ), metatype.GetName( ) );
+			mObjectPropertiesPanel->AddField( member.GetName( ), member.GetPtr<float>( component ), groupName );
 			break;
 
 		case TW_TYPE_DOUBLE:
-			mObjectPropertiesPanel->AddField( member.GetName( ), member.GetPtr<double>( component ), metatype.GetName( ) );
+			mObjectPropertiesPanel->AddField( member.GetName( ), member.GetPtr<double>( component ), groupName );
 			break;
 
 		case TW_TYPE_STDSTRING:
-			mObjectPropertiesPanel->AddField( member.GetName( ), member.GetPtr<std::string>( component ), metatype.GetName( ) );
+			mObjectPropertiesPanel->AddField( member.GetName( ), member.GetPtr<std::string>( component ), groupName );
 			break;
 
 		case TW_TYPE_DIR2F:
-			mObjectPropertiesPanel->AddField( member.GetName( ), member.GetPtr<glm::vec2>( component ), metatype.GetName( ) );
+			mObjectPropertiesPanel->AddField( member.GetName( ), member.GetPtr<glm::vec2>( component ), groupName );
 			break;
 
 		case TW_TYPE_DIR3F:
-			mObjectPropertiesPanel->AddField( member.GetName( ), member.GetPtr<glm::vec3>( component ), metatype.GetName( ) );
+			mObjectPropertiesPanel->AddField( member.GetName( ), member.GetPtr<glm::vec3>( component ), groupName );
 			break;
 
 		case TW_TYPE_DIR4F:
-			mObjectPropertiesPanel->AddField( member.GetName( ), member.GetPtr<glm::vec4>( component ), metatype.GetName( ) );
+			mObjectPropertiesPanel->AddField( member.GetName( ), member.GetPtr<glm::vec4>( component ), groupName );
 			break;
 
 		case TW_TYPE_QUAT4F:
-			mObjectPropertiesPanel->AddField( member.GetName( ), member.GetPtr<glm::quat>( component ), metatype.GetName( ) );
+			mObjectPropertiesPanel->AddField( member.GetName( ), member.GetPtr<glm::quat>( component ), groupName );
 			break;
 		}
-
-		return;
 	}
 
 	//////////////////////////////////////////////////

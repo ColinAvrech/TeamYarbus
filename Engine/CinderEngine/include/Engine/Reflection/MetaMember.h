@@ -17,8 +17,12 @@ namespace Reflection
 	public:
 		template <typename MemberType, typename ParentType >
 		MetaMember( const NameType & memberName,
-					HashedNameType memberType,
 					MemberType ParentType::*member,
+					const char * description = nullptr );
+
+		template <typename MemberType, typename ParentType, template<class T, class = std::allocator<T>> class ContainerType>
+		MetaMember( const NameType & memberName,
+					ContainerType<MemberType> ParentType::*member,
 					const char * description = nullptr );
 
 		~MetaMember( );
@@ -28,6 +32,9 @@ namespace Reflection
 		const MetaType &	GetType( ) const;
 		OffsetType			GetOffset( ) const;
 		const std::string & GetDescription( ) const;
+
+		bool				IsPointer( ) const;
+		bool				IsContainer( ) const;;
 
 		inline void *		GetPtr( void * obj ) const;
 		inline const void * GetPtr( const void * obj ) const;
@@ -46,6 +53,7 @@ namespace Reflection
 		OffsetType			mOffset;
 
 		bool				mIsPointer;
+		bool				mIsContainer = false;
 
 		std::string			mDescription;
 	};

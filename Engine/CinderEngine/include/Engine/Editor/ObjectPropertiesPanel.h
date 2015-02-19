@@ -41,8 +41,9 @@ namespace Editor
 		void SetupObjectPropertiesPanelProperties( );
 		void PopulateObjectProperties( );
 
-		void ReadComponent( const Reflection::MetaType & metatype, void * component );
-		void ReadMember( const Reflection::MetaType & metatype, const Reflection::MetaMember & member, void * component );
+		void ReadType( const Reflection::MetaType & metatype, void * component, const std::string & groupName );
+		void ReadMember( const Reflection::MetaType & metatype, const Reflection::MetaMember & member, void * component, const std::string & groupName );
+		void AddMember( const Reflection::MetaMember & member, void * component, const std::string & groupName );
 
 		//////////////////////////////////////////////////
 		// Component List Panel
