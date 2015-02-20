@@ -43,7 +43,7 @@ namespace Editor
 
 		void ReadType( const Reflection::MetaType & metatype, void * component, const std::string & groupName );
 		void ReadMember( const Reflection::MetaType & metatype, const Reflection::MetaMember & member, void * component, const std::string & groupName );
-		void AddMember( const Reflection::MetaMember & member, void * component, const std::string & groupName );
+		void AddMember( const Reflection::MetaMember & member, const Reflection::MetaType & value, void * component, const std::string & groupName );
 
 		//////////////////////////////////////////////////
 		// Component List Panel

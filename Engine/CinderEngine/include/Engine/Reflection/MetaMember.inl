@@ -10,24 +10,10 @@ namespace Reflection
 							mType( Reflection::MetaTypeToHash< std::remove_pointer< RemQual< MemberType >::Type >::type >( ) ),
 							mOffset( offsetof( ParentType, *member ) ),
 							mIsPointer( std::is_pointer< MemberType >::value ),
+							mContainer( Reflection::CreateContainer( ( ( ParentType* ) 0 )->*member ) ),
 							mDescription( description ? description : "" )
 	{
 
-	}
-
-	template <typename MemberType, typename ParentType, template<class T, class = std::allocator<T>> class ContainerType>
-	MetaMember::MetaMember( const NameType & memberName,
-							ContainerType<MemberType> ParentType::*member,
-							const char * description ) :
-
-							mName( memberName ),
-							mType( Reflection::MetaTypeToHash< std::remove_pointer< RemQual< MemberType >::Type >::type >( ) ),
-							mOffset( offsetof( ParentType, *member ) ),
-							mIsPointer( std::is_pointer< MemberType >::value ),
-							mIsContainer( true ),
-							mDescription( description ? description : "" )
-	{
-		
 	}
 
 	inline void * MetaMember::GetPtr( void * obj ) const

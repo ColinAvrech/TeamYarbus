@@ -42,7 +42,12 @@ namespace Reflection
 
 	bool MetaMember::IsContainer( ) const
 	{
-		return mIsContainer;
+		return mContainer != nullptr;
+	}
+
+	const MetaContainer & MetaMember::GetContainer( ) const
+	{
+		return *mContainer;
 	}
 
 }

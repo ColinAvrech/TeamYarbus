@@ -2,8 +2,10 @@
 #define METAMEMBER_H_
 
 #include "MetaCommon.h"
+#include "MetaContainer.h"
 
 #include <string>
+#include <memory>
 
 namespace Reflection
 {
@@ -20,11 +22,6 @@ namespace Reflection
 					MemberType ParentType::*member,
 					const char * description = nullptr );
 
-		template <typename MemberType, typename ParentType, template<class T, class = std::allocator<T>> class ContainerType>
-		MetaMember( const NameType & memberName,
-					ContainerType<MemberType> ParentType::*member,
-					const char * description = nullptr );
-
 		~MetaMember( );
 
 		const NameType &	GetName( ) const;
@@ -34,7 +31,8 @@ namespace Reflection
 		const std::string & GetDescription( ) const;
 
 		bool				IsPointer( ) const;
-		bool				IsContainer( ) const;;
+		bool				IsContainer( ) const;
+		const MetaContainer & GetContainer( ) const;
 
 		inline void *		GetPtr( void * obj ) const;
 		inline const void * GetPtr( const void * obj ) const;
@@ -47,15 +45,15 @@ namespace Reflection
 
 	private:
 
-		NameType			mName;
+		NameType						mName;
 
-		HashedNameType		mType;
-		OffsetType			mOffset;
+		HashedNameType					mType;
+		OffsetType						mOffset;
 
-		bool				mIsPointer;
-		bool				mIsContainer = false;
+		bool							mIsPointer;
+		std::shared_ptr<MetaContainer>	mContainer;
 
-		std::string			mDescription;
+		std::string						mDescription;
 	};
 
 }
