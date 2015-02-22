@@ -35,6 +35,11 @@ namespace Framework
     return gameObject->C<Transform>()->GetPosition2D() + offset;
   }
 
+  void ShapeCollider2D::SetOrient(float radians)
+  {
+    u = GetRotationMatrix(radians);
+  }
+
   //////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////
   // CIRCLE COLLIDER 2D IMPLEMENTATION
@@ -55,7 +60,7 @@ namespace Framework
   {
     Serializer::DataNode* value = data->FindElement (data, "Radius");
     value->GetValue (&radius);
-    SetRadius(radius * static_cast<Transform*>(gameObject->GetComponent("Transform"))->GetScale().x);
+    SetRadius(radius * gameObject->C<Transform>()->GetScale().x);
   }
 
   void CircleCollider2D::SetRadius(const float &newrad)
@@ -149,7 +154,7 @@ namespace Framework
 
     value->FindElement (data, "Orientation")->GetValue (&orientation);
     //TODO: Possible orientation fix,research more
-    //orientation += tform->GetRotation();
+    orientation += tform->GetRotation();
   }
 
   void PolygonCollider2D::CenterPolygon()
@@ -312,11 +317,6 @@ namespace Framework
     }
 	}
 	
-	void PolygonCollider2D::SetOrient (float radians)
-  {
-    u = GetRotationMatrix(radians);
-	}
-
   float PolygonCollider2D::GetArea() const
   {
     float area = 0.0f;
@@ -470,7 +470,7 @@ namespace Framework
   {
     newCollider->gameObject = gameObject;
     childColliders.push_back(newCollider);
-    RigidBody2D* rb = static_cast<RigidBody2D*>(gameObject->GetComponent("RigidBody2D"));
+    RigidBody2D* rb = gameObject->C<RigidBody2D>();
     if (rb)
       rb->ComputeMass();
   }

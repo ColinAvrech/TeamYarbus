@@ -72,7 +72,7 @@ namespace Framework
 
   void Lantern::CheckCollision()
   {
-    for (int i = 0; i < OBJECTSYSTEM->GameObjects.size(); ++i)
+    for (unsigned i = 0; i < OBJECTSYSTEM->GameObjects.size(); ++i)
     {
       glm::vec2 objPos = (glm::vec2)OBJECTSYSTEM->GameObjects[i]->C<Transform>()->GetPosition();
       glm::vec2 playerPos = (glm::vec2)gameObject->C<Transform>()->GetPosition();

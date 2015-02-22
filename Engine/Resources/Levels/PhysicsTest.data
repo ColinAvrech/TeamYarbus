@@ -139,7 +139,7 @@ Level =
 			bool AllowSleep = true,
 			bool Inherit2DMode = true,
 			Vec3 Velocity = [0, 0, 0],
-			Vec3 AngularVelocity = [0, 0, 0],
+			float AngularVelocity = 0,
 		},
 	},
 	Cog = 
@@ -194,7 +194,7 @@ Level =
 			bool AllowSleep = true,
 			bool Inherit2DMode = true,
 			Vec3 Velocity = [0, 0, 0],
-			Vec3 AngularVelocity = [0, 0, 0],
+			float AngularVelocity = 0,
 		},
 	},
 },

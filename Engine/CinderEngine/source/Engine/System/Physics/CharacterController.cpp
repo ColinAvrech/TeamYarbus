@@ -140,11 +140,11 @@ namespace Framework
       return;
     }
 
-    // Fly up
+    // Jump/Fly up
     if (InputManager::IsKeyDown(GLFW_KEY_UP) && (onGround || useFlying) && (body->velocity.y < 9.5f))
     {
       onGround = false;
-      body->ApplyForce(vec2(0, 4000 * body->mat->density));
+      body->ApplyForce(vec2(0, 1000 * body->mat->density));
         
       if (hp)
       {
@@ -160,7 +160,8 @@ namespace Framework
     }
 
     // Go down
-    if (InputManager::IsKeyDown(GLFW_KEY_DOWN) && (body->velocity.y > -9.5f))
+
+    if (InputManager::IsKeyDown(GLFW_KEY_DOWN) && !onGround && (body->velocity.y > -9.5f))
     {
       body->ApplyForce(vec2(0, -2000 * body->mat->density));
     }

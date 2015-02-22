@@ -77,7 +77,7 @@ namespace Framework
             continue;
           Manifold m(A, B);
           m.Solve();
-          if (m.contact_count)
+          if (m.contacts.size())
             contacts.emplace_back(m);
         }
       }
@@ -108,7 +108,7 @@ namespace Framework
       {
         RigidBody2D *b = rigidBodies[i];
         b->force = vec2();
-        b->torque = 0;
+        b->torque = 1;
       }
     }
 
@@ -161,7 +161,7 @@ namespace Framework
         for (unsigned i = 0; i < contacts.size(); ++i)
         {
           Manifold& m = contacts[i];
-          for (unsigned j = 0; j < m.contact_count; ++j)
+          for (unsigned j = 0; j < m.contacts.size(); ++j)
           {
             vec2 c = m.contacts[j];
             glVertex2f(c.x, c.y);
@@ -176,7 +176,7 @@ namespace Framework
         {
           Manifold& m = contacts[i];
           vec2 n = m.normal;
-          for (unsigned j = 0; j < m.contact_count; ++j)
+          for (unsigned j = 0; j < m.contacts.size(); ++j)
           {
             vec2 c = m.contacts[j];
             glVertex2f(c.x, c.y);

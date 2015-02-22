@@ -23,7 +23,6 @@ namespace Framework
 	    : A( a )
 	    , B( b )
 	  {
-      contact_count = 0;
 	  }
 	
 	  void Solve( void );                 // Generate contact information
@@ -37,8 +36,7 @@ namespace Framework
 	
 	  float penetration;     // Depth of penetration from collision
 	  vec2 normal;          // From A to B
-	  vec2 contacts[2];     // Points of contact during collision
-	  unsigned contact_count; // Number of contacts that occured during collision
+	  vector<vec2> contacts;     // Points of contact during collision
 	  float e;               // Mixed restitution
 	  float df;              // Mixed dynamic friction
 	  float sf;              // Mixed static friction

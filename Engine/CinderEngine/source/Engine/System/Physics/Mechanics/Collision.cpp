@@ -49,10 +49,7 @@ namespace Framework
 	
 	  // Not in contact
 	  if(dist_sqr >= radius * radius)
-	  {
-	    m->contact_count = 0;
 	    return;
-	  }
 	  
     //has collided
     CollisionEvent collisionEvent;
@@ -65,19 +62,18 @@ namespace Framework
 
 	  float distance = std::sqrt( dist_sqr );
 	
-	  m->contact_count = 1;
 	
 	  if(distance == 0.0f)
 	  {
 	    m->penetration = circleA->GetRadius();
 	    m->normal = vec2( 1, 0);
-	    m->contacts [0] = tformA->GetPosition2D();
+	    m->contacts.push_back(tformA->GetPosition2D());
 	  }
 	  else
 	  {
 	    m->penetration = radius - distance;
 	    m->normal = normal / distance; // Faster than using Normalized since we already performed sqrt
-      m->contacts[0] = m->normal * circleA->GetRadius() + tformA->GetPosition2D();
+      m->contacts.push_back(m->normal * circleA->GetRadius() + tformA->GetPosition2D());
 	  }
 	}
 	
@@ -87,7 +83,7 @@ namespace Framework
     CircleCollider2D *circle = static_cast<CircleCollider2D *>(a);
     PolygonCollider2D *polygon = static_cast<PolygonCollider2D *>(b);
     
-    m->contact_count = 0;
+    m->contacts.clear();
 
     // Transform circle center to Polygon model space
     vec2 center = circle->GetCenter();
@@ -125,10 +121,9 @@ namespace Framework
     // Check to see if center is within polygon
     if (separation < EPSILON)
     {
-      m->contact_count = 1;
       m->normal = -(polygon->u * polygon->m_normals[faceNormal]);
       m->penetration = circle->GetRadius();
-      m->contacts[0] = m->normal * m->penetration + circle->GetCenter();
+      m->contacts.push_back(m->normal * m->penetration + circle->GetCenter());
       return;
     }
 
@@ -143,12 +138,10 @@ namespace Framework
       if (glm::distance(center, v1) > circle->GetRadius())
         return;
 
-      m->contact_count = 1;
       vec2 n = v1 - center;
       n = polygon->u * n;
       m->normal = glm::normalize(n);
       v1 = polygon->u * v1 + polygon->GetCenter();
-      m->contacts[0] = v1;
     }
 
     // Closest to v2
@@ -157,10 +150,8 @@ namespace Framework
       if (glm::distance(center, v2) > circle->GetRadius())
         return;
 
-      m->contact_count = 1;
       vec2 n = v2 - center;
       v2 = polygon->u * v2 + polygon->GetCenter();
-      m->contacts[0] = v2;
       n = polygon->u * n;
       m->normal = glm::normalize(n);
     }
@@ -172,11 +163,11 @@ namespace Framework
       if (glm::dot(center - v1, n) > circle->GetRadius())
         return;
 
-      m->contact_count = 1;
       n = polygon->u * n;
       m->normal = -n;
-      m->contacts[0] = m->normal * circle->GetRadius() + circle->GetCenter();
     }
+
+    m->contacts.push_back(m->normal * circle->GetRadius() + circle->GetCenter());
   }
 
   void PolygontoCircle(Manifold *m, ShapeCollider2D* polygon, ShapeCollider2D* circle)
@@ -305,8 +296,6 @@ namespace Framework
     RigidBody2D* rbA = A->gameObject->C<RigidBody2D>();
     RigidBody2D* rbB = B->gameObject->C<RigidBody2D>();
 
-	  m->contact_count = 0;
-	
 	  // Check for a separating axis with A's face planes
 	  unsigned faceA;
 	  float penetrationA = FindAxisLeastPenetration( &faceA, A, B );
@@ -396,9 +385,8 @@ namespace Framework
 	  float separation = glm::dot( refFaceNormal, incidentFace[0] ) - refC;
 	  if(separation <= 0.0f)
 	  {
-	    m->contacts[cp] = incidentFace[0];
+      m->contacts.push_back(incidentFace[0]);
 	    m->penetration = -separation;
-	    ++cp;
 	  }
 	  else
 	    m->penetration = 0;
@@ -406,16 +394,13 @@ namespace Framework
 	  separation = glm::dot( refFaceNormal, incidentFace[1] ) - refC;
 	  if(separation <= 0.0f)
 	  {
-	    m->contacts[cp] = incidentFace[1];
+	    m->contacts.push_back(incidentFace[1]);
 	
 	    m->penetration += -separation;
-	    ++cp;
 	
 	    // Average penetration
 	    m->penetration /= (float)cp;
 	  }
-	
-	  m->contact_count = cp;
 	}
 
   void CompoundSolve(Manifold *m, ShapeCollider2D* a, ShapeCollider2D* b)
@@ -453,7 +438,7 @@ namespace Framework
       if (m->normal != vec2())
       {
         fCollision = true;
-        //normals.push_back(m->normal);
+        normals.push_back(m->normal);
         //normal = m->normal;
       }
     }

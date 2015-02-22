@@ -254,6 +254,11 @@ inline float Cross( const Vector2& a, const Vector2& b )
 }
 */
 
+inline vec2 Cross(const vec2& v, float a)
+{
+  return vec2(a * v.y, -a * v.x);
+}
+
 inline vec2 Cross(float a, const vec2&v)
 {
   return vec2(-a * v.y, a * v.x);
@@ -314,7 +319,7 @@ inline glm::mat2 GetRotationMatrix(float radians)
   float s = std::sin(radians);
 
   m[0][0] = c; m[0][1] = -s;
-  m[0][0] = s; m[0][1] = c;
+  m[1][0] = s; m[1][1] = c;
   return m;
 }
 #endif // _MATH_EXT_H

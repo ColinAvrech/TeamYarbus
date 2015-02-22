@@ -46,7 +46,7 @@ namespace Framework
       }
 	    virtual void Initialize (void){}
       virtual void ComputeMass (float density) {}
-      virtual void SetOrient (float radians){}
+      virtual void SetOrient(float radians);
       virtual void Draw (void) const{}
       virtual ColliderType GetType (void) const
       {
@@ -59,7 +59,10 @@ namespace Framework
       virtual float GetArea() const { return 0.0f; };
       virtual vec2 GetCenter() const;
 
-    protected: 
+      glm::mat2 u = glm::mat2(); // Orientation matrix from model to world
+
+  protected:
+      float orientation = 0;
       vec2 offset = vec2();
 	};
 	
@@ -102,7 +105,6 @@ namespace Framework
 	    virtual void Initialize( void );
 	
 	    ShapeCollider2D *Clone( void ) const;
-	    void SetOrient( float radians );
 	    void Draw( void ) const;
 	    ColliderType GetType( void ) const;
 	
@@ -118,10 +120,8 @@ namespace Framework
       float ComputeInertia(float density);
 
       // For Polygon shape
-      glm::mat2 u = glm::mat2(); // Orientation matrix from model to world
       vec2 dimensions = vec2();
 
-      float orientation = 0;
 	    unsigned m_vertexCount = 0;
 	    vec2 m_vertices[MaxVertices];
 	    vec2 m_normals[MaxVertices];

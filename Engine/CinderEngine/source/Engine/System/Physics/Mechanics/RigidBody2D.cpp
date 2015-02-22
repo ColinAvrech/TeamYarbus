@@ -26,8 +26,11 @@ namespace Framework
     maxVelocity = vec2(10, 10);
     angularVelocity = 0;
     torque = 0;
+    mass = 0;
+    invMass = 0;
+    I = 0;
+    invI = 0;
     orient = MyRandom(-PI, PI);
-
     r = MyRandom(0.2f, 1.0f);
     g = MyRandom(0.2f, 1.0f);
     b = MyRandom(0.2f, 1.0f);
@@ -48,9 +51,12 @@ namespace Framework
 	  orient = radians;
     if (gameObject)
     {
-      ShapeCollider2D* shape = static_cast<ShapeCollider2D*>(gameObject->GetComponent("ShapeCollider2D"));
-      if (shape)
-        shape->SetOrient(radians);
+      ShapeCollider2D* shape = gameObject->C<ShapeCollider2D>();
+      if (!shape)
+        __debugbreak();
+
+      shape->SetOrient(radians);
+
     }
   }
 	
@@ -95,7 +101,7 @@ namespace Framework
   void RigidBody2D::ApplyForce (const vec2& f)
   {
     //if (force.y < 0.1f)
-      force += f;
+    force += f;
 
     //std::cout << force.y << "\n";
   }
@@ -110,23 +116,21 @@ namespace Framework
   {
     if (gameObject)
     {
-      ShapeCollider2D* shape = static_cast<ShapeCollider2D*>(gameObject->GetComponent("ShapeCollider2D"));
-      Transform* tform = static_cast<Transform*>(gameObject->GetComponent("Transform"));
-
-      if (shape)
+      ShapeCollider2D* shape = gameObject->C<ShapeCollider2D>();
+      
+      assert(shape && "shape invalid pointer Rigidbody2D.cpp");
+      switch (shape->GetType())
       {
-        switch (shape->GetType())
-        {
-          case ShapeCollider2D::eCircle:
-            return static_cast<CircleCollider2D*>(shape)->GetArea();
-          case ShapeCollider2D::ePoly:
-            return static_cast<PolygonCollider2D*>(shape)->GetArea();
-          case ShapeCollider2D::eCompound:
-            return static_cast<CompoundCollider2D*>(shape)->GetArea();
-
-        }
+        case ShapeCollider2D::eCircle:
+          return static_cast<CircleCollider2D*>(shape)->GetArea();
+        case ShapeCollider2D::ePoly:
+          return static_cast<PolygonCollider2D*>(shape)->GetArea();
+        case ShapeCollider2D::eCompound:
+          return static_cast<CompoundCollider2D*>(shape)->GetArea();
+        default:
+          Transform* tform = static_cast<Transform*>(gameObject->GetComponent("Transform"));
+          return tform->GetScale().x * tform->GetScale().y;
       }
-      return tform->GetScale().x * tform->GetScale().y;
     }
     else
     {
@@ -140,7 +144,30 @@ namespace Framework
   {
     mass = mat->density * GetArea();
     invMass = (mass > 0.0f) ? 1.0f / mass : 0.0f;
-    I = I * mat->density;
+
+    ShapeCollider2D* shape = gameObject->C<ShapeCollider2D>();
+    
+    assert(shape && "No shape bwahaha");
+    switch (shape->GetType())
+    {
+    case ShapeCollider2D::ColliderType::eCircle: {
+      CircleCollider2D *circle = static_cast<CircleCollider2D*>(shape);
+      I = mass * circle->GetRadius() * circle->GetRadius();
+    }
+      break;
+
+    case ShapeCollider2D::ColliderType::ePoly: {
+      PolygonCollider2D *poly = static_cast<PolygonCollider2D*>(shape);
+      //TODO Implement the I for this collider. Not necessary at the time as our only polygon collider is static(TERRAIN).
+    }
+        break;
+
+    case ShapeCollider2D::ColliderType::eCompound: {
+      //TODO Only do this if you get the polygon one working. Should be relatively simple as you probably just use the sum of impulses somehow.
+    }
+        break;
+    }
+
     invI = (abs(I) > 0) ? 1.0f / I : 0.0f;
   }
 

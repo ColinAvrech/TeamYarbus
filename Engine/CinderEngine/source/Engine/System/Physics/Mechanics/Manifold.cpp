@@ -33,7 +33,7 @@ namespace Framework
     sf = std::sqrt(A->mat->staticFriction * A->mat->staticFriction);
     df = std::sqrt(A->mat->dynamicFriction * A->mat->dynamicFriction);
 
-    for (unsigned i = 0; i < contact_count; ++i)
+    for (unsigned i = 0; i < contacts.size(); ++i)
     {
       // Calculate radii from Center Of Model to contact
       vec2 ra = contacts[i] - A->gameObject->C<ShapeCollider2D>()->GetCenter();
@@ -60,7 +60,7 @@ namespace Framework
       return;
     }
 
-    for (unsigned i = 0; i < contact_count; ++i)
+    for (unsigned i = 0; i < contacts.size(); ++i)
     {
       // Calculate radii from COM to contact
       vec2 ra = contacts[i] - A->gameObject->C<ShapeCollider2D>()->GetCenter();
@@ -84,7 +84,7 @@ namespace Framework
       // Calculate impulse scalar
       float j = -(1.0f + e) * contactVel;
       j /= invMassSum;
-      j /= (float)contact_count;
+      j /= (float)contacts.size();
 
       // ***** SUPER BUG AHEAD
       //if ((OBJECTSYSTEM->ptrPlayer != nullptr) && (OBJECTSYSTEM->ptrPlayer->RigidBody2D->velocity.Len()) > 1000)
@@ -110,7 +110,7 @@ namespace Framework
       // j tangent magnitude
       float jt = -glm::dot(rv, t);
       jt /= invMassSum;
-      jt /= (float)contact_count;
+      jt /= (float)contacts.size();
 
       // Don't apply tiny friction impulses
       if (Equal(jt, 0.0f))
