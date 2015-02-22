@@ -34,16 +34,17 @@ namespace Framework
 		virtual bool Draw_Last() { return true; }
 		virtual bool InViewport() { return true; }
 
-		float getLightTheta(){ return lightTheta; }
+		float getLightTheta(){ return lightThetaCurr; }
 		float getAngleFromGround(){ return angleFromGround; }
 		bool getRainedOn(){ return rainedOn; }
 		void setRainedOn(bool check){ rainedOn = check; }
-
+		void ToggleInvulnerability();
 
 	private:
 		//basic shape
 		float lightRadius;
-		float lightTheta;
+		float lightThetaCurr;
+		float lightThetaMax;
 		float lightThetaRad; //in radians
 		float angleFromGround;
 		glm::vec2 origin;
@@ -54,6 +55,11 @@ namespace Framework
 		//interaction with rain
 		bool rainedOn;
 		float rainDecayRate;
-	
+
+		//refueling
+		bool reFueling;
+		float reFuelRate;
+
+		bool invincible;
 	};
 }

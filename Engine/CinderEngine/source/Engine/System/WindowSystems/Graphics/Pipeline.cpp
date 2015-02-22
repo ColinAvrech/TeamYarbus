@@ -48,6 +48,8 @@ namespace Framework
 
   Pipeline::Pipeline ()
   {
+    int W = WINDOWSYSTEM->Get_Width();
+    int H = WINDOWSYSTEM->Get_Height();
     glViewport (0, 0, WINDOWSYSTEM->Get_Width(), WINDOWSYSTEM->Get_Height());
     useDebugDraw = false;
     OPENGL = this;
@@ -77,7 +79,7 @@ namespace Framework
     rainshader = Resources::RS->Get_Shader("Storm");
     //=============================================================
     //Post process test============================================
-    bnw = Resources::RS->Get_Shader("BNW");
+    bnw = Resources::RS->Get_Shader("GrayScale");
     //=============================================================
     Change_Shader ("Passthrough", (int) SS_DEFAULT);
 
@@ -97,20 +99,20 @@ namespace Framework
     fbo = new FBO ();
     //MSAA test
     //////////////////////////////
-    renderTexture = GenerateTextureMultiSampled(1920, 1080); //primary texture
+    renderTexture = GenerateTextureMultiSampled(W, H); //primary texture
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE, renderTexture, 0);
     // Generate a depth buffer
     glGenRenderbuffers(1, &depthrenderbuffer);
     glBindRenderbuffer(GL_RENDERBUFFER, depthrenderbuffer);
-    glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_DEPTH_COMPONENT, 1920, 1080);
+    glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_DEPTH_COMPONENT, W, H);
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthrenderbuffer);
     fbo->unBind();
     ////////////////////////////////////////////////////
     //Test offscreen rendering
     //=================================================
     dsfbo = new FBO();
-    sourceTexture = GenerateTexture(1920, 1080); //post process texture
-    dsTexture = GenerateTexture(1920, 1080);     //downsampled version of original texture
+    sourceTexture = GenerateTexture(W, H); //post process texture
+    dsTexture = GenerateTexture(W, H);     //downsampled version of original texture
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, dsTexture, 0);
     //===================================================
     
@@ -140,6 +142,13 @@ namespace Framework
 
   void Pipeline::Update ()
   {
+    //clear post process buffer//
+    dsfbo->bind();
+    glClearColor(0.f, 0.f, 0.f, 0);
+    glClear(GL_COLOR_BUFFER_BIT);
+    /////////////////////////////
+
+    //Start rendering scene/////
     fbo->bind();
 
     glClearColor(0.5f, 0.5f, 0.5f, 1);
@@ -681,9 +690,19 @@ namespace Framework
   void Pipeline::ResizeBuffer (const int w, const int h)
   {
     glViewport (0, 0, w, h);
-    //glBindTexture(GL_TEXTURE_2D, dsTexture);
-    //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
-    //glBindTexture(GL_TEXTURE_2D, 0);
+    glBindTexture(GL_TEXTURE_2D, renderTexture);
+    glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 4, GL_RGB, w, h, GL_TRUE);
+
+    glBindTexture(GL_TEXTURE_2D, dsTexture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, w, h, 0, GL_RGBA, GL_FLOAT, NULL);
+
+    glBindTexture(GL_TEXTURE_2D, sourceTexture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, w, h, 0, GL_RGBA, GL_FLOAT, NULL);
+
+    glBindRenderbuffer(GL_RENDERBUFFER, depthrenderbuffer);
+    glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_DEPTH_COMPONENT, w, h);
+
+    glBindTexture(GL_TEXTURE_2D, 0);
   }
 
   void Pipeline::Change_Shader (std::string sh, int id /* = 0*/)

@@ -35,4 +35,19 @@ namespace Reflection
 		return mDescription;
 	}
 
+	bool MetaMember::IsPointer( ) const
+	{
+		return mIsPointer;
+	}
+
+	bool MetaMember::IsContainer( ) const
+	{
+		return mContainer != nullptr;
+	}
+
+	const MetaContainer & MetaMember::GetContainer( ) const
+	{
+		return *mContainer;
+	}
+
 }

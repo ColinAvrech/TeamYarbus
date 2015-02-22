@@ -4,7 +4,7 @@
 \author Manas Sudhir Kulkarni
 \par    Course: GAM200
 \par    All content 2014 DigiPen (USA) Corporation, all rights reserved.
-\brief  
+\brief
 */
 /******************************************************************************/
 
@@ -24,90 +24,92 @@
 namespace Framework
 {
 
-  class Transform : public Component
-  {
-  public:
-	  META_DECLARE( Transform );
-    ZilchDeclareDerivedType(Transform, Component);
-    
-    Transform ();
-    virtual ~Transform();
-    virtual void Initialize ();
-    virtual void Serialize (Serializer::DataNode* data);
-    //////////////////////////////////////////////////////////////////////////
-    // Transformations
-    void Load_Identity ();
-    void Translate (const float x, const float y, const float z);
-  	void Translate(const vec3 &v);
-    void Translate2D(const vec2 &v) { Translate(v.x, v.y, 0); }
-    void Scale (const float x, const float y, const float z);
-    void Scale (const float v);
-    void Rotate (float angle);
-    //////////////////////////////////////////////////////////////////////////
-    bool MatrixMode (int m);
-    void UpdateMatrices ();
-    void SetMVP(glm::mat4 &mvp);
+	class Transform : public Component
+	{
+	public:
+		META_DECLARE( Transform );
+		ZilchDeclareDerivedType( Transform, Component );
 
-    //getters
-    glm::mat4 GetModelMatrix ();
-    glm::mat4 GetModelViewProjectionMatrix ();
-    /*inline*/ vec3 GetPosition ();
-    /*inline*/ vec2 GetPosition2D();
-    /*inline*/ vec3 GetScale ();
-    /*inline*/ float GetRotation ();
-	  vec3 GetLocalPosition();
-	  vec3 GetLocalScale();
-	  Real3 ZGetLocalPosition();
-	  Real3 ZGetLocalScale();
-	  float GetLocalRotation();
-    vec2 GetNDCPosition ();
-    glm::vec2 GetGridPosition ();
-    glm::vec2 GetGridPosition (glm::vec2 pos);
-    glm::vec2 GetNDCPosition (const glm::vec2& v);
-    glm::vec2 GetScreenPosition ();
+		Transform( );
+		virtual ~Transform( );
+		virtual void Initialize( );
+		virtual void Serialize( Serializer::DataNode* data );
+		//////////////////////////////////////////////////////////////////////////
+		// Transformations
+		void Load_Identity( );
+		void Translate( const float x, const float y, const float z );
+		void Translate( const vec3 &v );
+		void Translate2D( const vec2 &v ) { Translate( v.x, v.y, 0 ); }
+		void Scale( const float x, const float y, const float z );
+		void Scale( const float v );
+		void Rotate( float angle );
+		//////////////////////////////////////////////////////////////////////////
+		bool MatrixMode( int m );
+		void UpdateMatrices( );
+		void SetMVP( glm::mat4 &mvp );
 
-    void SetPosition (const vec2& v);
+		//getters
+		glm::mat4 GetModelMatrix( );
+		glm::mat4 GetModelViewProjectionMatrix( );
+		/*inline*/ vec3 GetPosition( );
+		/*inline*/ vec2 GetPosition2D( );
+		/*inline*/ vec3 GetScale( );
+		/*inline*/ float GetRotation( );
+		vec3 GetLocalPosition( );
+		vec3 GetLocalScale( );
+		Real3 ZGetLocalPosition( );
+		Real3 ZGetLocalScale( );
+		float GetLocalRotation( );
+		vec2 GetNDCPosition( );
+		glm::vec2 GetGridPosition( );
+		glm::vec2 GetGridPosition( glm::vec2 pos );
+		glm::vec2 GetNDCPosition( const glm::vec2& v );
+		glm::vec2 GetScreenPosition( );
 
-	//void UpdateChildren();
-    //////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////
-    // ZILCH FUNCTIONS
-    Zilch::Real3 Transform::ZGetTranslation ();
-    Zilch::Real3 Transform::ZGetScale ();
-    void Transform::ZSetTranslation (Zilch::Real3 newpos);
-    void Transform::ZSetScale (Zilch::Real3 newscale);
-    Zilch::Real2 ZGetScreenPosition (Zilch::Real2);
-    //////////////////////////////////////////////////////////////////////////
+		void SetPosition( const vec2& v );
 
-    static void Print (vec3 position);
+		//void UpdateChildren();
+		//////////////////////////////////////////////////////////////////////////
+		//////////////////////////////////////////////////////////////////////////
+		// ZILCH FUNCTIONS
+		Zilch::Real3 Transform::ZGetTranslation( );
+		Zilch::Real3 Transform::ZGetScale( );
+		void Transform::ZSetTranslation( Zilch::Real3 newpos );
+		void Transform::ZSetScale( Zilch::Real3 newscale );
+		Zilch::Real2 ZGetScreenPosition( Zilch::Real2 );
+		//////////////////////////////////////////////////////////////////////////
 
-    // The non-base component usees DefineComponentName macro to name component
-    const static string Name;
-	
-	bool matricesReady;
+		static void Print( vec3 position );
 
-  private:
-    int currentMatrix;
+		// The non-base component usees DefineComponentName macro to name component
+		const static string Name;
 
-	//These functions assume that there is a parent.
-	void UpdatePosition(Transform* trans);
-	void UpdateScale(Transform* trans);
-	void UpdateRotation(Transform* trans);
+		bool matricesReady;
 
-    glm::mat4 modelMatrix;
-    glm::mat4 modelViewProjectionMatrix;
-    vec3 position;
-    vec3 scale;
-    float rotation;
+	private:
+		int currentMatrix;
 
-	  vec3 localPosition;
-	  vec3 localScale;
-	  float localRotation;
-    glm::mat3 normalMatrix;
+		//These functions assume that there is a parent.
+		void UpdatePosition( Transform* trans );
+		void UpdateScale( Transform* trans );
+		void UpdateRotation( Transform* trans );
 
-    // To avoid Unnecesary calculation in Update Matrices
-    
-  };
+		glm::mat4 modelMatrix;
+		glm::mat4 modelViewProjectionMatrix;
+		vec3 position;
+		vec3 scale;
+		float rotation;
+
+		vec3 localPosition;
+		vec3 localScale;
+		float localRotation;
+		glm::mat3 normalMatrix;
+
+		// To avoid Unnecesary calculation in Update Matrices
+
+	};
+
+
 
 }
 

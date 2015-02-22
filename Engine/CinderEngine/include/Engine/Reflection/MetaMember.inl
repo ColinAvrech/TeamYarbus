@@ -3,14 +3,14 @@ namespace Reflection
 
 	template <typename MemberType, typename ParentType >
 	MetaMember::MetaMember( const NameType & memberName,
-							HashedNameType memberType,
 							MemberType ParentType::*member,
 							const char * description ) :
 
 							mName( memberName ),
-							mType( memberType ),
+							mType( Reflection::MetaTypeToHash< std::remove_pointer< RemQual< MemberType >::Type >::type >( ) ),
 							mOffset( offsetof( ParentType, *member ) ),
 							mIsPointer( std::is_pointer< MemberType >::value ),
+							mContainer( Reflection::CreateContainer( ( ( ParentType* ) 0 )->*member ) ),
 							mDescription( description ? description : "" )
 	{
 
@@ -18,12 +18,12 @@ namespace Reflection
 
 	inline void * MetaMember::GetPtr( void * obj ) const
 	{
-		return reinterpret_cast< void * >( reinterpret_cast< char * >( obj ) + mOffset );
+		return reinterpret_cast< void * >( reinterpret_cast< char * >( obj ) +mOffset );
 	}
 
 	inline const void * MetaMember::GetPtr( const void * obj ) const
 	{
-		return reinterpret_cast< const void * >( reinterpret_cast< const char * >( obj ) + mOffset );
+		return reinterpret_cast< const void * >( reinterpret_cast< const char * >( obj ) +mOffset );
 	}
 
 	template <typename T>

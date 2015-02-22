@@ -52,6 +52,8 @@ namespace Panel
 		void SetPanelColor( unsigned char r, unsigned char g, unsigned char b );
 		void SetAlpha( unsigned int a );
 
+		void AddGroupToGroup( const std::string & outer, const std::string & inner );
+
 		// modify panel field
 		void ClearPanel( );
 		void ClearField( const std::string & fieldName );

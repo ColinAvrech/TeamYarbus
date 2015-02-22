@@ -181,7 +181,7 @@ Level =
 		{
 		  bool Enabled = true,
           bool UseFlying = false,
-		  Vec2 Acceleration = [30, 0],
+		  //Vec2 Acceleration = [30, 0],
 		  Vec2 JumpVelocity = [0, 2],
 		  Vec2 MicrophoneMultiplier = [0, 10],
 		},
@@ -200,6 +200,11 @@ Level =
 			SpriteGeometryMode GeometryMode = ZPlane,
 			string SpriteLayer = "52ad5fa30d7fcd50:DefaultSpriteLayer",
 			string Shader = "Default",
+		},
+		Lantern = 
+		{
+			float lightThetaMax = 90.f,
+			float lightRadius = 2.f,
 		},
 	},
   Cog = 
@@ -232,11 +237,6 @@ Level =
 		},
 		Rain = 
 		{
-		},
-		Lantern = 
-		{
-			float lightTheta = 90.f,
-			float lightRadius = 2.f,
 		},
   },
   Cog = 

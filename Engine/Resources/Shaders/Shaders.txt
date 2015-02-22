@@ -107,4 +107,4 @@ Storm
 Quad.vs.glsl
 Black_n_White.frag.glsl
 0
-BNW
+GrayScale

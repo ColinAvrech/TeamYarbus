@@ -16,6 +16,8 @@ starts the game loop.
 
 #include "LevelEditor.h"
 
+#include "MetaContainer.h"
+
 #define WINDOWSBUILD
 #ifdef WINDOWSBUILD
 
@@ -133,6 +135,7 @@ int main (void)
   //! Initialize all added Systems. DON'T INIT YOUR OWN
   engine->Initialize ();
 
+  Reflection::testFunction( );
 
   audio->LoadMicData ();
   //Sound *SplashScreenMusic = resourceManager.Get_Sound("_Intro.ogg");
