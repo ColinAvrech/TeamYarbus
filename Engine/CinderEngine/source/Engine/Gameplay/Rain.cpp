@@ -29,17 +29,18 @@ namespace Framework
 
 	void Rain::Update(UpdateEvent* e)
 	{
-		float afg = gameObject->C<Lantern>()->getAngleFromGround();
-		float lt = gameObject->C<Lantern>()->getLightTheta();
+    GameObject* player = OBJECTSYSTEM->ptrPlayer;
+		float afg = player->C<Lantern>()->getAngleFromGround();
+		float lt = player->C<Lantern>()->getLightTheta();
 
 		/*check if lantern is blocking rain*/
 		if (rainAngle >= afg && rainAngle <= afg + lt)
 		{
-			gameObject->C<Lantern>()->setRainedOn(false);
+			player->C<Lantern>()->setRainedOn(false);
 		}
 		else
 		{
-			gameObject->C<Lantern>()->setRainedOn(true);
+			player->C<Lantern>()->setRainedOn(true);
 		}
 	}
 	DefineComponentName(Rain);

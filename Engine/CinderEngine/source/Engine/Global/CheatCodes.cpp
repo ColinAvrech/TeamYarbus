@@ -16,6 +16,7 @@
 #include "Pipeline.h"
 #include "PlayerStats.h"
 #include "Events.h"
+#include "Lantern.h"
 
 namespace Framework
 {
@@ -32,7 +33,7 @@ namespace Framework
       {
         GameObject* player = OBJECTSYSTEM->ptrPlayer;
 
-        Health* hp = static_cast<Health*>(player->GetComponent("Health"));
+		    Lantern* la = player->C<Lantern>();
         CharacterController* cc = static_cast<CharacterController*>(player->GetComponent("CharacterController"));
         PlayerStats* ps = static_cast<PlayerStats*>(OBJECTSYSTEM->ptrPlayer->GetComponent("PlayerStats"));
         if (e->SHIFTPressed)
@@ -56,11 +57,13 @@ namespace Framework
               OBJECTSYSTEM->RestartLevel();
               break;
 
-            case GLFW_KEY_I: // Toggle Invincibility:   Shift + I
-              if (player && hp)
-              {
-                std::cout << "Toggle Invincibility Cheat!" << std::endl;
-                hp->ToggleInvulnerability();
+            case GLFW_KEY_L: // Toggle Invincibility:   Shift + L
+			      {
+								 if (la)
+								 {
+									 std::cout << "Toggle Invincibility Cheat!" << std::endl;
+									 la->ToggleInvulnerability();
+								 }
               }
               break;
 

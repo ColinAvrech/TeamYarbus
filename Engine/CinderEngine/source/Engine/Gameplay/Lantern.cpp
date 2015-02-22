@@ -24,32 +24,46 @@ namespace Framework
     EVENTSYSTEM->mConnect<UpdateEvent, Lantern>(Events::UPDATEEVENT, this, &Lantern::Update);
 	decayRate = .1f;
 	rainDecayRate = .2f;
+	reFuelRate = .3f;
 	rainedOn = false;
-
+	reFueling = false;
+	invincible = false;
+	lightThetaCurr = lightThetaMax;
   }
 
   void Lantern::Serialize(Serializer::DataNode* data)
   {
     data->FindElement(data, "lightRadius")->GetValue(&lightRadius);
-    data->FindElement(data, "lightTheta")->GetValue(&lightTheta);
+    data->FindElement(data, "lightThetaMax")->GetValue(&lightThetaMax);
   }
 
   void Lantern::Update(UpdateEvent* e)
   {
-	  if (lightTheta <= 0)
+	  Transform* tform = static_cast<Transform*>(gameObject->GetComponent("Transform"));
+	  //check if player is colliding with node on fire -- for refuel
+	  glm::ivec2 currPos = tform->GetGridPosition();
+
+    CalculateBounds();
+
+	  if (invincible)
+	  {
+		  return;
+	  }
+
+	  if (lightThetaCurr <= 0)
 	  {
 		  //set game state to end
 	  }
 	  if (rainedOn == true)
-		  lightTheta -= rainDecayRate;
+		  lightThetaCurr -= rainDecayRate;
 	  else
-		  lightTheta -= decayRate;
-	  CalculateBounds();
+		  lightThetaCurr -= decayRate;
+	  
   }
 
   void Lantern::CalculateBounds()
   {
-	lightThetaRad = lightTheta * PI / 180;
+	lightThetaRad = lightThetaCurr * PI / 180;
     //flaslight follows the mouse
     //lantern position
     glm::vec2 tform = (glm::vec2)gameObject->C<Transform>()->GetPosition();
@@ -88,7 +102,13 @@ namespace Framework
     }
   }
 
-  void Lantern::reFuel(){};
+  void Lantern::reFuel()
+  {
+	  if (lightThetaCurr < lightThetaMax)
+	  {
+		  lightThetaCurr += reFuelRate;
+	  }
+  };
 
   void Lantern::Draw()
   {
@@ -124,5 +144,9 @@ namespace Framework
     glEnd();
   }
 
+  void Lantern::ToggleInvulnerability()
+  {
+	  invincible = !invincible;
+  }
   DefineComponentName(Lantern);
 }
